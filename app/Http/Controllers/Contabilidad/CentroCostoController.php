@@ -110,7 +110,6 @@ class CentroCostoController extends Controller
     {
         if ($request->ajax()) {
             $data = $request->all();
-            
             $centrocosto = CentroCosto::findOrFail($id);
             if ($centrocosto->isValid($data)) {
                 DB::beginTransaction();

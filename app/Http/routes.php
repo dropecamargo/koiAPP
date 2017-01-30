@@ -57,5 +57,11 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::resource('documentos', 'Contabilidad\DocumentoController', ['except' => ['destroy']]);
 	Route::resource('folders', 'Contabilidad\FolderController', ['except' => ['destroy']]);
 	Route::resource('centroscosto', 'Contabilidad\CentroCostoController', ['except' => ['destroy']]);
-	Route::resource('plancuentas', 'Contabilidad\PlanCuentasController', ['except' => ['destroy']]);
+	
+	Route::group(['prefix' => 'plancuentas'], function()
+	{
+		Route::get('nivel', ['as' => 'plancuentas.nivel', 'uses' => 'Contabilidad\PlanCuentasController@nivel']);
+		Route::get('search', ['as' => 'plancuentas.search', 'uses' => 'Contabilidad\PlanCuentasController@search']);
+	});
+    Route::resource('plancuentas', 'Contabilidad\PlanCuentasController', ['except' => ['destroy']]);
 });

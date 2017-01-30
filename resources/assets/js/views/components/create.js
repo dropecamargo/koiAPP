@@ -94,7 +94,14 @@ app || (app = {});
                         _this.model = new app.ProductoModel();
                         var template = _.template($('#add-producto-tpl').html());
                         _this.$modalComponent.find('.content-modal').html( template(_this.model.toJSON()) );
-                    }
+                    },
+                    'centrocosto' : function() {
+                        _this.$modalComponent.find('.inner-title-modal').html('Centros de costo');
+
+                        _this.model = new app.CentroCostoModel();
+                        var template = _.template($('#add-centrocosto-tpl').html());
+                        _this.$modalComponent.find('.content-modal').html( template(_this.model.toJSON()) );
+                    },
 	            };
 
             if (stuffToDo[this.resource]) {
@@ -200,7 +207,11 @@ app || (app = {});
                     },
                     'producto' : function() {
                         _this.$resourceField.val(_this.model.get('sirvea_codigo')).trigger('change');
-                    }
+                    },
+                    'centrocosto' : function() {
+                        _this.$resourceField.select2({ data: [{id: _this.model.get('id'), text: _this.model.get('centrocosto_nombre')}] }).trigger('change');
+                        _this.$resourceField.val(_this.model.get('id')).trigger('change');
+                    },
                 };
 
             if (stuffToDo[this.resource]) {

@@ -45,7 +45,7 @@ app || (app = {});
             if( typeof window.initComponent.initToUpper == 'function' )
                 window.initComponent.initToUpper();
 
-       		if( typeof window.initComponent.initICheck == 'function' )
+            if( typeof window.initComponent.initICheck == 'function' )
                 window.initComponent.initICheck();
 
             if( typeof window.initComponent.initSelect2 == 'function' )
@@ -60,16 +60,16 @@ app || (app = {});
                 type: 'GET',
                 data: { plancuentas_cuenta: $(e.currentTarget).val() },
                 beforeSend: function() {
-            		_this.$nivel.val('');
+                    _this.$nivel.val('');
                     window.Misc.setSpinner( _this.el );
                 }
             })
             .done(function(resp) {
                 window.Misc.removeSpinner( _this.el );
                 if(resp.success) {
-           		 	if(_.isUndefined(resp.nivel) || _.isNull(resp.nivel) || !_.isNumber(resp.nivel)) {
-		                alertify.error('Ocurrió un error definiendo el nivel de la cuenta, por favor verifique el número de caracteres.');
-             		}
+                    if(_.isUndefined(resp.nivel) || _.isNull(resp.nivel) || !_.isNumber(resp.nivel)) {
+                        alertify.error('Ocurrió un error definiendo el nivel de la cuenta, por favor verifique el número de caracteres.');
+                    }
                     _this.$nivel.val(resp.nivel);
                 }
             })
