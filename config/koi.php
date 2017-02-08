@@ -7,8 +7,8 @@ return [
     'image' => '/images/koi.png',
 
     'app' => [
-        'name' => 'Váziko',
-        'site' => 'http://www.vaziko.com',
+        'name' => 'Signsupply',
+        'site' => 'http://signsupply.com.co/',
         'image' => [
             'logo' => '/images/logo.png',
             'avatar' => '/images/avatar.svg'
