@@ -29,7 +29,6 @@ class MunicipioController extends Controller
             return Datatables::of($query)->make(true);
 
         }
-
         return view('admin.municipios.index');
     }
 

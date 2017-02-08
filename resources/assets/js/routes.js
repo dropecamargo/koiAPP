@@ -24,7 +24,10 @@ app || (app = {});
             'terceros(/)': 'getTercerosMain',
             'terceros/create(/)': 'getTercerosCreate',
             'terceros/:tercero(/)': 'getTercerosShow',
-            'terceros/:tercero/edit(/)': 'getTercerosEdit',            
+            'terceros/:tercero/edit(/)': 'getTercerosEdit', 
+    
+            //Empresa
+            'empresa(/)': 'getEmpresaEdit',           
 
             //Actividades
             'actividades(/)': 'getActividadesMain',
@@ -39,6 +42,10 @@ app || (app = {});
             //Departamentos & Municipios
             'departamentos(/)': 'getDepartamentosMain',
             'municipios(/)': 'getMunicipiosMain',
+
+            'puntosventa(/)': 'getPuntosVentaMain',
+            'puntosventa/create(/)': 'getPuntosVentaCreate',
+            'puntosventa/:puntoventa/edit(/)': 'getPuntosVentaEdit',
 
             /*
             |-----------------------
@@ -60,6 +67,11 @@ app || (app = {});
             'centroscosto(/)': 'getCentrosCostoMain',
             'centroscosto/create(/)': 'getCentrosCostoCreate',
             'centroscosto/:centrocosto/edit(/)': 'getCentrosCostoEdit',
+
+            'asientos(/)': 'getAsientosMain',
+            'asientos/create(/)': 'getAsientosCreate',
+            'asientos/:asientos(/)': 'getAsientosShow',
+            'asientos/:asiento/edit(/)': 'getAsientosEdit',
         },
 
         /**
@@ -95,7 +107,10 @@ app || (app = {});
             this.componentGlobalView = new app.ComponentGlobalView();
             this.componentSearchTerceroView = new app.ComponentSearchTerceroView();
             this.componentTerceroView = new app.ComponentTerceroView();
+            this.componentReporteView = new app.ComponentReporteView();
             this.componentCreateResourceView = new app.ComponentCreateResourceView();
+            this.componentSearchCuentaView = new app.ComponentSearchCuentaView();
+
       	},
 
         /**
@@ -127,6 +142,19 @@ app || (app = {});
         /*------------------------
         | Administracion
         /*-----------------------*/
+
+        //Empresa
+        getEmpresaEdit: function () {
+            this.empresaModel = new app.EmpresaModel();
+
+            if ( this.createEmpresaView instanceof Backbone.View ){
+                this.createEmpresaView.stopListening();
+                this.createEmpresaView.undelegateEvents();
+            }
+
+            this.createEmpresaView = new app.CreateEmpresaView({ model: this.empresaModel });
+            this.empresaModel.fetch();
+        },
 
         // Tercero
         getTercerosMain: function () {
@@ -272,6 +300,48 @@ app || (app = {});
             this.mainMunicipioView = new app.MainMunicipioView( );
         },
 
+        // Puntos de Venta
+        getPuntosVentaMain: function () {
+
+            if ( this.mainPuntoventaView instanceof Backbone.View ){
+                this.mainPuntoventaView.stopListening();
+                this.mainPuntoventaView.undelegateEvents();
+            }
+
+            this.mainPuntoventaView = new app.MainPuntoventaView( );
+        },
+
+        /**
+        * show view create puntos de venta
+        */
+        getPuntosVentaCreate: function () {
+            this.puntoVentaModel = new app.PuntoVentaModel();
+
+            if ( this.createPuntoventaView instanceof Backbone.View ){
+                this.createPuntoventaView.stopListening();
+                this.createPuntoventaView.undelegateEvents();
+            }
+
+            this.createPuntoventaView = new app.CreatePuntoventaView({ model: this.puntoVentaModel });
+            this.createPuntoventaView.render();
+        },
+
+        /**
+        * show view edit puntos de venta
+        */
+        getPuntosVentaEdit: function (puntoventa) {
+            this.puntoVentaModel = new app.PuntoVentaModel();
+            this.puntoVentaModel.set({'id': puntoventa}, {silent: true});
+
+            if ( this.createPuntoventaView instanceof Backbone.View ){
+                this.createPuntoventaView.stopListening();
+                this.createPuntoventaView.undelegateEvents();
+            }
+
+            this.createPuntoventaView = new app.CreatePuntoventaView({ model: this.puntoVentaModel });
+            this.puntoVentaModel.fetch();
+        },
+        
         /*
         |-----------------------
         | Contabilidad
@@ -420,6 +490,60 @@ app || (app = {});
             this.createCentroCostoView = new app.CreateCentroCostoView({ model: this.centroCostoModel, parameters: { callback: 'toShow' } });
             this.centroCostoModel.fetch();
         },
+
+        // Asientos
+         getAsientosMain: function () {
+
+            if ( this.mainAsientosView instanceof Backbone.View ){
+                this.mainAsientosView.stopListening();
+                this.mainAsientosView.undelegateEvents();
+            }
+
+            this.mainAsientosView = new app.MainAsientosView( );
+        },
+
+        getAsientosCreate: function () {
+            this.asientoModel = new app.AsientoModel();
+
+            if ( this.createAsientoView instanceof Backbone.View ){
+                this.createAsientoView.stopListening();
+                this.createAsientoView.undelegateEvents();
+            }
+
+            this.createAsientoView = new app.CreateAsientoView({ model: this.asientoModel });
+            this.createAsientoView.render();
+        },
+
+        getAsientosShow: function (asiento) {
+            this.asientoModel = new app.AsientoModel();
+            this.asientoModel.set({'id': asiento}, {'silent':true});
+
+            if ( this.showAsientoView instanceof Backbone.View ){
+                this.showAsientoView.stopListening();
+                this.showAsientoView.undelegateEvents();
+            }
+
+            this.showAsientoView = new app.ShowAsientoView({ model: this.asientoModel });
+        },
+
+        getAsientosEdit: function (asiento) {
+            this.asientoModel = new app.AsientoModel();
+            this.asientoModel.set({'id': asiento}, {'silent':true});
+
+            if ( this.editAsientoView instanceof Backbone.View ){
+                this.editAsientoView.stopListening();
+                this.editAsientoView.undelegateEvents();
+            }
+
+            if ( this.createAsientoView instanceof Backbone.View ){
+                this.createAsientoView.stopListening();
+                this.createAsientoView.undelegateEvents();
+            }
+
+            this.editAsientoView = new app.EditAsientoView({ model: this.asientoModel });
+            this.asientoModel.fetch();
+        },
+
 
     }) );
 

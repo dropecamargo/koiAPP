@@ -53,8 +53,8 @@ var app = app || {};
         */
         initICheck: function () {
             $('input').iCheck({
-                checkboxClass: 'icheckbox_minimal',
-                radioClass: 'iradio_minimal'
+                checkboxClass: 'icheckbox_minimal-green',
+                radioClass: 'iradio_minimal-green'
             });
         },
 

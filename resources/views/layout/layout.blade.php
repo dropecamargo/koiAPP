@@ -38,7 +38,9 @@
 
                 {{-- Global templates --}}
                 @include('templates')
-
+                
+                {{-- Global modals --}}
+                @include('modals')
             </div>
 
             <!-- Main Footer -->

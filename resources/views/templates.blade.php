@@ -39,6 +39,28 @@
 	</div>
 </script>
 
+{{--template punto de venta--}}
+<script type="text/template" id="add-puntoventa-tpl">
+    <div class="row">
+		<div class="form-group col-md-6">
+			<label for="puntoventa_nombre" class="control-label">Nombre</label>
+			<input type="text" id="puntoventa_nombre" name="puntoventa_nombre" value="<%- puntoventa_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="200" required>
+		</div>
+    </div>
+
+    <div class="row">
+		<div class="form-group col-md-2">
+			<label for="puntoventa_prefijo" class="control-label">Prefijo</label>
+			<input type="text" id="puntoventa_prefijo" name="puntoventa_prefijo" value="<%- puntoventa_prefijo %>" placeholder="Prefijo" class="form-control input-sm input-toupper" maxlength="4">
+		</div>
+
+		<div class="form-group col-md-4">
+			<label for="puntoventa_resolucion_dian" class="control-label">Resolución de facturación DIAN</label>
+			<input type="text" id="puntoventa_resolucion_dian" name="puntoventa_resolucion_dian" value="<%- puntoventa_resolucion_dian %>" placeholder="Resolución de facturación DIAN" class="form-control input-sm input-toupper" maxlength="200">
+		</div>
+    </div>
+</script>
+
 {{--template Tercero--}}
 <script type="text/template" id="add-tercero-tpl">
 	<div class="row">

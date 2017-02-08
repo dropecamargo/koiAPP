@@ -2,18 +2,18 @@
 
 return [
     'name' => 'KOI Tecnologías de la Información S.A.S.',
-	'nickname' => 'KOI-TI',
-	'site' => 'http://www.koi-ti.com',
-	'image' => '/images/koi.png',
+    'nickname' => 'KOI-TI',
+    'site' => 'http://www.koi-ti.com',
+    'image' => '/images/koi.png',
 
     'app' => [
-        'name' => 'Sign Supply',
-        'site' => 'http://signsupply.com.co',
+        'name' => 'Váziko',
+        'site' => 'http://www.vaziko.com',
         'image' => [
             'logo' => '/images/logo.png',
             'avatar' => '/images/avatar.svg'
         ],
-    	'ano' => 2015
+        'ano' => 2015
     ],
 
     'meses' => [
@@ -161,6 +161,11 @@ return [
                 'A' => 'Automático',
                 'M' => 'Manual'
             ]
+        ],
+
+        'iva' => [
+            '16' => '16%',
+            '19' => '19%'
         ]
     ],
 

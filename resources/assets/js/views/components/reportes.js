@@ -1,5 +1,5 @@
 /**
-* Class ComponentReportView  of Backbone
+* Class ComponentReporteView  of Backbone
 * @author KOI || @dropecamargo
 * @link http://koi-ti.com
 */
@@ -9,7 +9,7 @@ app || (app = {});
 
 (function ($, window, document, undefined) {
 
-    app.ComponentReportView = Backbone.View.extend({
+    app.ComponentReporteView = Backbone.View.extend({
 
       	el: 'body',
 		events: {
@@ -25,11 +25,11 @@ app || (app = {});
 		},
 
 		onPdf: function(e) {
-			this.$("#type-report-koi-component").val('pdf');
+			this.$("#type-reporte-koi-component").val('pdf');
 		},
 
 		onXls: function(e) {
-			this.$("#type-report-koi-component").val('xls');
+			this.$("#type-reporte-koi-component").val('xls');
 		}
     });
 

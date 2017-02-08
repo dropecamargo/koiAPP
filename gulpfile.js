@@ -20,7 +20,7 @@ elixir(function(mix) {
     mix.styles([
 		paths.adminlte + 'bootstrap/css/bootstrap.min.css',
 		paths.adminlte + 'dist/css/skins/skin-yellow.min.css',
-		paths.adminlte + 'plugins/iCheck/minimal/minimal.css',
+		paths.adminlte + 'plugins/iCheck/minimal/green.css',
 		paths.adminlte + 'plugins/select2/select2.min.css',
 		paths.adminlte + 'plugins/datepicker/datepicker3.css',
 		paths.adminlte + 'dist/css/AdminLTE.min.css',
@@ -72,6 +72,6 @@ elixir(function(mix) {
 
 elixir(function(mix) {
     mix.copy(paths.adminlte + 'bootstrap/fonts/', 'public/fonts');
-    mix.copy(paths.adminlte + 'plugins/iCheck/minimal/minimal**.png', 'public/css');
+    mix.copy(paths.adminlte + 'plugins/iCheck/minimal/green**.png', 'public/css');
     mix.copy(paths.libs + 'font-awesome/fonts/', 'public/fonts');
 });

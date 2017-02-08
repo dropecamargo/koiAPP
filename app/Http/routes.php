@@ -43,11 +43,13 @@ Route::group(['middleware' => 'auth'], function(){
 	| Admin Routes
 	|--------------------------
 	*/
+	Route::resource('empresa', 'Admin\EmpresaController', ['only' => ['index', 'update']]);
 	Route::resource('terceros', 'Admin\TerceroController', ['except' => ['destroy']]);
 	Route::resource('actividades', 'Admin\ActividadController', ['except' => ['destroy']]);
 	Route::resource('departamentos', 'Admin\DepartamentoController', ['only' => ['index', 'show']]);
 	Route::resource('municipios', 'Admin\MunicipioController', ['only' => ['index']]);
 	Route::resource('sucursales', 'Admin\SucursalController', ['except' => ['destroy']]);
+	Route::resource('puntosventa', 'Admin\PuntoVentaController', ['except' => ['destroy']]);
 
 	/*
 	|--------------------------
@@ -64,4 +66,16 @@ Route::group(['middleware' => 'auth'], function(){
 		Route::get('search', ['as' => 'plancuentas.search', 'uses' => 'Contabilidad\PlanCuentasController@search']);
 	});
     Route::resource('plancuentas', 'Contabilidad\PlanCuentasController', ['except' => ['destroy']]);
+
+    /*
+	|-------------------------
+	| Reports Routes
+	|-------------------------
+	*/
+
+	Route::resource('asientos', 'Contabilidad\AsientoController', ['only' => ['index', 'create', 'store', 'edit', 'update', 'show']]);
+
+	Route::resource('rmayorbalance', 'Reporte\MayorBalanceController', ['only' => ['index']]);
+   	Route::resource('rplancuentas', 'Reporte\PlanCuentasController', ['only' => ['index']]);
+
 });
