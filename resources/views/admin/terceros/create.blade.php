@@ -6,7 +6,7 @@
 @stop
 
 @section('module')
-	<div class="box box-warning" id="tercero-create">
+	<div class="box box-success" id="tercero-create">
 		{!! Form::open(['route' => 'terceros.store', 'id' => 'form-create-tercero', 'data-toggle' => 'validator', 'role' => 'form']) !!}
 			
 	        <div class="box-header with-border">

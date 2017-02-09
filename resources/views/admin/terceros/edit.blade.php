@@ -6,7 +6,7 @@
 @stop
 
 @section('module')
-	<div class="box box-warning" id="tercero-create">
+	<div class="box box-success" id="tercero-create">
 	 	{!! Form::model($tercero, ['route' => ['terceros.edit', $tercero->id], 'id' => 'form-create-tercero', 'data-toggle' => 'validator']) !!}			
 			
 	        <div class="box-header with-border">
