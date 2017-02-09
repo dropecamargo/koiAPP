@@ -111,4 +111,43 @@
             </li>
         </ul>
     </li>
+
+    {{-- Inventario --}}
+    <li class="treeview {{ in_array(Request::segment(1), ['grupos', 'subgrupos', 'unidades', 'productos']) ? 'active' : '' }}">
+        <a href="#">
+            <i class="fa fa-list"></i> <span>Inventario</span><i class="fa fa-angle-left pull-right"></i>
+        </a>
+
+        <ul class="treeview-menu">
+            {{-- Modulos inventario --}}
+            <li class="{{ in_array(Request::segment(1), ['productos']) ? 'active' : '' }}">
+                <a href="#">
+                    <i class="fa fa-wpforms"></i> Módulos <i class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="treeview-menu">
+                    <li class="{{ Request::segment(1) == 'productos' ? 'active' : '' }}">
+                        <a href="{{ route('productos.index') }}"><i class="fa fa-wrench"></i> Insumos</a>
+                    </li>
+                </ul>
+            </li>
+
+            {{-- Referencias inventario --}}
+            <li class="{{ in_array(Request::segment(1), ['grupos', 'subgrupos', 'unidades']) ? 'active' : '' }}">
+                <a href="#">
+                    <i class="fa fa-circle-o"></i> Referencias <i class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="treeview-menu">
+                    <li class="{{ Request::segment(1) == 'grupos' ? 'active' : '' }}">
+                        <a href="{{ route('grupos.index') }}"><i class="fa fa-circle-o"></i> Grupos</a>
+                    </li>
+                    <li class="{{ Request::segment(1) == 'subgrupos' ? 'active' : '' }}">
+                        <a href="{{ route('subgrupos.index') }}"><i class="fa fa-circle-o"></i> Subgrupos</a>
+                    </li>
+                    <li class="{{ Request::segment(1) == 'unidades' ? 'active' : '' }}">
+                        <a href="{{ route('unidades.index') }}"><i class="fa fa-circle-o"></i> Unidades</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </li>
 </ul>
