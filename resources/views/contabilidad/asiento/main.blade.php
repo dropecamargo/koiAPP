@@ -25,7 +25,7 @@
 						<h4>Factura proveedor</h4>
 					</div>
 					{!! Form::open(['id' => 'form-create-asiento-component-source', 'data-toggle' => 'validator']) !!}
-						<div class="modal-body box box-warning" id="modal-asiento-wrapper-facturap">
+						<div class="modal-body box box-success" id="modal-asiento-wrapper-facturap">
 							<div id="error-eval-facturap" class="alert alert-danger"></div>
 							<div class="content-modal"></div>
 						</div>
@@ -47,7 +47,7 @@
 						<h4>Cartera</h4>
 					</div>
 					{!! Form::open(['id' => 'form-create-asiento-component-source', 'data-toggle' => 'validator']) !!}
-						<div class="modal-body box box-warning" id="modal-asiento-wrapper-cartera">
+						<div class="modal-body box box-success" id="modal-asiento-wrapper-cartera">
 							<div id="error-eval-cartera" class="alert alert-danger"></div>
 							<div class="content-modal"></div>
 						</div>
@@ -69,7 +69,7 @@
 						<h4>Ordenes de producción</h4>
 					</div>
 					{!! Form::open(['id' => 'form-create-ordenp-asiento-component-source', 'class' => 'form-horizontal', 'data-toggle' => 'validator']) !!}
-						<div class="modal-body box box-warning" id="modal-asiento-wrapper-ordenp">
+						<div class="modal-body box box-success" id="modal-asiento-wrapper-ordenp">
 							<div id="error-search-orden-asiento2" class="alert alert-danger"></div>
 							<div class="content-modal"></div>
 						</div>
@@ -91,7 +91,7 @@
 						<h4>Inventario</h4>
 					</div>
 					{!! Form::open(['id' => 'form-create-inventario-asiento-component-source', 'data-toggle' => 'validator']) !!}
-						<div class="modal-body box box-warning" id="modal-asiento-wrapper-inventario">
+						<div class="modal-body box box-success" id="modal-asiento-wrapper-inventario">
 							<div id="error-inventario-asiento2" class="alert alert-danger"></div>
 							<div class="content-modal"></div>
 						</div>
@@ -112,7 +112,7 @@
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 						<h4>Detalle item asiento</h4>
 					</div>
-					<div class="modal-body box box-warning" id="modal-asiento-wrapper-show-info">
+					<div class="modal-body box box-success" id="modal-asiento-wrapper-show-info">
 						<div class="content-modal"></div>
 					</div>
 					<div class="modal-footer">
@@ -172,7 +172,7 @@
 
 					<% if(asiento1_preguardado) { %>
 						<div class="form-group col-md-offset-4 col-md-2 text-right">
-							<span class="label label-warning">PRE-GUARDADO</span>
+							<span class="label label-success">PRE-GUARDADO</span>
 						</div>
 					<% } %>
 				</div>
@@ -235,7 +235,7 @@
 			<% if(edit) { %> </form> <% } %>
 
 			<!-- Detalle -->
-			<div class="box box-warning">
+			<div class="box box-success">
 				<% if(edit) { %> <form method="POST" accept-charset="UTF-8" id="form-item-asiento" data-toggle="validator"> <% } %>
 					<div class="box-body">
 						<div class="row">
@@ -313,7 +313,7 @@
 								<input id="asiento2_valor" name="asiento2_valor" placeholder="Valor" class="form-control input-sm" data-currency type="text" required>
 							</div>
 							<div class="form-group col-sm-1">
-								<button type="submit" class="btn btn-warning btn-sm btn-block">
+								<button type="submit" class="btn btn-success btn-sm btn-block">
 									<i class="fa fa-plus"></i>
 								</button>
 							</div>
