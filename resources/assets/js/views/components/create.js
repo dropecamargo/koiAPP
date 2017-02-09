@@ -123,6 +123,13 @@ app || (app = {});
                         var template = _.template($('#add-unidad-tpl').html());
                         _this.$modalComponent.find('.content-modal').html( template(_this.model.toJSON()) );
                     },
+                    'folder' : function() {
+                        _this.$modalComponent.find('.inner-title-modal').html('Folder');
+
+                        _this.model = new app.FolderModel();
+                        var template = _.template($('#add-folder-tpl').html());
+                        _this.$modalComponent.find('.content-modal').html( template(_this.model.toJSON()) );
+                    },
 	            };
 
             if (stuffToDo[this.resource]) {
@@ -243,6 +250,10 @@ app || (app = {});
                     },
                     'unidadmedida' : function() {
                         _this.$resourceField.select2({ data: [{id: _this.model.get('id'), text: _this.model.get('unidadmedida_nombre')}] }).trigger('change');
+                        _this.$resourceField.val(_this.model.get('id')).trigger('change');
+                    },
+                    'folder' : function() {
+                        _this.$resourceField.select2({ data: [{id: _this.model.get('id'), text: _this.model.get('folder_nombre')}] }).trigger('change');
                         _this.$resourceField.val(_this.model.get('id')).trigger('change');
                     },
                 };
