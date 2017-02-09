@@ -367,7 +367,7 @@
 								</div>
 							</div>
 							<br / -->
-								<div class="box box-warning">
+								<div class="box box-success">
 									<div class="box-body table-responsive no-padding">
 										<table id="browse-contact-list" class="table table-hover table-bordered" cellspacing="0" width="100%">
 							            	<thead>

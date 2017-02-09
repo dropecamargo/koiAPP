@@ -19,7 +19,7 @@ var paths = {
 elixir(function(mix) {
     mix.styles([
 		paths.adminlte + 'bootstrap/css/bootstrap.min.css',
-		paths.adminlte + 'dist/css/skins/skin-yellow.min.css',
+        paths.adminlte + 'dist/css/skins/skin-yellow.min.css',
 		paths.adminlte + 'plugins/iCheck/minimal/green.css',
 		paths.adminlte + 'plugins/select2/select2.min.css',
 		paths.adminlte + 'plugins/datepicker/datepicker3.css',
