@@ -102,6 +102,27 @@ app || (app = {});
                         var template = _.template($('#add-centrocosto-tpl').html());
                         _this.$modalComponent.find('.content-modal').html( template(_this.model.toJSON()) );
                     },
+                    'grupo' : function() {
+                        _this.$modalComponent.find('.inner-title-modal').html('Grupo inventario');
+
+                        _this.model = new app.GrupoModel();
+                        var template = _.template($('#add-grupo-tpl').html());
+                        _this.$modalComponent.find('.content-modal').html( template(_this.model.toJSON()) );
+                    },
+                    'subgrupo' : function() {
+                        _this.$modalComponent.find('.inner-title-modal').html('Subrupo inventario');
+
+                        _this.model = new app.SubGrupoModel();
+                        var template = _.template($('#add-subgrupo-tpl').html());
+                        _this.$modalComponent.find('.content-modal').html( template(_this.model.toJSON()) );
+                    },
+                    'unidadmedida' : function() {
+                        _this.$modalComponent.find('.inner-title-modal').html('Unidad de medida');
+
+                        _this.model = new app.UnidadModel();
+                        var template = _.template($('#add-unidad-tpl').html());
+                        _this.$modalComponent.find('.content-modal').html( template(_this.model.toJSON()) );
+                    },
 	            };
 
             if (stuffToDo[this.resource]) {
@@ -210,6 +231,18 @@ app || (app = {});
                     },
                     'centrocosto' : function() {
                         _this.$resourceField.select2({ data: [{id: _this.model.get('id'), text: _this.model.get('centrocosto_nombre')}] }).trigger('change');
+                        _this.$resourceField.val(_this.model.get('id')).trigger('change');
+                    },
+                    'grupo' : function() {
+                        _this.$resourceField.select2({ data: [{id: _this.model.get('id'), text: _this.model.get('grupo_nombre')}] }).trigger('change');
+                        _this.$resourceField.val(_this.model.get('id')).trigger('change');
+                    },
+                    'subgrupo' : function() {
+                        _this.$resourceField.select2({ data: [{id: _this.model.get('id'), text: _this.model.get('subgrupo_nombre')}] }).trigger('change');
+                        _this.$resourceField.val(_this.model.get('id')).trigger('change');
+                    },
+                    'unidadmedida' : function() {
+                        _this.$resourceField.select2({ data: [{id: _this.model.get('id'), text: _this.model.get('unidadmedida_nombre')}] }).trigger('change');
                         _this.$resourceField.val(_this.model.get('id')).trigger('change');
                     },
                 };

@@ -81,10 +81,26 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::resource('asientos', 'Contabilidad\AsientoController', ['only' => ['index', 'create', 'store', 'edit', 'update', 'show']]);
     /*
 	|-------------------------
-	| Reports Routes
+	| Reportes Routes
 	|-------------------------
 	*/
 	Route::resource('rmayorbalance', 'Reporte\MayorBalanceController', ['only' => ['index']]);
    	Route::resource('rplancuentas', 'Reporte\PlanCuentasController', ['only' => ['index']]);
+
+   	/*
+	|-------------------------
+	| Inventario Routes
+	|-------------------------
+	*/
+	Route::group(['prefix' => 'productos'], function()
+	{
+		Route::get('search', ['as' => 'productos.search', 'uses' => 'Inventario\ProductoController@search']);
+		Route::resource('rollos', 'Inventario\ProdbodeRolloController', ['only' => ['index']]);
+	});
+	Route::resource('productos', 'Inventario\ProductoController', ['except' => ['destroy']]);
+
+	Route::resource('grupos', 'Inventario\GrupoController', ['except' => ['destroy']]);
+	Route::resource('subgrupos', 'Inventario\SubGrupoController', ['except' => ['destroy']]);
+	Route::resource('unidades', 'Inventario\UnidadesMedidaController', ['except' => ['destroy']]);
 
 });
