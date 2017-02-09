@@ -232,6 +232,61 @@
                 alertify.error(thrownError);
             });
         },
+
+        /**
+        * Evaluate facturap
+        */
+        evaluateFacturap: function ( options ) {
+
+            options || (options = {});
+
+            var defaults = {
+                'callback': null,
+                'wrap': 'body',
+                'facturap': null,
+                'tercero': null,
+                'naturaleza': null
+            }, settings = {};
+            settings = $.extend({}, defaults, options);
+
+            // Search facturap
+            $.ajax({
+                url: window.Misc.urlFull(Route.route('facturap.search')),
+                type: 'GET',
+                data: { facturap1_factura: settings.facturap, tercero_nit: settings.tercero },
+                beforeSend: function() {
+                    window.Misc.setSpinner( settings.wrap );
+                }
+            })
+            .done(function(resp) {
+                window.Misc.removeSpinner( settings.wrap );
+                var response = { actions: false };
+
+                if(resp.success) {
+                    // Evaluate actions
+                    response.actions = true;
+                    response.facturap = resp.id;
+                    response.action = 'quota';
+
+                }else{
+                    if(settings.naturaleza == 'C') {
+                        response.actions = true;
+                        response.action = 'add';
+
+                    }else if(settings.naturaleza == 'D') {
+                        response.message = 'Para realizar movimientos de naturaleza débito de ingresar un numero de factura existente.';
+                    }
+                }
+
+                // return callback
+                if( ({}).toString.call(settings.callback).slice(8,-1) === 'Function' )
+                    settings.callback( response );
+            })
+            .fail(function(jqXHR, ajaxOptions, thrownError) {
+                window.Misc.removeSpinner( settings.wrap );
+                alertify.error(thrownError);
+            });
+        },
     };
 
     window.Misc = new Misc();
