@@ -172,7 +172,7 @@
 
 					<% if(asiento1_preguardado) { %>
 						<div class="form-group col-md-offset-4 col-md-2 text-right">
-							<span class="label label-success">PRE-GUARDADO</span>
+							<span class="label label-warning">PRE-GUARDADO</span>
 						</div>
 					<% } %>
 				</div>
