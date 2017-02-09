@@ -22,12 +22,12 @@ class AsientoController extends Controller
      */
     public function index(Request $request)
     {
-        /*if ($request->ajax()) {
+        if ($request->ajax()) {
             $query = Asiento::query();
-            $query->select('koi_asiento1.id as id', 'asiento1_numero', 'asiento1_mes', 'asiento1_ano', 'tercero_nit', 'tercero_razonsocial', 'tercero_nombre1', 'tercero_nombre2', 'tercero_apellido1', 'tercero_apellido2', DB::raw("(CASE WHEN tercero_persona = 'N' THEN CONCAT(tercero_nombre1,' ',tercero_nombre2,' ',tercero_apellido1,' ',tercero_apellido2) ELSE tercero_razonsocial END) as tercero_nombre"), 'asiento1_preguardado');
-            $query->join('koi_tercero', 'koi_asiento1.asiento1_beneficiario', '=', 'koi_tercero.id');
+            $query->select('asiento1.id as id', 'asiento1_numero', 'asiento1_mes', 'asiento1_ano', 'tercero_nit', 'tercero_razonsocial', 'tercero_nombre1', 'tercero_nombre2', 'tercero_apellido1', 'tercero_apellido2', DB::raw("(CASE WHEN tercero_persona = 'N' THEN CONCAT(tercero_nombre1,' ',tercero_nombre2,' ',tercero_apellido1,' ',tercero_apellido2) ELSE tercero_razonsocial END) as tercero_nombre"), 'asiento1_preguardado');
+            $query->join('tercero', 'asiento1.asiento1_beneficiario', '=', 'tercero.id');
             return Datatables::of($query)->make(true);
-        }*/
+        }
         return view('contabilidad.asiento.index');
     }
 
@@ -49,7 +49,7 @@ class AsientoController extends Controller
      */
     public function store(Request $request)
     {
-        /*if ($request->ajax()) {
+        if ($request->ajax()) {
             $data = $request->all();
 
             $asiento = new Asiento;
@@ -152,7 +152,7 @@ class AsientoController extends Controller
             }
             return response()->json(['success' => false, 'errors' => $asiento->errors]);
         }
-        abort(403);*/
+        abort(403);
     }
 
     /**
@@ -163,14 +163,14 @@ class AsientoController extends Controller
      */
     public function show(Request $request, $id)
     {
-        /*$asiento = Asiento::getAsiento($id);
+        $asiento = Asiento::getAsiento($id);
         if(!$asiento instanceof Asiento){
             abort(404);
         }
 
         if ($request->ajax()) {
             return response()->json($asiento);
-        }*/
+        }
 
         return view('contabilidad.asiento.show', ['asiento' => $asiento]);
     }
@@ -182,11 +182,11 @@ class AsientoController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    {/*
+    {
         $asiento = Asiento::findOrFail($id);
         if($asiento->asiento1_preguardado == false) {
             return redirect()->route('asientos.show', ['asiento' => $asiento]);
-        }*/
+        }
 
         return view('contabilidad.asiento.edit', ['asiento' => $asiento]);
     }
@@ -200,7 +200,7 @@ class AsientoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        /*if ($request->ajax()) {
+        if ($request->ajax()) {
             $data = $request->all();
 
             $asiento = Asiento::findOrFail($id);
@@ -211,11 +211,11 @@ class AsientoController extends Controller
                     // Preparar cuentas
                     // Recupero items asiento 2
                     $query = Asiento2::query();
-                    $query->select('koi_asiento2.*', 'plancuentas_cuenta', 'plancuentas_tipo', 'tercero_nit',
+                    $query->select('asiento2.*', 'plancuentas_cuenta', 'plancuentas_tipo', 'tercero_nit',
                         DB::raw("(CASE WHEN asiento2_credito != 0 THEN 'C' ELSE 'D' END) as asiento2_naturaleza")
                     );
-                    $query->join('koi_tercero', 'asiento2_beneficiario', '=', 'koi_tercero.id');
-                    $query->join('koi_plancuentas', 'asiento2_cuenta', '=', 'koi_plancuentas.id');
+                    $query->join('tercero', 'asiento2_beneficiario', '=', 'tercero.id');
+                    $query->join('plancuentas', 'asiento2_cuenta', '=', 'plancuentas.id');
                     $query->where('asiento2_asiento', $asiento->id);
                     $asiento2 = $query->get();
 
@@ -280,7 +280,7 @@ class AsientoController extends Controller
             }
             return response()->json(['success' => false, 'errors' => $asiento->errors]);
         }
-        abort(403);*/
+        abort(403);
     }
 
     /**

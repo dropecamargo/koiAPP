@@ -358,7 +358,7 @@
 		</div>
 	</script>
 
-	{{--<script type="text/template" id="add-asiento2-item-tpl">
+	<script type="text/template" id="add-asiento2-item-tpl">
 		<% if(edit) { %>
 		<td class="text-center">
 			<a class="btn btn-default btn-xs item-asiento2-remove" data-resource="<%- id %>">
@@ -415,7 +415,7 @@
 				<input id="asiento2_orden_beneficiario" name="asiento2_orden_beneficiario" placeholder="Tercero" class="form-control input-sm" type="text" readonly required>
 			</div>
 		</div>
-	</script>--}}
+	</script>
 
 	<script type="text/template" id="rfacturap-asiento-tpl">
 		<div class="row">

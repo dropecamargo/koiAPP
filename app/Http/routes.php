@@ -35,7 +35,6 @@ Route::group(['middleware' => 'auth'], function(){
 		Route::get('search', ['as' => 'terceros.search', 'uses' => 'Admin\TerceroController@search']);
 
 		Route::resource('contactos', 'Admin\ContactoController', ['only' => ['index', 'store', 'update']]);
-		
 	});
 
 	/*
@@ -59,7 +58,7 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::resource('documentos', 'Contabilidad\DocumentoController', ['except' => ['destroy']]);
 	Route::resource('folders', 'Contabilidad\FolderController', ['except' => ['destroy']]);
 	Route::resource('centroscosto', 'Contabilidad\CentroCostoController', ['except' => ['destroy']]);
-	
+
 	Route::group(['prefix' => 'plancuentas'], function()
 	{
 		Route::get('nivel', ['as' => 'plancuentas.nivel', 'uses' => 'Contabilidad\PlanCuentasController@nivel']);
@@ -67,14 +66,24 @@ Route::group(['middleware' => 'auth'], function(){
 	});
     Route::resource('plancuentas', 'Contabilidad\PlanCuentasController', ['except' => ['destroy']]);
 
+	Route::group(['prefix' => 'asientos'], function()
+	{
+		Route::resource('detalle', 'Contabilidad\DetalleAsientoController', ['only' => ['index', 'store', 'destroy']]);
+		Route::get('exportar/{asientos}', ['as' => 'asientos.exportar', 'uses' => 'Contabilidad\AsientoController@exportar']);
+
+		Route::group(['prefix' => 'detalle'], function()
+		{
+			Route::post('evaluate', ['as' => 'asientos.detalle.evaluate', 'uses' => 'Contabilidad\DetalleAsientoController@evaluate']);
+			Route::post('validate', ['as' => 'asientos.detalle.validate', 'uses' => 'Contabilidad\DetalleAsientoController@validation']);
+			Route::get('movimientos', ['as' => 'asientos.detalle.movimientos', 'uses' => 'Contabilidad\DetalleAsientoController@movimientos']);
+		});
+	});
+	Route::resource('asientos', 'Contabilidad\AsientoController', ['only' => ['index', 'create', 'store', 'edit', 'update', 'show']]);
     /*
 	|-------------------------
 	| Reports Routes
 	|-------------------------
 	*/
-
-	Route::resource('asientos', 'Contabilidad\AsientoController', ['only' => ['index', 'create', 'store', 'edit', 'update', 'show']]);
-
 	Route::resource('rmayorbalance', 'Reporte\MayorBalanceController', ['only' => ['index']]);
    	Route::resource('rplancuentas', 'Reporte\PlanCuentasController', ['only' => ['index']]);
 
