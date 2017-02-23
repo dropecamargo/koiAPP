@@ -39,6 +39,20 @@
 	</div>
 </script>
 
+{{-- Documentos --}}
+<script type="text/template" id="add-documentos-tpl">
+    <div class="row">
+		<div class="form-group col-md-2">
+			<label for="documentos_codigo" class="control-label">Código</label>
+			<input type="text" id="documentos_codigo" name="documentos_codigo" value="<%- documentos_codigo %>" placeholder="Código" class="form-control input-sm input-toupper" maxlength="4" required>
+		</div>
+		<div class="form-group col-md-4">
+			<label for="documentos_nombre" class="control-label">Nombre</label>
+			<input type="text" id="documentos_nombre" name="documentos_nombre" value="<%- documentos_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="25" required>
+		</div>
+    </div>
+</script>
+
 {{--template punto de venta--}}
 <script type="text/template" id="add-puntoventa-tpl">
     <div class="row">

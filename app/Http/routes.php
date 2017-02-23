@@ -49,6 +49,7 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::resource('municipios', 'Admin\MunicipioController', ['only' => ['index']]);
 	Route::resource('sucursales', 'Admin\SucursalController', ['except' => ['destroy']]);
 	Route::resource('puntosventa', 'Admin\PuntoVentaController', ['except' => ['destroy']]);
+	Route::resource('documento', 'Admin\DocumentosController', ['except' => ['destroy']]);
 
 	/*
 	|--------------------------
@@ -95,7 +96,7 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::group(['prefix' => 'productos'], function()
 	{
 		Route::get('search', ['as' => 'productos.search', 'uses' => 'Inventario\ProductoController@search']);
-		Route::resource('rollos', 'Inventario\ProdbodeRolloController', ['only' => ['index']]);
+		// Route::resource('rollos', 'Inventario\ProdbodeRolloController', ['only' => ['index']]);
 	});
 	Route::resource('productos', 'Inventario\ProductoController', ['except' => ['destroy']]);
 

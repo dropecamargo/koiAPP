@@ -1,21 +1,21 @@
-@extends('contabilidad.documentos.main')
+@extends('admin.documento.main')
 
 @section('breadcrumb')	
-    <li><a href="{{ route('documentos.index')}}">Documentos</a></li>
+    <li><a href="{{ route('documento.index')}}">Documentos</a></li>
 	<li class="active">Nuevo</li>
 @stop
 
 @section('module')
-	<div class="box box-success" id="documento-create">
-		{!! Form::open(['id' => 'form-documento', 'data-toggle' => 'validator']) !!}
-			<div class="box-body" id="render-form-documento">
+	<div class="box box-success" id="documentos-create">
+		{!! Form::open(['id' => 'form-documentos', 'data-toggle' => 'validator']) !!}
+			<div class="box-body" id="render-form-documentos">
 				{{-- Render form documentos --}}
 			</div>
 			
 	        <div class="box-header with-border">
 	        	<div class="row">
 					<div class="col-md-2 col-md-offset-4 col-sm-6 col-xs-6 text-left">
-						<a href="{{ route('documentos.index') }}" class="btn btn-default btn-sm btn-block">{{ trans('app.cancel') }}</a>
+						<a href="{{ route('documento.index') }}" class="btn btn-default btn-sm btn-block">{{ trans('app.cancel') }}</a>
 					</div>
 					<div class="col-md-2 col-sm-6 col-xs-6 text-right">
 						<button type="submit" class="btn btn-primary btn-sm btn-block">{{ trans('app.create') }}</button>

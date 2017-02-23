@@ -39,6 +39,11 @@ app || (app = {});
             'sucursales/create(/)': 'getSucursalesCreate',
             'sucursales/:sucursal/edit(/)': 'getSucursalesEdit',
 
+            //Documento
+            'documento(/)': 'getDocumentoMain',
+            'documento/create(/)': 'getDocumentoCreate',
+            'documento/:documentos/edit(/)':'getDocumentoEdit',
+
             //Departamentos & Municipios
             'departamentos(/)': 'getDepartamentosMain',
             'municipios(/)': 'getMunicipiosMain',
@@ -309,6 +314,41 @@ app || (app = {});
             }
 
             this.mainDepartamentoView = new app.MainDepartamentoView( );
+        },
+
+        //Documento
+        getDocumentoMain: function () {
+            if ( this.mainDocumentoView instanceof Backbone.View ){
+                this.mainDocumentoView.stopListening();
+                this.mainDocumentoView.undelegateEvents();
+            }
+
+            this.mainDocumentoView = new app.MainDocumentoView( );
+        },
+
+        getDocumentoCreate: function () {
+            this.documentosModel = new app.DocumentosModel();
+
+            if ( this.createDocumentosView instanceof Backbone.View ){
+                this.createDocumentosView.stopListening();
+                this.createDocumentosView.undelegateEvents();
+            }
+
+            this.createDocumentosView = new app.CreateDocumentosView({ model: this.documentosModel });
+            this.createDocumentosView.render();
+        },
+
+        getDocumentoEdit: function (documento) {
+            this.documentosModel = new app.DocumentosModel();
+            this.documentosModel.set({'id': documento}, {silent: true});
+
+            if ( this.createDocumentosView instanceof Backbone.View ){
+                this.createDocumentosView.stopListening();
+                this.createDocumentosView.undelegateEvents();
+            }
+
+            this.createDocumentosView = new app.CreateDocumentosView({ model: this.documentosModel });
+            this.documentosModel.fetch();
         },
 
         // Vistas de Municipios

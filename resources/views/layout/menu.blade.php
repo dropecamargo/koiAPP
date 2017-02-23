@@ -5,7 +5,7 @@
     </li>
 
     {{-- Administracion --}}
-    <li class="treeview {{ in_array(Request::segment(1), ['puntosventa','empresa', 'terceros', 'actividades', 'municipios', 'departamentos', 'sucursales']) ? 'active' : '' }}">
+    <li class="treeview {{ in_array(Request::segment(1), ['puntosventa','empresa', 'terceros', 'actividades', 'documento', 'municipios', 'departamentos', 'sucursales']) ? 'active' : '' }}">
         <a href="{{ route('dashboard') }}">
             <i class="fa fa-cog"></i> <span>Administración</span><i class="fa fa-angle-left pull-right"></i>
         </a>
@@ -27,7 +27,7 @@
             </li>
 
             {{-- Referencias administracion --}}
-            <li class="{{ in_array(Request::segment(1), ['puntosventa', 'actividades', 'municipios', 'departamentos', 'sucursales']) ? 'active' : '' }}">
+            <li class="{{ in_array(Request::segment(1), ['puntosventa', 'actividades', 'municipios', 'documento', 'departamentos', 'sucursales']) ? 'active' : '' }}">
 
                 <a href="#">
                     <i class="fa fa-circle-o"></i> Referencias <i class="fa fa-angle-left pull-right"></i>
@@ -38,6 +38,9 @@
                     </li>
                     <li class="{{ Request::segment(1) == 'departamentos' ? 'active' : '' }}">
                         <a href="{{ route('departamentos.index') }}"><i class="fa fa-circle-o"></i> Departamentos</a>
+                    </li>
+                    <li class="{{ Request::segment(1) == 'documento' ? 'active' : '' }}">
+                        <a href="{{ route('documento.index') }}"><i class="fa fa-circle-o"></i> Documentos</a>
                     </li>
                     <li class="{{ Request::segment(1) == 'puntosventa' ? 'active' : '' }}">
                         <a href="{{ route('puntosventa.index') }}"><i class="fa fa-circle-o"></i> Puntos de venta</a>
