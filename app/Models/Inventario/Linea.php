@@ -36,9 +36,9 @@ class Linea extends BaseModel
     {
         $rules = [
             'linea_nombre' => 'required|max: 25',
-            'linea_margen_nivel1' => 'required',
-            'linea_margen_nivel2' => 'required',
-            'linea_margen_nivel3' => 'required'
+            'linea_margen_nivel1' => 'required|numeric',
+            'linea_margen_nivel2' => 'required|numeric',
+            'linea_margen_nivel3' => 'required|numeric'
 
         ];
 

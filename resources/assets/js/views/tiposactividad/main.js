@@ -56,7 +56,7 @@ app || (app = {});
                         targets: [1,2,3,4],
                         width: '15%',
                         render: function ( data, type, full, row ) {
-                            return data ? 'Si' : 'No';
+                            return parseInt(data) ? 'Si' : 'No';
                         },
 
                     }
