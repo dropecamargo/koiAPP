@@ -39,6 +39,11 @@ app || (app = {});
             'sucursales/create(/)': 'getSucursalesCreate',
             'sucursales/:sucursal/edit(/)': 'getSucursalesEdit',
 
+            //Documento
+            'documento(/)': 'getDocumentoMain',
+            'documento/create(/)': 'getDocumentoCreate',
+            'documento/:documentos/edit(/)':'getDocumentoEdit',
+
             //Departamentos & Municipios
             'departamentos(/)': 'getDepartamentosMain',
             'municipios(/)': 'getMunicipiosMain',
@@ -89,6 +94,11 @@ app || (app = {});
             'grupos(/)': 'getGruposMain',
             'grupos/create(/)': 'getGruposCreate',
             'grupos/:grupo/edit(/)': 'getGruposEdit',
+
+
+            'lineas(/)': 'getLineasMain',
+            'lineas/create(/)': 'getLineaCreate',
+            'lineas/:lineas/edit(/)': 'getLineasEdit',
 
             'unidades(/)': 'getUnidadesMain',
             'unidades/create(/)': 'getUnidadesCreate',
@@ -309,6 +319,41 @@ app || (app = {});
             }
 
             this.mainDepartamentoView = new app.MainDepartamentoView( );
+        },
+
+        //Documento
+        getDocumentoMain: function () {
+            if ( this.mainDocumentoView instanceof Backbone.View ){
+                this.mainDocumentoView.stopListening();
+                this.mainDocumentoView.undelegateEvents();
+            }
+
+            this.mainDocumentoView = new app.MainDocumentoView( );
+        },
+
+        getDocumentoCreate: function () {
+            this.documentosModel = new app.DocumentosModel();
+
+            if ( this.createDocumentosView instanceof Backbone.View ){
+                this.createDocumentosView.stopListening();
+                this.createDocumentosView.undelegateEvents();
+            }
+
+            this.createDocumentosView = new app.CreateDocumentosView({ model: this.documentosModel });
+            this.createDocumentosView.render();
+        },
+
+        getDocumentoEdit: function (documento) {
+            this.documentosModel = new app.DocumentosModel();
+            this.documentosModel.set({'id': documento}, {silent: true});
+
+            if ( this.createDocumentosView instanceof Backbone.View ){
+                this.createDocumentosView.stopListening();
+                this.createDocumentosView.undelegateEvents();
+            }
+
+            this.createDocumentosView = new app.CreateDocumentosView({ model: this.documentosModel });
+            this.documentosModel.fetch();
         },
 
         // Vistas de Municipios
@@ -635,6 +680,41 @@ app || (app = {});
 
             this.createGrupoView = new app.CreateGrupoView({ model: this.grupoModel });
             this.grupoModel.fetch();
+        },
+
+        getLineasMain: function () {
+
+            if ( this.mainLineasView instanceof Backbone.View ){
+                this.mainLineasView.stopListening();
+                this.mainLineasView.undelegateEvents();
+            }
+
+            this.mainLineasView = new app.MainLineasView( );
+        },
+
+        getLineaCreate: function () {
+            this.lineaModel = new app.LineaModel();
+
+            if ( this.createLineaView instanceof Backbone.View ){
+                this.createLineaView.stopListening();
+                this.createLineaView.undelegateEvents();
+            }
+
+            this.createLineaView = new app.CreateLineaView({ model: this.lineaModel });
+            this.createLineaView.render();
+        },
+
+        getLineasEdit: function (lineas) {
+            this.lineaModel = new app.LineaModel();
+            this.lineaModel.set({'id': lineas}, {silent: true});
+
+            if ( this.createLineaView instanceof Backbone.View ){
+                this.createLineaView.stopListening();
+                this.createLineaView.undelegateEvents();
+            }
+
+            this.createLineaView = new app.CreateLineaView({ model: this.lineaModel });
+            this.lineaModel.fetch();
         },
 
         getUnidadesMain: function () {
