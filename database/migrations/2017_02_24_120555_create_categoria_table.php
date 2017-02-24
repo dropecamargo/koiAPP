@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateLineaTable extends Migration
+class CreateCategoriaTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,15 +12,12 @@ class CreateLineaTable extends Migration
      */
     public function up()
     {
-        Schema::create('linea', function (Blueprint $table) {
+        Schema::create('categoria', function (Blueprint $table){
             $table->engine = 'InnoDB';
 
             $table->increments('id');
-            $table->string('linea_nombre', 25);
-            $table->double('linea_margen_nivel1');
-            $table->double('linea_margen_nivel2');
-            $table->double('linea_margen_nivel3');
-            $table->boolean('linea_activo')->default(false);
+            $table->string('categoria_nombre', 25);
+            $table->boolean('categoria_activo')->default(false);
         });
     }
 
@@ -31,6 +28,6 @@ class CreateLineaTable extends Migration
      */
     public function down()
     {
-         Schema::dropIfExists('linea'); 
+        Schema::dropIfExists('categoria'); 
     }
 }
