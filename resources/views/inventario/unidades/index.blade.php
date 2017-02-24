@@ -13,6 +13,7 @@
                         <tr>
                             <th>Sigla</th>
                             <th>Nombre</th>
+                            <th>Activo</th>
                         </tr>
                     </thead>
                 </table>

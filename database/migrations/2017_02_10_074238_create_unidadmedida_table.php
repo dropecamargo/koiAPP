@@ -16,8 +16,9 @@ class CreateUnidadmedidaTable extends Migration
             $table->engine = 'InnoDB';
 
             $table->increments('id');
-            $table->string('unidadmedida_nombre', 200);
-            $table->string('unidadmedida_sigla', 15);
+            $table->string('unidadmedida_nombre', 25);
+            $table->string('unidadmedida_sigla', 4);
+            $table->boolean('unidad_medida_activo');
         });
     }
 

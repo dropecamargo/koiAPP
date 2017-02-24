@@ -67,6 +67,9 @@ app || (app = {});
             // to fire plugins
             if( typeof window.initComponent.initToUpper == 'function' )
                 window.initComponent.initToUpper();
+
+            if( typeof window.initComponent.initICheck == 'function' )
+                window.initComponent.initICheck();
         },
 
         /**

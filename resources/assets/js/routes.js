@@ -52,6 +52,11 @@ app || (app = {});
             'puntosventa/create(/)': 'getPuntosVentaCreate',
             'puntosventa/:puntoventa/edit(/)': 'getPuntosVentaEdit',
 
+            //Tipos Actividad
+            'tiposactividad(/)': 'getTiposActividadMain',
+            'tiposactividad/create(/)': 'getTiposActividadCreate',
+            'tiposactividad/:tipoactividad/edit(/)': 'getTiposActividadEdit',
+
             /*
             |-----------------------
             | Contabilidad
@@ -402,6 +407,48 @@ app || (app = {});
 
             this.createPuntoventaView = new app.CreatePuntoventaView({ model: this.puntoVentaModel });
             this.puntoVentaModel.fetch();
+        },
+
+        // Tipos Actividad
+        getTiposActividadMain: function () {
+
+            if ( this.mainTipoActividadView instanceof Backbone.View ){
+                this.mainTipoActividadView.stopListening();
+                this.mainTipoActividadView.undelegateEvents();
+            }
+
+            this.mainTipoActividadView = new app.MainTipoActividadView( );
+        },
+
+        /**
+        * show view create tipos actividad
+        */
+        getTiposActividadCreate: function () {
+            this.tipoActividadModel = new app.TipoActividadModel();
+
+            if ( this.createTipoactividadView instanceof Backbone.View ){
+                this.createTipoactividadView.stopListening();
+                this.createTipoactividadView.undelegateEvents();
+            }
+
+            this.createTipoactividadView = new app.CreateTipoActividadView({ model: this.tipoActividadModel });
+            this.createTipoactividadView.render();
+        },
+
+        /**
+        * show view edit tipos actividad
+        */
+        getTiposActividadEdit: function (tipoactividad) {
+            this.tipoActividadModel = new app.TipoActividadModel();
+            this.tipoActividadModel.set({'id': tipoactividad}, {silent: true});
+
+            if ( this.createTipoActividadView instanceof Backbone.View ){
+                this.createTipoActividadView.stopListening();
+                this.createTipoActividadView.undelegateEvents();
+            }
+
+            this.createTipoActividadView = new app.CreateTipoActividadView({ model: this.tipoActividadModel });
+            this.tipoActividadModel.fetch();
         },
         
         /*

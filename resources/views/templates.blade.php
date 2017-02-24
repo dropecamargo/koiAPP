@@ -53,6 +53,42 @@
     </div>
 </script>
 
+{{-- Tipo Actividad --}}
+<script type="text/template" id="add-tipoactividad-tpl">
+    <div class="row">
+		<div class="col-md-4 col-md-offset-4 text-left">
+			<label for="tipoactividad_nombre" class="control-label">Nombre</label>
+			<input type="text" id="tipoactividad_nombre" name="tipoactividad_nombre" value="<%- tipoactividad_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="25" required>
+		</div>
+	</div>
+	<br>
+	<div class="row">
+    	<div class="col-md-1 col-md-offset-4 text-left">
+	    	<label class="checkbox-inline" for="tipoactividad_activo">
+				<input type="checkbox" id="tipoactividad_activo" name="tipoactividad_activo" value="tipoactividad_activo" <%- parseInt(tipoactividad_activo) ? 'checked': ''%>> Activo
+			</label>
+		</div>
+
+		<div class="form-group col-md-1">
+			<label class="checkbox-inline" for="tipoactividad_comercial">
+				<input type="checkbox" id="tipoactividad_comercial" name="tipoactividad_comercial" value="tipoactividad_comercial" <%- parseInt(tipoactividad_comercial) ? 'checked': ''%>> Comercio
+			</label>
+		</div>
+
+		<div class="form-group col-md-1">
+			<label class="checkbox-inline" for="tipoactividad_tecnico">
+				<input type="checkbox" id="tipoactividad_tecnico" name="tipoactividad_tecnico" value="tipoactividad_tecnico" <%- parseInt(tipoactividad_tecnico) ? 'checked': ''%>> Tecnico
+			</label>
+		</div>
+
+		<div class="form-group col-md-1">
+			<label class="checkbox-inline" for="tipoactividad_cartera">
+				<input type="checkbox" id="tipoactividad_cartera" name="tipoactividad_cartera" value="tipoactividad_cartera" <%- parseInt(tipoactividad_cartera) ? 'checked': ''%>> Cartera
+			</label>
+		</div>
+	</div>
+</script>
+
 {{--template punto de venta--}}
 <script type="text/template" id="add-puntoventa-tpl">
     <div class="row">
@@ -263,31 +299,31 @@
 					    <div class="row">
 					    	<div class="form-group col-md-2">
 						    	<label class="checkbox-inline" for="tercero_activo">
-									<input type="checkbox" id="tercero_activo" name="tercero_activo" value="tercero_activo" <%- tercero_activo ? 'checked': ''%>> Activo
+									<input type="checkbox" id="tercero_activo" name="tercero_activo" value="tercero_activo" <%- parseInt(tercero_activo) ? 'checked': ''%>> Activo
 								</label>
 							</div>
 
 							<div class="form-group col-md-2">
 								<label class="checkbox-inline" for="tercero_cliente">
-									<input type="checkbox" id="tercero_cliente" name="tercero_cliente" value="tercero_cliente" <%- tercero_socio ? 'checked': ''%>> Cliente
+									<input type="checkbox" id="tercero_cliente" name="tercero_cliente" value="tercero_cliente" <%- parseInt(tercero_socio) ? 'checked': ''%>> Cliente
 								</label>
 							</div>
 
 							<div class="form-group col-md-2">
 								<label class="checkbox-inline" for="tercero_acreedor">
-									<input type="checkbox" id="tercero_acreedor" name="tercero_acreedor" value="tercero_acreedor" <%- tercero_acreedor ? 'checked': ''%>> Acreedor
+									<input type="checkbox" id="tercero_acreedor" name="tercero_acreedor" value="tercero_acreedor" <%- parseInt(tercero_acreedor) ? 'checked': ''%>> Acreedor
 								</label>
 							</div>
 
 							<div class="form-group col-md-2">
 								<label class="checkbox-inline" for="tercero_interno">
-									<input type="checkbox" id="tercero_interno" name="tercero_interno" value="tercero_interno" <%- tercero_interno ? 'checked': ''%>> Interno
+									<input type="checkbox" id="tercero_interno" name="tercero_interno" value="tercero_interno" <%- parseInt(tercero_interno) ? 'checked': ''%>> Interno
 								</label>
 							</div>
 
 							<div class="form-group col-md-3">
 								<label class="checkbox-inline" for="tercero_responsable_iva">
-									<input type="checkbox" id="tercero_responsable_iva" name="tercero_responsable_iva" value="tercero_responsable_iva" <%- tercero_responsable_iva ? 'checked': ''%>> Responsable de IVA
+									<input type="checkbox" id="tercero_responsable_iva" name="tercero_responsable_iva" value="tercero_responsable_iva" <%- parseInt(tercero_responsable_iva) ? 'checked': ''%>> Responsable de IVA
 								</label>
 							</div>
 					    </div>
@@ -295,31 +331,31 @@
 					    <div class="row">
 					    	<div class="form-group col-md-2">
 						    	<label class="checkbox-inline" for="tercero_empleado">
-									<input type="checkbox" id="tercero_empleado" name="tercero_empleado" value="tercero_empleado" <%- tercero_empleado ? 'checked': ''%>> Empleado
+									<input type="checkbox" id="tercero_empleado" name="tercero_empleado" value="tercero_empleado" <%- parseInt(tercero_empleado) ? 'checked': ''%>> Empleado
 								</label>
 							</div>
 
 							<div class="form-group col-md-2">
 								<label class="checkbox-inline" for="tercero_proveedor">
-									<input type="checkbox" id="tercero_proveedor" name="tercero_proveedor" value="tercero_proveedor" <%- tercero_proveedor ? 'checked': ''%>> Proveedor
+									<input type="checkbox" id="tercero_proveedor" name="tercero_proveedor" value="tercero_proveedor" <%- parseInt(tercero_proveedor) ? 'checked': ''%>> Proveedor
 								</label>
 							</div>
 
 							<div class="form-group col-md-2">
 								<label class="checkbox-inline" for="tercero_extranjero">
-									<input type="checkbox" id="tercero_extranjero" name="tercero_extranjero" value="tercero_extranjero" <%- tercero_extranjero ? 'checked': ''%>> Extranjero
+									<input type="checkbox" id="tercero_extranjero" name="tercero_extranjero" value="tercero_extranjero" <%- parseInt(tercero_extranjero) ? 'checked': ''%>> Extranjero
 								</label>
 							</div>
 
 							<div class="form-group col-md-2">
 								<label class="checkbox-inline" for="tercero_afiliado">
-									<input type="checkbox" id="tercero_afiliado" name="tercero_afiliado" value="tercero_afiliado" <%- tercero_afiliado ? 'checked': ''%>> Afiliado
+									<input type="checkbox" id="tercero_afiliado" name="tercero_afiliado" value="tercero_afiliado" <%- parseInt(tercero_afiliado) ? 'checked': ''%>> Afiliado
 								</label>
 							</div>
 
 							<div class="form-group col-md-3">
 								<label class="checkbox-inline" for="tercero_autoretenedor_cree">
-									<input type="checkbox" id="tercero_autoretenedor_cree" name="tercero_autoretenedor_cree" value="tercero_autoretenedor_cree" <%- tercero_autoretenedor_cree ? 'checked': ''%>> Autorretenedor CREE
+									<input type="checkbox" id="tercero_autoretenedor_cree" name="tercero_autoretenedor_cree" value="tercero_autoretenedor_cree" <%- parseInt(tercero_autoretenedor_cree) ? 'checked': ''%>> Autorretenedor CREE
 								</label>
 							</div>
 					    </div>
@@ -327,31 +363,31 @@
 						<div class="row">
 							<div class="form-group col-md-2">
 								<label class="checkbox-inline" for="tercero_socio">
-									<input type="checkbox" id="tercero_socio" name="tercero_socio" value="tercero_socio" <%- tercero_socio ? 'checked': ''%>> Socio
+									<input type="checkbox" id="tercero_socio" name="tercero_socio" value="tercero_socio" <%- parseInt(tercero_socio) ? 'checked': ''%>> Socio
 								</label>
 							</div>
 
 							<div class="form-group col-md-2">
 								<label class="checkbox-inline" for="tercero_mandatario">
-									<input type="checkbox" id="tercero_mandatario" name="tercero_mandatario" value="tercero_mandatario" <%- tercero_mandatario ? 'checked': ''%>> Mandatario
+									<input type="checkbox" id="tercero_mandatario" name="tercero_mandatario" value="tercero_mandatario" <%- parseInt(tercero_mandatario) ? 'checked': ''%>> Mandatario
 								</label>
 							</div>
 
 							<div class="form-group col-md-2">
 								<label class="checkbox-inline" for="tercero_gran_contribuyente">
-									<input type="checkbox" id="tercero_gran_contribuyente" name="tercero_gran_contribuyente" value="tercero_gran_contribuyente" <%- tercero_gran_contribuyente ? 'checked': ''%>> Gran contribuyente
+									<input type="checkbox" id="tercero_gran_contribuyente" name="tercero_gran_contribuyente" value="tercero_gran_contribuyente" <%- parseInt(tercero_gran_contribuyente) ? 'checked': ''%>> Gran contribuyente
 								</label>
 							</div>
 
 							<div class="form-group col-md-2">
 								<label class="checkbox-inline" for="tercero_autoretenedor_renta">
-									<input type="checkbox" id="tercero_autoretenedor_renta" name="tercero_autoretenedor_renta" value="tercero_autoretenedor_renta" <%- tercero_autoretenedor_renta ? 'checked': ''%>> Autorretenedor renta
+									<input type="checkbox" id="tercero_autoretenedor_renta" name="tercero_autoretenedor_renta" value="tercero_autoretenedor_renta" <%- parseInt(tercero_autoretenedor_renta) ? 'checked': ''%>> Autorretenedor renta
 								</label>
 							</div>
 
 							<div class="form-group col-md-2">
 								<label class="checkbox-inline" for="tercero_autoretenedor_ica">
-									<input type="checkbox" id="tercero_autoretenedor_ica" name="tercero_autoretenedor_ica" value="tercero_autoretenedor_ica" <%- tercero_autoretenedor_ica ? 'checked': ''%>> Autorretenedor ICA
+									<input type="checkbox" id="tercero_autoretenedor_ica" name="tercero_autoretenedor_ica" value="tercero_autoretenedor_ica" <%- parseInt(tercero_autoretenedor_ica) ? 'checked': ''%>> Autorretenedor ICA
 								</label>
 							</div>
 					    </div>
@@ -359,7 +395,7 @@
 					    <div class="row">
 							<div class="form-group col-md-2">
 								<label class="checkbox-inline" for="tercero_otro">
-									<input type="checkbox" id="tercero_otro" name="tercero_otro" value="tercero_otro" <%- tercero_otro ? 'checked': ''%>> Otro
+									<input type="checkbox" id="tercero_otro" name="tercero_otro" value="tercero_otro" <%- parseInt(tercero_otro) ? 'checked': ''%>> Otro
 								</label>
 							</div>
 
@@ -390,8 +426,6 @@
 								                	<th>Dirección</th>
 								                	<th>Teléfono</th>
 								                	<th>Celular</th>
-								                	
-
 								            	</tr>
 							           		</thead>
 							         		<tbody>
@@ -625,7 +659,7 @@
 		</div>
 		<div class="form-group col-md-2 col-xs-8 col-sm-3">
 			<br><label class="checkbox-inline" for="centrocosto_activo">
-				<input type="checkbox" id="centrocosto_activo" name="centrocosto_activo" value="centrocosto_activo" <%- centrocosto_activo ? 'checked': ''%>> Activo
+				<input type="checkbox" id="centrocosto_activo" name="centrocosto_activo" value="centrocosto_activo" <%- parseInt(centrocosto_activo) ? 'checked': ''%>> Activo
 			</label>
 		</div>
     </div>
@@ -670,9 +704,15 @@
 		</div>
     </div>
     <div class="row">
-		<div class="form-group col-md-8">
+		<div class="form-group col-md-6">
 			<label for="unidadmedida_nombre" class="control-label">Nombre</label>
-			<input type="text" id="unidadmedida_nombre" name="unidadmedida_nombre" value="<%- unidadmedida_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="100" required>
+			<input type="text" id="unidadmedida_nombre" name="unidadmedida_nombre" value="<%- unidadmedida_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="25" required>
+		</div>
+		<br>
+		<div class="form-group col-md-1">
+			<label class="checkbox-inline" for="unidad_medida_activo">
+				<input type="checkbox" id="unidad_medida_activo" name="unidad_medida_activo" value="unidad_medida_activo" <%- parseInt(unidad_medida_activo) ? 'checked': ''%>> Activo
+			</label>
 		</div>
     </div>
 </script>
@@ -752,17 +792,17 @@
 	<div class="row">
 		<div class="form-group col-md-2 col-xs-12">
 			<label for="producto_unidades" class="control-label">¿Maneja unidades?</label>
-			<div><input type="checkbox" id="producto_unidades" name="producto_unidades" value="producto_unidades" <%- producto_unidades ? 'checked': ''%>></div>
+			<div><input type="checkbox" id="producto_unidades" name="producto_unidades" value="producto_unidades" <%- parseInt(producto_unidades) ? 'checked': ''%>></div>
 		</div>
 
 		<div class="form-group col-md-2 col-xs-6">
 			<label for="producto_serie" class="control-label">¿Meneja serie?</label>
-			<div><input type="checkbox" id="producto_serie" name="producto_serie" value="producto_serie" <%- producto_serie ? 'checked': ''%>></div>
+			<div><input type="checkbox" id="producto_serie" name="producto_serie" value="producto_serie" <%- parseInt(producto_serie) ? 'checked': ''%>></div>
 		</div>
 
 		<div class="form-group col-md-2 col-xs-6">
 			<label for="producto_metrado" class="control-label">¿Producto metrado?</label>
-			<div><input type="checkbox" id="producto_metrado" name="producto_metrado" value="producto_metrado" <%- producto_metrado ? 'checked': ''%>></div>
+			<div><input type="checkbox" id="producto_metrado" name="producto_metrado" value="producto_metrado" <%- parseInt(producto_metrado) ? 'checked': ''%>></div>
 		</div>
 	</div>
 </script>

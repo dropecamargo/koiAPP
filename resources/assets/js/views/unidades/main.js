@@ -30,7 +30,8 @@ app || (app = {});
                 ajax: window.Misc.urlFull( Route.route('unidades.index') ),
                 columns: [
                     { data: 'unidadmedida_sigla', name: 'unidadmedida_sigla' },
-                    { data: 'unidadmedida_nombre', name: 'unidadmedida_nombre' }
+                    { data: 'unidadmedida_nombre', name: 'unidadmedida_nombre' },
+                    { data: 'unidad_medida_activo', name: 'unidad_medida_activo' }
                 ],
 				buttons: [
 					{
@@ -48,6 +49,13 @@ app || (app = {});
                         render: function ( data, type, full, row ) {
                             return '<a href="'+ window.Misc.urlFull( Route.route('unidades.show', {unidades: full.id }) )  +'">' + data + '</a>';
                         }
+                    },
+                    {
+                        targets: 2,
+                        width: '15%',
+                        render: function ( data, type, full, row ) {
+                            return data ? 'Si' : 'No';
+                        },
                     }
                 ]
 			});

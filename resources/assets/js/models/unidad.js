@@ -17,7 +17,8 @@ app || (app = {});
         idAttribute: 'id',
         defaults: {
         	'unidadmedida_sigla': '',
-        	'unidadmedida_nombre': ''
+            'unidadmedida_nombre': '',
+        	'unidad_medida_activo': false
         }
     });
 

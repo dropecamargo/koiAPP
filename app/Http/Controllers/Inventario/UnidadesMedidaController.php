@@ -47,13 +47,13 @@ class UnidadesMedidaController extends Controller
     {
         if ($request->ajax()) {
             $data = $request->all();
-
             $unidad = new Unidad;
             if ($unidad->isValid($data)) {
                 DB::beginTransaction();
                 try {
                     // unidad
                     $unidad->fill($data);
+                    $unidad->fillBoolean($data);
                     $unidad->save();
 
                     // Commit Transaction
@@ -118,6 +118,7 @@ class UnidadesMedidaController extends Controller
                 try {
                     // unidad
                     $unidad->fill($data);
+                    $unidad->fillBoolean($data);
                     $unidad->save();
 
                     // Commit Transaction

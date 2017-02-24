@@ -6,7 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 use Validator, Cache;
 
-class Unidad extends Model
+use App\Models\BaseModel;
+
+class Unidad extends BaseModel
 {
     /**
      * The database table used by the model.
@@ -22,7 +24,7 @@ class Unidad extends Model
      *
      * @var static string
      */
-    public static $key_cache = '_measurement_units';
+    public static $key_cache = '_unidadmedida';
 
     /**
      * The attributes that are mass assignable.
@@ -31,11 +33,18 @@ class Unidad extends Model
      */
     protected $fillable = ['unidadmedida_nombre', 'unidadmedida_sigla'];
 
+    /**
+     * The attributes that are mass boolean assignable.
+     *
+     * @var array
+     */
+    protected $boolean = ['unidad_medida_activo'];
+
     public function isValid($data)
     {
         $rules = [
-            'unidadmedida_sigla' => 'required|max:15|min:1|unique:unidadmedida',
-            'unidadmedida_nombre' => 'required|max:100'
+            'unidadmedida_sigla' => 'required|max:4|min:1|unique:unidadmedida',
+            'unidadmedida_nombre' => 'required|max:25'
         ];
 
         if ($this->exists){

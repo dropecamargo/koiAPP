@@ -18,6 +18,9 @@ var paths = {
 
 elixir(function(mix) {
     mix.styles([
+        paths.libs + 'jquery-ui/themes/base/core.css',
+        paths.libs + 'jquery-ui/themes/base/spinner.css',
+        paths.libs + 'jquery-ui/themes/base/theme.css',
 		paths.adminlte + 'bootstrap/css/bootstrap.min.css',
         paths.adminlte + 'dist/css/skins/skin-yellow.min.css',
 		paths.adminlte + 'plugins/iCheck/minimal/green.css',
@@ -37,6 +40,9 @@ elixir(function(mix) {
 elixir(function(mix) {
     mix.scripts([
     	paths.adminlte + 'plugins/jQuery/jquery-2.2.3.min.js',
+        paths.libs + 'jquery-ui/ui/core.js',
+        paths.libs + 'jquery-ui/ui/widget.js',
+        paths.libs + 'jquery-ui/ui/spinner.js',
         paths.adminlte + 'bootstrap/js/bootstrap.min.js',
         paths.adminlte + 'dist/js/app.min.js',
         paths.adminlte + 'plugins/slimScroll/jquery.slimscroll.min.js',
@@ -74,4 +80,5 @@ elixir(function(mix) {
     mix.copy(paths.adminlte + 'bootstrap/fonts/', 'public/fonts');
     mix.copy(paths.adminlte + 'plugins/iCheck/minimal/green**.png', 'public/css');
     mix.copy(paths.libs + 'font-awesome/fonts/', 'public/fonts');
+    mix.copy(paths.libs + 'jquery-ui/themes/base/images/', 'public/css/images/');
 });

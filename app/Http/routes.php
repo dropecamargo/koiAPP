@@ -50,6 +50,7 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::resource('sucursales', 'Admin\SucursalController', ['except' => ['destroy']]);
 	Route::resource('puntosventa', 'Admin\PuntoVentaController', ['except' => ['destroy']]);
 	Route::resource('documento', 'Admin\DocumentosController', ['except' => ['destroy']]);
+	Route::resource('tiposactividad', 'Admin\TipoActividadController', ['except' => ['destroy']]);
 
 	/*
 	|--------------------------
