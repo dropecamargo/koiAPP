@@ -1,5 +1,5 @@
 /**
-* Class CreateDocumentosView  of Backbone Router
+* Class CreateLineaView  of Backbone Router
 * @author KOI || @dropecamargo
 * @link http://koi-ti.com
 */
@@ -9,12 +9,12 @@ app || (app = {});
 
 (function ($, window, document, undefined) {
 
-    app.CreateDocumentosView = Backbone.View.extend({
+    app.CreateLineaView = Backbone.View.extend({
 
-        el: '#documentos-create',
-        template: _.template( ($('#add-documentos-tpl').html() || '') ),
+        el: '#lineas-create',
+        template: _.template( ($('#add-linea-tpl').html() || '') ),
         events: {
-            'submit #form-documentos': 'onStore'
+            'submit #form-linea': 'onStore'
         },
         parameters: {
         },
@@ -22,13 +22,13 @@ app || (app = {});
         /**
         * Constructor Method
         */
-        initialize : function(opts) {      
+        initialize : function(opts) {
             // Initialize
             if( opts !== undefined && _.isObject(opts.parameters) )
                 this.parameters = $.extend({}, this.parameters, opts.parameters);
-            
-            // Attributes 
-            this.$wraperForm = this.$('#render-form-documentos');
+
+            // Attributes
+            this.$wraperForm = this.$('#render-form-linea');
 
             // Events
             this.listenTo( this.model, 'change', this.render );
@@ -42,10 +42,10 @@ app || (app = {});
         onStore: function (e) {
 
             if (!e.isDefaultPrevented()) {
-            
+
                 e.preventDefault();
                 var data = window.Misc.formToJson( e.target );
-                this.model.save( data, {patch: true, silent: true} );                
+                this.model.save( data, {patch: true, silent: true} );
             }
         },
 
@@ -57,9 +57,9 @@ app || (app = {});
             var attributes = this.model.toJSON();
             this.$wraperForm.html( this.template(attributes) );
 
-            this.ready();  
+            this.ready();
         },
-        
+
         /**
         * fires libraries js
         */
@@ -67,6 +67,9 @@ app || (app = {});
             // to fire plugins
             if( typeof window.initComponent.initToUpper == 'function' )
                 window.initComponent.initToUpper();
+
+            if( typeof window.initComponent.initICheck == 'function' )
+                window.initComponent.initICheck();
         },
 
         /**
@@ -94,7 +97,7 @@ app || (app = {});
                     return;
                 }
 
-                window.Misc.redirect( window.Misc.urlFull( Route.route('documento.show', { documento: resp.id})) );
+                window.Misc.redirect( window.Misc.urlFull( Route.route('lineas.show', { lineas: resp.id})) );
             }
         }
     });

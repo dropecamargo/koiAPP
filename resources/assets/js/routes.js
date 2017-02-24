@@ -100,6 +100,11 @@ app || (app = {});
             'grupos/create(/)': 'getGruposCreate',
             'grupos/:grupo/edit(/)': 'getGruposEdit',
 
+
+            'lineas(/)': 'getLineasMain',
+            'lineas/create(/)': 'getLineaCreate',
+            'lineas/:lineas/edit(/)': 'getLineasEdit',
+
             'unidades(/)': 'getUnidadesMain',
             'unidades/create(/)': 'getUnidadesCreate',
             'unidades/:unidad/edit(/)': 'getUnidadesEdit',
@@ -722,6 +727,41 @@ app || (app = {});
 
             this.createGrupoView = new app.CreateGrupoView({ model: this.grupoModel });
             this.grupoModel.fetch();
+        },
+
+        getLineasMain: function () {
+
+            if ( this.mainLineasView instanceof Backbone.View ){
+                this.mainLineasView.stopListening();
+                this.mainLineasView.undelegateEvents();
+            }
+
+            this.mainLineasView = new app.MainLineasView( );
+        },
+
+        getLineaCreate: function () {
+            this.lineaModel = new app.LineaModel();
+
+            if ( this.createLineaView instanceof Backbone.View ){
+                this.createLineaView.stopListening();
+                this.createLineaView.undelegateEvents();
+            }
+
+            this.createLineaView = new app.CreateLineaView({ model: this.lineaModel });
+            this.createLineaView.render();
+        },
+
+        getLineasEdit: function (lineas) {
+            this.lineaModel = new app.LineaModel();
+            this.lineaModel.set({'id': lineas}, {silent: true});
+
+            if ( this.createLineaView instanceof Backbone.View ){
+                this.createLineaView.stopListening();
+                this.createLineaView.undelegateEvents();
+            }
+
+            this.createLineaView = new app.CreateLineaView({ model: this.lineaModel });
+            this.lineaModel.fetch();
         },
 
         getUnidadesMain: function () {

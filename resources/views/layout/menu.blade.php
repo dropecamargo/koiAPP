@@ -52,7 +52,7 @@
                         <a href="{{ route('sucursales.index') }}"><i class="fa fa-circle-o"></i> Sucursales</a>
                     </li>
                     <li class="{{ Request::segment(1) == 'tiposactividad' ? 'active' : '' }}">
-                        <a href="{{ route('tiposactividad.index') }}"><i class="fa fa-circle-o"></i> Tipos Actividad</a>
+                        <a href="{{ route('tiposactividad.index') }}"><i class="fa fa-circle-o"></i> Tipo Actividad</a>
                     </li>
                 </ul>
             </li> 
@@ -119,7 +119,7 @@
     </li>
 
     {{-- Inventario --}}
-    <li class="treeview {{ in_array(Request::segment(1), ['grupos', 'subgrupos', 'unidades', 'productos']) ? 'active' : '' }}">
+    <li class="treeview {{ in_array(Request::segment(1), ['grupos', 'subgrupos', 'unidades', 'productos','lineas']) ? 'active' : '' }}">
         <a href="#">
             <i class="fa fa-list"></i> <span>Inventario</span><i class="fa fa-angle-left pull-right"></i>
         </a>
@@ -138,13 +138,16 @@
             </li>
 
             {{-- Referencias inventario --}}
-            <li class="{{ in_array(Request::segment(1), ['grupos', 'subgrupos', 'unidades']) ? 'active' : '' }}">
+            <li class="{{ in_array(Request::segment(1), ['grupos', 'subgrupos', 'unidades','lineas']) ? 'active' : '' }}">
                 <a href="#">
                     <i class="fa fa-circle-o"></i> Referencias <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
                     <li class="{{ Request::segment(1) == 'grupos' ? 'active' : '' }}">
                         <a href="{{ route('grupos.index') }}"><i class="fa fa-circle-o"></i> Grupos</a>
+                    </li>
+                    <li class="{{Request::segment(1)== 'lineas' ? 'active' : ''}}">
+                        <a href="{{route('lineas.index')}}"><i class="fa fa-circle-o"></i> Lineas</a>
                     </li>
                     <li class="{{ Request::segment(1) == 'subgrupos' ? 'active' : '' }}">
                         <a href="{{ route('subgrupos.index') }}"><i class="fa fa-circle-o"></i> Subgrupos</a>

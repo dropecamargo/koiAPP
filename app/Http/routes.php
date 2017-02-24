@@ -100,7 +100,7 @@ Route::group(['middleware' => 'auth'], function(){
 		// Route::resource('rollos', 'Inventario\ProdbodeRolloController', ['only' => ['index']]);
 	});
 	Route::resource('productos', 'Inventario\ProductoController', ['except' => ['destroy']]);
-
+	Route::resource('lineas', 'Inventario\LineaController', ['except' => ['destroy']]);
 	Route::resource('grupos', 'Inventario\GrupoController', ['except' => ['destroy']]);
 	Route::resource('subgrupos', 'Inventario\SubGrupoController', ['except' => ['destroy']]);
 	Route::resource('unidades', 'Inventario\UnidadesMedidaController', ['except' => ['destroy']]);

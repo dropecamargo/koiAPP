@@ -666,6 +666,34 @@
 </script>
 
 {{--Template Inventarios--}}
+<script type="text/template" id="add-linea-tpl">
+    <div class="row">
+		<div class="form-group col-md-7">
+			<label for="linea_nombre" class="control-label">Nombre</label>
+			<input type="text" id="linea_nombre" name="linea_nombre" value="<%- linea_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="50" required>
+		</div>
+		<div class="form-group col-md-2 col-xs-8 col-sm-2">
+			<br><label class="checkbox-inline" for="linea_activo">
+				<input type="checkbox" id="linea_activo" name="linea_activo" value="linea_activo" <%- parseInt(linea_activo) ? 'checked': ''%>> Activo
+			</label>
+		</div>
+    </div>
+    <div class="row">
+		<div class="form-group col-md-3">
+			<label for="linea_margen_nivel1" class="control-label">Nivel 1</label>
+			<input type="text" id="linea_margen_nivel1" name="linea_margen_nivel1" value="<%- linea_margen_nivel1 %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="50" required>
+		</div>
+		<div class="form-group col-md-3">
+			<label for="linea_margen_nivel2" class="control-label">Nivel 2</label>
+			<input type="text" id="linea_margen_nivel2" name="linea_margen_nivel2" value="<%- linea_margen_nivel2 %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="50" required>
+		</div>
+		<div class="form-group col-md-3">
+			<label for="linea_margen_nivel3" class="control-label">Nivel 3</label>
+			<input type="text" id="linea_margen_nivel3" name="linea_margen_nivel3" value="<%- linea_margen_nivel3 %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="50" required>
+		</div>
+    </div>
+</script>
+
 <script type="text/template" id="add-grupo-tpl">
     <div class="row">
 		<div class="form-group col-md-2">
