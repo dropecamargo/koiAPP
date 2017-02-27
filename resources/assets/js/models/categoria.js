@@ -1,5 +1,5 @@
 /**
-* Class SubGrupoModel extend of Backbone Model
+* Class CategoriaModel extend of Backbone Model
 * @author KOI || @dropecamargo
 * @link http://koi-ti.com
 */
@@ -9,15 +9,15 @@ app || (app = {});
 
 (function (window, document, undefined) {
 
-    app.SubGrupoModel = Backbone.Model.extend({
+    app.CategoriaModel = Backbone.Model.extend({
 
         urlRoot: function () {
-            return window.Misc.urlFull( Route.route('subgrupos.index') );
+            return window.Misc.urlFull( Route.route('categorias.index') );
         },
         idAttribute: 'id',
         defaults: {
-        	'subgrupo_codigo': '',
-        	'subgrupo_nombre': ''
+            'categoria_nombre': '',
+            'categoria_activo': true
         }
     });
 

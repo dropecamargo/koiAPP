@@ -58,6 +58,8 @@ class LineaController extends Controller
 
                     // Commit Transaction
                     DB::commit();
+                    //Forget cache
+                    Cache::forget( Linea::$key_cache );
 
                     return response()->json(['success' => true, 'id' => $linea->id]);
                 }catch(\Exception $e){

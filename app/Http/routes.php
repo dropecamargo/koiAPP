@@ -99,10 +99,11 @@ Route::group(['middleware' => 'auth'], function(){
 		Route::get('search', ['as' => 'productos.search', 'uses' => 'Inventario\ProductoController@search']);
 		// Route::resource('rollos', 'Inventario\ProdbodeRolloController', ['only' => ['index']]);
 	});
+	Route::resource('modelos','Inventario\ModeloController', ['except' => ['destroy']]);
+	Route::resource('marcas', 'Inventario\MarcaController', ['except' => ['destroy']]);
+	Route::resource('categorias', 'Inventario\CategoriaController', ['except' => ['destroy']]);
 	Route::resource('productos', 'Inventario\ProductoController', ['except' => ['destroy']]);
 	Route::resource('lineas', 'Inventario\LineaController', ['except' => ['destroy']]);
-	Route::resource('grupos', 'Inventario\GrupoController', ['except' => ['destroy']]);
-	Route::resource('subgrupos', 'Inventario\SubGrupoController', ['except' => ['destroy']]);
 	Route::resource('unidades', 'Inventario\UnidadesMedidaController', ['except' => ['destroy']]);
 
 });

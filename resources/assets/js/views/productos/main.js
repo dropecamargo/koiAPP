@@ -43,7 +43,8 @@ app || (app = {});
                     }
                 },
                 columns: [
-                    { data: 'producto_codigo', name: 'producto_codigo' },
+                    { data: 'producto_serie', name: 'producto_referencia' },
+                    { data: 'producto_referencia', name: 'producto_referencia' },
                     { data: 'producto_nombre', name: 'producto_nombre' }
                 ],
 				buttons: [
@@ -58,7 +59,7 @@ app || (app = {});
                 columnDefs: [
                     {
                         targets: 0,
-                        width: '10%',
+                        width: '25%',
                         render: function ( data, type, full, row ) {
                             return '<a href="'+ window.Misc.urlFull( Route.route('productos.show', {productos: full.id }) )  +'">' + data + '</a>';
                         }

@@ -10,7 +10,7 @@
             <div class="box-body">
                 {!! Form::open(['id' => 'form-koi-search-producto-component', 'class' => 'form-horizontal', 'data-toggle' => 'validator', 'role' => 'form']) !!}
                     <div class="form-group">
-                        <label for="producto_codigo" class="col-md-1 control-label">Código</label>
+                        <label for="producto_codigo" class="col-md-1 control-label">Serie</label>
                         <div class="col-md-2">
                             {!! Form::text('producto_codigo', session('search_producto_codigo'), ['id' => 'producto_codigo', 'class' => 'form-control input-sm']) !!}
                         </div>
@@ -40,7 +40,8 @@
                     <table id="productos-search-table" class="table table-bordered table-striped" cellspacing="0" width="100%">
                         <thead>
                             <tr>
-                                <th>Código</th>
+                                <th>Sirvea</th>
+                                <th width="25%">Referencia</th>
                                 <th>Nombre</th>
                             </tr>
                         </thead>

@@ -1,11 +1,11 @@
 @extends('layout.layout')
 
-@section('title') Grupos inventario @stop
+@section('title') Categoias @stop
 
 @section('content')
     <section class="content-header">
         <h1>
-            Grupos inventario <small>Administración de grupos</small>
+            Categoias <small>Administración de categorias</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> {{trans('app.home')}}</a></li>

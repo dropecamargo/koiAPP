@@ -119,7 +119,7 @@
     </li>
 
     {{-- Inventario --}}
-    <li class="treeview {{ in_array(Request::segment(1), ['grupos', 'subgrupos', 'unidades', 'productos','lineas']) ? 'active' : '' }}">
+    <li class="treeview {{ in_array(Request::segment(1), ['unidades', 'productos','lineas','marcas','modelos','categorias']) ? 'active' : '' }}">
         <a href="#">
             <i class="fa fa-list"></i> <span>Inventario</span><i class="fa fa-angle-left pull-right"></i>
         </a>
@@ -132,25 +132,29 @@
                 </a>
                 <ul class="treeview-menu">
                     <li class="{{ Request::segment(1) == 'productos' ? 'active' : '' }}">
-                        <a href="{{ route('productos.index') }}"><i class="fa fa-wrench"></i> Insumos</a>
-                    </li>
+                        <a href="{{ route('productos.index') }}"><i class="fa fa-barcode"></i> Productos</a>
+                    </li> 
+
                 </ul>
             </li>
 
             {{-- Referencias inventario --}}
-            <li class="{{ in_array(Request::segment(1), ['grupos', 'subgrupos', 'unidades','lineas']) ? 'active' : '' }}">
+            <li class="{{ in_array(Request::segment(1), ['unidades','lineas','marcas','modelos','categorias']) ? 'active' : '' }}">
                 <a href="#">
                     <i class="fa fa-circle-o"></i> Referencias <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
-                    <li class="{{ Request::segment(1) == 'grupos' ? 'active' : '' }}">
-                        <a href="{{ route('grupos.index') }}"><i class="fa fa-circle-o"></i> Grupos</a>
+                    <li class="{{Request::segment(1)== 'categorias' ? 'active' : ''}}">
+                        <a href="{{route('categorias.index')}}"><i class="fa fa-circle-o"></i> Categorias</a>
                     </li>
                     <li class="{{Request::segment(1)== 'lineas' ? 'active' : ''}}">
                         <a href="{{route('lineas.index')}}"><i class="fa fa-circle-o"></i> Lineas</a>
                     </li>
-                    <li class="{{ Request::segment(1) == 'subgrupos' ? 'active' : '' }}">
-                        <a href="{{ route('subgrupos.index') }}"><i class="fa fa-circle-o"></i> Subgrupos</a>
+                    <li class="{{Request::segment(1)== 'marcas' ? 'active' : ''}}">
+                        <a href="{{route('marcas.index')}}"><i class="fa fa-circle-o"></i> Marcas</a>
+                    </li>
+                    <li class="{{Request::segment(1)== 'modelos' ? 'active' : ''}}">
+                        <a href="{{route('modelos.index')}}"><i class="fa fa-circle-o"></i> Modelos</a>
                     </li>
                     <li class="{{ Request::segment(1) == 'unidades' ? 'active' : '' }}">
                         <a href="{{ route('unidades.index') }}"><i class="fa fa-circle-o"></i> Unidades</a>

@@ -9,9 +9,9 @@ use App\Http\Controllers\Controller;
 
 use DB, Log, Datatables, Cache;
 
-use App\Models\Inventario\SubGrupo;
+use App\Models\Inventario\Modelo;
 
-class SubGrupoController extends Controller
+class ModeloController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -21,11 +21,11 @@ class SubGrupoController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $query = SubGrupo::query();
-            $query->select('subgrupo.id as id', 'subgrupo_codigo', 'subgrupo_nombre');
+            $query = Modelo::query();
             return Datatables::of($query)->make(true);
         }
-        return view('inventario.subgrupos.index');
+
+        return view('inventario.modelo.index');
     }
 
     /**
@@ -35,7 +35,7 @@ class SubGrupoController extends Controller
      */
     public function create()
     {
-        return view('inventario.subgrupos.create');
+        return view('inventario.modelo.create');
     }
 
     /**
@@ -48,28 +48,29 @@ class SubGrupoController extends Controller
     {
         if ($request->ajax()) {
             $data = $request->all();
-
-            $subgrupo = new SubGrupo;
-            if ($subgrupo->isValid($data)) {
+            
+            $modelo = new Modelo;
+            if ($modelo->isValid($data)) {
                 DB::beginTransaction();
                 try {
-                    // Subgrupo
-                    $subgrupo->fill($data);
-                    $subgrupo->save();
+                    // Modelo
+                    $modelo->fill($data);
+                    $modelo->fillBoolean($data);
+                    $modelo->save();
 
                     // Commit Transaction
                     DB::commit();
-                    // Forget cache
-                    Cache::forget( SubGrupo::$key_cache );
+                    //Forget cache
+                    Cache::forget( Modelo::$key_cache );
 
-                    return response()->json(['success' => true, 'id' => $subgrupo->id]);
+                    return response()->json(['success' => true, 'id' => $modelo->id]);
                 }catch(\Exception $e){
                     DB::rollback();
                     Log::error($e->getMessage());
                     return response()->json(['success' => false, 'errors' => trans('app.exception')]);
                 }
             }
-            return response()->json(['success' => false, 'errors' => $subgrupo->errors]);
+            return response()->json(['success' => false, 'errors' => $modelo->errors]);
         }
         abort(403);
     }
@@ -80,13 +81,14 @@ class SubGrupoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, $id)
+    public function show(Request $request ,$id)
     {
-        $subgrupo = SubGrupo::findOrFail($id);
+        $modelo = Modelo::findOrFail($id);
+        
         if ($request->ajax()) {
-            return response()->json($subgrupo);
-        }
-        return view('inventario.subgrupos.show', ['subgrupo' => $subgrupo]);
+            return response()->json($modelo);    
+        }        
+        return view('inventario.modelo.show', ['modelo' => $modelo]);
     }
 
     /**
@@ -97,8 +99,8 @@ class SubGrupoController extends Controller
      */
     public function edit($id)
     {
-        $subgrupo = SubGrupo::findOrFail($id);
-        return view('inventario.subgrupos.edit', ['subgrupo' => $subgrupo]);
+        $modelo = Modelo::findOrFail($id);
+        return view('inventario.modelo.edit', ['modelo' => $modelo]);
     }
 
     /**
@@ -113,27 +115,28 @@ class SubGrupoController extends Controller
         if ($request->ajax()) {
             $data = $request->all();
 
-            $subgrupo = SubGrupo::findOrFail($id);
-            if ($subgrupo->isValid($data)) {
+            $modelo = Modelo::findOrFail($id);
+            if ($modelo->isValid($data)) {
                 DB::beginTransaction();
                 try {
-                    // Subgrupo
-                    $subgrupo->fill($data);
-                    $subgrupo->save();
+                    // Modelo
+                    $modelo->fill($data);
+                    $modelo->fillBoolean($data);
+                    $modelo->save();
 
                     // Commit Transaction
                     DB::commit();
                     // Forget cache
-                    Cache::forget( SubGrupo::$key_cache );
+                    //Cache::forget( Modelo::$key_cache );
 
-                    return response()->json(['success' => true, 'id' => $subgrupo->id]);
+                    return response()->json(['success' => true, 'id' => $modelo->id]);
                 }catch(\Exception $e){
                     DB::rollback();
                     Log::error($e->getMessage());
                     return response()->json(['success' => false, 'errors' => trans('app.exception')]);
                 }
             }
-            return response()->json(['success' => false, 'errors' => $subgrupo->errors]);
+            return response()->json(['success' => false, 'errors' => $modelo->errors]);
         }
         abort(403);
     }

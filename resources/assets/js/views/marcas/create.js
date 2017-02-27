@@ -1,5 +1,5 @@
 /**
-* Class CreateSubGrupoView  of Backbone Router
+* Class CreateMarcaView  of Backbone Router
 * @author KOI || @dropecamargo
 * @link http://koi-ti.com
 */
@@ -9,12 +9,12 @@ app || (app = {});
 
 (function ($, window, document, undefined) {
 
-    app.CreateSubGrupoView = Backbone.View.extend({
+    app.CreateMarcaView = Backbone.View.extend({
 
-        el: '#subgrupos-create',
-        template: _.template( ($('#add-subgrupo-tpl').html() || '') ),
+        el: '#marca-create',
+        template: _.template( ($('#add-marca-tpl').html() || '') ),
         events: {
-            'submit #form-subgrupos': 'onStore'
+            'submit #form-marca': 'onStore'
         },
         parameters: {
         },
@@ -28,7 +28,7 @@ app || (app = {});
                 this.parameters = $.extend({}, this.parameters, opts.parameters);
 
             // Attributes
-            this.$wraperForm = this.$('#render-form-subgrupo');
+            this.$wraperForm = this.$('#render-form-marca');
 
             // Events
             this.listenTo( this.model, 'change', this.render );
@@ -65,6 +65,9 @@ app || (app = {});
         */
         ready: function () {
             // to fire plugins
+            if( typeof window.initComponent.initICheck == 'function' )
+                window.initComponent.initICheck();
+            
             if( typeof window.initComponent.initToUpper == 'function' )
                 window.initComponent.initToUpper();
         },
@@ -94,7 +97,7 @@ app || (app = {});
                     return;
                 }
 
-                window.Misc.redirect( window.Misc.urlFull( Route.route('subgrupos.show', { subgrupos: resp.id})) );
+                window.Misc.redirect( window.Misc.urlFull( Route.route('marcas.index')) );
             }
         }
     });

@@ -19,6 +19,13 @@ class Linea extends BaseModel
     public $timestamps = false;
 
     /**
+     * The key used by cache store.
+     *
+     * @var static string
+     */
+    public static $key_cache = '_linea';
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
@@ -49,6 +56,22 @@ class Linea extends BaseModel
         }
         $this->errors = $validator->errors();
         return false;
+    }
+
+    public static function getlineas()
+    {
+        if ( Cache::has(self::$key_cache)) {
+            return Cache::get(self::$key_cache);
+        }
+
+        return Cache::rememberForever( self::$key_cache , function() {
+            $query = Linea::query();
+            $query->orderBy('linea_nombre', 'asc');
+            $collection = $query->lists('linea_nombre', 'linea.id');
+
+            $collection->prepend('', '');
+            return $collection;
+        });
     }
 
 }

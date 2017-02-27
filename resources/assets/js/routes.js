@@ -85,21 +85,24 @@ app || (app = {});
 
             /*
             |-----------------------
-            | Contabilidad
+            | Inventario
             |-----------------------
             */
             'productos(/)': 'getProductosMain',
             'productos/create(/)': 'getProductosCreate',
             'productos/:producto/edit(/)': 'getProductosEdit',
 
-            'subgrupos(/)': 'getSubGruposMain',
-            'subgrupos/create(/)': 'getSubGruposCreate',
-            'subgrupos/:subgrupo/edit(/)': 'getSubGruposEdit',
+            'marcas(/)': 'getMarcasMain',
+            'marcas/create(/)': 'getMarcasCreate',
+            'marcas/:marcas/edit(/)': 'getMarcasEdit',
 
-            'grupos(/)': 'getGruposMain',
-            'grupos/create(/)': 'getGruposCreate',
-            'grupos/:grupo/edit(/)': 'getGruposEdit',
+            'categorias(/)': 'getCategoriasMain',
+            'categorias/create(/)': 'getCategoriasCreate',
+            'categorias/:categorias/edit(/)': 'getCategoriasEdit',
 
+            'modelos(/)': 'getModelosMain',
+            'modelos/create(/)': 'getModelosCreate',
+            'modelos/:modelo/edit(/)': 'getModelosEdit',
 
             'lineas(/)': 'getLineasMain',
             'lineas/create(/)': 'getLineaCreate',
@@ -659,76 +662,113 @@ app || (app = {});
         },
 
         // Inventario
-        getSubGruposMain: function () {
+       
+        // Marca
+        getMarcasMain: function () {
 
-            if ( this.mainSubGruposView instanceof Backbone.View ){
-                this.mainSubGruposView.stopListening();
-                this.mainSubGruposView.undelegateEvents();
+            if ( this.mainMarcaView instanceof Backbone.View ){
+                this.mainMarcaView.stopListening();
+                this.mainMarcaView.undelegateEvents();
             }
 
-            this.mainSubGruposView = new app.MainSubGruposView( );
+            this.mainMarcaView = new app.MainMarcasView( );
         },
 
-        getSubGruposCreate: function () {
-            this.subGrupoModel = new app.SubGrupoModel();
+        getMarcasCreate: function () {
+            this.marcaModel = new app.MarcaModel();
 
-            if ( this.createSubGrupoView instanceof Backbone.View ){
-                this.createSubGrupoView.stopListening();
-                this.createSubGrupoView.undelegateEvents();
+            if ( this.createMarcaView instanceof Backbone.View ){
+                this.createMarcaView.stopListening();
+                this.createMarcaView.undelegateEvents();
             }
 
-            this.createSubGrupoView = new app.CreateSubGrupoView({ model: this.subGrupoModel });
-            this.createSubGrupoView.render();
+            this.createMarcaView = new app.CreateMarcaView({ model: this.marcaModel });
+            this.createMarcaView.render();
         },
 
-        getSubGruposEdit: function (subgrupo) {
-            this.subGrupoModel = new app.SubGrupoModel();
-            this.subGrupoModel.set({'id': subgrupo}, {silent: true});
+        getMarcasEdit: function (marcas) {
+            this.marcaModel = new app.MarcaModel();
+            this.marcaModel.set({'id': marcas}, {'silent':true});
 
-            if ( this.createSubGrupoView instanceof Backbone.View ){
-                this.createSubGrupoView.stopListening();
-                this.createSubGrupoView.undelegateEvents();
+            if ( this.createMarcaView instanceof Backbone.View ){
+                this.createMarcaView.stopListening();
+                this.createMarcaView.undelegateEvents();
             }
 
-            this.createSubGrupoView = new app.CreateSubGrupoView({ model: this.subGrupoModel });
-            this.subGrupoModel.fetch();
+            this.createMarcaView = new app.CreateMarcaView({ model: this.marcaModel });
+            this.marcaModel.fetch();
         },
 
-        getGruposMain: function () {
+         getCategoriasMain: function () {
 
-            if ( this.mainGruposView instanceof Backbone.View ){
-                this.mainGruposView.stopListening();
-                this.mainGruposView.undelegateEvents();
+            if ( this.mainCategoriasView instanceof Backbone.View ){
+                this.mainCategoriasView.stopListening();
+                this.mainCategoriasView.undelegateEvents();
             }
 
-            this.mainGruposView = new app.MainGruposView( );
+            this.mainCategoriasView = new app.MainCategoriasView( );
         },
 
-        getGruposCreate: function () {
-            this.grupoModel = new app.GrupoModel();
+        getCategoriasCreate: function () {
+            this.categoriaModel = new app.CategoriaModel();
 
-            if ( this.createGrupoView instanceof Backbone.View ){
-                this.createGrupoView.stopListening();
-                this.createGrupoView.undelegateEvents();
+            if ( this.createCategoriaView instanceof Backbone.View ){
+                this.createCategoriaView.stopListening();
+                this.createCategoriaView.undelegateEvents();
             }
 
-            this.createGrupoView = new app.CreateGrupoView({ model: this.grupoModel });
-            this.createGrupoView.render();
+            this.createCategoriaView = new app.CreateCategoriaView({ model: this.categoriaModel });
+            this.createCategoriaView.render();
         },
 
-        getGruposEdit: function (grupo) {
-            this.grupoModel = new app.GrupoModel();
-            this.grupoModel.set({'id': grupo}, {silent: true});
+        getCategoriasEdit: function (categorias) {
+            this.categoriaModel = new app.CategoriaModel();
+            this.categoriaModel.set({'id': categorias}, {'silent':true});
 
-            if ( this.createGrupoView instanceof Backbone.View ){
-                this.createGrupoView.stopListening();
-                this.createGrupoView.undelegateEvents();
+            if ( this.createCategoriaView instanceof Backbone.View ){
+                this.createCategoriaView.stopListening();
+                this.createCategoriaView.undelegateEvents();
             }
 
-            this.createGrupoView = new app.CreateGrupoView({ model: this.grupoModel });
-            this.grupoModel.fetch();
+            this.createCategoriaView = new app.CreateCategoriaView({ model: this.categoriaModel });
+            this.categoriaModel.fetch();
         },
 
+        getModelosMain: function () {
+
+            if ( this.mainModeloView instanceof Backbone.View ){
+                this.mainModeloView.stopListening();
+                this.mainModeloView.undelegateEvents();
+            }
+
+            this.mainModeloView = new app.MainModelosView( );
+        },
+
+        getModelosCreate: function () {
+            this.modeloModel = new app.ModeloModel();
+
+            if ( this.createModeloView instanceof Backbone.View ){
+                this.createModeloView.stopListening();
+                this.createModeloView.undelegateEvents();
+            }
+
+            this.createModeloView = new app.CreateModeloView({ model: this.modeloModel });
+            this.createModeloView.render();
+        },
+
+        getModelosEdit: function (modelos) {
+            this.modeloModel = new app.ModeloModel();
+            this.modeloModel.set({'id': modelos}, {'silent':true});
+
+            if ( this.createModeloView instanceof Backbone.View ){
+                this.createModeloView.stopListening();
+                this.createModeloView.undelegateEvents();
+            }
+
+            this.createModeloView = new app.CreateModeloView({ model: this.modeloModel });
+            this.modeloModel.fetch();
+        },
+        
         getLineasMain: function () {
 
             if ( this.mainLineasView instanceof Backbone.View ){

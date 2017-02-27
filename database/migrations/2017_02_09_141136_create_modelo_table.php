@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSubgrupoTable extends Migration
+class CreateModeloTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,13 +12,12 @@ class CreateSubgrupoTable extends Migration
      */
     public function up()
     {
-        Schema::create('subgrupo', function (Blueprint $table) {
+        Schema::create('modelo', function (Blueprint $table) {
             $table->engine = 'InnoDB';
 
             $table->increments('id');
-            $table->string('subgrupo_codigo', 4)->unique();
-            $table->string('subgrupo_nombre', 200);
-
+            $table->string('modelo_nombre', 200);
+            $table->boolean('modelo_activo')->default(false);
         });
     }
 
@@ -29,6 +28,6 @@ class CreateSubgrupoTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('subgrupo');
+        Schema::dropIfExists('modelo');
     }
 }
