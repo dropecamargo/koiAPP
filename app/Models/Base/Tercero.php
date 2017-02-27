@@ -12,7 +12,7 @@ use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
 use App\Models\BaseModel;
 
-use Validator, DB;
+use Validator, DB, Cache;
 
 class Tercero extends BaseModel implements AuthenticatableContract,
                                     AuthorizableContract,
@@ -26,6 +26,13 @@ class Tercero extends BaseModel implements AuthenticatableContract,
      * @var string
      */
     protected $table = 'tercero';
+
+    /**
+     * The key used by cache store.
+     *
+     * @var static string
+     */
+    public static $key_cache = '_asesor';
 
     /**
      * The attributes that are mass assignable.
@@ -104,6 +111,30 @@ class Tercero extends BaseModel implements AuthenticatableContract,
     public function getName()
     {
         return $this->attributes['tercero_razonsocial'] ? $this->attributes['tercero_razonsocial'] : sprintf('%s %s %s', $this->attributes['tercero_nombre1'], $this->attributes['tercero_apellido1'], $this->attributes['tercero_apellido2']);
+    }
+
+    public static function getAsesor()
+    {
+        if (Cache::has(self::$key_cache)) {
+            return Cache::get(self::$key_cache);
+        }
+
+        return Cache::rememberForever(self::$key_cache, function() {
+            $query = Tercero::query();
+            $query->select('id',
+                DB::raw("(CASE WHEN tercero_persona = 'N'
+                    THEN CONCAT(tercero_nombre1,' ',tercero_nombre2,' ',tercero_apellido1,' ',tercero_apellido2,
+                            (CASE WHEN (tercero_razonsocial IS NOT NULL AND tercero_razonsocial != '') THEN CONCAT(' - ', tercero_razonsocial) ELSE '' END)
+                        )
+                    ELSE tercero_razonsocial END)
+                AS tercero_nombre")
+            );
+            $query->orderby('tercero_nombre', 'asc');
+            $collection = $query->lists('tercero_nombre', 'id');
+
+            $collection->prepend('', '');
+            return $collection;
+        });
     }
 
     public function setTerceroNombre1Attribute($name)

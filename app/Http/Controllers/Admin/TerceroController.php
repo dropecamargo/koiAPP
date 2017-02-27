@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use DB, Log, Datatables;
+use DB, Log, Datatables, Cache;
 
 use App\Models\Base\Tercero, App\Models\Base\Actividad;
 
@@ -94,6 +94,8 @@ class TerceroController extends Controller
 
                     // Commit Transaction
                     DB::commit();
+                    // Forget cache
+                    Cache::forget( Tercero::$key_cache );
                     
                     return response()->json(['success' => true, 'id' => $tercero->id]);
                 }catch(\Exception $e){
@@ -157,6 +159,7 @@ class TerceroController extends Controller
 
                     // Commit Transaction
                     DB::commit();
+                    
                     return response()->json(['success' => true, 'id' => $tercero->id]);
                 }catch(\Exception $e){
                     DB::rollback();

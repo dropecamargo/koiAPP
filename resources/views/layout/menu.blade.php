@@ -52,11 +52,32 @@
                         <a href="{{ route('sucursales.index') }}"><i class="fa fa-circle-o"></i> Sucursales</a>
                     </li>
                     <li class="{{ Request::segment(1) == 'tiposactividad' ? 'active' : '' }}">
-                        <a href="{{ route('tiposactividad.index') }}"><i class="fa fa-circle-o"></i> Tipo Actividad</a>
+                        <a href="{{ route('tiposactividad.index') }}"><i class="fa fa-circle-o"></i> Tipo actividad</a>
                     </li>
                 </ul>
             </li> 
  		</ul>
+    </li>
+
+    {{-- Comercial --}}
+    <li class="treeview {{ in_array(Request::segment(1), ['presupuestoasesor']) ? 'active' : '' }}">
+        <a href="#">
+            <i class="fa fa-book"></i> <span>Comercial</span><i class="fa fa-angle-left pull-right"></i>
+        </a>
+
+        <ul class="treeview-menu">
+            {{-- Modulos contabilidad --}}
+            <li class="{{ in_array(Request::segment(1), ['presupuestoasesor']) ? 'active' : '' }}">
+                <a href="#">
+                    <i class="fa fa-wpforms"></i> Módulos <i class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="treeview-menu">
+                    <li class="{{ Request::segment(1) == 'presupuestoasesor' ? 'active' : '' }}">
+                        <a href="{{ route('presupuestoasesor.index') }}"><i class="fa fa-handshake-o"></i> Presupuesto</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
     </li>
 
     {{-- Contabilidad --}}
