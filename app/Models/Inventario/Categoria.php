@@ -3,17 +3,17 @@
 namespace App\Models\Inventario;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
+use Validator,Cache;
 
-use Validator, Cache;
-
-class Grupo extends Model
+class Categoria extends BaseModel
 {
     /**
      * The database table used by the model.
      *
      * @var string
      */
-    protected $table = 'grupo';
+    protected $table = 'categoria';
 
     public $timestamps = false;
 
@@ -22,27 +22,22 @@ class Grupo extends Model
      *
      * @var static string
      */
-    public static $key_cache = '_groups_inventory';
+    public static $key_cache = '_categoria';
 
-    /**
+     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['grupo_codigo', 'grupo_nombre'];
+    protected $fillable = ['categoria_nombre'];
+
+    protected $boolean = ['categoria_activo'];
 
     public function isValid($data)
     {
         $rules = [
-            'grupo_codigo' => 'required|max:4|min:1|unique:grupo',
-            'grupo_nombre' => 'required|max:50'
+            'categoria_nombre' => 'required|max:200'
         ];
-
-        if ($this->exists){
-            $rules['grupo_codigo'] .= ',grupo_codigo,' . $this->id;
-        }else{
-            $rules['grupo_codigo'] .= '|required';
-        }
 
         $validator = Validator::make($data, $rules);
         if ($validator->passes()) {
@@ -52,16 +47,16 @@ class Grupo extends Model
         return false;
     }
 
-    public static function getGrupos()
+    public static function getCategorias()
     {
-        if (Cache::has( self::$key_cache )) {
-            return Cache::get( self::$key_cache );
+        if ( Cache::has(self::$key_cache)) {
+            return Cache::get(self::$key_cache);
         }
 
         return Cache::rememberForever( self::$key_cache , function() {
-            $query = Grupo::query();
-            $query->orderby('grupo_nombre', 'asc');
-            $collection = $query->lists('grupo_nombre', 'id');
+            $query = Categoria::query();
+            $query->orderBy('categoria_nombre', 'asc');
+            $collection = $query->lists('categoria_nombre', 'categoria.id');
 
             $collection->prepend('', '');
             return $collection;

@@ -15,7 +15,7 @@
 
    	<section class="content">
 	   	<div class="box box-success" id="presupuestoasesor-create">
-		   	<form method="POST" accept-charset="UTF-8" id="form-asignacion1" data-toggle="validator">
+		   	<form method="POST" accept-charset="UTF-8" id="form-presupuestoasesor" data-toggle="validator">
 		        <div class="box-body">
 			   		<div class="row">
 			   			<div class="col-md-6 col-md-offset-2 text-left">
@@ -52,16 +52,33 @@
 	</section>
 
 	<script type="text/template" id="add-presupuesto-tpl">
+	<br>
 		<div class="table-responsive">
 			<table id="presupuesto-table" class="table table-bordered table-striped" cellspacing="0" width="100%">
 		        <thead>
 		            <tr>
-		                <th>Categoria</th>
+		                <th width="15%">Categoria</th>
+		                <% _.each(moment.monthsShort(), function(mes) { %>
+							<th width="7%"><%- mes %></th>
+						<% }); %>
 		            </tr>
 		        </thead>
 		        <tbody>
-		        
-                </tbody>
+		        <% _.each(categorias, function(categoria) { %>
+			        <tr>
+			        	<th>
+			        		<%- categoria.categoria_nombre %>
+			        	</th>
+
+						<% _.each(moment.monthsShort(), function(mes) { %>
+							<td>
+								<input type="text" id="presupuestoasesor_valor" name="presupuestoasesor_valor" class="form-control input-sm" data-currency>
+							</td>
+						<% }); %>	 
+			        </tr>
+
+			    <% }); %>
+		        </tbody>
 		    </table>
 		</div>
 	</script>

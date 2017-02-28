@@ -1,21 +1,19 @@
-@extends('admin.tiposactividad.main')
+@extends('inventario.marca.main')
 
 @section('breadcrumb')
-    <li class="active">Tipos Actividad</li>
+    <li class="active">Marcas</li>
 @stop
 
 @section('module')
-    <div id="tiposactividad-main">
+	<div id="marcas-main">
         <div class="box box-success">
             <div class="box-body table-responsive">
-                <table id="tiposactividad-search-table" class="table table-bordered table-striped" cellspacing="0" width="100%">
+                <table id="marcas-search-table" class="table table-bordered table-striped" cellspacing="0" width="100%">
                     <thead>
                         <tr>
+                            <th>Código</th>
                             <th>Nombre</th>
                             <th>Activo</th>
-                            <th>Comercial</th>
-                            <th>Tecnico</th>
-                            <th>Cartera</th>
                         </tr>
                     </thead>
                 </table>

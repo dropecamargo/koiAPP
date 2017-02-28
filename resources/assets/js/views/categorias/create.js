@@ -1,5 +1,5 @@
 /**
-* Class CreateTipoActividadView  of Backbone Router
+* Class CreateMarcaView  of Backbone Router
 * @author KOI || @dropecamargo
 * @link http://koi-ti.com
 */
@@ -9,12 +9,12 @@ app || (app = {});
 
 (function ($, window, document, undefined) {
 
-    app.CreateTipoActividadView = Backbone.View.extend({
+    app.CreateCategoriaView = Backbone.View.extend({
 
-        el: '#tiposactividad-create',
-        template: _.template( ($('#add-tipoactividad-tpl').html() || '') ),
+        el: '#categoria-create',
+        template: _.template( ($('#add-categoria-tpl').html() || '') ),
         events: {
-            'submit #form-tiposactividad': 'onStore'
+            'submit #form-categoria': 'onStore'
         },
         parameters: {
         },
@@ -28,7 +28,7 @@ app || (app = {});
                 this.parameters = $.extend({}, this.parameters, opts.parameters);
 
             // Attributes
-            this.$wraperForm = this.$('#render-form-tipoactividad');
+            this.$wraperForm = this.$('#render-form-categoria');
 
             // Events
             this.listenTo( this.model, 'change', this.render );
@@ -65,11 +65,11 @@ app || (app = {});
         */
         ready: function () {
             // to fire plugins
-            if( typeof window.initComponent.initToUpper == 'function' )
-                window.initComponent.initToUpper();
-
             if( typeof window.initComponent.initICheck == 'function' )
                 window.initComponent.initICheck();
+            
+            if( typeof window.initComponent.initToUpper == 'function' )
+                window.initComponent.initToUpper();
         },
 
         /**
@@ -97,7 +97,7 @@ app || (app = {});
                     return;
                 }
 
-                window.Misc.redirect( window.Misc.urlFull( Route.route('tiposactividad.show', { tiposactividad: resp.id})) );
+                window.Misc.redirect( window.Misc.urlFull( Route.route('categorias.index')) );
             }
         }
     });

@@ -30,31 +30,36 @@ app || (app = {});
         },
 
         /**
+        * fires libraries js
+        */
+        ready: function () {
+            if( typeof window.initComponent.initInputMask == 'function' )
+                    window.initComponent.initInputMask();
+        },
+
+        /**
         * Event Create Folder
         */
         changeAsesor: function (e) {
         	var _this = this;
-            
+
             $.ajax({
                 url: window.Misc.urlFull(Route.route('presupuestoasesor.index')),
                 type: 'GET',
                 data: { 
-                	presupuestoasesor_asesor: $(e.currentTarget).val(),
-                	presupuestoasesor_ano: $(e.currentTarget).val()
+                	presupuestoasesor_asesor: _this.$asesor.val(),
+                	presupuestoasesor_ano: _this.$ano.val()
                 },
                 beforeSend: function() {
                     window.Misc.setSpinner( _this.el );
                 }
-
             })
             .done(function(resp) {
                 window.Misc.removeSpinner( _this.el );
                 if(resp.success) {
                     // asesor
-                    _this.$wraperForm.html( _this.template() );
-
-                    _this.$asesor.val(resp.asesor);
-                    _this.$ano.val(resp.ano);
+                    _this.$wraperForm.html( _this.template( resp ) );
+                    _this.ready();
                 }
             })
             .fail(function(jqXHR, ajaxOptions, thrownError) {

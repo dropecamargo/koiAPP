@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use Log, DB;
 
 use App\Models\Comercial\PresupuestoAsesor;
+use App\Models\Inventario\Categoria;
 
 class PresupuestoAsesorController extends Controller
 {
@@ -21,10 +22,25 @@ class PresupuestoAsesorController extends Controller
     public function index(Request $request)
     {
         if($request->ajax()){
-            // $query = PresupuestoAsesor::query();
-            // $query->select('presupuestoasesor.*','categoria_nombre');
-            // $query->join('categoria','presupuestoasesor.presupuestoasesor_categoria', '=', 'categoria.id');
-            return response()->json(['success'=>true]);
+            $query = Categoria::query();
+            $query->select('categoria_nombre','id');
+            $categoria = $query->get();
+
+            $data = [];
+            foreach ($categoria as $categoria) {
+                $objeto = new \stdClass();
+                $objeto->id = $categoria->id;
+                $objeto->categoria_nombre = $categoria->categoria_nombre;
+                $objeto->presupuesto = [];
+
+                $query = PresupuestoAsesor::query();
+                $query->select('presupuestoasesor_mes','presupuestoasesor_valor');
+                $query->where('presupuestoasesor_asesor', $request->presupuestoasesor_asesor)->where('presupuestoasesor_categoria', $categoria->id)->where('presupuestoasesor_ano', $request->presupuestoasesor_ano);
+
+                $objeto->presupuesto = $query->lists('presupuestoasesor_valor','presupuestoasesor_mes');
+                $data[] = $objeto;
+            } 
+            return response()->json(['success'=>true, 'categorias'=>$data]);
         }
         return view('comercial.presupuestoasesor.main');
     }

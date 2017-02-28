@@ -3,17 +3,17 @@
 namespace App\Models\Inventario;
 
 use Illuminate\Database\Eloquent\Model;
+use Validator,Cache;
+use App\Models\BaseModel;
 
-use Validator, Cache;
-
-class SubGrupo extends Model
+class Marca extends BaseModel
 {
     /**
      * The database table used by the model.
      *
      * @var string
      */
-    protected $table = 'subgrupo';
+    protected $table = 'marca';
 
     public $timestamps = false;
 
@@ -22,27 +22,22 @@ class SubGrupo extends Model
      *
      * @var static string
      */
-    public static $key_cache = '_subgroups_inventory';
+    public static $key_cache = '_marcas';
 
-    /**
+     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['subgrupo_codigo', 'subgrupo_nombre'];
+    protected $fillable = ['marca_nombre'];
+
+    protected $boolean = ['marca_activo'];
 
     public function isValid($data)
     {
         $rules = [
-            'subgrupo_codigo' => 'required|max:4|min:1|unique:subgrupo',
-            'subgrupo_nombre' => 'required|max:50'
+            'marca_nombre' => 'required|max:200'
         ];
-
-        if ($this->exists){
-            $rules['subgrupo_codigo'] .= ',subgrupo_codigo,' . $this->id;
-        }else{
-            $rules['subgrupo_codigo'] .= '|required';
-        }
 
         $validator = Validator::make($data, $rules);
         if ($validator->passes()) {
@@ -52,16 +47,16 @@ class SubGrupo extends Model
         return false;
     }
 
-    public static function getSubGrupos()
+    public static function getMarcas()
     {
-        if (Cache::has( self::$key_cache )) {
-            return Cache::get( self::$key_cache );
+        if ( Cache::has(self::$key_cache)) {
+            return Cache::get(self::$key_cache);
         }
 
         return Cache::rememberForever( self::$key_cache , function() {
-            $query = SubGrupo::query();
-            $query->orderby('subgrupo_nombre', 'asc');
-            $collection = $query->lists('subgrupo_nombre', 'id');
+            $query = Marca::query();
+            $query->orderBy('marca_nombre', 'asc');
+            $collection = $query->lists('marca_nombre', 'marca.id');
 
             $collection->prepend('', '');
             return $collection;

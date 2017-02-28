@@ -1,5 +1,5 @@
 /**
-* Class CreateGrupoView  of Backbone Router
+* Class CreateModeloView  of Backbone Router
 * @author KOI || @dropecamargo
 * @link http://koi-ti.com
 */
@@ -9,12 +9,12 @@ app || (app = {});
 
 (function ($, window, document, undefined) {
 
-    app.CreateGrupoView = Backbone.View.extend({
+    app.CreateModeloView = Backbone.View.extend({
 
-        el: '#grupos-create',
-        template: _.template( ($('#add-grupo-tpl').html() || '') ),
+        el: '#modelo-create',
+        template: _.template( ($('#add-modelo-tpl').html() || '') ),
         events: {
-            'submit #form-grupos': 'onStore'
+            'submit #form-modelo': 'onStore'
         },
         parameters: {
         },
@@ -28,7 +28,7 @@ app || (app = {});
                 this.parameters = $.extend({}, this.parameters, opts.parameters);
 
             // Attributes
-            this.$wraperForm = this.$('#render-form-grupo');
+            this.$wraperForm = this.$('#render-form-modelo');
 
             // Events
             this.listenTo( this.model, 'change', this.render );
@@ -37,7 +37,7 @@ app || (app = {});
         },
 
         /**
-        * Event Create Folder
+        * Event Create Modelo
         */
         onStore: function (e) {
 
@@ -56,7 +56,7 @@ app || (app = {});
 
             var attributes = this.model.toJSON();
             this.$wraperForm.html( this.template(attributes) );
-
+            
             this.ready();
         },
 
@@ -65,6 +65,10 @@ app || (app = {});
         */
         ready: function () {
             // to fire plugins
+            if( typeof window.initComponent.initICheck == 'function' )
+                window.initComponent.initICheck(); 
+
+            
             if( typeof window.initComponent.initToUpper == 'function' )
                 window.initComponent.initToUpper();
         },
@@ -94,7 +98,7 @@ app || (app = {});
                     return;
                 }
 
-                window.Misc.redirect( window.Misc.urlFull( Route.route('grupos.show', { grupos: resp.id})) );
+                window.Misc.redirect( window.Misc.urlFull( Route.route('modelos.index')) );
             }
         }
     });

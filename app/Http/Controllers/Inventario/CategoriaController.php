@@ -6,12 +6,11 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
 use DB, Log, Datatables, Cache;
 
-use App\Models\Inventario\Grupo;
+use App\Models\Inventario\Categoria;
 
-class GrupoController extends Controller
+class CategoriaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -21,11 +20,10 @@ class GrupoController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $query = Grupo::query();
-            $query->select('grupo.id as id', 'grupo_codigo', 'grupo_nombre');
+            $query = Categoria::query();
             return Datatables::of($query)->make(true);
         }
-        return view('inventario.grupos.index');
+        return view('inventario.categoria.index');
     }
 
     /**
@@ -35,7 +33,7 @@ class GrupoController extends Controller
      */
     public function create()
     {
-        return view('inventario.grupos.create');
+        return view('inventario.categoria.create');
     }
 
     /**
@@ -49,27 +47,28 @@ class GrupoController extends Controller
         if ($request->ajax()) {
             $data = $request->all();
 
-            $grupo = new Grupo;
-            if ($grupo->isValid($data)) {
+            $categoria = new Categoria;
+            if ($categoria->isValid($data)) {
                 DB::beginTransaction();
                 try {
-                    // grupo
-                    $grupo->fill($data);
-                    $grupo->save();
+                    //Categoria
+                    $categoria->fill($data);
+                    $categoria->fillBoolean($data);
+                    $categoria->save();
 
                     // Commit Transaction
                     DB::commit();
-                    // Forget cache
-                    Cache::forget( Grupo::$key_cache );
+                    //Forget cache
+                    Cache::forget( Categoria::$key_cache );
 
-                    return response()->json(['success' => true, 'id' => $grupo->id]);
+                    return response()->json(['success' => true, 'id' => $categoria->id]);
                 }catch(\Exception $e){
                     DB::rollback();
                     Log::error($e->getMessage());
                     return response()->json(['success' => false, 'errors' => trans('app.exception')]);
                 }
             }
-            return response()->json(['success' => false, 'errors' => $grupo->errors]);
+            return response()->json(['success' => false, 'errors' => $categoria->errors]);
         }
         abort(403);
     }
@@ -82,11 +81,11 @@ class GrupoController extends Controller
      */
     public function show(Request $request, $id)
     {
-        $grupo = Grupo::findOrFail($id);
+        $categoria = Categoria::findOrFail($id);
         if ($request->ajax()) {
-            return response()->json($grupo);
+            return response()->json($categoria);
         }
-        return view('inventario.grupos.show', ['grupo' => $grupo]);
+        return view('inventario.categoria.show', ['marca' => $categoria]);
     }
 
     /**
@@ -97,8 +96,8 @@ class GrupoController extends Controller
      */
     public function edit($id)
     {
-        $grupo = Grupo::findOrFail($id);
-        return view('inventario.grupos.edit', ['grupo' => $grupo]);
+        $categoria = Categoria::findOrFail($id);
+        return view('inventario.categoria.edit', ['marca' => $categoria]);
     }
 
     /**
@@ -112,28 +111,25 @@ class GrupoController extends Controller
     {
         if ($request->ajax()) {
             $data = $request->all();
-
-            $grupo = Grupo::findOrFail($id);
-            if ($grupo->isValid($data)) {
+            $categoria = Categoria::findOrFail($id);
+            if ($categoria->isValid($data)) {
                 DB::beginTransaction();
                 try {
-                    // grupo
-                    $grupo->fill($data);
-                    $grupo->save();
-
+                    // marca
+                    $categoria->fill($data);
+                    $categoria->fillBoolean($data);
+                    $categoria->save();
                     // Commit Transaction
                     DB::commit();
-                    // Forget cache
-                    Cache::forget( Grupo::$key_cache );
-
-                    return response()->json(['success' => true, 'id' => $grupo->id]);
+                    
+                    return response()->json(['success' => true, 'id' => $categoria->id]);
                 }catch(\Exception $e){
                     DB::rollback();
                     Log::error($e->getMessage());
                     return response()->json(['success' => false, 'errors' => trans('app.exception')]);
                 }
             }
-            return response()->json(['success' => false, 'errors' => $grupo->errors]);
+            return response()->json(['success' => false, 'errors' => $categoria->errors]);
         }
         abort(403);
     }
