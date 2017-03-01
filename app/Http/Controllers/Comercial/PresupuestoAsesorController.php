@@ -72,13 +72,20 @@ class PresupuestoAsesorController extends Controller
     {
         if ($request->ajax()) {
             $data = $request->all();
+
+            dd($data);
             $presupuesto = new PresupuestoAsesor;
             if ($presupuesto->isValid($data)) {
                 DB::beginTransaction();
                 try {
-                    // presupuestoasesor
+                    $pre = PresupuestoAsesor::find($request->presupuestoasesor_asesor);
+                    if(!$pre instanceof PresupuestoAsesor) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'Asesor no se encuentra registrado, por favor verifique la información o consulte al administrador.']);
+                    }
 
-                    // $presupuesto->fill($data);
+                    // presupuestoasesor          
+                    $presupuesto->fill($data);
                     // $presupuesto->save();
 
                     // Commit Transaction

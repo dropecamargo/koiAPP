@@ -67,6 +67,11 @@ app || (app = {});
                         alertify.success('Presupuesto actualizado');
                         return;
                     }else{
+                        if( !_.isObject( resp.errors ) ) {
+                            alertify.error(JSON.stringify(resp.errors));
+                            return;
+                        }
+
                         var text = window.Misc.parseErrors(resp.errors);
                         alertify.error(text);
                         return;
@@ -102,8 +107,13 @@ app || (app = {});
                 if(resp.success) {
                     // asesor
                     _this.$wraperForm.html( _this.template( resp ) );
-                    _this.ready();  
+                    _this.ready();
                 }else{
+                    if( !_.isObject( resp.errors ) ) {
+                        alertify.error(JSON.stringify(resp.errors));
+                        return;
+                    }
+
                     var text = window.Misc.parseErrors(resp.errors);
                     alertify.error(text);
                     return;
