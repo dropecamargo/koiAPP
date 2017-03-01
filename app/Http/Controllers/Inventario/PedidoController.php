@@ -112,7 +112,7 @@ class PedidoController extends Controller
      */
     public function show(Request $request, $id)
     {
-       
+       dd($request->all());
         $pedido = Pedido1::getPedido($id);
         
         if(!$pedido instanceof Pedido1) {
