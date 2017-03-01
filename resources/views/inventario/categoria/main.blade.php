@@ -1,11 +1,11 @@
 @extends('layout.layout')
 
-@section('title') Categoias @stop
+@section('title') Categorias @stop
 
 @section('content')
     <section class="content-header">
         <h1>
-            Categoias <small>Administración de categorias</small>
+            Categorias <small>Administración de categorias</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> {{trans('app.home')}}</a></li>

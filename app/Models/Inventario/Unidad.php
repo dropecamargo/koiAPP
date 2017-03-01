@@ -70,7 +70,9 @@ class Unidad extends BaseModel
         return Cache::rememberForever( self::$key_cache , function() {
             $query = Unidad::query();
             $query->orderby('unidadmedida_nombre', 'asc');
-            return $query->lists('unidadmedida_nombre', 'id');
+            $collection = $query->lists('unidadmedida_nombre', 'id');
+            $collection->prepend('', '');
+            return $collection;
         });
     }
 }

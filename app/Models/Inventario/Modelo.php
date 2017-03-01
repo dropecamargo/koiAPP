@@ -67,7 +67,6 @@ class Modelo extends BaseModel
             $query = Modelo::query();
             $query->orderBy('modelo_nombre', 'asc');
             $collection = $query->lists('modelo_nombre', 'modelo.id');
-
             $collection->prepend('', '');
             return $collection;
         });

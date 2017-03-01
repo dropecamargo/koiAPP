@@ -9,14 +9,27 @@
     <div class="box box-success">
         <div class="box-body">
             <div class="row">
-                <div class="form-group col-md-8">
+                <div class="form-group col-md-4">
                     <label class="control-label">Nombre</label>
                     <div>{{ $sucursal->sucursal_nombre }}</div>
                     <label class="control-label">Direccion</label>
                     <div>{{ $sucursal->sucursal_direccion }}</div>
+                </div> 
+                <div class="form-group col-md-4">
+                    <label class="control-label">Regional</label>
+                    <div>{{ $sucursal->regional_nombre }}</div>
+                    <label class="control-label">Teléfono</label>
+                    <div>{{ $sucursal->sucursal_telefono }}</div>
                 </div>
+            </div>    
+        
+            <div class="form-group col-md-4">
+                <label class="" for="sucursal_activo">
+                <input type="checkbox" id="sucursal_activo" name="sucursal_activo" value="sucursal_activo" disabled {{ $sucursal->sucursal_activo ? 'checked': '' }}> Activo
+                </label> 
             </div>
         </div>
+    </div>
         <div class="box-footer with-border">
             <div class="row">
                 <div class="col-md-2 col-md-offset-4 col-sm-6 col-xs-6 text-left">

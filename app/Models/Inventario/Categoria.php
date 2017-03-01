@@ -57,7 +57,6 @@ class Categoria extends BaseModel
             $query = Categoria::query();
             $query->orderBy('categoria_nombre', 'asc');
             $collection = $query->lists('categoria_nombre', 'categoria.id');
-
             $collection->prepend('', '');
             return $collection;
         });

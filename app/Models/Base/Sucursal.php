@@ -3,10 +3,11 @@
 namespace App\Models\Base;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
 use Validator, Cache;
 
-class Sucursal extends Model
+class Sucursal extends BaseModel
 {
     /**
      * The database table used by the model.
@@ -29,13 +30,22 @@ class Sucursal extends Model
      *
      * @var array
      */
-    protected $fillable = ['sucursal_nombre','sucursal_direccion'];
+    protected $fillable = ['sucursal_nombre','sucursal_direccion','sucursal_telefono','sucursal_regional','sucursal_pedn','sucursal_entr','sucusal_tras'];
+
+    /**
+     * The attributes that are mass boolean assignable.
+     *
+     * @var array
+     */
+    protected $boolean = ['sucursal_activo'];
+
 
     public function isValid($data)
     {
         $rules = [
             'sucursal_nombre' => 'required|max:200|unique:sucursal',
-            'sucursal_direccion'=>'required|max:200'
+            'sucursal_direccion'=>'required|max:200',
+            'sucursal_regional' => 'required'
         ];
 
         if ($this->exists){
@@ -66,5 +76,12 @@ class Sucursal extends Model
 
             return $collection;
         });
+    }
+
+    public static function getSucursal($id){
+        $query = Sucursal::query();
+        $query->select('sucursal.*','regional_nombre');
+        $query->join('regional','sucursal.sucursal_regional','=','regional.id');
+        return $query->first();
     }
 }
