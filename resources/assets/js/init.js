@@ -78,7 +78,7 @@ var app = app || {};
         * Init toUpper
         */
         initToUpper: function () {
-            $('.input-toupper').keyup(function(){
+            $('.input-toupper').change(function(){
                 $(this).val( $(this).val().toUpperCase() );
             });
         },

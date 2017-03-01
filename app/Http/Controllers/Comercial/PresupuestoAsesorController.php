@@ -35,16 +35,15 @@ class PresupuestoAsesorController extends Controller
                 $objCategoria = new \stdClass();
                 $objCategoria->id = $categoria->id;
                 $objCategoria->categoria_nombre = $categoria->categoria_nombre;
-                // $objCategoria->presupuesto = [];
 
                 $query = PresupuestoAsesor::query();
                 $query->select('presupuestoasesor_mes','presupuestoasesor_valor');
                 $query->where('presupuestoasesor_asesor', $request->presupuestoasesor_asesor)->where('presupuestoasesor_categoria', $categoria->id)->where('presupuestoasesor_ano', $request->presupuestoasesor_ano);
-                // $presupuestoasesor = $query->get();
-                // foreach ($presupuestoasesor as $presupuesto) {
-                //     $objCategoria->presupuesto[$presupuesto->presupuestoasesor_mes] = $presupuesto->presupuestoasesor_valor;
-                // }
-                // // dd($query->lists('presupuestoasesor_valor', 'presupuestoasesor_mes')->toArray());
+
+                $presupuestoasesor = $query->get();
+                foreach ($presupuestoasesor as $presupuesto) {
+                    $objCategoria->presupuesto[$presupuesto->presupuestoasesor_mes] = $presupuesto->presupuestoasesor_valor;
+                }
                 $objCategoria->presupuesto = $query->lists('presupuestoasesor_valor', 'presupuestoasesor_mes');
                 $object->categorias[] = $objCategoria;
             }
@@ -71,7 +70,30 @@ class PresupuestoAsesorController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if ($request->ajax()) {
+            $data = $request->all();
+            $presupuesto = new PresupuestoAsesor;
+            if ($presupuesto->isValid($data)) {
+                DB::beginTransaction();
+                try {
+                    // presupuestoasesor
+
+                    // $presupuesto->fill($data);
+                    // $presupuesto->save();
+
+                    // Commit Transaction
+                    DB::commit();
+
+                    return response()->json(['success' => true, 'id' => $presupuesto->id]);
+                }catch(\Exception $e){
+                    DB::rollback();
+                    Log::error($e->getMessage());
+                    return response()->json(['success' => false, 'errors' => trans('app.exception')]);
+                }
+            }
+            return response()->json(['success' => false, 'errors' => $presupuesto->errors]);
+        }
+        abort(403);
     }
 
     /**
@@ -105,12 +127,7 @@ class PresupuestoAsesorController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if ($request->ajax()) {
-            $data = $request->all();
-
-            dd($data);
-        }
-        abort(403);
+        //
     }
 
     /**
