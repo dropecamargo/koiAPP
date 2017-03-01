@@ -27,7 +27,7 @@ app || (app = {});
             'terceros/:tercero/edit(/)': 'getTercerosEdit', 
     
             //Empresa
-            'empresa(/)': 'getEmpresaEdit',           
+            'empresa(/)': 'getEmpresaEdit',        
 
             //Actividades
             'actividades(/)': 'getActividadesMain',
@@ -61,6 +61,13 @@ app || (app = {});
             'tiposactividad(/)': 'getTiposActividadMain',
             'tiposactividad/create(/)': 'getTiposActividadCreate',
             'tiposactividad/:tipoactividad/edit(/)': 'getTiposActividadEdit',
+
+            /*
+            |-----------------------
+            | Contabilidad
+            |-----------------------
+            */
+            'presupuestoasesor(/)': 'getPresupuestoAsesorMain',        
 
             /*
             |-----------------------
@@ -505,14 +512,27 @@ app || (app = {});
 
             this.createTipoActividadView = new app.CreateTipoActividadView({ model: this.tipoActividadModel });
             this.tipoActividadModel.fetch();
-        },
+        },     
         
+        /*
+        |-----------------------
+        | Comercial
+        |-----------------------
+        */
+        getPresupuestoAsesorMain: function () {
+            if ( this.mainPresupuestoAsesorView instanceof Backbone.View ){
+                this.mainPresupuestoAsesorView.stopListening();
+                this.mainPresupuestoAsesorView.undelegateEvents();
+            }
+
+            this.mainPresupuestoAsesorView = new app.MainPresupuestoAsesorView( );
+        },
+
         /*
         |-----------------------
         | Contabilidad
         |-----------------------
         */
-
         //Folder
         getFoldersMain: function () {
 

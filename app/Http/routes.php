@@ -55,6 +55,13 @@ Route::group(['middleware' => 'auth'], function(){
 
 	/*
 	|--------------------------
+	| Comercial Routes
+	|--------------------------
+	*/
+	Route::resource('presupuestoasesor', 'Comercial\PresupuestoAsesorController', ['only' => ['index']]);
+
+	/*
+	|--------------------------
 	| Contabilidad Routes
 	|--------------------------
 	*/
