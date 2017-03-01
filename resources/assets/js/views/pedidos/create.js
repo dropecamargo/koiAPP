@@ -59,6 +59,7 @@ app || (app = {});
         * Render View Element
         */
         render: function() {
+                console.log('referenceViews');  
             
             var attributes = this.model.toJSON();
             this.$wraperForm.html( this.template(attributes) );
@@ -132,7 +133,8 @@ app || (app = {});
                     return;
                 }
 
-                window.Misc.redirect( window.Misc.urlFull( Route.route('pedidos.index')) );
+                // Redirect to edit pedido
+                Backbone.history.navigate(Route.route('pedidos.edit', { pedidos: resp.id}), { trigger:true });
             }
         }
     });
