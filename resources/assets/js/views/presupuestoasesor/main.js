@@ -109,11 +109,6 @@ app || (app = {});
                     _this.$wraperForm.html( _this.template( resp ) );
                     _this.ready();
                 }else{
-                    if( !_.isObject( resp.errors ) ) {
-                        alertify.error(JSON.stringify(resp.errors));
-                        return;
-                    }
-
                     var text = window.Misc.parseErrors(resp.errors);
                     alertify.error(text);
                     return;

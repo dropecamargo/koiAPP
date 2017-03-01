@@ -34,8 +34,8 @@ app || (app = {});
              //Model Exists
             if( this.model.id != undefined ) {
                 
-                console.log('initialize');
                 this.detallePedido = new app.DetallePedidoCollection();
+                console.log('initialize');
             }
             // Events
             this.listenTo( this.model, 'change', this.render );
@@ -77,6 +77,7 @@ app || (app = {});
         },
 
         referenceViews:function(){
+
             this.detallePedidosView = new app.DetallePedidosView( {
                 collection: this.detallePedido,
                 parameters: {
@@ -114,6 +115,7 @@ app || (app = {});
         */
         loadSpinner: function (model, xhr, opts) {
             window.Misc.setSpinner( this.el );
+            
         },
 
         /**

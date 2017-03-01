@@ -11,6 +11,7 @@ use Log, DB;
 
 use App\Models\Comercial\PresupuestoAsesor;
 use App\Models\Inventario\Categoria;
+use App\Models\Base\Tercero;
 
 class PresupuestoAsesorController extends Controller
 {
@@ -24,30 +25,22 @@ class PresupuestoAsesorController extends Controller
         if($request->ajax()){
             $query = Categoria::query();
             $query->select('categoria_nombre','id');
-            $categoria = $query->get();
+            $data = $query->get();
 
-            $object = new \stdClass();
-            $object->success = true;
-            $object->categorias = [];
-
-            $data = [];
-            foreach ($categoria as $categoria) {
-                $objCategoria = new \stdClass();
-                $objCategoria->id = $categoria->id;
-                $objCategoria->categoria_nombre = $categoria->categoria_nombre;
+            $categorias = [];
+            foreach ($data as $item) {
+                $categoria = new \stdClass();
+                $categoria->id = $item->id;
+                $categoria->categoria_nombre = $item->categoria_nombre;
 
                 $query = PresupuestoAsesor::query();
                 $query->select('presupuestoasesor_mes','presupuestoasesor_valor');
-                $query->where('presupuestoasesor_asesor', $request->presupuestoasesor_asesor)->where('presupuestoasesor_categoria', $categoria->id)->where('presupuestoasesor_ano', $request->presupuestoasesor_ano);
+                $query->where('presupuestoasesor_asesor', $request->presupuestoasesor_asesor)->where('presupuestoasesor_categoria', $item->id)->where('presupuestoasesor_ano', $request->presupuestoasesor_ano);
+                $categoria->presupuesto = $query->lists('presupuestoasesor_valor', 'presupuestoasesor_mes');
 
-                $presupuestoasesor = $query->get();
-                foreach ($presupuestoasesor as $presupuesto) {
-                    $objCategoria->presupuesto[$presupuesto->presupuestoasesor_mes] = $presupuesto->presupuestoasesor_valor;
-                }
-                $objCategoria->presupuesto = $query->lists('presupuestoasesor_valor', 'presupuestoasesor_mes');
-                $object->categorias[] = $objCategoria;
+                $categorias[] = $categoria;
             }
-            return response()->json($object);
+            return response()->json(['success' => true, 'categorias' => $categorias]);
         }
         return view('comercial.presupuestoasesor.main');
     }
@@ -72,16 +65,20 @@ class PresupuestoAsesorController extends Controller
     {
         if ($request->ajax()) {
             $data = $request->all();
-
-            dd($data);
             $presupuesto = new PresupuestoAsesor;
             if ($presupuesto->isValid($data)) {
                 DB::beginTransaction();
                 try {
-                    $pre = PresupuestoAsesor::find($request->presupuestoasesor_asesor);
-                    if(!$pre instanceof PresupuestoAsesor) {
+                    $asesor = Tercero::find($request->presupuestoasesor_asesor);
+                    if(!$asesor instanceof Tercero) {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'Asesor no se encuentra registrado, por favor verifique la información o consulte al administrador.']);
+                    }
+
+                    $categoria = Categoria::where('id', $request->presupuestoasesor_categoria);
+                    if($categoria instanceof Categoria) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No se pudo recuperar categorias activas, por favor verifique la información o consulte al administrador.']);
                     }
 
                     // presupuestoasesor          
