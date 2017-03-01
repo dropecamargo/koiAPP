@@ -93,7 +93,11 @@ app || (app = {});
                 window.initComponent.initSelect2();
 
             if( typeof window.initComponent.initICheck == 'function' )
-                window.initComponent.initICheck();
+                window.initComponent.initICheck();   
+
+            if( typeof window.initComponent.initInputMask == 'function' )
+                window.initComponent.initInputMask();  
+           
         },
 
         /**

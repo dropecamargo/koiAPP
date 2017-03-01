@@ -117,6 +117,14 @@ var app = app || {};
                 unmaskAsNumber: true,
                 min: 0
             });
+
+            $("[data-currency-precise]").inputmask({
+                radixPoint: ",",
+                alias: 'currency',
+                removeMaskOnSubmit: true,
+                unmaskAsNumber: true,
+                min: 0
+            });
         },
 
         /**

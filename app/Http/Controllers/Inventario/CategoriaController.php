@@ -85,7 +85,7 @@ class CategoriaController extends Controller
         if ($request->ajax()) {
             return response()->json($categoria);
         }
-        return view('inventario.categoria.show', ['marca' => $categoria]);
+        return view('inventario.categoria.show', ['categoria' => $categoria]);
     }
 
     /**
@@ -97,7 +97,7 @@ class CategoriaController extends Controller
     public function edit($id)
     {
         $categoria = Categoria::findOrFail($id);
-        return view('inventario.categoria.edit', ['marca' => $categoria]);
+        return view('inventario.categoria.edit', ['categoria' => $categoria]);
     }
 
     /**
@@ -115,7 +115,7 @@ class CategoriaController extends Controller
             if ($categoria->isValid($data)) {
                 DB::beginTransaction();
                 try {
-                    // marca
+                    // categoria
                     $categoria->fill($data);
                     $categoria->fillBoolean($data);
                     $categoria->save();

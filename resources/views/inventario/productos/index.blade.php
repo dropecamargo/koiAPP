@@ -1,7 +1,7 @@
 @extends('inventario.productos.main')
 
 @section('breadcrumb')
-    <li class="active">Insumos</li>
+    <li class="active">Productos</li>
 @stop
 
 @section('module')
@@ -10,9 +10,9 @@
             <div class="box-body">
                 {!! Form::open(['id' => 'form-koi-search-producto-component', 'class' => 'form-horizontal', 'data-toggle' => 'validator', 'role' => 'form']) !!}
                     <div class="form-group">
-                        <label for="producto_codigo" class="col-md-1 control-label">Serie</label>
+                        <label for="producto_serie" class="col-md-1 control-label">Serie</label>
                         <div class="col-md-2">
-                            {!! Form::text('producto_codigo', session('search_producto_codigo'), ['id' => 'producto_codigo', 'class' => 'form-control input-sm']) !!}
+                            {!! Form::text('producto_serie', session('search_producto_serie'), ['id' => 'producto_serie', 'class' => 'form-control input-sm']) !!}
                         </div>
 
                         <label for="producto_nombre" class="col-md-1 control-label">Nombre</label>
@@ -40,7 +40,7 @@
                     <table id="productos-search-table" class="table table-bordered table-striped" cellspacing="0" width="100%">
                         <thead>
                             <tr>
-                                <th>Sirvea</th>
+                                <th>Serie</th>
                                 <th width="25%">Referencia</th>
                                 <th>Nombre</th>
                             </tr>

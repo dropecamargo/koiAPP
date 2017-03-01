@@ -48,6 +48,7 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::resource('departamentos', 'Admin\DepartamentoController', ['only' => ['index', 'show']]);
 	Route::resource('municipios', 'Admin\MunicipioController', ['only' => ['index']]);
 	Route::resource('sucursales', 'Admin\SucursalController', ['except' => ['destroy']]);
+	Route::resource('regionales', 'Admin\RegionalController', ['except' => ['destroy']]);
 	Route::resource('puntosventa', 'Admin\PuntoVentaController', ['except' => ['destroy']]);
 	Route::resource('documento', 'Admin\DocumentosController', ['except' => ['destroy']]);
 	Route::resource('tiposactividad', 'Admin\TipoActividadController', ['except' => ['destroy']]);
@@ -106,9 +107,15 @@ Route::group(['middleware' => 'auth'], function(){
 		Route::get('search', ['as' => 'productos.search', 'uses' => 'Inventario\ProductoController@search']);
 		// Route::resource('rollos', 'Inventario\ProdbodeRolloController', ['only' => ['index']]);
 	});
+	Route::group(['prefix' => 'pedidos'], function()
+	{
+		Route::resource('detalle', 'Inventario\DetallePedidoController', ['except' => ['destroy']]);
+	});
 	Route::resource('modelos','Inventario\ModeloController', ['except' => ['destroy']]);
 	Route::resource('marcas', 'Inventario\MarcaController', ['except' => ['destroy']]);
 	Route::resource('categorias', 'Inventario\CategoriaController', ['except' => ['destroy']]);
+	Route::resource('impuestos', 'Inventario\ImpuestoController', ['except' => ['destroy']]);
+	Route::resource('pedidos', 'Inventario\PedidoController', ['except' => ['destroy']]);
 	Route::resource('productos', 'Inventario\ProductoController', ['except' => ['destroy']]);
 	Route::resource('lineas', 'Inventario\LineaController', ['except' => ['destroy']]);
 	Route::resource('unidades', 'Inventario\UnidadesMedidaController', ['except' => ['destroy']]);

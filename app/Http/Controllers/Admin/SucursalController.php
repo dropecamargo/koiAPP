@@ -55,6 +55,7 @@ class SucursalController extends Controller
                 try {
                     // sucursal
                     $sucursal->fill($data);
+                    $sucursal->fillBoolean($data);
                     $sucursal->save();
 
                     // Commit Transaction
@@ -82,7 +83,7 @@ class SucursalController extends Controller
      */
     public function show(Request $request, $id)
     {
-        $sucursal = Sucursal::findOrFail($id);
+        $sucursal = Sucursal::getSucursal($id);
         if ($request->ajax()) {
             return response()->json($sucursal);
         }
@@ -119,6 +120,7 @@ class SucursalController extends Controller
                 try {
                     // sucursal
                     $sucursal->fill($data);
+                    $sucursal->fillBoolean($data);
                     $sucursal->save();
 
                     // Commit Transaction

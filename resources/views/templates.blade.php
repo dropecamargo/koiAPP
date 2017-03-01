@@ -30,11 +30,45 @@
     <div class="row">
 		<div class="form-group col-md-8">
 			<label for="sucursal_nombre" class="control-label">Nombre</label>
-			<input type="text" id="sucursal_nombre" name="sucursal_nombre" value="<%- sucursal_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="100" required>
+			<input type="text" id="sucursal_nombre" name="sucursal_nombre" value="<%- sucursal_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="50" required>
 		</div>
-		<div class="form-group col-md-8">
+	</div>
+	<div class="row">
+		<div class="form-group col-md-4">
+			<label for="sucursal_telefono" class="control-label">Teléfono</label>
+			<input type="text" id="sucursal_telefono" name="sucursal_telefono" value="<%- sucursal_telefono %>" placeholder="Telefono" class="form-control input-sm" data-inputmask="'mask': '(+99) 999-99-99'" data-mask>
+		</div>
+		<div class="form-group col-md-4">
 			<label for="sucursal_direccion" class="control-label">Direccion</label>
 			<input type="text" id="sucursal_direccion" name="sucursal_direccion" value="<%- sucursal_direccion %>" placeholder="Direccion" class="form-control input-sm input-toupper" maxlength="100" required>
+		</div>
+		<div class="form-group col-md-2">
+	    	<br><label class="checkbox-inline" for="sucursal_activo">
+				<input type="checkbox" id="sucursal_activo" name="sucursal_activo" value="sucursal_activo" <%- parseInt(sucursal_activo) ? 'checked': ''%>> Activo
+			</label>
+		</div>
+	</div>
+	<div class="row">
+		<div class="form-group col-md-4">
+			<label for="sucursal_regional" class="control-label">Regional</label>
+			<select name="sucursal_regional" id="sucursal_regional" class="form-control select2-default change-actividad-koi-component" required >
+				@foreach( App\Models\Base\Regional::getRegionales() as $key => $value)
+					<option value="{{ $key }}" <%- sucursal_regional == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
+				@endforeach
+			</select>
+		</div>
+	</div>
+</script>
+<script type="text/template" id="add-regional-tpl">
+    <div class="row">
+		<div class="form-group col-md-8">
+			<label for="regional_nombre" class="control-label">Nombre</label>
+			<input type="text" id="regional_nombre" name="regional_nombre" value="<%- regional_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="50" required>
+		</div>
+		<div class="form-group col-md-2">
+	    	<br><label class="checkbox-inline" for="regional_activo">
+				<input type="checkbox" id="regional_activo" name="regional_activo" value="regional_activo" <%- parseInt(regional_activo) ? 'checked': ''%>> Activo
+			</label>
 		</div>
 	</div>
 </script>
@@ -282,13 +316,13 @@
 					{{-- Tab contabilidad --}}
 					<div class="tab-pane active" id="tab_contabilidad">
 	    	    	    <div class="row">
-					    <div class="form-group col-md-10">
-					    		<label for="tercero_actividad" class="control-label">Actividad Económica</label>
-					    		<select name="tercero_actividad" id="tercero_actividad" class="form-control select2-default change-actividad-koi-component" required data-field="tercero_retecree">
-									@foreach( App\Models\Base\Actividad::getActividades() as $key => $value)
-										<option value="{{ $key }}" <%- tercero_actividad == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
-									@endforeach
-								</select>
+						    <div class="form-group col-md-10">
+						    		<label for="tercero_actividad" class="control-label">Actividad Económica</label>
+						    		<select name="tercero_actividad" id="tercero_actividad" class="form-control select2-default change-actividad-koi-component" required data-field="tercero_retecree">
+										@foreach( App\Models\Base\Actividad::getActividades() as $key => $value)
+											<option value="{{ $key }}" <%- tercero_actividad == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
+										@endforeach
+									</select>
 					    	</div>
 					    	<div class="form-group col-md-2">
 					    		<label for="tercero_retecree" class="control-label">% Cree</label>
@@ -670,7 +704,7 @@
 	<div class="row">
 		<div class="form-group col-md-8">
 			<label for="categoria_nombre" class="control-label">Nombre</label>
-			<input type="text" id="categoria_nombre" name="categoria_nombre" value="<%- categoria_nombre %>" placeholder="Marca" class="form-control input-sm input-toupper" maxlength="25" required>
+			<input type="text" id="categoria_nombre" name="categoria_nombre" value="<%- categoria_nombre %>" placeholder="Categoria" class="form-control input-sm input-toupper" maxlength="25" required>
 		</div>
 
 		<div class="form-group col-md-2 col-xs-8 col-sm-3">
@@ -690,6 +724,24 @@
 		<div class="form-group col-md-2 col-xs-8 col-sm-3">
 			<br><label class="checkbox-inline" for="marca_activo">
 				<input type="checkbox" id="marca_activo" name="marca_activo" value="marca_activo" <%- marca_activo ? 'checked': ''%>> Activo
+			</label>
+		</div>
+    </div>
+</script>
+<script type="text/template" id="add-impuesto-tpl">
+	<div class="row">
+		<div class="form-group col-md-8">
+			<label for="impuesto_nombre" class="control-label">Nombre</label>
+			<input type="text" id="impuesto_nombre" name="impuesto_nombre" value="<%- impuesto_nombre %>" placeholder="Impuesto" class="form-control input-sm input-toupper" maxlength="25" required>
+		</div>
+		<div class="form-group col-md-2">
+			<label for="impuesto_porcentaje" class="control-label">Porcentaje %</label>
+			<input type="text" id="impuesto_porcentaje" name="impuesto_porcentaje" value="<%- impuesto_porcentaje %>" class="form-control input-sm spinner-percentage" min="0" required>
+		</div>
+
+		<div class="form-group col-md-2 col-xs-8 col-sm-3">
+			<br><label class="checkbox-inline" for="impuesto_activo">
+				<input type="checkbox" id="impuesto_activo" name="impuesto_activo" value="impuesto_activo" <%- impuesto_activo ? 'checked': ''%>> Activo
 			</label>
 		</div>
     </div>
@@ -722,16 +774,16 @@
     </div>
     <div class="row">
 		<div class="form-group col-md-3">
-			<label for="linea_margen_nivel1" class="control-label">Nivel 1</label>
-			<input type="text" id="linea_margen_nivel1" name="linea_margen_nivel1" value="<%- linea_margen_nivel1 %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="50" required>
+			<label for="linea_margen_nivel1" class="control-label">Margen Nivel 1</label>
+			<input type="number" id="linea_margen_nivel1" name="linea_margen_nivel1" value="<%- linea_margen_nivel1 %>" placeholder="Margen" class="form-control input-sm " maxlength="50" required>
 		</div>
 		<div class="form-group col-md-3">
-			<label for="linea_margen_nivel2" class="control-label">Nivel 2</label>
-			<input type="text" id="linea_margen_nivel2" name="linea_margen_nivel2" value="<%- linea_margen_nivel2 %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="50" required>
+			<label for="linea_margen_nivel2" class="control-label">Margen Nivel 2</label>
+			<input type="number" id="linea_margen_nivel2" name="linea_margen_nivel2" value="<%- linea_margen_nivel2 %>" placeholder="Margen" class="form-control input-sm " maxlength="50" required>
 		</div>
 		<div class="form-group col-md-3">
-			<label for="linea_margen_nivel3" class="control-label">Nivel 3</label>
-			<input type="text" id="linea_margen_nivel3" name="linea_margen_nivel3" value="<%- linea_margen_nivel3 %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="50" required>
+			<label for="linea_margen_nivel3" class="control-label">Margen Nivel 3</label>
+			<input type="number" id="linea_margen_nivel3" name="linea_margen_nivel3" value="<%- linea_margen_nivel3 %>" placeholder="Margen" class="form-control input-sm " maxlength="50" required>
 		</div>
     </div>
 </script>
@@ -745,7 +797,7 @@
     </div>
     <div class="row">
 		<div class="form-group col-md-6">
-			<label for="unidadmedida_nombre" class="control-label">Nombre</label>
+		<label for="unidadmedida_nombre" class="control-label">Nombre</label>
 			<input type="text" id="unidadmedida_nombre" name="unidadmedida_nombre" value="<%- unidadmedida_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="25" required>
 		</div>
 		<br>
@@ -759,31 +811,50 @@
 
 <script type="text/template" id="add-producto-tpl">
 	<div class="row">
-		<div class="form-group col-md-6">
-			<label for="producto_nombre" class="control-label">Nombre</label>
-			<input type="text" id="producto_nombre" name="producto_nombre" value="" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="200" required>
-		</div>
-		<div class="form-group col-md-3">
-			<label for="producto_serie" class="control-label">Serie</label>
-			<input type="text" id="producto_serie" name="producto_serie" value="" placeholder="Código" class="form-control input-sm input-toupper" maxlength="15" required>
-		</div>
-		<div class="form-group col-md-3">
+		<div class="form-group col-md-2">
 			<label for="producto_referencia" class="control-label">Referencia</label>
-			<input type="text" id="producto_referencia" name="producto_referencia" value="" placeholder="Código" class="form-control input-sm input-toupper" maxlength="15" required>
+			<input type="text" id="producto_referencia" name="producto_referencia" value="<%- producto_referencia %>" placeholder="Referencia" class="form-control input-sm input-toupper" maxlength="20" required>
+		</div>
+		<div class="form-group col-md-2">
+			<label for="producto_ref_proveedor" class="control-label">Referencia Proveedor</label>
+			<input type="text" id="producto_ref_proveedor" name="producto_ref_proveedor" value="<%- producto_ref_proveedor %>" placeholder="Referencia Proveedor " class="form-control input-sm input-toupper" maxlength="20" required>
 		</div>
 
 	</div>
+	<div class="row">
+		<div class="form-group col-md-8">
+		<label for="producto_nombre" class="control-label">Nombre</label>
+			<input type="text" id="producto_nombre" name="producto_nombre" value="<%- producto_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="100" required>
+		</div>
+	</div>
 
 	<div class="row">
-		<div class="form-group col-md-3 col-xs-10">
-			<label for="producto_categoria" class="control-label">Categoria</label>
+		<div class="form-group col-md-2 col-xs-10">
+			<label for="producto_categoria" class="control-label">Categoría</label>
 			<select name="producto_categoria" id="producto_categoria" class="form-control select2-default-clear">
 				@foreach( App\Models\Inventario\Categoria::getCategorias() as $key => $value)
 					<option value="{{ $key }}" <%- producto_categoria == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
 				@endforeach
 			</select>
 		</div>
-		<div class="form-group col-md-3 col-xs-10">
+		<div class="form-group col-md-1">
+            <br>
+            <button type="button" class="btn btn-default btn-flat btn-sm btn-add-resource-koi-component" data-resource="categoria" data-field="producto_categoria" > <i class="fa fa-plus"></i></button>
+        </div>
+		<div class="form-group col-md-2 col-xs-10">
+			<label for="producto_linea" class="control-label">Línea</label>
+			<select name="producto_linea" id="producto_linea" class="form-control select2-default-clear">
+				@foreach( App\Models\Inventario\Linea::getLineas() as $key => $value)
+					<option value="{{ $key }}" <%- producto_linea == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
+				@endforeach
+			</select>
+		</div>
+		<div class="form-group col-md-1">
+            <br>
+            <button type="button" class="btn btn-default btn-flat btn-sm btn-add-resource-koi-component" data-resource="linea" data-field="producto_linea" > <i class="fa fa-plus"></i></button>
+        </div>
+	
+		<div class="form-group col-md-2 col-xs-10">
 			<label for="producto_unidadmedida" class="control-label">Unidad de medida</label>
 			<select name="producto_unidadmedida" id="producto_unidadmedida" class="form-control select2-default-clear">
 				@foreach( App\Models\Inventario\Unidad::getUnidades() as $key => $value)
@@ -791,86 +862,35 @@
 				@endforeach
 			</select>
 		</div>
-		<div class="form-group col-md-1 col-xs-2 text-right">
-			<div>&nbsp;</div>
-			<button type="button" class="btn btn-default btn-flat btn-sm btn-add-resource-koi-component" data-resource="unidadmedida" data-field="producto_unidadmedida">
-				<i class="fa fa-plus"></i>
-			</button>
-		</div>
-
-		<div class="form-group col-md-2 col-xs-12">
-			<label for="producto_vidautil" class="control-label">Vida útil</label>
-			<input type="number" id="producto_vidautil" name="producto_vidautil" value="<%- producto_vidautil %>" placeholder="Vida útil" class="form-control input-sm">
-		</div>
-	</div>
-	<div class="row">
-		<div class="form-group col-md-3 col-xs-10">
-			<label for="producto_categoria" class="control-label">Linea</label>
-			<select name="producto_categoria" id="producto_categoria" class="form-control select2-default-clear">
-				@foreach( App\Models\Inventario\Linea::getLineas() as $key => $value)
-					<option value="{{ $key }}" <%- producto_categoria == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
-				@endforeach
-			</select>
-		</div>
-		<div class="form-group col-md-3 col-xs-10">
-			<label for="producto_modelo" class="control-label">Modelo</label>
-			<select name="producto_modelo" id="producto_modelo" class="form-control select2-default-clear">
-				@foreach( App\Models\Inventario\Modelo::getModelos() as $key => $value)
-					<option value="{{ $key }}" <%- producto_modelo == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
-				@endforeach
-			</select>
-		</div>
-		<div class="form-group col-md-1 col-xs-2 text-right">
-			<div>&nbsp;</div>
-			<button type="button" class="btn btn-default btn-flat btn-sm btn-add-resource-koi-component" data-resource="modelo" data-field="producto_modelo">
-				<i class="fa fa-plus"></i>
-			</button>
-		</div>
-		<div class="form-group col-md-3 col-xs-10">
-			<label for="producto_marca" class="control-label">Marca</label>
-			<select name="producto_marca" id="producto_marca" class="form-control select2-default-clear">
-				@foreach( App\Models\Inventario\Marca::getMarcas() as $key => $value)
-					<option value="{{ $key }}" <%- producto_marca == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
-				@endforeach
-			</select>
-		</div>
-		<div class="form-group col-md-1 col-xs-2 text-right">
-			<div>&nbsp;</div>
-			<button type="button" class="btn btn-default btn-flat btn-sm btn-add-resource-koi-component" data-resource="marca" data-field="producto_marca">
-				<i class="fa fa-plus"></i>
-			</button>
-		</div>
+	   	<div class="form-group col-md-1">
+            <br>
+            <button type="button" class="btn btn-default btn-flat btn-sm btn-add-resource-koi-component" data-resource="unidadmedida" data-field="producto_unidadmedida" > <i class="fa fa-plus"></i></button>
+        </div>
 
 	</div>
-
 	<div class="row">
-		<div class="form-group col-md-3">
+		<div class="form-group col-md-2">
 			<label for="producto_peso" class="control-label">Peso</label>
-			<input type="number" id="producto_peso" name="producto_peso" value="" placeholder="Peso" class="form-control input-sm input-toupper" maxlength="15" required>
+			<input type="number" id="producto_peso" name="producto_peso" value="<%-producto_peso %>" placeholder="Peso" class="form-control input-sm input-toupper" min="1" required>
 		</div>
-		<div class="form-group col-md-3">
+		<div class="form-group col-md-2">
 			<label for="producto_largo" class="control-label">Largo</label>
-			<input type="number" id="producto_largo" name="producto_largo" value="" placeholder="Largo" class="form-control input-sm input-toupper" maxlength="15" required>
+			<input type="number" id="producto_largo" name="producto_largo" value="<%- producto_largo %>" placeholder="Largo" class="form-control input-sm input-toupper" min="1" required>
 		</div>
-		<div class="form-group col-md-3">
+		<div class="form-group col-md-2">
 			<label for="producto_alto" class="control-label">Alto</label>
-			<input type="number" id="producto_alto" name="producto_alto" value="" placeholder="Alto" class="form-control input-sm input-toupper" maxlength="15" required>
+			<input type="number" id="producto_alto" name="producto_alto" value="<%- producto_alto %>" placeholder="Alto" class="form-control input-sm input-toupper" min="1" required>
 		</div>
-		<div class="form-group col-md-3">
+		<div class="form-group col-md-2">
 			<label for="producto_ancho" class="control-label">Ancho</label>
-			<input type="number" id="producto_ancho" name="producto_ancho" value="" placeholder="Ancho" class="form-control input-sm input-toupper" maxlength="15" required>
+			<input type="number" id="producto_ancho" name="producto_ancho" value="<%- producto_ancho %>" placeholder="Ancho" class="form-control input-sm input-toupper" min="1" required>
 		</div>
 	</div>
-
 	<div class="row">
-		<div class="form-group col-md-2 col-xs-12">
-			<label for="producto_unidades" class="control-label">¿Maneja unidades?</label>
-			<div><input type="checkbox" id="producto_unidades" name="producto_unidades" value="producto_unidades" <%- parseInt(producto_unidades) ? 'checked': ''%>></div>
-		</div>
-
+		
 		<div class="form-group col-md-2 col-xs-6">
-			<label for="producto_serie" class="control-label">¿Meneja serie?</label>
-			<div><input type="checkbox" id="producto_serie" name="producto_serie" value="producto_serie" <%- parseInt(producto_serie) ? 'checked': ''%>></div>
+			<label for="producto_maneja_serie" class="control-label">¿Meneja serie?</label>
+			<div><input type="checkbox" id="producto_maneja_serie" name="producto_maneja_serie" value="producto_maneja_serie" <%- parseInt(producto_maneja_serie) ? 'checked': ''%>></div>
 		</div>
 
 		<div class="form-group col-md-2 col-xs-6">
@@ -878,8 +898,66 @@
 			<div><input type="checkbox" id="producto_metrado" name="producto_metrado" value="producto_metrado" <%- parseInt(producto_metrado) ? 'checked': ''%>></div>
 		</div>
 		<div class="form-group col-md-2 col-xs-6">
-			<label for="producto_vence" class="control-label">Producto vence</label>
+			<label for="producto_vence" class="control-label">¿Producto vence?</label>
 			<div><input type="checkbox" id="producto_vence" name="producto_vence" value="producto_vence" <%- parseInt(producto_vence) ? 'checked': ''%>></div>
 		</div>
+		<div class="form-group col-md-2">
+			<label for="producto_barras" class="control-label">Código De Barras</label>
+			<input type="text" id="producto_barras" name="producto_barras" value="<%- producto_barras %>" placeholder="Código De Barras" class="form-control input-sm input-toupper" maxlength="100" required>
+		</div>
+	</div>
+	<div class="row">
+		<div class="form-group col-md-2 col-xs-10">
+			<label for="producto_marca" class="control-label">Marca</label>
+			<select name="producto_marca" id="producto_marca" class="form-control select2-default-clear">
+				@foreach( App\Models\Inventario\Marca::getMarcas() as $key => $value)
+					<option value="{{ $key }}" <%- producto_marca == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
+				@endforeach
+			</select>
+		</div>
+		<div class="form-group col-md-1">
+		    <br>
+	        <button type="button" class="btn btn-default btn-flat btn-sm btn-add-resource-koi-component" data-resource="marca" data-field="producto_marca" > <i class="fa fa-plus"></i></button>
+		</div>
+		<div class="form-group col-md-2 col-xs-10">
+			<label for="producto_modelo" class="control-label">Modelo</label>
+			<select name="producto_modelo" id="producto_modelo" class="form-control select2-default-clear">
+				@foreach( App\Models\Inventario\Modelo::getModelos() as $key => $value)
+					<option value="{{ $key }}" <%- producto_modelo == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
+				@endforeach
+			</select>
+		</div>	
+	   	<div class="form-group col-md-1">
+            <br>
+            <button type="button" class="btn btn-default btn-flat btn-sm btn-add-resource-koi-component" data-resource="modelo" data-field="producto_modelo" > <i class="fa fa-plus"></i></button>
+        </div>
+		<div class="form-group col-md-2 col-xs-10">
+			<label for="producto_impuesto" class="control-label">Impuesto</label>
+			<select name="producto_impuesto" id="producto_impuesto" class="form-control select2-default-clear">
+				@foreach( App\Models\Inventario\Impuesto::getImpuestos() as $key => $value)
+					<option value="{{ $key }}" <%- producto_impuesto == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
+				@endforeach
+			</select>
+		</div>
+		<div class="form-group col-md-1">
+            <br>
+            <button type="button" class="btn btn-default btn-flat btn-sm btn-add-resource-koi-component" data-resource="impuesto" data-field="producto_impuesto" > <i class="fa fa-plus"></i></button>
+        </div>
+	</div>
+	<br>
+	<div class="row">
+		<div class="form-group col-md-2">
+			<label for="producto_precio1" class="control-label">Precio Mínimo</label>
+			<input type="text" id="producto_precio1" name="producto_precio1" value="$  <%- producto_precio1 %>" class="form-control input-sm" maxlength="15" data-currency required>
+		</div>
+		<div class="form-group col-md-2">
+			<label for="producto_precio2" class="control-label">Precio Sugerido</label>
+			<input type="text" id="producto_precio2" name="producto_precio2" value="<%- producto_precio2 %>" class="form-control input-sm" maxlength="15" data-currency required>
+		</div>
+		<div class="form-group col-md-2">
+			<label for="producto_precio3" class="control-label">Precio Crédito</label>
+			<input type="text" id="producto_precio3" name="producto_precio3" value="<%- producto_precio3 %>" class="form-control input-sm" maxlength="15" data-currency required>
+		</div>
+
 	</div>
 </script>
