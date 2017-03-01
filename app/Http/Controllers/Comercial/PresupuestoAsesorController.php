@@ -21,32 +21,33 @@ class PresupuestoAsesorController extends Controller
      */
     public function index(Request $request)
     {
-        if($request->ajax()){
-            $query = Categoria::query();
-            $query->select('categoria_nombre','id');
-            $categoria = $query->get();
-
+        if($request->ajax()) {
             $object = new \stdClass();
-            $object->success = true;
+            $object->meses = config('koi.meses');
             $object->categorias = [];
 
+            $query = Categoria::query();
+            $query->select('categoria_nombre','id');
+            $query->where('categoria_activo', true);
+            $categorias = $query->get();
+
             $data = [];
-            foreach ($categoria as $categoria) {
-                $objCategoria = new \stdClass();
-                $objCategoria->id = $categoria->id;
-                $objCategoria->categoria_nombre = $categoria->categoria_nombre;
+            foreach ($categorias as $item)
+            {
+                $categoria = new \stdClass();
+                $categoria->id = $item->id;
+                $categoria->categoria_nombre = $item->categoria_nombre;
 
                 $query = PresupuestoAsesor::query();
-                $query->select('presupuestoasesor_mes','presupuestoasesor_valor');
-                $query->where('presupuestoasesor_asesor', $request->presupuestoasesor_asesor)->where('presupuestoasesor_categoria', $categoria->id)->where('presupuestoasesor_ano', $request->presupuestoasesor_ano);
+                $query->where('presupuestoasesor_asesor', $request->presupuestoasesor_asesor);
+                $query->where('presupuestoasesor_ano', $request->presupuestoasesor_ano);
+                $query->where('presupuestoasesor_categoria', $item->id);
+                $categoria->presupuesto = $query->lists('presupuestoasesor_valor', 'presupuestoasesor_mes');
 
-                $presupuestoasesor = $query->get();
-                foreach ($presupuestoasesor as $presupuesto) {
-                    $objCategoria->presupuesto[$presupuesto->presupuestoasesor_mes] = $presupuesto->presupuestoasesor_valor;
-                }
-                $objCategoria->presupuesto = $query->lists('presupuestoasesor_valor', 'presupuestoasesor_mes');
-                $object->categorias[] = $objCategoria;
+                $object->categorias[] = $categoria;
             }
+
+            $object->success = true;
             return response()->json($object);
         }
         return view('comercial.presupuestoasesor.main');

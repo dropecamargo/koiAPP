@@ -58,8 +58,8 @@
 		        <thead>
 		            <tr>
 		                <th width="16%">Categoria</th>
-		                <% _.each(moment.months(), function(month) { %>
-							<th width="7%"><%- month %></th>
+		                <% _.each(meses, function(name, month) { %>
+							<th width="7%"><%- name %></th>
 						<% }); %>
 		            </tr>
 		        </thead>
@@ -68,9 +68,9 @@
 		        <% _.each(categorias, function(categoria) { %>
 			        <tr>
 			        	<th><%- categoria.categoria_nombre %></th>
-						<% _.each(moment.months(), function(name, month) { %>
-							<td>
-								<input type="text" id="presupuestoasesor_valor_<%- categoria.id %>_<%- (month + 1) %>" name="presupuestoasesor_valor_<%- categoria.id %>_<%- (month + 1) %>" class="form-control input-sm" value="<%- !_.isUndefined(categoria.presupuesto[(month + 1)]) ? categoria.presupuesto[(month + 1)] : 0 %>" data-currency-precise>
+						<% _.each(meses, function(name, month) { %>
+							<td class="padding-custom-grid">
+								<input type="text" id="presupuestoasesor_valor_<%- categoria.id %>_<%- month %>" name="presupuestoasesor_valor_<%- categoria.id %>_<%- month %>" class="form-control input-sm" value="<%- !_.isUndefined(categoria.presupuesto[month]) ? categoria.presupuesto[month] : 0 %>" data-currency-precise>
 							</td>
 						<% }); %>
 			        </tr>

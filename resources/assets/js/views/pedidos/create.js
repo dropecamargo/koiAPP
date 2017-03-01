@@ -48,7 +48,6 @@ app || (app = {});
         onStore: function (e) {
 
             if (!e.isDefaultPrevented()) {
-
                 e.preventDefault();
                 var data = window.Misc.formToJson( e.target );
                 this.model.save( data, {patch: true, silent: true} );
@@ -59,12 +58,10 @@ app || (app = {});
         * Event Create PedidoDetalle
         */
         onStoreDetallePedido:function(e){
-            
+
             if (!e.isDefaultPrevented()) {
                 e.preventDefault();
-
                 var data = window.Misc.formToJson( e.target );
-
                 this.detallePedido.trigger( 'store', data );
             }
         },
