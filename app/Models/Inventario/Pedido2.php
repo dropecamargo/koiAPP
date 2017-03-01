@@ -44,11 +44,9 @@ class Pedido2 extends Model
     public static function getPedido2($id)
     {
         $query = Pedido2::query();
-        $query->select('productocontador.*','producto.producto_nombre','contador.contador_nombre');
-        $query->where('productocontador_producto', $id);
-        $query->join('contador', 'productocontador.productocontador_contador', '=', 'contador.id');
-        $query->join('producto', 'productocontador.productocontador_producto', '=', 'producto.id'); 
-        $query->orderBy('productocontador.id', 'asc');
+        $query->select('pedido2.*');
+       
+        $query->orderBy('pedido2.id', 'asc');
         return  $query->get();
     }
 }

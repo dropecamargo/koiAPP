@@ -988,7 +988,7 @@ app || (app = {});
         },
 
         getPedidosCreate: function () {
-            console.log('routes create');
+            
             this.pedidoModel = new app.PedidoModel();
 
             if ( this.createPedidoView instanceof Backbone.View ){
@@ -1001,7 +1001,7 @@ app || (app = {});
         },
 
         getPedidosEdit: function (pedido) {
-            console.log(pedido);
+          
             this.pedidoModel = new app.PedidoModel();
             this.pedidoModel.set({'id': pedido}, {silent: true});
 
@@ -1012,7 +1012,8 @@ app || (app = {});
 
             this.createPedidoView = new app.CreatePedidoView({ model: this.pedidoModel });
             this.pedidoModel.fetch();
-        },
+           
+        },  
 
     }) );
 
