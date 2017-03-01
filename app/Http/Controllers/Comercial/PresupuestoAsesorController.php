@@ -25,7 +25,6 @@ class PresupuestoAsesorController extends Controller
             $query = Categoria::query();
             $query->select('categoria_nombre','id');
             $categoria = $query->get();
-
             $data = [];
             foreach ($categoria as $categoria) {
                 $objeto = new \stdClass();
@@ -39,7 +38,7 @@ class PresupuestoAsesorController extends Controller
 
                 $objeto->presupuesto = $query->lists('presupuestoasesor_valor','presupuestoasesor_mes');
                 $data[] = $objeto;
-            } 
+            }
             return response()->json(['success'=>true, 'categorias'=>$data]);
         }
         return view('comercial.presupuestoasesor.main');
@@ -63,7 +62,33 @@ class PresupuestoAsesorController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if ($request->ajax()) {
+            $data = $request->all();
+
+            dd($data);
+            $presupuesto = new PresupuestoAsesor;
+            if ($presupuesto->isValid($data)) {
+                DB::beginTransaction();
+                try {
+                    // presupuestoasesor
+
+                    
+                    // $presupuesto->fill($data);
+                    // $presupuesto->save();
+
+                    // Commit Transaction
+                    DB::commit();
+
+                    return response()->json(['success' => true, 'id' => $presupuesto->id]);
+                }catch(\Exception $e){
+                    DB::rollback();
+                    Log::error($e->getMessage());
+                    return response()->json(['success' => false, 'errors' => trans('app.exception')]);
+                }
+            }
+            return response()->json(['success' => false, 'errors' => $presupuesto->errors]);
+        }
+        abort(403);
     }
 
     /**
@@ -97,12 +122,7 @@ class PresupuestoAsesorController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if ($request->ajax()) {
-            $data = $request->all();
-
-            dd($data);
-        }
-        abort(403);
+        //
     }
 
     /**

@@ -62,7 +62,7 @@
     {{-- Comercial --}}
     <li class="treeview {{ in_array(Request::segment(1), ['presupuestoasesor']) ? 'active' : '' }}">
         <a href="#">
-            <i class="fa fa-book"></i> <span>Comercial</span><i class="fa fa-angle-left pull-right"></i>
+            <i class="fa fa-globe"></i> <span>Comercial</span><i class="fa fa-angle-left pull-right"></i>
         </a>
 
         <ul class="treeview-menu">
