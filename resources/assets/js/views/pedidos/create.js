@@ -34,6 +34,7 @@ app || (app = {});
              //Model Exists
             if( this.model.id != undefined ) {
                 
+                console.log('initialize');
                 this.detallePedido = new app.DetallePedidoCollection();
             }
             // Events
@@ -59,7 +60,7 @@ app || (app = {});
         * Render View Element
         */
         render: function() {
-                console.log('referenceViews');  
+            console.log('referenceViews');  
             
             var attributes = this.model.toJSON();
             this.$wraperForm.html( this.template(attributes) );
