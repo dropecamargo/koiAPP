@@ -123,7 +123,9 @@ var app = app || {};
                 alias: 'currency',
                 removeMaskOnSubmit: true,
                 unmaskAsNumber: true,
-                min: 0
+                min: 0,
+                digits: 0,
+                prefix: ''
             });
         },
 
