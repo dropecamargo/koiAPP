@@ -65,7 +65,7 @@ class Pedido1 extends BaseModel
     public static function getPedido($id)
     {
         $query = Pedido1::query();
-        $query->select('pedido1.*',DB::raw("CONCAT(tercero_nombre1, ' ', tercero_nombre2, ' ', tercero_apellido1, ' ', tercero_apellido2) as tercero_nombre"));
+        $query->select('pedido1.*','tercero_nit',DB::raw("CONCAT(tercero_nombre1, ' ', tercero_nombre2, ' ', tercero_apellido1, ' ', tercero_apellido2) as tercero_nombre"));
 
         $query->join('tercero', 'pedido1.pedido1_tercero', '=', 'tercero.id');
         

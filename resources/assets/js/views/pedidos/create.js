@@ -15,7 +15,8 @@ app || (app = {});
         template: _.template( ($('#add-pedido-tpl').html() || '') ),
         events: {
             'click .submit-pedido': 'submitPedido',
-            'submit #form-pedido' :'onStore'
+            'submit #form-pedido' :'onStore',
+            'submit #form-detalle-pedido' :'onStoreDetallePedido'
          },
         parameters: {
         },
@@ -33,9 +34,7 @@ app || (app = {});
 
              //Model Exists
             if( this.model.id != undefined ) {
-                
                 this.detallePedido = new app.DetallePedidoCollection();
-                console.log('initialize');
             }
             // Events
             this.listenTo( this.model, 'change', this.render );
@@ -56,12 +55,25 @@ app || (app = {});
             }
         },
 
+        /**
+        * Event Create PedidoDetalle
+        */
+        onStoreDetallePedido:function(e){
+            
+            if (!e.isDefaultPrevented()) {
+                e.preventDefault();
+
+                var data = window.Misc.formToJson( e.target );
+
+                this.detallePedido.trigger( 'store', data );
+            }
+        },
+
         /*
         * Render View Element
         */
         render: function() {
-            console.log('referenceViews');  
-            
+                        
             var attributes = this.model.toJSON();
             this.$wraperForm.html( this.template(attributes) );
             this.$form = this.$('#form-pedido');

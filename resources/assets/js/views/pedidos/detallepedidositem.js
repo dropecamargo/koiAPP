@@ -1,5 +1,5 @@
 /**
-* Class DetallePedidosView  of Backbone Router
+* Class DetallePedidoItemView  of Backbone Router
 * @author KOI || @dropecamargo
 * @link http://koi-ti.com
 */
@@ -9,7 +9,7 @@ app || (app = {});
 
 (function ($, window, document, undefined) {
 
-    app.DetallePedidosView = Backbone.View.extend({
+    app.DetallePedidoItemView = Backbone.View.extend({
 
         tagName: 'tr',
         template: _.template( ($('#add-pedidodetalle-item-tpl').html() || '') ),

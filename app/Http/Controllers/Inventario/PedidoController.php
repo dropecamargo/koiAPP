@@ -112,13 +112,14 @@ class PedidoController extends Controller
      */
     public function show(Request $request, $id)
     {
-       dd($request->all());
+       
         $pedido = Pedido1::getPedido($id);
-        
         if(!$pedido instanceof Pedido1) {
             abort(404);
         }
-
+         if($request->ajax()) {
+            return response()->json($pedido);
+        }
         return view('inventario.pedidos.show', ['pedido1' => $pedido]);
     }
 
@@ -135,6 +136,7 @@ class PedidoController extends Controller
         if(!$pedido instanceof Pedido1) {
             abort(404);
         }
+
 
         return view('inventario.pedidos.edit', ['pedido1' => $pedido]);   
     }
