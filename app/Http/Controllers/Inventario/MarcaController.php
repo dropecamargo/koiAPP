@@ -34,7 +34,7 @@ class MarcaController extends Controller
      */
     public function create()
     {
-        return view('inventario.marca.create');
+        return view('inventario.impuesto.create');
     }
 
     /**

@@ -57,7 +57,6 @@ class Marca extends BaseModel
             $query = Marca::query();
             $query->orderBy('marca_nombre', 'asc');
             $collection = $query->lists('marca_nombre', 'marca.id');
-
             $collection->prepend('', '');
             return $collection;
         });

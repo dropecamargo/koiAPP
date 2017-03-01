@@ -25,7 +25,7 @@ app || (app = {});
 
             // Rerefences
             this.$productosSearchTable = this.$('#productos-search-table');
-            this.$searchCod = this.$('#producto_codigo');
+            this.$searchSerie = this.$('#producto_serie');
             this.$searchName = this.$('#producto_nombre');
 
             this.productosSearchTable = this.$productosSearchTable.DataTable({
@@ -38,12 +38,13 @@ app || (app = {});
                     url: window.Misc.urlFull( Route.route('productos.index') ),
                     data: function( data ) {
                         data.persistent = true;
-                        data.producto_codigo = _this.$searchCod.val();
+                        data.producto_serie = _this.$searchSerie.val();
                         data.producto_nombre = _this.$searchName.val();
                     }
                 },
                 columns: [
-                    { data: 'producto_serie', name: 'producto_referencia' },
+              
+                    { data: 'producto_serie', name: 'producto_serie' },
                     { data: 'producto_referencia', name: 'producto_referencia' },
                     { data: 'producto_nombre', name: 'producto_nombre' }
                 ],
@@ -62,7 +63,8 @@ app || (app = {});
                         width: '25%',
                         render: function ( data, type, full, row ) {
                             return '<a href="'+ window.Misc.urlFull( Route.route('productos.show', {productos: full.id }) )  +'">' + data + '</a>';
-                        }
+                        },
+                       
                     }
                 ]
 			});
@@ -77,7 +79,7 @@ app || (app = {});
         clear: function(e) {
             e.preventDefault();
 
-            this.$searchCod.val('');
+            this.$searchSerie.val('');
             this.$searchName.val('');
 
             this.productosSearchTable.ajax.reload();

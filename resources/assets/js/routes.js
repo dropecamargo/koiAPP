@@ -39,6 +39,11 @@ app || (app = {});
             'sucursales/create(/)': 'getSucursalesCreate',
             'sucursales/:sucursal/edit(/)': 'getSucursalesEdit',
 
+            //Regionales
+            'regionales(/)': 'getRegionalesMain',
+            'regionales/create(/)': 'getRegionalesCreate',
+            'regionales/:regional/edit(/)': 'getRegionalesEdit',
+
             //Documento
             'documento(/)': 'getDocumentoMain',
             'documento/create(/)': 'getDocumentoCreate',
@@ -92,6 +97,10 @@ app || (app = {});
             'productos/create(/)': 'getProductosCreate',
             'productos/:producto/edit(/)': 'getProductosEdit',
 
+            'pedidos(/)': 'getPedidosMain',
+            'pedidos/create(/)': 'getPedidosCreate',
+            'pedidos/:pedido/edit(/)': 'getPedidosEdit',
+
             'marcas(/)': 'getMarcasMain',
             'marcas/create(/)': 'getMarcasCreate',
             'marcas/:marcas/edit(/)': 'getMarcasEdit',
@@ -99,6 +108,10 @@ app || (app = {});
             'categorias(/)': 'getCategoriasMain',
             'categorias/create(/)': 'getCategoriasCreate',
             'categorias/:categorias/edit(/)': 'getCategoriasEdit',
+
+            'impuestos(/)': 'getImpuestosMain',
+            'impuestos/create(/)': 'getImpuestoCreate',
+            'impuestos/:impuestos/edit(/)': 'getImpuestoEdit',
 
             'modelos(/)': 'getModelosMain',
             'modelos/create(/)': 'getModelosCreate',
@@ -316,6 +329,41 @@ app || (app = {});
 
             this.createSucursalView = new app.CreateSucursalView({ model: this.sucursalModel });
             this.sucursalModel.fetch();
+        },
+
+        //Regionales
+        getRegionalesMain:function(){
+            if ( this.mainRegionalesView instanceof Backbone.View ){
+                this.mainRegionalesView.stopListening();
+                this.mainRegionalesView.undelegateEvents();
+            }
+
+            this.mainRegionalesView = new app.MainRegionalesView( );
+        },
+
+        getRegionalesCreate: function () {
+            this.regionalModel = new app.RegionalModel();
+
+            if ( this.createRegionalView instanceof Backbone.View ){
+                this.createRegionalView.stopListening();
+                this.createRegionalView.undelegateEvents();
+            }
+
+            this.createRegionalView = new app.CreateRegionalView({ model: this.regionalModel });
+            this.createRegionalView.render();
+        },
+
+        getRegionalesEdit: function (regional) {
+            this.regionalModel = new app.RegionalModel();
+            this.regionalModel.set({'id': regional}, {silent: true});
+
+            if ( this.createRegionalView instanceof Backbone.View ){
+                this.createRegionalView.stopListening();
+                this.createRegionalView.undelegateEvents();
+            }
+
+            this.createRegionalView = new app.CreateRegionalView({ model: this.regionalModel });
+            this.regionalModel.fetch();
         },
 
         // Vistas de Departamentos
@@ -699,7 +747,7 @@ app || (app = {});
             this.marcaModel.fetch();
         },
 
-         getCategoriasMain: function () {
+        getCategoriasMain: function () {
 
             if ( this.mainCategoriasView instanceof Backbone.View ){
                 this.mainCategoriasView.stopListening();
@@ -732,6 +780,41 @@ app || (app = {});
 
             this.createCategoriaView = new app.CreateCategoriaView({ model: this.categoriaModel });
             this.categoriaModel.fetch();
+        },
+
+        getImpuestosMain: function () {
+
+            if ( this.mainImpuestosView instanceof Backbone.View ){
+                this.mainImpuestosView.stopListening();
+                this.mainImpuestosView.undelegateEvents();
+            }
+
+            this.mainImpuestosView = new app.MainImpuestosView( );
+        },
+
+        getImpuestoCreate: function () {
+            this.impuestoModel = new app.ImpuestoModel();
+
+            if ( this.createImpuestoView instanceof Backbone.View ){
+                this.createImpuestoView.stopListening();
+                this.createImpuestoView.undelegateEvents();
+            }
+
+            this.createImpuestoView = new app.CreateImpuestoView({ model: this.impuestoModel });
+            this.createImpuestoView.render();
+        },
+
+        getImpuestoEdit: function (impuestos) {
+            this.impuestoModel = new app.ImpuestoModel();
+            this.impuestoModel.set({'id': impuestos}, {'silent':true});
+
+            if ( this.createImpuestoView instanceof Backbone.View ){
+                this.createImpuestoView.stopListening();
+                this.createImpuestoView.undelegateEvents();
+            }
+
+            this.createImpuestoView = new app.CreateImpuestoView({ model: this.impuestoModel });
+            this.impuestoModel.fetch();
         },
 
         getModelosMain: function () {
@@ -872,6 +955,41 @@ app || (app = {});
 
             this.createProductoView = new app.CreateProductoView({ model: this.productoModel });
             this.productoModel.fetch();
+        },
+
+        getPedidosMain: function () {
+
+            if ( this.mainPedidosView instanceof Backbone.View ){
+                this.mainPedidosView.stopListening();
+                this.mainPedidosView.undelegateEvents();
+            }
+
+            this.mainPedidosView = new app.MainPedidosView( );
+        },
+
+        getPedidosCreate: function () {
+            this.pedidoModel = new app.PedidoModel();
+
+            if ( this.createPedidoView instanceof Backbone.View ){
+                this.createPedidoView.stopListening();
+                this.createPedidoView.undelegateEvents();
+            }
+
+            this.createPedidoView = new app.CreatePedidoView({ model: this.pedidoModel });
+            this.createPedidoView.render();
+        },
+
+        getPedidosEdit: function (pedido) {
+            this.pedidoModel = new app.PedidoModel();
+            this.pedidoModel.set({'id': pedido}, {silent: true});
+
+            if ( this.createPedidoView instanceof Backbone.View ){
+                this.createPedidoView.stopListening();
+                this.createPedidoView.undelegateEvents();
+            }
+
+            this.createPedidoView = new app.CreatePedidoView({ model: this.pedidoModel });
+            this.pedidoModel.fetch();
         },
 
     }) );

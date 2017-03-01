@@ -52,6 +52,27 @@ app || (app = {});
                         var template = _.template($('#add-marca-tpl').html());
                         _this.$modalComponent.find('.content-modal').html( template(_this.model.toJSON()) );
                     },
+                    'linea' : function() {
+                        _this.$modalComponent.find('.inner-title-modal').html('Linea');
+
+                        _this.model = new app.LineaModel();
+                        var template = _.template($('#add-linea-tpl').html());
+                        _this.$modalComponent.find('.content-modal').html( template(_this.model.toJSON()) );
+                    },
+                    'impuesto' : function() {
+                        _this.$modalComponent.find('.inner-title-modal').html('Impuesto');
+
+                        _this.model = new app.ImpuestoModel();
+                        var template = _.template($('#add-impuesto-tpl').html());
+                        _this.$modalComponent.find('.content-modal').html( template(_this.model.toJSON()) );
+                    },
+                    'categoria' : function() {
+                        _this.$modalComponent.find('.inner-title-modal').html('Categoria');
+
+                        _this.model = new app.CategoriaModel();
+                        var template = _.template($('#add-categoria-tpl').html());
+                        _this.$modalComponent.find('.content-modal').html( template(_this.model.toJSON()) );
+                    },
                     'tipo' : function() {
                         _this.$modalComponent.find('.inner-title-modal').html('Tipo');
 
@@ -164,6 +185,9 @@ app || (app = {});
 
             if( typeof window.initComponent.initICheck == 'function' )
                 window.initComponent.initICheck();
+            
+            if( typeof window.initComponent.initSpinner == 'function' )
+                window.initComponent.initSpinner(); 
         },
 
         /**
@@ -211,11 +235,23 @@ app || (app = {});
             var _this = this,
                 stuffToDo = {
                     'marca' : function() {
-                        _this.$resourceField.select2({ data: [{id: _this.model.get('id'), text: _this.model.get('marca_modelo')}] }).trigger('change');
+                        _this.$resourceField.select2({ data: [{id: _this.model.get('id'), text: _this.model.get('marca_nombre')}] }).trigger('change');
                         _this.$resourceField.val(_this.model.get('id')).trigger('change');
                     },
                     'tipo' : function() {
                         _this.$resourceField.select2({ data: [{id: _this.model.get('id'), text: _this.model.get('tipo_nombre')}] }).trigger('change');
+                        _this.$resourceField.val(_this.model.get('id')).trigger('change');
+                    },
+                    'linea' : function() {
+                        _this.$resourceField.select2({ data: [{id: _this.model.get('id'), text: _this.model.get('linea_nombre')}] }).trigger('change');
+                        _this.$resourceField.val(_this.model.get('id')).trigger('change');
+                    },
+                    'impuesto' : function() {
+                        _this.$resourceField.select2({ data: [{id: _this.model.get('id'), text: _this.model.get('impuesto_nombre')}] }).trigger('change');
+                        _this.$resourceField.val(_this.model.get('id')).trigger('change');
+                    },
+                    'categoria' : function() {
+                        _this.$resourceField.select2({ data: [{id: _this.model.get('id'), text: _this.model.get('categoria_nombre')}] }).trigger('change');
                         _this.$resourceField.val(_this.model.get('id')).trigger('change');
                     },
                     'modelo' : function() {

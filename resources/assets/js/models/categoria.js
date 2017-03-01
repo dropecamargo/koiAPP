@@ -17,7 +17,7 @@ app || (app = {});
         idAttribute: 'id',
         defaults: {
             'categoria_nombre': '',
-            'categoria_activo': true
+            'categoria_activo': false
         }
     });
 

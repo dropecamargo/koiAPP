@@ -27,15 +27,15 @@ class ProductoController extends Controller
 
             // Persistent data filter
             if($request->has('persistent') && $request->persistent) {
-                session(['search_producto_codigo' => $request->has('producto_codigo') ? $request->producto_codigo : '']);
+                session(['search_producto_serie' => $request->has('producto_serie') ? $request->producto_serie : '']);
                 session(['search_producto_nombre' => $request->has('producto_nombre') ? $request->producto_nombre : '']);
             }
 
             return Datatables::of($query)
                 ->filter(function($query) use($request) {
                     // Codigo
-                    if($request->has('producto_codigo')) {
-                        $query->whereRaw("producto_codigo LIKE '%{$request->producto_codigo}%'");
+                    if($request->has('producto_serie')) {
+                        $query->whereRaw("producto_serie LIKE '%{$request->producto_serie}%'");
                     }
 
                     // Nombre
@@ -68,19 +68,15 @@ class ProductoController extends Controller
     {
         if ($request->ajax()) {
             $data = $request->all();
-           
             $producto = new Producto;
             if ($producto->isValid($data)) {
                 DB::beginTransaction();
                 try {
                     // Producto
+                    $producto->producto_serie = $request->producto_referencia;
                     $producto->fill($data);
                     $producto->fillBoolean($data);
-                    $producto->save();
-
-                    // En la creación siempre producto_referencia = id
-                    $producto->producto_referencia = $producto->id;
-                    $producto->save(); 
+                    $producto->save();  
 
                     // Commit Transaction
                     DB::commit();
@@ -106,6 +102,7 @@ class ProductoController extends Controller
     public function show(Request $request, $id)
     {
         $producto = Producto::getProduct($id);
+
         if($producto instanceof Producto){
             if ($request->ajax()) {
                 return response()->json($producto);
@@ -141,13 +138,14 @@ class ProductoController extends Controller
 
             $producto = Producto::findOrFail($id);
             if ($producto->isValid($data)) {
-                if($producto->id != $producto->producto_referencia ) {
-                    return response()->json(['success' => false, 'errors' => 'No es posible editar una serie, para modificar comportamiento por favor modifique la referencia padre.']);
-                }
+                // if($producto->id != $producto->producto_referencia ) {
+                //     return response()->json(['success' => false, 'errors' => 'No es posible editar una serie, para modificar comportamiento por favor modifique la referencia padre.']);
+                // }
 
                 DB::beginTransaction();
                 try {
                     // Producto
+                    $producto->producto_serie = $request->producto_referencia;
                     $producto->fill($data);
                     $producto->fillBoolean($data);
                     $producto->save();

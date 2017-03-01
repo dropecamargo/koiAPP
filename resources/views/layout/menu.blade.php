@@ -5,7 +5,7 @@
     </li>
 
     {{-- Administracion --}}
-    <li class="treeview {{ in_array(Request::segment(1), ['puntosventa','empresa', 'terceros', 'actividades', 'tiposactividad', 'documento', 'municipios', 'departamentos', 'sucursales']) ? 'active' : '' }}">
+    <li class="treeview {{ in_array(Request::segment(1), ['puntosventa','empresa', 'terceros', 'actividades', 'tiposactividad', 'documento', 'municipios', 'departamentos', 'sucursales','regionales']) ? 'active' : '' }}">
         <a href="{{ route('dashboard') }}">
             <i class="fa fa-cog"></i> <span>Administración</span><i class="fa fa-angle-left pull-right"></i>
         </a>
@@ -27,7 +27,7 @@
             </li>
 
             {{-- Referencias administracion --}}
-            <li class="{{ in_array(Request::segment(1), ['puntosventa', 'actividades', 'municipios', 'documento', 'tiposactividad', 'departamentos', 'sucursales']) ? 'active' : '' }}">
+            <li class="{{ in_array(Request::segment(1), ['puntosventa', 'actividades', 'municipios', 'documento', 'tiposactividad', 'departamentos', 'sucursales','regionales']) ? 'active' : '' }}">
 
                 <a href="#">
                     <i class="fa fa-circle-o"></i> Referencias <i class="fa fa-angle-left pull-right"></i>
@@ -47,6 +47,9 @@
                     </li>
                     <li class="{{ Request::segment(1) == 'municipios' ? 'active' : '' }}">
                         <a href="{{ route('municipios.index') }}"><i class="fa fa-circle-o"></i> Municipios</a>
+                    </li>
+                     <li class="{{ Request::segment(1) == 'regionales' ? 'active' : '' }}">
+                        <a href="{{ route('regionales.index') }}"><i class="fa fa-circle-o"></i> Regionales</a>
                     </li>
                     <li class="{{ Request::segment(1) == 'sucursales' ? 'active' : '' }}">
                         <a href="{{ route('sucursales.index') }}"><i class="fa fa-circle-o"></i> Sucursales</a>
@@ -119,7 +122,7 @@
     </li>
 
     {{-- Inventario --}}
-    <li class="treeview {{ in_array(Request::segment(1), ['unidades', 'productos','lineas','marcas','modelos','categorias']) ? 'active' : '' }}">
+    <li class="treeview {{ in_array(Request::segment(1), ['unidades', 'productos','lineas','marcas','modelos','categorias','impuestos','pedidos']) ? 'active' : '' }}">
         <a href="#">
             <i class="fa fa-list"></i> <span>Inventario</span><i class="fa fa-angle-left pull-right"></i>
         </a>
@@ -133,19 +136,24 @@
                 <ul class="treeview-menu">
                     <li class="{{ Request::segment(1) == 'productos' ? 'active' : '' }}">
                         <a href="{{ route('productos.index') }}"><i class="fa fa-barcode"></i> Productos</a>
+                    </li>
+                    <li class="{{ Request::segment(1) == 'pedidos' ? 'active' : '' }}">
+                        <a href="{{ route('pedidos.index') }}"><i class="fa fa-cubes"></i> Pedidos</a>
                     </li> 
-
                 </ul>
             </li>
 
             {{-- Referencias inventario --}}
-            <li class="{{ in_array(Request::segment(1), ['unidades','lineas','marcas','modelos','categorias']) ? 'active' : '' }}">
+            <li class="{{ in_array(Request::segment(1), ['unidades','lineas','marcas','modelos','categorias','impuestos']) ? 'active' : '' }}">
                 <a href="#">
                     <i class="fa fa-circle-o"></i> Referencias <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
                     <li class="{{Request::segment(1)== 'categorias' ? 'active' : ''}}">
                         <a href="{{route('categorias.index')}}"><i class="fa fa-circle-o"></i> Categorias</a>
+                    </li>
+                    <li class="{{Request::segment(1)== 'impuestos' ? 'active' : ''}}">
+                        <a href="{{route('impuestos.index')}}"><i class="fa fa-circle-o"></i> Impuestos</a>
                     </li>
                     <li class="{{Request::segment(1)== 'lineas' ? 'active' : ''}}">
                         <a href="{{route('lineas.index')}}"><i class="fa fa-circle-o"></i> Lineas</a>

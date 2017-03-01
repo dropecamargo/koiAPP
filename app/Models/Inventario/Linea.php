@@ -68,7 +68,6 @@ class Linea extends BaseModel
             $query = Linea::query();
             $query->orderBy('linea_nombre', 'asc');
             $collection = $query->lists('linea_nombre', 'linea.id');
-
             $collection->prepend('', '');
             return $collection;
         });
