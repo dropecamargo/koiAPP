@@ -129,10 +129,5 @@
         </div>
     </script>
 
-    <script type="text/template">
-        <div id="detalle-pedido">
-            
-        </div>
-
-    </script>
+    
 @stop

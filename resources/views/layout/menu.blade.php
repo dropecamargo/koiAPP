@@ -150,7 +150,7 @@
 
         <ul class="treeview-menu">
             {{-- Modulos inventario --}}
-            <li class="{{ in_array(Request::segment(1), ['productos']) ? 'active' : '' }}">
+            <li class="{{ in_array(Request::segment(1), ['productos','pedidos']) ? 'active' : '' }}">
                 <a href="#">
                     <i class="fa fa-wpforms"></i> Módulos <i class="fa fa-angle-left pull-right"></i>
                 </a>

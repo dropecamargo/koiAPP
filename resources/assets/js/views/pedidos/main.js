@@ -35,7 +35,7 @@ app || (app = {});
                 columns: [
               
                     { data: 'id', name: 'id' },
-                    { data: 'pedido1_tercero', name: 'pedido1_tercero' },
+                    { data: 'tercero_nombre', name: 'tercero_nombre' },
                     { data: 'pedido1_fecha', name: 'pedido1_fecha' }
                 ],
                 buttons: [
