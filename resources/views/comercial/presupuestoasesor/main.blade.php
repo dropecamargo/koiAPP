@@ -57,13 +57,14 @@
 			<table id="presupuesto-table" class="table table-bordered table-striped" cellspacing="0" width="100%">
 		        <thead>
 		            <tr>
-		                <th width="15%">Categoria</th>
+		                <th width="16%">Categoria</th>
 		                <% _.each(moment.months(), function(month) { %>
 							<th width="7%"><%- month %></th>
 						<% }); %>
 		            </tr>
 		        </thead>
 		        <tbody>
+
 		        <% _.each(categorias, function(categoria) { %>
 			        <tr>
 			        	<th><%- categoria.categoria_nombre %></th>
@@ -73,7 +74,6 @@
 							</td>
 						<% }); %>
 			        </tr>
-
 			    <% }); %>
 		        </tbody>
 		    </table>

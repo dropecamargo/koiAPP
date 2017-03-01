@@ -59,13 +59,7 @@ app || (app = {});
                         var template = _.template($('#add-linea-tpl').html());
                         _this.$modalComponent.find('.content-modal').html( template(_this.model.toJSON()) );
                     },
-                    'impuesto' : function() {
-                        _this.$modalComponent.find('.inner-title-modal').html('Impuesto');
-
-                        _this.model = new app.ImpuestoModel();
-                        var template = _.template($('#add-impuesto-tpl').html());
-                        _this.$modalComponent.find('.content-modal').html( template(_this.model.toJSON()) );
-                    },
+                  
                     'categoria' : function() {
                         _this.$modalComponent.find('.inner-title-modal').html('Categoria');
 
@@ -246,10 +240,7 @@ app || (app = {});
                         _this.$resourceField.select2({ data: [{id: _this.model.get('id'), text: _this.model.get('linea_nombre')}] }).trigger('change');
                         _this.$resourceField.val(_this.model.get('id')).trigger('change');
                     },
-                    'impuesto' : function() {
-                        _this.$resourceField.select2({ data: [{id: _this.model.get('id'), text: _this.model.get('impuesto_nombre')}] }).trigger('change');
-                        _this.$resourceField.val(_this.model.get('id')).trigger('change');
-                    },
+                   
                     'categoria' : function() {
                         _this.$resourceField.select2({ data: [{id: _this.model.get('id'), text: _this.model.get('categoria_nombre')}] }).trigger('change');
                         _this.$resourceField.val(_this.model.get('id')).trigger('change');

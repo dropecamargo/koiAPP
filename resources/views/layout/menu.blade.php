@@ -48,7 +48,7 @@
                     <li class="{{ Request::segment(1) == 'municipios' ? 'active' : '' }}">
                         <a href="{{ route('municipios.index') }}"><i class="fa fa-circle-o"></i> Municipios</a>
                     </li>
-                     <li class="{{ Request::segment(1) == 'regionales' ? 'active' : '' }}">
+                    <li class="{{ Request::segment(1) == 'regionales' ? 'active' : '' }}">
                         <a href="{{ route('regionales.index') }}"><i class="fa fa-circle-o"></i> Regionales</a>
                     </li>
                     <li class="{{ Request::segment(1) == 'sucursales' ? 'active' : '' }}">
@@ -65,7 +65,7 @@
     {{-- Comercial --}}
     <li class="treeview {{ in_array(Request::segment(1), ['presupuestoasesor']) ? 'active' : '' }}">
         <a href="#">
-            <i class="fa fa-book"></i> <span>Comercial</span><i class="fa fa-angle-left pull-right"></i>
+            <i class="fa fa-globe"></i> <span>Comercial</span><i class="fa fa-angle-left pull-right"></i>
         </a>
 
         <ul class="treeview-menu">
@@ -150,7 +150,7 @@
 
         <ul class="treeview-menu">
             {{-- Modulos inventario --}}
-            <li class="{{ in_array(Request::segment(1), ['productos']) ? 'active' : '' }}">
+            <li class="{{ in_array(Request::segment(1), ['productos','pedidos']) ? 'active' : '' }}">
                 <a href="#">
                     <i class="fa fa-wpforms"></i> Módulos <i class="fa fa-angle-left pull-right"></i>
                 </a>
