@@ -22,7 +22,7 @@ class PresupuestoAsesor extends Model
      *
      * @var array
      */
-    protected $fillable = ['presupuestoasesor_asesor','presupuestoasesor_categoria','presupuestoasesor_ano','presupuestoasesor_mes','presupuestoasesor_valor'];
+    protected $fillable = ['presupuestoasesor_asesor','presupuestoasesor_ano'];
 
     public function isValid($data)
     {
