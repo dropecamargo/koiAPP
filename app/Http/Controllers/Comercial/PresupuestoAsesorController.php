@@ -26,21 +26,29 @@ class PresupuestoAsesorController extends Controller
             $query->select('categoria_nombre','id');
             $categoria = $query->get();
 
+            $object = new \stdClass();
+            $object->success = true;
+            $object->categorias = [];
+
             $data = [];
             foreach ($categoria as $categoria) {
-                $objeto = new \stdClass();
-                $objeto->id = $categoria->id;
-                $objeto->categoria_nombre = $categoria->categoria_nombre;
-                $objeto->presupuesto = [];
+                $objCategoria = new \stdClass();
+                $objCategoria->id = $categoria->id;
+                $objCategoria->categoria_nombre = $categoria->categoria_nombre;
+                // $objCategoria->presupuesto = [];
 
                 $query = PresupuestoAsesor::query();
                 $query->select('presupuestoasesor_mes','presupuestoasesor_valor');
                 $query->where('presupuestoasesor_asesor', $request->presupuestoasesor_asesor)->where('presupuestoasesor_categoria', $categoria->id)->where('presupuestoasesor_ano', $request->presupuestoasesor_ano);
-
-                $objeto->presupuesto = $query->lists('presupuestoasesor_valor','presupuestoasesor_mes');
-                $data[] = $objeto;
-            } 
-            return response()->json(['success'=>true, 'categorias'=>$data]);
+                // $presupuestoasesor = $query->get();
+                // foreach ($presupuestoasesor as $presupuesto) {
+                //     $objCategoria->presupuesto[$presupuesto->presupuestoasesor_mes] = $presupuesto->presupuestoasesor_valor;
+                // }
+                // // dd($query->lists('presupuestoasesor_valor', 'presupuestoasesor_mes')->toArray());
+                $objCategoria->presupuesto = $query->lists('presupuestoasesor_valor', 'presupuestoasesor_mes');
+                $object->categorias[] = $objCategoria;
+            }
+            return response()->json($object);
         }
         return view('comercial.presupuestoasesor.main');
     }
