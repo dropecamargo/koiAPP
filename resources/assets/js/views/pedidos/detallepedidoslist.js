@@ -50,6 +50,7 @@ app || (app = {});
         * @param Object detallePedidoModel Model instance
         */
         addOne: function (detallePedidoModel) {
+           
             var view = new app.DetallePedidoItemView({
                 model: detallePedidoModel,
                 parameters: {

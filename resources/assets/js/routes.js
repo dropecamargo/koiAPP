@@ -166,6 +166,7 @@ app || (app = {});
             // Initialize resources
             this.componentGlobalView = new app.ComponentGlobalView();
             this.componentSearchTerceroView = new app.ComponentSearchTerceroView();
+            this.componentSearchProductoView = new app.ComponentSearchProductoView();
             this.componentTerceroView = new app.ComponentTerceroView();
             this.componentReporteView = new app.ComponentReporteView();
             this.componentCreateResourceView = new app.ComponentCreateResourceView();

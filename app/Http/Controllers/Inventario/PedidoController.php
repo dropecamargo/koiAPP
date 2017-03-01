@@ -69,13 +69,13 @@ class PedidoController extends Controller
                 DB::beginTransaction();
                 try {
                     //valida Documentos
-                    $documento = Documentos::query()->where('documentos_codigo', Pedido1::$default_document)->first();
+                    $documento = Documentos::where('documentos_codigo', Pedido1::$default_document)->first();
                     if(!$documento instanceof Documentos) {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar documentos, por favor consulte al administrador.']);
                     }
                     //valida Tercero
-                    $tercero = Tercero::query()->where('tercero_nit', $request->pedido1_tercero)->first();
+                    $tercero = Tercero::where('tercero_nit', $request->pedido1_tercero)->first();
                     if(!$tercero instanceof Tercero) {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar tercero, por favor verifique información o consulte al administrador.']);
@@ -112,13 +112,14 @@ class PedidoController extends Controller
      */
     public function show(Request $request, $id)
     {
-       dd($request->all());
+       
         $pedido = Pedido1::getPedido($id);
-        
         if(!$pedido instanceof Pedido1) {
             abort(404);
         }
-
+         if($request->ajax()) {
+            return response()->json($pedido);
+        }
         return view('inventario.pedidos.show', ['pedido1' => $pedido]);
     }
 
@@ -135,6 +136,7 @@ class PedidoController extends Controller
         if(!$pedido instanceof Pedido1) {
             abort(404);
         }
+
 
         return view('inventario.pedidos.edit', ['pedido1' => $pedido]);   
     }

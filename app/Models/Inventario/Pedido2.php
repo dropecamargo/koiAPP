@@ -20,7 +20,7 @@ class Pedido2 extends Model
      *
      * @var array
      */
-    protected $fillable = ['pedido2_pedido1','pedido2_serie','pedido2_cantidad','pedido2_saldo','pedido2_precio']
+    protected $fillable = ['pedido2_pedido1','pedido2_serie','pedido2_cantidad','pedido2_saldo','pedido2_precio'];
 
 
     public function isValid($data)

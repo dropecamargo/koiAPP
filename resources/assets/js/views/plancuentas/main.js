@@ -64,14 +64,14 @@ app || (app = {});
                         targets: 3,
                         width: '10%',
                         render: function ( data, type, full, row ) {
-                            return data == 'D' ? 'Débito' : 'Crédito';
+                            return parseInt(data) == 'D' ? 'Débito' : 'Crédito';
                         }
                     },
                     {
                         targets: 4,
                         width: '10%',
                         render: function ( data, type, full, row ) {
-                            return data ? 'Si' : 'No';
+                            return parseInt(data) ? 'Si' : 'No';
                         }
                     }
                 ]

@@ -24,7 +24,7 @@ class Producto extends BaseModel
      *
      * @var array
      */
-    protected $fillable = ['producto_referencia', 'producto_nombre', 'producto_ref_proveedor', 'producto_categoria','producto_linea', 'producto_unidadmedida', 'producto_vidautil','producto_peso','producto_largo','producto_alto','producto_ancho','producto_barras','producto_marca','producto_modelo','producto_precio1','producto_precio2','producto_precio3','producto_impuesto'];
+    protected $fillable = ['producto_referencia', 'producto_nombre', 'producto_ref_proveedor', 'producto_categoria','producto_linea', 'producto_unidadmedida', 'producto_vidautil','producto_peso','producto_largo','producto_alto','producto_ancho','producto_barras','producto_modelo','producto_marca','producto_precio1','producto_precio2','producto_precio3','producto_impuesto'];
 
     /**
      * The attributes that are mass boolean assignable.
@@ -43,7 +43,7 @@ class Producto extends BaseModel
     public function isValid($data)
     {
         $rules = [
-          'producto_referencia' => 'required|max:20' 
+            'producto_referencia' => 'required|max:20' 
         ];
 
         $validator = Validator::make($data, $rules);
