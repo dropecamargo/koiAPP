@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Models\Inventario\Pedido2;
 
 class DetallePedidoController extends Controller
 {
@@ -14,9 +15,13 @@ class DetallePedidoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        //
+    public function index(Request $request)
+    {   
+        if ($request->ajax()){
+         $pedidoDetalle = pedido2::getPedido2($request->producto_id);
+         return response()->json($pedidoDetalle);
+        }
+        abort(404);
     }
 
     /**

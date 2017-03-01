@@ -110,9 +110,16 @@ class PedidoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        //
+       
+        $pedido = Pedido1::getPedido($id);
+        
+        if(!$pedido instanceof Pedido1) {
+            abort(404);
+        }
+
+        return view('inventario.pedidos.show', ['pedido1' => $pedido]);
     }
 
     /**
@@ -124,7 +131,7 @@ class PedidoController extends Controller
     public function edit($id)
     {   
         $pedido = Pedido1::getPedido($id);
-        
+       
         if(!$pedido instanceof Pedido1) {
             abort(404);
         }
