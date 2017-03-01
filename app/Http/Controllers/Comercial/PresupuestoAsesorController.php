@@ -37,7 +37,7 @@ class PresupuestoAsesorController extends Controller
                 $query->where('presupuestoasesor_asesor', $request->presupuestoasesor_asesor)->where('presupuestoasesor_categoria', $item->id)->where('presupuestoasesor_ano', $request->presupuestoasesor_ano);
                 $categoria->presupuesto = $query->lists('presupuestoasesor_valor', 'presupuestoasesor_mes');
 
-                $object->categorias[] = $categoria;
+                $categorias[] = $categoria;
             }
             return response()->json(['success' => true, 'categorias' => $categorias]);
         }
