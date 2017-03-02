@@ -1,6 +1,6 @@
 @extends('layout.layout')
 
-@section('title') Tipo Actividad @stop
+@section('title') Tipo actividad @stop
 
 @section('content')
     <section class="content-header">
@@ -15,5 +15,5 @@
 
 	<section class="content">
     	@yield('module')
-    </section>    
+    </section>
 @stop
