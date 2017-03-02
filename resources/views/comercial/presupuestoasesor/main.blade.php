@@ -57,7 +57,7 @@
 			<table id="presupuesto-table" class="table table-bordered table-striped" cellspacing="0" width="100%">
 		        <thead>
 		            <tr>
-		                <th width="16%">Categoria</th>
+		                <th width="14%">Categoria<th width="2%">$</th></th>
 		                <% _.each(meses, function(name, month) { %>
 							<th width="7%"><%- name %></th>
 						<% }); %>
@@ -68,11 +68,20 @@
 		        <% _.each(categorias, function(categoria) { %>
 			        <tr>
 			        	<th><%- categoria.categoria_nombre %></th>
+
+			        	<td class="text-center">
+					        <a class="btn btn-default btn-xs btn-export-xls-koi-component" data-resource="">
+					            <span><i class="fa fa-info-circle "></i></span>
+					        </a>
+					    </td>
+
+
 						<% _.each(meses, function(name, month) { %>
 							<td class="padding-custom-grid">
 								<input type="text" id="presupuestoasesor_valor_<%- categoria.id %>_<%- month %>" name="presupuestoasesor_valor_<%- categoria.id %>_<%- month %>" class="form-control input-sm" value="<%- !_.isUndefined(categoria.presupuesto[month]) ? categoria.presupuesto[month] : 0 %>" data-currency>
 							</td>
 						<% }); %>
+			        	
 			        </tr>
 			    <% }); %>
 		        </tbody>
