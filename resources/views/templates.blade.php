@@ -294,12 +294,12 @@
 								<div class="row">
 							    	<div class="form-group col-md-2">
 								    	<label class="checkbox-inline" for="tercero_activo">
-											<input type="checkbox" id="tercero_activo" name="tercero_activo" value="tercero_activo" <%- tercero_activo ? 'checked': ''%>> Activo
+											<input type="checkbox" id="tercero_activo" name="tercero_activo" value="tercero_activo" <%- parseInt(tercero_activo) ? 'checked': ''%>> Activo
 										</label>
 									</div>
 							    	<div class="form-group col-md-2">
 								    	<label class="checkbox-inline" for="tercero_tecnico">
-											<input type="checkbox" id="tercero_tecnico" name="tercero_tecnico" value="tercero_tecnico" <%- tercero_tecnico ? 'checked': ''%>> Técnico
+											<input type="checkbox" id="tercero_tecnico" name="tercero_tecnico" value="tercero_tecnico" <%- parseInt(tercero_tecnico) ? 'checked': ''%>> Técnico
 										</label>
 									</div>
 								</div>
@@ -307,7 +307,7 @@
 								<div class="row">
 									<div class="form-group col-md-2">
 								    	<label class="checkbox-inline" for="tercero_coordinador">
-											<input type="checkbox" id="tercero_coordinador" name="tercero_coordinador" value="tercero_coordinador" <%- tercero_coordinador ? 'checked': ''%>> Coordinador
+											<input type="checkbox" id="tercero_coordinador" name="tercero_coordinador" value="tercero_coordinador" <%- parseInt(tercero_coordinador) ? 'checked': ''%>> Coordinador
 										</label>
 									</div>
 
