@@ -21,7 +21,8 @@ app || (app = {});
             if( this.model.id != undefined ) {
 
                 this.contactsList = new app.ContactsList();
-                
+                this.rolList = new app.RolList();
+
                 // Reference views
                 this.referenceViews();
             }
@@ -41,6 +42,17 @@ app || (app = {});
                }
             });
 
+            // Rol list
+            this.rolesListView = new app.RolesListView( {
+                collection: this.rolList,
+                parameters: {
+                    edit: false,
+                    wrapper: this.$('#wrapper-roles'),
+                    dataFilter: {
+                        'tercero_id': this.model.get('id')
+                    }
+               }
+            });
         }
     });
 

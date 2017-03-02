@@ -21,7 +21,7 @@
 			   			<div class="col-md-6 col-md-offset-2 text-left">
 							<label for="presupuestoasesor_asesor" class="control-label">Asesor</label>
 							<select name="presupuestoasesor_asesor" id="presupuestoasesor_asesor" class="form-control select2-default change-asesor" required>
-				                @foreach( App\Models\Base\Tercero::getAsesor() as $key => $value)
+				                @foreach( App\Models\Base\Tercero::getBusinessAdvisors() as $key => $value)
 				                    <option value="{{ $key }}" <%- presupuestoasesor_asesor == '{{ $key }}' ? 'selected': ''%>{{ $value }}</option>
 				                @endforeach
 				            </select>
@@ -78,7 +78,7 @@
 
 						<% _.each(meses, function(name, month) { %>
 							<td class="padding-custom-grid">
-								<input type="text" id="presupuestoasesor_valor_<%- categoria.id %>_<%- month %>" name="presupuestoasesor_valor_<%- categoria.id %>_<%- month %>" class="form-control input-sm" value="<%- !_.isUndefined(categoria.presupuesto[month]) ? categoria.presupuesto[month] : 0 %>" data-currency>
+								<input type="text" id="presupuestoasesor_valor_<%- categoria.id %>_<%- month %>" name="presupuestoasesor_valor_<%- categoria.id %>_<%- month %>" class="form-control input-sm" value="<%- !_.isUndefined(categoria.presupuesto[month]) ? categoria.presupuesto[month] : 0 %>" data-currency-precise>
 							</td>
 						<% }); %>
 			        	

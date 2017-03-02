@@ -153,15 +153,15 @@
         <div class="row">
             <div class="form-group col-md-2">
                 <label for="producto_precio1" class="control-label">Precio Mínimo</label>
-                <input type="text" id="producto_precio1" name="producto_precio1" value="$  <%- producto_precio1 %>" class="form-control input-sm" maxlength="15" data-currency required>
+                <input type="text" id="producto_precio1" name="producto_precio1" value="$  <%- producto_precio1 %>" class="form-control input-sm" maxlength="15" data-currency-precise required>
             </div>
             <div class="form-group col-md-2">
                 <label for="producto_precio2" class="control-label">Precio Sugerido</label>
-                <input type="text" id="producto_precio2" name="producto_precio2" value="<%- producto_precio2 %>" class="form-control input-sm" maxlength="15" data-currency required>
+                <input type="text" id="producto_precio2" name="producto_precio2" value="<%- producto_precio2 %>" class="form-control input-sm" maxlength="15" data-currency-precise required>
             </div>
             <div class="form-group col-md-2">
                 <label for="producto_precio3" class="control-label">Precio Crédito</label>
-                <input type="text" id="producto_precio3" name="producto_precio3" value="<%- producto_precio3 %>" class="form-control input-sm" maxlength="15" data-currency required>
+                <input type="text" id="producto_precio3" name="producto_precio3" value="<%- producto_precio3 %>" class="form-control input-sm" maxlength="15" data-currency-precise required>
             </div>
 
         </div>

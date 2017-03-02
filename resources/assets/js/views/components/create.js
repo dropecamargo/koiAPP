@@ -42,9 +42,29 @@ app || (app = {});
             this.$resourceField = $("#"+$(e.currentTarget).attr("data-field"));
             this.parameters = {};
 
+            if(this.resource == 'contacto') {
+                this.$inputPhone = this.$("#"+$(e.currentTarget).attr("data-phone"));
+                this.$inputAddress = this.$("#"+$(e.currentTarget).attr("data-address"));
+                this.$inputCity = this.$("#"+$(e.currentTarget).attr("data-city"));
+                this.$inputEmail = this.$("#"+$(e.currentTarget).attr("data-email"));
+                this.parameters.tcontacto_tercero = $(e.currentTarget).attr("data-tercero");
+                if( _.isUndefined(this.parameters.tcontacto_tercero) || _.isNull(this.parameters.tcontacto_tercero) || this.parameters.tcontacto_tercero == '') {
+                    alertify.error('Por favor ingrese cliente antes agregar contacto.');
+                    return;
+                }
+            }
+
             // stuffToDo resource
             var _this = this,
 	            stuffToDo = {
+                    'contacto' : function() {
+                        _this.$resourceName = $("#"+$(e.currentTarget).attr("data-name"));
+                        _this.$modalComponent.find('.inner-title-modal').html('Contacto');
+
+                        _this.model = new app.ContactoModel();
+                        var template = _.template($('#add-contacto-tpl').html());
+                        _this.$modalComponent.find('.content-modal').html( template(_this.model.toJSON()) );
+                    },
                     'marca' : function() {
                         _this.$modalComponent.find('.inner-title-modal').html('Marca');
 
@@ -59,7 +79,7 @@ app || (app = {});
                         var template = _.template($('#add-linea-tpl').html());
                         _this.$modalComponent.find('.content-modal').html( template(_this.model.toJSON()) );
                     },
-                  
+
                     'categoria' : function() {
                         _this.$modalComponent.find('.inner-title-modal').html('Categoria');
 
@@ -95,13 +115,15 @@ app || (app = {});
                         var template = _.template($('#add-dano-tpl').html());
                         _this.$modalComponent.find('.content-modal').html( template(_this.model.toJSON()) );
                     },
-                    
+
 	                'tercero' : function() {
                         _this.$modalComponent.find('.inner-title-modal').html('Tercero');
 
                         _this.model = new app.TerceroModel();
                         var template = _.template($('#add-tercero-tpl').html());
                         _this.$modalComponent.find('.content-modal').html( template(_this.model.toJSON()) );
+
+                        _this.$formAccounting = _this.$modalComponent.find('#form-accounting');
                     },
                     'producto' : function() {
                         _this.$modalComponent.find('.inner-title-modal').html('Producto');
@@ -179,9 +201,9 @@ app || (app = {});
 
             if( typeof window.initComponent.initICheck == 'function' )
                 window.initComponent.initICheck();
-            
+
             if( typeof window.initComponent.initSpinner == 'function' )
-                window.initComponent.initSpinner(); 
+                window.initComponent.initSpinner();
         },
 
         /**
@@ -195,6 +217,10 @@ app || (app = {});
 
                 e.preventDefault();
                 var data = $.extend({}, this.parameters, window.Misc.formToJson( e.target ));
+
+                if (this.resource == 'tercero') {
+                    data = $.extend({}, data, window.Misc.formToJson( this.$formAccounting ));
+                }
 
                 this.model.save( data, {patch: true} );
             }
@@ -228,6 +254,26 @@ app || (app = {});
             // stuffToDo Response success
             var _this = this,
                 stuffToDo = {
+                    'contacto' : function() {
+                        _this.$resourceField.val(_this.model.get('id'));
+                        _this.$resourceName.val(_this.model.get('tcontacto_nombre'));
+
+                        if(_this.$inputPhone.length) {
+                            _this.$inputPhone.val( _this.model.get('tcontacto_telefono') );
+                        }
+
+                        if(_this.$inputAddress.length) {
+                            _this.$inputAddress.val( _this.model.get('tcontacto_direccion') );
+                        }
+
+                        if(_this.$inputEmail.length) {
+                            _this.$inputEmail.val( _this.model.get('tcontacto_email') );
+                        }
+
+                        if(_this.$inputCity.length) {
+                            _this.$inputCity.val( _this.model.get('tcontacto_municipio') ).trigger('change');
+                        }
+                    },
                     'marca' : function() {
                         _this.$resourceField.select2({ data: [{id: _this.model.get('id'), text: _this.model.get('marca_nombre')}] }).trigger('change');
                         _this.$resourceField.val(_this.model.get('id')).trigger('change');
@@ -240,7 +286,7 @@ app || (app = {});
                         _this.$resourceField.select2({ data: [{id: _this.model.get('id'), text: _this.model.get('linea_nombre')}] }).trigger('change');
                         _this.$resourceField.val(_this.model.get('id')).trigger('change');
                     },
-                   
+
                     'categoria' : function() {
                         _this.$resourceField.select2({ data: [{id: _this.model.get('id'), text: _this.model.get('categoria_nombre')}] }).trigger('change');
                         _this.$resourceField.val(_this.model.get('id')).trigger('change');
