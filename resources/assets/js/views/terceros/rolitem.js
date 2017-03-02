@@ -1,5 +1,5 @@
 /**
-* Class ContactItemView  of Backbone Router
+* Class RolItemView  of Backbone Router
 * @author KOI || @dropecamargo
 * @link http://koi-ti.com
 */
@@ -9,17 +9,21 @@ app || (app = {});
 
 (function ($, window, document, undefined) {
 
-    app.ContactItemView = Backbone.View.extend({
+    app.RolItemView = Backbone.View.extend({
 
         tagName: 'tr',
-        template: _.template( ($('#contact-item-list-tpl').html() || '') ),
+        template: _.template( ($('#roles-item-list-tpl').html() || '') ),
+        parameters: {
+            edit: false
+        },
 
         /**
         * Constructor Method
         */
-        initialize: function(){
-
-            //Init Attributes
+        initialize: function(opts){
+            // Extends parameters
+            if( opts !== undefined && _.isObject(opts.parameters) )
+                this.parameters = $.extend({},this.parameters, opts.parameters);
 
             // Events Listener
             this.listenTo( this.model, 'change', this.render );
@@ -29,10 +33,9 @@ app || (app = {});
         * Render View Element
         */
         render: function(){
-
             var attributes = this.model.toJSON();
+            attributes.edit = this.parameters.edit;
             this.$el.html( this.template(attributes) );
-
             return this;
         }
     });

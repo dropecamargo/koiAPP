@@ -125,7 +125,7 @@ var app = app || {};
                 unmaskAsNumber: true,
                 min: 0,
                 digits: 0,
-                prefix: ''
+                // prefix: ''
             });
         },
 

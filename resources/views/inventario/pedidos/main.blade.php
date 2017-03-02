@@ -98,18 +98,18 @@
                             <div class="form-group col-sm-2 col-md-offset-1">
                                 <div class="input-group input-group-sm">
                                     <span class="input-group-btn">
-                                        <button type="button" class="btn btn-default btn-flat btn-koi-search-producto-component" data-field="sirvea_codigo">
+                                        <button type="button" class="btn btn-default btn-flat btn-koi-search-producto-component" data-field="producto_pedido">
                                             <i class="fa fa-barcode"></i>
                                         </button>
                                     </span>
-                                    <input id="sirvea_codigo" placeholder="Serie" class="form-control producto-koi-component" name="sirvea_codigo" type="text" maxlength="15" data-wrapper="producto_create" data-tipo="" data-name="sirvea_codigo_nombre" required>
+                                    <input id="producto_pedido" placeholder="Serie" class="form-control producto-koi-component" name="producto_pedido" type="text" maxlength="15" data-wrapper="producto_create" data-tipo="" data-name="producto_pedido_nombre" data-ref="producto_pedido_referencia" required>
                                 </div>
                             </div>
                             <div class="col-sm-5 col-xs-10">
-                                <input id="sirvea_codigo_nombre" name="sirvea_codigo_nombre" placeholder="Nombre producto" class="form-control input-sm" type="text" maxlength="15" readonly required>
+                                <input id="producto_pedido_nombre" name="producto_pedido_nombre" placeholder="Nombre producto" class="form-control input-sm" type="text" maxlength="15" readonly required>
                             </div>
                              <div class="col-sm-2 col-xs-10">
-                                <input id="sirvea_codigo_nombre" name="sirvea_codigo_nombre" placeholder="Referencia Producto" class="form-control input-sm" type="text" maxlength="15" readonly required>
+                                <input id="producto_pedido_referencia" name="producto_pedido_referencia" placeholder="Referencia Producto" class="form-control input-sm" type="text" maxlength="15" readonly required>
                             </div>
                             <div class="form-group col-sm-1">
                                 <button type="submit" class="btn btn-success btn-sm btn-block">
@@ -132,9 +132,11 @@
                         <table id="browse-detalle-pedido-list" class="table table-hover table-bordered" cellspacing="0">
                             <thead>
                                 <tr>
-                                    <th width="5px"></th>
-                                    <th width="5px">Serie</th>
-                                    <th width="95px">Nombre</th>
+                                    <th width="4%"></th>
+                                    <th width="10%">Serie</th>
+                                    <th width="50%">Nombre</th>
+                                    <th width="18%">Cantidad</th>
+                                    <th width="18%">Precio</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -146,16 +148,16 @@
             </div>
         </div>
     </script>
-    <script type="text/template" id="add-pedidodetalle-item-tpl">
+    <script type="text/template" id="add-pedidodetalle-item-tpl">producto_pedido_referencia
         <td class="text-center">
             <a class="btn btn-default btn-xs item-visita-remove" data-resource="<%- id %>">
                 <span><i class="fa fa-times"></i></span>
             </a>
         </td>
     
-        <td></td>
-        <td></td>
-        
-        </td>
+        <td><%- producto_serie %></td>
+        <td><%- producto_nombre %></td>
+        <td><%- pedido_cantidad %></td>
+        <td><%- pedido_precio %></td>
     </script>
 @stop

@@ -69,13 +69,13 @@ class PedidoController extends Controller
                 DB::beginTransaction();
                 try {
                     //valida Documentos
-                    $documento = Documentos::query()->where('documentos_codigo', Pedido1::$default_document)->first();
+                    $documento = Documentos::where('documentos_codigo', Pedido1::$default_document)->first();
                     if(!$documento instanceof Documentos) {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar documentos, por favor consulte al administrador.']);
                     }
                     //valida Tercero
-                    $tercero = Tercero::query()->where('tercero_nit', $request->pedido1_tercero)->first();
+                    $tercero = Tercero::where('tercero_nit', $request->pedido1_tercero)->first();
                     if(!$tercero instanceof Tercero) {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar tercero, por favor verifique información o consulte al administrador.']);

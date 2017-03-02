@@ -1,34 +1,26 @@
 <?php
 
-namespace App\Models\Comercial;
+namespace App\Models\Base;
 
 use Illuminate\Database\Eloquent\Model;
-
 use Validator;
 
-class PresupuestoAsesor extends Model
+class UsuarioRol extends Model
 {
     /**
      * The database table used by the model.
      *
      * @var string
      */
-    protected $table = 'presupuestoasesor';
+    protected $table = 'usuario_rol';
 
     public $timestamps = false;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = ['presupuestoasesor_asesor','presupuestoasesor_ano'];
 
     public function isValid($data)
     {
         $rules = [
-            'presupuestoasesor_asesor' => 'required',
-            'presupuestoasesor_ano' => 'required'
+            'role_id' => 'required'
         ];
 
         $validator = Validator::make($data, $rules);

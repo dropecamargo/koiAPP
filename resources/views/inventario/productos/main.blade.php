@@ -39,7 +39,7 @@
         <div class="row">
             <div class="form-group col-md-2 col-xs-10">
                 <label for="producto_categoria" class="control-label">Categoría</label>
-                <select name="producto_categoria" id="producto_categoria" class="form-control select2-default-clear">
+                <select name="producto_categoria" id="producto_categoria" class="form-control select2-default-clear" required>
                     @foreach( App\Models\Inventario\Categoria::getCategorias() as $key => $value)
                         <option value="{{ $key }}" <%- producto_categoria == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
                     @endforeach
@@ -51,7 +51,7 @@
             </div>
             <div class="form-group col-md-2 col-xs-10">
                 <label for="producto_linea" class="control-label">Línea</label>
-                <select name="producto_linea" id="producto_linea" class="form-control select2-default-clear">
+                <select name="producto_linea" id="producto_linea" class="form-control select2-default-clear" required>
                     @foreach( App\Models\Inventario\Linea::getLineas() as $key => $value)
                         <option value="{{ $key }}" <%- producto_linea == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
                     @endforeach
@@ -64,7 +64,7 @@
         
             <div class="form-group col-md-2 col-xs-10">
                 <label for="producto_unidadmedida" class="control-label">Unidad de medida</label>
-                <select name="producto_unidadmedida" id="producto_unidadmedida" class="form-control select2-default-clear">
+                <select name="producto_unidadmedida" id="producto_unidadmedida" class="form-control select2-default-clear" required>
                     @foreach( App\Models\Inventario\Unidad::getUnidades() as $key => $value)
                         <option value="{{ $key }}" <%- producto_unidadmedida == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
                     @endforeach
@@ -117,7 +117,7 @@
         <div class="row">
             <div class="form-group col-md-2 col-xs-10">
                 <label for="producto_marca" class="control-label">Marca</label>
-                <select name="producto_marca" id="producto_marca" class="form-control select2-default-clear">
+                <select name="producto_marca" id="producto_marca" class="form-control select2-default-clear" required>
                     @foreach( App\Models\Inventario\Marca::getMarcas() as $key => $value)
                         <option value="{{ $key }}" <%- producto_marca == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
                     @endforeach
@@ -129,7 +129,7 @@
             </div>
             <div class="form-group col-md-2 col-xs-10">
                 <label for="producto_modelo" class="control-label">Modelo</label>
-                <select name="producto_modelo" id="producto_modelo" class="form-control select2-default-clear">
+                <select name="producto_modelo" id="producto_modelo" class="form-control select2-default-clear" required>
                     @foreach( App\Models\Inventario\Modelo::getModelos() as $key => $value)
                         <option value="{{ $key }}" <%- producto_modelo == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
                     @endforeach
@@ -141,7 +141,7 @@
             </div>
             <div class="form-group col-md-2 col-xs-10">
                 <label for="producto_impuesto" class="control-label">Impuesto</label>
-                <select name="producto_impuesto" id="producto_impuesto" class="form-control select2-default-clear">
+                <select name="producto_impuesto" id="producto_impuesto" class="form-control select2-default-clear" required>
                     @foreach( App\Models\Inventario\Impuesto::getImpuestos() as $key => $value)
                         <option value="{{ $key }}" <%- producto_impuesto == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
                     @endforeach
@@ -153,15 +153,15 @@
         <div class="row">
             <div class="form-group col-md-2">
                 <label for="producto_precio1" class="control-label">Precio Mínimo</label>
-                <input type="text" id="producto_precio1" name="producto_precio1" value="$  <%- producto_precio1 %>" class="form-control input-sm" maxlength="15" data-currency required>
+                <input type="text" id="producto_precio1" name="producto_precio1" value="$  <%- producto_precio1 %>" class="form-control input-sm" maxlength="15" data-currency-precise required>
             </div>
             <div class="form-group col-md-2">
                 <label for="producto_precio2" class="control-label">Precio Sugerido</label>
-                <input type="text" id="producto_precio2" name="producto_precio2" value="<%- producto_precio2 %>" class="form-control input-sm" maxlength="15" data-currency required>
+                <input type="text" id="producto_precio2" name="producto_precio2" value="<%- producto_precio2 %>" class="form-control input-sm" maxlength="15" data-currency-precise required>
             </div>
             <div class="form-group col-md-2">
                 <label for="producto_precio3" class="control-label">Precio Crédito</label>
-                <input type="text" id="producto_precio3" name="producto_precio3" value="<%- producto_precio3 %>" class="form-control input-sm" maxlength="15" data-currency required>
+                <input type="text" id="producto_precio3" name="producto_precio3" value="<%- producto_precio3 %>" class="form-control input-sm" maxlength="15" data-currency-precise required>
             </div>
 
         </div>

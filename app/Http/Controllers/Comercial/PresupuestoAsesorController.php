@@ -11,6 +11,7 @@ use Log, DB;
 
 use App\Models\Comercial\PresupuestoAsesor;
 use App\Models\Inventario\Categoria;
+use App\Models\Base\Tercero;
 
 class PresupuestoAsesorController extends Controller
 {
@@ -73,14 +74,44 @@ class PresupuestoAsesorController extends Controller
     {
         if ($request->ajax()) {
             $data = $request->all();
+
             $presupuesto = new PresupuestoAsesor;
             if ($presupuesto->isValid($data)) {
                 DB::beginTransaction();
                 try {
-                    // presupuestoasesor
+                    $asesor = Tercero::find($request->presupuestoasesor_asesor);
+                    if(!$asesor instanceof Tercero) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'Asesor no se encuentra registrado, por favor verifique la información o consulte al administrador.']);
+                    }
 
-                    // $presupuesto->fill($data);
-                    // $presupuesto->save();
+                    $query = Categoria::query()->where('categoria_activo', true);
+                    $categorias = $query->get();
+                    
+                    foreach ($categorias as $categoria) {
+                        foreach ( config('koi.meses') as $key => $name ) {
+                            if($request->has("presupuestoasesor_valor_{$categoria->id}_{$key}")){
+
+                                $query = PresupuestoAsesor::query();
+                                $query->where('presupuestoasesor_mes', $key);
+                                $query->where('presupuestoasesor_ano', $request->presupuestoasesor_ano);
+                                $query->where('presupuestoasesor_categoria', $categoria->id);
+                                $query->where('presupuestoasesor_asesor', $request->presupuestoasesor_asesor);
+                                $presupuestoasesor = $query->first();
+
+                                if(!$presupuestoasesor instanceof PresupuestoAsesor) {
+                                    $presupuestoasesor = new PresupuestoAsesor;
+                                }
+
+                                $presupuestoasesor->presupuestoasesor_mes = $key;
+                                $presupuestoasesor->presupuestoasesor_ano = $request->presupuestoasesor_ano;
+                                $presupuestoasesor->presupuestoasesor_categoria = $categoria->id;
+                                $presupuestoasesor->presupuestoasesor_asesor = $request->presupuestoasesor_asesor;
+                                $presupuestoasesor->presupuestoasesor_valor = $request->get("presupuestoasesor_valor_{$categoria->id}_{$key}");
+                                $presupuestoasesor->save();
+                            }
+                        }
+                    }
 
                     // Commit Transaction
                     DB::commit();

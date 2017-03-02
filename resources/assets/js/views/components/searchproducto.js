@@ -44,6 +44,7 @@ app || (app = {});
             this.$productosSearchTable = this.$modalComponent.find('#koi-search-producto-component-table');
 			this.$inputContent = this.$("#"+$(e.currentTarget).attr("data-field"));
 			this.$inputName = this.$("#"+this.$inputContent.attr("data-name"));
+			this.$inputRef = this.$("#"+this.$inputContent.attr("data-ref"));
 			this.$wraperType = this.$("#"+this.$inputContent.attr("data-render"));
 
 			// Filters
@@ -91,6 +92,7 @@ app || (app = {});
 
 			this.$inputContent.val( data.producto_serie );
 			this.$inputName.val( data.producto_nombre );
+			this.$inputRef.val( data.producto_referencia );
 
 		 	if(this.$wraperType.length) {
                 this.renderType(data.tipo_codigo);
