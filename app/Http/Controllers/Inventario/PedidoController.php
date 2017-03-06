@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\Inventario\Pedido1;
+use App\Models\Inventario\Pedido1, App\Models\Inventario\Pedido2, App\Models\Inventario\Producto;
 use App\Models\Base\Documentos, App\Models\Base\Tercero;
 
 use DB, Log, Datatables, Cache, Auth;
@@ -63,23 +63,33 @@ class PedidoController extends Controller
     {
         if ($request->ajax()) {
             $data = $request->all();
-
             $pedido = new Pedido1;
+            $pedidoDetalle = new Pedido2;
             if ($pedido->isValid($data)) {
                 DB::beginTransaction();
                 try {
+                    
                     //valida Documentos
                     $documento = Documentos::where('documentos_codigo', Pedido1::$default_document)->first();
                     if(!$documento instanceof Documentos) {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar documentos, por favor consulte al administrador.']);
                     }
+
                     //valida Tercero
                     $tercero = Tercero::where('tercero_nit', $request->pedido1_tercero)->first();
                     if(!$tercero instanceof Tercero) {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar tercero, por favor verifique información o consulte al administrador.']);
                     }
+
+                    //validaProducto
+                    $producto = Producto::where('producto_serie',$request->producto_pedido2)->first();
+                    if(!$producto instanceof Producto){
+                        DB::rollback();
+                        return response()->json(['success' => false,'errors' => 'No es posible recuperar producto, por favor verifique información o consulte al administrador']);
+                    }
+                    
                     // Pedidos
                     $pedido->fill($data);
                     //$pedido->fillBoolean($data);
@@ -89,10 +99,17 @@ class PedidoController extends Controller
                     $pedido->pedido1_fh_elaboro = date('Y-m-d H:m:s');
                     $pedido->save();
 
+                    //Pedido2
+                    $pedidoDetalle->pedido2_pedido1 = $pedido->id;
+                    $pedidoDetalle->pedido2_serie = $producto->id;
+                    $pedidoDetalle->pedido2_cantidad = $request->pedido2_cantidad;
+                    $pedidoDetalle->pedido2_precio = $request->pedido2_precio;
+                    $pedidoDetalle->save();
+
                     // Commit Transaction
                     DB::commit();
 
-                    return response()->json(['success' => true, 'id' => $pedido->id]);
+                    return response()->json(['success' => true, 'pedido_id' => $pedido->id]);
                 }catch(\Exception $e){
                     DB::rollback();
                     Log::error($e->getMessage());
@@ -152,8 +169,7 @@ class PedidoController extends Controller
     {
         if ($request->ajax()) {
             $data = $request->all();
-
-            $pedido = new Pedido1;
+            $pedido = Pedido1::findOrFail($id);
             if ($pedido->isValid($data)) {
                 DB::beginTransaction();
                 try {

@@ -110,7 +110,7 @@ Route::group(['middleware' => 'auth'], function(){
 	});
 	Route::group(['prefix' => 'pedidos'], function()
 	{
-		Route::resource('detalle', 'Inventario\DetallePedidoController', ['except' => ['destroy']]);
+		Route::resource('detalle', 'Inventario\DetallePedidoController');
 	});
 	Route::resource('modelos','Inventario\ModeloController', ['except' => ['destroy']]);
 	Route::resource('marcas', 'Inventario\MarcaController', ['except' => ['destroy']]);

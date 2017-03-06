@@ -182,10 +182,10 @@ class ProductoController extends Controller
      */
     public function search(Request $request)
     {
-        if($request->has('producto_codigo')) {
-            $producto = Producto::select('id', 'producto_nombre', 'producto_metrado', 'producto_serie', 'producto_unidades')->where('producto_codigo', $request->producto_codigo)->first();
+        if($request->has('producto_serie')) {
+            $producto = Producto::select('id', 'producto_nombre', 'producto_serie','producto_referencia')->where('producto_serie', $request->producto_serie)->first();
             if($producto instanceof Producto) {
-                return response()->json(['success' => true, 'id' => $producto->id, 'producto_nombre' => $producto->producto_nombre, 'producto_metrado' => $producto->producto_metrado, 'producto_serie' => $producto->producto_serie, 'producto_unidades' => $producto->producto_unidades]);
+                return response()->json(['success' => true, 'id' => $producto->id, 'producto_nombre' => $producto->producto_nombre, 'producto_serie' => $producto->producto_serie, 'producto_referencia' => $producto->producto_referencia]);
             }
         }
         return response()->json(['success' => false]);

@@ -1006,12 +1006,17 @@ app || (app = {});
             this.pedidoModel = new app.PedidoModel();
             this.pedidoModel.set({'id': pedido}, {silent: true});
 
-            if ( this.createPedidoView instanceof Backbone.View ){
-                this.createPedidoView.stopListening();
-                this.createPedidoView.undelegateEvents();
+            if ( this.editPedidoView instanceof Backbone.View ){
+                this.editPedidoView.stopListening();
+                this.editPedidoView.undelegateEvents();
             }
 
-            this.createPedidoView = new app.CreatePedidoView({ model: this.pedidoModel });
+            if ( this.createAsientoView instanceof Backbone.View ){
+                this.createAsientoView.stopListening();
+                this.createAsientoView.undelegateEvents();
+            }
+            
+            this.editPedidoView = new app.EditPedidoView({ model: this.pedidoModel });
             this.pedidoModel.fetch();
            
         },  

@@ -52,7 +52,11 @@ app || (app = {});
                         targets: 0,
                         width: '25%',
                         render: function ( data, type, full, row ) {
-                            return '<a href="'+ window.Misc.urlFull( Route.route('pedidos.show', {pedidos: full.id }) )  +'">' + data + '</a>';
+                            if (!full.pedido1_cerrado) {
+                                return '<a href="'+ window.Misc.urlFull( Route.route('pedidos.edit', {pedidos: full.id }) )  +'">' + data +' <span class="label label-success"> Abierto</span></a>';
+                            }else{
+                                return '<a href="'+ window.Misc.urlFull( Route.route('pedidos.show', {pedidos: full.id }) )  +'">' + data + '</a>';
+                            }
                         },
                        
                     }

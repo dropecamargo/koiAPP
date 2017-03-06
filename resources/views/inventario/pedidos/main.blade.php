@@ -19,7 +19,36 @@
 
     <script type="text/template" id="add-pedido-tpl">
         <div class="box-body" id="render-form-pedido">
-           
+           <%if(edit){ %> 
+               <div class="box-header with-border">
+                    <ul class="nav nav-tabs">
+                        
+                        <li class="pull-right">
+                            <button type="button" class="btn btn-block btn-danger btn-sm export-pedido">
+                                <i class="fa fa-file-pdf-o"></i>
+                            </button>
+                        </li>
+                        <li class="dropdown pull-right">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                Opciones <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li role="presentation">
+                                    <a role="menuitem" tabindex="-1" href="#" class="close-pedido">
+                                        <i class="fa fa-lock"></i>Cerrar Pedido
+                                    </a>
+                                    <a role="menuitem" tabindex="-1" href="#" class="clone-pedido">
+                                        <i class="fa fa-clone"></i>Clonar Pedido
+                                    </a>
+                                    <a role="menuitem" tabindex="-1" href="#" class="export-pedido">
+                                        <i class="fa fa-file-pdf-o"></i>Exportar
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div><br>
+            <% } %>
             <form method="POST" accept-charset="UTF-8" id="form-pedido" data-toggle="validator">
                 <div class="row">
                     <label for="pedido1_sucursal" class="col-sm-1 control-label">Sucursal</label>
@@ -32,7 +61,7 @@
                     </div>
                     <label for="pedido1_numero" class="col-sm-2 control-label">Número</label>
                     <div class="form-group col-sm-2">     
-                        <input id="pedido1_numero" name="pedido1_numero" placeholder="Número" class="form-control input-sm" type="number" min="1" value="<%- pedido1_numero %>" required readonly>
+                        <input id="pedido1_numero" name="pedido1_numero" placeholder="Número" class="form-control input-sm" type="number" min="1" value="<%- pedido1_numero %>" required>
                     </div>
                 </div>
                 <div class="row">
@@ -53,7 +82,7 @@
                     </div> 
                     <label for="pedido1_anticipo" class="col-sm-2 control-label">Valor Antcipo</label>
                     <div class="form-group col-sm-2 ">
-                        <input type="text" id="pedido1_anticipo" name="pedido1_anticipo" class="form-control input-sm" value="<%- pedido1_anticipo %>" required data-currency>
+                        <input type="text" id="pedido1_anticipo" name="pedido1_anticipo" class="form-control input-sm" value="<%- pedido1_anticipo %>" required data-currency-precise>
                     </div> 
                 </div>
 
@@ -80,36 +109,39 @@
                         <textarea id="pedido1_observaciones" name="pedido1_observaciones" class="form-control" rows="2" placeholder="Observaciones Pedidos"><%- pedido1_observaciones %></textarea>
                     </div>
                 </div>
-            </form>
+            <% if(edit){ %></form> <% } %>
             
-           
-            <div class="row">
-                <div class="col-md-2 col-md-offset-4 col-sm-6 col-xs-6 text-left">
-                    <a href="{{ route('pedidos.index') }}" class="btn btn-default btn-sm btn-block">{{ trans('app.cancel') }}</a>
-                </div>
-                <div class="col-md-2  col-sm-5 col-xs-5 text-right">
-                    <button type="button" class="btn btn-primary btn-sm btn-block submit-pedido">{{ trans('app.save') }}</button>
-                </div>
-            </div><br>
-            <div id="detalle-pedido" >
+                <div class="row">
+                    <div class="col-md-2 col-md-offset-4 col-sm-6 col-xs-6 text-left">
+                        <a href="{{ route('pedidos.index') }}" class="btn btn-default btn-sm btn-block">{{ trans('app.cancel') }}</a>
+                    </div>
+            <% if(edit) { %>
+                    
+                        <div class="col-md-2  col-sm-5 col-xs-5 text-right">
+                            <button type="button" class="btn btn-primary btn-sm btn-block submit-pedido">{{ trans('app.save') }}</button>
+                        </div>
+            <% } %>
+                </div><br>
+            
                 <div class="box box-success">
-                    <form method="POST" accept-charset="UTF-8" id="form-detalle-pedido" data-toggle="validator"><br>
+                <% if(edit){ %> <form method="POST" accept-charset="UTF-8" id="form-detalle-pedido" data-toggle="validator"> <% } %>
+                    <div class="box-body">
                         <div class="row">
                             <div class="form-group col-sm-2 col-md-offset-1">
                                 <div class="input-group input-group-sm">
                                     <span class="input-group-btn">
-                                        <button type="button" class="btn btn-default btn-flat btn-koi-search-producto-component" data-field="producto_pedido">
+                                        <button type="button" class="btn btn-default btn-flat btn-koi-search-producto-component" data-field="producto_pedido2">
                                             <i class="fa fa-barcode"></i>
                                         </button>
                                     </span>
-                                    <input id="producto_pedido" placeholder="Serie" class="form-control producto-koi-component" name="producto_pedido" type="text" maxlength="15" data-wrapper="producto_create" data-tipo="" data-name="producto_pedido_nombre" data-ref="producto_pedido_referencia" required>
+                                    <input id="producto_pedido2" placeholder="Serie" class="form-control producto-koi-component" name="producto_pedido2" type="text" maxlength="15" data-wrapper="pedido-create" data-tipo="" data-name="producto_pedido2_nombre" data-ref="producto_pedido2_referencia" required>
                                 </div>
                             </div>
                             <div class="col-sm-5 col-xs-10">
-                                <input id="producto_pedido_nombre" name="producto_pedido_nombre" placeholder="Nombre producto" class="form-control input-sm" type="text" maxlength="15" readonly required>
+                                <input id="producto_pedido2_nombre" name="producto_pedido2_nombre" placeholder="Nombre producto" class="form-control input-sm" type="text" maxlength="15" readonly required>
                             </div>
                              <div class="col-sm-2 col-xs-10">
-                                <input id="producto_pedido_referencia" name="producto_pedido_referencia" placeholder="Referencia Producto" class="form-control input-sm" type="text" maxlength="15" readonly required>
+                                <input id="producto_pedido2_referencia" name="producto_pedido2_referencia" placeholder="Referencia Producto" class="form-control input-sm" type="text" maxlength="15" readonly required>
                             </div>
                             <div class="form-group col-sm-1">
                                 <button type="submit" class="btn btn-success btn-sm btn-block">
@@ -119,45 +151,47 @@
                         </div>
                         <div class="row">
                             <label class="control-label col-sm-1 col-md-offset-3">Cantidad</label>
-                                <div class="col-sm-1 col-xs-10">
-                                    <input id="pedido2_cantidad" name="pedido2_cantidad" min="1" class="form-control input-sm" type="number" required>
-                                </div>
+                            <div class="col-sm-1 col-xs-10">
+                                <input id="pedido2_cantidad" name="pedido2_cantidad" min="1" class="form-control input-sm" type="number" required>
+                            </div>
                             <label class="control-label col-sm-1">Precio</label>
-                                <div class="col-sm-2 col-xs-10">
-                                    <input id="pedido2_precio" name="pedido2_precio" class="form-control input-sm" type="text" data-currency required>
-                                </div>
-                        </div><br>
-                    </form>
-                    <div class="table-responsive no-padding">
-                        <table id="browse-detalle-pedido-list" class="table table-hover table-bordered" cellspacing="0">
-                            <thead>
-                                <tr>
-                                    <th width="4%"></th>
-                                    <th width="10%">Serie</th>
-                                    <th width="50%">Nombre</th>
-                                    <th width="18%">Cantidad</th>
-                                    <th width="18%">Precio</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {{-- Render content detalle pedido --}}
-                            </tbody>
-                        </table>
+                            <div class="col-sm-2 col-xs-10">
+                                <input id="pedido2_precio" name="pedido2_precio" class="form-control input-sm" type="text" data-currency required>
+                            </div>
+                        </div>
+                        <br>
                     </div>
+                </form>
+
+                <div class="table-responsive no-padding">
+                    <table id="browse-detalle-pedido-list" class="table table-hover table-bordered" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th width="5%"></th>
+                                <th width="15%">Serie</th>
+                                <th width="50%">Nombre</th>
+                                <th width="15%">Cantidad</th>
+                                <th width="15%">Precio</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{-- Render content detalle pedido --}}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </script>
-    <script type="text/template" id="add-pedidodetalle-item-tpl">producto_pedido_referencia
+
+    <script type="text/template" id="add-pedidodetalle-item-tpl">
         <td class="text-center">
-            <a class="btn btn-default btn-xs item-visita-remove" data-resource="<%- id %>">
+            <a class="btn btn-default btn-xs item-detallepedido-remove" data-resource="<%- id %>">
                 <span><i class="fa fa-times"></i></span>
             </a>
         </td>
-    
         <td><%- producto_serie %></td>
         <td><%- producto_nombre %></td>
-        <td><%- pedido_cantidad %></td>
-        <td><%- pedido_precio %></td>
+        <td><%- pedido2_cantidad %></td>
+        <td><%- pedido2_precio %></td>
     </script>
 @stop

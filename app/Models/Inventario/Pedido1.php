@@ -46,7 +46,6 @@ class Pedido1 extends BaseModel
     public function isValid($data)
     {
         $rules = [
-            'pedido1_numero' => 'required|numeric',
             'pedido1_sucursal' => 'required|numeric',
             'pedido1_tercero' => 'required|numeric',
             'pedido1_fecha' => 'required|date',

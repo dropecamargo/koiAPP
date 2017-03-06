@@ -16,6 +16,8 @@ app || (app = {});
             'click .item-detallepedido-remove': 'removeOne'
         },
         parameters: {
+            wrapper: null,
+            edit: false,
             dataFilter: {}
         },
 
@@ -28,6 +30,9 @@ app || (app = {});
             if( opts !== undefined && _.isObject(opts.parameters) )
                 this.parameters = $.extend({},this.parameters, opts.parameters);
 
+            //Init Attributes
+            this.confCollection = { reset: true, data: {} };
+
             // Events Listeners
             this.listenTo( this.collection, 'add', this.addOne );
             this.listenTo( this.collection, 'reset', this.addAll );
@@ -35,7 +40,12 @@ app || (app = {});
             this.listenTo( this.collection, 'store', this.storeOne );
             this.listenTo( this.collection, 'sync', this.responseServer);
 
-            this.collection.fetch({ data: {pedido_id: this.parameters.dataFilter.pedido_id}, reset: true });
+            if( !_.isUndefined(this.parameters.dataFilter.pedido_id) && !_.isNull(this.parameters.dataFilter.pedido_id) ){
+                this.confCollection.data.pedido_id = this.parameters.dataFilter.pedido_id;
+                this.collection.fetch( this.confCollection );
+                // this.collection.fetch( { data: {pedido_id: this.parameters.dataFilter.pedido_id}, reset: true } );
+            }
+            
         },
 
         /*
@@ -50,7 +60,6 @@ app || (app = {});
         * @param Object detallePedidoModel Model instance
         */
         addOne: function (detallePedidoModel) {
-           
             var view = new app.DetallePedidoItemView({
                 model: detallePedidoModel,
                 parameters: {
@@ -58,7 +67,7 @@ app || (app = {});
                 }
             });
             detallePedidoModel.view = view;
-            this.$el.prepend( view.render().el );
+            this.$el.append( view.render().el );
         },
 
         /**
@@ -74,13 +83,13 @@ app || (app = {});
         */
         storeOne: function (data) {
             var _this = this
-
             // Set Spinner
             window.Misc.setSpinner( this.parameters.wrapper );
             
             // Prepare data
             data.pedido2_pedido1 = this.parameters.dataFilter.pedido_id;
-
+            
+            
             // Add model in collection
             var detallepedidoModel = new app.PedidoDetalleModel();
             detallepedidoModel.save(data, {

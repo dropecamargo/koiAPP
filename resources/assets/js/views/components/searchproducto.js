@@ -123,6 +123,7 @@ app || (app = {});
 
 			this.$inputContent = $(e.currentTarget);
 			this.$inputName = this.$("#"+$(e.currentTarget).attr("data-name"));
+			this.$inputRef = this.$("#"+$(e.currentTarget).attr("data-ref"));
 			this.$wraperConten = this.$("#"+$(e.currentTarget).attr("data-wrapper"));
 			this.$wraperType = this.$("#"+this.$inputContent.attr("data-render"));
             
@@ -148,6 +149,10 @@ app || (app = {});
 	                if(resp.success) {
 	                    if(!_.isUndefined(resp.producto_nombre) && !_.isNull(resp.producto_nombre)){
 							_this.$inputName.val(resp.producto_nombre);
+							_this.$inputRef.val(resp.producto_referencia);
+	                    }
+	                    if(!_.isUndefined(resp.producto_referencia) && !_.isNull(resp.producto_referencia)){
+							_this.$inputRef.val(resp.producto_referencia);
 	                    }
 
 	                    if(_this.$wraperType.length) {

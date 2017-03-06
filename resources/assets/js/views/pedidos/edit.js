@@ -1,5 +1,5 @@
 /**
-* Class CreatePedidoView  of Backbone Router
+* Class EditPedidoView  of Backbone Router
 * @author KOI || @dropecamargo
 * @link http://koi-ti.com
 */
@@ -9,12 +9,13 @@ app || (app = {});
 
 (function ($, window, document, undefined) {
 
-    app.CreatePedidoView = Backbone.View.extend({
-
+    app.EditPedidoView = Backbone.View.extend({
         el: '#pedido-create',
         template: _.template(($('#add-pedido-tpl').html() || '') ),
         events: {
+            'click .submit-pedido' :'submitPedido',
             'submit #form-pedido' :'onStore',
+            'submit #form-detalle-pedido' :'onStoreDetalle',
         },
         parameters: {
         },
@@ -35,14 +36,13 @@ app || (app = {});
             this.listenTo( this.model, 'request', this.loadSpinner );
         },
 
-
-        /*
+        /**
         * Render View Element
         */
         render: function() {
                         
             var attributes = this.model.toJSON();
-            attributes.edit = false;
+            attributes.edit = true;
             this.$wraperForm.html( this.template(attributes) );
             this.$form = this.$('#form-pedido');
             this.$formItem = this.$('#form-detalle-pedido');
@@ -53,6 +53,25 @@ app || (app = {});
             this.ready();
         },
 
+     	/**
+        * fires libraries js
+        */
+        ready: function () {
+            // to fire plugins
+            if( typeof window.initComponent.initICheck == 'function' )
+                window.initComponent.initICheck(); 
+
+            if( typeof window.initComponent.initInputMask == 'function' )
+                window.initComponent.initInputMask();
+            
+            if( typeof window.initComponent.initToUpper == 'function' )
+                window.initComponent.initToUpper();
+        },
+
+
+        /**
+        * reference to views
+        */
         referenceViews:function(){ 
 
             this.detallePedidosView = new app.DetallePedidosView( {
@@ -68,6 +87,13 @@ app || (app = {});
         },
 
         /**
+        * Event submit Asiento
+        */
+        submitPedido: function (e) {
+            this.$form.submit();
+        },
+
+        /**
         * Event Create Pedido
         */
         onStore: function (e) {
@@ -79,52 +105,18 @@ app || (app = {});
                 this.model.save( data, {patch: true, silent: true} );
             }
         },
-
         /**
-        * fires libraries js
+        * Event Create DetallePedido
         */
-        ready: function () {
-            // to fire plugins
-            if( typeof window.initComponent.initICheck == 'function' )
-                window.initComponent.initICheck(); 
+        onStoreDetalle: function (e) {
 
-            if( typeof window.initComponent.initInputMask == 'function' )
-                window.initComponent.initInputMask();
-            
-            if( typeof window.initComponent.initToUpper == 'function' )
-                window.initComponent.initToUpper();
-        },
-
-        /**
-        * Load spinner on the request
-        */
-        loadSpinner: function (model, xhr, opts) {
-            window.Misc.setSpinner( this.el );
-            
-        },
-
-        /**
-        * response of the server
-        */
-        responseServer: function ( model, resp, opts ) {
-            window.Misc.removeSpinner( this.el );
-
-            if(!_.isUndefined(resp.success)) {
-                // response success or error
-                var text = resp.success ? '' : resp.errors;
-                if( _.isObject( resp.errors ) ) {
-                    text = window.Misc.parseErrors(resp.errors);
-                }
-
-                if( !resp.success ) {
-                    alertify.error(text);
-                    return;
-                }
-
-                // Redirect to edit pedido
-                Backbone.history.navigate(Route.route('pedidos.edit', { pedidos: resp.pedido_id}), { trigger:true });
+            if (!e.isDefaultPrevented()) {
+                e.preventDefault();
+                var data = window.Misc.formToJson( e.target );
+                this.detallePedido.trigger('store' , data);
             }
         }
+
     });
 
 })(jQuery, this, this.document);
