@@ -26,11 +26,10 @@ class PresupuestoAsesorController extends Controller
             $object = new \stdClass();
             $object->meses = config('koi.meses');
             $object->categorias = [];
+            $object->total_mes = [];
+            $object->total_categorias = [];
 
-            $query = Categoria::query();
-            $query->select('categoria_nombre','id');
-            $query->where('categoria_activo', true);
-            $categorias = $query->get();
+            $categorias = Categoria::where('categoria_activo', true)->get();
 
             $data = [];
             foreach ($categorias as $item)
@@ -44,9 +43,26 @@ class PresupuestoAsesorController extends Controller
                 $query->where('presupuestoasesor_ano', $request->presupuestoasesor_ano);
                 $query->where('presupuestoasesor_categoria', $item->id);
                 $categoria->presupuesto = $query->lists('presupuestoasesor_valor', 'presupuestoasesor_mes');
-
+           
                 $object->categorias[] = $categoria;
             }
+            
+            $object->total_categorias = PresupuestoAsesor::query()
+                ->select('categoria.id as categoria', DB::raw('sum(presupuestoasesor_valor) as total'))
+                ->join('categoria', 'presupuestoasesor_categoria', '=', 'categoria.id')
+                ->where('presupuestoasesor_asesor', $request->presupuestoasesor_asesor)
+                ->where('presupuestoasesor_ano', $request->presupuestoasesor_ano)
+                ->where('categoria_activo', true)
+                ->groupBy('presupuestoasesor_categoria')->lists('total', 'categoria');
+
+            $object->total_mes = PresupuestoAsesor::query()
+                ->select('presupuestoasesor_mes as mes', DB::raw('SUM(presupuestoasesor_valor) as total'))
+                ->join('categoria', 'presupuestoasesor_categoria', '=', 'categoria.id')
+                ->where('presupuestoasesor_asesor', $request->presupuestoasesor_asesor)
+                ->where('presupuestoasesor_ano', $request->presupuestoasesor_ano)
+                ->where('categoria_activo', true)
+                ->groupBy('presupuestoasesor_mes')
+                ->lists('total', 'mes');
 
             $object->success = true;
             return response()->json($object);
@@ -74,12 +90,20 @@ class PresupuestoAsesorController extends Controller
     {
         if ($request->ajax()) {
             $data = $request->all();
-
             $presupuesto = new PresupuestoAsesor;
             if ($presupuesto->isValid($data)) {
                 DB::beginTransaction();
                 try {
-                    $asesor = Tercero::find($request->presupuestoasesor_asesor);
+                    $asesor = Tercero::select(
+                            DB::raw("CONCAT((CASE WHEN tercero_persona = 'N'
+                                    THEN CONCAT(tercero_nombre1,' ',tercero_nombre2,' ',tercero_apellido1,' ',tercero_apellido2,
+                                        (CASE WHEN (tercero_razonsocial IS NOT NULL AND tercero_razonsocial != '') THEN CONCAT(' - ', tercero_razonsocial) ELSE '' END)
+                                    )
+                                    ELSE tercero_razonsocial
+                                END)
+                            ) AS tercero_nombre"
+                        ))     
+                        ->find($request->presupuestoasesor_asesor);
                     if(!$asesor instanceof Tercero) {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'Asesor no se encuentra registrado, por favor verifique la información o consulte al administrador.']);
@@ -111,19 +135,18 @@ class PresupuestoAsesorController extends Controller
                                 $presupuestoasesor->save();
                             }
                         }
-                    }
+                    }                   
 
                     // Commit Transaction
                     DB::commit();
-
-                    return response()->json(['success' => true, 'id' => $presupuesto->id]);
+                    return response()->json(['success' => true, 'message' => "Presupuesto de $asesor->tercero_nombre del año $request->presupuestoasesor_ano actualizado!"]);
                 }catch(\Exception $e){
                     DB::rollback();
                     Log::error($e->getMessage());
                     return response()->json(['success' => false, 'errors' => trans('app.exception')]);
                 }
             }
-            return response()->json(['success' => false, 'errors' => $presupuesto->errors]);
+            return response()->json(['success' => false, 'errors' => $presupuestoasesor->errors]);
         }
         abort(403);
     }

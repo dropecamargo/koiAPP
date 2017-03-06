@@ -15,7 +15,8 @@ app || (app = {});
         template: _.template( ($('#add-presupuesto-tpl').html() || '') ),
         events: {
             'change .change-asesor': 'changeAsesor',
-            'submit #form-presupuestoasesor': 'onStore'
+            'submit #form-presupuestoasesor': 'onStore',
+            'change .change-input-presupuesto': 'changePresupuesto'
         },
 
         /**
@@ -31,6 +32,9 @@ app || (app = {});
             // Reference to fields
             this.$asesor = this.$('#presupuestoasesor_asesor');
             this.$ano = this.$('#presupuestoasesor_ano');
+
+            this.meses = { };
+            this.categorias = { };
         },
 
         /**
@@ -44,6 +48,39 @@ app || (app = {});
                 window.initComponent.initValidator();
         },
 
+
+        /**
+        * Change input presupuesto
+        */
+        changePresupuesto: function (e) {
+
+            var mes = $(e.currentTarget).attr("data-mes"),
+                categoria = $(e.currentTarget).attr("data-categoria");
+
+            // Total categoria
+            this.totalCategoria(categoria);
+
+            // Total meses
+            this.totalMes(mes);
+        },
+
+        totalCategoria(categoria) {
+            var total = 0;
+            _.each(this.meses, function(name, month) {
+                total += parseFloat( this.$('#presupuestoasesor_valor_' + categoria + '_' + month).inputmask('unmaskedvalue') );
+            });
+
+            this.$('#presupuestoasesor_total_categoria_' + categoria).html( window.Misc.currency(total) );
+        },
+
+        totalMes(mes) {
+            var total = 0;
+            _.each(this.categorias, function(categoria) {
+                total += parseFloat( this.$('#presupuestoasesor_valor_' + categoria.id + '_' + mes).inputmask('unmaskedvalue') );
+            });
+
+            this.$('#presupuestoasesor_total_mes_' + mes).html( window.Misc.currency(total) );
+        },
 
         /**
         * Event store presupuestoasesor
@@ -60,12 +97,16 @@ app || (app = {});
                     dataType: 'json',
                     url: window.Misc.urlFull(Route.route('presupuestoasesor.store')),
                     data: data,
+                    beforeSend: function() {
+                        window.Misc.setSpinner( _this.el );
+                    }
                 })
                 .done(function(resp) {
                     window.Misc.removeSpinner( _this.el );
                     if(resp.success) {
-                        alertify.success('Presupuesto actualizado');
+                        alertify.success(resp.message);
                         return;
+                        
                     }else{
                         if( !_.isObject( resp.errors ) ) {
                             alertify.error(JSON.stringify(resp.errors));
@@ -85,7 +126,7 @@ app || (app = {});
         },
 
         /**
-        * Event Create Folder
+        * Event Change Asesor
         */
         changeAsesor: function (e) {
         	var _this = this;
@@ -105,6 +146,9 @@ app || (app = {});
             .done(function(resp) {
                 window.Misc.removeSpinner( _this.el );
                 if(resp.success) {
+                    _this.meses = resp.meses;
+                    _this.categorias = resp.categorias;
+
                     // asesor
                     _this.$wraperForm.html( _this.template( resp ) );
                     _this.ready();

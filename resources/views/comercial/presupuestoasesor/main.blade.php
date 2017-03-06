@@ -57,33 +57,36 @@
 			<table id="presupuesto-table" class="table table-bordered table-striped" cellspacing="0" width="100%">
 		        <thead>
 		            <tr>
-		                <th width="14%">Categoria<th width="2%">$</th></th>
+		                <th width="10%">Categoria</th>
 		                <% _.each(meses, function(name, month) { %>
 							<th width="7%"><%- name %></th>
 						<% }); %>
+						<th width="6">Total</th>
 		            </tr>
 		        </thead>
+		        
 		        <tbody>
+			        <% _.each(categorias, function(categoria) { %>
+				        <tr>
+				        	<th>
+				        		<%- categoria.categoria_nombre %>
+				        	</th>
 
-		        <% _.each(categorias, function(categoria) { %>
-			        <tr>
-			        	<th><%- categoria.categoria_nombre %></th>
+							<% _.each(meses, function(name, month) { %>
+								<td class="padding-custom-grid">
+									<input type="text" id="presupuestoasesor_valor_<%- categoria.id %>_<%- month %>" name="presupuestoasesor_valor_<%- categoria.id %>_<%- month %>" class="form-control input-sm change-input-presupuesto" value="<%- !_.isUndefined(categoria.presupuesto[month]) ? categoria.presupuesto[month] : 0 %>" data-mes="<%- month %>" data-categoria="<%- categoria.id %>" data-currency-precise>
+								</td>
+							<% }); %>
+							<th class="text-right" id="presupuestoasesor_total_categoria_<%- categoria.id %>" ><%- !_.isUndefined(total_categorias[categoria.id]) ?  window.Misc.currency(total_categorias[categoria.id]) : window.Misc.currency(0) %></th>
+				        </tr>
+				    <% }); %>
 
-			        	<td class="text-center">
-					        <a class="btn btn-default btn-xs btn-export-xls-koi-component" data-resource="">
-					            <span><i class="fa fa-info-circle "></i></span>
-					        </a>
-					    </td>
-
-
-						<% _.each(meses, function(name, month) { %>
-							<td class="padding-custom-grid">
-								<input type="text" id="presupuestoasesor_valor_<%- categoria.id %>_<%- month %>" name="presupuestoasesor_valor_<%- categoria.id %>_<%- month %>" class="form-control input-sm" value="<%- !_.isUndefined(categoria.presupuesto[month]) ? categoria.presupuesto[month] : 0 %>" data-currency-precise>
-							</td>
-						<% }); %>
-			        	
-			        </tr>
-			    <% }); %>
+				    <tr>
+				    	<th>Total</th>
+				    	<% _.each(meses, function(name, month) { %>
+				    		<th id="presupuestoasesor_total_mes_<%- month %>" class="text-right"><%- !_.isUndefined(total_mes[month]) ?  window.Misc.currency(total_mes[month]) : window.Misc.currency(0) %></th>
+					 	<% }); %>
+				    </tr>
 		        </tbody>
 		    </table>
 		</div>
