@@ -48,18 +48,21 @@ class DetallePedidoController extends Controller
             if ($detallePedido->isValid($data)) {
                 DB::beginTransaction();
                 try {
-                    //Validar Producto
-                    $producto = Producto::query()->where('producto_serie',$request->producto_pedido2)->first();
-                    if (!$producto instanceof Producto ) {
-                        DB::rollBack();
-                        return response()->json(['success' => false,'errors' => 'No es posible recuperar producto, por favor verifique la información o consulte al administrador.']);
+
+                    $detalle = [];
+                    $detalle['Producto'] = $request->producto_pedido2;
+                    $detalle['Pedido'] = $request->pedido2_pedido1;
+                    $detalle['Cantidad'] =  $request->pedido2_cantidad;
+                    $detalle['Precio'] =  $request->pedido2_precio;
+                   
+                    $result = $detallePedido->storePedido2($detalle);
+                    if(!$result->success) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $result->error]);
                     }
-                    $detallePedido->fill($data);
-                    $detallePedido->pedido2_pedido1 = $request->pedido2_pedido1;
-                    $detallePedido->pedido2_serie = $producto->id;
-                    $detallePedido->save();
+
                     DB::commit();
-                    return response()->json(['success' => true, 'producto_serie'=>$producto->producto_serie,'producto_nombre'=>$producto->producto_nombre, 'pedido_cantidad'=>$detallePedido->pedido2_cantidad,'pedido_precio'=>$detallePedido->pedido2_precio,'id' => $detallePedido->id]);
+                    return response()->json(['success' => true, 'producto_serie'=>$result->producto_serie,'producto_nombre'=>$result->producto_nombre, 'pedido_cantidad'=>$result->pedido2_cantidad,'pedido_precio'=>$result->pedido2_precio,'id' => $result->id]);
                 } catch (\Exception $e) {
                     DB::rollback();
                     Log::error($e->getMessage());

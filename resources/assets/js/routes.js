@@ -1010,10 +1010,9 @@ app || (app = {});
                 this.editPedidoView.stopListening();
                 this.editPedidoView.undelegateEvents();
             }
-
-            if ( this.createAsientoView instanceof Backbone.View ){
-                this.createAsientoView.stopListening();
-                this.createAsientoView.undelegateEvents();
+            if ( this.createPedidoView instanceof Backbone.View ){
+                this.createPedidoView.stopListening();
+                this.createPedidoView.undelegateEvents();
             }
             
             this.editPedidoView = new app.EditPedidoView({ model: this.pedidoModel });

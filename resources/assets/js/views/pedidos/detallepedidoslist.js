@@ -43,7 +43,6 @@ app || (app = {});
             if( !_.isUndefined(this.parameters.dataFilter.pedido_id) && !_.isNull(this.parameters.dataFilter.pedido_id) ){
                 this.confCollection.data.pedido_id = this.parameters.dataFilter.pedido_id;
                 this.collection.fetch( this.confCollection );
-                // this.collection.fetch( { data: {pedido_id: this.parameters.dataFilter.pedido_id}, reset: true } );
             }
             
         },

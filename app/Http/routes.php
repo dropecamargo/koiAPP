@@ -113,6 +113,7 @@ Route::group(['middleware' => 'auth'], function(){
 		Route::resource('detalle', 'Inventario\DetallePedidoController');
 	});
 	Route::resource('modelos','Inventario\ModeloController', ['except' => ['destroy']]);
+	Route::resource('bitacoras','Admin\BitacoraController', ['only' => ['index']]);
 	Route::resource('marcas', 'Inventario\MarcaController', ['except' => ['destroy']]);
 	Route::resource('categorias', 'Inventario\CategoriaController', ['except' => ['destroy']]);
 	Route::resource('impuestos', 'Inventario\ImpuestoController', ['except' => ['destroy']]);

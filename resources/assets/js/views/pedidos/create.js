@@ -93,6 +93,15 @@ app || (app = {});
             
             if( typeof window.initComponent.initToUpper == 'function' )
                 window.initComponent.initToUpper();
+            
+            if( typeof window.initComponent.initSelect2 == 'function' )
+                window.initComponent.initSelect2();
+            
+            if( typeof window.initComponent.initValidator == 'function' )
+                window.initComponent.initValidator();
+
+            if( typeof window.initComponent.initDatePicker == 'function' )
+                window.initComponent.initDatePicker();
         },
 
         /**
@@ -118,7 +127,13 @@ app || (app = {});
 
                 if( !resp.success ) {
                     alertify.error(text);
-                    return;
+                    return; 
+                }
+
+                // EditPedidoView undelegateEvents
+                if ( this.editPedidoView instanceof Backbone.View ){
+                    this.editPedidoView.stopListening();
+                    this.editPedidoView.undelegateEvents();
                 }
 
                 // Redirect to edit pedido

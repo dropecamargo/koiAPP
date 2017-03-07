@@ -64,7 +64,6 @@ class PedidoController extends Controller
         if ($request->ajax()) {
             $data = $request->all();
             $pedido = new Pedido1;
-            $pedidoDetalle = new Pedido2;
             if ($pedido->isValid($data)) {
                 DB::beginTransaction();
                 try {
@@ -83,16 +82,10 @@ class PedidoController extends Controller
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar tercero, por favor verifique información o consulte al administrador.']);
                     }
 
-                    //validaProducto
-                    $producto = Producto::where('producto_serie',$request->producto_pedido2)->first();
-                    if(!$producto instanceof Producto){
-                        DB::rollback();
-                        return response()->json(['success' => false,'errors' => 'No es posible recuperar producto, por favor verifique información o consulte al administrador']);
-                    }
                     
-                    // Pedidos
+                    
+                    // Pedido
                     $pedido->fill($data);
-                    //$pedido->fillBoolean($data);
                     $pedido->pedido1_documentos = $documento->id;
                     $pedido->pedido1_tercero = $tercero->id;
                     $pedido->pedido1_usuario_elaboro = Auth::user()->id;
@@ -100,11 +93,18 @@ class PedidoController extends Controller
                     $pedido->save();
 
                     //Pedido2
-                    $pedidoDetalle->pedido2_pedido1 = $pedido->id;
-                    $pedidoDetalle->pedido2_serie = $producto->id;
-                    $pedidoDetalle->pedido2_cantidad = $request->pedido2_cantidad;
-                    $pedidoDetalle->pedido2_precio = $request->pedido2_precio;
-                    $pedidoDetalle->save();
+                    $pedidoDetalle = new Pedido2;
+                    $detalle = [];
+                    $detalle['Producto'] = $request->producto_pedido2;
+                    $detalle['Pedido'] = $pedido->id;
+                    $detalle['Cantidad'] =  $request->pedido2_cantidad;
+                    $detalle['Precio'] =  $request->pedido2_precio;
+                   
+                    $result = $pedidoDetalle->storePedido2($detalle);
+                    if(!$result->success) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $result->error]);
+                    }
 
                     // Commit Transaction
                     DB::commit();

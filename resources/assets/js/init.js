@@ -115,7 +115,19 @@ var app = app || {};
                 alias: 'currency',
                 removeMaskOnSubmit: true,
                 unmaskAsNumber: true,
-                min: 0
+                min: 0,
+                onBeforeMask: function (value, opts) {
+                    var processedValue = value || 0;
+
+                    return processedValue;
+                },
+                oncleared: function  (event) {
+                    var $input = $(this);
+
+                    if( this.inputmask.unmaskedvalue() == null || isNaN(parseFloat(this.inputmask.unmaskedvalue())) ) {
+                        $input.inputmask('setvalue', 0);
+                    }
+                },
             });
 
             $("[data-currency-precise]").inputmask({
@@ -125,7 +137,18 @@ var app = app || {};
                 unmaskAsNumber: true,
                 min: 0,
                 digits: 0,
-                // prefix: ''
+                onBeforeMask: function (value, opts) {
+                    var processedValue = value || 0;
+
+                    return processedValue;
+                },
+                oncleared: function  (event) {
+                    var $input = $(this);
+
+                    if( this.inputmask.unmaskedvalue() == null || isNaN(parseFloat(this.inputmask.unmaskedvalue())) ) {
+                        $input.inputmask('setvalue', 0);
+                    }
+                },
             });
         },
 

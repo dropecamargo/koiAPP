@@ -30,7 +30,7 @@ class Pedido2 extends Model
             'pedido2_pedido1' => 'numeric',
             'pedido2_serie' => 'numeric',
             'pedido2_cantidad' => 'required|numeric',
-            //'pedido2_saldo' => 'required|numeric',
+            'pedido2_saldo' => 'numeric',
             'pedido2_precio' => 'numeric'
         ];
 
@@ -41,17 +41,31 @@ class Pedido2 extends Model
         $this->errors = $validator->errors();
         return false;
     }
-    public static function storePedido2(Array $data, Pedido1 $pedido){
+
+    public function storePedido2(Array $data){
         $response = new \stdClass();
         $response->success = false;
         if(!isset($data['Id']) || empty($data['Id'])){
-            $this->pedido2_pedido1 = $pedido->id;
-            $this->pedido2_serie = $data['Producto'] ?: '';
+
+            //validaProducto
+            $producto = Producto::where('producto_serie',$data['Producto'])->first();
+            if(!$producto instanceof Producto){
+                DB::rollback();
+                return response()->json(['success' => false,'errors' => 'No es posible recuperar producto, por favor verifique información o consulte al administrador']);
+            }
+            $this->pedido2_pedido1 = $data['Pedido'] ?: '';
+            $this->pedido2_serie = $producto->id ?: '';
             $this->pedido2_cantidad = $data['Cantidad'] ?: 0;
-            $this->pedido2_cantidad = $data['Precio'] ?: 0;
+            $this->pedido2_precio = $data['Precio'] ?: 0;
             $this->save();
-            $response->success = true;
         }
+        //response items
+        $response->success = true;  
+        $response->producto_serie = $producto->producto_serie;  
+        $response->producto_nombre = $producto->producto_nombre;  
+        $response->pedido2_cantidad = $this->pedido2_cantidad;  
+        $response->pedido2_precio = $this->pedido2_precio;  
+        $response->id = $this->id;  
         return $response;
     }
 

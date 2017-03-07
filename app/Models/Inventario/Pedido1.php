@@ -35,7 +35,7 @@ class Pedido1 extends BaseModel
     protected $boolean = [ 'pedido1_anulado','pedido1_cerrado'];
 
     /**
-     * The default contador if documentos.
+     * The default pedido if documentos.
      *
      * @var static string
      */
