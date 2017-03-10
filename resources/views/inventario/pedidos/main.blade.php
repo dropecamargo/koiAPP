@@ -34,8 +34,8 @@
                                 <a role="menuitem" tabindex="-1" href="#" class="close-pedido">
                                     <i class="fa fa-lock"></i>Cerrar Pedido
                                 </a>
-                                <a role="menuitem" tabindex="-1" href="#" class="clone-pedido">
-                                    <i class="fa fa-clone"></i>Clonar Pedido
+                                <a role="menuitem" tabindex="-1" href="#" class="cancel-pedido">
+                                    <i class="fa fa-times"></i>Anular Pedido
                                 </a>
                             </li>
                         </ul>
@@ -43,23 +43,23 @@
                 <% } %>
             </ul><br>
             <div class="tab-content">
-                {{-- Content orden --}}
+                {{-- Content pedidos --}}
                 <div class="tab-pane active" id="tab_pedido">
                     <div class="box box-whithout-border">
                         <div class="box-body">
                             <form method="POST" accept-charset="UTF-8" id="form-pedido" data-toggle="validator">
                                 <div class="row">
                                     <label for="pedido1_sucursal" class="col-sm-1 control-label">Sucursal</label>
-                                    <div class="form-group col-sm-3 ">
-                                        <select name="pedido1_sucursal" id="pedido1_sucursal" class="form-control select2-default-clear">
+                                    <div class="form-group col-sm-3">
+                                        <select name="pedido1_sucursal" id="pedido1_sucursal" class="form-control select2-default change-sucursal-consecutive-koi-component" data-field="pedido1_numero" data-document ="pedido" data-wrapper="pedido-create">
                                         @foreach( App\Models\Base\Sucursal::getSucursales() as $key => $value)
-                                        <option value="{{ $key }}" <%- pedido1_sucursal == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
+                                        <option  value="{{ $key }}" <%- pedido1_sucursal == '{{ $key }}' ? 'selected': ''%>>{{ $value }}</option>
                                         @endforeach
                                         </select>
                                     </div>
                                     <label for="pedido1_numero" class="col-sm-1 control-label">Número</label>
                                     <div class="form-group col-sm-1">     
-                                        <input id="pedido1_numero" name="pedido1_numero" placeholder="Número" class="form-control input-sm" type="number" min="1" value="<%- pedido1_numero %>" required>
+                                        <input id="pedido1_numero" name="pedido1_numero" class="form-control input-sm" type="number" min="1" value="<%- pedido1_numero %>" required readonly>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -89,11 +89,11 @@
                                     <div class="form-group col-sm-3">
                                         <div class="input-group input-group-sm">
                                             <span class="input-group-btn">
-                                                <button type="button" class="btn btn-default btn-flat btn-koi-search-tercero-component-table" data-field="pedido1_tercero">
+                                                <button type="button" class="btn btn-default btn-flat btn-koi-search-tercero-component-table" data-field="pedido1_tercero" <%- edit ? 'disabled': ''%>>
                                                     <i class="fa fa-user"></i>
                                                 </button>
                                             </span>
-                                            <input id="pedido1_tercero" placeholder="Cliente" class="form-control tercero-koi-component" name="pedido1_tercero" type="text" maxlength="15" data-wrapper="pedido-create" data-name="pedido1_terecero_nombre" data-contacto="btn-add-contact" value="<%- tercero_nit %>" required>
+                                            <input id="pedido1_tercero" placeholder="Cliente" class="form-control tercero-koi-component" name="pedido1_tercero" type="text" maxlength="15" data-wrapper="pedido-create" data-name="pedido1_terecero_nombre" data-contacto="btn-add-contact" value="<%- tercero_nit %>" required <%- edit ? 'readonly': ''%>>
                                         </div>
                                     </div>
                                     <div class="col-sm-4 col-xs-12">
@@ -130,11 +130,11 @@
                                             <div class="form-group col-sm-2 col-md-offset-2">
                                                 <div class="input-group input-group-sm">
                                                     <span class="input-group-btn">
-                                                        <button type="button" class="btn btn-default btn-flat btn-koi-search-producto-component" data-field="producto_pedido2">
+                                                        <button type="button" class="btn btn-default btn-flat btn-koi-search-producto-component"  data-field="producto_pedido2">
                                                             <i class="fa fa-barcode"></i>
                                                         </button>
                                                     </span>
-                                                    <input id="producto_pedido2" placeholder="Serie" class="form-control producto-koi-component" name="producto_pedido2" type="text" maxlength="15" data-wrapper="pedido-create" data-tipo="" data-name="producto_pedido2_nombre" data-ref="producto_pedido2_referencia" required>
+                                                    <input id="producto_pedido2" placeholder="Serie" class="form-control producto-koi-component" name="producto_pedido2" type="text" maxlength="15" data-wrapper="pedido-create" data-tipo="" data-name="producto_pedido2_nombre" data-ref="true" required>
                                                 </div>
                                             </div>
                                             <div class="col-sm-5 ">
@@ -146,6 +146,7 @@
                                                 </button>
                                             </div>
                                         </div>
+             
                                         <div class="row">
                                             <label class="control-label col-sm-1 col-md-offset-3">Cantidad</label>
                                             <div class="col-sm-1">
@@ -165,7 +166,7 @@
                                         <thead>
                                             <tr>
                                                 <th width="5%"></th>
-                                                <th width="15%">Serie</th>
+                                                <th width="15%">Referencia</th>
                                                 <th width="50%">Nombre</th>
                                                 <th width="15%">Cantidad</th>
                                                 <th width="15%">Precio</th>
@@ -180,20 +181,52 @@
                         </div>
                     </div>
                 </div>
+                {{-- Content bitacora --}}
+                <% if( typeof(id) !== 'undefined' && !_.isUndefined(id) && !_.isNull(id) && id != '') { %>
+                    <div class="tab-pane" id="tab_bitacora">
+                        <div class="box box-whithout-border" id="wrapper-bitacora">
+                            <div class="box-body">
+                                <div class="table-responsive no-padding">
+                           
+                                    <table id="browse-bitacora-list" class="table table-hover table-bordered" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <th width="25%">Nombre</th>
+                                                <th width="20%">Campo</th>
+                                                <th width="20%">Anterior</th>
+                                                <th width="20%">Nuevo</th>
+                                                <th width="15%">Fecha</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {{-- Render content item bitacora --}}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <% } %>
             </div>      
         </div>
    
     </script>
 
     <script type="text/template" id="add-pedidodetalle-item-tpl">
-        <td class="text-center">
-            <a class="btn btn-default btn-xs item-detallepedido-remove" data-resource="<%- id %>">
-                <span><i class="fa fa-times"></i></span>
-            </a>
-        </td>
+        <% if(edit){ %>
+            <td class="text-center">
+                <a class="btn btn-default btn-xs item-detallepedido-remove" data-resource="<%- id %>">
+                    <span><i class="fa fa-times"></i></span>
+                </a>
+            </td>
+        <% } %>
         <td><%- producto_serie %></td>
         <td><%- producto_nombre %></td>
         <td><%- pedido2_cantidad %></td>
         <td><%- window.Misc.currency(pedido2_precio) %></td>
+    </script>
+
+    <script type="text/template" id="pedido-close-confirm-tpl">
+        <p>¿Está seguro que desea cerrar el pedido de mercancía <b><%- id_pedido %></b>?</p>
     </script>
 @stop

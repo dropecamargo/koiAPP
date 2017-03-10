@@ -24,7 +24,7 @@ class Pedido1 extends BaseModel
     *
     * @var array
     */
-    protected $fillable = ['pedido1_numero','pedido1_sucursal','pedido1_tercero','pedido1_fecha','pedido1_documentos','pedido1_fecha_estimada','pedido1_anticipo','pedido1_fecha_anticipo','pedido1_observaciones'];
+    protected $fillable = ['pedido1_sucursal','pedido1_fecha','pedido1_fecha_estimada','pedido1_anticipo','pedido1_fecha_anticipo','pedido1_observaciones'];
 
 
      /**
@@ -33,6 +33,13 @@ class Pedido1 extends BaseModel
      * @var array
      */
     protected $boolean = [ 'pedido1_anulado','pedido1_cerrado'];
+
+    /**
+     * The attributes that are mass bitacora assignable.
+     *
+     * @var array
+     */
+    protected $bitacora = ['pedido1_fecha','pedido1_fecha_estimada','pedido1_anticipo','pedido1_fecha_anticipo','pedido1_observaciones'];
 
     /**
      * The default pedido if documentos.
@@ -46,7 +53,7 @@ class Pedido1 extends BaseModel
     public function isValid($data)
     {
         $rules = [
-            'pedido1_sucursal' => 'required|numeric',
+            'pedido1_sucursal' => 'numeric',
             'pedido1_tercero' => 'required|numeric',
             'pedido1_fecha' => 'required|date',
             'pedido1_fecha_estimada' => 'required|date'
@@ -64,11 +71,10 @@ class Pedido1 extends BaseModel
     public static function getPedido($id)
     {
         $query = Pedido1::query();
-        $query->select('pedido1.*','tercero_nit',DB::raw("CONCAT(tercero_nombre1, ' ', tercero_nombre2, ' ', tercero_apellido1, ' ', tercero_apellido2) as tercero_nombre"));
+        $query->select('pedido1.*','tercero_nit',DB::raw("CONCAT(tercero_nombre1, ' ', tercero_nombre2, ' ', tercero_apellido1, ' ', tercero_apellido2) as tercero_nombre"),'sucursal_nombre');
 
         $query->join('tercero', 'pedido1.pedido1_tercero', '=', 'tercero.id');
-        
-     
+        $query->join('sucursal', 'pedido1.pedido1_sucursal', '=', 'sucursal.id');
         $query->where('pedido1.id', $id);
         return $query->first();
     }

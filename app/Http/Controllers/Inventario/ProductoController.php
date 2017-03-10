@@ -27,20 +27,29 @@ class ProductoController extends Controller
 
             // Persistent data filter
             if($request->has('persistent') && $request->persistent) {
+                session(['search_producto_referencia' => $request->has('producto_referencia') ? $request->producto_referencia : '']);
                 session(['search_producto_serie' => $request->has('producto_serie') ? $request->producto_serie : '']);
                 session(['search_producto_nombre' => $request->has('producto_nombre') ? $request->producto_nombre : '']);
             }
 
             return Datatables::of($query)
                 ->filter(function($query) use($request) {
-                    // Codigo
+                    // Serie
                     if($request->has('producto_serie')) {
                         $query->whereRaw("producto_serie LIKE '%{$request->producto_serie}%'");
+                    } 
+                    //Referencia
+                    if($request->has('producto_referencia')) {
+                        $query->whereRaw("producto_serie LIKE '%{$request->producto_referencia}%'");
                     }
 
                     // Nombre
                     if($request->has('producto_nombre')) {
                         $query->whereRaw("producto_nombre LIKE '%{$request->producto_nombre}%'");
+                    }
+                    //Ref and Serie equals filter
+                    if ($request->has('equalsRef')) {
+                        $query->whereRaw('producto_serie = producto_referencia');
                     }
                 })
                 ->make(true);
@@ -183,9 +192,9 @@ class ProductoController extends Controller
     public function search(Request $request)
     {
         if($request->has('producto_serie')) {
-            $producto = Producto::select('id', 'producto_nombre', 'producto_serie','producto_referencia')->where('producto_serie', $request->producto_serie)->first();
+            $producto = Producto::select('id', 'producto_nombre', 'producto_serie')->where('producto_serie', $request->producto_serie)->first();
             if($producto instanceof Producto) {
-                return response()->json(['success' => true, 'id' => $producto->id, 'producto_nombre' => $producto->producto_nombre, 'producto_serie' => $producto->producto_serie, 'producto_referencia' => $producto->producto_referencia]);
+                return response()->json(['success' => true, 'id' => $producto->id, 'producto_nombre' => $producto->producto_nombre, 'producto_serie' => $producto->producto_serie]);
             }
         }
         return response()->json(['success' => false]);

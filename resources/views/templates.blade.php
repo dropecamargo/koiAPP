@@ -885,3 +885,14 @@
     </div>
 </script>
 
+
+<script type="text/template" id="add-bitacora-item-tpl">
+  
+    
+    <td><%- tercero_nombre %></td>
+    <td><%- bitacora_campo %></td>
+    <td> <%- bitacora_anterior %></td>
+    <td> <%- bitacora_nuevo %></td>
+    <td><%- bitacora_fh_elaboro %></td>
+</script>
+

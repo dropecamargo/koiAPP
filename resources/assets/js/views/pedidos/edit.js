@@ -1,4 +1,4 @@
-/**
+    /**
 * Class EditPedidoView  of Backbone Router
 * @author KOI || @dropecamargo
 * @link http://koi-ti.com
@@ -14,8 +14,11 @@ app || (app = {});
         template: _.template(($('#add-pedido-tpl').html() || '') ),
         events: {
             'click .submit-pedido' :'submitPedido',
+            'click .close-pedido' :'closePedido',
+            'click .cancel-pedido' :'cancelPedido',
             'submit #form-pedido' :'onStore',
             'submit #form-detalle-pedido' :'onStoreDetalle',
+
         },
         parameters: {
         },
@@ -101,7 +104,8 @@ app || (app = {});
                     edit: true,
                     wrapper: this.el,
                     dataFilter: {
-                        'documento_id': this.model.get('id')
+                        'document_id': this.model.get('id'),
+                        'document_type': this.model.get('pedido1_documentos')
                     }
                }
             });
@@ -136,6 +140,56 @@ app || (app = {});
                 this.detallePedido.trigger('store' , data);
             }
         },
+        
+        /**
+        * Close pedido
+        */
+        closePedido: function (e) {
+            e.preventDefault();
+
+            var _this = this;
+            var cancelConfirm = new window.app.ConfirmWindow({
+                parameters: {
+                    dataFilter: { id_pedido: _this.model.get('id') },
+                    template: _.template( ($('#pedido-close-confirm-tpl').html() || '') ),
+                    titleConfirm: 'Cerrar Pedido',
+                    onConfirm: function () {
+                        // Close pedido
+                        $.ajax({
+                            url: window.Misc.urlFull( Route.route('pedidos.cerrar', { pedidos: _this.model.get('id') }) ),
+                            type: 'GET',
+                            beforeSend: function() {
+                                window.Misc.setSpinner( _this.el );
+                            }
+                        })
+                        .done(function(resp) {
+                            window.Misc.removeSpinner( _this.el );
+
+                            if(!_.isUndefined(resp.success)) {
+                                // response success or error
+                                var text = resp.success ? '' : resp.errors;
+                                if( _.isObject( resp.errors ) ) {
+                                    text = window.Misc.parseErrors(resp.errors);
+                                }
+
+                                if( !resp.success ) {
+                                    alertify.error(text);
+                                    return;
+                                }
+
+                                window.Misc.successRedirect( resp.msg, window.Misc.urlFull(Route.route('pedidos.show', { pedidos: _this.model.get('id') })) );
+                            }
+                        })
+                        .fail(function(jqXHR, ajaxOptions, thrownError) {
+                            window.Misc.removeSpinner( _this.el );
+                            alertify.error(thrownError);
+                        });
+                    }
+                }
+            });
+
+            cancelConfirm.render();
+        },
 
         /**
         * Load spinner on the request
@@ -164,7 +218,8 @@ app || (app = {});
                 }
 
                 // Redirect to edit pedido
-                Backbone.history.navigate(Route.route('pedidos.edit', { pedidos: resp.id}), { trigger:true });
+               window.Misc.redirect( window.Misc.urlFull(Route.route('pedidos.edit', { pedidos: resp.id})));
+               
             }
         }
     });

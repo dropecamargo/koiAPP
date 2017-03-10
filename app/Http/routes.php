@@ -111,6 +111,8 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::group(['prefix' => 'pedidos'], function()
 	{
 		Route::resource('detalle', 'Inventario\DetallePedidoController');
+		Route::get('cerrar/{pedidos}', ['as' => 'pedidos.cerrar', 'uses' => 'Inventario\PedidoController@cerrar']);
+		Route::get('anular/{pedidos}', ['as' => 'pedidos.anular', 'uses' => 'Inventario\PedidoController@anular']);
 	});
 	Route::resource('modelos','Inventario\ModeloController', ['except' => ['destroy']]);
 	Route::resource('bitacoras','Admin\BitacoraController', ['only' => ['index']]);

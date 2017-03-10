@@ -21,7 +21,7 @@ class CreateBitacoraTable extends Migration
             $table->string('bitacora_campo',30);
             $table->text('bitacora_anterior');
             $table->text('bitacora_nuevo'); 
-            $table->date('bitacora_fh_elaboro');
+            $table->dateTime('bitacora_fh_elaboro');
             $table->integer('bitacora_usuario_elaboro')->unsigned();
 
             $table->foreign('bitacora_documentos')->references('id')->on('documentos')->onDelete('restrict');

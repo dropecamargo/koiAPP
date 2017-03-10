@@ -62,7 +62,7 @@ class DetallePedidoController extends Controller
                     }
 
                     DB::commit();
-                    return response()->json(['success' => true, 'producto_serie'=>$result->producto_serie,'producto_nombre'=>$result->producto_nombre, 'pedido_cantidad'=>$result->pedido2_cantidad,'pedido_precio'=>$result->pedido2_precio,'id' => $result->id]);
+                    return response()->json(['success' => true, 'producto_serie'=>$result->producto_serie,'producto_nombre'=>$result->producto_nombre, 'pedido_cantidad'=>$result->pedido2_cantidad,'pedido_precio'=>$result->pedido2_precio,'id'=>$result->id]);
                 } catch (\Exception $e) {
                     DB::rollback();
                     Log::error($e->getMessage());
@@ -126,7 +126,7 @@ class DetallePedidoController extends Controller
                     return response()->json(['success' => false, 'errors' => 'No es posible definir pedido, por favor verifique la información del pedido o consulte al administrador.']);
                 }
                 
-                // Eliminar item asiento2
+                // Eliminar item detallepedido
                 $pedido2->delete();
 
                 DB::commit();

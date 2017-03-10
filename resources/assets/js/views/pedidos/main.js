@@ -32,11 +32,16 @@ app || (app = {});
                 serverSide: true,
                 language: window.Misc.dataTableES(),
                 ajax: window.Misc.urlFull( Route.route('pedidos.index') ),
-                columns: [
-              
-                    { data: 'id', name: 'id' },
+                columns: [ 
+                    { data: 'pedido1_numero', name: 'pedido1_numero' },
+                    { data: 'sucursal_nombre', name: 'sucursal_nombre' },
                     { data: 'tercero_nombre', name: 'tercero_nombre' },
-                    { data: 'pedido1_fecha', name: 'pedido1_fecha' }
+                    { data: 'pedido1_fecha', name: 'pedido1_fecha' },
+                    { data: 'tercero_nombre1', name: 'tercero_nombre1' },
+                    { data: 'tercero_nombre2', name: 'tercero_nombre2' },
+                    { data: 'tercero_nombre2', name: 'tercero_apellido1' },
+                    { data: 'tercero_nombre2', name: 'tercero_apellido2' },
+                    { data: 'tercero_nit', name: 'tercero_nit' }
                 ],
                 buttons: [
                     {
@@ -52,14 +57,22 @@ app || (app = {});
                         targets: 0,
                         width: '25%',
                         render: function ( data, type, full, row ) {
-                            if (!full.pedido1_cerrado) {
-                                return '<a href="'+ window.Misc.urlFull( Route.route('pedidos.edit', {pedidos: full.id }) )  +'">' + data +' <span class="label label-success"> Abierto</span></a>';
+                            if (full.pedido1_cerrado || full.pedido1_anulado) {
+                                return '<a href="'+ window.Misc.urlFull( Route.route('pedidos.show', {pedidos: full.id}) )  +'">' + data + ' <span class="label label-warning"> Ver</span></a>';
                             }else{
-                                return '<a href="'+ window.Misc.urlFull( Route.route('pedidos.show', {pedidos: full.id }) )  +'">' + data + '</a>';
+                                return '<a href="'+ window.Misc.urlFull( Route.route('pedidos.edit', {pedidos: full.id }) )  +'">' + data +' <span class="label label-success"> Abierto</span></a>';
                             }
                         },
                        
-                    }
+                    },
+                    {
+                        targets:2,
+                        searchable:false
+                    },
+                    {
+                        targets:[4,5,6,7,8],
+                        visible:false
+                    },
                 ]
             });
         },

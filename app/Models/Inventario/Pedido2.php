@@ -3,6 +3,7 @@
 namespace App\Models\Inventario;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 use App\Models\Inventario\Pedido1;
 use Validator,Cache,DB;
 class Pedido2 extends Model
@@ -47,11 +48,16 @@ class Pedido2 extends Model
         $response->success = false;
         if(!isset($data['Id']) || empty($data['Id'])){
 
-            //validaProducto
+            //Validate Product
             $producto = Producto::where('producto_serie',$data['Producto'])->first();
             if(!$producto instanceof Producto){
-                DB::rollback();
-                return response()->json(['success' => false,'errors' => 'No es posible recuperar producto, por favor verifique información o consulte al administrador']);
+                $response->error = "No es posible recuperar Producto, por favor verifique la información del asiento o consulte al administrador.";
+                return $response;
+            }
+            //Validate Esquals Ref & Serie
+            if ($producto->producto_serie != $producto->producto_referencia) {
+                $response->error = "No es posible recuperar referencia del Producto, por favor verifique la información del asiento o consulte al administrador.";
+                return $response;
             }
             $this->pedido2_pedido1 = $data['Pedido'] ?: '';
             $this->pedido2_serie = $producto->id ?: '';
@@ -59,7 +65,7 @@ class Pedido2 extends Model
             $this->pedido2_precio = $data['Precio'] ?: 0;
             $this->save();
         }
-        //response items
+        //Response items
         $response->success = true;  
         $response->producto_serie = $producto->producto_serie;  
         $response->producto_nombre = $producto->producto_nombre;  

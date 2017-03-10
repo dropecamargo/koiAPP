@@ -38,17 +38,17 @@ app || (app = {});
             this.$modalComponent.find('.content-modal').html( this.template({ }) );
 
             // References
+            this.$searchReferencia = this.$('#koi_search_producto_referencia');
             this.$searchSerie = this.$('#koi_search_producto_serie');
             this.$searchNombre = this.$('#koi_search_producto_nombre');
 
             this.$productosSearchTable = this.$modalComponent.find('#koi-search-producto-component-table');
 			this.$inputContent = this.$("#"+$(e.currentTarget).attr("data-field"));
 			this.$inputName = this.$("#"+this.$inputContent.attr("data-name"));
-			this.$inputRef = this.$("#"+this.$inputContent.attr("data-ref"));
 			this.$wraperType = this.$("#"+this.$inputContent.attr("data-render"));
-
-			// Filters
 			
+			// Filters
+			this.equalsRef = this.$inputContent.attr("data-ref");
 			this.productosSearchTable = this.$productosSearchTable.DataTable({
 				dom: "<'row'<'col-sm-12'tr>>" +
 					"<'row'<'col-sm-5'i><'col-sm-7'p>>",
@@ -60,10 +60,12 @@ app || (app = {});
                     data: function( data ) {
                         data.producto_serie = _this.$searchSerie.val();
                         data.producto_nombre = _this.$searchNombre.val();                     
-                        // data.producto_tercero = tercero;                        
+                        data.producto_referencia = _this.$searchReferencia.val();                                            
+                        data.equalsRef = _this.equalsRef;                                            
                     }
                 },
                 columns: [
+                    { data: 'producto_referencia', name: 'producto_referencia'},
                     { data: 'producto_serie', name: 'producto_serie' },
                     { data: 'producto_nombre', name: 'producto_nombre' }, 
                 ],
@@ -92,7 +94,7 @@ app || (app = {});
 
 			this.$inputContent.val( data.producto_serie );
 			this.$inputName.val( data.producto_nombre );
-			this.$inputRef.val( data.producto_referencia );
+			
 
 		 	if(this.$wraperType.length) {
                 this.renderType(data.tipo_codigo);
@@ -123,7 +125,7 @@ app || (app = {});
 
 			this.$inputContent = $(e.currentTarget);
 			this.$inputName = this.$("#"+$(e.currentTarget).attr("data-name"));
-			this.$inputRef = this.$("#"+$(e.currentTarget).attr("data-ref"));
+			
 			this.$wraperConten = this.$("#"+$(e.currentTarget).attr("data-wrapper"));
 			this.$wraperType = this.$("#"+this.$inputContent.attr("data-render"));
             
@@ -149,15 +151,11 @@ app || (app = {});
 	                if(resp.success) {
 	                    if(!_.isUndefined(resp.producto_nombre) && !_.isNull(resp.producto_nombre)){
 							_this.$inputName.val(resp.producto_nombre);
-							_this.$inputRef.val(resp.producto_referencia);
-	                    }
-	                    if(!_.isUndefined(resp.producto_referencia) && !_.isNull(resp.producto_referencia)){
-							_this.$inputRef.val(resp.producto_referencia);
 	                    }
 
 	                    if(_this.$wraperType.length) {
     		            	_this.renderType(resp.tipo_codigo);
-	                    }
+	                    } 
 	                   
 	                }
 	            })
@@ -181,6 +179,7 @@ app || (app = {});
 	        	var template = _.template($('#koi-search-producto-type-component-tpl').html());
 	           	this.$wraperType.html( template( data ) );
         	}
+        
         },
 
         /**

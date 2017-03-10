@@ -11,7 +11,8 @@
 				<table id="pedido-search-table" class="table table-bordered table-striped" cellspacing="0" width="100%">
 			        <thead>
 			            <tr>
-			                <th>Id</th>
+			                <th>Numero</th>
+			                <th>Sucursal</th>
 			                <th>Tercero</th>
 			                <th>Fecha</th>
 			            </tr>

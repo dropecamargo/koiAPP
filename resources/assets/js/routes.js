@@ -107,6 +107,7 @@ app || (app = {});
             'pedidos(/)': 'getPedidosMain',
             'pedidos/create(/)': 'getPedidosCreate',
             'pedidos/:pedido/edit(/)': 'getPedidosEdit',
+            'pedidos/:pedidos(/)': 'getPedidoShow',
 
             'marcas(/)': 'getMarcasMain',
             'marcas/create(/)': 'getMarcasCreate',
@@ -171,6 +172,7 @@ app || (app = {});
             this.componentReporteView = new app.ComponentReporteView();
             this.componentCreateResourceView = new app.ComponentCreateResourceView();
             this.componentSearchCuentaView = new app.ComponentSearchCuentaView();
+            this.componentConsecutiveView = new app.ComponentConsecutiveView();
 
       	},
 
@@ -943,6 +945,9 @@ app || (app = {});
             this.unidadModel.fetch();
         },
 
+        /**
+        * show view main producto
+        */
         getProductosMain: function () {
 
             if ( this.mainProductosView instanceof Backbone.View ){
@@ -953,6 +958,9 @@ app || (app = {});
             this.mainProductosView = new app.MainProductosView( );
         },
 
+        /**
+        * show view create producto
+        */
         getProductosCreate: function () {
             this.productoModel = new app.ProductoModel();
 
@@ -965,6 +973,9 @@ app || (app = {});
             this.createProductoView.render();
         },
 
+        /**
+        * show view edit producto
+        */
         getProductosEdit: function (producto) {
             this.productoModel = new app.ProductoModel();
             this.productoModel.set({'id': producto}, {silent: true});
@@ -978,6 +989,9 @@ app || (app = {});
             this.productoModel.fetch();
         },
 
+        /**
+        * show view main pedido
+        */
         getPedidosMain: function () {
 
             if ( this.mainPedidosView instanceof Backbone.View ){
@@ -988,6 +1002,9 @@ app || (app = {});
             this.mainPedidosView = new app.MainPedidosView( );
         },
 
+        /**
+        * show view create pedido
+        */
         getPedidosCreate: function () {
             
             this.pedidoModel = new app.PedidoModel();
@@ -1001,6 +1018,25 @@ app || (app = {});
             this.createPedidoView.render();
         },
 
+        /**
+        * show view show pedido
+        */
+        getPedidoShow: function (pedidos) {
+            this.pedidoModel = new app.PedidoModel();
+            this.pedidoModel.set({'id': pedidos}, {'silent':true});
+
+            if ( this.showPedidoView instanceof Backbone.View ){
+                this.showPedidoView.stopListening();
+                this.showPedidoView.undelegateEvents();
+            }
+
+            this.showPedidoView = new app.ShowPedidoView({ model: this.pedidoModel });
+            this.pedidoModel.fetch();
+        },
+
+        /**
+        * show view edit pedido
+        */
         getPedidosEdit: function (pedido) {
           
             this.pedidoModel = new app.PedidoModel();

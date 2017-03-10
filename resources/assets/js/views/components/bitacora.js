@@ -32,7 +32,7 @@ app || (app = {});
             this.listenTo( this.collection, 'request', this.loadSpinner);
             this.listenTo( this.collection, 'sync', this.responseServer);
 
-            this.collection.fetch({ data: {documento_id: this.parameters.dataFilter.documento_id}, reset: true });
+            this.collection.fetch({ data: {document_id: this.parameters.dataFilter.document_id , document_type: this.parameters.dataFilter.document_type}, reset: true });
             
         },
 
@@ -45,17 +45,18 @@ app || (app = {});
 
         /**
         * Render view contact by model
-        * @param Object detallePedidoModel Model instance
+        * @param Object bitacoraModel Model instance
         */
-        addOne: function (detallePedidoModel) {
-            var view = new app.DetallePedidoItemView({
-                model: detallePedidoModel,
+        addOne: function (bitacoraModel) {
+            
+            var view = new app.BitacoraItemView({
+                model: bitacoraModel,
                 parameters: {
                     edit: this.parameters.edit
                 }
             });
-            detallePedidoModel.view = view;
-            this.$el.append( view.render().el );
+            bitacoraModel.view = view;
+            this.$el.prepend( view.render().el );
         },
 
         /**
