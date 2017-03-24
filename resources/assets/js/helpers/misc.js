@@ -234,6 +234,49 @@
         },
 
         /**
+        *Evaluate action Inventory
+        */
+        evaluateActionsInventory: function(options){
+            options || (options = {});
+            var defaults = {
+                'callback': null,
+                'wrap': 'body',
+                'data': null
+            }, settings = {};
+
+            settings = $.extend({}, defaults, options);
+            $.ajax({
+                url: window.Misc.urlFull(Route.route('productos.evaluate')),
+                type: 'POST',
+                data: settings.data,
+                beforeSend: function() {
+                    window.Misc.setSpinner( settings.wrap );
+                }
+            })
+            .done(function(resp) {
+                window.Misc.removeSpinner( settings.wrap );
+
+                // response success or error
+                var text = resp.success ? '' : resp.errors;
+                if( _.isObject( resp.errors ) ) {
+                    text = window.Misc.parseErrors(resp.errors);
+                }
+
+                if( !resp.success ) {
+                    alertify.error(text);
+                    return;
+                }
+
+                // return callback
+                if( ({}).toString.call(settings.callback).slice(8,-1) === 'Function' )
+                    settings.callback( resp.action, resp.tipoajuste );
+            })
+            .fail(function(jqXHR, ajaxOptions, thrownError) {
+                window.Misc.removeSpinner( settings.wrap );
+                alertify.error(thrownError);
+            });
+        },
+        /**
         * Evaluate facturap
         */
         evaluateFacturap: function ( options ) {

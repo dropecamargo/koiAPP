@@ -9,7 +9,7 @@ use App\Http\Controllers\Controller;
 
 use DB, Log, Datatables;
 
-use App\Models\Inventario\Producto;
+use App\Models\Inventario\Producto,App\Models\Inventario\Impuesto,App\Models\Inventario\TipoAjuste;
 
 class ProductoController extends Controller
 {
@@ -23,7 +23,7 @@ class ProductoController extends Controller
         if ($request->ajax()) {
 
             $query = Producto::query();
-            $query->select('producto.id as id', 'producto_serie', 'producto_nombre','producto_referencia');
+            $query->select('producto.id as id', 'producto_serie', 'producto_nombre','producto_referencia','producto_costo');
 
             // Persistent data filter
             if($request->has('persistent') && $request->persistent) {
@@ -81,9 +81,15 @@ class ProductoController extends Controller
             if ($producto->isValid($data)) {
                 DB::beginTransaction();
                 try {
+                    $impuesto = Impuesto::where('id', $request->producto_impuesto)->first();
+                    if (!$impuesto instanceof Impuesto) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar IMPUESTO,verifique información ó por favor consulte al administrador.']);
+                    }
                     // Producto
                     $producto->producto_serie = $request->producto_referencia;
                     $producto->fill($data);
+                    $producto->producto_impuesto = $impuesto->id;
                     $producto->fillBoolean($data);
                     $producto->save();  
 
@@ -183,6 +189,45 @@ class ProductoController extends Controller
     {
         //
     }
+    /**
+     * Evaluate actions detail asiento.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function evaluate(Request $request)
+    {   
+        // Prepare response
+        $response = new \stdClass();
+        $response->action = "";
+        $response->tipoajuste = "";
+        $response->success = false;
+
+        $tipoajuste = TipoAjuste::find($request->tipoajuste);
+        if (!$tipoajuste instanceof TipoAjuste) {            
+            $response->errors = "No es posible recuperar TIPO AJUSTE,verifique información ó por favor consulte al administrador.";
+        }
+        $producto = Producto::where('producto_serie', $request->ajuste2_producto)->first();
+        if (!$producto instanceof Producto) {
+            $response->errors = "No es posible recuperar PRODUCTO,verifique información ó por favor consulte al administrador.";
+        }
+
+            if ($producto->producto_unidad == true) {
+                if($tipoajuste->tipoajuste_tipo == 'E'){
+                    if ($producto->producto_maneja_serie == true) {
+                        $action = 'modalSerie';
+                        $response->action = $action;   
+                        $response->tipoajuste = $tipoajuste->tipoajuste_tipo;
+                    }  
+                    $response->success = true;
+            }else{
+                $response->errors = "No es posible realizar movimientos para productos que no manejan unidades";
+            }  
+        }else{
+            $response->errors = "SALIDAS";
+            $response->success = true;
+        }
+        return response()->json($response);
+    }
 
     /**
      * Search producto.
@@ -192,9 +237,9 @@ class ProductoController extends Controller
     public function search(Request $request)
     {
         if($request->has('producto_serie')) {
-            $producto = Producto::select('id', 'producto_nombre', 'producto_serie')->where('producto_serie', $request->producto_serie)->first();
+            $producto = Producto::select('id', 'producto_nombre', 'producto_serie','producto_costo')->where('producto_serie', $request->producto_serie)->first();
             if($producto instanceof Producto) {
-                return response()->json(['success' => true, 'id' => $producto->id, 'producto_nombre' => $producto->producto_nombre, 'producto_serie' => $producto->producto_serie]);
+                return response()->json(['success' => true, 'id' => $producto->id, 'producto_nombre' => $producto->producto_nombre, 'producto_serie' => $producto->producto_serie ,'producto_costo'=>$producto->producto_costo]);
             }
         }
         return response()->json(['success' => false]);

@@ -14,7 +14,7 @@ app || (app = {});
         el: '#productos-create',
         template: _.template( ($('#add-producto-tpl').html() || '') ),
         events: {
-            'ifChecked #producto_serie': 'serieChange',
+            'ifChecked #producto_maneja_serie': 'serieChange',
             'ifChecked #producto_metrado': 'metradoChange',
             'submit #form-productos': 'onStore'
         },
@@ -60,7 +60,7 @@ app || (app = {});
             this.$wraperForm.html( this.template(attributes) );
 
             // References
-            this.$inputSerie = this.$("#producto_serie");
+            this.$inputSerie = this.$("#producto_maneja_serie");
             this.$inputMetrado = this.$("#producto_metrado");
 
             this.ready();

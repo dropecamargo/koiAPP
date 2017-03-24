@@ -51,7 +51,7 @@
             <table id="presupuesto-table" class="table table-bordered table-striped" cellspacing="0" width="100%">
                 <thead>
                     <tr>
-                       <th width="10%">Categoria</th>
+                       <th width="10%">Sub Categoria</th>
                         <% _.each(meses, function(name, month) { %>
                             <th width="7%"><%- name %></th>
                         <% }); %>
@@ -60,17 +60,17 @@
                 </thead>                
 
                 <tbody>
-                    <% _.each(categorias, function(categoria) { %>
+                    <% _.each(subcategorias, function(subcategoria) { %>
                         <tr>
                             <th>
-                                <%- categoria.categoria_nombre %>
+                                <%- subcategoria.subcategoria_nombre %>
                             </th>
                             <% _.each(meses, function(name, month) { %>
                                 <td class="padding-custom-grid">
-                                    <input type="text" id="presupuestoasesor_valor_<%- categoria.id %>_<%- month %>" name="presupuestoasesor_valor_<%- categoria.id %>_<%- month %>" class="form-control input-sm change-input-presupuesto" value="<%- !_.isUndefined(categoria.presupuesto[month]) ? categoria.presupuesto[month] : 0 %>" data-mes="<%- month %>" data-categoria="<%- categoria.id %>" data-currency-precise>
+                                    <input type="text" id="presupuestoasesor_valor_<%- subcategoria.id %>_<%- month %>" name="presupuestoasesor_valor_<%- subcategoria.id %>_<%- month %>" class="form-control input-sm change-input-presupuesto" value="<%- !_.isUndefined(subcategoria.presupuesto[month]) ? subcategoria.presupuesto[month] : 0 %>" data-mes="<%- month %>" data-subcategoria="<%- subcategoria.id %>" data-currency-precise>
                                 </td>
                             <% }); %>
-                            <th class="text-right" id="presupuestoasesor_total_categoria_<%- categoria.id %>" ><%- !_.isUndefined(total_categorias[categoria.id]) ?  window.Misc.currency(total_categorias[categoria.id]) : window.Misc.currency(0) %></th>
+                            <th class="text-right" id="presupuestoasesor_total_subcategoria_<%- subcategoria.id %>" ><%- !_.isUndefined(total_subcategorias[subcategoria.id]) ?  window.Misc.currency(total_subcategorias[subcategoria.id]) : window.Misc.currency(0) %></th>
                         </tr>
                     <% }); %>
                     <tr>

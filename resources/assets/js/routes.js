@@ -62,6 +62,10 @@ app || (app = {});
             'tiposactividad/create(/)': 'getTiposActividadCreate',
             'tiposactividad/:tipoactividad/edit(/)': 'getTiposActividadEdit',
 
+            'tiposajuste(/)': 'getTiposAjusteMain',
+            'tiposajuste/create(/)': 'getTipoAjusteCreate',
+            'tiposajuste/:tipoajuste/edit(/)': 'getTipoAjusteEdit',
+
             /*
             |-----------------------
             | Contabilidad
@@ -116,6 +120,10 @@ app || (app = {});
             'categorias(/)': 'getCategoriasMain',
             'categorias/create(/)': 'getCategoriasCreate',
             'categorias/:categorias/edit(/)': 'getCategoriasEdit',
+            
+            'subcategorias(/)': 'getSubCategoriasMain',
+            'subcategorias/create(/)': 'getSubCategoriasCreate',
+            'subcategorias/:subcategorias/edit(/)': 'getSubCategoriasEdit',
 
             'impuestos(/)': 'getImpuestosMain',
             'impuestos/create(/)': 'getImpuestoCreate',
@@ -132,6 +140,14 @@ app || (app = {});
             'unidades(/)': 'getUnidadesMain',
             'unidades/create(/)': 'getUnidadesCreate',
             'unidades/:unidad/edit(/)': 'getUnidadesEdit',
+
+            'unidadesnegocio(/)': 'getUnidadesNegocioMain',
+            'unidadesnegocio/create(/)': 'getUnidadNegocioCreate',
+            'unidadesnegocio/:unidadnegocio/edit(/)': 'getUnidadNegocioEdit',
+
+            'ajustes(/)': 'getAjustesMain',
+            'ajustes/create(/)': 'getAjustesCreate',
+            'ajustes/:ajustes(/)': 'getAjusteShow',
             
         },
 
@@ -516,6 +532,47 @@ app || (app = {});
             this.createTipoActividadView = new app.CreateTipoActividadView({ model: this.tipoActividadModel });
             this.tipoActividadModel.fetch();
         },     
+        // Tipos Ajuste
+        getTiposAjusteMain: function () {
+
+            if ( this.mainTipoAjusteView instanceof Backbone.View ){
+                this.mainTipoAjusteView.stopListening();
+                this.mainTipoAjusteView.undelegateEvents();
+            }
+
+            this.mainTipoAjusteView = new app.MainTipoAjusteView( );
+        },
+
+        /**
+        * show view create tipos ajuste
+        */
+        getTipoAjusteCreate: function () {
+            this.tipoAjusteModel = new app.TipoAjusteModel();
+
+            if ( this.createTipoajusteView instanceof Backbone.View ){
+                this.createTipoajusteView.stopListening();
+                this.createTipoajusteView.undelegateEvents();
+            }
+
+            this.createTipoajusteView = new app.CreateTipoAjusteView({ model: this.tipoAjusteModel });
+            this.createTipoajusteView.render();
+        },
+
+        /**
+        * show view edit tipos ajuste
+        */
+        getTipoAjusteEdit: function (tipoajuste) {
+            this.tipoAjusteModel = new app.TipoAjusteModel();
+            this.tipoAjusteModel.set({'id': tipoajuste}, {silent: true});
+
+            if ( this.createTipoAjusteView instanceof Backbone.View ){
+                this.createTipoAjusteView.stopListening();
+                this.createTipoAjusteView.undelegateEvents();
+            }
+
+            this.createTipoAjusteView = new app.CreateTipoAjusteView({ model: this.tipoAjusteModel });
+            this.tipoAjusteModel.fetch();
+        },     
         
         /*
         |-----------------------
@@ -804,6 +861,40 @@ app || (app = {});
             this.createCategoriaView = new app.CreateCategoriaView({ model: this.categoriaModel });
             this.categoriaModel.fetch();
         },
+        getSubCategoriasMain: function () {
+
+            if ( this.mainSubCategoriasView instanceof Backbone.View ){
+                this.mainSubCategoriasView.stopListening();
+                this.mainSubCategoriasView.undelegateEvents();
+            }
+
+            this.mainSubCategoriasView = new app.MainSubCategoriasView( );
+        },
+
+        getSubCategoriasCreate: function () {
+            this.subcategoriaModel = new app.SubCategoriaModel();
+
+            if ( this.createSubCategoriaView instanceof Backbone.View ){
+                this.createSubCategoriaView.stopListening();
+                this.createSubCategoriaView.undelegateEvents();
+            }
+
+            this.createCategoriaView = new app.CreateSubCategoriaView({ model: this.subcategoriaModel });
+            this.createCategoriaView.render();
+        },
+
+        getSubCategoriasEdit: function (subcategorias) {
+            this.subcategoriaModel = new app.SubCategoriaModel();
+            this.subcategoriaModel.set({'id': subcategorias}, {'silent':true});
+
+            if ( this.createSubCategoriaView instanceof Backbone.View ){
+                this.createSubCategoriaView.stopListening();
+                this.createSubCategoriaView.undelegateEvents();
+            }
+
+            this.createSubCategoriaView = new app.CreateSubCategoriaView({ model: this.subcategoriaModel });
+            this.subcategoriaModel.fetch();
+        },
 
         getImpuestosMain: function () {
 
@@ -945,6 +1036,41 @@ app || (app = {});
             this.unidadModel.fetch();
         },
 
+        getUnidadesNegocioMain: function () {
+
+            if ( this.mainUnidadesNegocioView instanceof Backbone.View ){
+                this.mainUnidadesNegocioView.stopListening();
+                this.mainUnidadesNegocioView.undelegateEvents();
+            }
+
+            this.mainUnidadesNegocioView = new app.MainUnidadesNegocioView( );
+        },
+
+        getUnidadNegocioCreate: function () {
+            this.unidadNegocioModel = new app.UnidadNegocioModel();
+
+            if ( this.createUnidadNegocioView instanceof Backbone.View ){
+                this.createUnidadNegocioView.stopListening();
+                this.createUnidadNegocioView.undelegateEvents();
+            }
+
+            this.createUnidadNegocioView = new app.CreateUnidadNegocioView({ model: this.unidadNegocioModel });
+            this.createUnidadNegocioView.render();
+        },
+
+        getUnidadNegocioEdit: function (unidadnegocio) {
+            this.unidadNegocioModel = new app.UnidadNegocioModel();
+            this.unidadNegocioModel.set({'id': unidadnegocio}, {silent: true});
+
+            if ( this.createUnidadNegocioView instanceof Backbone.View ){
+                this.createUnidadNegocioView.stopListening();
+                this.createUnidadNegocioView.undelegateEvents();
+            }
+
+            this.createUnidadNegocioView = new app.CreateUnidadNegocioView({ model: this.unidadNegocioModel });
+            this.unidadNegocioModel.fetch();
+        },
+
         /**
         * show view main producto
         */
@@ -1055,6 +1181,50 @@ app || (app = {});
             this.pedidoModel.fetch();
            
         },  
+
+        /**
+        * show view main ajuste
+        */
+        getAjustesMain:function(){
+
+            if ( this.mainAjustesView instanceof Backbone.View ){
+                this.mainAjustesView.stopListening();
+                this.mainAjustesView.undelegateEvents();
+            }
+
+            this.mainAjustesView = new app.MainAjustesView();
+        },
+        /**
+        * show view create ajuste
+        */
+        getAjustesCreate:function(){
+            this.ajusteModel = new app.AjusteModel();
+
+            if ( this.createAjusteView instanceof Backbone.View ){
+                this.createAjusteView.stopListening();
+                this.createAjusteView.undelegateEvents();
+            }
+
+            this.createAjusteView = new app.CreateAjusteView({ model: this.ajusteModel });
+            this.createAjusteView.render();
+        },
+
+        /**
+        * show view show ajustes
+        */
+        getAjusteShow: function (ajustes) {
+            this.ajusteModel = new app.AjusteModel();
+            this.ajusteModel.set({'id': ajustes}, {'silent':true});
+
+            if ( this.showAjusteView instanceof Backbone.View ){
+                this.showAjusteView.stopListening();
+                this.showAjusteView.undelegateEvents();
+            }
+
+            this.showAjusteView = new app.ShowAjusteView({ model: this.ajusteModel });
+            this.ajusteModel.fetch();
+        },
+ 
 
     }) );
 

@@ -53,6 +53,7 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::resource('puntosventa', 'Admin\PuntoVentaController', ['except' => ['destroy']]);
 	Route::resource('documento', 'Admin\DocumentosController', ['except' => ['destroy']]);
 	Route::resource('tiposactividad', 'Admin\TipoActividadController', ['except' => ['destroy']]);
+	Route::resource('bitacoras','Admin\BitacoraController', ['only' => ['index']]);
 
 	/*
 	|--------------------------
@@ -107,15 +108,22 @@ Route::group(['middleware' => 'auth'], function(){
 	{
 		Route::get('search', ['as' => 'productos.search', 'uses' => 'Inventario\ProductoController@search']);
 		// Route::resource('rollos', 'Inventario\ProdbodeRolloController', ['only' => ['index']]);
+		Route::post('evaluate',['as' =>'productos.evaluate','uses'=>'Inventario\ProductoController@evaluate'] );
+		Route::post('validate',['as' =>'productos.validate','uses'=>'Inventario\ProductoController@validation'] );
 	});
+
 	Route::group(['prefix' => 'pedidos'], function()
 	{
 		Route::resource('detalle', 'Inventario\DetallePedidoController');
 		Route::get('cerrar/{pedidos}', ['as' => 'pedidos.cerrar', 'uses' => 'Inventario\PedidoController@cerrar']);
 		Route::get('anular/{pedidos}', ['as' => 'pedidos.anular', 'uses' => 'Inventario\PedidoController@anular']);
 	});
+
+	Route::group(['prefix' => 'ajustes'], function()
+	{
+		Route::resource('detalle', 'Inventario\DetalleAjusteController');
+	});
 	Route::resource('modelos','Inventario\ModeloController', ['except' => ['destroy']]);
-	Route::resource('bitacoras','Admin\BitacoraController', ['only' => ['index']]);
 	Route::resource('marcas', 'Inventario\MarcaController', ['except' => ['destroy']]);
 	Route::resource('categorias', 'Inventario\CategoriaController', ['except' => ['destroy']]);
 	Route::resource('impuestos', 'Inventario\ImpuestoController', ['except' => ['destroy']]);
@@ -123,5 +131,10 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::resource('productos', 'Inventario\ProductoController', ['except' => ['destroy']]);
 	Route::resource('lineas', 'Inventario\LineaController', ['except' => ['destroy']]);
 	Route::resource('unidades', 'Inventario\UnidadesMedidaController', ['except' => ['destroy']]);
+	Route::resource('ajustes', 'Inventario\AjusteController', ['except' => ['edit','destroy']]);
+	Route::resource('tiposajuste', 'Inventario\TipoAjusteController', ['except' => ['destroy']]);
+	Route::resource('subcategorias', 'Inventario\SubCategoriaController', ['except' => ['destroy']]);
+	Route::resource('unidadesnegocio', 'Inventario\UnidadNegocioController', ['except' => ['destroy']]);
+
 
 });

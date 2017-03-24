@@ -14,7 +14,7 @@ app || (app = {});
       	el: 'body',
 		events: {
 			'click .btn-export-pdf-koi-component': 'onPdf',
-			'click .btn-export-xls-koi-component': 'onXls',
+			'click .btn-export-xls-koi-component': 'onXls'
 		},
 
         /**

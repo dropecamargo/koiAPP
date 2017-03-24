@@ -543,6 +543,34 @@
 		</div>
 	</div>
 </script>
+<script type="text/template" id="add-tipoajuste-tpl">
+    <div class="row">
+		<div class="col-md-2">
+			<label for="tipoajuste_sigla" class="control-label">Sigla</label>
+			<input type="text" id="tipoajuste_sigla" name="tipoajuste_sigla" value="<%- tipoajuste_sigla %>" placeholder="Sigla" class="form-control input-sm input-toupper" maxlength="25" required>
+		</div>
+		<div class="col-md-6">
+			<label for="tipoajuste_nombre" class="control-label">Nombre</label>
+			<input type="text" id="tipoajuste_nombre" name="tipoajuste_nombre" value="<%- tipoajuste_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="25" required>
+		</div>
+		
+	</div>
+	<div class="row">
+		<div class="col-md-2">
+			<label for="tipoajuste_tipo" class="control-label">Tipo</label>
+		 	<select name="tipoajuste_tipo" id="tipoajuste_tipo" class="form-control select2-default" required>
+                    @foreach(config('koi.tipoInventario') as $key => $value)
+                        <option value="{{ $key }}" <%- tipoajuste_tipo == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
+                    @endforeach
+            </select>
+		</div><br>
+    	<div class="col-md-3">
+	    	<label class="checkbox-inline" for="tipoajuste_activo">
+				<input type="checkbox" id="tipoajuste_activo" name="tipoajuste_activo" value="tipoajuste_activo" <%- parseInt(tipoajuste_activo) ? 'checked': ''%>> Activo
+			</label>
+		</div>
+	</div>
+</script>
 
 <script type="text/template" id="add-puntoventa-tpl">
     <div class="row">
@@ -806,6 +834,20 @@
 		</div>
     </div>
 </script>
+<script type="text/template" id="add-subcategoria-tpl">
+	<div class="row">
+		<div class="form-group col-md-8">
+			<label for="subcategoria_nombre" class="control-label">Nombre</label>
+			<input type="text" id="subcategoria_nombre" name="subcategoria_nombre" value="<%- subcategoria_nombre %>" placeholder="SubCategoria" class="form-control input-sm input-toupper" maxlength="25" required>
+		</div>
+
+		<div class="form-group col-md-2 col-xs-8 col-sm-3">
+			<br><label class="checkbox-inline" for="subcategoria_activo">
+				<input type="checkbox" id="subcategoria_activo" name="subcategoria_activo" value="subcategoria_activo" <%- parseInt(subcategoria_activo) ? 'checked': ''%>> Activo
+			</label>
+		</div>
+    </div>
+</script>
 
 <script type="text/template" id="add-marca-tpl">
 	<div class="row">
@@ -884,15 +926,32 @@
 		</div>
     </div>
 </script>
+<script type="text/template" id="add-unidadnegocio-tpl">
+    <div class="row">
+		<div class="form-group col-md-6">
+		<label for="unidadnegocio_nombre" class="control-label">Nombre</label>
+			<input type="text" id="unidadnegocio_nombre" name="unidadnegocio_nombre" value="<%- unidadnegocio_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="25" required>
+		</div>
+		<br>
+		<div class="form-group col-md-1">
+			<label class="checkbox-inline" for="unidadnegocio_activo">
+				<input type="checkbox" id="unidadnegocio_activo" name="unidadnegocio_activo" value="unidadnegocio_activo" <%- parseInt(unidadnegocio_activo) ? 'checked': ''%>> Activo
+			</label>
+		</div>
+    </div>
+</script>
 
-
-<script type="text/template" id="add-bitacora-item-tpl">
-  
-    
+<script type="text/template" id="add-bitacora-item-tpl"> 
     <td><%- tercero_nombre %></td>
     <td><%- bitacora_campo %></td>
     <td> <%- bitacora_anterior %></td>
     <td> <%- bitacora_nuevo %></td>
     <td><%- bitacora_fh_elaboro %></td>
+</script>
+<script type="text/template" id="add-serie-tpl">
+    <td class="text-center"><%- id %></td>
+    <td>
+    	<input type="text" id="producto_serie_<%- id %>" name="producto_serie_<%- id %>" class="form-control input-sm input-toupper" maxlength="15" required>
+    </td>
 </script>
 

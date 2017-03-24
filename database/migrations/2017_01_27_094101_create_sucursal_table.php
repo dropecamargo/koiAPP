@@ -24,6 +24,7 @@ class CreateSucursalTable extends Migration
             $table->integer('sucursal_pedn')->unsigned();
             $table->integer('sucursal_entr')->unsigned();
             $table->integer('sucursal_tras')->unsigned();
+            $table->integer('sucursal_ajus')->unsigned();
             
             $table->foreign('sucursal_regional')->references('id')->on('regional')->onDelete('restrict');
         });

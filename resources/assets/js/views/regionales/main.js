@@ -1,5 +1,5 @@
 /**
-* Class MainMarcasView
+* Class MainRegionalesView
 * @author KOI || @dropecamargo
 * @link http://koi-ti.com
 */
@@ -55,7 +55,7 @@ app || (app = {});
                         width: '10%',
                         render: function ( data, type, full, row ) {
                             return parseInt(data) ? 'Si' : 'No';
-                        },
+                        }
                     }
                 ]
             });

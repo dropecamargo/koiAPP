@@ -36,9 +36,12 @@ app || (app = {});
             'producto_precio3': 0,
             'producto_costo': 0,
             'producto_vidautil': 0,
-            'producto_vence': true,
-            'producto_maneja_serie': false,
-            'producto_metrado': false
+            'producto_vence': 0,
+            'producto_maneja_serie': 1,
+            'producto_metrado': 0,
+            'producto_unidadnegocio':'',
+            'producto_subcategoria':'', 
+            'producto_unidad': 1
         }
     });
 

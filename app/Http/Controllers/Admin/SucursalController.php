@@ -87,7 +87,7 @@ class SucursalController extends Controller
         // dd($id);
         if ($request->ajax()) {
 
-            return response()->json(['sucursal_pedn'=>$sucursal->sucursal_pedn,'id'=>$sucursal->id,'sucursal_nombre'=>$sucursal->sucursal_nombre]);
+            return response()->json(['sucursal'=>$sucursal]);
         }
         return view('admin.sucursales.show', ['sucursal' => $sucursal]);
     }

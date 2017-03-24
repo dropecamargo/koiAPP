@@ -14,7 +14,7 @@ app || (app = {});
         el: '#pedido-create',
         template: _.template(($('#add-pedido-tpl').html() || '') ),
         events: {
-            'submit #form-pedido' :'onStore',
+            'submit #form-pedido' :'onStore'
         },
         parameters: {
         },

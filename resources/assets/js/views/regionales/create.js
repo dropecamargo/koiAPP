@@ -16,6 +16,7 @@ app || (app = {});
         events: {
             'submit #form-regional': 'onStore'
         },
+        
         parameters: {
         },
 

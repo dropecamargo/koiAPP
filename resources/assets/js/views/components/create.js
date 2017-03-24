@@ -87,6 +87,13 @@ app || (app = {});
                         var template = _.template($('#add-categoria-tpl').html());
                         _this.$modalComponent.find('.content-modal').html( template(_this.model.toJSON()) );
                     },
+                    'subcategoria' : function() {
+                        _this.$modalComponent.find('.inner-title-modal').html('SubCategoria');
+
+                        _this.model = new app.SubCategoriaModel();
+                        var template = _.template($('#add-subcategoria-tpl').html());
+                        _this.$modalComponent.find('.content-modal').html( template(_this.model.toJSON()) );
+                    },
                     'tipo' : function() {
                         _this.$modalComponent.find('.inner-title-modal').html('Tipo');
 
@@ -158,6 +165,13 @@ app || (app = {});
 
                         _this.model = new app.UnidadModel();
                         var template = _.template($('#add-unidad-tpl').html());
+                        _this.$modalComponent.find('.content-modal').html( template(_this.model.toJSON()) );
+                    },
+                    'unidadnegocio' : function() {
+                        _this.$modalComponent.find('.inner-title-modal').html('Unidad de negocio');
+
+                        _this.model = new app.UnidadNegocioModel();
+                        var template = _.template($('#add-unidadnegocio-tpl').html());
                         _this.$modalComponent.find('.content-modal').html( template(_this.model.toJSON()) );
                     },
                     'folder' : function() {
@@ -291,6 +305,10 @@ app || (app = {});
                         _this.$resourceField.select2({ data: [{id: _this.model.get('id'), text: _this.model.get('categoria_nombre')}] }).trigger('change');
                         _this.$resourceField.val(_this.model.get('id')).trigger('change');
                     },
+                    'subcategoria' : function() {
+                        _this.$resourceField.select2({ data: [{id: _this.model.get('id'), text: _this.model.get('subcategoria_nombre')}] }).trigger('change');
+                        _this.$resourceField.val(_this.model.get('id')).trigger('change');
+                    },
                     'modelo' : function() {
                         _this.$resourceField.select2({ data: [{id: _this.model.get('id'), text: _this.model.get('modelo_nombre')}] }).trigger('change');
                         _this.$resourceField.val(_this.model.get('id')).trigger('change');
@@ -323,6 +341,10 @@ app || (app = {});
                     },
                     'unidadmedida' : function() {
                         _this.$resourceField.select2({ data: [{id: _this.model.get('id'), text: _this.model.get('unidadmedida_nombre')}] }).trigger('change');
+                        _this.$resourceField.val(_this.model.get('id')).trigger('change');
+                    },
+                    'unidadnegocio' : function() {
+                        _this.$resourceField.select2({ data: [{id: _this.model.get('id'), text: _this.model.get('unidadnegocio_nombre')}] }).trigger('change');
                         _this.$resourceField.val(_this.model.get('id')).trigger('change');
                     },
                     'folder' : function() {

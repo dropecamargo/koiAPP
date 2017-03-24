@@ -39,7 +39,7 @@ app || (app = {});
             var debitos = this.debitos();
             var creditos = this.creditos();
             return { 'debitos': debitos, 'creditos': creditos, 'diferencia': Math.abs(creditos - debitos)}
-        },
+        }
    });
 
 })(this, this.document);

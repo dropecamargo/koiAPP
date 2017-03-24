@@ -42,11 +42,11 @@
                     <li class="{{ Request::segment(1) == 'documento' ? 'active' : '' }}">
                         <a href="{{ route('documento.index') }}"><i class="fa fa-circle-o"></i> Documentos</a>
                     </li>
-                    <li class="{{ Request::segment(1) == 'puntosventa' ? 'active' : '' }}">
-                        <a href="{{ route('puntosventa.index') }}"><i class="fa fa-circle-o"></i> Puntos de venta</a>
-                    </li>
                     <li class="{{ Request::segment(1) == 'municipios' ? 'active' : '' }}">
                         <a href="{{ route('municipios.index') }}"><i class="fa fa-circle-o"></i> Municipios</a>
+                    </li>
+                    <li class="{{ Request::segment(1) == 'puntosventa' ? 'active' : '' }}">
+                        <a href="{{ route('puntosventa.index') }}"><i class="fa fa-circle-o"></i> Puntos de venta</a>
                     </li>
                     <li class="{{ Request::segment(1) == 'regionales' ? 'active' : '' }}">
                         <a href="{{ route('regionales.index') }}"><i class="fa fa-circle-o"></i> Regionales</a>
@@ -57,6 +57,7 @@
                     <li class="{{ Request::segment(1) == 'tiposactividad' ? 'active' : '' }}">
                         <a href="{{ route('tiposactividad.index') }}"><i class="fa fa-circle-o"></i> Tipo actividad</a>
                     </li>
+                    
                 </ul>
             </li> 
  		</ul>
@@ -143,18 +144,21 @@
     </li>
 
     {{-- Inventario --}}
-    <li class="treeview {{ in_array(Request::segment(1), ['unidades', 'productos','lineas','marcas','modelos','categorias','impuestos','pedidos']) ? 'active' : '' }}">
+    <li class="treeview {{ in_array(Request::segment(1), ['unidades', 'productos','lineas','marcas','modelos','categorias','impuestos','pedidos','ajustes','tiposajuste','subcategorias','unidadesnegocio']) ? 'active' : '' }}">
         <a href="#">
             <i class="fa fa-list"></i> <span>Inventario</span><i class="fa fa-angle-left pull-right"></i>
         </a>
 
         <ul class="treeview-menu">
             {{-- Modulos inventario --}}
-            <li class="{{ in_array(Request::segment(1), ['productos','pedidos']) ? 'active' : '' }}">
+            <li class="{{ in_array(Request::segment(1), ['productos','pedidos','ajustes']) ? 'active' : '' }}">
                 <a href="#">
                     <i class="fa fa-wpforms"></i> Módulos <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
+                    <li class="{{ Request::segment(1) == 'ajustes' ? 'active' : '' }}">
+                        <a href="{{ route('ajustes.index') }}"><i class="fa fa-cog"></i> Ajustes</a>
+                    </li> 
                     <li class="{{ Request::segment(1) == 'productos' ? 'active' : '' }}">
                         <a href="{{ route('productos.index') }}"><i class="fa fa-barcode"></i> Productos</a>
                     </li>
@@ -165,7 +169,7 @@
             </li>
 
             {{-- Referencias inventario --}}
-            <li class="{{ in_array(Request::segment(1), ['unidades','lineas','marcas','modelos','categorias','impuestos']) ? 'active' : '' }}">
+            <li class="{{ in_array(Request::segment(1), ['unidades','lineas','marcas','modelos','categorias','impuestos','tiposajuste','subcategorias','unidadesnegocio']) ? 'active' : '' }}">
                 <a href="#">
                     <i class="fa fa-circle-o"></i> Referencias <i class="fa fa-angle-left pull-right"></i>
                 </a>
@@ -185,8 +189,17 @@
                     <li class="{{Request::segment(1)== 'modelos' ? 'active' : ''}}">
                         <a href="{{route('modelos.index')}}"><i class="fa fa-circle-o"></i> Modelos</a>
                     </li>
+                    <li class="{{Request::segment(1)== 'subcategorias' ? 'active' : ''}}">
+                        <a href="{{route('subcategorias.index')}}"><i class="fa fa-circle-o"></i> Subcategorias</a>
+                    </li>
+                    <li class="{{ Request::segment(1) == 'tiposajuste' ? 'active' : '' }}">
+                        <a href="{{ route('tiposajuste.index') }}"><i class="fa fa-circle-o"></i> Tipo ajuste</a>
+                    </li>
                     <li class="{{ Request::segment(1) == 'unidades' ? 'active' : '' }}">
                         <a href="{{ route('unidades.index') }}"><i class="fa fa-circle-o"></i> Unidades</a>
+                    </li>
+                    <li class="{{ Request::segment(1) == 'unidadesnegocio' ? 'active' : '' }}">
+                        <a href="{{ route('unidadesnegocio.index') }}"><i class="fa fa-circle-o"></i> Unidades Negocio</a>
                     </li>
                 </ul>
             </li>

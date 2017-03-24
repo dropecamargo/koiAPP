@@ -14,7 +14,7 @@ app || (app = {});
         el: '#pedido-show',
         template: _.template(($('#show-pedido-tpl').html() || '') ),
         events: {
-            'click .cancel-pedido' :'cancelPedido',
+            'click .cancel-pedido' :'cancelPedido'
         },
 
         /**
@@ -32,6 +32,8 @@ app || (app = {});
             }
             // Events
             this.listenTo( this.model, 'change', this.render );
+            this.listenTo( this.model, 'sync', this.responseServer );
+            this.listenTo( this.model, 'request', this.loadSpinner );
         },
 
         /*
@@ -150,6 +152,33 @@ app || (app = {});
 
             cancelConfirm.render();
         },
+        /**
+        * Load spinner on the request
+        */
+        loadSpinner: function (model, xhr, opts) {
+            window.Misc.setSpinner( this.el );
+            
+        },
+
+        /**
+        * response of the server
+        */
+        responseServer: function ( model, resp, opts ) {
+            window.Misc.removeSpinner( this.el );
+            if(!_.isUndefined(resp.success)) {
+                // response success or error
+                var text = resp.success ? '' : resp.errors;
+                if( _.isObject( resp.errors ) ) {
+                    text = window.Misc.parseErrors(resp.errors);
+                }
+
+                if( !resp.success ) {
+                    alertify.error(text);
+                    return; 
+                }
+               
+            }
+        }
     });
 
 })(jQuery, this, this.document);

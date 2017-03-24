@@ -33,8 +33,8 @@ app || (app = {});
             this.$asesor = this.$('#presupuestoasesor_asesor');
             this.$ano = this.$('#presupuestoasesor_ano');
 
-            this.meses = { };
-            this.categorias = { };
+            this.meses = {};
+            this.categorias = {};
         },
 
         /**
@@ -55,28 +55,28 @@ app || (app = {});
         changePresupuesto: function (e) {
 
             var mes = $(e.currentTarget).attr("data-mes"),
-                categoria = $(e.currentTarget).attr("data-categoria");
+                subcategoria = $(e.currentTarget).attr("data-subcategoria");
 
-            // Total categoria
-            this.totalCategoria(categoria);
+            // Total subcategoria
+            this.totalCategoria(subcategoria);
 
             // Total meses
             this.totalMes(mes);
         },
 
-        totalCategoria(categoria) {
+        totalCategoria: function(subcategoria) {
             var total = 0;
             _.each(this.meses, function(name, month) {
-                total += parseFloat( this.$('#presupuestoasesor_valor_' + categoria + '_' + month).inputmask('unmaskedvalue') );
+                total += parseFloat( this.$('#presupuestoasesor_valor_' + subcategoria + '_' + month).inputmask('unmaskedvalue') );
             });
 
-            this.$('#presupuestoasesor_total_categoria_' + categoria).html( window.Misc.currency(total) );
+            this.$('#presupuestoasesor_total_subcategoria_' + subcategoria).html( window.Misc.currency(total) );
         },
 
-        totalMes(mes) {
+        totalMes: function(mes) {
             var total = 0;
             _.each(this.categorias, function(categoria) {
-                total += parseFloat( this.$('#presupuestoasesor_valor_' + categoria.id + '_' + mes).inputmask('unmaskedvalue') );
+                total += parseFloat( this.$('#presupuestoasesor_valor_' + subcategoria.id + '_' + mes).inputmask('unmaskedvalue') );
             });
 
             this.$('#presupuestoasesor_total_mes_' + mes).html( window.Misc.currency(total) );
@@ -147,8 +147,8 @@ app || (app = {});
                 window.Misc.removeSpinner( _this.el );
                 if(resp.success) {
                     _this.meses = resp.meses;
-                    _this.categorias = resp.categorias;
-
+                    _this.subcategorias = resp.subcategorias;
+                    
                     // asesor
                     _this.$wraperForm.html( _this.template( resp ) );
                     _this.ready();

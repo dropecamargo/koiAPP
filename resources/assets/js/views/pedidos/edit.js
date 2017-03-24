@@ -17,7 +17,7 @@ app || (app = {});
             'click .close-pedido' :'closePedido',
             'click .cancel-pedido' :'cancelPedido',
             'submit #form-pedido' :'onStore',
-            'submit #form-detalle-pedido' :'onStoreDetalle',
+            'submit #form-detalle-pedido' :'onStoreDetalle'
 
         },
         parameters: {
@@ -112,7 +112,7 @@ app || (app = {});
         },
 
         /**
-        * Event submit Asiento
+        * Event submit Pedido
         */
         submitPedido: function (e) {
             this.$form.submit();
@@ -223,5 +223,4 @@ app || (app = {});
             }
         }
     });
-
 })(jQuery, this, this.document);

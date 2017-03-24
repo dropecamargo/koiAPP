@@ -5,7 +5,7 @@ namespace App\Models\Inventario;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\BaseModel;
 
-use Validator,Cache,DB;
+use Validator,DB;
 
 class Pedido1 extends BaseModel
 {
@@ -72,7 +72,6 @@ class Pedido1 extends BaseModel
     {
         $query = Pedido1::query();
         $query->select('pedido1.*','tercero_nit',DB::raw("CONCAT(tercero_nombre1, ' ', tercero_nombre2, ' ', tercero_apellido1, ' ', tercero_apellido2) as tercero_nombre"),'sucursal_nombre');
-
         $query->join('tercero', 'pedido1.pedido1_tercero', '=', 'tercero.id');
         $query->join('sucursal', 'pedido1.pedido1_sucursal', '=', 'sucursal.id');
         $query->where('pedido1.id', $id);

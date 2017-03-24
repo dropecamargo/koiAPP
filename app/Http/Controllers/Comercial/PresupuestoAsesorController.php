@@ -10,7 +10,7 @@ use App\Http\Controllers\Controller;
 use Log, DB;
 
 use App\Models\Comercial\PresupuestoAsesor;
-use App\Models\Inventario\Categoria;
+use App\Models\Inventario\SubCategoria;
 use App\Models\Base\Tercero;
 
 class PresupuestoAsesorController extends Controller
@@ -25,42 +25,42 @@ class PresupuestoAsesorController extends Controller
         if($request->ajax()) {
             $object = new \stdClass();
             $object->meses = config('koi.meses');
-            $object->categorias = [];
+            $object->subcategorias = [];
             $object->total_mes = [];
-            $object->total_categorias = [];
+            $object->total_subcategorias = [];
 
-            $categorias = Categoria::where('categoria_activo', true)->get();
+            $subcategorias = SubCategoria::where('subcategoria_activo', true)->get();
 
             $data = [];
-            foreach ($categorias as $item)
+            foreach ($subcategorias as $item)
             {
-                $categoria = new \stdClass();
-                $categoria->id = $item->id;
-                $categoria->categoria_nombre = $item->categoria_nombre;
+                $subcategoria = new \stdClass();
+                $subcategoria->id = $item->id;
+                $subcategoria->subcategoria_nombre = $item->subcategoria_nombre;
 
                 $query = PresupuestoAsesor::query();
                 $query->where('presupuestoasesor_asesor', $request->presupuestoasesor_asesor);
                 $query->where('presupuestoasesor_ano', $request->presupuestoasesor_ano);
-                $query->where('presupuestoasesor_categoria', $item->id);
-                $categoria->presupuesto = $query->lists('presupuestoasesor_valor', 'presupuestoasesor_mes');
+                $query->where('presupuestoasesor_subcategoria', $item->id);
+                $subcategoria->presupuesto = $query->lists('presupuestoasesor_valor', 'presupuestoasesor_mes');
            
-                $object->categorias[] = $categoria;
+                $object->subcategorias[] = $subcategoria;
             }
             
-            $object->total_categorias = PresupuestoAsesor::query()
-                ->select('categoria.id as categoria', DB::raw('sum(presupuestoasesor_valor) as total'))
-                ->join('categoria', 'presupuestoasesor_categoria', '=', 'categoria.id')
+            $object->total_subcategorias = PresupuestoAsesor::query()
+                ->select('subcategoria.id as subcategoria', DB::raw('sum(presupuestoasesor_valor) as total'))
+                ->join('subcategoria', 'presupuestoasesor_subcategoria', '=', 'subcategoria.id')
                 ->where('presupuestoasesor_asesor', $request->presupuestoasesor_asesor)
                 ->where('presupuestoasesor_ano', $request->presupuestoasesor_ano)
-                ->where('categoria_activo', true)
-                ->groupBy('presupuestoasesor_categoria')->lists('total', 'categoria');
+                ->where('subcategoria_activo', true)
+                ->groupBy('presupuestoasesor_subcategoria')->lists('total', 'subcategoria');
 
             $object->total_mes = PresupuestoAsesor::query()
                 ->select('presupuestoasesor_mes as mes', DB::raw('SUM(presupuestoasesor_valor) as total'))
-                ->join('categoria', 'presupuestoasesor_categoria', '=', 'categoria.id')
+                ->join('subcategoria', 'presupuestoasesor_subcategoria', '=', 'subcategoria.id')
                 ->where('presupuestoasesor_asesor', $request->presupuestoasesor_asesor)
                 ->where('presupuestoasesor_ano', $request->presupuestoasesor_ano)
-                ->where('categoria_activo', true)
+                ->where('subcategoria_activo', true)
                 ->groupBy('presupuestoasesor_mes')
                 ->lists('total', 'mes');
 
@@ -109,17 +109,17 @@ class PresupuestoAsesorController extends Controller
                         return response()->json(['success' => false, 'errors' => 'Asesor no se encuentra registrado, por favor verifique la información o consulte al administrador.']);
                     }
 
-                    $query = Categoria::query()->where('categoria_activo', true);
-                    $categorias = $query->get();
+                    $query = SubCategoria::query()->where('subcategoria_activo', true);
+                    $subcategorias = $query->get();
                     
-                    foreach ($categorias as $categoria) {
+                    foreach ($subcategorias as $subcategoria) {
                         foreach ( config('koi.meses') as $key => $name ) {
-                            if($request->has("presupuestoasesor_valor_{$categoria->id}_{$key}")){
+                            if($request->has("presupuestoasesor_valor_{$subcategoria->id}_{$key}")){
 
                                 $query = PresupuestoAsesor::query();
                                 $query->where('presupuestoasesor_mes', $key);
                                 $query->where('presupuestoasesor_ano', $request->presupuestoasesor_ano);
-                                $query->where('presupuestoasesor_categoria', $categoria->id);
+                                $query->where('presupuestoasesor_subcategoria', $subcategoria->id);
                                 $query->where('presupuestoasesor_asesor', $request->presupuestoasesor_asesor);
                                 $presupuestoasesor = $query->first();
 
@@ -129,9 +129,9 @@ class PresupuestoAsesorController extends Controller
 
                                 $presupuestoasesor->presupuestoasesor_mes = $key;
                                 $presupuestoasesor->presupuestoasesor_ano = $request->presupuestoasesor_ano;
-                                $presupuestoasesor->presupuestoasesor_categoria = $categoria->id;
+                                $presupuestoasesor->presupuestoasesor_subcategoria = $subcategoria->id;
                                 $presupuestoasesor->presupuestoasesor_asesor = $request->presupuestoasesor_asesor;
-                                $presupuestoasesor->presupuestoasesor_valor = $request->get("presupuestoasesor_valor_{$categoria->id}_{$key}");
+                                $presupuestoasesor->presupuestoasesor_valor = $request->get("presupuestoasesor_valor_{$subcategoria->id}_{$key}");
                                 $presupuestoasesor->save();
                             }
                         }

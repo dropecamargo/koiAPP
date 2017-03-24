@@ -45,8 +45,7 @@ app || (app = {});
             this.$productosSearchTable = this.$modalComponent.find('#koi-search-producto-component-table');
 			this.$inputContent = this.$("#"+$(e.currentTarget).attr("data-field"));
 			this.$inputName = this.$("#"+this.$inputContent.attr("data-name"));
-			this.$wraperType = this.$("#"+this.$inputContent.attr("data-render"));
-			
+			this.$inputCosto = this.$("#"+this.$inputContent.attr("data-costo"));			
 			// Filters
 			this.equalsRef = this.$inputContent.attr("data-ref");
 			this.productosSearchTable = this.$productosSearchTable.DataTable({
@@ -89,19 +88,12 @@ app || (app = {});
 
 		setProducto: function(e) {
 			e.preventDefault();
-
 	        var data = this.productosSearchTable.row( $(e.currentTarget).parents('tr') ).data();
 
 			this.$inputContent.val( data.producto_serie );
 			this.$inputName.val( data.producto_nombre );
+			this.$inputCosto.val(window.Misc.currency(data.producto_costo));
 			
-
-		 	if(this.$wraperType.length) {
-                this.renderType(data.tipo_codigo);
-            }
-
-            
-            
 			this.$modalComponent.modal('hide');
 		},
 
@@ -125,14 +117,14 @@ app || (app = {});
 
 			this.$inputContent = $(e.currentTarget);
 			this.$inputName = this.$("#"+$(e.currentTarget).attr("data-name"));
-			
+			this.$inputCosto = this.$("#"+$(e.currentTarget).attr("data-costo"));
 			this.$wraperConten = this.$("#"+$(e.currentTarget).attr("data-wrapper"));
-			this.$wraperType = this.$("#"+this.$inputContent.attr("data-render"));
             
 			var producto = this.$inputContent.val();
 
             // Before eval clear data
             this.$inputName.val('');
+            this.$inputCosto.val('');
 
 			if(!_.isUndefined(producto) && !_.isNull(producto) && producto != '') {
 				// Get Producto
@@ -142,6 +134,7 @@ app || (app = {});
 	                data: { producto_serie: producto },
 	                beforeSend: function() {
 						_this.$inputName.val('');
+						_this.$inputCosto.val('');
 	                    window.Misc.setSpinner( _this.$wraperConten );
 	                }
 	            })
@@ -151,12 +144,10 @@ app || (app = {});
 	                if(resp.success) {
 	                    if(!_.isUndefined(resp.producto_nombre) && !_.isNull(resp.producto_nombre)){
 							_this.$inputName.val(resp.producto_nombre);
-	                    }
-
-	                    if(_this.$wraperType.length) {
-    		            	_this.renderType(resp.tipo_codigo);
-	                    } 
-	                   
+	                    }	
+	                    if(!_.isUndefined(resp.producto_costo) && !_.isNull(resp.producto_costo)){
+							_this.$inputCosto.val(window.Misc.currency(resp.producto_costo));
+	                    }	                   
 	                }
 	            })
 	            .fail(function(jqXHR, ajaxOptions, thrownError) {
@@ -165,22 +156,6 @@ app || (app = {});
 	            });
 	     	}
 		},
-
-
-        /**
-        * Render form type
-        */
-        renderType: function (type) {
-        	this.$wraperType.empty();
-
-        	var data = { };
-        	if( type == 'AC') {
-	        	data.producto_tipo = type;
-	        	var template = _.template($('#koi-search-producto-type-component-tpl').html());
-	           	this.$wraperType.html( template( data ) );
-        	}
-        
-        },
 
         /**
         * fires libraries js

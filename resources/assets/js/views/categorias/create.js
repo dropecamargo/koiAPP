@@ -1,5 +1,5 @@
 /**
-* Class CreateMarcaView  of Backbone Router
+* Class CreateCategoriaView  of Backbone Router
 * @author KOI || @dropecamargo
 * @link http://koi-ti.com
 */

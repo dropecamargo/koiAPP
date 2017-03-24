@@ -174,5 +174,14 @@ return [
             'CO' => 'Contado',
             'CT' => 'Crédito'
         ]
+    ],
+
+    'tipoInventario'=> [
+        'E' => 'Entrada',
+        'S' => 'Salida',
+        'R' => 'Reclacificación'
+    ],
+    'template' => [
+        'bg' => 'bg-green'
     ]
 ];

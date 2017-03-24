@@ -16,8 +16,6 @@ app || (app = {});
         },
         idAttribute: 'id',
         defaults: {
-        		
-        	
         }
     });
 

@@ -37,7 +37,7 @@
                         <div id="render-pedido-show" class="box-body">{{--Render-show--}}</div>
                         <div class="row">
                             <div class="col-md-2 col-md-offset-5 col-sm-6 col-xs-6 text-left">
-                                <a href="{{ route('pedidos.index') }}" class="btn btn-default btn-sm btn-block">{{ trans('app.comeback') }}</a>
+                                <a href="{{ route('pedidos.index') }}" class="btn btn-default btn-sm btn-block">{{ trans('app.comeback') }}</a><br>
                             </div>   
                         </div>
                     </div>

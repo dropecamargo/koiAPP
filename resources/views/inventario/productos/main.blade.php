@@ -35,7 +35,32 @@
                 <input type="text" id="producto_nombre" name="producto_nombre" value="<%- producto_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="100" required>
             </div>
         </div>
-
+        <div class="row">
+            <div class="form-group col-md-2 col-xs-10">
+                <label for="producto_unidadnegocio" class="control-label">Unidad Negocio</label>
+                <select name="producto_unidadnegocio" id="producto_unidadnegocio" class="form-control select2-default-clear" required>
+                    @foreach( App\Models\Inventario\UnidadNegocio::getUnidadesNegocio() as $key => $value)
+                        <option value="{{ $key }}" <%- producto_unidadnegocio == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="form-group col-md-1">
+                <br>
+                <button type="button" class="btn btn-default btn-flat btn-sm btn-add-resource-koi-component" data-resource="unidadnegocio" data-field="producto_unidadnegocio" > <i class="fa fa-plus"></i></button>
+            </div>
+             <div class="form-group col-md-2 col-xs-10">
+                <label for="producto_linea" class="control-label">Línea</label>
+                <select name="producto_linea" id="producto_linea" class="form-control select2-default-clear" required>
+                    @foreach( App\Models\Inventario\Linea::getLineas() as $key => $value)
+                        <option value="{{ $key }}" <%- producto_linea == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="form-group col-md-1">
+                <br>
+                <button type="button" class="btn btn-default btn-flat btn-sm btn-add-resource-koi-component" data-resource="linea" data-field="producto_linea" > <i class="fa fa-plus"></i></button>
+            </div>
+        </div>    
         <div class="row">
             <div class="form-group col-md-2 col-xs-10">
                 <label for="producto_categoria" class="control-label">Categoría</label>
@@ -50,17 +75,18 @@
                 <button type="button" class="btn btn-default btn-flat btn-sm btn-add-resource-koi-component" data-resource="categoria" data-field="producto_categoria" > <i class="fa fa-plus"></i></button>
             </div>
             <div class="form-group col-md-2 col-xs-10">
-                <label for="producto_linea" class="control-label">Línea</label>
-                <select name="producto_linea" id="producto_linea" class="form-control select2-default-clear" required>
-                    @foreach( App\Models\Inventario\Linea::getLineas() as $key => $value)
-                        <option value="{{ $key }}" <%- producto_linea == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
+                <label for="producto_subcategoria" class="control-label">SubCategoría</label>
+                <select name="producto_subcategoria" id="producto_subcategoria" class="form-control select2-default-clear" required>
+                    @foreach( App\Models\Inventario\SubCategoria::getSubCategorias() as $key => $value)
+                        <option value="{{ $key }}" <%- producto_subcategoria == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
                     @endforeach
                 </select>
             </div>
             <div class="form-group col-md-1">
                 <br>
-                <button type="button" class="btn btn-default btn-flat btn-sm btn-add-resource-koi-component" data-resource="linea" data-field="producto_linea" > <i class="fa fa-plus"></i></button>
+                <button type="button" class="btn btn-default btn-flat btn-sm btn-add-resource-koi-component" data-resource="subcategoria" data-field="producto_subcategoria" > <i class="fa fa-plus"></i></button>
             </div>
+           
         
             <div class="form-group col-md-2 col-xs-10">
                 <label for="producto_unidadmedida" class="control-label">Unidad de medida</label>
@@ -97,7 +123,7 @@
         <div class="row">
             
             <div class="form-group col-md-2 col-xs-6">
-                <label for="producto_maneja_serie" class="control-label">¿Meneja serie?</label>
+                <label for="producto_maneja_serie" class="control-label">¿Maneja serie?</label>
                 <div><input type="checkbox" id="producto_maneja_serie" name="producto_maneja_serie" value="producto_maneja_serie" <%- parseInt(producto_maneja_serie) ? 'checked': ''%>></div>
             </div>
 
@@ -109,10 +135,11 @@
                 <label for="producto_vence" class="control-label">¿Producto vence?</label>
                 <div><input type="checkbox" id="producto_vence" name="producto_vence" value="producto_vence" <%- parseInt(producto_vence) ? 'checked': ''%>></div>
             </div>
-            <div class="form-group col-md-2">
-                <label for="producto_barras" class="control-label">Código De Barras</label>
-                <input type="text" id="producto_barras" name="producto_barras" value="<%- producto_barras %>" placeholder="Código De Barras" class="form-control input-sm input-toupper" maxlength="100" required>
+            <div class="form-group col-md-2 col-xs-6">
+                <label for="producto_unidad" class="control-label">¿Maneja Unidades?</label>
+                <div><input type="checkbox" id="producto_unidad" name="producto_unidad" value="producto_unidad" <%- parseInt(producto_unidad) ? 'checked': ''%>></div>
             </div>
+
         </div>
         <div class="row">
             <div class="form-group col-md-2 col-xs-10">
@@ -139,17 +166,12 @@
                 <br>
                 <button type="button" class="btn btn-default btn-flat btn-sm btn-add-resource-koi-component" data-resource="modelo" data-field="producto_modelo" > <i class="fa fa-plus"></i></button>
             </div>
-            <div class="form-group col-md-2 col-xs-10">
-                <label for="producto_impuesto" class="control-label">Impuesto</label>
-                <select name="producto_impuesto" id="producto_impuesto" class="form-control select2-default-clear" required>
-                    @foreach( App\Models\Inventario\Impuesto::getImpuestos() as $key => $value)
-                        <option value="{{ $key }}" <%- producto_impuesto == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
-                    @endforeach
-                </select>
-            </div>
-            
+            <div class="form-group col-md-2">
+                <label for="producto_barras" class="control-label">Código De Barras</label>
+                <input type="text" id="producto_barras" name="producto_barras" value="<%- producto_barras %>" placeholder="Código De Barras" class="form-control input-sm input-toupper" maxlength="100" required>
+            </div>    
         </div>
-        <br>
+
         <div class="row">
             <div class="form-group col-md-2">
                 <label for="producto_precio1" class="control-label">Precio Mínimo</label>
@@ -163,7 +185,14 @@
                 <label for="producto_precio3" class="control-label">Precio Crédito</label>
                 <input type="text" id="producto_precio3" name="producto_precio3" value="<%- producto_precio3 %>" class="form-control input-sm" maxlength="15" data-currency-precise required>
             </div>
-
+            <div class="form-group col-md-2 col-xs-10">
+                <label for="producto_impuesto" class="control-label">Impuesto</label>
+                <select name="producto_impuesto" id="producto_impuesto" class="form-control select2-default-clear" required>
+                    @foreach( App\Models\Inventario\Impuesto::getImpuestos() as $key => $value)
+                        <option value="{{ $key }}" <%- producto_impuesto == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
+                    @endforeach
+                </select>
+            </div>
         </div>
     </script>
 @stop

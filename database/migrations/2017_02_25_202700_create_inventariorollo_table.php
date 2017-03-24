@@ -23,7 +23,7 @@ class CreateInventariorolloTable extends Migration
             $table->double('inventariorollo_costo')->default(0);
 
             $table->foreign('inventariorollo_inventario')->references('id')->on('inventario')->onDelete('restrict');
-            $table->unique(['inventariorollo_inventario', 'inventariorollo_item'], 'inventariorollo_inventario_item_unique');
+           
         });
     }
 

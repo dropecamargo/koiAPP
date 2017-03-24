@@ -1,4 +1,4 @@
-@extends('inventario.productos.main')
+    @extends('inventario.productos.main')
 
 @section('breadcrumb')
     <li><a href="{{ route('productos.index')}}">Productos</a></li>
@@ -33,6 +33,16 @@
                     <div>{{ $producto->producto_nombre }}</div>
                 </div>
             </div>
+            <div class="row">
+                <div class="form-group col-md-3">
+                    <label class="control-label">Unidad De Negocio</label>
+                    <div>{{ $producto->unidadnegocio_nombre }}</div>
+                </div>
+                <div class="form-group col-md-3">
+                    <label class="control-label">Linea</label>
+                    <div>{{ $producto->linea_nombre}} </div>
+                </div>
+            </div>
 
             <div class="row">
                 <div class="form-group col-md-3">
@@ -43,11 +53,11 @@
                     <label class="control-label">Categoria</label>
                     <div>{{ $producto->categoria_nombre}} </div>
                 </div>
-                <div class="form-group col-md-3">
-                    <label class="control-label">Linea</label>
-                    <div>{{ $producto->linea_nombre}} </div>
+                 <div class="form-group col-md-3">
+                    <label class="control-label">SubCategoria</label>
+                    <div>{{ $producto->subcategoria_nombre}} </div>
                 </div>
-            
+                
                 <div class="form-group col-md-3">
                     <label class="control-label">Modelo</label>
                     <div>{{ $producto->modelo_nombre}} </div>
@@ -81,7 +91,7 @@
             </div>
             <div class="row">
                 <div class="form-group col-md-3">
-                    <label class="control-label">¿Meneja serie?</label>
+                    <label class="control-label">¿Maneja serie?</label>
                     <div>
                         <input type="checkbox" id="producto_maneja_serie" name="producto_maneja_serie" value="producto_maneja_serie" disabled {{ $producto->producto_maneja_serie ? 'checked': '' }}>
                     </div>
@@ -96,6 +106,12 @@
                     <label class="control-label">¿Producto vence?</label>
                     <div>
                         <input type="checkbox" id="producto_vence" name="producto_vence" value="producto_vence" disabled {{ $producto->producto_vence ? 'checked': '' }}>
+                    </div>
+                </div>
+                <div class="form-group col-md-3">
+                    <label class="control-label">¿Maneja Unidades?</label>
+                    <div>
+                        <input type="checkbox" id="producto_unidad" name="producto_unidad" value="producto_unidad" disabled {{ $producto->producto_unidad ? 'checked': '' }}>
                     </div>
                 </div>
             </div>

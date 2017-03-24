@@ -54,7 +54,7 @@ app || (app = {});
 
             this.$modalOp = this.$('#modal-asiento-ordenp-component');
             this.$modalFp = this.$('#modal-asiento-facturap-component');
-            this.$modalIn = this.$('#modal-asiento-inventario-component');
+            this.$modalIn = this.$('#modal-inventario-component');
             this.$modalCt = this.$('#modal-asiento-cartera-component');
 
             // Collection cuotas

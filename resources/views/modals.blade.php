@@ -2,7 +2,7 @@
 <div class="modal fade" id="modal-add-resource-component" data-backdrop="static" data-keyboard="false" aria-hidden="true">
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content" id="content-create-resource-component">
-			<div class="modal-header">
+			<div class="modal-header ">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				<h4 class="inner-title-modal modal-title"></h4>
 			</div>
@@ -19,7 +19,27 @@
 		</div>
 	</div>
 </div>
-
+<!-- Modal inventario entradas -->
+<div class="modal fade" id="modal-inventario-component" data-backdrop="static" data-keyboard="false" aria-hidden="true">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header small-box {{ config('koi.template.bg') }}">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4>Inventario</h4>
+			</div>
+			{!! Form::open(['id' => 'form-create-inventario-entrada-component-source', 'data-toggle' => 'validator']) !!}
+				<div class="modal-body" id="modal-wrapper-inventario">
+					<div id="error-inventario" class="alert alert-danger"></div>
+					<div class="content-modal"></div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancelar</button>
+					<button type="submit" class="btn btn-primary btn-sm">Continuar</button>
+				</div>
+			{!! Form::close() !!}
+		</div>
+	</div>
+</div>
 <!-- Modal add tcontacto -->
 <div class="modal fade" id="modal-tcontacto-component" data-backdrop="static" data-keyboard="false" aria-hidden="true">
 	<div class="modal-dialog modal-lg" role="document">
@@ -221,3 +241,19 @@
 		</div>
 	{!! Form::close() !!}
 </script>
+<script type="text/template" id="add-series-tpl">
+	<div class="row">
+		<div class="col-sm-6 col-md-offset-3 col-xs-12">
+			<!-- table table-bordered table-striped -->
+			<div class="box-body table-responsive no-padding">
+				<table id="browse-series-list" class="table table-hover table-bordered" cellspacing="0">
+		            <tr>
+		                <th>Item</th>
+		                <th>Serie</th>
+		            </tr>
+			    </table>
+			</div>
+		</div>
+	</div>
+</script>
+

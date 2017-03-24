@@ -20,7 +20,7 @@ app || (app = {});
         	'linea_activo' : true,
         	'linea_margen_nivel1' : '',
         	'linea_margen_nivel2' : '',
-        	'linea_margen_nivel3' : '',
+        	'linea_margen_nivel3' : ''
         }
     });
 

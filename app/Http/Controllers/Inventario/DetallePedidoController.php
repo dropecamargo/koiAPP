@@ -138,5 +138,6 @@ class DetallePedidoController extends Controller
                 return response()->json(['success' => false, 'errors' => trans('app.exception')]);
             }
         }
-        abort(403);    }
+        abort(403);
+    }
 }
