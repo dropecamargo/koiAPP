@@ -170,6 +170,7 @@ class Tercero extends BaseModel implements AuthenticatableContract,
                     ELSE tercero_razonsocial END)
                 AS tercero_nombre")
             );
+            $query->where('tercero_activo', true);
             $query->orderby('tercero_nombre', 'asc');
             $collection = $query->lists('tercero_nombre', 'id');
 
