@@ -211,21 +211,44 @@ class ProductoController extends Controller
             $response->errors = "No es posible recuperar PRODUCTO,verifique información ó por favor consulte al administrador.";
         }
 
-            if ($producto->producto_unidad == true) {
-                if($tipoajuste->tipoajuste_tipo == 'E'){
-                    if ($producto->producto_maneja_serie == true) {
-                        $action = 'modalSerie';
-                        $response->action = $action;   
-                        $response->tipoajuste = $tipoajuste->tipoajuste_tipo;
-                    }  
+        if ($producto->producto_unidad == true) {
+
+            if($tipoajuste->tipoajuste_tipo == 'E'){
+                if ($producto->producto_maneja_serie == true) {
+                    $action = 'modalSerie';
+                    $response->action = $action;   
+                    $response->tipoajuste = $tipoajuste->tipoajuste_tipo;
                     $response->success = true;
+                }  
             }else{
-                $response->errors = "No es posible realizar movimientos para productos que no manejan unidades";
+                if ($producto->producto_maneja_serie == true) {
+                    //Salidas Series
+                    $action = 'modalSerie';
+                    $response->action = $action;   
+                    $response->tipoajuste = $tipoajuste->tipoajuste_tipo;
+                    $response->success = true;
+                }
             }  
         }else{
-            $response->errors = "SALIDAS";
-            $response->success = true;
+            $response->errors = "No es posible realizar movimientos para productos que no manejan unidades";
+            $response->success = false;
         }
+        return response()->json($response);
+    }
+    /**
+     * Validate actions detail asiento.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function validation(Request $request)
+    {
+        // Prepare response
+        $response = new \stdClass();
+        $response->success = false;
+        $response->asiento2_valor = $request->asiento2_valor;
+
+       
+        $response->errors = 'No es posible definir acción a validar, por favor verifique la información del asiento o consulte al administrador.';
         return response()->json($response);
     }
 

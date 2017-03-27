@@ -247,10 +247,17 @@
 			<!-- table table-bordered table-striped -->
 			<div class="box-body table-responsive no-padding">
 				<table id="browse-series-list" class="table table-hover table-bordered" cellspacing="0">
+				<% if(tipoAjuste == 'E'){ %> 
 		            <tr>
 		                <th>Item</th>
 		                <th>Serie</th>
 		            </tr>
+				<% }else{ %>
+				  	<th>Lote</th>
+                	<th>Fecha</th>
+                	<th>Saldo</th>
+                	<th></th>
+				<% } %> 
 			    </table>
 			</div>
 		</div>

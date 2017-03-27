@@ -10,12 +10,11 @@ app || (app = {});
 
     app.InventarioActionView = Backbone.View.extend({
     	el: 'body',
-    	//tpl's Inventario
-	 	templateInventario: _.template( ($('#add-inventario-tpl').html() || '') ),
+
     	templateAddSeries: _.template( ($('#add-series-tpl').html() || '') ),
 
     	events:{ 
-            
+            'submit #form-create-inventario-entrada-component-source': 'onStoreItemInventario',
     	},
 
         parameters: {
@@ -34,11 +33,13 @@ app || (app = {});
 
             // Collection item rollo
             this.itemRolloINList = new app.ItemRolloINList();
+            //Collectio lotes
+            this.LotesProducto = new app.ProductoLote();
             // Collection series producto
             this.productoSeriesINList = new app.ProductoSeriesINList();
 
             // Events Listeners
-            this.listenTo( this.cuotasFPList, 'reset', this.addAllCuotasFacturap );
+            this.listenTo( this.LotesProducto, 'reset', this.addAllProductoLote );
             this.listenTo( this.itemRolloINList, 'reset', this.addAllItemRolloInventario );
             
             this.listenTo( this.model, 'sync', this.responseServer );
@@ -53,9 +54,9 @@ app || (app = {});
                 _this = this,
                 stuffToDo = {
                     'modalSerie': function() {
-                        _this.$modalIn.find('.content-modal').empty().html(_this.templateAddSeries());
+                        _this.$modalIn.find('.content-modal').empty().html(_this.templateAddSeries(resp));
                         // Reference inventario
-                        _this.referenceAddSerie(resp);
+                        _this.referenceSerie(resp);
                     }
                 };
             if (stuffToDo[resp.action]) {
@@ -85,26 +86,50 @@ app || (app = {});
       	/**
         * Reference add Series
         */
-        referenceAddSerie: function(atributes) {
-           console.log('salidas');
+        referenceSerie: function(atributes) {
             this.$wraper = this.$('#modal-wrapper-inventario');
             this.$wraperFormIn = this.$modalIn.find('.content-modal');
             this.$wraperDetailIn = this.$modalIn.find('#content-detail-inventory');
             this.$wraperErrorIn = this.$('#error-inventario');
             this.$wraperSeries = this.$('#browse-series-list');
-            if(atributes.tipoajuste = 'E' ){
+
+            if(atributes.tipoAjuste == 'E' ){
                 for (var i = 1; i <= atributes.data.ajuste2_cantidad_entrada; i++) {
                     this.addOneSerieInventario( new app.ProductoModel({ id: i }) )
                 }
             }else{
                 //salidas
-                console.log('salidas');
+                this.LotesProducto.fetch({ reset: true, data: { producto: atributes.data.ajuste2_producto, sucursal: atributes.data.sucursal } });
             }
             // Hide errors
             this.$wraperErrorIn.hide().empty();
 
             // Open modal
             this.$modalIn.modal('show');
+        },
+        /**
+        * Render view task by model
+        * @param Object ProductoLote Model instance
+        */
+        addOneProductoLote: function (ProductoLote) {
+            var view = new app.ProductoLotesINListView({
+                model: ProductoLote,
+            });
+
+            this.$wraperSeries.append( view.render().el );
+
+            this.ready();
+            
+        },
+
+        /**
+        * Render all view tast of the collection
+        */
+        addAllProductoLote: function () {
+            var _this = this; 
+            this.LotesProducto.forEach(function(model, index) {
+                _this.addOneProductoLote(model)
+            });
         },
 
         /**
@@ -119,6 +144,28 @@ app || (app = {});
             this.$wraperSeries.append( view.render().el );
             this.ready();
         },
+
+        /*
+        *Validate Carro temporal
+        */
+        onStoreItemInventario: function (e){
+            if (!e.isDefaultPrevented()) {
+                e.preventDefault();
+                this.parameters.data = $.extend({}, this.parameters.data, window.Misc.formToJson( e.target ));
+                var result = this.collection.trigger('store', this.parameters.data);
+                // this.$modalIn.modal('hide');   
+            }
+        },
+
+        
+        responseServer: function ( model, resp, opts ) {
+            if(!_.isUndefined(resp.success)) {
+                if( resp.success ) {
+                    // Close modals
+                    this.$modalIn.modal('hide');
+                }
+            }
+        }
 
     });
 })(jQuery, this, this.document);

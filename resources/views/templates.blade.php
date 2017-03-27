@@ -955,3 +955,12 @@
     </td>
 </script>
 
+<script type="text/template" id="exit-lotes-tpl">
+    <td class="text-center"><%- prodbodelote_lote %></td>
+    <td class="text-center"><%- prodbodelote_fecha_lote %></td>
+    <td class="text-center"><%- prodbodelote_cantidad %></td>
+    <td>
+    	<input type="text" id="prodbodelote_cantidad_<%- id %>" name="prodbodelote_cantidad_<%- id %>" class="form-control input-sm input-toupper" maxlength="15" required>
+    </td>
+</script>
+

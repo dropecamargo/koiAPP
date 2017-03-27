@@ -34,7 +34,7 @@ app || (app = {});
             this.$ano = this.$('#presupuestoasesor_ano');
 
             this.meses = {};
-            this.categorias = {};
+            this.subcategorias = {};
         },
 
         /**
@@ -75,7 +75,7 @@ app || (app = {});
 
         totalMes: function(mes) {
             var total = 0;
-            _.each(this.categorias, function(categoria) {
+            _.each(this.subcategorias, function(subcategoria) {
                 total += parseFloat( this.$('#presupuestoasesor_valor_' + subcategoria.id + '_' + mes).inputmask('unmaskedvalue') );
             });
 

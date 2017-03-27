@@ -42,7 +42,7 @@ class DetalleAjusteController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
+    {   
         if($request->ajax()){
             $data = $request->all();
             $ajusteDetalle = new Ajuste2;
@@ -60,7 +60,7 @@ class DetalleAjusteController extends Controller
                     } 
                     switch ($tipoAjuste->tipoajuste_tipo) {
                         case 'S':
-                            if (((int)($request->ajuste2_cantidad_salida) <= 0 )  && ((int)($request->ajuste2_costo == 0))) {
+                            if ($request->get('ajuste2_cantidad_salida') <= 0 && $request->get('ajuste2_costo') == 0) {
                                return response()->json(['success' => false,'errors' => "No es posible realizar $tipoAjuste->tipoajuste_nombre, por favor verifique la información ó consulte al administrador"]);
                             }                     
                             break;
@@ -70,8 +70,34 @@ class DetalleAjusteController extends Controller
                             if(!$producto->producto_unidad){
                                 return response()->json(['success' => false,'errors' => "No es posible realizar movimientos para productos que no manejan unidades"]);
                             }
-                            if (((int)($request->ajuste2_cantidad_entrada) <= 0 )  && ((int)($request->ajuste2_costo == 0))) {
+                            if ($request->get('ajuste2_cantidad_entrada') == 0 && $request->get('ajuste2_costo') == 0 ) {
                                return response()->json(['success' => false,'errors' => "No es posible realizar $tipoAjuste->tipoajuste_nombre, por favor verifique la información ó consulte al administrador"]);
+                            }
+                            if ($producto->producto_serie == true) {
+                                // Producto serie
+                                $series = [];
+                                for ($item = 1; $item <= $request->ajuste2_cantidad_entrada; $item++) {
+                                    if(!$request->has("producto_serie_$item") || $request->get("producto_serie_$item") == '') {
+                                        return response()->json(['success' => false,'errors' => "Por favor ingrese serie para el item $item."]);
+                                    }
+
+                                    // Validar series ingresadas repetidas
+                                    if(in_array($request->get("producto_serie_$item"), $series)){
+                                        return response()->json(['success' => false,'errors' => "No es posible registrar dos números de serie iguales"]);  
+                                    }
+
+                                    // Validar serie
+                                    $serie = Producto::where('producto_serie', $request->get("producto_serie_$item"))->first();
+                                    if($serie instanceof Producto) {
+                                        // Si ya existe serie validamos prodbode en cualquier sucursal, serie unica
+                                        $existencias = DB::table('prodbode')->where('prodbode_serie', $serie->id)->sum('prodbode_cantidad');
+                                        if($existencias > 0) {
+                                            return response()->json(['success' => false,'errors' => "Ya existe un producto con este número de serie {$serie->producto_codigo}."]);
+                                        }
+                                    }
+
+                                    $series[] = $request->get("producto_serie_$item");
+                                }
                             }
                             break;
                         case 'R':

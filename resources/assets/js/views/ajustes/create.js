@@ -108,14 +108,15 @@ app || (app = {});
             if (!e.isDefaultPrevented()) {
                 e.preventDefault();
                 var data = window.Misc.formToJson( e.target );
-                data.tipoajuste = this.$selectTipoAjuste.val();
-                this.detalleAjuste.trigger( 'store', data );
+                    data.tipoajuste = this.$selectTipoAjuste.val();
+                    data.sucursal = this.$('#ajuste1_sucursal').val();
+                // this.detalleAjuste.trigger( 'store', data );
                 window.Misc.evaluateActionsInventory({
                     'data': data,
                     'wrap': this.$el,
                     'callback': (function (_this) {
-                        return function ( action , tipoajuste)
-                        {   
+                        return function ( action , tipo)
+                        {      
                             // Open InventarioActionView
                             if ( _this.inventarioActionView instanceof Backbone.View ){
                                 _this.inventarioActionView.stopListening();
@@ -128,14 +129,14 @@ app || (app = {});
                                 parameters: {
                                     data: data,
                                     action: action,
-                                    tipoAjuste: tipoajuste
+                                    tipoAjuste: tipo
                                 }
                             });
                             _this.inventarioActionView.render();
-                          
                         }
                     })(this)
                 });
+
                 
             }
         },
