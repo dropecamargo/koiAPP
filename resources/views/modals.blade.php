@@ -19,13 +19,13 @@
 		</div>
 	</div>
 </div>
-<!-- Modal inventario entradas -->
+<!-- Modal inventario -->
 <div class="modal fade" id="modal-inventario-component" data-backdrop="static" data-keyboard="false" aria-hidden="true">
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header small-box {{ config('koi.template.bg') }}">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4>Inventario</h4>
+				<h4 class="modal-title"></h4>
 			</div>
 			{!! Form::open(['id' => 'form-create-inventario-entrada-component-source', 'data-toggle' => 'validator']) !!}
 				<div class="modal-body" id="modal-wrapper-inventario">
@@ -247,17 +247,61 @@
 			<!-- table table-bordered table-striped -->
 			<div class="box-body table-responsive no-padding">
 				<table id="browse-series-list" class="table table-hover table-bordered" cellspacing="0">
-				<% if(tipoAjuste == 'E'){ %> 
 		            <tr>
 		                <th>Item</th>
 		                <th>Serie</th>
 		            </tr>
-				<% }else{ %>
+			    </table>
+			</div>
+		</div>
+	</div>
+</script>
+<script type="text/template" id="add-series-lotes-tpl">
+	<div class="row">
+		<div class="col-sm-8 col-md-offset-2 col-xs-12">
+			<!-- table table-bordered table-striped -->
+			<div class="box-body table-responsive no-padding">
+				<table id="browse-series-lotes-list" class="table table-hover table-bordered" cellspacing="0">
 				  	<th>Lote</th>
                 	<th>Fecha</th>
                 	<th>Saldo</th>
                 	<th></th>
-				<% } %> 
+			    </table>
+			</div>
+		</div>
+	</div>
+</script>
+
+<script type="text/template" id="add-itemrollo-tpl">
+	<div class="row">
+		<div class="col-sm-4 col-md-offset-4 col-xs-12">
+			<!-- table table-bordered table-striped -->
+			<div class="box-body table-responsive no-padding">
+				<table id="browse-itemtollo-list" class="table table-hover table-bordered" cellspacing="0">
+		            <tr>
+		                <th>Item</th>
+		                <th>Metros (m)</th>
+		            </tr>
+			    </table>
+			</div>
+		</div>
+	</div>
+</script>
+
+<script type="text/template" id="choose-itemrollo-tpl">
+	<div class="row">
+		<div class="col-sm-12  col-xs-12">
+			<!-- table table-bordered table-striped -->
+			<div class="box-body table-responsive no-padding">
+				<table id="browse-chooseitemtollo-list" class="table table-hover table-bordered" cellspacing="0">
+		            <tr>
+		                <th>Item</th>
+		                <th>Metros (m)</th>
+		                <th>Saldo (m)</th>
+		                <th>Lote</th>
+		                <th>Fecha De Ingreso</th>
+		                <th></th>
+		            </tr>
 			    </table>
 			</div>
 		</div>

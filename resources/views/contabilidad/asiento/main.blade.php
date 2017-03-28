@@ -528,39 +528,7 @@
 		<div id="content-detail-inventory"></div>
 	</script>
 
-	<script type="text/template" id="add-itemrollo-asiento-tpl">
-		<div class="row">
-			<div class="col-sm-4 col-md-offset-4 col-xs-12">
-				<!-- table table-bordered table-striped -->
-				<div class="box-body table-responsive no-padding">
-					<table id="browse-itemtollo-list" class="table table-hover table-bordered" cellspacing="0">
-			            <tr>
-			                <th>Item</th>
-			                <th>Metros (m)</th>
-			            </tr>
-				    </table>
-				</div>
-			</div>
-		</div>
-	</script>
 
-	<script type="text/template" id="choose-itemrollo-asiento-tpl">
-		<div class="row">
-			<div class="col-sm-6 col-md-offset-3 col-xs-12">
-				<!-- table table-bordered table-striped -->
-				<div class="box-body table-responsive no-padding">
-					<table id="browse-chooseitemtollo-list" class="table table-hover table-bordered" cellspacing="0">
-			            <tr>
-			                <th>Item</th>
-			                <th>Metros (m)</th>
-			                <th>Saldo (m)</th>
-			                <th></th>
-			            </tr>
-				    </table>
-				</div>
-			</div>
-		</div>
-	</script>
 
 
 	<script type="text/template" id="show-info-asiento2-tpl">

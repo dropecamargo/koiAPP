@@ -70,6 +70,18 @@ class Producto extends BaseModel
         return $query->first();
     }
 
+    public function serie($serie)
+    {
+        $producto = Producto::where('producto_serie', $serie)->first();
+        if($producto instanceof Producto) {
+            return "Ya existe un producto con este número de serie {$producto->producto_serie}, por favor verifique la información del asiento o consulte al administrador.";
+        }
+        $producto = $this->replicate();
+        $producto->producto_serie = $serie;
+        $producto->save();
+
+        return $producto;
+    }
 
     public function costopromedio($costo = 0, $cantidad = 0, $update = true)
     {

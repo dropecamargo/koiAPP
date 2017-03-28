@@ -219,11 +219,21 @@ class ProductoController extends Controller
                     $response->action = $action;   
                     $response->tipoajuste = $tipoajuste->tipoajuste_tipo;
                     $response->success = true;
+                }elseif($producto->producto_metrado == true){
+                    $action = 'ProductoMetrado';
+                    $response->action = $action;   
+                    $response->tipoajuste = $tipoajuste->tipoajuste_tipo;
+                    $response->success = true;
                 }  
             }else{
                 if ($producto->producto_maneja_serie == true) {
                     //Salidas Series
                     $action = 'modalSerie';
+                    $response->action = $action;   
+                    $response->tipoajuste = $tipoajuste->tipoajuste_tipo;
+                    $response->success = true;
+                }elseif($producto->producto_metrado == true){
+                    $action = 'ProductoMetrado';
                     $response->action = $action;   
                     $response->tipoajuste = $tipoajuste->tipoajuste_tipo;
                     $response->success = true;

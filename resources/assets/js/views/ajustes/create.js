@@ -135,9 +135,7 @@ app || (app = {});
                             _this.inventarioActionView.render();
                         }
                     })(this)
-                });
-
-                
+                });                
             }
         },
         

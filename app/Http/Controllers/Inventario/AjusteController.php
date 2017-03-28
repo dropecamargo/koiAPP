@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\Inventario\Ajuste1,App\Models\Inventario\TipoAjuste,App\Models\Inventario\Ajuste2,App\Models\Inventario\Inventario,App\Models\Inventario\Prodbode, App\Models\Inventario\Prodbodelote,App\Models\Inventario\Producto;
+use App\Models\Inventario\Ajuste1,App\Models\Inventario\TipoAjuste,App\Models\Inventario\Ajuste2,App\Models\Inventario\Inventario,App\Models\Inventario\Prodbode,App\Models\Inventario\Prodboderollo, App\Models\Inventario\Prodbodelote,App\Models\Inventario\Producto;
 use App\Models\Base\Documentos, App\Models\Base\Sucursal;
 
 use DB,Log,Datatables,Auth;
@@ -81,7 +81,7 @@ class AjusteController extends Controller
                     $ajuste->ajuste1_fh_elaboro = date('Y-m-d H:m:s'); 
                     $ajuste->save();
 
-                        $ajusteDetalle = new Ajuste2;
+                    
                     $ajuste2 = isset($data['ajuste2']) ? $data['ajuste2'] : null;
      
                     $lote = Ajuste1:: $default_document.$ajuste->id;
@@ -92,55 +92,70 @@ class AjusteController extends Controller
                             DB::rollback();
                             return response()->json(['success' => false,'errors'=>'No es posible recuperar el producto,por favor verifique la información ó por favor consulte al administrador']);
                         }
-                        
-                        $ajusteDetalle->ajuste2_ajuste1 = $ajuste->id;
-                        $ajusteDetalle->fill($item);
-                        $ajusteDetalle->ajuste2_lote = $lote;
-                        $ajusteDetalle->ajuste2_producto = $item['id_producto'];
-                        $ajusteDetalle->save();
-
+                        if ($producto->producto_maneja_serie != true) {
+                            $ajusteDetalle = new Ajuste2;
+                            $ajusteDetalle->ajuste2_ajuste1 = $ajuste->id;
+                            $ajusteDetalle->fill($item);
+                            $ajusteDetalle->ajuste2_lote = $lote;
+                            $ajusteDetalle->ajuste2_producto = $item['id_producto'];
+                            $ajusteDetalle->save();
+                        }
                         $costo = 0 ; 
                         if ($tipoAjuste->tipoajuste_tipo == 'E') {
                             
                             // Costo promedio
-                            $costopromedio = $producto->costopromedio($ajusteDetalle->ajuste2_costo, $ajusteDetalle->ajuste2_cantidad_entrada);
-                            $costo = $ajusteDetalle->ajuste2_costo / $ajusteDetalle->ajuste2_cantidad_entrada;
+                            $costopromedio = $producto->costopromedio($item['ajuste2_costo'], $item['ajuste2_cantidad_entrada']);
+                            $costo = $item['ajuste2_costo'] / $item['ajuste2_cantidad_entrada'];
 
-                            //ProdBode
-                            $result = Prodbode::actualizar($producto, $sucursal->id,'E', $ajusteDetalle->ajuste2_cantidad_entrada);
-                            if($result != 'OK') {
-                                DB::rollback();
-                                return response()->json(['success' => false, 'errors'=>"$result"]);
-                            }
+                            if ($producto->producto_maneja_serie == true) {
+                                for ($i=1; $i <= $item['ajuste2_cantidad_entrada']; $i++) {
+                                    // crea producto
+                                    $serie = $producto->serie($item["producto_serie_$i"]);
+                                    if(!$serie instanceof Producto) {
+                                        DB::rollback();
+                                        return response()->json(['success' => false, 'errors'=>"$serie"]);
+                                    }
 
-                            //ProdBodeLote
-                            $result = Prodbodelote::actualizar($producto,$sucursal->id,'E',$ajusteDetalle->ajuste2_cantidad_entrada,$lote);
+                                    $costopromedio = $serie->costopromedio($item['ajuste2_costo'], $item['ajuste2_cantidad_entrada']);
+
+                                    $ajusteDetalle = new Ajuste2;
+                                    $ajusteDetalle->ajuste2_ajuste1 = $ajuste->id;
+                                    $ajusteDetalle->fill($item);
+                                    $ajusteDetalle->ajuste2_cantidad_entrada = 1;
+                                    $ajusteDetalle->ajuste2_costo_promedio = $costopromedio;
+                                    $ajusteDetalle->ajuste2_lote = $lote;
+                                    $ajusteDetalle->ajuste2_producto = $serie->id;
+                                    $ajusteDetalle->save();
+                                    //ProdBode
+                                    $result = Prodbode::actualizar($serie, $sucursal->id,'E', 1);
+                                    if($result != 'OK') {
+                                        DB::rollback();
+                                        return response()->json(['success' => false, 'errors'=>"$result"]);
+                                    }
+                                    //ProdBodeLote
+                                    $result = Prodbodelote::actualizar($serie,$sucursal->id,'E',1,1,$lote);;
+                                    if($result != 'OK') {
+                                        DB::rollback();
+                                        return response()->json(['success' => false, 'errors'=>"$result"]);
+                                    }
+                                    // Inventario
+                                    $inventario = Inventario::movimiento($serie, $sucursal->id,'AJUS',$ajuste->id,$ajusteDetalle->ajuste2_cantidad_entrada,0,$ajusteDetalle->ajuste2_costo,$ajusteDetalle->ajuste2_costo);
+                                    if (!$inventario instanceof Inventario) {
+                                    DB::rollback();
+                                    return response()->json(['success' => false,'errors'=>'No es posible realizar inventario,por favor verifique la información ó por favor consulte al administrador']);
+                                    }
+                                }
+                            }elseif ($producto->producto_metrado == true) {
+                                $item = DB::table('prodboderollo')->where('prodboderollo_serie', $producto->id)->where('prodboderollo_sucursal', $sucursal->id)->where('prodboderollo_lote',$lote)->max('prodboderollo_item');
+                                $item++;
+                                $costometrado = $ajusteDetalle->ajuste2_costo / $ajusteDetalle->ajuste2_cantidad_entrada; 
+                                $result = Prodboderollo::actualizar($producto,$sucursal->id,'E', $item,$ajusteDetalle->ajuste2_cantidad_entrada,$costometrado,$lote );
+
                                 if($result != 'OK') {
-                                DB::rollback();
-                                return response()->json(['success' => false, 'errors'=>"$result"]);
+                                    DB::rollback();
+                                    return response()->json(['success' => false, 'errors'=>"$result"]);
+                                }
                             }
-
-                            // //ProdBodeRollo
-                            // if ($producto->producto_metrado == true) {
-
-                            //     $item = DB::table('prodboderollo')->where('prodboderollo_serie', $producto->id)->where('prodboderollo_sucursal', $sucursal->id)->where('prodboderollo_lote',$lote)->max('prodboderollo_item');
-                            //     $item++;
-                            //     // $costometrado = $ajusteDetalle->ajuste2_costo / $ajusteDetalle->ajuste2_cantidad_entrada; 
-                            //     $result = Prodboderollo::actualizar($producto,$sucursal->id,'E', $item);
-
-                            //     if($result != 'OK') {
-                            //         DB::rollback();
-                            //         return response()->json(['success' => false, 'errors'=>"$result"]);
-                            //     }
-                            // }
-
-                            // Inventario
-                            $inventario = Inventario::movimiento($producto, $sucursal->id,'AJUS',$ajuste->id,$ajusteDetalle->ajuste2_cantidad_entrada,0,$costo,$costopromedio);
-                            if (!$inventario instanceof Inventario) {
-                            DB::rollback();
-                            return response()->json(['success' => false,'errors'=>'No es posible realizar inventario,por favor verifique la información ó por favor consulte al administrador']);
-                            }
-
                         }else{
                             $costo = $ajusteDetalle->ajuste2_costo / $ajusteDetalle->ajuste2_cantidad_salida;   
                             //ProdBode
@@ -171,7 +186,7 @@ class AjusteController extends Controller
                     $sucursal->save();
 
                     // Commit Transaction
-                    DB::rollback();
+                    DB::commit();
                     return response()->json(['success' => true, 'id' => $ajuste->id]);
                 }catch (\Exception $e) {
                     DB::rollback();

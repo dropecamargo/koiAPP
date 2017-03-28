@@ -48,6 +48,10 @@ app || (app = {});
 			this.$inputCosto = this.$("#"+this.$inputContent.attr("data-costo"));			
 			// Filters
 			this.equalsRef = this.$inputContent.attr("data-ref");
+			if(this.equalsRef == "true" && this.$('#ajuste1_sucursal').val() == '' ){
+				alertify.error('Por favor ingrese sucursal antes agregar producto.');
+                return;
+			}
 			this.productosSearchTable = this.$productosSearchTable.DataTable({
 				dom: "<'row'<'col-sm-12'tr>>" +
 					"<'row'<'col-sm-5'i><'col-sm-7'p>>",
@@ -119,7 +123,11 @@ app || (app = {});
 			this.$inputName = this.$("#"+$(e.currentTarget).attr("data-name"));
 			this.$inputCosto = this.$("#"+$(e.currentTarget).attr("data-costo"));
 			this.$wraperConten = this.$("#"+$(e.currentTarget).attr("data-wrapper"));
-            
+        	this.equalsRef = this.$inputContent.attr("data-ref");
+			if(this.equalsRef == "true" && this.$('#ajuste1_sucursal').val() == '' ){
+				alertify.error('Por favor ingrese sucursal antes agregar producto.');
+                return;
+			}
 			var producto = this.$inputContent.val();
 
             // Before eval clear data

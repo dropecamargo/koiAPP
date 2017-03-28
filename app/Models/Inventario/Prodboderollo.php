@@ -3,7 +3,7 @@
 namespace App\Models\Inventario;
 
 use Illuminate\Database\Eloquent\Model;
-
+use App\Models\Base\Sucursal;
 class Prodboderollo extends Model
 {
 	/**
@@ -34,22 +34,24 @@ class Prodboderollo extends Model
         }
 
         // Recuperar prodbode rollo
-    	$prodboderollo = Prodboderollo::where('prodboderollo_producto', $producto->id)->where('prodboderollo_sucursal', $sucursal->id)->where('prodboderollo_item', $item)->where('prodboderollo_item', $lote)->first();
+    	$prodboderollo = Prodboderollo::where('prodboderollo_serie', $producto->id)->where('prodboderollo_sucursal', $sucursal->id)->where('prodboderollo_item', $item)->where('prodboderollo_item', $lote)->first();
 
 		if(!$prodboderollo instanceof Prodboderollo){
         	$prodboderollo = new Prodboderollo;
-	        $prodboderollo->prodboderollo_producto = $producto->id;
+	        $prodboderollo->prodboderollo_serie = $producto->id;
 	        $prodboderollo->prodboderollo_sucursal = $sucursal->id;
 	        $prodboderollo->prodboderollo_item = $item;
 	        $prodboderollo->prodboderollo_metros = $metros;
             $prodboderollo->prodboderollo_saldo = $metros;
 	        $prodboderollo->prodboderollo_costo = $costo;
-
+            $prodboderollo->prodboderollo_lote = $lote;
+            $prodboderollo->prodboderollo_fecha_lote =date('Y-m-d');
     	}else{
 
 	    	switch ($tipo) {
 	    		case 'E':
 			        $prodboderollo->prodboderollo_saldo = ($prodboderollo->prodboderollo_saldo + $metros);
+
 				break;
 
 				case 'S':
