@@ -4,6 +4,7 @@ namespace App\Models\Inventario;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Base\Sucursal;
+use DB;
 class Prodboderollo extends Model
 {
 	/**
@@ -15,16 +16,19 @@ class Prodboderollo extends Model
 
     public $timestamps = false;
 
-    public static function actualizar(Producto $producto, $sucursal, $tipo, $item, $metros = 0, $costo = 0,$lote)
-    {
+    public static function actualizar(Producto $producto, $sucursal, $tipo,$metros = 0, $costo = 0,$lote)
+    {   
+
         // Validar sucursal
         $sucursal = Sucursal::find($sucursal);
         if(!$sucursal instanceof Sucursal) {
             return "No es posible recuperar sucursal prodbode rollo, por favor verifique la información o consulte al administrador.";
         }
+        $items = DB::table('prodboderollo')->where('prodboderollo_serie', $producto->id)->where('prodboderollo_sucursal', $sucursal->id)->where('prodboderollo_lote',$lote)->max('prodboderollo_item');
+        $items++;
 
     	// Validar item
-        if(!is_numeric($item) || $item <= 0){
+        if(!is_numeric($items) || $items <= 0){
             return "No es posible recuperar item prodbode rollo, por favor verifique la información o consulte al administrador.";
         }
 
@@ -34,13 +38,13 @@ class Prodboderollo extends Model
         }
 
         // Recuperar prodbode rollo
-    	$prodboderollo = Prodboderollo::where('prodboderollo_serie', $producto->id)->where('prodboderollo_sucursal', $sucursal->id)->where('prodboderollo_item', $item)->where('prodboderollo_item', $lote)->first();
+    	$prodboderollo = Prodboderollo::where('prodboderollo_serie', $producto->id)->where('prodboderollo_sucursal', $sucursal->id)->where('prodboderollo_item', $items)->where('prodboderollo_lote', $lote)->first();
 
 		if(!$prodboderollo instanceof Prodboderollo){
         	$prodboderollo = new Prodboderollo;
 	        $prodboderollo->prodboderollo_serie = $producto->id;
 	        $prodboderollo->prodboderollo_sucursal = $sucursal->id;
-	        $prodboderollo->prodboderollo_item = $item;
+	        $prodboderollo->prodboderollo_item = $items;
 	        $prodboderollo->prodboderollo_metros = $metros;
             $prodboderollo->prodboderollo_saldo = $metros;
 	        $prodboderollo->prodboderollo_costo = $costo;
@@ -68,6 +72,6 @@ class Prodboderollo extends Model
 	    	}
 	    }
 		$prodboderollo->save();
-        return 'OK';
+        return $prodboderollo;
     }
 }

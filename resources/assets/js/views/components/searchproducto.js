@@ -48,7 +48,7 @@ app || (app = {});
 			this.$inputCosto = this.$("#"+this.$inputContent.attr("data-costo"));			
 			// Filters
 			this.equalsRef = this.$inputContent.attr("data-ref");
-			if(this.equalsRef == "true" && this.$('#ajuste1_sucursal').val() == '' ){
+			if((this.equalsRef == "true" || this.equalsRef == "false") && this.$('#ajuste1_sucursal').val() == '' ){
 				alertify.error('Por favor ingrese sucursal antes agregar producto.');
                 return;
 			}

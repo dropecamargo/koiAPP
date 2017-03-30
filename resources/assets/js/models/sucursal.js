@@ -20,7 +20,7 @@ app || (app = {});
             'sucursal_direccion': '',
             'sucursal_regional': '',
             'sucursal_telefono': '',
-        	'sucursal_activo': true
+        	'sucursal_activo': 1
         }
     });
 

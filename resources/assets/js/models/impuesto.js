@@ -18,7 +18,7 @@ app || (app = {});
         defaults: {
             'impuesto_nombre': '',
             'impuesto_porcentaje': '',
-            'impuesto_activo': true
+            'impuesto_activo': 1
         }
     });
 

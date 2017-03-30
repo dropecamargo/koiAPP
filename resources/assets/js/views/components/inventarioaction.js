@@ -58,12 +58,13 @@ app || (app = {});
                 stuffToDo = {
                     'modalSerie': function() {
                         if (resp.tipoAjuste== 'E') {
-                            _this.$modalIn.find('.content-modal').empty().html(_this.templateAddSeries());
+                            _this.$modalIn.find('.content-modal').empty().html(_this.templateAddSeries( ));
                             _this.$modalIn.find('.modal-title').text('Inventario, Entradas De Productos ');
                             // Reference inventario
                             _this.referenceSerie(resp);
                         }else{
-                            _this.$modalIn.find('.content-modal').empty().html(_this.templateSeriesLotes());
+                            _this.$modalIn.find('.content-modal').empty().html(_this.templateSeriesLotes( ));
+                            
                             _this.$modalIn.find('.modal-title').text('Inventario, Salidas De Productos ');
                             // Reference inventario
                             _this.referenceSerie(resp);
@@ -80,6 +81,16 @@ app || (app = {});
                             _this.$modalIn.find('.content-modal').empty().html(_this.templateChooseItemsRollo( ) );
                             _this.$modalIn.find('.modal-title').text('Inventario, Salidas De Productos Metrados');
                             _this.ReferenceMetrado(resp);
+                        }
+                    },
+                    'NoSerieNoMetros': function(){
+                        if (resp.tipoAjuste == 'E') {
+                            _this.collection.trigger('store',resp.data);
+                        }else{
+                            _this.$modalIn.find('.content-modal').empty().html(_this.templateSeriesLotes( ));
+                            _this.$modalIn.find('.modal-title').text('Inventario, Salidas De Productos ');
+                                 // Reference inventario
+                            _this.referenceSerie(resp);
                         }
                     }
                 };
@@ -125,6 +136,7 @@ app || (app = {});
                 //salidas
                 this.$wraperSeries = this.$('#browse-series-lotes-list');
                 this.LotesProducto.fetch({ reset: true, data: { producto: atributes.data.ajuste2_producto, sucursal: atributes.data.sucursal } });
+                this.parameters.data.lote = this.LotesProducto;
             }
             // Hide errors
             this.$wraperErrorIn.hide().empty();
@@ -229,11 +241,12 @@ app || (app = {});
         *Validate Carro temporal
         */
         onStoreItemInventario: function (e){
+            console.log(this.parameters.data);
             if (!e.isDefaultPrevented()) {
-                e.preventDefault();
+                e.preventDefault(); 
                 this.parameters.data = $.extend({}, this.parameters.data, window.Misc.formToJson( e.target ));
-                var result = this.collection.trigger('store', this.parameters.data);
-                // this.$modalIn.modal('hide');   
+                
+                this.collection.trigger('store', this.parameters.data);
             }
         },
 

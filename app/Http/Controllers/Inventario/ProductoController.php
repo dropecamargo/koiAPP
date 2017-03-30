@@ -9,7 +9,7 @@ use App\Http\Controllers\Controller;
 
 use DB, Log, Datatables;
 
-use App\Models\Inventario\Producto,App\Models\Inventario\Impuesto,App\Models\Inventario\TipoAjuste;
+use App\Models\Inventario\Producto,App\Models\Inventario\Prodbode,App\Models\Inventario\Impuesto,App\Models\Inventario\TipoAjuste;
 
 class ProductoController extends Controller
 {
@@ -49,7 +49,13 @@ class ProductoController extends Controller
                     }
                     //Ref and Serie equals filter
                     if ($request->has('equalsRef')) {
-                        $query->whereRaw('producto_serie = producto_referencia');
+                        if($request->equalsRef == "true"){
+                            $query->whereRaw('producto_serie = producto_referencia');
+                        }else{
+                            $query->whereRaw('producto_serie = producto_referencia OR producto_serie != producto_referencia');
+                            // $query->where('producto_maneja_serie',1);
+                            // $query->orwhere('producto_metrado',1);
+                        }
                     }
                 })
                 ->make(true);
@@ -210,6 +216,10 @@ class ProductoController extends Controller
         if (!$producto instanceof Producto) {
             $response->errors = "No es posible recuperar PRODUCTO,verifique información ó por favor consulte al administrador.";
         }
+        $productoBode = Prodbode::where('prodbode_serie', $producto->id)->where('prodbode_sucursal' ,$request->sucursal)->first();
+        if (!$productoBode instanceof Prodbode) {
+            $response->errors = "No es posible recuperar PRODUCTO en PRODBODE,verifique información ó por favor consulte al administrador.";
+        }
 
         if ($producto->producto_unidad == true) {
 
@@ -224,20 +234,36 @@ class ProductoController extends Controller
                     $response->action = $action;   
                     $response->tipoajuste = $tipoajuste->tipoajuste_tipo;
                     $response->success = true;
+                }else{
+                    $action = 'NoSerieNoMetros';
+                    $response->action = $action;   
+                    $response->tipoajuste = $tipoajuste->tipoajuste_tipo;
+                    $response->success = true;
                 }  
             }else{
-                if ($producto->producto_maneja_serie == true) {
-                    //Salidas Series
-                    $action = 'modalSerie';
-                    $response->action = $action;   
-                    $response->tipoajuste = $tipoajuste->tipoajuste_tipo;
-                    $response->success = true;
-                }elseif($producto->producto_metrado == true){
-                    $action = 'ProductoMetrado';
-                    $response->action = $action;   
-                    $response->tipoajuste = $tipoajuste->tipoajuste_tipo;
-                    $response->success = true;
-                }
+                if($productoBode->prodbode_cantidad > 0){
+                        
+                    if ($producto->producto_maneja_serie == true) {
+                        //Salidas Series
+                        $action = 'modalSerie';
+                        $response->action = $action;   
+                        $response->tipoajuste = $tipoajuste->tipoajuste_tipo;
+                        $response->success = true;
+                    }elseif($producto->producto_metrado == true){
+                        $action = 'ProductoMetrado';
+                        $response->action = $action;   
+                        $response->tipoajuste = $tipoajuste->tipoajuste_tipo;
+                        $response->success = true;
+                    }else{
+                        $action = 'NoSerieNoMetros';
+                        $response->action = $action;   
+                        $response->tipoajuste = $tipoajuste->tipoajuste_tipo;
+                        $response->success = true;
+                    }   
+                }else{
+                    $response->errors = "No hay unidades en BODEGA de esta SUCURSAL,verifique información ó por favor consulte al administrador.";
+                    $response->success = false;
+                }     
             }  
         }else{
             $response->errors = "No es posible realizar movimientos para productos que no manejan unidades";

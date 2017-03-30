@@ -18,7 +18,7 @@ app || (app = {});
         defaults: {
         	'unidadmedida_sigla': '',
             'unidadmedida_nombre': '',
-        	'unidad_medida_activo': false
+        	'unidad_medida_activo': 1
         }
     });
 

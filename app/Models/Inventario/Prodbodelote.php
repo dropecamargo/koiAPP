@@ -47,9 +47,10 @@ class Prodbodelote extends Model
             case 'S':
                 // Validar disponibles
                 if($unidades > $prodbodelote->prodbodelote_cantidad){
-                    return "No existen suficientes unidades para salida producto {$producto->producto_series}, disponibles {$prodbodelote->prodbodelote_cantidad}, salida $unidades, por favor verifique la información o consulte al administrador.";
+                    return "No existen suficientes unidades para salida del producto {$producto->id}, disponibles {$prodbodelote->prodbodelote_cantidad}, salida $unidades, por favor verifique la información o consulte al administrador.";
                 }
                 $prodbodelote->prodbodelote_cantidad = ($prodbodelote->prodbodelote_cantidad - $unidades);
+                $prodbodelote->prodbodelote_saldo = ($prodbodelote->prodbodelote_saldo - $loteSaldo);
             break;
 
             default:

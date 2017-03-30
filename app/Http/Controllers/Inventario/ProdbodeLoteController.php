@@ -1,9 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Inventario;
-
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Inventario\Prodbodelote, App\Models\Inventario\Producto;
@@ -32,7 +30,7 @@ class ProdbodeLoteController extends Controller
                 $query = Prodbodelote::query();
                 $query->where('prodbodelote_serie', $producto->id);
                 $query->where('prodbodelote_sucursal', $sucursal->id);
-                $query->whereRaw('prodbodelote_cantidad >= 0');
+                $query->whereRaw('prodbodelote_cantidad > 0');
                 $lotes = $query->get();
             }
             return response()->json($lotes);

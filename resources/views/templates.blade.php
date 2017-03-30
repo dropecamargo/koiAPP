@@ -960,7 +960,7 @@
     <td class="text-left"><%- prodbodelote_fecha_lote %></td>
     <td class="text-left"><%- prodbodelote_cantidad %></td>
     <td>
-    	<input type="text" id="prodbodelote_cantidad_<%- id %>" name="prodbodelote_cantidad_<%- id %>" class="form-control input-sm input-toupper" maxlength="15" required>
+    	<input type="text" id="item_lote_<%- id %>" name="item_lote_<%- id %>" class="form-control input-sm input-toupper" maxlength="15">
     </td>
 </script>
 
@@ -979,7 +979,7 @@
     <td class="text-left"><%- prodboderollo_lote %></td>
     <td class="text-left"><%- prodboderollo_fecha_lote %></td>
     <td>
-		<input id="itemrollo_metros_<%- id %>" name="itemrollo_metros_<%- id %>" class="form-control input-sm text-right" type="number" value="0" min="0" max="<%- prodboderollo_saldo %>" step="0.1">
+		<input id="item_<%- id %>" name="item_<%- id %>" class="form-control input-sm text-right" type="number" value="0" min="0" max="<%- prodboderollo_saldo %>" step="0.1">
     </td>
 </script>
 

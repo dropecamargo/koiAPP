@@ -60,6 +60,7 @@ class DetalleAjusteController extends Controller
                     } 
                     switch ($tipoAjuste->tipoajuste_tipo) {
                         case 'S':
+                            // dd($data);
                             if ($request->get('ajuste2_cantidad_salida') <= 0 && $request->get('ajuste2_costo') == 0) {
                                return response()->json(['success' => false,'errors' => "No es posible realizar $tipoAjuste->tipoajuste_nombre, por favor verifique la información ó consulte al administrador"]);
                             }                     
@@ -93,7 +94,7 @@ class DetalleAjusteController extends Controller
                                         // Si ya existe serie validamos prodbode en cualquier sucursal, serie unica
                                         $existencias = DB::table('prodbode')->where('prodbode_serie', $serie->id)->sum('prodbode_cantidad');
                                         if($existencias > 0) {
-                                            return response()->json(['success' => false,'errors' => "Ya existe un producto con este número de serie {$serie->producto_codigo}."]);
+                                            return response()->json(['success' => false,'errors' => "Ya existe un producto con este número de serie {$serie->producto_serie}."]);
                                         }
                                     }
 

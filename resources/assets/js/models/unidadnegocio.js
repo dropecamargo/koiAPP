@@ -17,7 +17,7 @@ app || (app = {});
         idAttribute: 'id',
         defaults: {
             'unidadnegocio_nombre': '',
-        	'unidadnegocio_activo': false
+        	'unidadnegocio_activo': 1
         }
     });
 
