@@ -19,6 +19,7 @@ class CreateSucursalTable extends Migration
             $table->integer('sucursal_regional')->unsigned();
             $table->string('sucursal_nombre', 200);
             $table->string('sucursal_direccion', 200);
+            $table->string('sucursal_direccion_nomenclatura', 200);
             $table->string('sucursal_telefono', 15);
             $table->boolean('sucursal_activo')->default(0);
             $table->integer('sucursal_pedn')->unsigned();

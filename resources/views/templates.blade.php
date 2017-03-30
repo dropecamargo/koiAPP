@@ -456,9 +456,10 @@
 
     <div class="row">
     	<div class="form-group col-md-4">
-			<label for="tcontacto_direccion" class="control-label">Dirección</label>
+			<label for="tcontacto_direccion" class="control-label">Dirección</label> <small id="tcontacto_dir_nomenclatura"><%- tcontacto_direccion_nomenclatura %></small>
       		<div class="input-group input-group-sm">
-				<input id="tcontacto_direccion" value="<%- tcontacto_direccion %>" placeholder="Dirección" class="form-control address-koi-component" name="tcontacto_direccion" type="text" maxlength="200" required>
+  		 		<input type="hidden" id="tcontacto_direccion_nomenclatura" name="tcontacto_direccion_nomenclatura" value="<%- tcontacto_direccion_nomenclatura %>">
+				<input id="tcontacto_direccion" value="<%- tcontacto_direccion %>" placeholder="Dirección" class="form-control address-koi-component" name="tcontacto_direccion" type="text" maxlength="200" required data-nm-name="tcontacto_dir_nomenclatura" data-nm-value="tcontacto_direccion_nomenclatura">
 				<span class="input-group-btn">
 					<button type="button" class="btn btn-default btn-flat btn-address-koi-component" data-field="tcontacto_direccion">
 						<i class="fa fa-map-signs"></i>

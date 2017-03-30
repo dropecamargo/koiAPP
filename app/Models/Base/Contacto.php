@@ -22,7 +22,7 @@ class Contacto extends Model
      *
      * @var array
      */
-    protected $fillable = ['tcontacto_nombres', 'tcontacto_apellidos', 'tcontacto_municipio', 'tcontacto_direccion', 'tcontacto_telefono', 'tcontacto_celular', 'tcontacto_email', 'tcontacto_cargo'];
+    protected $fillable = ['tcontacto_nombres', 'tcontacto_apellidos', 'tcontacto_municipio', 'tcontacto_direccion', 'tcontacto_direccion_nomenclatura' ,'tcontacto_telefono', 'tcontacto_celular', 'tcontacto_email', 'tcontacto_cargo'];
 
     public function isValid($data)
     {
