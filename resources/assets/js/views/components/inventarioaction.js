@@ -243,9 +243,8 @@ app || (app = {});
         onStoreItemInventario: function (e){
             console.log(this.parameters.data);
             if (!e.isDefaultPrevented()) {
-                e.preventDefault(); 
+                e.preventDefault();     
                 this.parameters.data = $.extend({}, this.parameters.data, window.Misc.formToJson( e.target ));
-                
                 this.collection.trigger('store', this.parameters.data);
             }
         },
