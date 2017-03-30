@@ -139,3 +139,56 @@ label {
 .padding-custom-grid {
 	padding: 8px 2px 8px 2px !important;
 }
+
+@media (min-width: 992px) {
+	.modal-xlg {
+	width: 1050px;
+	}
+}
+
+#modal-address-component {
+	.modal-header {
+		padding: 10px;
+	}
+
+	.modal-body {
+		padding: 10px;
+	}
+
+	.small-box {
+		margin-bottom: 0px;
+	}
+
+	.address-nomenclatura {
+		padding: 1px 1px 1px 1px;
+
+		.btn {
+			padding: 2px;
+			font-size: 12px;
+		}
+	}
+
+	.address-digitos {
+
+		>li {
+			width: 50px;
+			padding-right: 0px;
+			padding-bottom: 2px;
+
+			.btn {
+				padding: 3px 12px;
+				font-size: 12px;
+			}
+		}
+	}
+
+	.other-controls {
+		.btn {
+			padding: 3px 12px;
+		}
+	}
+
+	.modal-footer {
+		padding: 10px;
+	}
+}
