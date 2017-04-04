@@ -84,10 +84,8 @@ class SucursalController extends Controller
     public function show(Request $request, $id)
     {
         $sucursal = Sucursal::getSucursal($id);
-        // dd($id);
         if ($request->ajax()) {
-
-            return response()->json(['sucursal'=>$sucursal]);
+            return response()->json($sucursal);
         }
         return view('admin.sucursales.show', ['sucursal' => $sucursal]);
     }

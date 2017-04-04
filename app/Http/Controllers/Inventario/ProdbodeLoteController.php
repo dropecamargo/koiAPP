@@ -31,6 +31,7 @@ class ProdbodeLoteController extends Controller
                 $query->where('prodbodelote_serie', $producto->id);
                 $query->where('prodbodelote_sucursal', $sucursal->id);
                 $query->whereRaw('prodbodelote_cantidad > 0');
+                $query->orderby('prodbodelote_fecha_lote', 'asc');
                 $lotes = $query->get();
             }
             return response()->json($lotes);

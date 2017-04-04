@@ -17,7 +17,7 @@ app || (app = {});
        	idAttribute: 'id',
         defaults: {
             'modelo_nombre': '',
-            'modelo_activo': true
+            'modelo_activo': 1
         }
     });
 

@@ -60,7 +60,6 @@ class DetalleAjusteController extends Controller
                     } 
                     switch ($tipoAjuste->tipoajuste_tipo) {
                         case 'S':
-                            // dd($data);
                             if ($request->get('ajuste2_cantidad_salida') <= 0 && $request->get('ajuste2_costo') == 0) {
                                return response()->json(['success' => false,'errors' => "No es posible realizar $tipoAjuste->tipoajuste_nombre, por favor verifique la información ó consulte al administrador"]);
                             }                     
@@ -102,12 +101,15 @@ class DetalleAjusteController extends Controller
                                 }
                             }elseif ($producto->producto_metrado == true) {
                                 // Producto metrado
-                                for ($item = 1; $item <= $request->ajuste2_cantidad_entrada; $item++) {
-                                    if(!$request->has("itemrollo_metros_$item") || $request->get("itemrollo_metros_$item") <=0) {
-                                        $response->errors = "Por favor ingrese valor en metros para el item rollo $item, debe ser mayor a 0.";
-                                        return $response;
+                                $items = isset($data['items']) ? $data['items'] : null;
+                                $metradoItem = 0.0;
+                                foreach ($items as $key => $item) {
+                                        $metradoItem += $item;
+                                    if ($request->ajuste2_cantidad_entrada < $metradoItem) {
+                                        return response()->json(['success' => false,'errors' => "Metraje no puede ser mayor a la cantidad de METROS ingresada anteriormente, por favor verifique información."]);
                                     }
                                 }
+   
                             } 
                             break;
                         case 'R':

@@ -16,7 +16,7 @@ app || (app = {});
         },
         idAttribute: 'id',
         defaults: {
-        	'sucursal_nombre': '',
+            'sucursal_nombre': '',
             'sucursal_direccion': '',
             'sucursal_regional': '',
             'sucursal_telefono': '',

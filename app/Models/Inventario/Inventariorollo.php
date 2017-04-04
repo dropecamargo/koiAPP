@@ -29,7 +29,7 @@ class Inventariorollo extends Model
         $inventariorollo->inventariorollo_metros_salida = $msalida;
         $inventariorollo->inventariorollo_costo = $costo;
         $inventariorollo->inventariorollo_costo_promedio = $costopromedio;
-        $inventariorollo->inventariorollo_costo_metros = $prodboderollo->prodboderollo_costo;
+        // $inventariorollo->inventariorollo_costo_metros = $prodboderollo->prodboderollo_costo;
         $inventariorollo->save();
         return $inventariorollo;
     }

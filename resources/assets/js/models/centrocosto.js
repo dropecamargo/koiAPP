@@ -23,7 +23,7 @@ app || (app = {});
             'centrocosto_descripcion2': '',
             'centrocosto_estructura': 'N',
             'centrocosto_tipo': 'N',
-        	'centrocosto_activo': true
+        	'centrocosto_activo': 1
         }
     });
 

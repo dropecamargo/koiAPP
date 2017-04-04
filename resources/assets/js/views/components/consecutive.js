@@ -41,11 +41,10 @@ app || (app = {});
             })
             .done(function(resp) {
                 window.Misc.removeSpinner( _this.$wrapperContent );
-
                 // Eval consecutive
                 var consecutive = 0;
-                if(documents == 'pedido') consecutive = resp.sucursal.sucursal_pedn;
-                if(documents == 'ajuste') consecutive = resp.sucursal.sucursal_ajus;
+                if(documents == 'pedido') consecutive = resp.sucursal_pedn;
+                if(documents == 'ajuste') consecutive = resp.sucursal_ajus;
                 
                 // Set consecutive
                 _this.$consecutive.val( parseInt(consecutive) + 1);

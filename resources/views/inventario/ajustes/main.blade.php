@@ -128,14 +128,14 @@
                 </div>
                 <div class="row">
                     <% if(tipoajuste_tipo == 'R' || tipoajuste_tipo == 'E') { %>
-                        <div id="ajuste2_cantidad_entrada" class="col-md-1 col-md-offset-2">
+                        <div id="ajuste2_cantidad_entradas" class="col-md-1 col-md-offset-2">
                         <label for="ajuste2_cantidad_entrada" class="control-label">Cantidad Entrada</label>
                             <input id="ajuste2_cantidad_entrada" name="ajuste2_cantidad_entrada" min="1" class="form-control input-sm <%- tipoajuste_tipo == 'R' ? 'koi-changed-reclacification':'' %>" type="number" required>
                         </div>
                     <% } %>
 
                     <% if(tipoajuste_tipo == 'R' || tipoajuste_tipo == 'S'){ %>
-                        <div id="ajuste2_cantidad_salida" class="col-md-1 col-md-offset-2">
+                        <div id="ajuste2_cantidad_salidas" class="col-md-1 col-md-offset-2">
                          <label for="ajuste2_cantidad_salida" class="control-label">Cantidad Salida</label>
                             <input id="ajuste2_cantidad_salida" name="ajuste2_cantidad_salida" min="1" class="form-control input-sm  <%- tipoajuste_tipo == 'R' ? 'koi-changed-reclacification':'' %>" type="number" required>
                         </div>

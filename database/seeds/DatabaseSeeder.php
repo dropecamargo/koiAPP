@@ -19,6 +19,9 @@ class DatabaseSeeder extends Seeder
         $this->call(MunicipioTableSeeder::class);
         $this->call(ContactoTableSeeder::class);
         $this->call(EmpresaTableSeeder::class);
+        $this->call(DocumentosTableSeeder::class);
+        $this->call(RegionalesTableSeeder::class);
+        $this->call(SucursalesTableSeeder::class);
 
         Model::reguard();
     }

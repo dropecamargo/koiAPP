@@ -46,6 +46,7 @@ app || (app = {});
 			this.$inputContent = this.$("#"+$(e.currentTarget).attr("data-field"));
 			this.$inputName = this.$("#"+this.$inputContent.attr("data-name"));
 			this.$inputCosto = this.$("#"+this.$inputContent.attr("data-costo"));			
+
 			// Filters
 			this.equalsRef = this.$inputContent.attr("data-ref");
 			if((this.equalsRef == "true" || this.equalsRef == "false") && this.$('#ajuste1_sucursal').val() == '' ){
@@ -93,7 +94,6 @@ app || (app = {});
 		setProducto: function(e) {
 			e.preventDefault();
 	        var data = this.productosSearchTable.row( $(e.currentTarget).parents('tr') ).data();
-
 			this.$inputContent.val( data.producto_serie );
 			this.$inputName.val( data.producto_nombre );
 			this.$inputCosto.val(window.Misc.currency(data.producto_costo));

@@ -27,7 +27,8 @@
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				<h4 class="modal-title"></h4>
 			</div>
-			{!! Form::open(['id' => 'form-create-inventario-entrada-component-source', 'data-toggle' => 'validator']) !!}
+
+			<form id="form-create-inventario-entrada-component-source" data-toggle = "validator">
 				<div class="modal-body" id="modal-wrapper-inventario">
 					<div id="error-inventario" class="alert alert-danger"></div>
 					<div class="content-modal"></div>
@@ -36,7 +37,7 @@
 					<button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancelar</button>
 					<button type="submit" class="btn btn-primary btn-sm">Continuar</button>
 				</div>
-			{!! Form::close() !!}
+			</form>
 		</div>
 	</div>
 </div>
@@ -232,7 +233,6 @@
 				                <th>Referencia</th>
 				                <th>Serie</th>
 			                	<th>Nombre</th>
-
 				            </tr>
 				        </thead>
 		            </table>
@@ -265,7 +265,7 @@
 				  	<th>Lote</th>
                 	<th>Fecha</th>
                 	<th>Saldo</th>
-                	<th></th>
+                	<th id="cantidad-salidau" class="text-center"><%- data.ajuste2_cantidad_salida %></th>
 			    </table>
 			</div>
 		</div>
@@ -280,9 +280,10 @@
 				<table id="browse-itemtollo-list" class="table table-hover table-bordered" cellspacing="0">
 		            <tr>
 		                <th>Item</th>
-		                <th>Metros (m)</th>
+		                <th>Metros  (m)</th>
 		            </tr>
 			    </table>
+				<label id="cantidad-entradau" class="label pull-right bg-green" ><%- data.ajuste2_cantidad_entrada %> (m)</label>
 			</div>
 		</div>
 	</div>
@@ -300,7 +301,7 @@
 		                <th>Saldo (m)</th>
 		                <th>Lote</th>
 		                <th>Fecha De Ingreso</th>
-		                <th></th>
+		                <th class="text-center"> <label id="cantidad-salidau" class="label bg-green"><%- data.ajuste2_cantidad_salida %> (m)</label></th>
 		            </tr>
 			    </table>
 			</div>

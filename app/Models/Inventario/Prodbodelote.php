@@ -27,10 +27,11 @@ class Prodbodelote extends Model
 
         // Validar unidades
         if(!is_numeric($unidades) || $unidades <= 0){
+
             return "No es posible recuperar unidades prodbodelote, por favor verifique la información o consulte al administrador.";
         }
-        	
-		$prodbodelote = Prodbodelote::where('prodbodelote_serie',$producto->id)->where('prodbodelote_sucursal',$sucursal->id)->where('prodbodelote_lote', $loteA)->first();
+            
+        $prodbodelote = Prodbodelote::where('prodbodelote_serie',$producto->id)->where('prodbodelote_sucursal',$sucursal->id)->where('prodbodelote_lote', $loteA)->first();
         if(!$prodbodelote instanceof Prodbodelote){
         	$prodbodelote = new Prodbodelote;
 	        $prodbodelote->prodbodelote_lote = $loteA;

@@ -51,10 +51,6 @@ class ProductoController extends Controller
                     if ($request->has('equalsRef')) {
                         if($request->equalsRef == "true"){
                             $query->whereRaw('producto_serie = producto_referencia');
-                        }else{
-                            $query->whereRaw('producto_serie = producto_referencia OR producto_serie != producto_referencia');
-                            // $query->where('producto_maneja_serie',1);
-                            // $query->orwhere('producto_metrado',1);
                         }
                     }
                 })
@@ -216,13 +212,8 @@ class ProductoController extends Controller
         if (!$producto instanceof Producto) {
             $response->errors = "No es posible recuperar PRODUCTO,verifique información ó por favor consulte al administrador.";
         }
-        $productoBode = Prodbode::where('prodbode_serie', $producto->id)->where('prodbode_sucursal' ,$request->sucursal)->first();
-        if (!$productoBode instanceof Prodbode) {
-            $response->errors = "No es posible recuperar PRODUCTO en PRODBODE,verifique información ó por favor consulte al administrador.";
-        }
 
         if ($producto->producto_unidad == true) {
-
             if($tipoajuste->tipoajuste_tipo == 'E'){
                 if ($producto->producto_maneja_serie == true) {
                     $action = 'modalSerie';
@@ -241,34 +232,40 @@ class ProductoController extends Controller
                     $response->success = true;
                 }  
             }else{
-                if($productoBode->prodbode_cantidad > 0){
-                        
-                    if ($producto->producto_maneja_serie == true) {
-                        //Salidas Series
-                        $action = 'modalSerie';
-                        $response->action = $action;   
-                        $response->tipoajuste = $tipoajuste->tipoajuste_tipo;
-                        $response->success = true;
-                    }elseif($producto->producto_metrado == true){
-                        $action = 'ProductoMetrado';
-                        $response->action = $action;   
-                        $response->tipoajuste = $tipoajuste->tipoajuste_tipo;
-                        $response->success = true;
+                $productoBode = Prodbode::where('prodbode_serie', $producto->id)->where('prodbode_sucursal' ,$request->sucursal)->first();
+                if ($productoBode instanceof Prodbode) {
+                    if($productoBode->prodbode_cantidad > 0){
+                        if ($producto->producto_maneja_serie == true) {
+                            //Salidas Series
+                            $action = 'modalSerie';
+                            $response->action = $action;   
+                            $response->tipoajuste = $tipoajuste->tipoajuste_tipo;
+                            $response->success = true;
+                        }elseif($producto->producto_metrado == true){
+                            $action = 'ProductoMetrado';
+                            $response->action = $action;   
+                            $response->tipoajuste = $tipoajuste->tipoajuste_tipo;
+                            $response->success = true;
+                        }else{
+                            $action = 'NoSerieNoMetros';
+                            $response->action = $action;   
+                            $response->tipoajuste = $tipoajuste->tipoajuste_tipo;
+                            $response->success = true;
+                        }   
                     }else{
-                        $action = 'NoSerieNoMetros';
-                        $response->action = $action;   
-                        $response->tipoajuste = $tipoajuste->tipoajuste_tipo;
-                        $response->success = true;
-                    }   
+                        $response->errors = "No hay unidades en BODEGA de esta SUCURSAL,verifique información ó por favor consulte al administrador.";
+                        $response->success = false;
+                    }            
                 }else{
-                    $response->errors = "No hay unidades en BODEGA de esta SUCURSAL,verifique información ó por favor consulte al administrador.";
+                    $response->errors = "No es posible recuperar PRODUCTO en PRODBODE,verifique información ó por favor consulte al administrador.";
                     $response->success = false;
-                }     
+                }
             }  
         }else{
             $response->errors = "No es posible realizar movimientos para productos que no manejan unidades";
             $response->success = false;
         }
+
         return response()->json($response);
     }
     /**

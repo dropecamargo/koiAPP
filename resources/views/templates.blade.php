@@ -960,14 +960,14 @@
     <td class="text-left"><%- prodbodelote_fecha_lote %></td>
     <td class="text-left"><%- prodbodelote_cantidad %></td>
     <td>
-    	<input type="text" id="item_lote_<%- id %>" name="item_lote_<%- id %>" class="form-control input-sm input-toupper" maxlength="15">
+    	<input type="text" id="item_<%- id %>" name="item_<%- id %>" class="form-control input-sm input-toupper cantidad-salidau-koi-inventario" maxlength="15">
     </td>
 </script>
 
 <script type="text/template" id="add-itemsrollos-tpl">
     <td class="text-center"><%- id %></td>
     <td>
-		<input id="itemrollo_metros_<%- id %>" name="itemrollo_metros_<%- id %>" class="form-control input-sm text-right" type="number" value="0" min="0.1" step="0.1" required>
+		<input id="itemrollo_metros_<%- id %>" name="itemrollo_metros_<%- id %>" class="form-control input-sm text-right cantidad-entradau-koi-inventario" type="number" value="0" min="0.1" step="0.1" required>
     </td>
 </script>
 
@@ -979,7 +979,7 @@
     <td class="text-left"><%- prodboderollo_lote %></td>
     <td class="text-left"><%- prodboderollo_fecha_lote %></td>
     <td>
-		<input id="item_<%- id %>" name="item_<%- id %>" class="form-control input-sm text-right" type="number" value="0" min="0" max="<%- prodboderollo_saldo %>" step="0.1">
+		<input id="item_<%- id %>" name="item_<%- id %>" class="form-control input-sm text-right cantidad-salidau-koi-inventario" type="number" value="0" min="0" max="<%- prodboderollo_saldo %>" step="0.1">
     </td>
 </script>
 
