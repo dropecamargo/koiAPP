@@ -21,7 +21,8 @@ app || (app = {});
             'ajuste2_cantidad_entrada':'',
             'ajuste2_cantidad_salida':'',
             'ajuste2_costo':'',
-            'ajuste2_costo_promedio':''
+            'ajuste2_costo_promedio':'',
+            'lote_nombre':''
         }
     });
 

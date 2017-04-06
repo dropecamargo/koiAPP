@@ -27,7 +27,8 @@ class CreateProdboderolloTable extends Migration
             $table->foreign('prodboderollo_serie')->references('id')->on('producto')->onDelete('restrict');
             $table->foreign('prodboderollo_sucursal')->references('id')->on('sucursal')->onDelete('restrict');
             $table->foreign('prodboderollo_lote')->references('id')->on('lote')->onDelete('restrict');
-            $table->unique(['prodboderollo_serie', 'prodboderollo_sucursal', 'prodboderollo_item'], 'prodboderollo_serie_sucursal_item_unique');
+            
+            $table->unique(['prodboderollo_serie', 'prodboderollo_sucursal', 'prodboderollo_item','prodboderollo_lote'], 'prodboderollo_lote_serie_sucursal_item_unique');
         });
     }
 

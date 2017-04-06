@@ -586,7 +586,7 @@
     <div class="row">
 		<div class="col-md-2">
 			<label for="tipoajuste_sigla" class="control-label">Sigla</label>
-			<input type="text" id="tipoajuste_sigla" name="tipoajuste_sigla" value="<%- tipoajuste_sigla %>" placeholder="Sigla" class="form-control input-sm input-toupper" maxlength="25" required>
+			<input type="text" id="tipoajuste_sigla" name="tipoajuste_sigla" value="<%- tipoajuste_sigla %>" placeholder="Sigla" class="form-control input-sm input-toupper" maxlength="3" required>
 		</div>
 		<div class="col-md-6">
 			<label for="tipoajuste_nombre" class="control-label">Nombre</label>
@@ -996,8 +996,8 @@
 </script>
 
 <script type="text/template" id="exit-lotes-tpl">
-    <td class="text-left"><%- prodbodelote_lote %></td>
-    <td class="text-left"><%- prodbodelote_fecha_lote %></td>
+    <td class="text-left"><%- lote_nombre %></td>
+    <td class="text-left"><%- lote_fecha %></td>
     <td class="text-left"><%- prodbodelote_saldo %></td>
     <td>
     	<div class="form-group">

@@ -51,9 +51,10 @@
                         <tr>
                             <th width="15%">Referencia</th>
                             <th width="40%" align="left">Nombre</th>
-                            <th width="15%">Cantidad Entrada</th>
-                            <th width="15%">Cantidad Salida</th>
-                            <th width="15%">Costo</th>
+                            <th width="15%" align="left">Nombre Lote</th>
+                            <th width="10%">Cantidad Entrada</th>
+                            <th width="10%">Cantidad Salida</th>
+                            <th width="10%">Costo</th>
                         </tr>
                     </thead>
                     <tbody>
