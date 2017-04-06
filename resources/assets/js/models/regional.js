@@ -17,7 +17,7 @@ app || (app = {});
         idAttribute: 'id',
         defaults: {
             'regional_nombre': '',
-            'regional_activo': true
+            'regional_activo': 1
         }
     });
 

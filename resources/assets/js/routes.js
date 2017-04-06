@@ -356,6 +356,7 @@ app || (app = {});
 
             this.createSucursalView = new app.CreateSucursalView({ model: this.sucursalModel });
             this.sucursalModel.fetch();
+            console.log(this.sucursalModel);
         },
 
         //Regionales
@@ -391,6 +392,7 @@ app || (app = {});
 
             this.createRegionalView = new app.CreateRegionalView({ model: this.regionalModel });
             this.regionalModel.fetch();
+            console.log(this.regionalModel);
         },
 
         // Vistas de Departamentos

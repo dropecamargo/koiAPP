@@ -27,16 +27,17 @@
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				<h4 class="modal-title"></h4>
 			</div>
-			{!! Form::open(['id' => 'form-create-inventario-entrada-component-source', 'data-toggle' => 'validator']) !!}
+			
+			<form id="form-create-inventario-entrada-component-source" data-toggle="validator">
 				<div class="modal-body" id="modal-wrapper-inventario">
 					<div id="error-inventario" class="alert alert-danger"></div>
 					<div class="content-modal"></div>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancelar</button>
-					<button type="submit" class="btn btn-primary btn-sm">Continuar</button>
+					<button type="submit" class="btn btn-primary btn-sm" id="button-koi-inventory-modal">Continuar</button>
 				</div>
-			{!! Form::close() !!}
+			</form>
 		</div>
 	</div>
 </div>
@@ -249,7 +250,6 @@
 				                <th>Referencia</th>
 				                <th>Serie</th>
 			                	<th>Nombre</th>
-
 				            </tr>
 				        </thead>
 		            </table>
@@ -260,7 +260,7 @@
 </script>
 <script type="text/template" id="add-series-tpl">
 	<div class="row">
-		<div class="col-sm-6 col-md-offset-3 col-xs-12">
+		<div class="col-sm-8 col-md-offset-2 col-xs-12">
 			<!-- table table-bordered table-striped -->
 			<div class="box-body table-responsive no-padding">
 				<table id="browse-series-list" class="table table-hover table-bordered" cellspacing="0">
@@ -282,7 +282,7 @@
 				  	<th>Lote</th>
                 	<th>Fecha</th>
                 	<th>Saldo</th>
-                	<th></th>
+                	<th class="text-center"> <label id="cantidad-salidau" class="label bg-green"><%- data.ajuste2_cantidad_salida %></label></th>
 			    </table>
 			</div>
 		</div>
@@ -296,10 +296,15 @@
 			<div class="box-body table-responsive no-padding">
 				<table id="browse-itemtollo-list" class="table table-hover table-bordered" cellspacing="0">
 		            <tr>
-		                <th>Item</th>
-		                <th>Metros (m)</th>
+		                <th>Metros  (m)</th>
+		                <th class="text-center">
+		               		<button id="btn-itemrollo-entradau-koi-inventario" type="button" class="btn btn-success btn-sm btn-flat">
+								<i class="fa fa-plus"></i>
+							</button>
+		                </th>
 		            </tr>
 			    </table>
+				<label id="cantidad-entradau" class="label pull-right bg-green" ><%- data.ajuste2_cantidad_entrada %> (m)</label>
 			</div>
 		</div>
 	</div>
@@ -313,11 +318,11 @@
 				<table id="browse-chooseitemtollo-list" class="table table-hover table-bordered" cellspacing="0">
 		            <tr>
 		                <th>Item</th>
-		                <th>Metros (m)</th>
-		                <th>Saldo (m)</th>
 		                <th>Lote</th>
 		                <th>Fecha De Ingreso</th>
-		                <th></th>
+		                <th>Metros (m)</th>
+		                <th>Saldo (m)</th>
+		                <th class="text-center"> <label id="cantidad-salidau" class="label bg-green"><%- data.ajuste2_cantidad_salida %> (m)</label></th>
 		            </tr>
 			    </table>
 			</div>

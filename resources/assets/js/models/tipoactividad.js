@@ -17,10 +17,10 @@ app || (app = {});
         idAttribute: 'id',
         defaults: {
         	'tipoactividad_nombre': '',
-        	'tipoactividad_activo': false,
-        	'tipoactividad_comercial': false,
-        	'tipoactividad_tecnico': false,
-        	'tipoactividad_cartera': false
+        	'tipoactividad_activo': 0,
+        	'tipoactividad_comercial': 0,
+        	'tipoactividad_tecnico': 0,
+        	'tipoactividad_cartera': 0
         }
     });
 

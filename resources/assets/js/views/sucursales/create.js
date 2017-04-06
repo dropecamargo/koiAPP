@@ -55,6 +55,7 @@ app || (app = {});
         render: function() {
 
             var attributes = this.model.toJSON();
+            console.log(attributes);
             this.$wraperForm.html( this.template(attributes) );
 
             this.ready();
@@ -73,6 +74,9 @@ app || (app = {});
             
             if( typeof window.initComponent.initICheck == 'function' )
                 window.initComponent.initICheck();
+
+            if( typeof window.initComponent.initSelect2 == 'function' )
+                window.initComponent.initSelect2();  
         },
 
         /**

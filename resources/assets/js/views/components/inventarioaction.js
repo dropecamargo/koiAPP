@@ -18,6 +18,9 @@ app || (app = {});
 
     	events:{ 
             'submit #form-create-inventario-entrada-component-source': 'onStoreItemInventario',
+            'change .cantidad-salidau-koi-inventario': 'changedCantidadUnidadesSalida',
+            'click #btn-itemrollo-entradau-koi-inventario': 'clickAddItemRollo',
+            'click .btn-remove-itemrollo-koi-inventario': 'clickRemoveItemRollo',
     	},
 
         parameters: {
@@ -33,7 +36,7 @@ app || (app = {});
                 this.parameters = $.extend({}, this.parameters, opts.parameters);
 
             this.$modalIn = this.$('#modal-inventario-component');
-
+            
             // Collection item rollo
             this.itemRolloINList = new app.ItemRolloINList();
             //Collectio lotes
@@ -43,6 +46,8 @@ app || (app = {});
 
             // Events Listeners
             this.listenTo( this.LotesProducto, 'reset', this.addAllProductoLote );
+
+            this.listenTo( this.itemRolloINList, 'add', this.addOneItemRolloInventario );
             this.listenTo( this.itemRolloINList, 'reset', this.addAllItemRolloInventario );
             
             this.listenTo( this.model, 'sync', this.responseServer );
@@ -63,10 +68,8 @@ app || (app = {});
                             // Reference inventario
                             _this.referenceSerie(resp);
                         }else{
-                            _this.$modalIn.find('.content-modal').empty().html(_this.templateSeriesLotes( ));
-                            
-                            _this.$modalIn.find('.modal-title').text('Inventario, Salidas De Productos ');
                             // Reference inventario
+                            _this.$('#ajuste2_cantidad_salida').val(1).prop('readonly', true);
                             _this.referenceSerie(resp);
                         }
 
@@ -74,23 +77,23 @@ app || (app = {});
                     
                     'ProductoMetrado': function(){
                         if (resp.tipoAjuste == 'E') {
-                            _this.$modalIn.find('.content-modal').empty().html(_this.templateAddItemRollo( ) );
-                            _this.$modalIn.find('.modal-title').text('Inventario, Entradas De Productos Metrados');    
-                            _this.ReferenceMetrado(resp);
+                            _this.$modalIn.find('.content-modal').empty().html(_this.templateAddItemRollo(resp) );
+                            _this.$modalIn.find('.modal-title').text('Inventario, Entradas De Productos Metrados'); 
+                            _this.referenceMetrado(resp);
                         }else{
-                            _this.$modalIn.find('.content-modal').empty().html(_this.templateChooseItemsRollo( ) );
+                            _this.$modalIn.find('.content-modal').empty().html(_this.templateChooseItemsRollo(resp) );
                             _this.$modalIn.find('.modal-title').text('Inventario, Salidas De Productos Metrados');
-                            _this.ReferenceMetrado(resp);
+                            _this.referenceMetrado(resp);
                         }
                     },
                     'NoSerieNoMetros': function(){
                         if (resp.tipoAjuste == 'E') {
                             _this.collection.trigger('store',resp.data);
                         }else{
-                            _this.$modalIn.find('.content-modal').empty().html(_this.templateSeriesLotes( ));
+                            _this.$modalIn.find('.content-modal').empty().html(_this.templateSeriesLotes(resp));
                             _this.$modalIn.find('.modal-title').text('Inventario, Salidas De Productos ');
-                                 // Reference inventario
-                            _this.referenceSerie(resp);
+                             // Reference inventario
+                            _this.referenceNoSerie(resp);
                         }
                     }
                 };
@@ -132,22 +135,38 @@ app || (app = {});
                 for (var i = 1; i <= atributes.data.ajuste2_cantidad_entrada; i++) {
                     this.addOneSerieInventario( new app.ProductoModel({ id: i }) )
                 }
+                // Hide errors
+                this.$wraperErrorIn.hide().empty();
+                // Open modal
+                this.$modalIn.modal('show');
             }else{
-                //salidas
-                this.$wraperSeries = this.$('#browse-series-lotes-list');
-                this.LotesProducto.fetch({ reset: true, data: { producto: atributes.data.ajuste2_producto, sucursal: atributes.data.sucursal } });
-                this.parameters.data.lote = this.LotesProducto;
+                this.parameters.data = $.extend({}, this.parameters.data);
+                this.collection.trigger('store', this.parameters.data);
             }
+
+        },
+        /**
+        * Reference add No series No metros
+        */
+        referenceNoSerie: function(atributes) {
+            this.$wraper = this.$('#modal-wrapper-inventario');
+            this.$wraperFormIn = this.$modalIn.find('.content-modal');
+            this.$wraperDetailIn = this.$modalIn.find('#content-detail-inventory');
+            this.$wraperErrorIn = this.$('#error-inventario');
+            
+            this.$wraperSeries = this.$('#browse-series-lotes-list');
+            this.LotesProducto.fetch({ reset: true, data: { producto: atributes.data.ajuste2_producto, sucursal: atributes.data.sucursal } });
             // Hide errors
             this.$wraperErrorIn.hide().empty();
-
             // Open modal
             this.$modalIn.modal('show');
+  
+
         },
       	/**
         * Reference add RolloMetrado
         */
-        ReferenceMetrado: function(atributes) {
+        referenceMetrado: function(atributes) {
             this.$wraper = this.$('#modal-wrapper-inventario');
             this.$wraperFormIn = this.$modalIn.find('.content-modal');
             this.$wraperDetailIn = this.$modalIn.find('#content-detail-inventory');
@@ -155,9 +174,8 @@ app || (app = {});
             if(atributes.tipoAjuste == 'E' ){
                 // Items rollo view
                 this.$wraperItemRollo = this.$('#browse-itemtollo-list');
-                for (var i = 1; i <= atributes.data.ajuste2_cantidad_entrada; i++) {
-                    this.addOneItemRolloInventario( new app.ItemRolloModel({ id: i }) )
-                }
+                this.itemRolloINList.add( new app.ItemRolloModel({ id: shortid.uuid() }) );
+
             }else{
                 //salidas
                 this.$wraperItemRollo = this.$('#browse-chooseitemtollo-list');
@@ -168,6 +186,7 @@ app || (app = {});
 
             // Open modal
             this.$modalIn.modal('show');
+
         },
         /**
         * Render view task by model
@@ -213,7 +232,7 @@ app || (app = {});
         addAllItemRolloInventario: function () {
             var _this = this;
             this.itemRolloINList.forEach(function(model, index) {
-                _this.addOneItemRolloInventario(model, true)
+                _this.addOneItemRolloInventario(model)
             });
         },
 
@@ -221,34 +240,108 @@ app || (app = {});
         * Render view task by model
         * @param Object ItemRolloModel Model instance
         */
-        addOneItemRolloInventario: function (ItemRolloModel, choose) {
-            choose || (choose = false);
-
+        addOneItemRolloInventario: function (itemRolloModel) {
             var view = new app.ItemRolloINListView({
-                model: ItemRolloModel,
+                model: itemRolloModel,
                 parameters: {
-                    choose: choose
-
+                    type: this.parameters.tipoAjuste
                 }
             });
 
+            itemRolloModel.view = view;
             this.$wraperItemRollo.append( view.render().el );
-
             this.ready();
         },
-
         /*
         *Validate Carro temporal
         */
         onStoreItemInventario: function (e){
-            console.log(this.parameters.data);
             if (!e.isDefaultPrevented()) {
-                e.preventDefault();     
-                this.parameters.data = $.extend({}, this.parameters.data, window.Misc.formToJson( e.target ));
-                this.collection.trigger('store', this.parameters.data);
+                e.preventDefault(); 
+                if (this.parameters.action == 'modalSerie') {
+                    this.parameters.data = $.extend({}, this.parameters.data, window.Misc.formToJson(e.target));
+                    this.collection.trigger('store', this.parameters.data);
+                
+                }else{
+                    var items = [];
+                    items =  window.Misc.formToJson( e.target );
+                    this.parameters.data = $.extend({}, this.parameters.data);
+                    this.parameters.data.items =  items;
+                    this.collection.trigger('store', this.parameters.data);
+                }
+            }
+        },
+        /*
+        *changed unidades de salidas
+        */
+        changedCantidadUnidadesSalida: function(e){
+            if (!e.isDefaultPrevented()) {
+                e.preventDefault();
+                
+                if (this.parameters.action == 'ProductoMetrado' ) {
+                     // Valid total
+                    var ingresadas = 0;
+                    var result =_.every(this.itemRolloINList.models, function(itemRolloModel) { 
+                        
+                        if( itemRolloModel.get('prodboderollo_saldo') < parseFloat( this.$('#item_'+itemRolloModel.get('id')).val() ) ) {
+                            alertify.error("Cantidad insuficiente para este item, (" + itemRolloModel.get('prodboderollo_saldo') + ") SALDO, (" + this.$('#item_'+itemRolloModel.get('id')).val() + ") INGRESADAS, por favor verifique información.");
+                            return false;
+                        }
+                        return  true; 
+                    });
+
+                }else{
+
+                     // Valid total
+                    var ingresadas = 0;
+                    var result =_.every(this.LotesProducto.models, function(modelProdbodeLote) { 
+                        
+                        if( modelProdbodeLote.get('prodbodelote_saldo') < parseFloat( this.$('#item_'+modelProdbodeLote.get('id')).val() ) ) {
+                            alertify.error("Cantidad insuficiente para este item, (" + modelProdbodeLote.get('prodbodelote_saldo') + ") SALDO, (" + this.$('#item_'+modelProdbodeLote.get('id')).val() + ") INGRESADAS, por favor verifique información.");
+                            return false;
+                        }
+                        return  true; 
+                    });
+                }   
             }
         },
 
+        /*
+        * Add item unidades de entrada
+        */
+        clickAddItemRollo: function(e) {
+            e.preventDefault();
+
+            // Valid total
+            var ingresadas = 0;
+            _.each(this.itemRolloINList.models, function(itemRolloModel){  
+                ingresadas+= parseFloat( this.$('#itemrollo_metros_'+itemRolloModel.get('id')).val() );
+            });
+
+            if(ingresadas >= this.parameters.data.ajuste2_cantidad_entrada) {
+                alertify.error("No puede superar la cantidad de metros(" + this.parameters.data.ajuste2_cantidad_entrada +") a ingresar, por favor verifique información.");
+                return;
+            }
+         
+            this.itemRolloINList.add( new app.ItemRolloModel({ id: shortid.uuid() }) );
+        },
+
+        /*
+        * Remove item unidades de entrada
+        */
+        clickRemoveItemRollo: function(e) {
+            e.preventDefault();
+
+            var resource = $(e.currentTarget).attr("data-resource"),
+                model = this.itemRolloINList.get(resource);
+
+            if ( model instanceof Backbone.Model ) {
+                
+                this.itemRolloINList.remove(model);                
+                model.view.remove();
+
+            }
+        },
 
         responseServer: function ( model, resp, opts ) {
             if(!_.isUndefined(resp.success)) {

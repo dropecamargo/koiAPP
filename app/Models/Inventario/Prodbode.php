@@ -44,16 +44,14 @@ class Prodbode extends Model
 	        $prodbode->prodbode_serie = $producto->id;
 	        $prodbode->prodbode_sucursal = $sucursal->id;
     	}
-
         switch ($tipo) {
             case 'E':
-
                 $prodbode->prodbode_cantidad = ($prodbode->prodbode_cantidad + $unidades);
             break;
             case 'S':
                 // Validar disponibles
                 if($unidades > $prodbode->prodbode_cantidad){
-                    return "No existen suficientes unidades para salida producto {$producto->producto_series}, disponibles {$prodbode->prodbode_cantidad}, salida $unidades, por favor verifique la información o consulte al administrador.";
+                    return "No existen suficientes unidades para salida producto {$producto->producto_nombre}, disponibles {$prodbode->prodbode_cantidad}, salida $unidades, por favor verifique la información o consulte al administrador.";
                 }
                 $prodbode->prodbode_cantidad = ($prodbode->prodbode_cantidad - $unidades);
             break;

@@ -143,6 +143,13 @@ var app = app || {};
                 },
             });
 
+            $("[data-bitch]").inputmask({
+                alias: 'numeric',
+                min: 0,
+                removeMaskOnSubmit: true,
+                unmaskAsNumber: true,
+            });
+
             $("[data-currency-precise]").inputmask({
                 radixPoint: ",",
                 alias: 'currency',

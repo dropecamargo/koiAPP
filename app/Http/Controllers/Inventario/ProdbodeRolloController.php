@@ -31,9 +31,12 @@ class ProdbodeRolloController extends Controller
             $rollos = [];
             if($request->has('producto') && $request->has('sucursal')) {
                 $query = Prodboderollo::query();
+                $query->select('prodboderollo.*','lote_fecha', 'lote_nombre');
                 $query->where('prodboderollo_serie', $producto->id);
                 $query->where('prodboderollo_sucursal', $sucursal->id);
                 $query->whereRaw('prodboderollo_saldo > 0');
+                $query->join('lote','prodboderollo_lote', '=', 'lote.id');
+                $query->orderby('lote_fecha', 'asc');
                 $rollos = $query->get();
             }
             return response()->json($rollos);

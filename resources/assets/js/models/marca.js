@@ -17,7 +17,7 @@ app || (app = {});
         idAttribute: 'id',
         defaults: {
             'marca_nombre': '',
-            'marca_activo': true
+            'marca_activo': 1
         }
     });
 

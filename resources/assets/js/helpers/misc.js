@@ -276,6 +276,7 @@
                 alertify.error(thrownError);
             });
         },
+        
         /**
         * Evaluate facturap
         */
@@ -329,7 +330,7 @@
                 window.Misc.removeSpinner( settings.wrap );
                 alertify.error(thrownError);
             });
-        },
+        }
     };
 
     window.Misc = new Misc();
