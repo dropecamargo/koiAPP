@@ -66,6 +66,14 @@ app || (app = {});
             'tiposajuste/create(/)': 'getTipoAjusteCreate',
             'tiposajuste/:tipoajuste/edit(/)': 'getTipoAjusteEdit',
 
+            //permisos
+            'permisos(/)': 'getPermisosMain',
+            'modulos(/)': 'getModulosMain',
+
+            'roles(/)': 'getRolesMain',
+            'roles/create(/)': 'getRolesCreate',
+            'roles/:rol/edit(/)': 'getRolesEdit',
+
             /*
             |-----------------------
             | Contabilidad
@@ -1227,8 +1235,76 @@ app || (app = {});
             this.showAjusteView = new app.ShowAjusteView({ model: this.ajusteModel });
             this.ajusteModel.fetch();
         },
- 
+        
+         /**
+        * show main view permisos
+        */
+        getPermisosMain: function () {
 
+            if ( this.mainPermisoView instanceof Backbone.View ){
+                this.mainPermisoView.stopListening();
+                this.mainPermisoView.undelegateEvents();
+            }
+
+            this.mainPermisoView = new app.MainPermisoView( );
+        },
+
+        /**
+        * show main view modulos
+        */
+        getModulosMain: function () {
+
+            if ( this.mainModuloView instanceof Backbone.View ){
+                this.mainModuloView.stopListening();
+                this.mainModuloView.undelegateEvents();
+            }
+
+            this.mainModuloView = new app.MainModuloView( );
+        },
+
+        /**
+        * show view main roles
+        */
+        getRolesMain: function () {
+
+            if ( this.mainRolesView instanceof Backbone.View ){
+                this.mainRolesView.stopListening();
+                this.mainRolesView.undelegateEvents();
+            }
+
+            this.mainRolesView = new app.MainRolesView( );
+        },
+
+        /**
+        * show view create roles
+        */
+        getRolesCreate: function () {
+            this.rolModel = new app.RolModel();
+
+            if ( this.createRolView instanceof Backbone.View ){
+                this.createRolView.stopListening();
+                this.createRolView.undelegateEvents();
+            }
+
+            this.createRolView = new app.CreateRolView({ model: this.rolModel });
+            this.createRolView.render();
+        },
+
+        /**
+        * show view edit roles
+        */
+        getRolesEdit: function (rol) {
+            this.rolModel = new app.RolModel();
+            this.rolModel.set({'id': rol}, {silent: true});
+
+            if ( this.createRolView instanceof Backbone.View ){
+                this.createRolView.stopListening();
+                this.createRolView.undelegateEvents();
+            }
+
+            this.createRolView = new app.CreateRolView({ model: this.rolModel });
+            this.rolModel.fetch();
+        },
     }) );
 
 })(jQuery, this, this.document);

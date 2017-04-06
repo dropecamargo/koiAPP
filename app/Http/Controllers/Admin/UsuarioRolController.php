@@ -8,7 +8,6 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use DB, Log, Datatables,Cache;
-
 use App\Models\Base\UsuarioRol, App\Models\Base\Tercero, App\Models\Base\Rol;
 
 class UsuarioRolController extends Controller

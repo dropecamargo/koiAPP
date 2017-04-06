@@ -41,7 +41,7 @@ class TerceroTableSeeder extends Seeder
             'tercero_interno'   => true,
             'tercero_email'    => str_random(10).'@gmail.com',
             'username'    => 'machadoo00',
-            'password' => bcrypt('123')
+            'password' => bcrypt('123321')
         ]);
 
         Tercero::create([
