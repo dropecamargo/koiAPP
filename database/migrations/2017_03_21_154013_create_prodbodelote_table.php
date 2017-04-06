@@ -19,6 +19,7 @@ class CreateProdbodeloteTable extends Migration
             $table->integer('prodbodelote_serie')->unsigned();
             $table->integer('prodbodelote_sucursal')->unsigned();
             $table->integer('prodbodelote_cantidad')->unsigned();
+            $table->integer('prodbodelote_saldo')->unsigned();
             $table->date('prodbodelote_fecha_lote');
             $table->date('prodbodelote_fecha_vence');
             

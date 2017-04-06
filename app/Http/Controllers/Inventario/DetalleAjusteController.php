@@ -60,6 +60,7 @@ class DetalleAjusteController extends Controller
                     } 
                     switch ($tipoAjuste->tipoajuste_tipo) {
                         case 'S':
+                            // dd($data);
                             if ($request->get('ajuste2_cantidad_salida') <= 0 && $request->get('ajuste2_costo') == 0) {
                                return response()->json(['success' => false,'errors' => "No es posible realizar $tipoAjuste->tipoajuste_nombre, por favor verifique la información ó consulte al administrador"]);
                             }                     
@@ -70,10 +71,11 @@ class DetalleAjusteController extends Controller
                             if(!$producto->producto_unidad){
                                 return response()->json(['success' => false,'errors' => "No es posible realizar movimientos para productos que no manejan unidades"]);
                             }
+                            
                             if ($request->get('ajuste2_cantidad_entrada') == 0 && $request->get('ajuste2_costo') == 0 ) {
                                return response()->json(['success' => false,'errors' => "No es posible realizar $tipoAjuste->tipoajuste_nombre, por favor verifique la información ó consulte al administrador"]);
                             }
-                            if ($producto->producto_serie == true) {
+                            if ($producto->producto_maneja_serie == true) {
                                 // Producto serie
                                 $series = [];
                                 for ($item = 1; $item <= $request->ajuste2_cantidad_entrada; $item++) {
@@ -92,13 +94,21 @@ class DetalleAjusteController extends Controller
                                         // Si ya existe serie validamos prodbode en cualquier sucursal, serie unica
                                         $existencias = DB::table('prodbode')->where('prodbode_serie', $serie->id)->sum('prodbode_cantidad');
                                         if($existencias > 0) {
-                                            return response()->json(['success' => false,'errors' => "Ya existe un producto con este número de serie {$serie->producto_codigo}."]);
+                                            return response()->json(['success' => false,'errors' => "Ya existe un producto con este número de serie {$serie->producto_serie}."]);
                                         }
                                     }
 
                                     $series[] = $request->get("producto_serie_$item");
                                 }
-                            }
+                            }elseif ($producto->producto_metrado == true) {
+                                // Producto metrado
+                                for ($item = 1; $item <= $request->ajuste2_cantidad_entrada; $item++) {
+                                    if(!$request->has("itemrollo_metros_$item") || $request->get("itemrollo_metros_$item") <=0) {
+                                        $response->errors = "Por favor ingrese valor en metros para el item rollo $item, debe ser mayor a 0.";
+                                        return $response;
+                                    }
+                                }
+                            } 
                             break;
                         case 'R':
                             if(($request->has('ajuste2_cantidad_salida')) && ($request->has('ajuste2_cantidad_entrada')) || ((int)($request->ajuste2_costo == 0))) {

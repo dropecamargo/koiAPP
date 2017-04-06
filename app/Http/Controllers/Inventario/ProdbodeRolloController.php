@@ -1,13 +1,16 @@
 <?php
 
 namespace App\Http\Controllers\Inventario;
+
 use Illuminate\Http\Request;
+
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\Inventario\Prodbodelote, App\Models\Inventario\Producto;
+use App\Models\Inventario\Prodboderollo, App\Models\Inventario\Producto;
 use App\Models\Base\Sucursal;
 
-class ProdbodeLoteController extends Controller
+
+class ProdbodeRolloController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -25,19 +28,18 @@ class ProdbodeLoteController extends Controller
             if (!$sucursal instanceof Sucursal) {
                 return response()->json( 'No es posible recuperar SUCURSAL,verifique información ó por favor consulte al administrador.');
             }
-            $lotes = [];
+            $rollos = [];
             if($request->has('producto') && $request->has('sucursal')) {
-                $query = Prodbodelote::query();
-                $query->where('prodbodelote_serie', $producto->id);
-                $query->where('prodbodelote_sucursal', $sucursal->id);
-                $query->whereRaw('prodbodelote_cantidad > 0');
-                $lotes = $query->get();
+                $query = Prodboderollo::query();
+                $query->where('prodboderollo_serie', $producto->id);
+                $query->where('prodboderollo_sucursal', $sucursal->id);
+                $query->whereRaw('prodboderollo_saldo > 0');
+                $rollos = $query->get();
             }
-            return response()->json($lotes);
+            return response()->json($rollos);
         }
         abort(404);
     }
-
 
     /**
      * Show the form for creating a new resource.

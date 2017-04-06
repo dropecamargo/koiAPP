@@ -18,9 +18,10 @@ app || (app = {});
         defaults: {
         	'sucursal_nombre': '',
             'sucursal_direccion': '',
+            'sucursal_direccion_nomenclatura': '',
             'sucursal_regional': '',
             'sucursal_telefono': '',
-        	'sucursal_activo': true
+        	'sucursal_activo': 1
         }
     });
 

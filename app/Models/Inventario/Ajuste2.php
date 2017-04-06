@@ -20,7 +20,7 @@ class Ajuste2 extends Model
 	*
 	* @var array
 	*/
-	protected $fillable = ['ajuste2_cantidad_entrada','ajuste2_cantidad_salida','ajuste2_costo','ajuste2_costo_promedio'];	
+	protected $fillable = ['ajuste2_cantidad_entrada','ajuste2_cantidad_salida','ajuste2_costo'];	
 
 	public function isValid($data)
 	{

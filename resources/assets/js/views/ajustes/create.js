@@ -110,7 +110,6 @@ app || (app = {});
                 var data = window.Misc.formToJson( e.target );
                     data.tipoajuste = this.$selectTipoAjuste.val();
                     data.sucursal = this.$('#ajuste1_sucursal').val();
-                // this.detalleAjuste.trigger( 'store', data );
                 window.Misc.evaluateActionsInventory({
                     'data': data,
                     'wrap': this.$el,
@@ -135,9 +134,7 @@ app || (app = {});
                             _this.inventarioActionView.render();
                         }
                     })(this)
-                });
-
-                
+                });                
             }
         },
         
@@ -232,7 +229,7 @@ app || (app = {});
                     return; 
                 }
             }
-            // window.Misc.redirect( window.Misc.urlFull( Route.route('ajustes.show', { ajustes: resp.id})) );
+            window.Misc.redirect( window.Misc.urlFull( Route.route('ajustes.show', { ajustes: resp.id})) );
         }
     });
 

@@ -114,7 +114,7 @@
                                     <i class="fa fa-barcode"></i>
                                 </button>
                             </span>
-                            <input id="ajuste2_producto" placeholder="Serie" class="form-control producto-koi-component" name="ajuste2_producto" type="text" maxlength="15" data-wrapper="ajuste-create" data-tipo="" data-name="ajuste2_producto_nombre" data-ref="true" required <%- tipoajuste_tipo=='S' ? 'data-costo=ajuste2_costo': '' %> > 
+                            <input id="ajuste2_producto" placeholder="Serie" class="form-control producto-koi-component" name="ajuste2_producto" type="text" maxlength="15" data-wrapper="ajuste-create" data-name="ajuste2_producto_nombre" required <%- tipoajuste_tipo=='S' ? 'data-costo=ajuste2_costo': '' %> <%- tipoajuste_tipo=='S' ?  'data-ref=false' : 'data-ref=true' %> > 
                         </div>
                     </div>
                     <div class="col-sm-5 ">

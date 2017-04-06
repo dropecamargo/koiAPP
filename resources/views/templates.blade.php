@@ -76,9 +76,10 @@
 
 		<div class="row">
 			<div class="form-group col-md-3">
-				<label for="tercero_direccion" class="control-label">Dirección</label>
+				<label for="tercero_direccion" class="control-label">Dirección</label> <small id="tercero_nomenclatura"><%- tercero_dir_nomenclatura %></small>
 	      		<div class="input-group input-group-sm">
-					<input id="tercero_direccion" value="<%- tercero_direccion %>" placeholder="Dirección" class="form-control address-koi-component" name="tercero_direccion" type="text" required>
+      		 		<input type="hidden" id="tercero_dir_nomenclatura" name="tercero_dir_nomenclatura" value="<%- tercero_dir_nomenclatura %>">
+					<input id="tercero_direccion" value="<%- tercero_direccion %>" placeholder="Dirección" class="form-control address-koi-component" name="tercero_direccion" type="text" data-nm-name="tercero_nomenclatura" data-nm-value="tercero_dir_nomenclatura" required>
 					<span class="input-group-btn">
 						<button type="button" class="btn btn-default btn-flat btn-address-koi-component" data-field="tercero_direccion">
 							<i class="fa fa-map-signs"></i>
@@ -324,7 +325,44 @@
 
 							<br />
 							<div class="row">
-						    	<div class="form-group col-md-offset-2 col-md-8">
+								<div class="form-group col-md-6">
+					            	<div class="box box-success" id="wrapper-password">
+										<div class="box-header with-border">
+											<h3 class="box-title">Datos de acceso</h3>
+										</div>
+										<div class="box-body">
+											<form method="POST" accept-charset="UTF-8" id="form-changed-password" data-toggle="validator">
+												<div class="row">
+													<div class="form-group col-md-12">
+														<label for="username" class="control-label">Cuenta de usuario</label>
+														<input type="text" name="username" id="username" class="form-control input-lower" value="<%- username %>" minlength="4" maxlength="20" required>
+													</div>
+												</div>
+
+												<div class="row">
+													<div class="form-group col-md-6">
+													<label for="password" class="control-label">Contraseña</label>
+														<input type="password" name="password" id="password" class="form-control" minlength="6" maxlength="15">
+														<div class="help-block">Minimo de 6 caracteres</div>
+													</div>
+
+													<div class="form-group col-md-6">
+													<label for="password_confirmation" class="control-label">Verificar contraseña</label>
+														<input type="password" name="password_confirmation" id="password_confirmation" class="form-control" data-match="#password" data-match-error="Oops, no coinciden la contraseña" minlength="6" maxlength="15">
+														<div class="help-block with-errors"></div>
+													</div>
+												</div>
+
+												<div class="row">
+													<div class="col-md-12 text-center">
+														<button type="submit" class="btn btn-success change-pass">Cambiar</button>
+													</div>
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>
+						    	<div class="form-group col-md-6">
 									<div class="box box-success" id="wrapper-roles">
 										<div class="box-header with-border">
 											<h3 class="box-title">Roles de usuario</h3>
@@ -418,9 +456,10 @@
 
     <div class="row">
     	<div class="form-group col-md-4">
-			<label for="tcontacto_direccion" class="control-label">Dirección</label>
+			<label for="tcontacto_direccion" class="control-label">Dirección</label> <small id="tcontacto_dir_nomenclatura"><%- tcontacto_direccion_nomenclatura %></small>
       		<div class="input-group input-group-sm">
-				<input id="tcontacto_direccion" value="<%- tcontacto_direccion %>" placeholder="Dirección" class="form-control address-koi-component" name="tcontacto_direccion" type="text" maxlength="200" required>
+  		 		<input type="hidden" id="tcontacto_direccion_nomenclatura" name="tcontacto_direccion_nomenclatura" value="<%- tcontacto_direccion_nomenclatura %>">
+				<input id="tcontacto_direccion" value="<%- tcontacto_direccion %>" placeholder="Dirección" class="form-control address-koi-component" name="tcontacto_direccion" type="text" maxlength="200" required data-nm-name="tcontacto_dir_nomenclatura" data-nm-value="tcontacto_direccion_nomenclatura">
 				<span class="input-group-btn">
 					<button type="button" class="btn btn-default btn-flat btn-address-koi-component" data-field="tcontacto_direccion">
 						<i class="fa fa-map-signs"></i>
@@ -956,11 +995,30 @@
 </script>
 
 <script type="text/template" id="exit-lotes-tpl">
-    <td class="text-center"><%- prodbodelote_lote %></td>
-    <td class="text-center"><%- prodbodelote_fecha_lote %></td>
-    <td class="text-center"><%- prodbodelote_cantidad %></td>
+    <td class="text-left"><%- prodbodelote_lote %></td>
+    <td class="text-left"><%- prodbodelote_fecha_lote %></td>
+    <td class="text-left"><%- prodbodelote_cantidad %></td>
     <td>
-    	<input type="text" id="prodbodelote_cantidad_<%- id %>" name="prodbodelote_cantidad_<%- id %>" class="form-control input-sm input-toupper" maxlength="15" required>
+    	<input type="text" id="item_lote_<%- id %>" name="item_lote_<%- id %>" class="form-control input-sm input-toupper" maxlength="15">
+    </td>
+</script>
+
+<script type="text/template" id="add-itemsrollos-tpl">
+    <td class="text-center"><%- id %></td>
+    <td>
+		<input id="itemrollo_metros_<%- id %>" name="itemrollo_metros_<%- id %>" class="form-control input-sm text-right" type="number" value="0" min="0.1" step="0.1" required>
+    </td>
+</script>
+
+
+<script type="text/template" id="chooses-itemsrollos-tpl">
+    <td class="text-left"><%- prodboderollo_item %></td>
+    <td class="text-left"><%- prodboderollo_metros %></td>
+    <td class="text-left"><%- prodboderollo_saldo %></td>
+    <td class="text-left"><%- prodboderollo_lote %></td>
+    <td class="text-left"><%- prodboderollo_fecha_lote %></td>
+    <td>
+		<input id="item_<%- id %>" name="item_<%- id %>" class="form-control input-sm text-right" type="number" value="0" min="0" max="<%- prodboderollo_saldo %>" step="0.1">
     </td>
 </script>
 
