@@ -27,15 +27,15 @@
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				<h4 class="modal-title"></h4>
 			</div>
-
-			<form id="form-create-inventario-entrada-component-source" data-toggle = "validator">
+			
+			<form id="form-create-inventario-entrada-component-source" data-toggle="validator">
 				<div class="modal-body" id="modal-wrapper-inventario">
 					<div id="error-inventario" class="alert alert-danger"></div>
 					<div class="content-modal"></div>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancelar</button>
-					<button type="submit" class="btn btn-primary btn-sm">Continuar</button>
+					<button type="submit" class="btn btn-primary btn-sm" id="button-koi-inventory-modal">Continuar</button>
 				</div>
 			</form>
 		</div>
@@ -58,6 +58,23 @@
 					<button type="submit" class="btn btn-primary btn-sm">Continuar</button>
 				</div>
 			{!! Form::close() !!}
+		</div>
+	</div>
+</div>
+
+<!-- Modal address -->
+<div class="modal fade" id="modal-address-component" data-backdrop="static" data-keyboard="false" aria-hidden="true">
+	<div class="modal-dialog modal-xlg" role="document">
+		<div class="modal-content">
+			<div class="content-modal"></div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="modal-address-component-validacion" data-backdrop="static" data-keyboard="false" aria-hidden="true">
+	<div class="modal-dialog modal-md" role="document">
+		<div class="modal-content">
+			<div class="content-modal"></div>
 		</div>
 	</div>
 </div>
@@ -243,7 +260,7 @@
 </script>
 <script type="text/template" id="add-series-tpl">
 	<div class="row">
-		<div class="col-sm-6 col-md-offset-3 col-xs-12">
+		<div class="col-sm-8 col-md-offset-2 col-xs-12">
 			<!-- table table-bordered table-striped -->
 			<div class="box-body table-responsive no-padding">
 				<table id="browse-series-list" class="table table-hover table-bordered" cellspacing="0">
@@ -265,7 +282,7 @@
 				  	<th>Lote</th>
                 	<th>Fecha</th>
                 	<th>Saldo</th>
-                	<th id="cantidad-salidau" class="text-center"><%- data.ajuste2_cantidad_salida %></th>
+                	<th class="text-center"> <label id="cantidad-salidau" class="label bg-green"><%- data.ajuste2_cantidad_salida %></label></th>
 			    </table>
 			</div>
 		</div>
@@ -279,8 +296,12 @@
 			<div class="box-body table-responsive no-padding">
 				<table id="browse-itemtollo-list" class="table table-hover table-bordered" cellspacing="0">
 		            <tr>
-		                <th>Item</th>
 		                <th>Metros  (m)</th>
+		                <th class="text-center">
+		               		<button id="btn-itemrollo-entradau-koi-inventario" type="button" class="btn btn-success btn-sm btn-flat">
+								<i class="fa fa-plus"></i>
+							</button>
+		                </th>
 		            </tr>
 			    </table>
 				<label id="cantidad-entradau" class="label pull-right bg-green" ><%- data.ajuste2_cantidad_entrada %> (m)</label>
@@ -297,10 +318,10 @@
 				<table id="browse-chooseitemtollo-list" class="table table-hover table-bordered" cellspacing="0">
 		            <tr>
 		                <th>Item</th>
-		                <th>Metros (m)</th>
-		                <th>Saldo (m)</th>
 		                <th>Lote</th>
 		                <th>Fecha De Ingreso</th>
+		                <th>Metros (m)</th>
+		                <th>Saldo (m)</th>
 		                <th class="text-center"> <label id="cantidad-salidau" class="label bg-green"><%- data.ajuste2_cantidad_salida %> (m)</label></th>
 		            </tr>
 			    </table>
@@ -309,3 +330,96 @@
 	</div>
 </script>
 
+<script type="text/template" id="koi-component-select-tpl">
+	<div class="modal-header">
+		<h4 class="modal-title"></h4>
+	</div>
+	<div class="modal-body">
+		<div class="row">
+			<div class="form-group col-md-12">
+			<label class="col-md-2 col-xs-12 control-label">Nombre</label>
+				<div class="col-md-5">
+				    <select name="component-select" id="component-select" class="form-control" required>
+	                    <option value="" selected>Seleccione</option>
+	                    <option value="si">Si</option>
+	                    <option value="no">No</option>
+	                </select>
+				</div>
+				<div class="col-md-5" id="component-input" hidden>
+					<input type="text" class="form-control input-sm" name="component-input-text" id="component-input-text">
+				</div>
+			</div>
+		</div>
+	</div>
+</script>
+
+{{-- templates --}}
+<script type="text/template" id="koi-address-component-tpl">
+	<div class="modal-header small-box {{ config('koi.template.bg') }}">
+		<button type="button" class="close icon-close-koi" data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>
+		<h4><strong>Generador de direcciones</strong></h4>
+	</div>
+
+	{!! Form::open(['id' => 'form-address-component', 'data-toggle' => 'validator', 'role' => 'form']) !!}
+	<div class="modal-body koi-component-address-modal-body">
+		<div class="row">
+			<div class="col-md-offset-2">
+				<label for="koi_direccion" class="col-md-1 control-label">Direccion</label>
+				<div class="form-group col-md-8">
+					{!! Form::text('koi_direccion', null, ['id' => 'koi_direccion', 'class' => 'form-control input-sm','disabled']) !!}
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="form-group col-md-12 col-sm-12 col-xs-12">
+				@foreach(config('koi.direcciones.nomenclatura') as $key => $value)
+					<div class="col-md-2 col-sm-4 col-xs-6 koi-component-add address-nomenclatura">
+						<a class="btn btn-default btn-block" data-key="{{$key}}">{{ $value }}</a>
+					</div>
+				@endforeach
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-12">
+				<ul class="list-inline address-digitos">
+					<!-- Leters -->
+					@foreach(config('koi.direcciones.alfabeto') as $key => $value)
+						<li>
+							<a class="btn btn-default btn-block koi-component-add" data-key="{{$key}}">{{ $value }}</a>
+						</li>
+					@endforeach
+
+					<!-- Numbers -->
+					@for($i=0; $i<=9; $i++)
+						<li>
+							<a class="btn btn-default btn-block koi-component-add">{{ $i }}</a>
+						</li>
+					@endfor
+				</ul>
+			</div>
+		</div>
+
+		<div class="row other-controls ">
+			<label for="koi_direccion" class="col-md-2 col-xs-12 control-label text-right">Dirección DIAN</label>
+			<div class="col-md-6">
+				{!! Form::text('koi_direccion_nm', null, ['id' => 'koi_direccion_nm', 'class' => 'form-control input-sm','disabled']) !!}
+			</div>
+			<div class="col-md-2 koi-component-remove-last">
+				<a class="btn btn-default btn-block"><i class="fa fa-backward"> Regresar</i></a>
+			</div>
+			<div class="col-md-2 koi-component-remove">
+				<a class="btn btn-default btn-block"><i class="fa fa-trash-o"> Limpiar</i></a>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal-footer">
+		<button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancelar</button>
+		<button type="submit" class="btn btn-primary btn-sm btn-address-component-add-address">Continuar</button>
+	</div>
+	{!! Form::close() !!}
+</script>

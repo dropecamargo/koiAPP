@@ -27,6 +27,7 @@ app || (app = {});
             'tercero_apellido1' : '',
             'tercero_apellido2' : '',
             'tercero_direccion' : '',
+            'tercero_dir_nomenclatura' : '',
             'tercero_municipio' : '',
             'tercero_email' : '',
             'tercero_telefono1' : '',
@@ -53,6 +54,7 @@ app || (app = {});
             'tercero_afiliado': false,
             'tercero_otro': false,
             'tercero_cual': '',
+            'username': '',
             'actividad_tarifa' : ''
         }
     });

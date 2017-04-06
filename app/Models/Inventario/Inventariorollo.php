@@ -15,10 +15,10 @@ class Inventariorollo extends Model
 
     public $timestamps = false;
 
-    public static function movimiento(Inventario $inventario, Prodboderollo $prodboderollo, $costo = 0, $mentrada = 0, $msalida = 0,$costopromedio)
+    public static function movimiento(Inventario $inventario, Prodboderollo $prodboderollo, $costo = 0, $mentrada = 0, $msalida = 0, $costopromedio)
     {
         // Validar unidades
-        if($mentrada <= 0 && $msalida <= 0){
+        if($mentrada <= 0 && $msalida < 0){
             return "No es posible recuperar metros movimiento rollo, por favor verifique la información o consulte al administrador.";
         }
 
@@ -29,8 +29,8 @@ class Inventariorollo extends Model
         $inventariorollo->inventariorollo_metros_salida = $msalida;
         $inventariorollo->inventariorollo_costo = $costo;
         $inventariorollo->inventariorollo_costo_promedio = $costopromedio;
-        // $inventariorollo->inventariorollo_costo_metros = $prodboderollo->prodboderollo_costo;
         $inventariorollo->save();
+        
         return $inventariorollo;
     }
 }

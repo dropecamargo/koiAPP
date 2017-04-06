@@ -34,12 +34,11 @@ app || (app = {});
             this.$wraperForm = this.$('#render-form-ajuste');
 
             this.detalleAjuste = new app.AjustesDetalleCollection();
+            
             // Events
             this.listenTo( this.model, 'change', this.render );
             this.listenTo( this.model, 'sync', this.responseServer );
-            this.listenTo( this.model, 'request', this.loadSpinner );
-
-            
+            this.listenTo( this.model, 'request', this.loadSpinner );            
         },
 
 
@@ -156,6 +155,10 @@ app || (app = {});
                 
                 //Render form detalle ajuste
                 _this.$divDetalle.empty().html( _this.templateDetailt(resp) );
+
+                // Clear collection
+                _this.detalleAjuste.reset();
+
                 _this.ready();
             })       
             .fail(function(jqXHR, ajaxOptions, thrownError) {
@@ -229,7 +232,7 @@ app || (app = {});
                     return; 
                 }
             }
-            // window.Misc.redirect( window.Misc.urlFull( Route.route('ajustes.show', { ajustes: resp.id})) );
+            window.Misc.redirect( window.Misc.urlFull( Route.route('ajustes.show', { ajustes: resp.id})) );
         }
     });
 

@@ -53,24 +53,40 @@ class DetalleAjusteController extends Controller
                     if(!$producto instanceof Producto){
                         return response()->json(['success'=> false, 'errors'=>'No es posible recuperar producto, por favor consulte al administrador.']);
                     } 
+
                     //Validar Tipo Ajuste
                     $tipoAjuste = TipoAjuste::where('id', $request->tipoajuste)->first();
                     if (!$tipoAjuste instanceof TipoAjuste) {
                         return response()->json(['success' => false,'errors'=>'No es posible recuperar el tipo ajuste,por favor verifique la información ó por favor consulte al administrador']);
                     } 
+                    
+                    // Validar maneja unidades
+                    if(!$producto->producto_unidad) {
+                        return response()->json(['success' => false,'errors' => "No es posible realizar movimientos para productos que no manejan unidades"]);
+                    }
+                    
                     switch ($tipoAjuste->tipoajuste_tipo) {
                         case 'S':
                             if ($request->get('ajuste2_cantidad_salida') <= 0 && $request->get('ajuste2_costo') == 0) {
                                return response()->json(['success' => false,'errors' => "No es posible realizar $tipoAjuste->tipoajuste_nombre, por favor verifique la información ó consulte al administrador"]);
-                            }                     
+                            }
+                            if($producto->producto_maneja_serie){
+                                if (!$request->has('ajuste2_cantidad_salida') || $request->ajuste2_cantidad_salida > 1 ||$request->ajuste2_cantidad_salida < 1) {
+                                    return response()->json(['success'=> false, 'errors' => "La cantidad de salida de {$producto->producto_nombre} debe ser de una unidad"]);
+                                }
+                            }else{
+                                $items = isset($data['items']) ? $data['items'] : null;
+                                $cantidadItems = 0.0;
+                                foreach ($items as $key => $item) {
+                                    $cantidadItems += $item;
+                                }
+                                if ($cantidadItems > $request->ajuste2_cantidad_salida  || $cantidadItems == 0  ) {
+                                    return response()->json(['success' => false,'errors' => "Cantidad de items de  {$request->ajuste2_producto_nombre} no coincide con el valor de SALIDA, por favor verifique información."]);
+                                }
+                            }
                             break;
 
-                        case 'E':
-
-                            if(!$producto->producto_unidad){
-                                return response()->json(['success' => false,'errors' => "No es posible realizar movimientos para productos que no manejan unidades"]);
-                            }
-                            
+                        case 'E':                            
                             if ($request->get('ajuste2_cantidad_entrada') == 0 && $request->get('ajuste2_costo') == 0 ) {
                                return response()->json(['success' => false,'errors' => "No es posible realizar $tipoAjuste->tipoajuste_nombre, por favor verifique la información ó consulte al administrador"]);
                             }
@@ -102,12 +118,13 @@ class DetalleAjusteController extends Controller
                             }elseif ($producto->producto_metrado == true) {
                                 // Producto metrado
                                 $items = isset($data['items']) ? $data['items'] : null;
-                                $metradoItem = 0.0;
+                                $metradoItem = 0;
                                 foreach ($items as $key => $item) {
-                                        $metradoItem += $item;
-                                    if ($request->ajuste2_cantidad_entrada < $metradoItem) {
-                                        return response()->json(['success' => false,'errors' => "Metraje no puede ser mayor a la cantidad de METROS ingresada anteriormente, por favor verifique información."]);
-                                    }
+                                    $metradoItem += $item;
+                                }
+                                
+                                if ($metradoItem != $request->ajuste2_cantidad_entrada) {
+                                    return response()->json(['success' => false,'errors' => "Metraje debe igual a la cantidad de ({$request->ajuste2_cantidad_entrada}) METROS ingresada anteriormente, por favor verifique información."]);
                                 }
    
                             } 

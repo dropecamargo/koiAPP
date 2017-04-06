@@ -74,6 +74,8 @@ app || (app = {});
         * Render all view Marketplace of the collection
         */
         addAll: function () {
+
+            this.$el.find('tbody').html('');
             this.collection.forEach( this.addOne, this );
         },
 

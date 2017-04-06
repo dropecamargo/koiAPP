@@ -17,7 +17,7 @@ class Inventario extends Model
 
     public $timestamps = false;
 
-    public static function movimiento(Producto $producto, $sucursal, $documento, $documentoNumero,$uentrada = 0, $usalida = 0, $costo = 0, $costopromedio = 0)
+    public static function movimiento(Producto $producto, $sucursal, $documento, $documentoNumero, $uentrada = 0, $usalida = 0, $costo = 0, $costopromedio = 0)
     {
         // Validar producto
         $sucursal = Sucursal::find($sucursal);
@@ -44,5 +44,53 @@ class Inventario extends Model
         $inventario->save();
 
         return $inventario;
+    }
+
+    public static function entradaManejaSerie(Producto $referencia, Sucursal $sucursal, Lote $lote, $serie, $costo)
+    {
+        if($costo == 0) {
+            return "El costo de la serie debe ser diferente de 0.";    
+        }
+
+        // Crea producto
+        $serie = $referencia->serie($serie);
+        if(!$serie instanceof Producto) {
+            return $serie;
+        }
+
+        // Actualiza costo
+        $serie->producto_costo = $costo;
+        $serie->save();
+
+        // ProdBode
+        $result = Prodbode::actualizar($serie, $sucursal->id, 'E', 1);
+        if($result != 'OK') {
+            return $result;
+        }
+
+        // ProdBodeLote
+        $result = Prodbodelote::actualizar($serie, $sucursal->id, $lote,'E', 1);
+        if($result != 'OK') {
+            return $result;
+        }
+                                
+        return 'OK';
+    }
+
+    public static function salidaManejaSerie(Producto $serie, Sucursal $sucursal, Lote $lote)
+    {
+        // ProdBode
+        $result = Prodbode::actualizar($serie, $sucursal->id, 'S', 1);
+        if($result != 'OK') {
+            return $result;
+        }
+
+        // ProdBodeLote
+        $result = Prodbodelote::actualizar($serie, $sucursal->id, $lote, 'S', 1);
+        if($result != 'OK') {
+            return $result;
+        }
+                                   
+        return 'OK';
     }
 }

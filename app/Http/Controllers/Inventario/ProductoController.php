@@ -51,6 +51,10 @@ class ProductoController extends Controller
                     if ($request->has('equalsRef')) {
                         if($request->equalsRef == "true"){
                             $query->whereRaw('producto_serie = producto_referencia');
+                        }else{
+                            $query->select('producto.id as id','producto_maneja_serie','producto_serie', 'producto_nombre','producto_referencia','producto_costo','prodbode.id','prodbode.prodbode_cantidad','prodbode_serie');
+                            $query->join('prodbode', 'producto.id','=','prodbode.prodbode_serie');
+                            $query->whereRaw('prodbode_cantidad > 0');
                         }
                     }
                 })

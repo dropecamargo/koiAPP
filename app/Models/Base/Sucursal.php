@@ -30,7 +30,7 @@ class Sucursal extends BaseModel
      *
      * @var array
      */
-    protected $fillable = ['sucursal_nombre','sucursal_direccion','sucursal_telefono','sucursal_regional','sucursal_pedn','sucursal_entr','sucusal_tras'];
+    protected $fillable = ['sucursal_nombre','sucursal_direccion', 'sucursal_direccion_nomenclatura','sucursal_telefono','sucursal_regional','sucursal_pedn','sucursal_entr','sucusal_tras'];
 
     /**
      * The attributes that are mass boolean assignable.

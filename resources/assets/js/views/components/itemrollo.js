@@ -13,16 +13,17 @@ app || (app = {});
 
         tagName: 'tr',
         template: null,
+        parameters: { 
+            type: 'E'   
+        },
 
         /**
         * Constructor Method
         */
         initialize: function( opts ) {
-            if (opts.parameters.choose) {
-                this.template = _.template( ($('#chooses-itemsrollos-tpl').html() || '') );
-            } else {
-                this.template = _.template( ($('#add-itemsrollos-tpl').html() || '') );
-            }
+            // extends parameters
+            if( opts !== undefined && _.isObject(opts.parameters) )
+                this.parameters = $.extend({}, this.parameters, opts.parameters);
 
             // Events Listener
             this.listenTo( this.model, 'change', this.render );
@@ -32,6 +33,8 @@ app || (app = {});
         * Render View Element
         */
         render: function(){
+            this.template = _.template( ($( this.parameters.type == 'E' ? '#add-itemsrollos-tpl' : '#chooses-itemsrollos-tpl' ).html() || '') );
+
             var attributes = this.model.toJSON();
             this.$el.html( this.template(attributes) );
             return this;

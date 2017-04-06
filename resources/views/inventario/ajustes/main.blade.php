@@ -137,7 +137,7 @@
                     <% if(tipoajuste_tipo == 'R' || tipoajuste_tipo == 'S'){ %>
                         <div id="ajuste2_cantidad_salidas" class="col-md-1 col-md-offset-2">
                          <label for="ajuste2_cantidad_salida" class="control-label">Cantidad Salida</label>
-                            <input id="ajuste2_cantidad_salida" name="ajuste2_cantidad_salida" min="1" class="form-control input-sm  <%- tipoajuste_tipo == 'R' ? 'koi-changed-reclacification':'' %>" type="number" required>
+                            <input id="ajuste2_cantidad_salida" name="ajuste2_cantidad_salida"  class="form-control input-sm  <%- tipoajuste_tipo == 'R' ? 'koi-changed-reclacification':'' %>" type="number" min="1" required>
                         </div>
                     <% } %>
                     <div id="ajuste2_costos" class="col-md-2 col-md-offset-2">
