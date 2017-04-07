@@ -123,12 +123,13 @@ class ProductoController extends Controller
     public function show(Request $request, $id)
     {
         $producto = Producto::getProduct($id);
+        $prodbode = Prodbode::getProdBode($id);
 
         if($producto instanceof Producto){
             if ($request->ajax()) {
                 return response()->json($producto);
             }
-            return view('inventario.productos.show', ['producto' => $producto]);
+            return view('inventario.productos.show', ['producto' => $producto, 'prodbode' => $prodbode]);
         }
         abort(404);
     }

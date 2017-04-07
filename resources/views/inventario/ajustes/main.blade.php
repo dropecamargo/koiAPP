@@ -107,7 +107,7 @@
     </script>
 
     <script type="text/template" id="add-detailt-ajuste-tpl">
-        <div class="box-body box box-success">
+        <div class="box-body box-success">
             <form method="POST" accept-charset="UTF-8" id="form-detalle-ajuste" data-toggle="validator">
                 <div class="row">
                     <div class="form-group col-sm-2 col-md-offset-2">

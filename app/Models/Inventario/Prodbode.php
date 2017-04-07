@@ -24,6 +24,14 @@ class Prodbode extends Model
 	    return $query->first();
     }
 
+    public static function getProdBode($id){
+        $query = Prodbode::query();
+        $query->select('prodbode.*','sucursal_nombre');
+        $query->join('sucursal', 'prodbode.prodbode_sucursal', '=', 'sucursal.id');
+        $query->where('prodbode_serie', $id);
+        return $query->get();
+    }
+
     public  static function actualizar(Producto $producto, $sucursal, $tipo, $unidades)
     {
         // Validar suucursal
