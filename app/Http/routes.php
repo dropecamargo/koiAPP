@@ -55,6 +55,15 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::resource('tiposactividad', 'Admin\TipoActividadController', ['except' => ['destroy']]);
 	Route::resource('bitacoras','Admin\BitacoraController', ['only' => ['index']]);
 
+	Route::group(['prefix' => 'roles'], function()
+	{
+		Route::resource('permisos', 'Admin\PermisoRolController', ['only' => ['index', 'update', 'destroy']]);
+	});
+
+	Route::resource('roles', 'Admin\RolController', ['except' => ['destroy']]);
+    Route::resource('permisos', 'Admin\PermisoController', ['only' => ['index']]);
+    Route::resource('modulos', 'Admin\ModuloController', ['only' => ['index']]);
+
 	/*
 	|--------------------------
 	| Comercial Routes

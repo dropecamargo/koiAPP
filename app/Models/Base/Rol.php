@@ -3,11 +3,19 @@
 namespace App\Models\Base;
 
 use Zizaco\Entrust\EntrustRole;
-
 use Validator, Cache;
 
 class Rol extends EntrustRole
 {
+    /**
+     * The database table used by the model.
+     *
+     * @var string
+     */
+    protected $table = 'rol';
+
+    public $timestamps = false;
+    
     /**
      * The key used by cache store.
      *
@@ -57,5 +65,26 @@ class Rol extends EntrustRole
             $collection->prepend('', '');
             return $collection;
         });
+    }
+
+    //Big block of caching functionality.
+    public function cachedPermissions($module = null)
+    {
+        $rolePrimaryKey = $this->primaryKey;
+        $cacheKey = "entrust_permissions_for_role_{$this->$rolePrimaryKey}_$module";
+        return Cache::tags(config('entrust.permission_role_table'))->remember($cacheKey, config('cache.ttl'), function () use($module) {
+            return $this->perms()->join('modulo', 'modulo.id', '=', 'permiso_rol.module_id')->where('modulo.name', $module)->get();
+        });
+    }
+
+    /**
+     * Many-to-Many relations with the permission model.
+     * Named "perms" for backwards compatibility. Also because "perms" is short and sweet.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function perms()
+    {
+        return $this->belongsToMany(config('entrust.permission'), config('entrust.permission_role_table'), 'role_id', 'permission_id');
     }
 }

@@ -24,7 +24,6 @@ class Prodboderollo extends Model
             return "No es posible recuperar sucursal prodbode rollo, por favor verifique la información o consulte al administrador.";
         }
 
-
         // Validar item
         if(!is_numeric($item) || $item <= 0){
             return "No es posible recuperar item prodbode rollo, por favor verifique la información o consulte al administrador.";

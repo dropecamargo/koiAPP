@@ -1,13 +1,16 @@
 <?php
 
-namespace App\Http\Controllers\Inventario;
+namespace App\Http\Controllers\Admin;
+
 use Illuminate\Http\Request;
+
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\Inventario\Prodbodelote, App\Models\Inventario\Producto;
-use App\Models\Base\Sucursal;
 
-class ProdbodeLoteController extends Controller
+use Datatables, DB;
+use App\Models\Base\Permiso;
+
+class PermisoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,30 +20,11 @@ class ProdbodeLoteController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $producto = Producto::where('producto_serie', $request->producto)->first();
-            if (!$producto instanceof Producto) {
-                 return response()->json( 'No es posible recuperar PRODUCTO,verifique información ó por favor consulte al administrador.');
-            }
-            $sucursal = Sucursal::find($request->sucursal);
-            if (!$sucursal instanceof Sucursal) {
-                return response()->json( 'No es posible recuperar SUCURSAL,verifique información ó por favor consulte al administrador.');
-            }
-            $lotes = [];
-            if($request->has('producto') && $request->has('sucursal')) {
-                $query = Prodbodelote::query();
-                $query->select('prodbodelote.*','lote_fecha', 'lote_nombre');
-                $query->where('prodbodelote_serie', $producto->id);
-                $query->where('prodbodelote_sucursal', $sucursal->id);
-                $query->whereRaw('prodbodelote_saldo > 0');
-                $query->join('lote','prodbodelote_lote', '=', 'lote.id');
-                $query->orderby('lote_fecha', 'asc');
-                $lotes = $query->get();
-            }
-            return response()->json($lotes);
+            $query = Permiso::query();
+            return Datatables::of($query)->make(true);
         }
-        abort(404);
+        return view('admin.permisos.index');
     }
-
 
     /**
      * Show the form for creating a new resource.

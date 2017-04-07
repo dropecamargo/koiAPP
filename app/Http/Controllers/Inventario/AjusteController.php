@@ -83,6 +83,13 @@ class AjusteController extends Controller
                     $ajuste->ajuste1_usuario_elaboro = Auth::user()->id;
                     $ajuste->ajuste1_fh_elaboro = date('Y-m-d H:m:s'); 
                     $ajuste->save();
+                    // Define nombre del lote
+                    $nameLote = Ajuste1:: $default_document.$ajuste->id;
+                    $lote = new Lote;
+                    $lote->lote_nombre = $nameLote;
+                    $lote->lote_fecha = date('Y-m-d H:m:s');
+                    // $lote->lote_fecha = '';
+                    $lote->save();
 
                     // Detalle ajuste
                     foreach ($data['ajuste2'] as $item) {
@@ -99,13 +106,6 @@ class AjusteController extends Controller
                         // Entrada
                         if ($tipoAjuste->tipoajuste_tipo == 'E') {
 
-                            // Define nombre del lote
-                            $nameLote = Ajuste1:: $default_document.$ajuste->id;
-                            $lote = new Lote;
-                            $lote->lote_nombre = $nameLote;
-                            $lote->lote_fecha = date('Y-m-d H:m:s');
-                            // $lote->lote_fecha = '';
-                            $lote->save();
 
                             // Costo promedio
                             $costopromedio = $producto->costopromedio($item['ajuste2_costo'], $item['ajuste2_cantidad_entrada']);
@@ -221,6 +221,10 @@ class AjusteController extends Controller
                                     return response()->json(['success' => false,'errors' => 'No es posible recuperar el LOTE,por favor verifique la información ó por favor consulte al administrador']);
                                 }
                                 $lote = Lote::find($prodbodelote->prodbodelote_lote);
+                                if (!$lote instanceof Lote) {
+                                    DB::rollback();
+                                    return response()->json(['success' => false,'errors' => 'No es posible recuperar el LOTE,por favor verifique la información ó por favor consulte al administrador']);
+                                }
                                 // Detalle ajuste
                                 $ajusteDetalle = new Ajuste2;
                                 $ajusteDetalle->fill($item);
@@ -272,6 +276,10 @@ class AjusteController extends Controller
                                             return response()->json(['success'=> false, 'errors'=> 'No es posible encontrar lote , por favor verifique la información ó por favor consulte al administrador']);
                                         }
                                         $lote = Lote::find($prodboderollo->prodboderollo_lote);
+                                        if (!$lote instanceof Lote) {
+                                            DB::rollback();
+                                            return response()->json(['success' => false,'errors' => 'No es posible recuperar el LOTE,por favor verifique la información ó por favor consulte al administrador']);
+                                        }
                                         // Prodbode rollo
                                         $prodboderollo = Prodboderollo::actualizar($producto, $sucursal->id, 'S', $prodboderollo->prodboderollo_item,$lote,$value, $producto->producto_costo);
                                         if(!$prodboderollo instanceof Prodboderollo) {
@@ -312,6 +320,10 @@ class AjusteController extends Controller
                                             return response()->json(['success' => false,'errors'=>'No es posible recuperar el LOTE, por favor verifique la información ó por favor consulte al administrador']);
                                         }
                                         $lote = Lote::find($prodbodelote->prodbodelote_lote);
+                                        if (!$lote instanceof Lote) {
+                                            DB::rollback();
+                                            return response()->json(['success' => false,'errors' => 'No es posible recuperar el LOTE,por favor verifique la información ó por favor consulte al administrador']);
+                                        }   
                                         // ProdBode
                                         $result = Prodbode::actualizar($producto, $sucursal->id, 'S', $value);
                                         if($result != 'OK') {                                            
