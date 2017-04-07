@@ -6,17 +6,28 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Models\Inventario\Traslado1,App\Models\Inventario\Traslado2;
 
-class InventarioController extends Controller
+use App\Models\Base\Documentos, App\Models\Base\Sucursal;
+use DB, Log, Datatables;
+
+class TrasladoController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if ($request->ajax()) {
+            $query = Traslado1::query();
+            $query->select('traslado1.id', 'traslado1_numero', 'traslado1_fecha', 'o.sucursal_nombre as sucursa_origen', 'd.sucursal_nombre as sucursa_destino');   
+            $query->join('sucursal as o', 'traslado1_origen', '=', 'o.id');
+            $query->join('sucursal as d', 'traslado1_destino', '=', 'd.id');
+            return Datatables::of($query)->make(true);
+        }
+        return view('inventario.traslados.index');
     }
 
     /**
@@ -26,7 +37,7 @@ class InventarioController extends Controller
      */
     public function create()
     {
-        //
+        return view('inventario.traslados.create');
     }
 
     /**
