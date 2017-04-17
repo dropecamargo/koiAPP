@@ -1,5 +1,5 @@
 /**
-* Class TrasladoProductosItemView  of Backbone Router
+* Class ProductoVenceINListView  of Backbone Router
 * @author KOI || @dropecamargo
 * @link http://koi-ti.com
 */
@@ -9,22 +9,15 @@ app || (app = {});
 
 (function ($, window, document, undefined) {
 
-    app.TrasladoProductosItemView = Backbone.View.extend({
+    app.ProductoVenceINListView = Backbone.View.extend({
 
         tagName: 'tr',
-        template: _.template( ($('#add-traslado2-item-tpl').html() || '') ),
-        parameters: {
-            edit: false
-        },
+        template: _.template( ($('#add-itemsvencimiento-tpl').html() || '') ),
 
         /**
         * Constructor Method
         */
-        initialize: function(opts){
-            // extends parameters
-            if( opts !== undefined && _.isObject(opts.parameters) )
-                this.parameters = $.extend({},this.parameters, opts.parameters);
-
+        initialize: function() {
             // Events Listener
             this.listenTo( this.model, 'change', this.render );
         },
@@ -34,8 +27,6 @@ app || (app = {});
         */
         render: function(){
             var attributes = this.model.toJSON();
-            attributes.edit = this.parameters.edit;
-            console.log(this.model);
             this.$el.html( this.template(attributes) );
 
             return this;

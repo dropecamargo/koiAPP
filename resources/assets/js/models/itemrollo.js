@@ -17,7 +17,8 @@ app || (app = {});
         idAttribute: 'id',
         defaults: {
         	'prodboderollo_item': 0,
-        	'prodboderollo_metros': 0,
+            'prodboderollo_metros': 0,
+        	'prodboderollo_cantidad': 0, //cantidad input form modal 
             'prodboderollo_saldo': 0,
             'prodboderollo_lote': '',
         	'prodboderollo_fecha_lote': ''

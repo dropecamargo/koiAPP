@@ -16,6 +16,7 @@ app || (app = {});
         events: {
             'ifChecked #producto_maneja_serie': 'serieChange',
             'ifChecked #producto_metrado': 'metradoChange',
+            'ifChecked #producto_vence': 'venceChange',
             'submit #form-productos': 'onStore'
         },
         parameters: {
@@ -62,22 +63,43 @@ app || (app = {});
             // References
             this.$inputSerie = this.$("#producto_maneja_serie");
             this.$inputMetrado = this.$("#producto_metrado");
+            this.$inputVence = this.$("#producto_vence");
 
             this.ready();
         },
 
+        /*
+        *Function change check Product handles serie
+        */
         serieChange: function (e) {
 
             var selected = $(e.target).is(':checked');
             if( selected ) {
                 this.$inputMetrado.iCheck('uncheck');
+                this.$inputVence.iCheck('uncheck');
+            }
+        },
+        
+        /*
+        *Function change check Product vence
+        */
+        venceChange: function (e) {
+
+            var selected = $(e.target).is(':checked');
+            if( selected ) {
+                this.$inputMetrado.iCheck('uncheck');
+                this.$inputSerie.iCheck('uncheck');
             }
         },
 
+        /*
+        *Function change check Product metrado
+        */
         metradoChange: function (e) {
             var selected = $(e.target).is(':checked');
             if( selected ) {
                 this.$inputSerie.iCheck('uncheck');
+                this.$inputVence.iCheck('uncheck');
             }
         },
 

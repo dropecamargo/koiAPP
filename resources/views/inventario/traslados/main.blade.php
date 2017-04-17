@@ -81,11 +81,11 @@
                             <div class="form-group col-sm-2 col-md-offset-1">
                                 <div class="input-group input-group-sm">
                                     <span class="input-group-btn">
-                                        <button type="button" class="btn btn-default btn-flat btn-koi-search-producto-component" data-field="producto_codigo">
+                                        <button type="button" class="btn btn-default btn-flat btn-koi-search-producto-component" data-field="producto_serie">
                                             <i class="fa fa-barcode"></i>
                                         </button>
                                     </span>
-                                    <input id="producto_codigo" placeholder="Producto" class="form-control producto-koi-component" name="producto_codigo" type="text" maxlength="15" data-wrapper="traslados-create" data-name="producto_nombre" data-ref = "false" required>
+                                    <input id="producto_serie" placeholder="Producto" class="form-control producto-koi-component" name="producto_serie" type="text" maxlength="15" data-wrapper="traslados-create" data-name="producto_nombre" data-ref = "false" data-costo="ajuste2_costo" required>
                                 </div>
                             </div>
                             <div class="col-sm-4 col-xs-10">
@@ -142,7 +142,7 @@
                 </a>
             </td>
         <% } %>
-        <td><%- producto_codigo %></td>
+        <td><%- producto_serie %></td>
         <td><%- producto_nombre %></td>
         <td><%- traslado2_cantidad %></td>
     </script>

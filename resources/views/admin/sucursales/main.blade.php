@@ -43,7 +43,7 @@
             </div>
             <div class="form-group col-md-2">
                 <br><label class="checkbox-inline" for="sucursal_activo">
-                    <input type="checkbox" id="sucursal_activo" name="sucursal_activo" value="<%- sucursal_activo %>" <%- parseInt(sucursal_activo) ? 'checked': ''%>> Activo
+                    <input type="checkbox" id="sucursal_activo" name="sucursal_activo" value="sucursal_activo" <%- parseInt(sucursal_activo) ? 'checked': ''%>> Activo
                 </label>
             </div>
         </div>

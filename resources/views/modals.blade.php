@@ -291,14 +291,15 @@
 
 <script type="text/template" id="add-itemrollo-tpl">
 	<div class="row">
-		<div class="col-sm-4 col-md-offset-4 col-xs-12">
+		<div class="col-sm-8 col-md-offset-2 col-xs-12">
 			<!-- table table-bordered table-striped -->
 			<div class="box-body table-responsive no-padding">
 				<table id="browse-itemtollo-list" class="table table-hover table-bordered" cellspacing="0">
 		            <tr>
+		            	<th>Rollos</th>
 		                <th>Metros  (m)</th>
 		                <th class="text-center">
-		               		<button id="btn-itemrollo-entradau-koi-inventario" type="button" class="btn btn-success btn-sm btn-flat">
+		               		<button id="btn-itemrollo-entradau-koi-inventario" type="button" class="btn btn-success btn-sm">
 								<i class="fa fa-plus"></i>
 							</button>
 		                </th>
@@ -322,8 +323,43 @@
 		                <th>Fecha De Ingreso</th>
 		                <th>Metros (m)</th>
 		                <th>Saldo (m)</th>
-		                <th class="text-center"> <label id="cantidad-salidau" class="label bg-green"><%- data.ajuste2_cantidad_salida %> (m)</label></th>
+		                <th> <label id="cantidad-salidau"></label></th>
 		            </tr>
+		            <tfoot>
+		            	<tr>
+		            		<th colspan ="4"></th>
+		            		<th class="text-right">Total: </th>
+		            		<th id="metro_residuo" class="text-right"> <label class="label bg-green"> <%- data.ajuste2_cantidad_salida %> (m)</label></th>
+		            	</tr>
+	            	</tfoot>
+			    </table>
+			</div>
+		</div>
+	</div>
+</script>
+
+<script type="text/template" id="product-vence-tpl">
+	<div class="row">
+		<div class="col-sm-8 col-md-offset-2 col-xs-12">
+			<!-- table table-bordered table-striped -->
+			<div class="box-body table-responsive no-padding">
+				<table id="browse-product-vence-list" class="table table-hover table-bordered" cellspacing="0">
+		            <tr>
+		                <th width="30%">Lote</th>
+		                <th  width="20%">Unidades</th>
+		                <th width="30%">Fecha De Vencimiento</th>
+		                <th class="text-center">		               		
+		                	<button id="btn-vencimiento-entradau-koi-inventario" type="button" class="btn btn-success btn-sm">
+								<i class="fa fa-plus"></i>
+							</button>
+						</th>
+		            </tr>
+		            <tfoot>
+		            	<tr>
+		            		<th colspan="3" class="text-right">Total: </th>
+		            		<th id="metro_residuo" class="text-right"> <label class="label bg-green"> <%- data.ajuste2_cantidad_entrada %> (m)</label></th>
+		            	</tr>
+	            	</tfoot>
 			    </table>
 			</div>
 		</div>

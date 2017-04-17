@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\Inventario\Traslado1,App\Models\Inventario\Traslado2;
 
+use App\Models\Inventario\Traslado1,App\Models\Inventario\Traslado2, App\Models\Inventario\Producto;
 use App\Models\Base\Documentos, App\Models\Base\Sucursal;
 use DB, Log, Datatables;
 
@@ -48,7 +48,39 @@ class TrasladoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if ($request->ajax()) {
+            $data = $request->all();
+            $traslado = new Traslado1;
+            if ($traslado->isValid()) {
+                DB::beginTransaction();
+                try {
+                    // Recuperar origen
+                    $origen = Sucursal::find($request->traslado1_sucursal);
+                    if(!$origen instanceof Sucursal) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar sucursal origen, por favor verifique la información o consulte al administrador.']);
+                    }
+
+                    // Recuperar destino
+                    $destino = Sucursal::find($request->traslado1_destino);
+                    if(!$destino instanceof Sucursal) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar sucursal destino, por favor verifique la información o consulte al administrador.']);
+                    }
+
+                    // Recuperar consecutivo
+                    $consecutivo = $origen->sucursal_traslado + 1;
+
+                    // Commit Transaction
+                    DB:rollback();
+                    return response()->json(['success' => false, 'errors'=> 'OK']);
+                } catch (\Exception $e) {
+                    DB::rollback();
+                    Log::error($e->getMessage());
+                    return response()->json(['success' => false, 'errors' => trans('app.exception')]);
+                }
+            }
+        }
     }
 
     /**

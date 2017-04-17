@@ -49,7 +49,7 @@ class DetalleAjusteController extends Controller
             if ($ajusteDetalle->isValid($data)) {
             
                 try {                      
-                    $producto = Producto::where('producto_serie', $request->ajuste2_producto)->first();
+                    $producto = Producto::where('producto_serie', $request->producto_serie)->first();
                     if(!$producto instanceof Producto){
                         return response()->json(['success'=> false, 'errors'=>'No es posible recuperar producto, por favor consulte al administrador.']);
                     } 
@@ -81,7 +81,7 @@ class DetalleAjusteController extends Controller
                                     $cantidadItems += $item;
                                 }
                                 if ($cantidadItems > $request->ajuste2_cantidad_salida  || $cantidadItems == 0  ) {
-                                    return response()->json(['success' => false,'errors' => "Cantidad de items de  {$request->ajuste2_producto_nombre} no coincide con el valor de SALIDA, por favor verifique información."]);
+                                    return response()->json(['success' => false,'errors' => "Cantidad de items de  {$request->producto_nombre} no coincide con el valor de SALIDA, por favor verifique información."]);
                                 }
                             }
                             break;
@@ -120,7 +120,7 @@ class DetalleAjusteController extends Controller
                                 $items = isset($data['items']) ? $data['items'] : null;
                                 $metradoItem = 0;
                                 foreach ($items as $key => $item) {
-                                    $metradoItem += $item;
+                                    $metradoItem += $item['prodboderollo_metros'] * $item['prodboderollo_cantidad'];
                                 }
                                 
                                 if ($metradoItem != $request->ajuste2_cantidad_entrada) {

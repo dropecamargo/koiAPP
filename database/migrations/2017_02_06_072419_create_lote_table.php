@@ -16,9 +16,11 @@ class CreateLoteTable extends Migration
             $table->engine = 'InnoDB';
 
             $table->increments('id');
-            $table->string('lote_nombre', 25)->unique();
+            $table->string('lote_nombre', 100);
             $table->date('lote_fecha');
-            $table->date('lote_fecha_vencimiento');
+            $table->date('lote_fecha_vencimiento')->nullable();
+
+            $table->unique(['lote_nombre', 'lote_fecha'], 'lote_nombre_fecha_');
         });
     }
 

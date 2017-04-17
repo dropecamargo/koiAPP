@@ -39,7 +39,6 @@ app || (app = {});
             this.listenTo( this.collection, 'request', this.loadSpinner);
             this.listenTo( this.collection, 'store', this.storeOne );
             this.listenTo( this.collection, 'sync', this.responseServer);
-
             if( !_.isUndefined(this.parameters.dataFilter.id) && !_.isNull(this.parameters.dataFilter.id) ){
                 this.confCollection.data.id = this.parameters.dataFilter.id;
                 this.collection.fetch( this.confCollection );
@@ -58,15 +57,15 @@ app || (app = {});
         * Render view contact by model
         * @param Object detalleAjusteModel Model instance
         */
-        addOne: function (DetalleAjusteModel) {
+        addOne: function (detalleAjusteModel) {
             
             var view = new app.DetalleAjusteItemView({
-                model: DetalleAjusteModel,
+                model: detalleAjusteModel,
                 parameters: {
                     edit: this.parameters.edit
                 }
             });
-            DetalleAjusteModel.view = view;
+            detalleAjusteModel.view = view;
             this.$el.append( view.render().el );
         },
 

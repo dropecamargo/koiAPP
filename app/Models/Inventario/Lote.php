@@ -14,4 +14,7 @@ class Lote extends Model
     protected $table = 'lote';
 
     public $timestamps = false;
+
+    
+
 }

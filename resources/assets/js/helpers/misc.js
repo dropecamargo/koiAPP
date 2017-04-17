@@ -269,7 +269,7 @@
 
                 // return callback
                 if( ({}).toString.call(settings.callback).slice(8,-1) === 'Function' )
-                    settings.callback( resp.action, resp.tipoajuste );
+                    settings.callback( resp.action, resp.tipo );
             })
             .fail(function(jqXHR, ajaxOptions, thrownError) {
                 window.Misc.removeSpinner( settings.wrap );

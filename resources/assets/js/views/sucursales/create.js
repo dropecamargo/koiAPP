@@ -55,7 +55,6 @@ app || (app = {});
         render: function() {
 
             var attributes = this.model.toJSON();
-            console.log(attributes);
             this.$wraperForm.html( this.template(attributes) );
 
             this.ready();

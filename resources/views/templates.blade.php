@@ -1007,11 +1007,31 @@
 </script>
 
 <script type="text/template" id="add-itemsrollos-tpl">
+	<td>
+		<input type="number" id="rollos_<%- id %>" name="rollos_<%- id %>" class="form-control input-sm" min="1" value="<%- prodboderollo_cantidad %>">
+	</td>
     <td>
-		<input id="itemrollo_metros_<%- id %>" name="itemrollo_metros_<%- id %>" class="form-control input-sm" type="number" value="0" min="0" step="0.01" required>
+		<input id="itemrollo_metros_<%- id %>" name="itemrollo_metros_<%- id %>" class="form-control input-sm" type="number" value="<%- prodboderollo_metros %>" min="0" step="0.01" required>
     </td>
     <td class="text-center">
-		<button type="button" class="btn btn-default btn-xs btn-flat btn-remove-itemrollo-koi-inventario" data-resource="<%- id %>">
+		<button type="button" class="btn btn-default btn-xs btn-remove-itemrollo-koi-inventario" data-resource="<%- id %>">
+			<i class="fa fa-close"></i>
+		</button>
+    </td>
+</script>
+
+<script type="text/template" id="add-itemsvencimiento-tpl">
+	<td>
+		<input type="text" id="<%- id %>" name="<%- id %>" class="form-control input-sm input-toupper" value="">
+	</td>
+    <td>
+		<input id="<%- id %>" name="<%- id %>" class="form-control input-sm" type="number" value="" min="0" step="0.01" required>
+    </td>
+    <td>
+    	<input type="text" name="" class="form-control datepicker input-sm">
+    </td>
+    <td class="text-center">
+		<button type="button" class="btn btn-default btn-xs btn-remove-itemrollo-koi-inventario" data-resource="<%- id %>">
 			<i class="fa fa-close"></i>
 		</button>
     </td>
