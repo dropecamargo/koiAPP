@@ -25,10 +25,7 @@ app || (app = {});
         /**
         * Constructor Method
         */
-        initialize : function(opts) {
-            // Initialize
-            if( opts !== undefined && _.isObject(opts.parameters) )
-                this.parameters = $.extend({}, this.parameters, opts.parameters);
+        initialize : function() {
 
             // Attributes
             this.$wraperForm = this.$('#render-form-traslado');
@@ -66,7 +63,10 @@ app || (app = {});
                 collection: this.trasladoProductosList,
                 parameters: {
                     wrapper: this.el,
-                    edit: true
+                    edit: true,
+                    dataFilter: {
+                        'traslado': this.model.get('id')
+                    }
                 }
             });
         },
@@ -87,7 +87,7 @@ app || (app = {});
 
                 e.preventDefault();
                 var data = window.Misc.formToJson( e.target );
-                data.detalle = this.trasladoProductosList.toJSON()
+                    data.detalle = this.trasladoProductosList.toJSON();
 
                 this.model.save( data, {patch: true, silent: true} );
             }
@@ -98,9 +98,35 @@ app || (app = {});
         */
         onStoreItem: function (e) {
             if (!e.isDefaultPrevented()) {
-
                 e.preventDefault();
-                this.trasladoProductosList.trigger( 'store', this.$(e.target) );
+                var data = window.Misc.formToJson( e.target );
+                    data.tipo = 'S';
+                    data.sucursal = this.$('#traslado1_sucursal').val();
+                    
+                window.Misc.evaluateActionsInventory({
+                    'data': data,
+                    'wrap': this.$el,
+                    'callback': (function (_this) {
+                        return function ( action, tipo )
+                        {      
+                            // Open InventarioActionView
+                            if ( _this.inventarioActionView instanceof Backbone.View ){
+                                _this.inventarioActionView.stopListening();
+                                _this.inventarioActionView.undelegateEvents();
+                            }
+                            _this.inventarioActionView = new app.InventarioActionView({
+                                model: _this.model,
+                                collection: _this.trasladoProductosList,
+                                parameters: {
+                                    data: data,
+                                    action: action,
+                                    tipo: tipo
+                                }
+                            });
+                            _this.inventarioActionView.render();
+                        }
+                    })(this)
+                }); 
             }
         },
         /**
@@ -108,6 +134,14 @@ app || (app = {});
         */
         changedRepeatSucursal: function(e){
             e.preventDefault();
+
+            if (e.currentTarget.name == 'traslado1_sucursal') {
+                
+                // this.$("#traslado1_destino>option[value="+this.$(e.currentTarget).val()+"]").prop('disabled', true);
+            }else{
+
+            }
+
         },
         /**
         * Load spinner on the request

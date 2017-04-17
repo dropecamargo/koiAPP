@@ -100,8 +100,10 @@ app || (app = {});
 			this.$inputCosto.val(window.Misc.currency(data.producto_costo));
 			if(!_.isUndefined(data.producto_maneja_serie) && data.producto_maneja_serie == 1){
 				this.$('#ajuste2_cantidad_salida').val(1).prop('readonly' , true);
+				this.$('#traslado2_cantidad').val(1).prop('readonly' , true);
 			}else{
 				this.$('#ajuste2_cantidad_salida').val('').prop('readonly' , false);
+				this.$('#traslado2_cantidad').val('').prop('readonly' , false);
 			}
 			this.$modalComponent.modal('hide');
 		},

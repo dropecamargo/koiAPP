@@ -54,6 +54,10 @@ class Producto extends BaseModel
 
         $validator = Validator::make($data, $rules);
         if ($validator->passes()){
+            if(isset($data['producto_maneja_serie']) && $data['producto_maneja_serie'] == 'producto_maneja_serie' && isset($data['producto_metrado']) && $data['producto_metrado'] == 'producto_metrado') {
+                $this->errors = 'Producto no puede ser metrado y manejar serie al mismo tiempo, por favor verifique la información o consulte al administrador.';
+                return false;
+            }
             return true;
         }
         $this->errors = $validator->errors();

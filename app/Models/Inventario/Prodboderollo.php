@@ -57,7 +57,7 @@ class Prodboderollo extends Model
                 case 'S':
                     // Validar disponibles
                     if($metros > $prodboderollo->prodboderollo_saldo){
-                        return "No existen suficientes unidades para salida item rollo producto {$producto->producto_codigo}, item {$item}, por favor verifique la información o consulte al administrador.";
+                        return "No existen suficientes unidades para salida item rollo producto {$producto->producto_serie}, item {$item}, por favor verifique la información o consulte al administrador.";
                     }
                     $prodboderollo->prodboderollo_saldo = ($prodboderollo->prodboderollo_saldo - $metros);
                 break;

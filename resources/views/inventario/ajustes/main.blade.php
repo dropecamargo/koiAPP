@@ -42,10 +42,17 @@
                         @endforeach
                         </select>
                     </div>
+                    <div id="ajuste1_lotes">
+                        <label for="ajuste1_lote" class="col-sm-1 control-label">Lote</label>
+                        <div class="form-group col-sm-2">
+                            <input type="text" id="ajuste1_lote" name="ajuste1_lote" placeholder="Lote" class="input-toupper form-control" value="" required>
+                        </div> 
+                        
+                    </div>
                     <label for="ajuste1_fecha" class="col-sm-1 control-label">Fecha</label>
                     <div class="form-group col-sm-2">
                         <input type="text" id="ajuste1_fecha" name="ajuste1_fecha" class="form-control input-sm datepicker" value="<%- ajuste1_fecha %>" required>
-                    </div> 
+                    </div>
                 </div>
                 <div class="row">
                     <label for="ajuste1_observaciones" class="col-sm-1 control-label">Observaciones</label>
@@ -74,8 +81,8 @@
                             <th width="5%"></th>
                             <th width="10%">Referencia</th>
                             <th width="30%" align="left">Nombre</th>
-                            <th width="15%">Cantidad Entrada</th>
-                            <th width="15%">Cantidad Salida</th>
+                            <th width="15%">Cant. Entrada</th>
+                            <th width="15%">Cant. Salida</th>
                             <th width="15%">Costo</th>
                         </tr>
                     </thead>
@@ -101,6 +108,7 @@
         <% if(!edit){ %>
             <td><%- lote_nombre %></td>
        <% } %>
+
         <td><%-(ajuste2_cantidad_entrada <= 0) ? '0' : ajuste2_cantidad_entrada %></td>
         <td><%- (ajuste2_cantidad_salida <= 0) ? '0' : ajuste2_cantidad_salida %></td>
         <td><%- window.Misc.currency(ajuste2_costo) %></td>
@@ -113,15 +121,15 @@
                     <div class="form-group col-sm-2 col-md-offset-2">
                         <div class="input-group input-group-sm">
                             <span class="input-group-btn">
-                                <button type="button" class="btn btn-default btn-flat btn-koi-search-producto-component"  data-field="ajuste2_producto">
+                                <button type="button" class="btn btn-default btn-flat btn-koi-search-producto-component"  data-field="producto_serie">
                                     <i class="fa fa-barcode"></i>
                                 </button>
                             </span>
-                            <input id="ajuste2_producto" placeholder="Serie" class="form-control producto-koi-component" name="ajuste2_producto" type="text" maxlength="15" data-wrapper="ajuste-create" data-name="ajuste2_producto_nombre" required <%- tipoajuste_tipo=='S' ? 'data-costo=ajuste2_costo': '' %> <%- tipoajuste_tipo=='S' ?  'data-ref=false' : 'data-ref=true' %> > 
+                            <input id="producto_serie" placeholder="Serie" class="form-control producto-koi-component" name="producto_serie" type="text" maxlength="15" data-wrapper="ajuste-create" data-name="producto_nombre" required <%- tipoajuste_tipo=='S' ? 'data-costo=ajuste2_costo': '' %> <%- tipoajuste_tipo=='S' ?  'data-ref=false' : 'data-ref=true' %> > 
                         </div>
                     </div>
                     <div class="col-sm-5 ">
-                        <input id="ajuste2_producto_nombre" name="ajuste2_producto_nombre" placeholder="Nombre producto" class="form-control input-sm" type="text" maxlength="15" readonly required>
+                        <input id="producto_nombre" name="producto_nombre" placeholder="Nombre producto" class="form-control input-sm" type="text" maxlength="15" readonly required>
                     </div>
                     <div class="form-group col-sm-1 ">
                         <button type="submit" class="btn btn-success btn-sm btn-block">

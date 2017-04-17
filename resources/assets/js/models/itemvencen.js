@@ -1,5 +1,5 @@
 /**
-* Class Traslado2Model extend of Backbone Model
+* Class ProductVencenModel extend of Backbone Model
 * @author KOI || @dropecamargo
 * @link http://koi-ti.com
 */
@@ -9,14 +9,14 @@ app || (app = {});
 
 (function (window, document, undefined) {
 
-    app.Traslado2Model = Backbone.Model.extend({
+    app.ProductVencenModel = Backbone.Model.extend({
 
         urlRoot: function () {
-            return window.Misc.urlFull( Route.route('traslados.detalle.index') );
+            return window.Misc.urlFull( Route.route('productos.vencen.index') );
         },
         idAttribute: 'id',
         defaults: {
-        	'traslado2_cantidad': '',
+
         }
     });
 

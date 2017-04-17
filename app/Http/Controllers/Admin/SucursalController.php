@@ -48,7 +48,6 @@ class SucursalController extends Controller
     {
         if ($request->ajax()) {
             $data = $request->all();
-
             $sucursal = new Sucursal;
             if ($sucursal->isValid($data)) {
                 DB::beginTransaction();

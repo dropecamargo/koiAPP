@@ -19,7 +19,7 @@ class CreateProdboderolloTable extends Migration
             $table->integer('prodboderollo_serie')->unsigned();
             $table->integer('prodboderollo_sucursal')->unsigned();
             $table->integer('prodboderollo_lote')->unsigned();
-            $table->integer('prodboderollo_item');
+            $table->integer('prodboderollo_item')->unsigned();
             $table->double('prodboderollo_metros')->default(0);
             $table->double('prodboderollo_saldo')->default(0);
             $table->double('prodboderollo_costo')->default(0)->comment = 'Costo por metro (Costo total del rollo / # metros)';

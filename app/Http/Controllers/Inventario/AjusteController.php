@@ -83,12 +83,16 @@ class AjusteController extends Controller
                     $ajuste->ajuste1_usuario_elaboro = Auth::user()->id;
                     $ajuste->ajuste1_fh_elaboro = date('Y-m-d H:m:s'); 
                     $ajuste->save();
+
                     // Define nombre del lote
-                    $nameLote = Ajuste1:: $default_document.$ajuste->id;
+                    $lote = Lote::where('lote_nombre' , $request->ajuste1_lote)->where('lote_fecha', $request->ajuste1_fecha)->first();
+                    if ($lote instanceof Lote) {
+                        DB::rollback();
+                        return response()->json(['success'=>false, 'errors'=>"Ya se ingreso el lote con nombre $request->ajuste1_lote y con fecha $request->ajuste1_fecha por favor verifique su información" ]);
+                    }
                     $lote = new Lote;
-                    $lote->lote_nombre = $nameLote;
-                    $lote->lote_fecha = date('Y-m-d H:m:s');
-                    // $lote->lote_fecha = '';
+                    $lote->lote_nombre = $request->ajuste1_lote ;
+                    $lote->lote_fecha = $request->ajuste1_fecha;
                     $lote->save();
 
                     // Detalle ajuste
@@ -105,7 +109,6 @@ class AjusteController extends Controller
 
                         // Entrada
                         if ($tipoAjuste->tipoajuste_tipo == 'E') {
-
 
                             // Costo promedio
                             $costopromedio = $producto->costopromedio($item['ajuste2_costo'], $item['ajuste2_cantidad_entrada']);
@@ -156,7 +159,6 @@ class AjusteController extends Controller
                                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar serie, por favor verifique la información ó por favor consulte al administrador']);    
                                     }
 
-
                                     // Detalle ajuste
                                     $ajusteDetalle = new Ajuste2;
                                     $ajusteDetalle->fill($item);
@@ -181,20 +183,22 @@ class AjusteController extends Controller
                                 $itemRollo = DB::table('prodboderollo')->where('prodboderollo_serie', $producto->id)->where('prodboderollo_sucursal', $sucursal->id)->where('prodboderollo_lote', $lote)->max('prodboderollo_item');
                                 
                                 $items = isset($item['items']) ? $item['items'] : null;
-                                foreach ($items as $key => $value) {
-                                    if ($value > 0) {
+                                foreach ($items as $value) {
+                                    for ($i = 0; $i < $value['prodboderollo_cantidad']; $i++) { 
+                                        if ($value > 0) {
 
-                                        $itemRollo++;
-                                        $prodboderollo = Prodboderollo::actualizar($producto, $sucursal->id, 'E', $itemRollo, $lote, $value, $costopromedio );
-                                        if(!$prodboderollo instanceof Prodboderollo) {
-                                            DB::rollback();
-                                            return response()->json(['success' => false, 'errors'=> $prodboderollo]);
-                                        }
+                                            $itemRollo++;
+                                            $prodboderollo = Prodboderollo::actualizar($producto, $sucursal->id, 'E', $itemRollo, $lote, $value['prodboderollo_metros'], $costopromedio );
+                                            if(!$prodboderollo instanceof Prodboderollo) {
+                                                DB::rollback();
+                                                return response()->json(['success' => false, 'errors'=> $prodboderollo]);
+                                            }
 
-                                        $result = Inventariorollo::movimiento($inventario, $prodboderollo, $item['ajuste2_costo'], $value, 0, $costopromedio );
-                                        if(!$result instanceof Inventariorollo) {
-                                            DB::rollback();
-                                            return response()->json(['success' => false, 'errors'=> $result]);
+                                            $result = Inventariorollo::movimiento($inventario, $prodboderollo, $item['ajuste2_costo'], $value['prodboderollo_metros'], 0, $costopromedio );
+                                            if(!$result instanceof Inventariorollo) {
+                                                DB::rollback();
+                                                return response()->json(['success' => false, 'errors'=> $result]);
+                                            }
                                         }
                                     }
                                 }

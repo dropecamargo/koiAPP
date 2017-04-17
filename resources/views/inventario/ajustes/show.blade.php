@@ -40,7 +40,7 @@
             <div class="form-group col-md-8">
                 <label class="control-label">Elaboró: </label>
                 <div>
-                    <a href="{{ route('terceros.show', ['terceros' =>  $ajuste1->ajuste1_usuario_elaboro ]) }}" title="Ver tercero">{{ $ajuste1->tercero_nit }} </a><br> {{ $ajuste1->tercero_nombre }}
+                    <a href="{{ route('terceros.show', ['terceros' =>  $ajuste1->ajuste1_usuario_elaboro ]) }}" title="Ver tercero">{{ $ajuste1->tercero_nit }} </a> - {{ $ajuste1->tercero_nombre }}
                 </div>
             </div>
         </div>
@@ -52,8 +52,8 @@
                             <th width="15%">Referencia</th>
                             <th width="40%" align="left">Nombre</th>
                             <th width="15%" align="left">Nombre Lote</th>
-                            <th width="10%">Cantidad Entrada</th>
-                            <th width="10%">Cantidad Salida</th>
+                            <th width="10%">Cant. Entrada</th>
+                            <th width="10%">Cant. Salida</th>
                             <th width="10%">Costo</th>
                         </tr>
                     </thead>

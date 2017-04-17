@@ -33,10 +33,10 @@ app || (app = {});
         * Render View Element
         */
         render: function(){
-
             var attributes = this.model.toJSON();
             attributes.edit = this.parameters.edit;
             this.$el.html( this.template(attributes) );
+            
             return this;
         }
     });

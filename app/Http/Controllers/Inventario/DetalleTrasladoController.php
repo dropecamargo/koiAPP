@@ -16,7 +16,7 @@ class DetalleTrasladoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
     }
@@ -41,17 +41,38 @@ class DetalleTrasladoController extends Controller
     {
         if ($request->ajax()) {
             $data = $request->all();
-
             $traslado2 = new Traslado2;
             if ($traslado2->isValid($data)) {
                 try {
-                    // Recuperar producto
-                    // $producto = Producto::where('producto_codigo', $request->producto_codigo)->first();
-                    // if(!$producto instanceof Producto) {
-                    //     return response()->json(['success' => false, 'errors' => 'No es posible recuperar producto, por favor verifique la información o consulte al administrador.']);
-                    // }
+                    $producto = Producto::where('producto_serie', $request->producto_serie)->first();
+                    if(!$producto instanceof Producto) {
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar producto, por favor verifique la información o consulte al administrador.']);
+                    }
 
-                    return response()->json(['success' => true, 'id' => uniqid()]);
+                    // Validar maneja unidades
+                    if(!$producto->producto_unidad) {
+                        return response()->json(['success' => false,'errors' => "No es posible realizar movimientos para productos que no manejan unidades"]);
+                    }
+
+                    if ($request->get('traslado2_cantidad') <= 0 ) {
+                        return response()->json(['success' => false,'errors' => "No es posible realizar movimientos cantidad no valida, por favor verifique la información ó consulte al administrador"]);
+                    }
+                    if($producto->producto_maneja_serie){
+                        if (!$request->has('traslado2_cantidad') || $request->traslado2_cantidad > 1 ||$request->traslado2_cantidad < 1) {
+                            return response()->json(['success'=> false, 'errors' => "La cantidad de salida de {$producto->producto_nombre} debe ser de una unidad"]);
+                        }
+                    }else{
+                        $items = isset($data['items']) ? $data['items'] : null;
+                        $cantidadItems = 0.0;
+                        foreach ($items as $key => $item) {
+                            $cantidadItems += $item;
+                        }
+                        if ($cantidadItems > $request->traslado2_cantidad  || $cantidadItems == 0  ) {
+                            return response()->json(['success' => false,'errors' => "Cantidad de items de  {$request->producto_nombre} no coincide con el valor de SALIDA, por favor verifique información."]);
+                        }
+                    }
+                    
+                    return response()->json(['success' => true, 'id' => uniqid(), 'id_producto'=>$producto->id,'producto_serie'=> $producto->producto_serie,'producto_nombre'=> $producto->producto_nombre]);
                 }catch(\Exception $e){
                     Log::error($e->getMessage());
                     return response()->json(['success' => false, 'errors' => trans('app.exception')]);

@@ -53,7 +53,6 @@ app || (app = {});
             this.$form = this.$('#form-ajustes');
             this.$divDetalle = this.$('#detalle-ajuste');
             
-
              //Reference field select 
             this.$selectTipoAjuste = $('#ajuste1_tipoajuste');
             this.$fieldCantidadEntrada = $('#ajuste2_cantidad_entrada');
@@ -94,7 +93,7 @@ app || (app = {});
             if (!e.isDefaultPrevented()) {
                 e.preventDefault();
                 var data = window.Misc.formToJson( e.target );
-                data.ajuste2 = this.detalleAjuste.toJSON();
+                    data.ajuste2 = this.detalleAjuste.toJSON();
                 this.model.save( data, {patch: true, silent: true} );
 
             }   
@@ -127,7 +126,7 @@ app || (app = {});
                                 parameters: {
                                     data: data,
                                     action: action,
-                                    tipoAjuste: tipo
+                                    tipo: tipo
                                 }
                             });
                             _this.inventarioActionView.render();
@@ -155,6 +154,9 @@ app || (app = {});
                 
                 //Render form detalle ajuste
                 _this.$divDetalle.empty().html( _this.templateDetailt(resp) );
+
+                //Hide input lote
+                (resp.tipoajuste_tipo == 'S') ? _this.$('#ajuste1_lotes').hide() : _this.$('#ajuste1_lotes').show(); 
 
                 // Clear collection
                 _this.detalleAjuste.reset();

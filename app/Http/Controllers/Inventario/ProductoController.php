@@ -85,6 +85,7 @@ class ProductoController extends Controller
             $data = $request->all();
             $producto = new Producto;
             if ($producto->isValid($data)) {
+
                 DB::beginTransaction();
                 try {
                     $impuesto = Impuesto::where('id', $request->producto_impuesto)->first();
@@ -155,17 +156,14 @@ class ProductoController extends Controller
     {
         if ($request->ajax()) {
             $data = $request->all();
-
             $producto = Producto::findOrFail($id);
             if ($producto->isValid($data)) {
-                // if($producto->id != $producto->producto_referencia ) {
-                //     return response()->json(['success' => false, 'errors' => 'No es posible editar una serie, para modificar comportamiento por favor modifique la referencia padre.']);
-                // }
-
+                if($producto->producto_serie != $producto->producto_referencia ) {
+                    return response()->json(['success' => false, 'errors' => 'No es posible editar una serie, por favor verifique información o consulte con el administrador.']);
+                }   
                 DB::beginTransaction();
                 try {
                     // Producto
-                    $producto->producto_serie = $request->producto_referencia;
                     $producto->fill($data);
                     $producto->fillBoolean($data);
                     $producto->save();
@@ -200,38 +198,50 @@ class ProductoController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function evaluate(Request $request)
-    {   
+    {       
+        $tipoMovimiento = '';
+        // dd($request->all());
         // Prepare response
         $response = new \stdClass();
         $response->action = "";
-        $response->tipoajuste = "";
+        $response->tipo = "";
         $response->success = false;
-
-        $tipoajuste = TipoAjuste::find($request->tipoajuste);
-        if (!$tipoajuste instanceof TipoAjuste) {            
-            $response->errors = "No es posible recuperar TIPO AJUSTE,verifique información ó por favor consulte al administrador.";
+        if ($request->has('tipoajuste')) {
+            $tipoajuste = TipoAjuste::find($request->tipoajuste);
+            if (!$tipoajuste instanceof TipoAjuste) {            
+                $response->errors = "No es posible recuperar TIPO AJUSTE,verifique información ó por favor consulte al administrador.";
+            }  
+            $tipoMovimiento = $tipoajuste->tipoajuste_tipo;
+        }else{
+            $tipoMovimiento = $request->tipo;
         }
-        $producto = Producto::where('producto_serie', $request->ajuste2_producto)->first();
+
+        $producto = Producto::where('producto_serie', $request->producto_serie)->first();
         if (!$producto instanceof Producto) {
             $response->errors = "No es posible recuperar PRODUCTO,verifique información ó por favor consulte al administrador.";
         }
 
         if ($producto->producto_unidad == true) {
-            if($tipoajuste->tipoajuste_tipo == 'E'){
+            if($tipoMovimiento == 'E'){
                 if ($producto->producto_maneja_serie == true) {
                     $action = 'modalSerie';
                     $response->action = $action;   
-                    $response->tipoajuste = $tipoajuste->tipoajuste_tipo;
+                    $response->tipo = $tipoMovimiento;
                     $response->success = true;
                 }elseif($producto->producto_metrado == true){
                     $action = 'ProductoMetrado';
                     $response->action = $action;   
-                    $response->tipoajuste = $tipoajuste->tipoajuste_tipo;
+                    $response->tipo = $tipoMovimiento;
+                    $response->success = true;
+                }elseif($producto->producto_vence == true){
+                    $action = 'ProductoVence';
+                    $response->action = $action;   
+                    $response->tipo = $tipoMovimiento;
                     $response->success = true;
                 }else{
                     $action = 'NoSerieNoMetros';
                     $response->action = $action;   
-                    $response->tipoajuste = $tipoajuste->tipoajuste_tipo;
+                    $response->tipo = $tipoMovimiento;
                     $response->success = true;
                 }  
             }else{
@@ -242,17 +252,22 @@ class ProductoController extends Controller
                             //Salidas Series
                             $action = 'modalSerie';
                             $response->action = $action;   
-                            $response->tipoajuste = $tipoajuste->tipoajuste_tipo;
+                            $response->tipo = $tipoMovimiento;
                             $response->success = true;
                         }elseif($producto->producto_metrado == true){
                             $action = 'ProductoMetrado';
                             $response->action = $action;   
-                            $response->tipoajuste = $tipoajuste->tipoajuste_tipo;
+                            $response->tipo = $tipoMovimiento;
+                            $response->success = true;
+                        }elseif($producto->producto_vence == true){
+                            $action = 'ProductoVence';
+                            $response->action = $action;   
+                            $response->tipo = $tipoMovimiento;
                             $response->success = true;
                         }else{
                             $action = 'NoSerieNoMetros';
                             $response->action = $action;   
-                            $response->tipoajuste = $tipoajuste->tipoajuste_tipo;
+                            $response->tipo = $tipoMovimiento;
                             $response->success = true;
                         }   
                     }else{

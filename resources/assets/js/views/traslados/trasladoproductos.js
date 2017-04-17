@@ -41,7 +41,7 @@ app || (app = {});
             this.listenTo( this.collection, 'request', this.loadSpinner );
             this.listenTo( this.collection, 'store', this.storeOne );
             this.listenTo( this.collection, 'sync', this.responseServer );
-
+            console.log(this.parameters.dataFilter);
             /* if was passed traslado code */
             if( !_.isUndefined(this.parameters.dataFilter.traslado) && !_.isNull(this.parameters.dataFilter.traslado) ){
                  this.confCollection.data.traslado = this.parameters.dataFilter.traslado;
@@ -54,14 +54,15 @@ app || (app = {});
         * Render view task by model
         * @param Object mentoringTaskModel Model instance
         */
-        addOne: function (Traslado2Model) {
+        addOne: function (traslado2Model) {
+              console.log('addOne');
             var view = new app.TrasladoProductosItemView({
-                model: Traslado2Model,
+                model: traslado2Model,
                 parameters: {
                     edit: this.parameters.edit
                 }
             });
-            Traslado2Model.view = view;
+            traslado2Model.view = view;
             this.$el.append( view.render().el );
         },
 
@@ -76,13 +77,13 @@ app || (app = {});
         * storescuenta
         * @param form element
         */
-        storeOne: function (form) {
-            var _this = this,
-                data = window.Misc.formToJson( form );
+        storeOne: function (data) {
+            var _this = this
 
             // Set Spinner
             window.Misc.setSpinner( this.parameters.wrapper );
 
+            data.id = this.parameters.dataFilter.id;
             // Add model in collection
             var traslado2Model = new app.Traslado2Model();
             traslado2Model.save(data, {
