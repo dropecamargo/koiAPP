@@ -44,5 +44,4 @@ app || (app = {});
             'producto_unidad': 1
         }
     });
-
 })(this, this.document);

@@ -120,7 +120,9 @@ Route::group(['middleware' => 'auth'], function(){
 		Route::resource('lotes', 'Inventario\ProdbodeLoteController', ['only' => ['index']]);
 		Route::post('evaluate',['as' =>'productos.evaluate','uses'=>'Inventario\ProductoController@evaluate'] );
 		Route::post('validate',['as' =>'productos.validate','uses'=>'Inventario\ProductoController@validation'] );
+		Route::resource('prodbode', 'Inventario\ProdbodeController', ['only' => ['index', 'update']]);
 	});
+
 
 	Route::group(['prefix' => 'pedidos'], function()
 	{
