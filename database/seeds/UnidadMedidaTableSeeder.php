@@ -16,6 +16,6 @@ class UnidadMedidaTableSeeder extends Seeder
         	'unidadmedida_nombre' => 'METROS',
         	'unidadmedida_sigla' => 'M',
         	'unidad_medida_activo' => true
-        	]);
+    	]);
     }
 }

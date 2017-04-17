@@ -16,7 +16,7 @@ class ImpuestoTableSeeder extends Seeder
         	'impuesto_nombre' => 'IVA',
         	'impuesto_porcentaje' => '19',
         	'impuesto_activo' => true
-        	]);
+    	]);
 
     }
 }

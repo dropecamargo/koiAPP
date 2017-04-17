@@ -15,6 +15,6 @@ class CategoriaTableSeeder extends Seeder
         Categoria::create([
         	'categoria_nombre' => 'CATEGORIA',
         	'categoria_activo' => true
-        	]);
+    	]);
     }
 }

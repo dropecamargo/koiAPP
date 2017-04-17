@@ -15,7 +15,7 @@ class UnidadNegocioTableSeeder extends Seeder
         UnidadNegocio::create([
         	'unidadnegocio_nombre' => 'UNIDADNEGOCIO1',
         	'unidadnegocio_activo' => true
-        	]);
+    	]);
 
     }
 }

@@ -20,7 +20,7 @@ class CreateProdbodeloteTable extends Migration
             $table->integer('prodbodelote_sucursal')->unsigned();
             $table->integer('prodbodelote_cantidad')->unsigned();
             $table->integer('prodbodelote_saldo')->unsigned();
-            
+
             $table->foreign('prodbodelote_serie')->references('id')->on('producto')->onDelete('restrict');
             $table->foreign('prodbodelote_sucursal')->references('id')->on('sucursal')->onDelete('restrict');
             $table->foreign('prodbodelote_lote')->references('id')->on('lote')->onDelete('restrict');
