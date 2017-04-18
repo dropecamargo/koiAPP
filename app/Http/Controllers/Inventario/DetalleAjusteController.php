@@ -115,7 +115,7 @@ class DetalleAjusteController extends Controller
 
                                     $series[] = $request->get("producto_serie_$item");
                                 }
-                            }elseif ($producto->producto_metrado == true) {
+                            }else if ($producto->producto_metrado == true) {
                                 // Producto metrado
                                 $items = isset($data['items']) ? $data['items'] : null;
                                 $metradoItem = 0;
@@ -124,9 +124,19 @@ class DetalleAjusteController extends Controller
                                 }
                                 
                                 if ($metradoItem != $request->ajuste2_cantidad_entrada) {
-                                    return response()->json(['success' => false,'errors' => "Metraje debe igual a la cantidad de ({$request->ajuste2_cantidad_entrada}) METROS ingresada anteriormente, por favor verifique información."]);
+                                    return response()->json(['success' => false,'errors' => "Metraje debe ser igual a la cantidad de ({$request->ajuste2_cantidad_entrada}) METROS ingresada anteriormente, por favor verifique información."]);
                                 }
    
+                            }else if($producto->producto_vence == true){
+                                $items = isset($data['items']) ? $data['items'] : null;
+                                $numUnidades = 0;
+                                foreach ($items as $key => $item) {
+                                    $numUnidades += $item['prodbodevence_unidades'];
+                                }
+
+                                if ($numUnidades != $request->ajuste2_cantidad_entrada) {
+                                    return response()->json(['success' => false,'errors' => "Unidades debe ser igual a la cantidad ({$request->ajuste2_cantidad_entrada}) ingresada anteriormente, por favor verifique información."]);
+                                }
                             } 
                             break;
                         case 'R':

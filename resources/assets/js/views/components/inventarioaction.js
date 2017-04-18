@@ -16,13 +16,15 @@ app || (app = {});
         templateAddItemRollo: _.template( ($('#add-itemrollo-tpl').html() || '') ),
         templateChooseItemsRollo: _.template( ($('#choose-itemrollo-tpl').html() || '') ),
         templateAddItemsProductVence: _.template( ($('#product-vence-tpl').html() || '') ),
+        templateChooseItemsProductVence: _.template( ($('#product-choose-vence-tpl').html() || '') ),
 
     	events:{ 
             'submit #form-create-inventario-entrada-component-source': 'onStoreItemInventario',
             'change .cantidad-salidau-koi-inventario': 'changedCantidadUnidadesSalida',
             'click #btn-itemrollo-entradau-koi-inventario': 'clickAddItemRollo',
-            'click #btn-vencimiento-entradau-koi-inventario': 'clickAddVencimiento',
             'click .btn-remove-itemrollo-koi-inventario': 'clickRemoveItemRollo',
+            'click #btn-vencimiento-entradau-koi-inventario': 'clickAddVencimiento',
+            'click .btn-remove-itemvencimiento-koi-inventario': 'clickRemoveItemVencimiento',
     	},
 
         parameters: {
@@ -96,11 +98,11 @@ app || (app = {});
                             _this.$modalIn.find('.modal-title').text('Inventario - Entradas de productos con fecha de vencimiento '); 
                             _this.referenceVencimiento(resp);
                         }
-                        // else{
-                        //     _this.$modalIn.find('.content-modal').empty().html(_this.templateChooseItemsRollo(resp) );
-                        //     _this.$modalIn.find('.modal-title').text('Inventario - Salidas de productos metrados');
-                        //     _this.referenceMetrado(resp);
-                        // }
+                        else{
+                            _this.$modalIn.find('.content-modal').empty().html(_this.templateChooseItemsProductVence(resp) );
+                            _this.$modalIn.find('.modal-title').text('Inventario - Salidas de productos metrados');
+                            _this.referenceVencimiento(resp);
+                        }
                     },
                     'NoSerieNoMetros': function(){
                         if (resp.tipo == 'E') {
@@ -212,12 +214,17 @@ app || (app = {});
             this.$wraper = this.$('#modal-wrapper-inventario');
             this.$wraperFormIn = this.$modalIn.find('.content-modal');
             this.$wraperErrorIn = this.$('#error-inventario');
-
              if(atributes.tipo == 'E' ){
                 // Items vence view
                 this.$wraperVence = this.$('#browse-product-vence-list');
                 this.productoVenceList.add( new app.ProductVencenModel({ id: shortid.uuid() }) );
+             }else{
+                //salidas
+                this.$wraperVence = this.$('#browse-chooseproduct-vence-list');
+                this.productoVenceList.fetch({reset: true, data: { producto: atributes.data.producto_serie, sucursal: atributes.data.sucursal } } );
+
              }
+
 
             // Hide errors
             this.$wraperErrorIn.hide().empty();
@@ -270,7 +277,10 @@ app || (app = {});
         */
         addOneVencimientoInventario: function (productoModel) {
             var view = new app.ProductoVenceINListView({
-                model: productoModel
+                model: productoModel,
+                parameters:{
+                    type: this.parameters.tipo
+                }
             });
             
             productoModel.view = view;
@@ -283,8 +293,8 @@ app || (app = {});
         */
         addAllVencimientoInventario:function(){
             var _this = this;
-            this.itemRolloINList.forEach(function(model, index) {
-                _this.addOneItemRolloInventario(model)
+            this.productoVenceList.forEach(function(model, index) {
+                _this.addOneVencimientoInventario(model)
             });
         },
         /**
@@ -337,6 +347,21 @@ app || (app = {});
                     this.parameters.data.items = this.itemRolloINList;
                     this.collection.trigger('store', this.parameters.data);
 
+                }else if(this.parameters.action == 'ProductoVence' && this.parameters.tipo == 'E'){
+                    var lote = 0,
+                        unidades = 0;
+                        fecha = 0;
+
+                    //Prepare and setter models of collection
+                    _.each(this.productoVenceList.models,function(model){
+                        lote = this.$('#prodbodevence_lote_'+ model.get('id')).val();
+                        unidades = this.$('#prodbodevence_unidades_'+ model.get('id')).val();
+                        fecha = this.$('#prodbodevence_fecha_'+ model.get('id')).val();
+                        model.set({prodbodevence_lote: lote , prodbodevence_unidades: unidades, prodbodevence_fecha: fecha });
+                    });
+                    this.parameters.data = $.extend({}, this.parameters.data);
+                    this.parameters.data.items = this.productoVenceList;
+                    this.collection.trigger('store', this.parameters.data);
                 }else{
                     var items = [];
                     items =  window.Misc.formToJson( e.target );
@@ -407,17 +432,31 @@ app || (app = {});
         clickAddVencimiento: function(e){
             e.preventDefault();
             // Valid total
-            var ingresadas = 0;
-            // _.each(this.productoVenceList.models, function(itemRolloModel){ 
-            //     ingresadas+= parseFloat( this.$('#itemrollo_metros_'+itemRolloModel.get('id')).val() * this.$('#rollos_'+itemRolloModel.get('id')).val() );
-            // });
+            var unidades = 0;
+            _.each(this.productoVenceList.models, function(ProductVencenModel){ 
+                unidades+= parseFloat( this.$('#prodbodevence_unidades_'+ProductVencenModel.get('id')).val());
+            });
             
-            // if(ingresadas >= this.parameters.data.ajuste2_cantidad_entrada) {
-            //     alertify.error("No puede superar la cantidad de metros(" + this.parameters.data.ajuste2_cantidad_entrada +") a ingresar, por favor verifique información.");
-            //     return;
-            // }
+            if(unidades >= this.parameters.data.ajuste2_cantidad_entrada) {
+                alertify.error("No puede superar la cantidad de unidades(" + this.parameters.data.ajuste2_cantidad_entrada +") a ingresar, por favor verifique información.");
+                return;
+            }
          
-            this.productoVenceList.add( new app.ItemRolloModel({ id: shortid.uuid() }) );
+            this.productoVenceList.add( new app.ProductVencenModel({ id: shortid.uuid() }) );
+        },
+        /*
+        * Remove item unidades de entrada
+        */
+        clickRemoveItemVencimiento: function(e) {
+            e.preventDefault();
+
+            var resource = $(e.currentTarget).attr("data-resource"),
+                model = this.productoVenceList.get(resource);
+
+            if ( model instanceof Backbone.Model ) {
+                this.productoVenceList.remove(model);                
+                model.view.remove();
+            }
         },
         /*
         * Remove item unidades de entrada
@@ -429,10 +468,8 @@ app || (app = {});
                 model = this.itemRolloINList.get(resource);
 
             if ( model instanceof Backbone.Model ) {
-                
                 this.itemRolloINList.remove(model);                
                 model.view.remove();
-
             }
         },
 

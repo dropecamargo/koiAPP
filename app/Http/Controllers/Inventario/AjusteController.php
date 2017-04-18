@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\Inventario\Ajuste1,App\Models\Inventario\TipoAjuste,App\Models\Inventario\Producto,App\Models\Inventario\Lote,App\Models\Inventario\Ajuste2,App\Models\Inventario\Prodbode,App\Models\Inventario\Inventario,App\Models\Inventario\Inventariorollo,App\Models\Inventario\Prodboderollo,App\Models\Inventario\Prodbodelote;
+use App\Models\Inventario\Ajuste1,App\Models\Inventario\TipoAjuste,App\Models\Inventario\Producto,App\Models\Inventario\Lote,App\Models\Inventario\Ajuste2,App\Models\Inventario\Prodbode,App\Models\Inventario\Inventario,App\Models\Inventario\Inventariorollo,App\Models\Inventario\Prodboderollo,App\Models\Inventario\Prodbodelote,App\Models\Inventario\Prodbodevence;
 use App\Models\Base\Documentos, App\Models\Base\Sucursal;
 
 use DB,Log,Datatables,Auth;
@@ -202,7 +202,35 @@ class AjusteController extends Controller
                                         }
                                     }
                                 }
+                            //Producto vence    
+                            }else if($producto->producto_vence == true){
+                                // Item producto vence
+                                $items = isset($item['items']) ? $item['items'] : null;
+                                foreach ($items as $value) {
+                                    // valido lote
+                                    $loteVence = Lote::where('lote_nombre' , $value['prodbodevence_lote'])->where('lote_fecha', $request->ajuste1_fecha)->first();
+                                    if ($loteVence instanceof Lote) {
+                                        DB::rollback();
+                                        return response()->json(['success'=>false, 'errors'=>"Ya se ingreso el lote con nombre y con fecha por favor verifique su información" ]);
+                                    }
+                                    // Define nombre del lote
+                                    $loteVence = new Lote;
+                                    $loteVence->lote_nombre = $value['prodbodevence_lote'] ;
+                                    $loteVence->lote_fecha = $request->ajuste1_fecha;
+                                    $loteVence->lote_fecha_vencimiento = $value['prodbodevence_fecha'];
+                                    $loteVence->save();
+                                    $itemVence = DB::table('prodbodevence')->where('prodbodevence_serie', $producto->id)->where('prodbodevence_sucursal', $sucursal->id)->where('prodbodevence_lote', $loteVence)->max('prodbodevence_item');
 
+                                    for ($i=0; $i < $value['prodbodevence_unidades'] ; $i++) { 
+                                        $itemVence++;
+                                        $prodbodevence = Prodbodevence::actualizar($producto, $sucursal->id, 'E', $itemVence, $loteVence,1 );
+                                        if(!$prodbodevence instanceof Prodbodevence) {
+                                            DB::rollback();
+                                            return response()->json(['success' => false, 'errors'=> $prodbodevence]);
+                                        }
+                                    }
+
+                                }
                             // Normal
                             }else {
                                 // ProdBodeLote
@@ -309,7 +337,9 @@ class AjusteController extends Controller
                                         $ajusteDetalle->save();
                                     }
                                 }
-
+                            //Producto vence
+                            }else if($producto->producto_vence == true){
+                             
                             // Normal
                             }else {
                                 $items = isset($item['items']) ? $item['items'] : null;
@@ -318,7 +348,7 @@ class AjusteController extends Controller
                                     if($value > 0) {
                                         // Recuperar lore
                                         list($text, $lote) = explode("_", $key);
-                                        $prodbodelote = prodbodelote::find($lote);
+                                        $prodbodelote = Prodbodelote::find($lote);
                                         if (!$prodbodelote instanceof Prodbodelote) {
                                             DB::rollback();
                                             return response()->json(['success' => false,'errors'=>'No es posible recuperar el LOTE, por favor verifique la información ó por favor consulte al administrador']);

@@ -17,7 +17,7 @@ class Prodbodevence extends Model
 
     public $timestamps = false;
 
-    public static function actualizar(Producto $producto, $sucursal, $tipo, $item, Lote $lote, $cantidad = 0, $costo = 0)
+    public static function actualizar(Producto $producto, $sucursal, $tipo, $item, Lote $lote, $cantidad = 0)
     {   
         // Validar sucursal
         $sucursal = Sucursal::find($sucursal);
@@ -45,7 +45,6 @@ class Prodbodevence extends Model
                 $prodbodevence->prodbodevence_item = $item;
                 $prodbodevence->prodbodevence_cantidad = $cantidad;
                 $prodbodevence->prodbodevence_saldo = $cantidad;
-                $prodbodevence->prodbodevence_costo = $costo;
             }   
         }else{
 

@@ -1022,21 +1022,34 @@
 
 <script type="text/template" id="add-itemsvencimiento-tpl">
 	<td>
-		<input type="text" id="<%- id %>" name="<%- id %>" class="form-control input-sm input-toupper" value="">
+		<input type="text" id="prodbodevence_lote_<%- id %>" name="prodbodevence_lote_<%- id %>" class="form-control input-sm input-toupper" value="<%- prodbodevence_lote %>">
 	</td>
     <td>
-		<input id="<%- id %>" name="<%- id %>" class="form-control input-sm" type="number" value="" min="0" step="0.01" required>
+		<input id="prodbodevence_unidades_<%- id %>" name="prodbodevence_unidades_<%- id %>" class="form-control input-sm" type="number" value="<%- prodbodevence_unidades %>" min="0" required>
     </td>
     <td>
-    	<input type="text" name="" class="form-control datepicker input-sm">
+    	<input type="text" id="prodbodevence_fecha_<%- id %>" name="prodbodevence_fecha_<%- id %>" class="form-control datepicker input-sm" value="<%- prodbodevence_fecha %>">
     </td>
     <td class="text-center">
-		<button type="button" class="btn btn-default btn-xs btn-remove-itemrollo-koi-inventario" data-resource="<%- id %>">
+		<button type="button" class="btn btn-default btn-xs btn-remove-itemvencimiento-koi-inventario" data-resource="<%- id %>">
 			<i class="fa fa-close"></i>
 		</button>
     </td>
 </script>
 
+
+<script type="text/template" id="chooses-itemsvencimiento-tpl">
+    <td class="text-left"><%- lote_nombre %></td>
+    <td class="text-left"><%- lote_fecha %></td>
+    <td class="text-left"> <%- lote_fecha_vencimiento %></td>
+    <td class="text-left"><%- prodbodevence_cantidad %></td>
+    <td class="text-left"><%- prodbodevence_saldo %></td>
+    <td>
+    	<div class="form-group">
+			<input id="item_<%- id %>" name="item_<%- id %>" class="form-control input-sm cantidad-salidau-koi-inventario" type="number" value="0" min="0" max="<%- prodbodevence_saldo %>">
+    	</div>
+    </td>
+</script>
 
 <script type="text/template" id="chooses-itemsrollos-tpl">
     <td class="text-left"><%- prodboderollo_item %></td>

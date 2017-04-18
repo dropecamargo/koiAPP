@@ -234,7 +234,7 @@ app || (app = {});
                     return; 
                 }
             }
-            window.Misc.redirect( window.Misc.urlFull( Route.route('ajustes.show', { ajustes: resp.id})) );
+            // window.Misc.redirect( window.Misc.urlFull( Route.route('ajustes.show', { ajustes: resp.id})) );
         }
     });
 

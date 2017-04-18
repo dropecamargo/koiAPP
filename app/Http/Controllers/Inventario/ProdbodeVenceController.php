@@ -31,15 +31,14 @@ class ProdbodeVenceController extends Controller
             $rollos = [];
             if($request->has('producto') && $request->has('sucursal')) {
                 $query = Prodbodevence::query();
-                $query->select('prodbodevence.*','lote_fecha', 'lote_nombre');
+                $query->select('prodbodevence.*','lote_fecha', 'lote_nombre', 'lote_fecha_vencimiento');
                 $query->where('prodbodevence_serie', $producto->id);
                 $query->where('prodbodevence_sucursal', $sucursal->id);
                 $query->whereRaw('prodbodevence_saldo > 0');
                 $query->join('lote','prodbodevence_lote', '=', 'lote.id');
                 $query->orderby('lote_fecha', 'asc');
-                $rollos = $query->get();
             }
-            return response()->json($rollos);
+            return response()->json($query->get());
         }
         abort(404);
     }
