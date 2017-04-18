@@ -130,8 +130,14 @@ class DetalleAjusteController extends Controller
                             }else if($producto->producto_vence == true){
                                 $items = isset($data['items']) ? $data['items'] : null;
                                 $numUnidades = 0;
+                                $lotes = [];
                                 foreach ($items as $key => $item) {
                                     $numUnidades += $item['prodbodevence_unidades'];
+                                    // Validar series ingresadas repetidas
+                                    if(in_array($item['prodbodevence_lote'], $lotes)){
+                                        return response()->json(['success' => false,'errors' => "No es posible registrar dos lotes iguales"]);  
+                                    }
+                                    $lotes[] = $item['prodbodevence_lote'];
                                 }
 
                                 if ($numUnidades != $request->ajuste2_cantidad_entrada) {

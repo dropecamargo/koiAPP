@@ -85,7 +85,7 @@
                                             <i class="fa fa-barcode"></i>
                                         </button>
                                     </span>
-                                    <input id="producto_serie" placeholder="Producto" class="form-control producto-koi-component" name="producto_serie" type="text" maxlength="15" data-wrapper="traslados-create" data-name="producto_nombre" data-ref = "false" data-costo="ajuste2_costo" required>
+                                    <input id="producto_serie" placeholder="Producto" class="form-control producto-koi-component" name="producto_serie" type="text" maxlength="15" data-wrapper="traslados-create" data-name="producto_nombre" data-ref = "false" data-costo="ajuste2_costo" data-office="traslado1_sucursal" required>
                                 </div>
                             </div>
                             <div class="col-sm-4 col-xs-10">

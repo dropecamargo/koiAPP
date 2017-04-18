@@ -85,15 +85,18 @@ class AjusteController extends Controller
                     $ajuste->save();
 
                     // Define nombre del lote
-                    $lote = Lote::where('lote_nombre' , $request->ajuste1_lote)->where('lote_fecha', $request->ajuste1_fecha)->first();
-                    if ($lote instanceof Lote) {
-                        DB::rollback();
-                        return response()->json(['success'=>false, 'errors'=>"Ya se ingreso el lote con nombre $request->ajuste1_lote y con fecha $request->ajuste1_fecha por favor verifique su información" ]);
+                    if ($tipoAjuste->tipoajuste_tipo == 'E') {
+
+                        $lote = Lote::where('lote_nombre' , $request->ajuste1_lote)->where('lote_fecha', $request->ajuste1_fecha)->first();
+                        if ($lote instanceof Lote) {
+                            DB::rollback();
+                            return response()->json(['success'=>false, 'errors'=>"Ya se ingreso el lote con nombre $request->ajuste1_lote y con fecha $request->ajuste1_fecha por favor verifique su información" ]);
+                        }
+                        $lote = new Lote;
+                        $lote->lote_nombre = $request->ajuste1_lote ;
+                        $lote->lote_fecha = $request->ajuste1_fecha;
+                        $lote->save();
                     }
-                    $lote = new Lote;
-                    $lote->lote_nombre = $request->ajuste1_lote ;
-                    $lote->lote_fecha = $request->ajuste1_fecha;
-                    $lote->save();
 
                     // Detalle ajuste
                     foreach ($data['ajuste2'] as $item) {
@@ -286,7 +289,7 @@ class AjusteController extends Controller
                                 $result = Prodbode::actualizar($producto, $sucursal->id, 'S', $item['ajuste2_cantidad_salida']);
                                 if($result != 'OK') {                                            
                                     DB::rollback();
-                                    return response()->json(['success' => false, 'errors'=>"$result"]);
+                                    return response()->json(['success' => false, 'errors' => $result]);
                                 }
 
                                 // Inventario
@@ -300,7 +303,7 @@ class AjusteController extends Controller
                                 foreach ($items as $key => $value) 
                                 {
                                     if($value > 0) {
-                                        // Recuperar lore
+                                        // Recuperar lote
                                         list($text, $lote) = explode("_", $key);
                                         $prodboderollo = Prodboderollo::find($lote);
                                         if(!$prodboderollo instanceof Prodboderollo){
@@ -339,7 +342,44 @@ class AjusteController extends Controller
                                 }
                             //Producto vence
                             }else if($producto->producto_vence == true){
-                             
+                                // ProdBode
+                                $result = Prodbode::actualizar($producto, $sucursal->id, 'S', $item['ajuste2_cantidad_salida']);
+                                if($result != 'OK') {                                            
+                                    DB::rollback();
+                                    return response()->json(['success' => false, 'errors' => $result]);
+                                }
+                                $items = isset($item['items']) ? $item['items'] : null;
+
+                                foreach ($items as $key => $value) {
+                                    if ($value > 0) {
+                                        list($text, $stockid) = explode("_", $key);
+
+                                        $prodbodevence = prodbodevence::find($stockid);
+                                        if (!$prodbodevence instanceof Prodbodevence) {
+                                            DB::rollback();
+                                            return response()->json(['success' => false, 'errors' => 'No es posible recuperar PRODBODEVENCE por favor verificar información o consulte con el administrador']);
+                                        }
+                                        $loteVence = Lote::find($prodbodevence->prodbodevence_lote);
+                                        if (!$loteVence instanceof Lote) {
+                                            DB::rollback();
+                                            return response()->json(['success' => false, 'errors' => 'No es posible recuperar LOTE por favor verificar información o consulte con el administrador']);
+                                        }
+                                        $result = Prodbodevence::firstExit($producto, $sucursal->id, $loteVence ,$value);
+                                        if ($result != 'OK') {
+                                            DB::rollback();
+                                            return response()->json(['success'=> false, 'errors' => $result]);
+                                        }
+                                        // Detalle ajuste
+                                        $ajusteDetalle = new Ajuste2;
+                                        $ajusteDetalle->ajuste2_ajuste1 = $ajuste->id;
+                                        $ajusteDetalle->ajuste2_cantidad_salida = $value;
+                                        $ajusteDetalle->ajuste2_costo = $producto->producto_costo;
+                                        $ajusteDetalle->ajuste2_costo_promedio = $producto->producto_costo;
+                                        $ajusteDetalle->ajuste2_producto = $producto->id;
+                                        $ajusteDetalle->ajuste2_lote = $loteVence->id;
+                                        $ajusteDetalle->save();
+                                    }
+                                }
                             // Normal
                             }else {
                                 $items = isset($item['items']) ? $item['items'] : null;

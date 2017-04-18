@@ -138,4 +138,10 @@ label {
 #modal-address-component .modal-footer {
   padding: 10px; }
 
+.add-ubicacion {
+  padding: 1px 1px 1px 1px; }
+  .add-ubicacion .btn {
+    padding: 2px;
+    font-size: 12px; }
+
 /*# sourceMappingURL=app.min.css.map */

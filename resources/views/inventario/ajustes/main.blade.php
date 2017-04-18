@@ -125,7 +125,7 @@
                                     <i class="fa fa-barcode"></i>
                                 </button>
                             </span>
-                            <input id="producto_serie" placeholder="Serie" class="form-control producto-koi-component" name="producto_serie" type="text" maxlength="15" data-wrapper="ajuste-create" data-name="producto_nombre" required <%- tipoajuste_tipo=='S' ? 'data-costo=ajuste2_costo': '' %> <%- tipoajuste_tipo=='S' ?  'data-ref=false' : 'data-ref=true' %> > 
+                            <input id="producto_serie" placeholder="Serie" class="form-control producto-koi-component" name="producto_serie" type="text" maxlength="15" data-wrapper="ajuste-create" data-name="producto_nombre" required <%- tipoajuste_tipo=='S' ? 'data-costo=ajuste2_costo': '' %> <%- tipoajuste_tipo=='S' ?  'data-ref=false' : 'data-ref=true' %> <%- tipoajuste_tipo=='S' ?  'data-office= ajuste1_sucursal' : '' %> > 
                         </div>
                     </div>
                     <div class="col-sm-5 ">

@@ -71,6 +71,7 @@ class TrasladoController extends Controller
                     // Recuperar consecutivo
                     $consecutivo = $origen->sucursal_traslado + 1;
 
+                    
                     // Commit Transaction
                     DB:rollback();
                     return response()->json(['success' => false, 'errors'=> 'OK']);

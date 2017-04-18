@@ -108,6 +108,7 @@ app || (app = {});
             */
             'productos(/)': 'getProductosMain',
             'productos/create(/)': 'getProductosCreate',
+            'productos/:producto(/)': 'getProductosShow',
             'productos/:producto/edit(/)': 'getProductosEdit',
 
             'pedidos(/)': 'getPedidosMain',
@@ -1121,6 +1122,18 @@ app || (app = {});
 
             this.createProductoView = new app.CreateProductoView({ model: this.productoModel });
             this.productoModel.fetch();
+        },
+
+        getProductosShow: function (producto) {
+            this.productoModel = new app.ProductoModel();
+            this.productoModel.set({'id': producto}, {'silent':true});
+
+            if ( this.showProductoView instanceof Backbone.View ){
+                this.showProductoView.stopListening();
+                this.showProductoView.undelegateEvents();
+            }
+
+            this.showProductoView = new app.ShowProductoView({ model: this.productoModel });
         },
 
         /**

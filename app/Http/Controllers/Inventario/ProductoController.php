@@ -8,7 +8,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use DB, Log, Datatables;
-
+use App\Models\Base\Sucursal;
 use App\Models\Inventario\Producto,App\Models\Inventario\Prodbode,App\Models\Inventario\Impuesto,App\Models\Inventario\TipoAjuste;
 
 class ProductoController extends Controller
@@ -24,7 +24,6 @@ class ProductoController extends Controller
 
             $query = Producto::query();
             $query->select('producto.id as id', 'producto_serie', 'producto_nombre','producto_referencia','producto_costo');
-
             // Persistent data filter
             if($request->has('persistent') && $request->persistent) {
                 session(['search_producto_referencia' => $request->has('producto_referencia') ? $request->producto_referencia : '']);
@@ -52,9 +51,11 @@ class ProductoController extends Controller
                         if($request->equalsRef == "true"){
                             $query->whereRaw('producto_serie = producto_referencia');
                         }else{
-                            $query->select('producto.id as id','producto_maneja_serie','producto_serie', 'producto_nombre','producto_referencia','producto_costo','prodbode.id','prodbode.prodbode_cantidad','prodbode_serie');
+                            $query->select('producto.id as id','producto_maneja_serie','producto_serie', 'producto_nombre','producto_referencia','producto_costo','prodbode.id','prodbode.prodbode_cantidad','prodbode_serie', 'prodbode_sucursal');
                             $query->join('prodbode', 'producto.id','=','prodbode.prodbode_serie');
                             $query->whereRaw('prodbode_cantidad > 0');
+                            $sucursal = Sucursal::find($request->officeSucursal);
+                            ($sucursal instanceof Sucursal) ? $query->where('prodbode_sucursal', $sucursal->id) : '' ;
                         }
                     }
                 })
@@ -124,13 +125,11 @@ class ProductoController extends Controller
     public function show(Request $request, $id)
     {
         $producto = Producto::getProduct($id);
-        $prodbode = Prodbode::getProdBode($id);
-
         if($producto instanceof Producto){
             if ($request->ajax()) {
                 return response()->json($producto);
             }
-            return view('inventario.productos.show', ['producto' => $producto, 'prodbode' => $prodbode]);
+            return view('inventario.productos.show', ['producto' => $producto, 'prodbode' => $producto->producto_maneja_serie ? $producto->prodbode() : $producto->prodbode]);
         }
         abort(404);
     }

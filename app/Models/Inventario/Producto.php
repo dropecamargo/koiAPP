@@ -43,8 +43,14 @@ class Producto extends BaseModel
     public function isValid($data)
     {
         $rules = [
-            'producto_referencia' => 'required|max:20' 
+            'producto_referencia' => 'required|max:20|unique:producto'
         ];
+
+        if ($this->exists){
+            $rules['producto_referencia'] .= ',producto_referencia,' . $this->id;
+        }else{
+            $rules['producto_referencia'] .= '|required';
+        }
 
         $validator = Validator::make($data, $rules);
         if ($validator->passes()){
@@ -109,5 +115,22 @@ class Producto extends BaseModel
 
         return $costopromedio;
     }
-    
+
+    /**
+     * Get the prodbode record associated with the producto prodbode.
+     */
+    public function prodbode()
+    {
+        if($this->producto_maneja_serie){
+            $query = Prodbode::query();
+            $query->join('producto', 'prodbode.prodbode_serie', '=', 'producto.id');
+            $query->join('sucursal', 'prodbode.prodbode_sucursal', '=', 'sucursal.id');
+            $query->where('producto_referencia', $this->producto_serie);
+            $query->select('sucursal_nombre', DB::raw('count(sucursal_nombre) as prodbode_cantidad'), 'prodbode_reservado');
+            $query->groupBy('sucursal_nombre');
+            return $query->get();
+        }
+
+        return $this->hasMany('App\Models\Inventario\Prodbode', 'prodbode_serie', 'id')->join('sucursal','prodbode.prodbode_sucursal','=','sucursal.id')->select('prodbode.*','sucursal_nombre');
+    }
 }
