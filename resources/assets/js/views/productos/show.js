@@ -76,7 +76,7 @@ app || (app = {});
                 $.ajax({
                     type: "PUT",
                     url: window.Misc.urlFull(Route.route('productos.prodbode.update', {prodbode: prodbode})),
-                    data: {data, prodbode},
+                    data: {data: data, prodbode: prodbode},
                     beforeSend: function() {
                         window.Misc.setSpinner( _this.el );
                     }
@@ -101,7 +101,7 @@ app || (app = {});
                     alertify.error(thrownError);
                 });
             }
-        },
+        }
     });
 
 })(jQuery, this, this.document);
