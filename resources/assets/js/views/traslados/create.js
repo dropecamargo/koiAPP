@@ -102,6 +102,7 @@ app || (app = {});
                 var data = window.Misc.formToJson( e.target );
                     data.tipo = 'S';
                     data.sucursal = this.$('#traslado1_sucursal').val();
+                    data.destino = this.$('#traslado1_destino').val();
                     
                 window.Misc.evaluateActionsInventory({
                     'data': data,
@@ -134,15 +135,14 @@ app || (app = {});
         */
         changedRepeatSucursal: function(e){
             e.preventDefault();
-
-            if (e.currentTarget.name == 'traslado1_sucursal') {
-                
-                // this.$("#traslado1_destino>option[value="+this.$(e.currentTarget).val()+"]").prop('disabled', true);
-            }else{
-
+            var data = this.$(e.currentTarget).val();
+            if ( data != '' ) {
+                this.$('#traslado1_destino').val('').trigger('change');
+                this.$('#traslado1_destino').find('option:disabled').prop('disabled', false);
+                this.$('#traslado1_destino>option[value='+ data + ']').prop('disabled', true);
             }
-
         },
+
         /**
         * Load spinner on the request
         */

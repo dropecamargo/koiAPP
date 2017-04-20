@@ -610,6 +610,25 @@
 		</div>
 	</div>
 </script>
+<script type="text/template" id="add-tipotraslado-tpl">
+    <div class="row">
+		<div class="col-md-2">
+			<label for="tipotraslado_sigla" class="control-label">Sigla</label>
+			<input type="text" id="tipotraslado_sigla" name="tipotraslado_sigla" value="<%- tipotraslado_sigla %>" placeholder="Sigla" class="form-control input-sm input-toupper" maxlength="3" required>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-6">
+			<label for="tipotraslado_nombre" class="control-label">Nombre</label>
+			<input type="text" id="tipotraslado_nombre" name="tipotraslado_nombre" value="<%- tipotraslado_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="25" required>
+		</div><br>
+    	<div class="col-md-3">
+	    	<label class="checkbox-inline" for="tipotraslado_activo">
+				<input type="checkbox" id="tipotraslado_activo" name="tipotraslado_activo" value="tipotraslado_activo" <%- parseInt(tipotraslado_activo) ? 'checked': ''%>> Activo
+			</label>
+		</div>
+	</div>
+</script>
 
 <script type="text/template" id="add-puntoventa-tpl">
     <div class="row">

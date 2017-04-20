@@ -270,7 +270,7 @@ class AjusteController extends Controller
                                 $ajusteDetalle->ajuste2_producto = $producto->id;
                                 $ajusteDetalle->save();
                                 
-                                // Movimiento entradaManejaSerie
+                                // Movimiento salidaManejaSerie
                                 $movimiento = Inventario::salidaManejaSerie($producto, $sucursal, $lote);
                                 if($movimiento != 'OK') {
                                     DB::rollback();
@@ -386,7 +386,7 @@ class AjusteController extends Controller
                                 foreach ($items as $key => $value) 
                                 {
                                     if($value > 0) {
-                                        // Recuperar lore
+                                        // Recuperar lote
                                         list($text, $lote) = explode("_", $key);
                                         $prodbodelote = Prodbodelote::find($lote);
                                         if (!$prodbodelote instanceof Prodbodelote) {

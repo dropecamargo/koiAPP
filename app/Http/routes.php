@@ -151,6 +151,7 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::resource('ajustes', 'Inventario\AjusteController', ['except' => ['edit','destroy']]);
 	Route::resource('traslados', 'Inventario\TrasladoController', ['except' => ['edit','destroy']]);
 	Route::resource('tiposajuste', 'Inventario\TipoAjusteController', ['except' => ['destroy']]);
+	Route::resource('tipostraslados', 'Inventario\TipoTrasladoController', ['except' => ['destroy']]);
 	Route::resource('subcategorias', 'Inventario\SubCategoriaController', ['except' => ['destroy']]);
 	Route::resource('unidadesnegocio', 'Inventario\UnidadNegocioController', ['except' => ['destroy']]);
 

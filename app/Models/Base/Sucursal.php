@@ -73,7 +73,6 @@ class Sucursal extends BaseModel
             $query = Sucursal::query();
             $query->orderby('sucursal_nombre', 'asc');
             $collection = $query->lists('sucursal_nombre', 'id');
-            $collection->prepend('', '');
             return $collection;
         });
     }

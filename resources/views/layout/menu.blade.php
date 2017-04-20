@@ -153,7 +153,7 @@
     </li>
 
     {{-- Inventario --}}
-    <li class="treeview {{ in_array(Request::segment(1), ['unidades', 'productos','lineas','marcas','modelos','categorias','impuestos','pedidos','ajustes','tiposajuste','subcategorias','unidadesnegocio','traslados']) ? 'active' : '' }}">
+    <li class="treeview {{ in_array(Request::segment(1), ['unidades', 'productos','lineas','marcas','modelos','categorias','impuestos','pedidos','ajustes','tiposajuste','subcategorias','unidadesnegocio','traslados', 'tipostraslados']) ? 'active' : '' }}">
         <a href="#">
             <i class="fa fa-list"></i> <span>Inventario</span><i class="fa fa-angle-left pull-right"></i>
         </a>
@@ -181,7 +181,7 @@
             </li>
 
             {{-- Referencias inventario --}}
-            <li class="{{ in_array(Request::segment(1), ['unidades','lineas','marcas','modelos','categorias','impuestos','tiposajuste','subcategorias','unidadesnegocio']) ? 'active' : '' }}">
+            <li class="{{ in_array(Request::segment(1), ['unidades','lineas','marcas','modelos','categorias','impuestos','tiposajuste','tipostraslados','subcategorias','unidadesnegocio']) ? 'active' : '' }}">
                 <a href="#">
                     <i class="fa fa-circle-o"></i> Referencias <i class="fa fa-angle-left pull-right"></i>
                 </a>
@@ -206,6 +206,9 @@
                     </li>
                     <li class="{{ Request::segment(1) == 'tiposajuste' ? 'active' : '' }}">
                         <a href="{{ route('tiposajuste.index') }}"><i class="fa fa-circle-o"></i> Tipo ajuste</a>
+                    </li>
+                     <li class="{{ Request::segment(1) == 'tipostraslados' ? 'active' : '' }}">
+                        <a href="{{ route('tipostraslados.index') }}"><i class="fa fa-circle-o"></i> Tipo traslado</a>
                     </li>
                     <li class="{{ Request::segment(1) == 'unidades' ? 'active' : '' }}">
                         <a href="{{ route('unidades.index') }}"><i class="fa fa-circle-o"></i> Unidades</a>

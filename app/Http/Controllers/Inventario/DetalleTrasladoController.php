@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Log, DB;
-
+use App\Models\Base\Sucursal;
 use App\Models\Inventario\Producto, App\Models\Inventario\Traslado2;
 class DetalleTrasladoController extends Controller
 {
@@ -18,7 +18,18 @@ class DetalleTrasladoController extends Controller
      */
     public function index(Request $request)
     {
-        //
+        if ($request->ajax()) {
+            $detalle = [];
+            if($request->has('traslado')) {
+                $query = Traslado2::query();
+                $query->select('producto.id', 'traslado2_cantidad', 'traslado2_costo', 'producto_serie', 'producto_nombre');
+                $query->join('producto', 'traslado2_producto', '=', 'producto.id');
+                $query->where('traslado2_traslado1', $request->traslado);
+                $detalle = $query->get();
+            }
+            return response()->json($detalle);
+        }
+        abort(404);
     }
 
     /**
@@ -44,6 +55,17 @@ class DetalleTrasladoController extends Controller
             $traslado2 = new Traslado2;
             if ($traslado2->isValid($data)) {
                 try {
+                    $origen = Sucursal::find($request->sucursal);
+                    if (!$origen instanceof Sucursal) {
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar SUCURSAL DE ORIGEN, por favor verifique la información o consulte al administrador.']);
+                    }
+                    $destino = Sucursal::find($request->destino);
+                    if (!$destino instanceof Sucursal) {
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar SUCURSAL DESTINO, por favor verifique la información o consulte al administrador.']);
+                    }
+                    if ($origen->id == $destino->id ) {
+                        return response()->json(['success' => false, 'errors' => "No es posible realizar TRASLADO de $origen->sucursal_nombre a $destino->sucursal_nombre, por favor verifique la información o consulte al administrador."]);
+                    }
                     $producto = Producto::where('producto_serie', $request->producto_serie)->first();
                     if(!$producto instanceof Producto) {
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar producto, por favor verifique la información o consulte al administrador.']);

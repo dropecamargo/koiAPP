@@ -131,11 +131,7 @@
                     <div class="col-sm-5 ">
                         <input id="producto_nombre" name="producto_nombre" placeholder="Nombre producto" class="form-control input-sm" type="text" maxlength="15" readonly required>
                     </div>
-                    <div class="form-group col-sm-1 ">
-                        <button type="submit" class="btn btn-success btn-sm btn-block">
-                            <i class="fa fa-plus"></i>
-                        </button>
-                    </div>
+
                 </div>
                 <div class="row">
                     <% if(tipoajuste_tipo == 'R' || tipoajuste_tipo == 'E') { %>
@@ -154,6 +150,12 @@
                     <div id="ajuste2_costos" class="col-md-2 col-md-offset-2">
                     <label for="ajuste2_costo" class="control-label">Costo</label>
                         <input id="ajuste2_costo" name="ajuste2_costo" class="form-control input-sm" type="text" data-currency required <%- tipoajuste_tipo=='S' ? 'readonly': '' %> >
+                    </div>
+                    <br>
+                    <div class="form-group col-sm-1 col-md-offset-1">
+                        <button type="submit" class="btn btn-success btn-sm btn-block">
+                            <i class="fa fa-plus"></i>
+                        </button>
                     </div>
                 </div>
             </form>
