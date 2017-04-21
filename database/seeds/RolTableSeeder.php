@@ -17,5 +17,11 @@ class RolTableSeeder extends Seeder
             'display_name'   => 'Administrador',
             'description'   => ':V',
         ]);
+
+    	Rol::create([
+	    	'name' => 'logistic',
+	    	'display_name' => 'Logistica',
+	    	'description' => 'Perfil logistica plataforma'
+    	]);
     }
 }
