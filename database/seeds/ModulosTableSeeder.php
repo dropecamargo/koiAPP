@@ -277,7 +277,7 @@ class ModulosTableSeeder extends Seeder
             'display_name' => 'Productos',
             'nivel1' => 4,
             'nivel2' => 1,
-            'nivel3' => 1
+            'nivel3' => 2
         ]);
 
         Modulo::create([
@@ -285,7 +285,15 @@ class ModulosTableSeeder extends Seeder
             'display_name' => 'Pedidos',
             'nivel1' => 4,
             'nivel2' => 1,
-            'nivel3' => 1
+            'nivel3' => 3
+        ]);
+
+        Modulo::create([
+            'name' => 'traslados',
+            'display_name' => 'Traslados',
+            'nivel1' => 4,
+            'nivel2' => 1,
+            'nivel3' => 4
         ]);
 
         //Referencia
@@ -346,11 +354,19 @@ class ModulosTableSeeder extends Seeder
         ]);
 
         Modulo::create([
+            'name' => 'tipostraslados',
+            'display_name' => 'Tipo de traslado',
+            'nivel1' => 4,
+            'nivel2' => 2,
+            'nivel3' => 8
+        ]);
+
+        Modulo::create([
             'name' => 'unidades',
             'display_name' => 'Unidades',
             'nivel1' => 4,
             'nivel2' => 2,
-            'nivel3' => 8
+            'nivel3' => 9
         ]);
 
         Modulo::create([
@@ -358,7 +374,7 @@ class ModulosTableSeeder extends Seeder
             'display_name' => 'Unidades de negocio',
             'nivel1' => 4,
             'nivel2' => 2,
-            'nivel3' => 9
+            'nivel3' => 10
         ]);
     }
 }

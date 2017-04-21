@@ -18,6 +18,6 @@ class SubCategoriaTableSeeder extends Seeder
             'subcategoria_margen_nivel2' => '5884',
         	'subcategoria_margen_nivel3' => '1484',
         	'subcategoria_activo' => true
-        	]);
+    	]);
     }
 }

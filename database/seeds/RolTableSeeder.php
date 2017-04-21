@@ -15,7 +15,7 @@ class RolTableSeeder extends Seeder
         Rol::create([
             'name'   => 'admin',
             'display_name'   => 'Administrador',
-            'description'   => ':V',
+            'description'   => 'Perfil administrador plataforma'
         ]);
 
     	Rol::create([
