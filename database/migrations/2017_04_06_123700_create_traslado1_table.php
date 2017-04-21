@@ -20,6 +20,7 @@ class CreateTraslado1Table extends Migration
             $table->integer('traslado1_origen')->unsigned();
             $table->integer('traslado1_destino')->unsigned();
             $table->integer('traslado1_documentos')->unsigned();
+            $table->integer('traslado1_tipotraslado')->unsigned();
             $table->date('traslado1_fecha');
             $table->text('traslado1_observaciones');
             $table->integer('traslado1_usuario_elaboro')->unsigned();
@@ -27,6 +28,7 @@ class CreateTraslado1Table extends Migration
             
             $table->foreign('traslado1_origen')->references('id')->on('sucursal')->onDelete('restrict');
             $table->foreign('traslado1_destino')->references('id')->on('sucursal')->onDelete('restrict');
+            $table->foreign('traslado1_tipotraslado')->references('id')->on('tipotraslado')->onDelete('restrict');
             $table->foreign('traslado1_documentos')->references('id')->on('documentos')->onDelete('restrict');
             $table->foreign('traslado1_usuario_elaboro')->references('id')->on('tercero')->onDelete('restrict');
         });

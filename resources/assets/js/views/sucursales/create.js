@@ -103,7 +103,7 @@ app || (app = {});
                     return;
                 }
 
-                window.Misc.redirect( window.Misc.urlFull( Route.route('sucursales.show', { sucursales: resp.id})) );
+                window.Misc.redirect( window.Misc.urlFull( Route.route('sucursales.index')) );
             }
         }
     });

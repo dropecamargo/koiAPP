@@ -69,27 +69,67 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row" id="wrapper-series">
                         <div class="form-group col-md-12">
-                            <div class="box-body table-responsive no-padding">
-                                <table id="prodbod-search-table" class="table table-bordered table-striped" cellspacing="0" width="100%">
-                                    <thead>
-                                        <tr>
-                                            <th>Sucursal</th>
-                                            <th>U. Disponible</th>
-                                            <th>U. Reservadas</th>
-                                        </tr>
-                                    </thead>
-                                    <tfoot>
-                                        @foreach( $prodbode as $item)
-                                            <tr>
-                                                <td>{{ $item->sucursal_nombre }}</td>
-                                                <td>{{ $item->prodbode_cantidad }}</td>
-                                                <td>{{ $item->prodbode_reservado }}</td>
-                                            </tr>
-                                        @endforeach
-                                    </tfoot>
-                                </table>
+                            <div class="box box-success">
+                                <div class="box-header">
+                                    <h3 class="box-title">Disponibilidad</h3>
+                                </div>
+                                <div class="box-body no-padding">
+                                    <table id="prodbode-search-table" class="table table-striped">
+                                        <tbody>
+                                            @if( !$producto->producto_maneja_serie)
+                                                <tr>
+                                                    <th>Sucursal</th>
+                                                    <th>U. Disponible</th>
+                                                    <th>U. Reservadas</th>
+                                                    <th>Ubicacion</th>
+                                                </tr>
+
+                                                @if( count($prodbode) == 0 )
+                                                    <tr>
+                                                        <th colspan="3" class="text-center">NO EXISTEN UNIDADES EN INVENTARIO</th>
+                                                    </tr>
+                                                @endif
+                                                
+                                                @foreach( $prodbode as $item)
+                                                    <tr>
+                                                        <td>{{ $item->sucursal_nombre }}</td>
+                                                        <td>{{ $item->prodbode_cantidad }}</td>
+                                                        <td>{{ $item->prodbode_reservado }}</td>
+                                                        <th><a class="btn add-ubicacion" data-id="{{ $item->id }}" data-sucursal="{{ $item->sucursal_nombre }}" data-serie="{{ $producto->producto_serie }}" data-nombre="{{ $producto->producto_nombre }}">Agregar</a></th>
+                                                    </tr>
+                                                @endforeach
+                                            @endif
+
+                                            @if( $producto->producto_maneja_serie)
+                                                <tr>
+                                                    <th>Sucursal</th>
+                                                    <th>U. Disponible</th>
+                                                    <th>U. Reservadas</th>
+                                                </tr>
+                                                
+                                                @if( count($prodbode) == 0 )
+                                                    <tr>
+                                                        <th colspan="3" class="text-center">NO EXISTEN UNIDADES EN INVENTARIO</th>
+                                                    </tr>
+                                                @endif
+
+                                                @foreach( $prodbode as $item)
+                                                    <tr>
+                                                        <td>{{ $item->sucursal_nombre }}</td>
+                                                        <td>{{ $item->prodbode_cantidad }}</td>
+                                                        <td>{{ $item->prodbode_reservado }}</td>
+                                                    </tr>
+                                                @endforeach
+                                                <tr>
+                                                    <th colspan="4" class="text-center"><a class="btn get-series" id="{{ $producto->id }}">Ver series</a></th>
+                                                </tr>
+                                            @endif
+                                        </tbody>
+                                    </table>
+                                    <div id="render-series"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -99,7 +139,7 @@
             <div class="form-group col-md-6">
                 <div class="box box-solid collapsed-box">
                     <div class="box-header">
-                        <h1 class="box-title">Atributos</h1>
+                        <h1 class="box-title ">Atributos</h1>
                         <div class="box-tools pull-right">
                             <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
                         </div>

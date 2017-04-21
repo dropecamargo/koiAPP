@@ -1,5 +1,5 @@
 /**
-* Class ProductoVenceINListView  of Backbone Router
+* Class ProdbodeItemView  of Backbone Router
 * @author KOI || @dropecamargo
 * @link http://koi-ti.com
 */
@@ -9,21 +9,16 @@ app || (app = {});
 
 (function ($, window, document, undefined) {
 
-    app.ProductoVenceINListView = Backbone.View.extend({
+    app.ProdbodeItemView = Backbone.View.extend({
+        template: _.template( ($('#add-series-tpl').html() || '') ),
 
-        tagName: 'tr',
-        template: null,
-        parameters: {
-            type: 'E'
-        },
         /**
         * Constructor Method
         */
-        initialize: function( opts ) {
-
-            // extends parameters
+        initialize: function(opts){
+	        // Extends parameters
             if( opts !== undefined && _.isObject(opts.parameters) )
-                this.parameters = $.extend({}, this.parameters, opts.parameters);
+                this.parameters = $.extend({},this.parameters, opts.parameters);
 
             // Events Listener
             this.listenTo( this.model, 'change', this.render );
@@ -33,13 +28,9 @@ app || (app = {});
         * Render View Element
         */
         render: function(){
-            console.log(this.parameters.type)
-            this.template = _.template( ($( this.parameters.type == 'E' ? '#add-itemsvencimiento-tpl' : '#chooses-itemsvencimiento-tpl' ).html() || '') );
             var attributes = this.model.toJSON();
             this.$el.html( this.template(attributes) );
-
             return this;
         }
     });
-
 })(jQuery, this, this.document);

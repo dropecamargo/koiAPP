@@ -1,5 +1,5 @@
 /**
-* Class ShowProductoView
+* Class ShowProductosView
 * @author KOI || @dropecamargo
 * @link http://koi-ti.com
 */
@@ -11,18 +11,26 @@ app || (app = {});
 
     app.ShowProductoView = Backbone.View.extend({
 
-        el: '#producto-show',
+        el: '#content-show',
+        template: _.template( ($('#add-ubicacion-tpl').html() || '') ),
+        events: {
+            'click .get-series': 'getSeries',
+            'click .add-ubicacion': 'addUbicacion',
+            'submit #form-ubicacion-component': 'updateComponent'
+        },
 
         /**
         * Constructor Method
         */
-        initialize : function() {
+        initialize: function() {
+            this.prodbodeList = new app.ProdbodeList();
+            this.$modalUbicacion = this.$('#modal-ubicacion-component');
+        },
+
+        getSeries: function(e){
+            e.preventDefault();
             // Model exist
-            if( this.model.id != undefined ) {
-
-                this.contactsList = new app.ContactsList();
-                this.rolList = new app.RolList();
-
+            if( this.prodbodeList.length == 0 ) {
                 // Reference views
                 this.referenceViews();
             }
@@ -32,27 +40,67 @@ app || (app = {});
         * reference to views
         */
         referenceViews: function () {
-            // Contact list
-            this.contactsListView = new app.ContactsListView( {
-                collection: this.contactsList,
+            // Detalle asignaciones list
+            this.prodbodeListView = new app.ProdbodeListView({
+                collection: this.prodbodeList,
                 parameters: {
+                    wrapper: this.$('#wrapper-series'),
                     dataFilter: {
-                        'tercero_id': this.model.get('id')
+                        'producto_id': this.model.get('id')
                     }
-               }
+                }
             });
+        },
 
-            // Rol list
-            this.rolesListView = new app.RolesListView( {
-                collection: this.rolList,
-                parameters: {
-                    edit: false,
-                    wrapper: this.$('#wrapper-roles'),
-                    dataFilter: {
-                        'tercero_id': this.model.get('id')
+        addUbicacion: function(e){
+            var _this = this;
+
+            var resourse = {sucursal: _this.$(e.currentTarget).attr('data-sucursal'),
+                            nombre: _this.$(e.currentTarget).attr('data-nombre'),
+                            serie: _this.$(e.currentTarget).attr('data-serie'),
+                            id: _this.$(e.currentTarget).attr('data-id')};
+
+            _this.$modalUbicacion.find('.content-modal').empty().html( _this.template( resourse ) );
+
+            // Open modal
+            _this.$modalUbicacion.modal('show');
+        },
+
+        updateComponent: function(e){
+            var _this = this;
+            if (!e.isDefaultPrevented()) {
+                e.preventDefault();
+                var data = window.Misc.formToJson( e.target );
+                var prodbode = this.$('#prodbode_ubicacion1').attr('data-id');
+
+                $.ajax({
+                    type: "PUT",
+                    url: window.Misc.urlFull(Route.route('productos.prodbode.update', {prodbode: prodbode})),
+                    data: {data: data, prodbode: prodbode},
+                    beforeSend: function() {
+                        window.Misc.setSpinner( _this.el );
                     }
-               }
-            });
+                })
+                .done(function(resp) {
+                    window.Misc.removeSpinner( _this.el );
+                    // response success or error
+                    var text = resp.success ? '' : resp.errors;
+                    if( _.isObject( resp.errors ) ) {
+                        text = window.Misc.parseErrors(resp.errors);
+                    }
+
+                    if( !resp.success ) {
+                        alertify.error(text);
+                        return;
+                    }
+
+                    _this.$modalUbicacion.modal('hide');
+                })
+                .fail(function(jqXHR, ajaxOptions, thrownError) {
+                    window.Misc.removeSpinner( _this.el );
+                    alertify.error(thrownError);
+                });
+            }
         }
     });
 

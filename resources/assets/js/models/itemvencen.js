@@ -16,7 +16,9 @@ app || (app = {});
         },
         idAttribute: 'id',
         defaults: {
-
+            'prodbodevence_lote': '',
+            'prodbodevence_unidades': 0,
+            'prodbodevence_fecha': moment().format('YYYY-MM-DD')
         }
     });
 

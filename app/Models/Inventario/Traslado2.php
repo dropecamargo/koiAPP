@@ -21,19 +21,18 @@ class Traslado2 extends Model
      *
      * @var array
      */
-    protected $fillable = [];
+    protected $fillable = ['traslado2_cantidad'];
     
  	public function isValid($data)
     {
-        // $rules = [
-        //     'producto_codigo' => 'required',
-        //     'traslado2_cantidad' => 'required'
-        // ];
-        // $validator = Validator::make($data, $rules);
-        // if ($validator->passes()) {
+        $rules = [
+            'traslado2_cantidad' => 'numeric|required'
+        ];
+        $validator = Validator::make($data, $rules);
+        if ($validator->passes()) {
             return true;
-        // }
-        // $this->errors = $validator->errors();
-        // return false;
+        }
+        $this->errors = $validator->errors();
+        return false;
     }
 }

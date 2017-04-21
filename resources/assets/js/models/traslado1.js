@@ -19,6 +19,7 @@ app || (app = {});
         	'traslado1_sucursal': '',
         	'traslado1_numero': '',
         	'traslado1_destino': '',
+            'traslado1_tipotraslado':'',
         	'traslado1_fecha': moment().format('YYYY-MM-DD'),
         	'traslado1_observaciones': ''
 		}

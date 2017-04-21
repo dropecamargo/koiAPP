@@ -1,5 +1,5 @@
 /**
-* Class CreateTipoAjusteView  of Backbone Router
+* Class CreateTipoTrasladoView  of Backbone Router
 * @author KOI || @dropecamargo
 * @link http://koi-ti.com
 */
@@ -9,12 +9,12 @@ app || (app = {});
 
 (function ($, window, document, undefined) {
 
-    app.CreateTipoAjusteView = Backbone.View.extend({
+    app.CreateTipoTrasladoView = Backbone.View.extend({
 
-        el: '#tipoajuste-create',
-        template: _.template( ($('#add-tipoajuste-tpl').html() || '') ),
+        el: '#tipotraslado-create',
+        template: _.template( ($('#add-tipotraslado-tpl').html() || '') ),
         events: {
-            'submit #form-tipoajuste': 'onStore'
+            'submit #form-tipotraslado': 'onStore'
         },
         parameters: {
         },
@@ -28,7 +28,7 @@ app || (app = {});
                 this.parameters = $.extend({}, this.parameters, opts.parameters);
 
             // Attributes
-            this.$wraperForm = this.$('#render-form-tipoajuste');
+            this.$wraperForm = this.$('#render-form-tipotraslado');
 
             // Events
             this.listenTo( this.model, 'change', this.render );
@@ -97,7 +97,7 @@ app || (app = {});
                     return;
                 }
 
-                window.Misc.redirect( window.Misc.urlFull( Route.route('tiposajuste.index')) );
+                window.Misc.redirect( window.Misc.urlFull( Route.route('tipostraslados.index')) );
             }
         }
     });

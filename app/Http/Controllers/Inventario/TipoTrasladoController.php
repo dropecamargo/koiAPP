@@ -6,12 +6,11 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\Inventario\TipoAjuste;
+use App\Models\Inventario\TipoTraslado;
 
 use DB, Log, Datatables, Cache;
 
-
-class TipoAjusteController extends Controller
+class TipoTrasladoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -21,9 +20,9 @@ class TipoAjusteController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            return Datatables::of(TipoAjuste::query())->make(true);
+            return Datatables::of(TipoTraslado::query())->make(true);
         }
-        return view('inventario.tiposajuste.index');
+        return view('inventario.tipostraslados.index');
     }
 
     /**
@@ -33,7 +32,7 @@ class TipoAjusteController extends Controller
      */
     public function create()
     {
-        return view('inventario.tiposajuste.create');
+        return view('inventario.tipostraslados.create');
     }
 
     /**
@@ -46,20 +45,20 @@ class TipoAjusteController extends Controller
     {
         if ($request->ajax()) {
             $data = $request->all();
-            $tipoajuste = new TipoAjuste;
-            if ($tipoajuste->isValid($data)) {
+            $tipotraslado = new TipoTraslado;
+            if ($tipotraslado->isValid($data)) {
                 DB::beginTransaction();
                 try {
-                    //tipoajuste
-                    $tipoajuste->fill($data);
-                    $tipoajuste->fillBoolean($data);
-                    $tipoajuste->save();
+                    //tipo traslado
+                    $tipotraslado->fill($data);
+                    $tipotraslado->fillBoolean($data);
+                    $tipotraslado->save();
 
                     // Commit Transaction
                     DB::commit();
                     // Forget cache
-                    Cache::forget( TipoAjuste::$key_cache );
-                    return response()->json(['success' => true, 'id' => $tipoajuste->id]);
+                    Cache::forget( TipoTraslado::$key_cache );
+                    return response()->json(['success' => true, 'id' => $tipotraslado->id]);
                 } catch (\Exception $e) {
 
                     DB::rollback();
@@ -67,7 +66,7 @@ class TipoAjusteController extends Controller
                     return response()->json(['success' => false, 'errors' => trans('app.exception')]); 
                 }
             }
-            return response()->json(['success' => false, 'errors' => $tipoajuste->errors]);
+            return response()->json(['success' => false, 'errors' => $tipotraslado->errors]);
         }
     }
 
@@ -79,11 +78,11 @@ class TipoAjusteController extends Controller
      */
     public function show(Request $request, $id)
     {
-        $tipoajuste = TipoAjuste::findOrFail($id);
+        $tipotraslado = TipoTraslado::findOrFail($id);
         if ($request->ajax()) {
-            return response()->json($tipoajuste);
+            return response()->json($tipotraslado);
         }
-        return view('inventario.tiposajuste.show',['tipoajuste'=>$tipoajuste]);
+        return view('inventario.tipostraslados.show',['tipotraslado' => $tipotraslado]);
     }
 
     /**
@@ -94,8 +93,8 @@ class TipoAjusteController extends Controller
      */
     public function edit($id)
     {
-        $tipoajuste = TipoAjuste::findOrFail($id);
-        return view('inventario.tiposajuste.edit',['tipoajuste'=>$tipoajuste]);
+        $tipotraslado = TipoTraslado::findOrFail($id);
+        return view('inventario.tipostraslados.edit',['tipotraslado' => $tipotraslado]);
     }
 
     /**
@@ -109,17 +108,17 @@ class TipoAjusteController extends Controller
     {
         if ($request->ajax()) {
             $data = $request->all();
-            $tipoajuste = TipoAjuste::findOrFail($id);
-            if ($tipoajuste->isValid($data)) {
+            $tipotraslado = TipoTraslado::findOrFail($id);
+            if ($tipotraslado->isValid($data)) {
                 DB::beginTransaction();
                 try {
-                    //tipoajuste
-                    $tipoajuste->fill($data);
-                    $tipoajuste->fillBoolean($data);
-                    $tipoajuste->save();
+                    //tipotraslado
+                    $tipotraslado->fill($data);
+                    $tipotraslado->fillBoolean($data);
+                    $tipotraslado->save();
                     // Commit Transaction
                     DB::commit();
-                    return response()->json(['success' => true, 'id' => $tipoajuste->id]);
+                    return response()->json(['success' => true, 'id' => $tipotraslado->id]);
                 } catch (\Exception $e) {
 
                     DB::rollback();
@@ -127,7 +126,7 @@ class TipoAjusteController extends Controller
                     return response()->json(['success' => false, 'errors' => trans('app.exception')]); 
                 }
             }
-            return response()->json(['success' => false, 'errors' => $tipoajuste->errors]);
+            return response()->json(['success' => false, 'errors' => $tipotraslado->errors]);
         }
     }
 

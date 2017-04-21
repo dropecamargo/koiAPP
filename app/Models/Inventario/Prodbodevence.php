@@ -17,7 +17,7 @@ class Prodbodevence extends Model
 
     public $timestamps = false;
 
-    public static function actualizar(Producto $producto, $sucursal, $tipo, $item, Lote $lote, $cantidad = 0, $costo = 0)
+    public static function actualizar(Producto $producto, $sucursal, $tipo, $item, Lote $lote, $cantidad = 0)
     {   
         // Validar sucursal
         $sucursal = Sucursal::find($sucursal);
@@ -45,7 +45,6 @@ class Prodbodevence extends Model
                 $prodbodevence->prodbodevence_item = $item;
                 $prodbodevence->prodbodevence_cantidad = $cantidad;
                 $prodbodevence->prodbodevence_saldo = $cantidad;
-                $prodbodevence->prodbodevence_costo = $costo;
             }   
         }else{
 
@@ -71,6 +70,33 @@ class Prodbodevence extends Model
         $prodbodevence->save();
 
         return $prodbodevence;
+    }
+
+    public static function firstExit(Producto $producto, $sucursal, Lote $lote, $unidades){
+        $stocktaking = [];
+        while ($unidades > 0) {
+            $query = Prodbodevence::query();
+            $query->where('prodbodevence_serie', $producto->id);
+            $query->where('prodbodevence_sucursal', $sucursal);
+            $query->where('prodbodevence_lote', $lote->id);
+            $query->whereNotIn('id', $stocktaking);
+            $query->whereRaw('prodbodevence_saldo > 0');
+            $prodbodevence = $query->first();
+
+            if (!$prodbodevence instanceof Prodbodevence) {
+                return 'No es posible hacer movimiento en PRODBODEVENCE, por favor verificar información o consulte al administrador';
+            }
+
+            $descontadas = $unidades > $prodbodevence->prodbodevence_saldo ? $prodbodevence->prodbodevence_saldo : $unidades;
+            
+            $prodbodevence->prodbodevence_saldo = ($prodbodevence->prodbodevence_saldo - $unidades);
+            $prodbodevence->save();
+            
+            $unidades -= $descontadas;
+            $stocktaking[] = $prodbodevence->id;
+
+        }
+        return 'OK';
     }
 
 }

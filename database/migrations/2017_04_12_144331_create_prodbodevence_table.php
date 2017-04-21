@@ -22,7 +22,6 @@ class CreateProdbodevenceTable extends Migration
             $table->integer('prodbodevence_item')->unsigned();
             $table->integer('prodbodevence_cantidad')->unsigned();
             $table->integer('prodbodevence_saldo')->unsigned();
-            $table->integer('prodbodevence_costo')->unsigned();
             
             $table->foreign('prodbodevence_serie')->references('id')->on('producto')->onDelete('restrict');
             $table->foreign('prodbodevence_sucursal')->references('id')->on('sucursal')->onDelete('restrict');

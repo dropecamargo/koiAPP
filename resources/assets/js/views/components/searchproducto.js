@@ -46,6 +46,7 @@ app || (app = {});
 			this.$inputContent = this.$("#"+$(e.currentTarget).attr("data-field"));
 			this.$inputName = this.$("#"+this.$inputContent.attr("data-name"));
 			this.$inputCosto = this.$("#"+this.$inputContent.attr("data-costo"));			
+			this.$inputSucursal = this.$("#"+this.$inputContent.attr("data-office"));			
 
 			// Filters
 			this.equalsRef = this.$inputContent.attr("data-ref");
@@ -66,6 +67,7 @@ app || (app = {});
                         data.producto_nombre = _this.$searchNombre.val();                     
                         data.producto_referencia = _this.$searchReferencia.val();                                            
                         data.equalsRef = _this.equalsRef;                                            
+                        data.officeSucursal = _this.$inputSucursal.val();                                            
                     }
                 },
                 columns: [

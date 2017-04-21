@@ -24,24 +24,32 @@
                     <div class="row">
                         <label for="traslado1_sucursal" class="col-sm-1 control-label">Sucursal</label>
                         <div class="form-group col-sm-3">
-                            <select name="traslado1_sucursal" id="traslado1_sucursal" class="changed-koi-sucursal-repeat form-control select2-default  change-sucursal-consecutive-koi-component" data-wrapper="traslados-create" data-field="traslado1_numero" data-document="traslados" required>
+                            <select name="traslado1_sucursal" id="traslado1_sucursal" class="changed-koi-sucursal-repeat form-control   change-sucursal-consecutive-koi-component" data-wrapper="traslados-create" data-field="traslado1_numero" data-document="traslados" required>
                                 <option value="" selected>Seleccione</option>
                                 @foreach( App\Models\Base\Sucursal::getSucursales() as $key => $value)
                                     <option value="{{ $key }}" <%- traslado1_sucursal == '{{ $key }}' ? 'selected': ''%>>{{ $value }}</option>
                                 @endforeach
                             </select>
                         </div>
-
                         <label for="traslado1_numero" class="col-sm-1 control-label">Número</label>
                         <div class="form-group col-sm-2">
                             <input id="traslado1_numero" name="traslado1_numero" placeholder="Número" class="form-control input-sm input-toupper" type="number" required readonly>
+                        </div>
+                        <label for="traslado1_tipotraslado" class="col-sm-1 control-label">Tipo De Traslado</label>
+                        <div class="form-group col-sm-3">
+                              <select name="traslado1_tipotraslado" id="traslado1_tipotraslado" class="form-control select2-default"required>
+                                <option value="" selected>Seleccione</option>
+                                @foreach( App\Models\Inventario\TipoTraslado::getTiposTraslados() as $key => $value)
+                                    <option value="{{ $key }}" <%- traslado1_tipotraslado == '{{ $key }}' ? 'selected': ''%>>{{ $value }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
 
                     <div class="row">
                         <label for="traslado1_destino" class="col-sm-1 control-label">Destino</label>
                         <div class="form-group col-sm-3">
-                            <select name="traslado1_destino" id="traslado1_destino" class="changed-koi-sucursal-repeat  form-control select2-default" required>
+                            <select name="traslado1_destino" id="traslado1_destino" class="form-control" required>
                                 <option value="" selected>Seleccione</option>
                                 @foreach( App\Models\Base\Sucursal::getSucursales() as $key => $value)
                                     <option value="{{ $key }}" <%- traslado1_destino == '{{ $key }}' ? 'selected': ''%>>{{ $value }}</option>
@@ -85,7 +93,7 @@
                                             <i class="fa fa-barcode"></i>
                                         </button>
                                     </span>
-                                    <input id="producto_serie" placeholder="Producto" class="form-control producto-koi-component" name="producto_serie" type="text" maxlength="15" data-wrapper="traslados-create" data-name="producto_nombre" data-ref = "false" data-costo="ajuste2_costo" required>
+                                    <input id="producto_serie" placeholder="Producto" class="form-control producto-koi-component" name="producto_serie" type="text" maxlength="15" data-wrapper="traslados-create" data-name="producto_nombre" data-ref = "false" data-costo="ajuste2_costo" data-office="traslado1_sucursal" required>
                                 </div>
                             </div>
                             <div class="col-sm-4 col-xs-10">

@@ -7,13 +7,6 @@
 
 @section('module')
     <div class="box box-success" id="traslados-show">
-        <div class="box-header with-border">
-            <div class="row">
-                <div class="col-md-2 col-sm-6 col-xs-6 text-left">
-                    <a href=" {{ route('traslados.index') }}" class="btn btn-default btn-sm btn-block">{{ trans('app.comeback') }}</a>
-                </div>
-            </div>
-        </div>
         <div class="box-body">
             <div class="row">
                 <div class="form-group col-md-3">
@@ -45,27 +38,34 @@
             </div>
 
             <div class="row">
-                <div class="form-group col-md-2">
+                <div class="form-group col-md-3">
                     <label class="control-label">Usuario elaboro</label>
                     <div>
                         <a href="{{ route('terceros.show', ['terceros' =>  $traslado->traslado1_usuario_elaboro ]) }}" title="Ver tercero">
                             {{ $traslado->username_elaboro }}</a>
                     </div>
                 </div>
-                <div class="form-group col-md-2">
+                <div class="form-group col-md-3">
                     <label class="control-label">Fecha elaboro</label>
-                    <div>{{ $traslado->traslado1_fecha_elaboro }}</div>
+                    <div>{{ $traslado->traslado1_fh_elaboro }}</div>
                 </div>
             </div>
 
-            <div class="box-body table-responsive">
+            <div class="box-body box box-success table-responsive">
                 <table id="browse-detalle-traslado-list" class="table table-hover table-bordered" cellspacing="0" width="100%">
                     <tr>
-                        <th>Código</th>
+                        <th>Serie</th>
                         <th>Producto</th>
                         <th>Unidades</th>
                     </tr>
                 </table>
+            </div>
+        </div>
+        <div class="box-footer with-border">
+            <div class="row">
+                <div class="col-md-2 col-sm-6 col-md-offset-5 col-xs-6 text-left">
+                    <a href=" {{ route('traslados.index') }}" class="btn btn-default btn-sm btn-block">{{ trans('app.comeback') }}</a>
+                </div>
             </div>
         </div>
     </div>

@@ -92,6 +92,10 @@
 <div class="modal fade" id="modal-search-producto-component" data-backdrop="static" data-keyboard="false" aria-hidden="true">
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
+			<div class="modal-header small-box {{ config('koi.template.bg') }}">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">Buscador de productos</h4>
+			</div>
 			<div class="content-modal"></div>
 		</div>
 	</div>
@@ -211,10 +215,7 @@
 	{!! Form::close() !!}
 </script>
 <script type="text/template" id="koi-search-producto-component-tpl">
-	<div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		<h4 class="modal-title">Buscador de productos</h4>
-	</div>
+
 	{!! Form::open(['id' => 'form-koi-search-producto-component', 'class' => 'form-horizontal', 'data-toggle' => 'validator', 'role' => 'form']) !!}
 		<div class="modal-body">
 			<div class="form-group">
@@ -323,7 +324,7 @@
 		                <th>Fecha De Ingreso</th>
 		                <th>Metros (m)</th>
 		                <th>Saldo (m)</th>
-		                <th> <label id="cantidad-salidau"></label></th>
+		                <th></th>
 		            </tr>
 		            <tfoot>
 		            	<tr>
@@ -358,6 +359,31 @@
 		            	<tr>
 		            		<th colspan="3" class="text-right">Total: </th>
 		            		<th id="metro_residuo" class="text-right"> <label class="label bg-green"> <%- data.ajuste2_cantidad_entrada %> (m)</label></th>
+		            	</tr>
+	            	</tfoot>
+			    </table>
+			</div>
+		</div>
+	</div>
+</script>
+<script type="text/template" id="product-choose-vence-tpl">
+	<div class="row">
+		<div class="col-sm-12 col-xs-12">
+			<!-- table table-bordered table-striped -->
+			<div class="box-body table-responsive no-padding">
+				<table id="browse-chooseproduct-vence-list" class="table table-hover table-bordered" cellspacing="0">
+		            <tr>
+		                <th>Lote</th>
+		                <th>F.Ingreso</th>
+		                <th>F. Vencimiento</th>
+		                <th>Cantidad</th>
+		                <th>Saldo</th>
+		                <th></th>
+		            </tr>
+		            <tfoot>
+		            	<tr>
+		            		<th colspan="5" class="text-right">Total: </th>
+		            		<th id="metro_residuo" class="text-right"> <label class="label bg-green"> <%- data.ajuste2_cantidad_salida %> (m)</label></th>
 		            	</tr>
 	            	</tfoot>
 			    </table>

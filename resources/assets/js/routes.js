@@ -66,6 +66,11 @@ app || (app = {});
             'tiposajuste/create(/)': 'getTipoAjusteCreate',
             'tiposajuste/:tipoajuste/edit(/)': 'getTipoAjusteEdit',
 
+            //Tipos Traslados
+            'tipostraslados(/)': 'getTiposTrasladosMain',
+            'tipostraslados/create(/)': 'getTipoTrasladoCreate',
+            'tipostraslados/:tipostraslados/edit(/)': 'getTipoTrasladoEdit',
+
             //permisos
             'permisos(/)': 'getPermisosMain',
             'modulos(/)': 'getModulosMain',
@@ -108,6 +113,7 @@ app || (app = {});
             */
             'productos(/)': 'getProductosMain',
             'productos/create(/)': 'getProductosCreate',
+            'productos/:producto(/)': 'getProductosShow',
             'productos/:producto/edit(/)': 'getProductosEdit',
 
             'pedidos(/)': 'getPedidosMain',
@@ -581,6 +587,48 @@ app || (app = {});
 
             this.createTipoAjusteView = new app.CreateTipoAjusteView({ model: this.tipoAjusteModel });
             this.tipoAjusteModel.fetch();
+        },
+
+        //Tipos Traslados
+        getTiposTrasladosMain: function () {
+
+            if ( this.mainTipoTrasladosView instanceof Backbone.View ){
+                this.mainTipoTrasladosView.stopListening();
+                this.mainTipoTrasladosView.undelegateEvents();
+            }
+
+            this.mainTipoTrasladosView = new app.MainTipoTrasladosView( );
+        },
+
+        /**
+        * show view create tipos traslado
+        */
+        getTipoTrasladoCreate: function () {
+            this.tipoTrasladoModel = new app.TipoTrasladoModel();
+
+            if ( this.createTipoTrasladoView instanceof Backbone.View ){
+                this.createTipoTrasladoView.stopListening();
+                this.createTipoTrasladoView.undelegateEvents();
+            }
+
+            this.createTipoTrasladoView = new app.CreateTipoTrasladoView({ model: this.tipoTrasladoModel });
+            this.createTipoTrasladoView.render();
+        },
+
+        /**
+        * show view edit tipos traslado
+        */
+        getTipoTrasladoEdit: function (tipotraslado) {
+            this.tipoTrasladoModel = new app.TipoTrasladoModel();
+            this.tipoTrasladoModel.set({'id': tipotraslado}, {silent: true});
+
+            if ( this.createTipoTrasladoView instanceof Backbone.View ){
+                this.createTipoTrasladoView.stopListening();
+                this.createTipoTrasladoView.undelegateEvents();
+            }
+
+            this.createTipoTrasladoView = new app.CreateTipoTrasladoView({ model: this.tipoTrasladoModel });
+            this.tipoTrasladoModel.fetch();
         },
 
         /*
@@ -1122,6 +1170,18 @@ app || (app = {});
 
             this.createProductoView = new app.CreateProductoView({ model: this.productoModel });
             this.productoModel.fetch();
+        },
+
+        getProductosShow: function (producto) {
+            this.productoModel = new app.ProductoModel();
+            this.productoModel.set({'id': producto}, {'silent':true});
+
+            if ( this.showProductoView instanceof Backbone.View ){
+                this.showProductoView.stopListening();
+                this.showProductoView.undelegateEvents();
+            }
+
+            this.showProductoView = new app.ShowProductoView({ model: this.productoModel });
         },
 
         /**

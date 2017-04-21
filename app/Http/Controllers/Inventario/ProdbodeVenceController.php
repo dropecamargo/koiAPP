@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
+use DB;
 use App\Models\Inventario\Prodbodevence, App\Models\Inventario\Producto;
 use App\Models\Base\Sucursal;
 
@@ -28,18 +28,17 @@ class ProdbodeVenceController extends Controller
             if (!$sucursal instanceof Sucursal) {
                 return response()->json( 'No es posible recuperar SUCURSAL,verifique información ó por favor consulte al administrador.');
             }
-            $rollos = [];
             if($request->has('producto') && $request->has('sucursal')) {
                 $query = Prodbodevence::query();
-                $query->select('prodbodevence.*','lote_fecha', 'lote_nombre');
+                $query->select('prodbodevence.*','lote_fecha', 'lote_nombre', 'lote_fecha_vencimiento',DB::raw('SUM(prodbodevence_cantidad) as prodbodevence_cantidad'), DB::raw('SUM(prodbodevence_saldo) as prodbodevence_saldo'));
+                $query->groupBy('lote_nombre');
                 $query->where('prodbodevence_serie', $producto->id);
                 $query->where('prodbodevence_sucursal', $sucursal->id);
                 $query->whereRaw('prodbodevence_saldo > 0');
                 $query->join('lote','prodbodevence_lote', '=', 'lote.id');
                 $query->orderby('lote_fecha', 'asc');
-                $rollos = $query->get();
             }
-            return response()->json($rollos);
+            return response()->json($query->get());
         }
         abort(404);
     }

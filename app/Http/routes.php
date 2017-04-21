@@ -121,7 +121,9 @@ Route::group(['middleware' => 'auth'], function(){
 		Route::resource('lotes', 'Inventario\ProdbodeLoteController', ['only' => ['index']]);
 		Route::post('evaluate',['as' =>'productos.evaluate','uses'=>'Inventario\ProductoController@evaluate'] );
 		Route::post('validate',['as' =>'productos.validate','uses'=>'Inventario\ProductoController@validation'] );
+		Route::resource('prodbode', 'Inventario\ProdbodeController', ['only' => ['index', 'update']]);
 	});
+
 
 	Route::group(['prefix' => 'pedidos'], function()
 	{
@@ -149,6 +151,7 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::resource('ajustes', 'Inventario\AjusteController', ['except' => ['edit','destroy']]);
 	Route::resource('traslados', 'Inventario\TrasladoController', ['except' => ['edit','destroy']]);
 	Route::resource('tiposajuste', 'Inventario\TipoAjusteController', ['except' => ['destroy']]);
+	Route::resource('tipostraslados', 'Inventario\TipoTrasladoController', ['except' => ['destroy']]);
 	Route::resource('subcategorias', 'Inventario\SubCategoriaController', ['except' => ['destroy']]);
 	Route::resource('unidadesnegocio', 'Inventario\UnidadNegocioController', ['except' => ['destroy']]);
 
