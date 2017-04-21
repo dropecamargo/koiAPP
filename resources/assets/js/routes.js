@@ -13,7 +13,7 @@ app || (app = {});
         routes : {
             //Login
             'login(/)': 'getLogin',
-            
+
             /*
             |-----------------------
             | Administracion
@@ -24,10 +24,10 @@ app || (app = {});
             'terceros(/)': 'getTercerosMain',
             'terceros/create(/)': 'getTercerosCreate',
             'terceros/:tercero(/)': 'getTercerosShow',
-            'terceros/:tercero/edit(/)': 'getTercerosEdit', 
-    
+            'terceros/:tercero/edit(/)': 'getTercerosEdit',
+
             //Empresa
-            'empresa(/)': 'getEmpresaEdit',        
+            'empresa(/)': 'getEmpresaEdit',
 
             //Actividades
             'actividades(/)': 'getActividadesMain',
@@ -79,7 +79,7 @@ app || (app = {});
             | Contabilidad
             |-----------------------
             */
-            'presupuestoasesor(/)': 'getPresupuestoAsesorMain',        
+            'presupuestoasesor(/)': 'getPresupuestoAsesorMain',
             'documentos(/)': 'getDocumentosMain',
             'documentos/create(/)': 'getDocumentosCreate',
             'documentos/:documento/edit(/)':'getDocumentosEdit',
@@ -122,7 +122,7 @@ app || (app = {});
             'categorias(/)': 'getCategoriasMain',
             'categorias/create(/)': 'getCategoriasCreate',
             'categorias/:categorias/edit(/)': 'getCategoriasEdit',
-            
+
             'subcategorias(/)': 'getSubCategoriasMain',
             'subcategorias/create(/)': 'getSubCategoriasCreate',
             'subcategorias/:subcategorias/edit(/)': 'getSubCategoriasEdit',
@@ -150,7 +150,7 @@ app || (app = {});
             'ajustes(/)': 'getAjustesMain',
             'ajustes/create(/)': 'getAjustesCreate',
             'ajustes/:ajustes(/)': 'getAjusteShow',
-            
+
             'traslados(/)': 'getTrasladosMain',
             'traslados/create(/)': 'getTrasladosCreate',
             'traslados/:traslado(/)': 'getTrasladosShow',
@@ -204,6 +204,7 @@ app || (app = {});
         start: function () {
             var config = { pushState: true };
 
+            console.log(document.domain)
             if( document.domain.search(/(104.236.57.82|localhost)/gi) != '-1' )
                 config.root = '/signsupply/public/';
 
@@ -539,7 +540,7 @@ app || (app = {});
 
             this.createTipoActividadView = new app.CreateTipoActividadView({ model: this.tipoActividadModel });
             this.tipoActividadModel.fetch();
-        },     
+        },
         // Tipos Ajuste
         getTiposAjusteMain: function () {
 
@@ -580,8 +581,8 @@ app || (app = {});
 
             this.createTipoAjusteView = new app.CreateTipoAjusteView({ model: this.tipoAjusteModel });
             this.tipoAjusteModel.fetch();
-        },     
-        
+        },
+
         /*
         |-----------------------
         | Comercial
@@ -730,7 +731,7 @@ app || (app = {});
             this.createCentroCostoView = new app.CreateCentroCostoView({ model: this.centroCostoModel, parameters: { callback: 'toShow' } });
             this.createCentroCostoView.render();
         },
-        
+
         getCentrosCostoEdit: function (centrocosto) {
             this.centroCostoModel = new app.CentroCostoModel();
             this.centroCostoModel.set({'id': centrocosto}, {silent: true});
@@ -798,7 +799,7 @@ app || (app = {});
         },
 
         // Inventario
-       
+
         // Marca
         getMarcasMain: function () {
 
@@ -973,7 +974,7 @@ app || (app = {});
             this.createModeloView = new app.CreateModeloView({ model: this.modeloModel });
             this.modeloModel.fetch();
         },
-        
+
         getLineasMain: function () {
 
             if ( this.mainLineasView instanceof Backbone.View ){
@@ -1140,7 +1141,7 @@ app || (app = {});
         * show view create pedido
         */
         getPedidosCreate: function () {
-            
+
             this.pedidoModel = new app.PedidoModel();
 
             if ( this.createPedidoView instanceof Backbone.View ){
@@ -1172,7 +1173,7 @@ app || (app = {});
         * show view edit pedido
         */
         getPedidosEdit: function (pedido) {
-          
+
             this.pedidoModel = new app.PedidoModel();
             this.pedidoModel.set({'id': pedido}, {silent: true});
 
@@ -1184,11 +1185,11 @@ app || (app = {});
                 this.createPedidoView.stopListening();
                 this.createPedidoView.undelegateEvents();
             }
-            
+
             this.editPedidoView = new app.EditPedidoView({ model: this.pedidoModel });
             this.pedidoModel.fetch();
-           
-        },  
+
+        },
 
         /**
         * show view main ajuste
@@ -1232,7 +1233,7 @@ app || (app = {});
             this.showAjusteView = new app.ShowAjusteView({ model: this.ajusteModel });
             this.ajusteModel.fetch();
         },
-        
+
         /**
         * show view main traslados
         */
@@ -1275,7 +1276,7 @@ app || (app = {});
 
             this.showTrasladoView = new app.ShowTrasladoView({ model: this.trasladoModel });
         },
-        
+
         /**
         * show main view permisos
         */
