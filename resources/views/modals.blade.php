@@ -2,12 +2,14 @@
 <div class="modal fade" id="modal-add-resource-component" data-backdrop="static" data-keyboard="false" aria-hidden="true">
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content" id="content-create-resource-component">
-			<div class="modal-header ">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="inner-title-modal modal-title"></h4>
+			<div class="modal-header small-box {{ config('koi.template.bg') }}">
+				<button type="button" class="close icon-close-koi" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4><b class="inner-title-modal modal-title"></b></h4>
 			</div>
 			{!! Form::open(['id' => 'form-create-resource-component', 'data-toggle' => 'validator']) !!}
-				<div class="modal-body box box-success">
+				<div class="modal-body">
 					<div id="error-resource-component" class="alert alert-danger"></div>
 					<div class="content-modal"></div>
 				</div>
@@ -45,12 +47,14 @@
 <div class="modal fade" id="modal-tcontacto-component" data-backdrop="static" data-keyboard="false" aria-hidden="true">
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content" id="content-tcontacto-component">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="inner-title-modal">Contactos</h4>
+			<div class="modal-header small-box {{ config('koi.template.bg') }}">
+				<button type="button" class="close icon-close-koi" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title"><strong>Contactos</strong></h4>
 			</div>
 			{!! Form::open(['id' => 'form-tcontacto-component', 'data-toggle' => 'validator']) !!}
-				<div class="modal-body box box-success">
+				<div class="modal-body">
 					<div class="content-modal"></div>
 				</div>
 				<div class="modal-footer">
@@ -93,13 +97,16 @@
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header small-box {{ config('koi.template.bg') }}">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title">Buscador de productos</h4>
+				<button type="button" class="close icon-close-koi" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title"><strong>Buscador de productos</strong></h4>
 			</div>
 			<div class="content-modal"></div>
 		</div>
 	</div>
 </div>
+
 <!-- Modal Confirm -->
 <div class="modal fade" id="modal-confirm-component" data-backdrop="static" data-keyboard="false" aria-hidden="true">
 	<div class="modal-dialog modal-md" role="document">
@@ -120,10 +127,13 @@
 </div>
 
 <script type="text/template" id="koi-search-tercero-component-tpl">
-	<div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		<h4 class="modal-title">Buscador de terceros</h4>
+	<div class="modal-header small-box {{ config('koi.template.bg') }}">
+		<button type="button" class="close icon-close-koi" data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>
+		<h4 class="modal-title"><strong>Buscador de terceros</strong></h4>
 	</div>
+
 	{!! Form::open(['id' => 'form-koi-search-tercero-component', 'class' => 'form-horizontal', 'data-toggle' => 'validator', 'role' => 'form']) !!}
 		<div class="modal-body">
 			<div class="form-group">
@@ -169,10 +179,13 @@
 </script>
 
 <script type="text/template" id="koi-search-plancuenta-component-tpl">
-	<div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		<h4 class="modal-title">Buscador de cuentas</h4>
-	</div>
+<div class="modal-header small-box {{ config('koi.template.bg') }}">
+	<button type="button" class="close icon-close-koi" data-dismiss="modal" aria-label="Close">
+		<span aria-hidden="true">&times;</span>
+	</button>
+	<h4 class="modal-title"><strong>Buscador de cuentas</strong></h4>
+</div>
+
 	{!! Form::open(['id' => 'form-koi-search-plancuenta-component', 'class' => 'form-horizontal', 'data-toggle' => 'validator', 'role' => 'form']) !!}
 		<div class="modal-body">
 			<div class="form-group">
@@ -421,7 +434,7 @@
 		<button type="button" class="close icon-close-koi" data-dismiss="modal" aria-label="Close">
 			<span aria-hidden="true">&times;</span>
 		</button>
-		<h4><strong>Generador de direcciones</strong></h4>
+		<h4 class="modal-title"><strong>Generador de direcciones</strong></h4>
 	</div>
 
 	{!! Form::open(['id' => 'form-address-component', 'data-toggle' => 'validator', 'role' => 'form']) !!}
