@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTiporemisionTable extends Migration
+class CreatePedidoc2Table extends Migration
 {
     /**
      * Run the migrations.
@@ -12,14 +12,10 @@ class CreateTiporemisionTable extends Migration
      */
     public function up()
     {
-        Schema::create('tiporemision', function (Blueprint $table){
-            
+        Schema::create('pedidoc2', function(Blueprint $table){
             $table->engine = 'InnoDB';
+
             $table->increments('id');
-            $table->string('tiporemision_nombre',25);
-            $table->string('tiporemision_sigla',3);
-            $table->boolean('tiporemision_activio')->default(true);
-           
         });
     }
 
@@ -30,6 +26,6 @@ class CreateTiporemisionTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tiporemision');   
+        Schema::dropIfExists('pedidoc2');
     }
 }
