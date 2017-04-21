@@ -32,7 +32,7 @@ var app = app || {};
         */
         initialize: function () {
 
-            console.log('hola mundo', document.domain)
+            console.log(document)
 
             //Initialize
             this.initApp();
