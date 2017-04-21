@@ -30,7 +30,7 @@ class Linea extends BaseModel
      *
      * @var array
      */
-    protected $fillable = ['linea_nombre','linea_margen_nivel1','linea_margen_nivel2','linea_margen_nivel3'];
+    protected $fillable = ['linea_nombre'];
 
     /**
      * The attributes that are mass boolean assignable.
@@ -43,10 +43,6 @@ class Linea extends BaseModel
     {
         $rules = [
             'linea_nombre' => 'required|max: 25',
-            'linea_margen_nivel1' => 'required|numeric',
-            'linea_margen_nivel2' => 'required|numeric',
-            'linea_margen_nivel3' => 'required|numeric'
-
         ];
 
         $validator = Validator::make($data, $rules);

@@ -17,9 +17,6 @@ class CreateLineaTable extends Migration
 
             $table->increments('id');
             $table->string('linea_nombre', 25);
-            $table->double('linea_margen_nivel1');
-            $table->double('linea_margen_nivel2');
-            $table->double('linea_margen_nivel3');
             $table->boolean('linea_activo')->default(false);
         });
     }

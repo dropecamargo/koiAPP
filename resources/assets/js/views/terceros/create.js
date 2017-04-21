@@ -19,6 +19,7 @@ app || (app = {});
             'submit #form-changed-password': 'onStorePassword',
             'ifChanged .change_employee': 'changedEmployee',
             'ifChanged #tercero_tecnico': 'changedTechnical',
+            'ifChanged #tercero_vendedor': 'changedVendedor',
             'click .btn-add-tcontacto': 'addContacto'
         },
 
@@ -142,6 +143,17 @@ app || (app = {});
             }
         },
 
+        changedVendedor: function(e) {
+            var selected = $(e.target).is(':checked');
+            if( selected ) {
+                this.$wrapperCoordinador.removeClass('hide');
+            }else{
+                this.$wrapperCoordinador.addClass('hide');
+                this.$('#tercero_coordinador_por').prop('required', false);
+                this.$('#tercero_coordinador_por').val('');
+            }
+        },
+
         changedEmployee: function(e) {
             // Active if internal or employee
             if( this.$checkInternal.is(':checked') || this.$checkEmployee.is(':checked') ) {
@@ -237,6 +249,8 @@ app || (app = {});
                     alertify.error(text);
                     return;
                 }
+
+                alertify.success(this.msgSuccess);
 
                 // CreateTerceroView undelegateEvents
                 if ( this.createTerceroView instanceof Backbone.View ){

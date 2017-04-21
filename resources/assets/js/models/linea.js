@@ -18,9 +18,6 @@ app || (app = {});
         defaults: {
         	'linea_nombre' : '',
         	'linea_activo' : 1,
-        	'linea_margen_nivel1' : '',
-        	'linea_margen_nivel2' : '',
-        	'linea_margen_nivel3' : ''
         }
     });
 

@@ -8,31 +8,19 @@
 @section('module')
     <div class="box box-success">
         <div class="box-body">
-           
             <div class="row">
-                <div class="form-group col-md-8">
+                <div class="form-group col-md-3">
+                    <label class="control-label">Código</label>
+                    <div>{{ $lineas->id }}</div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="form-group col-md-4">
                     <label class="control-label">Nombre</label>
                     <div>{{ $lineas->linea_nombre }}</div>
                 </div>
-                
-            </div>
-            <div class="row">
-                <div class="form-group col-md-3">
-                    <label class="control-label">Nivel 1</label>
-                    <div>{{$lineas->linea_margen_nivel1}}</div>
-                </div>
-                <div class="form-group col-md-3">
-                    <label class="control-label">Nivel 2</label>
-                    <div>{{$lineas->linea_margen_nivel2}}</div>
-                </div>
-                
-            </div>
-            <div class="row">
-                <div class="form-group col-md-3">
-                    <label class="control-label">Nivel 3</label>
-                    <div>{{$lineas->linea_margen_nivel3}}</div>
-                </div>
-                <div class="form-group col-md-1 col-xs-8 c">
+                <div class="form-group col-md-1 col-xs-8"><br>
                     <label class="checkbox-inline" for="linea_activo">
                         <input type="checkbox" id="linea_activo" name="linea_activo" value="linea_activo" disabled {{ $lineas->linea_activo ? 'checked': '' }}> Activo
                     </label>
@@ -49,5 +37,6 @@
                     </div>
                 </div>
             </div>
+        </div>
     </div>
 @stop

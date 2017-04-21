@@ -14,10 +14,7 @@ class LineaTableSeeder extends Seeder
     {
        	Linea::create([
     		'linea_nombre' => 'LINEA1',
-    		'linea_margen_nivel1' => '1234',
-    		'linea_margen_nivel2' => '421234',
-    		'linea_margen_nivel3' => '54621',
         	'linea_activo' => true
-        	]);
+    	]);
     }
 }

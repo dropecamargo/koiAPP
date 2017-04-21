@@ -45,7 +45,6 @@ class SubCategoriaController extends Controller
     {
         if ($request->ajax()) {
             $data = $request->all();
-
             $subcategoria = new SubCategoria;
             if ($subcategoria->isValid($data)) {
                 DB::beginTransaction();
@@ -59,7 +58,6 @@ class SubCategoriaController extends Controller
                     DB::commit();
                     //Forget cache
                     Cache::forget( SubCategoria::$key_cache );
-
                     return response()->json(['success' => true, 'id' => $subcategoria->id]);
                 }catch(\Exception $e){
                     DB::rollback();
@@ -114,13 +112,13 @@ class SubCategoriaController extends Controller
             if ($subcategoria->isValid($data)) {
                 DB::beginTransaction();
                 try {
-                    // categoria
+                    // SubCategoria
                     $subcategoria->fill($data);
                     $subcategoria->fillBoolean($data);
                     $subcategoria->save();
+                    
                     // Commit Transaction
                     DB::commit();
-                    
                     return response()->json(['success' => true, 'id' => $subcategoria->id]);
                 }catch(\Exception $e){
                     DB::rollback();

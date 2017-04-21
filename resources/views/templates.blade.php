@@ -312,9 +312,17 @@
 										</label>
 									</div>
 
-	                               	<div id="wrapper-coordinador" class="form-group col-md-6 <%- parseInt(tercero_tecnico) ? '' : 'hide' %>">
+									<div class="form-group col-md-2">
+								    	<label class="checkbox-inline" for="tercero_vendedor">
+											<input type="checkbox" id="tercero_vendedor" name="tercero_vendedor" value="tercero_vendedor" <%- parseInt(tercero_vendedor) ? 'checked': ''%>> Vendedor
+										</label>
+									</div>
+								</div>
+								
+								<div class="row">
+	                               	<div id="wrapper-coordinador" class="form-group col-md-6 col-md-offset-2 <%- parseInt(tercero_tecnico) || parseInt(tercero_vendedor) ? '' : 'hide' %>">
 										<label for="tercero_coordinador_por" class="control-label">Coordinado por</label>
-										<select name="tercero_coordinador_por" id="tercero_coordinador_por" class="form-control select2-default">
+										<select name="tercero_coordinador_por" id="tercero_coordinador_por" class="form-control select2-default" required>
 		                                    @foreach( App\Models\Base\Tercero::getTechnicalAdministrators() as $key => $value)
 		                                        <option value="{{ $key }}" <%- tercero_coordinador_por == '{{ $key }}' ? 'selected': ''%>>{{ $value }}</option>
 		                                    @endforeach
@@ -524,13 +532,13 @@
 		</div>
     </div>
     <div class="row">
-		<div class="form-group col-md-2">
-			<label for="actividad_tarifa" class="control-label">% Cree</label>
-			<input type="text" id="actividad_tarifa" name="actividad_tarifa" value="<%- actividad_tarifa %>" placeholder="% Cree" class="form-control input-sm spinner-percentage" maxlength="4" required>
-		</div>
     	<div class="form-group col-md-2">
 			<label for="actividad_categoria" class="control-label">Categoria</label>
 			<input type="text" id="actividad_categoria" name="actividad_categoria" value="<%- actividad_categoria %>" placeholder="Categoria" class="form-control input-sm input-toupper" maxlength="3">
+		</div>
+		<div class="form-group col-md-2"><br>
+			<label for="actividad_tarifa" class="control-label">% Cree</label>
+			<input type="text" id="actividad_tarifa" name="actividad_tarifa" value="<%- actividad_tarifa %>" placeholder="% Cree" class="form-control input-sm spinner-percentage" maxlength="4" required>
 		</div>
 	</div>
 </script>
@@ -905,6 +913,20 @@
 			</label>
 		</div>
     </div>
+    <div class="row">
+		<div class="form-group col-md-3">
+			<label for="subcategoria_margen_nivel1" class="control-label">Margen Nivel 1</label>
+			<input type="number" id="subcategoria_margen_nivel1" name="subcategoria_margen_nivel1" value="<%- subcategoria_margen_nivel1 %>" placeholder="Margen" class="form-control input-sm " maxlength="50" required>
+		</div>
+		<div class="form-group col-md-3">
+			<label for="subcategoria_margen_nivel2" class="control-label">Margen Nivel 2</label>
+			<input type="number" id="subcategoria_margen_nivel2" name="subcategoria_margen_nivel2" value="<%- subcategoria_margen_nivel2 %>" placeholder="Margen" class="form-control input-sm " maxlength="50" required>
+		</div>
+		<div class="form-group col-md-3">
+			<label for="subcategoria_margen_nivel3" class="control-label">Margen Nivel 3</label>
+			<input type="number" id="subcategoria_margen_nivel3" name="subcategoria_margen_nivel3" value="<%- subcategoria_margen_nivel3 %>" placeholder="Margen" class="form-control input-sm " maxlength="50" required>
+		</div>
+    </div>
 </script>
 
 <script type="text/template" id="add-marca-tpl">
@@ -946,20 +968,6 @@
 			<br><label class="checkbox-inline" for="linea_activo">
 				<input type="checkbox" id="linea_activo" name="linea_activo" value="linea_activo" <%- parseInt(linea_activo) ? 'checked': ''%>> Activo
 			</label>
-		</div>
-    </div>
-    <div class="row">
-		<div class="form-group col-md-3">
-			<label for="linea_margen_nivel1" class="control-label">Margen Nivel 1</label>
-			<input type="number" id="linea_margen_nivel1" name="linea_margen_nivel1" value="<%- linea_margen_nivel1 %>" placeholder="Margen" class="form-control input-sm " maxlength="50" required>
-		</div>
-		<div class="form-group col-md-3">
-			<label for="linea_margen_nivel2" class="control-label">Margen Nivel 2</label>
-			<input type="number" id="linea_margen_nivel2" name="linea_margen_nivel2" value="<%- linea_margen_nivel2 %>" placeholder="Margen" class="form-control input-sm " maxlength="50" required>
-		</div>
-		<div class="form-group col-md-3">
-			<label for="linea_margen_nivel3" class="control-label">Margen Nivel 3</label>
-			<input type="number" id="linea_margen_nivel3" name="linea_margen_nivel3" value="<%- linea_margen_nivel3 %>" placeholder="Margen" class="form-control input-sm " maxlength="50" required>
 		</div>
     </div>
 </script>

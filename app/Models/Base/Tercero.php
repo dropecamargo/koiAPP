@@ -47,7 +47,7 @@ class Tercero extends BaseModel implements AuthenticatableContract,
      *
      * @var array
      */
-    protected $boolean = ['tercero_activo', 'tercero_responsable_iva', 'tercero_autoretenedor_cree', 'tercero_gran_contribuyente', 'tercero_autoretenedor_renta', 'tercero_autoretenedor_ica', 'tercero_socio', 'tercero_cliente', 'tercero_acreedor', 'tercero_interno', 'tercero_mandatario', 'tercero_empleado', 'tercero_proveedor', 'tercero_extranjero', 'tercero_afiliado', 'tercero_tecnico', 'tercero_coordinador', 'tercero_otro'];
+    protected $boolean = ['tercero_activo', 'tercero_responsable_iva', 'tercero_autoretenedor_cree', 'tercero_gran_contribuyente', 'tercero_autoretenedor_renta', 'tercero_autoretenedor_ica', 'tercero_socio', 'tercero_cliente', 'tercero_acreedor', 'tercero_interno', 'tercero_mandatario', 'tercero_empleado', 'tercero_proveedor', 'tercero_extranjero', 'tercero_afiliado', 'tercero_tecnico', 'tercero_vendedor', 'tercero_coordinador', 'tercero_otro'];
 
     /**
      * The attributes that are mass nullable fields to null.
@@ -73,7 +73,8 @@ class Tercero extends BaseModel implements AuthenticatableContract,
             'tercero_persona' => 'required',
             'tercero_direccion' => 'required',
             'tercero_municipio' => 'required',
-            'tercero_actividad' => 'required'
+            'tercero_actividad' => 'required',
+            'tercero_coordinador_por' => 'required_with:tercero_vendedor',
         ];
 
         if ($this->exists){
