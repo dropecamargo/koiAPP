@@ -210,7 +210,6 @@ app || (app = {});
         start: function () {
             var config = { pushState: true };
 
-            console.log(document.domain)
             if( document.domain.search(/(104.236.57.82|localhost)/gi) != '-1' )
                 config.root = '/signsupply/public/';
 
