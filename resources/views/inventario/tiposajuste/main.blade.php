@@ -1,11 +1,11 @@
 @extends('layout.layout')
 
-@section('title') Tipo De Ajuste @stop
+@section('title') Tipo de ajuste @stop
 
 @section('content')
     <section class="content-header">
 		<h1>
-			Tipo Ajuste <small>Administración de tipo ajsute</small>
+			Tipo de ajuste <small>Administración de tipo ajuste</small>
 		</h1>
 		<ol class="breadcrumb">
 			<li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> {{ trans('app.home') }}</a></li>

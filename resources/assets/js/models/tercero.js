@@ -52,6 +52,7 @@ app || (app = {});
             'tercero_proveedor': false,
             'tercero_extranjero': false,
             'tercero_afiliado': false,
+            'tercero_vendedor': false,
             'tercero_otro': false,
             'tercero_cual': '',
             'username': '',

@@ -1,7 +1,7 @@
 @extends('inventario.tiposajuste.main')
 
 @section('breadcrumb')	
-	<li><a href="{{route('tiposajuste.index')}}">Tipo Ajuste</a></li>
+	<li><a href="{{route('tiposajuste.index')}}">Tipo de ajuste</a></li>
 	<li><a href="{{ route('tiposajuste.show', ['tipoajuste' => $tipoajuste->id]) }}">{{ $tipoajuste->id }}</a></li>
 	<li class="active">Editar</li>
 @stop

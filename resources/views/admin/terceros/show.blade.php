@@ -268,11 +268,18 @@
 									<div class="row">
 										<div class="form-group col-md-2">
 							        		<label class="checkbox-inline" for="tercero_coordinador">
-												<input type="checkbox" id="tercero_coordinador" name="tercero_coordinador" value="tercero_coordinador" disabled {{ $tercero->tercero_coordinador ? 'checked': '' }}> Técnico
+												<input type="checkbox" id="tercero_coordinador" name="tercero_coordinador" value="tercero_coordinador" disabled {{ $tercero->tercero_coordinador ? 'checked': '' }}> Coordinador
 											</label>
 							        	</div>
+							        	<div class="form-group col-md-2">
+							        		<label class="checkbox-inline" for="tercero_vendedor">
+												<input type="checkbox" id="tercero_vendedor" name="tercero_vendedor" value="tercero_vendedor" disabled {{ $tercero->tercero_vendedor ? 'checked': '' }}> Vendedor
+											</label>
+							        	</div>
+							        </div>
 
-		                               	<div class="form-group col-md-6 {{ $tercero->tercero_tecnico ? '' : 'hide' }}">
+									<div class="row">
+		                               	<div class="form-group col-md-6 {{ $tercero->tercero_tecnico || $tercero->tercero_vendedor ? '' : 'hide' }}">
 											<label for="tercero_coordinador_por" class="control-label">Coordinado por</label>
 											<div>{{ $tercero->nombre_coordinador }}</div>
 				                        </div>

@@ -111,7 +111,6 @@ class LineaController extends Controller
     {
         if ($request->ajax()) {
             $data = $request->all();
-
             $linea = Linea::findOrFail($id);
             if ($linea->isValid($data)) {
                 DB::beginTransaction();
@@ -123,7 +122,6 @@ class LineaController extends Controller
 
                     // Commit Transaction
                     DB::commit();
-
                     return response()->json(['success' => true, 'id' => $linea->id]);
                 }catch(\Exception $e){
                     DB::rollback();

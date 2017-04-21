@@ -29,14 +29,17 @@ class SubCategoria extends BaseModel
      *
      * @var array
      */
-    protected $fillable = ['subcategoria_nombre'];
+    protected $fillable = ['subcategoria_nombre','subcategoria_margen_nivel1','subcategoria_margen_nivel2','subcategoria_margen_nivel3'];
 
     protected $boolean = ['subcategoria_activo'];
 
     public function isValid($data)
     {
         $rules = [
-            'subcategoria_nombre' => 'required|max:25'
+            'subcategoria_nombre' => 'required|max:25',
+            'subcategoria_margen_nivel1' => 'required|numeric',
+            'subcategoria_margen_nivel2' => 'required|numeric',
+            'subcategoria_margen_nivel3' => 'required|numeric'
         ];
 
         $validator = Validator::make($data, $rules);

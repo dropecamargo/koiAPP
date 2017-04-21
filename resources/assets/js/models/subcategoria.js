@@ -17,7 +17,10 @@ app || (app = {});
         idAttribute: 'id',
         defaults: {
             'subcategoria_nombre': '',
-            'subcategoria_activo': 1
+            'subcategoria_activo': 1,
+            'subcategoria_margen_nivel1' : '',
+            'subcategoria_margen_nivel2' : '',
+            'subcategoria_margen_nivel3' : ''
         }
     });
 

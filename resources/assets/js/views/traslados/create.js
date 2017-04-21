@@ -136,11 +136,11 @@ app || (app = {});
         changedRepeatSucursal: function(e){
             e.preventDefault();
             var data = this.$(e.currentTarget).val();
-            if ( data != '' ) {
-                this.$('#traslado1_destino').val('').trigger('change');
-                this.$('#traslado1_destino').find('option:disabled').prop('disabled', false);
-                this.$('#traslado1_destino>option[value='+ data + ']').prop('disabled', true);
-            }
+            // if ( data != '' ) {
+            //     this.$('#traslado1_destino').val('').trigger('change');
+            //     this.$('#traslado1_destino').find('option:disabled').prop('disabled', false);
+            //     this.$('#traslado1_destino>option[value='+ data + ']').prop('disabled', true);
+            // }
         },
 
         /**

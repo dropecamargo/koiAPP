@@ -34,7 +34,7 @@
                     </div>
                 </div>
                 <div class="row"> 
-                    <label for="ajuste1_tipoajuste" class="col-sm-1 control-label">Tipo De Ajuste</label>
+                    <label for="ajuste1_tipoajuste" class="col-sm-1 control-label">Tipo</label>
                     <div class="form-group col-sm-3">
                         <select name="ajuste1_tipoajuste" id="ajuste1_tipoajuste" class="form-control select2-default change-in-or-exit-koi-component">
                         @foreach( App\Models\Inventario\TipoAjuste::getTiposAjustes() as $key => $value)

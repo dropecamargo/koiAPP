@@ -1,7 +1,7 @@
 @extends('inventario.tiposajuste.main')
 
 @section('breadcrumb')
-    <li class="active">Tipos Ajustes</li>
+    <li class="active">Tipos de ajuste</li>
 @stop
 
 @section('module')

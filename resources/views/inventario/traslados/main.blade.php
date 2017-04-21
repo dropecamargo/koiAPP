@@ -24,7 +24,7 @@
                     <div class="row">
                         <label for="traslado1_sucursal" class="col-sm-1 control-label">Sucursal</label>
                         <div class="form-group col-sm-3">
-                            <select name="traslado1_sucursal" id="traslado1_sucursal" class="changed-koi-sucursal-repeat form-control   change-sucursal-consecutive-koi-component" data-wrapper="traslados-create" data-field="traslado1_numero" data-document="traslados" required>
+                            <select name="traslado1_sucursal" id="traslado1_sucursal" class="changed-koi-sucursal-repeat  form-control   select2-default change-sucursal-consecutive-koi-component" data-wrapper="traslados-create" data-field="traslado1_numero" data-document="traslados" required>
                                 <option value="" selected>Seleccione</option>
                                 @foreach( App\Models\Base\Sucursal::getSucursales() as $key => $value)
                                     <option value="{{ $key }}" <%- traslado1_sucursal == '{{ $key }}' ? 'selected': ''%>>{{ $value }}</option>
@@ -35,7 +35,7 @@
                         <div class="form-group col-sm-2">
                             <input id="traslado1_numero" name="traslado1_numero" placeholder="Número" class="form-control input-sm input-toupper" type="number" required readonly>
                         </div>
-                        <label for="traslado1_tipotraslado" class="col-sm-1 control-label">Tipo De Traslado</label>
+                        <label for="traslado1_tipotraslado" class="col-sm-1 control-label">Tipo</label>
                         <div class="form-group col-sm-3">
                               <select name="traslado1_tipotraslado" id="traslado1_tipotraslado" class="form-control select2-default"required>
                                 <option value="" selected>Seleccione</option>
@@ -49,7 +49,7 @@
                     <div class="row">
                         <label for="traslado1_destino" class="col-sm-1 control-label">Destino</label>
                         <div class="form-group col-sm-3">
-                            <select name="traslado1_destino" id="traslado1_destino" class="form-control" required>
+                            <select name="traslado1_destino" id="traslado1_destino" class="form-control select2-default" required>
                                 <option value="" selected>Seleccione</option>
                                 @foreach( App\Models\Base\Sucursal::getSucursales() as $key => $value)
                                     <option value="{{ $key }}" <%- traslado1_destino == '{{ $key }}' ? 'selected': ''%>>{{ $value }}</option>

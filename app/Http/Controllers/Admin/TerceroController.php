@@ -82,7 +82,6 @@ class TerceroController extends Controller
     {
         if ($request->ajax()) {
             $data = $request->all();
-
             $tercero = new Tercero;
             if ($tercero->isValid($data)) {
                 DB::beginTransaction();
@@ -148,7 +147,6 @@ class TerceroController extends Controller
     {
         if ($request->ajax()) {
             $data = $request->all();
-
             $tercero = Tercero::findOrFail($id);
             if ($tercero->isValid($data)) {
                 DB::beginTransaction();
@@ -163,7 +161,6 @@ class TerceroController extends Controller
                     // Forget cache
                     Cache::forget( Tercero::$key_cache_tadministrators );
                     Cache::forget( Tercero::$key_cache_badvisors );
-
                     return response()->json(['success' => true, 'id' => $tercero->id]);
                 }catch(\Exception $e){
                     DB::rollback();

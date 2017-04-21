@@ -1,7 +1,7 @@
 @extends('inventario.tiposajuste.main')
 
 @section('breadcrumb')	
-    <li><a href="{{ route('tiposajuste.index')}}">Tipo Ajuste</a></li>
+    <li><a href="{{ route('tiposajuste.index')}}">Tipo de ajuste</a></li>
 	<li class="active">Nuevo</li>
 @stop
 
@@ -13,7 +13,7 @@
 			</div>
 
 			<div class="box-footer with-border">
-	        	<div class="row">
+	        			<div class="row">
 					<div class="col-md-2 col-md-offset-4 col-sm-6 col-xs-6 text-left">
 						<a href="{{ route('tiposajuste.index') }}" class="btn btn-default btn-sm btn-block">{{ trans('app.cancel') }}</a>
 					</div>
