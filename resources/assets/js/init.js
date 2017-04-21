@@ -31,9 +31,6 @@ var app = app || {};
         * Constructor or Initialize Method
         */
         initialize: function () {
-
-            console.log(document)
-
             //Initialize
             this.initApp();
             this.initICheck();
