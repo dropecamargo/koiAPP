@@ -1,5 +1,5 @@
 /**
-* Class MainAjustesView
+* Class MainPedidoscView
 * @author KOI || @dropecamargo
 * @link http://koi-ti.com
 */
@@ -9,9 +9,9 @@ app || (app = {});
 
 (function ($, window, document, undefined) {
 
-    app.MainAjustesView = Backbone.View.extend({
+    app.MainPedidoscView = Backbone.View.extend({
 
-        el: '#ajustes-main',
+        el: '#pedidosc-main',
         events: {
         },
 
@@ -22,28 +22,28 @@ app || (app = {});
             var _this = this;
 
             // Rerefences
-            this.$ajustesSearchTable = this.$('#ajustes-search-table');
+            this.$ajustesSearchTable = this.$('#pedidosc-search-table');
             
             this.$ajustesSearchTable.DataTable({
-                dom:"<'row'<'col-sm-4'B><'col-sm-4 text-center'l><'col-sm-4'f>>" +
-                "<'row'<'col-sm-12'tr>>" +
-                "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+                dom: "<'row'<'col-sm-4'B><'col-sm-4 text-center'l><'col-sm-4'f>>" +
+                    "<'row'<'col-sm-12'tr>>" +
+                    "<'row'<'col-sm-5'i><'col-sm-7'p>>",
                 processing: true,
                 serverSide: true,
                 language: window.Misc.dataTableES(),
-                ajax: window.Misc.urlFull( Route.route('ajustes.index') ),
+                ajax: window.Misc.urlFull( Route.route('pedidosc.index') ),
                 columns: [ 
-                    { data: 'ajuste1_numero', name: 'ajuste1_numero' },
-                    { data: 'tipoajuste_nombre', name: 'tipoajuste_nombre' },
-                    { data: 'sucursal_nombre', name: 'sucursal_nombre' },
-                    { data: 'ajuste1_fecha', name: 'ajuste1_fecha' },
+                    { data: 'id', name: 'id' },
+                    { data: 'autorizaca_tercero', name: 'autorizaca_tercero' },
+                    { data: 'autorizaca_vencimiento', name: 'autorizaca_vencimiento' },
+                    { data: 'autorizaca_plazo', name: 'autorizaca_plazo' },
                 ],
                 buttons: [
                     {
-                        text: '<i class="fa fa-cog"></i> Nuevo Ajuste',
+                        text: '<i class="fa fa-plus"></i> Nuevo pedido',
                         className: 'btn-sm',
                         action: function ( e, dt, node, config ) {
-                            window.Misc.redirect( window.Misc.urlFull( Route.route('ajustes.create') ) )
+                            window.Misc.redirect( window.Misc.urlFull( Route.route('pedidosc.create') ) )
                         }
                     }
                 ],
@@ -52,7 +52,7 @@ app || (app = {});
                         targets: 0,
                         width: '25%',
                         render: function ( data, type, full, row ) {
-                           return '<a href="'+ window.Misc.urlFull( Route.route('ajustes.show', {ajustes: full.id }) )  +'">' + data + '</a>';
+                           return '<a href="'+ window.Misc.urlFull( Route.route('pedidosc.show', {pedidosc: full.id }) )  +'">' + data + '</a>';
                         },
                        
                     }, 

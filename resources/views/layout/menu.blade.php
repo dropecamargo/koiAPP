@@ -69,7 +69,39 @@
                     
                 </ul>
             </li> 
- 		</ul>
+        </ul>
+    </li>
+    {{--Cartera--}}
+    <li class="treeview {{ in_array(Request::segment(1), ['pedidosc','autorizacionesca','autorizaco']) ? 'active' : '' }}"> 
+        <a href="#">
+            <i class="fa fa-suitcase"></i> <span>Cartera</span><i class="fa fa-angle-left pull-right"></i>
+        </a>
+        <ul class="treeview-menu">
+            <li class="{{ in_array(Request::segment(1), ['pedidosc']) ? 'active' : '' }}">
+                <a href="#">
+                    <i class="fa fa-wpforms"></i> Módulos <i class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="treeview-menu">
+                    <li class="{{ Request::segment(1) == 'pedidosc' ? 'active' : '' }}">
+                        <a href="{{route('pedidosc.index')}}"><i class="fa fa-cube"></i> Pedidos</a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="{{ in_array(Request::segment(1), ['autorizacionesca','autorizaco']) ? 'active' : '' }}">
+                <a href="#">
+                    <i class="fa fa-circle-o"></i> Referencias <i class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="treeview-menu">
+                    <li class="{{ Request::segment(1) == 'autorizacionesca' ? 'active' : '' }}">
+                        <a href="{{route('autorizacionesca.index')}}"><i class="fa fa-circle-o"></i> Autorización Cartera</a>
+                    </li>
+                    {{--<li class="{{ Request::segment(1) == 'autorizaco' ? 'active' : ''}}">
+                        <a href="#"><i class="fa fa-circle-o"></i> Autorización Cobro</a>
+                    </li>--}}
+                </ul>
+            </li>
+        </ul>
     </li>
 
     {{-- Comercial --}}

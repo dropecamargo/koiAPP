@@ -155,5 +155,15 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::resource('subcategorias', 'Inventario\SubCategoriaController', ['except' => ['destroy']]);
 	Route::resource('unidadesnegocio', 'Inventario\UnidadNegocioController', ['except' => ['destroy']]);
 
-
+   	/*
+	|-------------------------
+	| Cartera Routes
+	|-------------------------
+	*/
+	Route::resource('pedidosc', 'Cartera\PedidoCarteraController',['except' => ['destroy']]);
+	Route::resource('autorizacionesca', 'Cartera\AutorizaCaController', ['only' => ['index']]);
+	Route::group(['prefix' => 'pedidosc'], function()
+	{
+		Route::resource('detalle', 'Cartera\DetallePedidoCarteraController');
+	});
 });

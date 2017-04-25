@@ -160,6 +160,19 @@ app || (app = {});
             'traslados(/)': 'getTrasladosMain',
             'traslados/create(/)': 'getTrasladosCreate',
             'traslados/:traslado(/)': 'getTrasladosShow',
+
+            /*
+            |-----------------------
+            | Cartera
+            |-----------------------
+            */
+            'autorizacionesca(/)': 'getAutorizacionesCaMain',
+            // 'autorizacionesca/create(/)': 'getAutorizacionCaCreate',
+            'autorizacionesca/:autorizacionesca(/)': 'getAutorizacionesCaShow',
+
+            'pedidosc(/)': 'getPedidoscMain',
+            'pedidosc/create(/)': 'getPedidoscCreate',
+            'pedidosc/:pedidosc(/)': 'getPedidoscShow',
         },
 
         /**
@@ -200,6 +213,7 @@ app || (app = {});
             this.componentReporteView = new app.ComponentReporteView();
             this.componentCreateResourceView = new app.ComponentCreateResourceView();
             this.componentSearchCuentaView = new app.ComponentSearchCuentaView();
+            this.componentSearchContactoView = new app.ComponentSearchContactoView();
             this.componentConsecutiveView = new app.ComponentConsecutiveView();
 
       	},
@@ -1338,6 +1352,46 @@ app || (app = {});
             }
 
             this.showTrasladoView = new app.ShowTrasladoView({ model: this.trasladoModel });
+        },        
+
+        /**
+        * show view main Autorizaciones Cartera
+        */
+        getAutorizacionesCaMain: function () {
+
+            if ( this.mainAutorizacionesCaView instanceof Backbone.View ){
+                this.mainAutorizacionesCaView.stopListening();
+                this.mainAutorizacionesCaView.undelegateEvents();
+            }
+
+            this.mainAutorizacionesCaView = new app.MainAutorizacionesCaView( );
+        },
+
+        /**
+        *show view main pedidosc Cartera
+        */
+        getPedidoscMain: function(){
+
+            if ( this.mainPedidoscView instanceof Backbone.View ){
+                this.mainPedidoscView.stopListening();
+                this.mainPedidoscView.undelegateEvents();
+            }
+
+            this.mainPedidoscView = new app.MainPedidoscView( );
+        },
+        /**
+        *show view create pedidosc Cartera
+        */
+        getPedidoscCreate: function(){
+            this.pedidoscModel = new app.PedidoscModel();
+
+            if ( this.createPedidoscView instanceof Backbone.View ){
+                this.createPedidoscView.stopListening();
+                this.createPedidoscView.undelegateEvents();
+            }
+
+            this.createPedidoscView = new app.CreatePedidoscView({ model: this.pedidoscModel });
+            this.createPedidoscView.render();
         },
 
         /**

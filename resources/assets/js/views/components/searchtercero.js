@@ -47,8 +47,10 @@ app || (app = {});
 			this.$inputContent = this.$("#"+$(e.currentTarget).attr("data-field"));
             this.$inputName = this.$("#"+this.$inputContent.attr("data-name"));
             this.$btnContact = this.$("#"+this.$inputContent.attr("data-contacto"));
-               
-               
+            this.$inputAddress = this.$("#"+this.$inputContent.attr("data-address"));
+            
+            this.$inputCliente = this.$inputContent.attr("data-cliente");
+            this.$inputVendedor = this.$inputContent.attr("data-vendedor");
             
             this.tercerosSearchTable = this.$tercerosSearchTable.DataTable({
                 dom: "<'row'<'col-sm-12'tr>>" +
@@ -56,13 +58,13 @@ app || (app = {});
                 processing: true,
                 serverSide: true,
                 language: window.Misc.dataTableES(),
-
                 ajax: {
                     url: window.Misc.urlFull( Route.route('terceros.index') ),
                     data: function( data ) {
-                      
                         data.tercero_nit = _this.$searchNit.val();
                         data.tercero_nombre = _this.$searchName.val();
+                        data.cliente = _this.$inputCliente;
+                        data.vendedor = _this.$inputVendedor;
                     }
                 },
 
@@ -73,7 +75,8 @@ app || (app = {});
                     { data: 'tercero_nombre1', name: 'tercero_nombre1' },
                     { data: 'tercero_nombre2', name: 'tercero_nombre2' },
                     { data: 'tercero_apellido1', name: 'tercero_apellido1' },
-                    { data: 'tercero_apellido2', name: 'tercero_apellido2' }
+                    { data: 'tercero_apellido2', name: 'tercero_apellido2' },
+                    { data: 'tercero_direccion', name: 'tercero_direccion' }
                 ],
                 columnDefs: [
                     {
@@ -90,7 +93,7 @@ app || (app = {});
                         searchable: false
                     },
                     {
-                        targets: [2, 3, 4, 5, 6],
+                        targets: [2, 3, 4, 5, 6, 7],
                         visible: false,
                         searchable: false
                     }
@@ -106,10 +109,10 @@ app || (app = {});
 			e.preventDefault();
 
 	        var data = this.tercerosSearchTable.row( $(e.currentTarget).parents('tr') ).data();
-
 			this.$inputContent.val( data.tercero_nit );
-			this.$inputName.val( data.tercero_nombre );
-
+            this.$inputName.val( data.tercero_nombre );
+            this.$inputAddress.val( data.tercero_direccion );
+            
             if(this.$btnContact.length > 0) {
                 this.$btnContact.attr('data-tercero', data.id);
             }

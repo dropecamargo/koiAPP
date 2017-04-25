@@ -21,6 +21,21 @@
 		</div>
 	</div>
 </div>
+<!-- Modal search contacto -->
+<div class="modal fade" id="modal-search-contacto-component" data-backdrop="static" data-keyboard="false" aria-hidden="true">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header small-box {{ config('koi.template.bg') }}">
+				<button type="button" class="close icon-close-koi" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="inner-title-modal modal-title">Buscador de contactos</h4>
+			</div>
+			<div class="content-modal"></div>
+		</div>
+	</div>
+</div>
+
 <!-- Modal inventario -->
 <div class="modal fade" id="modal-inventario-component" data-backdrop="static" data-keyboard="false" aria-hidden="true">
 	<div class="modal-dialog modal-lg" role="document">
@@ -177,7 +192,49 @@
 		</div>
 	{!! Form::close() !!}
 </script>
+<script type="text/template" id="koi-search-contacto-component-tpl">
+	{!! Form::open(['id' => 'form-koi-search-contacto-component', 'class' => 'form-horizontal', 'data-toggle' => 'validator', 'role' => 'form']) !!}
+		<div class="modal-body">
+			<div class="form-group">
+				<label for="koi_search_contacto_nombres" class="col-md-1 control-label">Nombres</label>
+				<div class="col-md-5">
+					{!! Form::text('koi_search_contacto_nombres', null, ['id' => 'koi_search_contacto_nombres', 'class' => 'form-control input-sm input-toupper']) !!}
+				</div>
+				<label for="koi_search_contacto_apellidos" class="col-md-1 control-label">Apellidos</label>
+				<div class="col-md-5">
+					{!! Form::text('koi_search_contacto_apellidos', null, ['id' => 'koi_search_contacto_apellidos', 'class' => 'form-control input-sm input-toupper']) !!}
+				</div>
+			</div>
 
+			<div class="form-group">
+				<div class="col-md-offset-4 col-md-2 col-xs-6">
+					<button type="button" class="btn btn-primary btn-block btn-sm btn-search-koi-search-contacto-component">Buscar</button>
+				</div>
+				<div class="col-md-2 col-xs-6">
+					<button type="button" class="btn btn-default btn-block btn-sm btn-clear-koi-search-contacto-component">Limpiar</button>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<div class="col-md-12 table-responsive">
+					<table id="koi-search-contacto-component-table" class="table table-bordered table-striped" cellspacing="0" width="100%">
+		                <thead>
+				            <tr>
+				            	<th>Id</th>
+			                	<th>Nombres</th>
+			                	<th>Apellidos</th>
+				                <th>Nombre</th>
+				                <th>Teléfono</th>
+				                <th>Municipio</th>
+				                <th>Dirección</th>
+				            </tr>
+				        </thead>
+		            </table>
+	           	</div>
+	     	</div>
+		</div>
+	{!! Form::close() !!}
+</script>
 <script type="text/template" id="koi-search-plancuenta-component-tpl">
 <div class="modal-header small-box {{ config('koi.template.bg') }}">
 	<button type="button" class="close icon-close-koi" data-dismiss="modal" aria-label="Close">

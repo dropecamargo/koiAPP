@@ -23,7 +23,7 @@ class Ajuste1 extends Model
     protected $fillable = ['ajuste1_numero','ajuste1_fecha','ajuste1_observaciones'];	  
 	
 	/**
-	* The default pedido if documentos.
+	* The default ajuste if documentos.
 	*
 	* @var static string
 	*/
