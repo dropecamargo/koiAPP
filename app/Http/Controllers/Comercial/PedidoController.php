@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Http\Controllers\Cartera;
+namespace App\Http\Controllers\Comercial;
 
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\Models\Cartera\Pedidoc1;
+use App\Models\Comercial\Pedidoc1;
 use App\Models\Base\Tercero,App\Models\Base\Sucursal,App\Models\Base\Documentos;
 
 use DB,Log,Datatables,Auth;
 
-class PedidoCarteraController extends Controller
+class PedidoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -25,7 +25,7 @@ class PedidoCarteraController extends Controller
             $query = Pedidoc1::query();
             return Datatables::of($query)->make(true);
         }
-        return view('cartera.pedidos.index');
+        return view('comercial.pedidos.index');
     }
 
     /**
@@ -35,7 +35,7 @@ class PedidoCarteraController extends Controller
      */
     public function create()
     {
-        return view('cartera.pedidos.create');
+        return view('comercial.pedidos.create');
     }
 
     /**
@@ -46,7 +46,7 @@ class PedidoCarteraController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        dd($request->all());
     }
 
     /**

@@ -76,11 +76,11 @@
                         <label for="tcontacto_direccion"> Dirección de despacho</label>
                         <input id="tcontacto_direccion" name="tcontacto_direccion" placeholder="Direccion contacto" class="form-control input-sm" type="text" readonly required>
                     </div>
-                    <div class="col-sm-1 col-xs-2"><br>
-                        <button type="button" id="btn-add-contact" class="btn btn-default btn-flat btn-sm btn-add-resource-koi-component" data-resource="contacto" data-field="pedidoc1_contacto" data-name="tcontacto_nombre" data-tercero="<%- pedidoc1_tercero %>" data-phone="tcontacto_telefono">
-                            <i class="fa fa-plus"></i>
-                        </button>
-                    </div>
+                        <div class="col-sm-1 col-xs-2" hidden="" ><br>
+                            <button type="button" id="btn-add-contact" class="btn btn-default btn-flat btn-sm " >
+                                <i class="fa fa-plus"></i>
+                            </button>
+                        </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-sm-2">
@@ -93,34 +93,26 @@
                     </div>                                           
                     <div class="form-group col-sm-1">     
                         <label for="pedidoc1_plazo" class="control-label">Plazo</label>
-                        <input id="pedidoc1_plazo" name="pedidoc1_plazo" class="form-control input-sm" type="number" min="1"  required>
+                        <input id="pedidoc1_plazo" name="pedidoc1_plazo" class="form-control input-sm" type="number" min="0"  required>
                     </div>
 
                     <div class="form-group col-sm-1">     
                         <label for="pedidoc1_plazo" class="control-label">Cuotas</label>
-                        <input id="pedidoc1_cuota   " name="pedidoc1_cuota" class="form-control input-sm" type="number" min="1" required>
+                        <input id="pedidoc1_cuota   " name="pedidoc1_cuota" class="form-control input-sm" type="number" min="0" required>
                     </div>
 
                     <div class="form-group col-sm-2">
                         <label for="pedidoc1_primerpago" class="control-label">Primer Pago</label>
                         <input type="text" id="pedidoc1_primerpago" name="pedidoc1_primerpago" value="<%- pedidoc1_primerpago %>" class="form-control input-sm datepicker" required>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-sm-2">
+                    <div class="form-group col-sm-4">
                         <label for="pedidoc1_vendedor" class="control-label">Vendedor</label>
-                        <div class="input-group input-group-sm">
-                            <span class="input-group-btn">
-                                <button type="button" class="btn btn-default btn-flat btn-koi-search-tercero-component-table" data-field="pedidoc1_vendedor">
-                                    <i class="fa fa-user"></i>
-                                </button>
-                            </span>
-                            <input id="pedidoc1_vendedor" placeholder="Vendedor" class="form-control tercero-koi-component" name="pedidoc1_vendedor" type="text" maxlength="15" data-wrapper="pedidoc1-create" data-name="pedidoc1_vendedor_nombre" data-vendedor="true" value="<%- tercero_nit %>" required>
-                        </div>
+                        <select name="pedidoc1_vendedor" id="pedidoc1_vendedor" class="form-control select2-default">
+                            @foreach( App\Models\Base\Tercero::getSellers() as $key => $value)
+                            <option  value="{{ $key }}" <%- pedidoc1_vendedor == '{{ $key }}' ? 'selected': ''%>>{{ $value }}</option>
+                            @endforeach
+                        </select>
                     </div>
-                    <div class="col-sm-4 col-xs-10"><br>
-                        <input id="pedidoc1_vendedor_nombre" name="pedidoc1_vendedor_nombre" placeholder="Nombre vendedor" class="form-control input-sm" type="text" maxlength="15" value="<%- tercero_nombre %>" readonly required>
-                    </div> 
                 </div>
                 <div class="row">
                     <div class="form-group col-md-10">
@@ -199,7 +191,7 @@
 
                         <div class="col-md-1"><br>
                             <label class="radio-inline without-padding" for="">
-                                <input type="radio" id="" name="" value="" checked> %
+                                <input type="radio" id="" name="radio_naturaleza_descuento" value="" checked> %
                             </label>
                         </div>
                         <div class="col-md-1"><br>
@@ -207,7 +199,7 @@
                         </div>
                         <div class="col-md-1"><br>
                             <label class="radio-inline without-padding" for="">
-                                <input type="radio" id="" name="" value="" checked> Valor
+                                <input type="radio" id="" name="radio_naturaleza_descuento" > Valor
                             </label>
                         </div> 
                         <div class="col-md-1"><br>
@@ -215,7 +207,7 @@
                         </div>
                         <div class="col-md-1"><br>
                             <label class="radio-inline without-padding" for="">
-                                <input type="radio" id="" name="" value="" checked> Final
+                                <input type="radio" id="" name="radio_naturaleza_descuento"> Final
                             </label>
                         </div> 
                         <div class="col-md-1">

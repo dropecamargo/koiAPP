@@ -70,6 +70,12 @@ Route::group(['middleware' => 'auth'], function(){
 	|--------------------------
 	*/
 	Route::resource('presupuestoasesor', 'Comercial\PresupuestoAsesorController', ['only' => ['index', 'store']]);
+	Route::resource('pedidosc', 'Comercial\PedidoController',['except' => ['destroy']]);
+
+	Route::group(['prefix' => 'pedidosc'], function()
+	{
+		Route::resource('detalle', 'Comercial\DetallePedidoController');
+	});
 
 	/*
 	|--------------------------
@@ -160,10 +166,7 @@ Route::group(['middleware' => 'auth'], function(){
 	| Cartera Routes
 	|-------------------------
 	*/
-	Route::resource('pedidosc', 'Cartera\PedidoCarteraController',['except' => ['destroy']]);
 	Route::resource('autorizacionesca', 'Cartera\AutorizaCaController', ['only' => ['index']]);
-	Route::group(['prefix' => 'pedidosc'], function()
-	{
-		Route::resource('detalle', 'Cartera\DetallePedidoCarteraController');
-	});
+
+
 });

@@ -1,4 +1,4 @@
-@extends('cartera.pedidos.main')
+@extends('comercial.pedidos.main')
 
 @section('breadcrumb')
     <li><a href="{{ route('pedidos.index')}}">Pedidos</a></li>

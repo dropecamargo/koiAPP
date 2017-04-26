@@ -96,6 +96,7 @@ app || (app = {});
             var data = this.contactoSearchTable.row( $(e.currentTarget).parents('tr') ).data();
             this.$inputContent.val( data.id );
             this.$inputName.val( data.tcontacto_nombre );
+
             if(this.$inputPhone.length) {
                 this.$inputPhone.val( data.tcontacto_telefono );
             }

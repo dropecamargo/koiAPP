@@ -18,7 +18,7 @@ app || (app = {});
         events: {
             
             'click .submit-pedidosc' : 'submitForm',
-            'submit #form-pedidosc' :'onStore',
+            'submit #form-pedidoc1' :'onStore',
         },
         parameters: {
         },
@@ -47,7 +47,7 @@ app || (app = {});
             var attributes = this.model.toJSON();
             this.$wraperForm.html( this.template(attributes) );
 
-            this.$form = this.$('#form-pedidosc');
+            this.$form = this.$('#form-pedidoc1');
             this.$divDetalle = this.$('#detalle-pedidoc1');
 
             //Render form detalle ajuste
