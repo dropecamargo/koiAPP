@@ -31,7 +31,7 @@
                 </div>
                 <div class="form-group col-md-4">
                     <label class="control-label">Plan de cuentas</label>
-                    <div>{{ $cuentabanco->plancuentas_nombre }}</div>
+                    <div>{{ $cuentabanco->plancuentas_cuenta }} - {{ $cuentabanco->plancuentas_nombre }}</div>
                 </div>
                 <div class="form-group col-md-2 col-xs-8 col-sm-3"><br>
                     <label class="checkbox-inline" for="cuentabanco_activa">

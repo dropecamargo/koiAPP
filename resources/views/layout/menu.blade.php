@@ -31,7 +31,6 @@
 
             {{-- Referencias administracion --}}
             <li class="{{ in_array(Request::segment(1), ['puntosventa', 'modulos', 'permisos','actividades', 'municipios', 'documento', 'tiposactividad', 'departamentos', 'sucursales','regionales']) ? 'active' : '' }}">
-
                 <a href="#">
                     <i class="fa fa-circle-o"></i> Referencias <i class="fa fa-angle-left pull-right"></i>
                 </a>
@@ -72,20 +71,16 @@
         </ul>
     </li>
     {{--Cartera--}}
-    <li class="treeview {{ in_array(Request::segment(1), ['pedidosc','autorizacionesca','autorizaco','conceptosrc','bancos','mediopagos','cuentabancos']) ? 'active' : '' }}"> 
+        <li class="{{ in_array(Request::segment(1), ['autorizacionesca','bancos','conceptosrc','cuentabancos','autorizaco','mediopagos']) ? 'active' : '' }}">
         <a href="#">
             <i class="fa fa-suitcase"></i> <span>Cartera</span><i class="fa fa-angle-left pull-right"></i>
         </a>
         <ul class="treeview-menu">
-            <li class="{{ in_array(Request::segment(1), ['pedidosc']) ? 'active' : '' }}">
+            <li class="{{ in_array(Request::segment(1), []) ? 'active' : '' }}">
                 <a href="#">
                     <i class="fa fa-wpforms"></i> Módulos <i class="fa fa-angle-left pull-right"></i>
                 </a>
-                <ul class="treeview-menu">
-                    <li class="{{ Request::segment(1) == 'pedidosc' ? 'active' : '' }}">
-                        <a href="{{route('pedidosc.index')}}"><i class="fa fa-cube"></i> Pedidos</a>
-                    </li>
-                </ul>
+
             </li>
 
             <li class="{{ in_array(Request::segment(1), ['autorizacionesca','bancos','conceptosrc','cuentabancos','autorizaco','mediopagos']) ? 'active' : '' }}">
@@ -117,17 +112,22 @@
     </li>
 
     {{-- Comercial --}}
-    <li class="treeview {{ in_array(Request::segment(1), ['presupuestoasesor']) ? 'active' : '' }}">
+    <li class="treeview {{ in_array(Request::segment(1), ['presupuestoasesor', 'pedidosc']) ? 'active' : '' }}">
         <a href="#">
             <i class="fa fa-globe"></i> <span>Comercial</span><i class="fa fa-angle-left pull-right"></i>
         </a>
 
         <ul class="treeview-menu">
             {{-- Modulos contabilidad --}}
-            <li class="{{ in_array(Request::segment(1), ['presupuestoasesor']) ? 'active' : '' }}">
+            <li class="{{ in_array(Request::segment(1), ['presupuestoasesor', 'pedidosc']) ? 'active' : '' }}">
                 <a href="#">
                     <i class="fa fa-wpforms"></i> Módulos <i class="fa fa-angle-left pull-right"></i>
                 </a>
+                <ul class="treeview-menu">
+                    <li class="{{ Request::segment(1) == 'pedidosc' ? 'active' : '' }}">
+                        <a href="{{route('pedidosc.index')}}"><i class="fa fa-cube"></i> Pedidos</a>
+                    </li>
+                </ul>
                 <ul class="treeview-menu">
                     <li class="{{ Request::segment(1) == 'presupuestoasesor' ? 'active' : '' }}">
                         <a href="{{ route('presupuestoasesor.index') }}"><i class="fa fa-handshake-o"></i> Presupuesto</a>

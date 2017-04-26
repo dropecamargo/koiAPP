@@ -141,8 +141,10 @@ app || (app = {});
 			this.$inputContent = $(e.currentTarget);
 			this.$inputName = this.$("#"+$(e.currentTarget).attr("data-name"));
 			this.$wraperConten = this.$("#"+$(e.currentTarget).attr("data-wrapper"));
+            this.$inputAddress = this.$("#"+this.$inputContent.attr("data-address"));
 
             this.$btnContact = this.$("#"+this.$inputContent.attr("data-contacto"));
+
             if(this.$btnContact.length > 0) {
                 this.$btnContact.attr('data-tercero', '');
             }
@@ -151,6 +153,7 @@ app || (app = {});
 
             // Before eval clear data
             this.$inputName.val('');
+            this.$inputAddress.val('');
 
 			if(!_.isUndefined(tercero) && !_.isNull(tercero) && tercero != '') {
 				// Get tercero
@@ -167,7 +170,10 @@ app || (app = {});
 	                window.Misc.removeSpinner( _this.$wraperConten );
 	                if(resp.success) {
 	                    if(!_.isUndefined(resp.tercero_nombre) && !_.isNull(resp.tercero_nombre)){
-							_this.$inputName.val(resp.tercero_nombre);
+                            _this.$inputName.val(resp.tercero_nombre);
+                        } 
+                        if(!_.isUndefined(resp.tercero_direccion) && !_.isNull(resp.tercero_direccion)){
+							_this.$inputAddress.val(resp.tercero_direccion);
 	                    }
                         if(_this.$btnContact.length > 0) {
                             _this.$btnContact.attr('data-tercero', resp.id);

@@ -1,20 +1,17 @@
 <?php
 
-namespace App\Models\Cartera;
+namespace App\Models\Comercial;
 
 use Illuminate\Database\Eloquent\Model;
 
-use App\Models\BaseModel;
-use Validator;
-
-class Pedidoc1 extends BaseModel
+class Pedidoc2 extends Model
 {
   	/**
 	* The database table used by the model.
 	*
 	* @var string
 	*/
-	protected $table = 'pedidoc1';
+	protected $table = 'pedidoc2';
 
 	public $timestamps = false;
 
@@ -23,15 +20,11 @@ class Pedidoc1 extends BaseModel
 	*
 	* @var array
 	*/
-    protected $fillable = ['pedidoc1_numero', 'pedidoc1_fecha'];
-
-    protected $boolean = [];
-
+    protected $fillable = [];
+    
 	public function isValid($data)
 	{
 		$rules = [
-			'pedidoc1_numero' => 'required|numeric',
-			'pedidoc1_fecha' => 'required|date'
 		];
 
 		$validator = Validator::make($data, $rules);

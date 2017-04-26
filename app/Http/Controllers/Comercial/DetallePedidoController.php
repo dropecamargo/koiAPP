@@ -1,20 +1,20 @@
 <?php
 
-namespace App\Http\Controllers\Cartera;
+namespace App\Http\Controllers\Comercial;
 
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-class DetallePedidoCarteraController extends Controller
+class DetallePedidoController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $Request)
+    public function index()
     {
         //
     }

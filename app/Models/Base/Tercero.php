@@ -34,6 +34,8 @@ class Tercero extends BaseModel implements AuthenticatableContract,
      */
     public static $key_cache_tadministrators = '_technical_administrators';
     public static $key_cache_badvisors = '_business_advisors';
+    public static $key_cache_sellers = '_sellers';
+
 
     /**
      * The attributes that are mass assignable.
@@ -191,7 +193,30 @@ class Tercero extends BaseModel implements AuthenticatableContract,
             return $collection;
         });
     }
+    public static function getSellers(){
+        if (Cache::has(self::$key_cache_sellers)) {
+            return Cache::get(self::$key_cache_sellers);
+        }
 
+        return Cache::rememberForever(self::$key_cache_sellers, function() {
+            $query = Tercero::query();
+            $query->select('id',
+                DB::raw("(CASE WHEN tercero_persona = 'N'
+                    THEN CONCAT(tercero_nombre1,' ',tercero_nombre2,' ',tercero_apellido1,' ',tercero_apellido2,
+                            (CASE WHEN (tercero_razonsocial IS NOT NULL AND tercero_razonsocial != '') THEN CONCAT(' - ', tercero_razonsocial) ELSE '' END)
+                        )
+                    ELSE tercero_razonsocial END)
+                AS tercero_nombre")
+            );
+            $query->where('tercero_activo', true);
+            $query->where('tercero_vendedor', true);
+            $query->orderby('tercero_nombre', 'asc');
+            $collection = $query->lists('tercero_nombre', 'id');
+
+            $collection->prepend('', '');
+            return $collection;
+        });
+    }
     public static function getBusinessAdvisors()
     {
         if (Cache::has(self::$key_cache_badvisors)) {

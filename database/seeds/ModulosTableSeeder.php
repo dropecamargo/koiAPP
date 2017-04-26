@@ -174,15 +174,6 @@ class ModulosTableSeeder extends Seeder
             'nivel2' => 2
         ]);
 
-        // Modulos
-        Modulo::create([
-            'name' => 'pedidosc',
-            'display_name' => 'Pedidos',
-            'nivel1' => 2,
-            'nivel2' => 1,
-            'nivel3' => 1
-        ]);
-
         // Referencia
         Modulo::create([
             'name' => 'autorizacionesca',
@@ -227,14 +218,23 @@ class ModulosTableSeeder extends Seeder
         	'nivel2' => 1
     	]);
 
-    	//Modulos
-    	Modulo::create([
-        	'name' => 'presupuestoasesor',
-        	'display_name' => 'Presupuesto',
-        	'nivel1' => 3,
-        	'nivel2' => 1,
-        	'nivel3' => 1
-    	]);
+        // Modulos
+        Modulo::create([
+            'name' => 'pedidosc',
+            'display_name' => 'Pedidos',
+            'nivel1' => 3,
+            'nivel2' => 1,
+            'nivel3' => 1
+        ]);
+
+        //Modulos
+        Modulo::create([
+            'name' => 'presupuestoasesor',
+            'display_name' => 'Presupuesto',
+            'nivel1' => 3,
+            'nivel2' => 1,
+            'nivel3' => 2
+        ]);
 
     	// Contabilidad
         Modulo::create([
