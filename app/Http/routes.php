@@ -162,6 +162,10 @@ Route::group(['middleware' => 'auth'], function(){
 	*/
 	Route::resource('pedidosc', 'Cartera\PedidoCarteraController',['except' => ['destroy']]);
 	Route::resource('autorizacionesca', 'Cartera\AutorizaCaController', ['only' => ['index']]);
+	Route::resource('bancos', 'Cartera\BancoController', ['except' => ['destroy']]);
+	Route::resource('cuentabancos', 'Cartera\CuentaBancoController', ['except' => ['destroy']]);
+	Route::resource('mediopagos', 'Cartera\MedioPagoController', ['except' => ['destroy']]);
+	Route::resource('conceptosrc', 'Cartera\ConceptosrcController', ['except' => ['destroy']]);
 	Route::group(['prefix' => 'pedidosc'], function()
 	{
 		Route::resource('detalle', 'Cartera\DetallePedidoCarteraController');

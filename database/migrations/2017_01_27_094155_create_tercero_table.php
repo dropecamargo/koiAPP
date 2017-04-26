@@ -63,12 +63,14 @@ class CreateTerceroTable extends Migration
             $table->boolean('tercero_otro')->default(false);
             $table->string('tercero_cual', 200)->nullable();
             $table->integer('tercero_coordinador_por')->unsigned()->nullable();
+            $table->integer('tercero_sucursal')->unsigned()->nullable();
 
             $table->string('username')->unique()->nullable();
             $table->string('password', 60);
 
             $table->foreign('tercero_municipio')->references('id')->on('municipio')->onDelete('restrict');
             $table->foreign('tercero_actividad')->references('id')->on('actividad')->onDelete('restrict');
+            $table->foreign('tercero_sucursal')->references('id')->on('sucursal')->onDelete('restrict');
             $table->foreign('tercero_coordinador_por')->references('id')->on('tercero')->onDelete('restrict');
 
             $table->rememberToken();

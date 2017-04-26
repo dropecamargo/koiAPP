@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use DB, Log, Datatables;
+use DB, Log, Cache, Datatables;
 
 use App\Models\Contabilidad\PlanCuenta;
 use App\Models\Contabilidad\CentroCosto;
@@ -78,7 +78,8 @@ class PlanCuentasController extends Controller
                     $plancuenta->setNivelesCuenta();
                     $plancuenta->save();
 
-
+                    //Forget cache
+                    Cache::forget( PlanCuenta::$key_cache );
                     // Commit Transaction
                     DB::commit();
                     return response()->json(['success' => true, 'id' => $plancuenta->id]);
@@ -145,6 +146,8 @@ class PlanCuentasController extends Controller
                     $plancuenta->setNivelesCuenta();
                     $plancuenta->save();
 
+                    //Forget cache
+                    Cache::forget( PlanCuenta::$key_cache );
                     // Commit Transaction
                     DB::commit();
                     return response()->json(['success' => true, 'id' => $plancuenta->id]);

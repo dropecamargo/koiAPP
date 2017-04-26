@@ -25,7 +25,7 @@ class Actividad extends Model
     protected $fillable = ['actividad_codigo', 'actividad_nombre', 'actividad_tarifa', 'actividad_categoria'];
 
 
-     /**
+    /**
      * The key used by cache store.
      *
      * @var static string

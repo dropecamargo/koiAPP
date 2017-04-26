@@ -173,6 +173,22 @@ app || (app = {});
             'pedidosc(/)': 'getPedidoscMain',
             'pedidosc/create(/)': 'getPedidoscCreate',
             'pedidosc/:pedidosc(/)': 'getPedidoscShow',
+
+            'bancos(/)': 'getBancosMain',
+            'bancos/create(/)': 'getBancosCreate',
+            'bancos/:bancos/edit(/)': 'getBancosEdit',
+
+            'cuentabancos(/)': 'getCuentaBancosMain',
+            'cuentabancos/create(/)': 'getCuentaBancosCreate',
+            'cuentabancos/:cuentabancos/edit(/)': 'getCuentaBancosEdit',
+
+            'mediopagos(/)': 'getMedioPagosMain',
+            'mediopagos/create(/)': 'getMedioPagosCreate',
+            'mediopagos/:mediopagos/edit(/)': 'getMedioPagosEdit',
+
+            'conceptosrc(/)': 'getConceptosrcMain',
+            'conceptosrc/create(/)': 'getConceptosrcCreate',
+            'conceptosrc/:conceptosrc/edit(/)': 'getConceptosrcEdit',
         },
 
         /**
@@ -1463,6 +1479,151 @@ app || (app = {});
             this.createRolView = new app.CreateRolView({ model: this.rolModel });
             this.rolModel.fetch();
         },
+
+        // Banco
+        getBancosMain: function () {
+
+            if ( this.mainBancoView instanceof Backbone.View ){
+                this.mainBancoView.stopListening();
+                this.mainBancoView.undelegateEvents();
+            }
+
+            this.mainBancoView = new app.MainBancosView( );
+        },
+
+        getBancosCreate: function () {
+            this.bancoModel = new app.BancoModel();
+
+            if ( this.createBancoView instanceof Backbone.View ){
+                this.createBancoView.stopListening();
+                this.createBancoView.undelegateEvents();
+            }
+
+            this.createBancoView = new app.CreateBancoView({ model: this.bancoModel });
+            this.createBancoView.render();
+        },
+
+        getBancosEdit: function (bancos) {
+            this.bancoModel = new app.BancoModel();
+            this.bancoModel.set({'id': bancos}, {'silent':true});
+
+            if ( this.createBancoView instanceof Backbone.View ){
+                this.createBancoView.stopListening();
+                this.createBancoView.undelegateEvents();
+            }
+
+            this.createBancoView = new app.CreateBancoView({ model: this.bancoModel });
+            this.bancoModel.fetch();
+        },
+
+        // Cuenta de banco
+        getCuentaBancosMain: function () {
+
+            if ( this.mainCuentaBancoView instanceof Backbone.View ){
+                this.mainCuentaBancoView.stopListening();
+                this.mainCuentaBancoView.undelegateEvents();
+            }
+
+            this.mainCuentaBancoView = new app.MainCuentaBancosView( );
+        },
+
+        getCuentaBancosCreate: function () {
+            this.cuentabancoModel = new app.CuentaBancoModel();
+
+            if ( this.createCuentaBancoView instanceof Backbone.View ){
+                this.createCuentaBancoView.stopListening();
+                this.createCuentaBancoView.undelegateEvents();
+            }
+
+            this.createCuentaBancoView = new app.CreateCuentaBancoView({ model: this.cuentabancoModel });
+            this.createCuentaBancoView.render();
+        },
+
+        getCuentaBancosEdit: function (cuentabancos) {
+            this.cuentabancoModel = new app.CuentaBancoModel();
+            this.cuentabancoModel.set({'id': cuentabancos}, {'silent':true});
+
+            if ( this.createCuentaBancoView instanceof Backbone.View ){
+                this.createCuentaBancoView.stopListening();
+                this.createCuentaBancoView.undelegateEvents();
+            }
+
+            this.createCuentaBancoView = new app.CreateCuentaBancoView({ model: this.cuentabancoModel });
+            this.cuentabancoModel.fetch();
+        },
+
+        // Medio Pago
+        getMedioPagosMain: function () {
+
+            if ( this.mainMedioPagoView instanceof Backbone.View ){
+                this.mainMedioPagoView.stopListening();
+                this.mainMedioPagoView.undelegateEvents();
+            }
+
+            this.mainMedioPagoView = new app.MainMedioPagosView( );
+        },
+
+        getMedioPagosCreate: function () {
+            this.mediopagoModel = new app.MedioPagoModel();
+
+            if ( this.createMedioPagoView instanceof Backbone.View ){
+                this.createMedioPagoView.stopListening();
+                this.createMedioPagoView.undelegateEvents();
+            }
+
+            this.createMedioPagoView = new app.CreateMedioPagoView({ model: this.mediopagoModel });
+            this.createMedioPagoView.render();
+        },
+
+        getMedioPagosEdit: function (mediopagos) {
+            this.mediopagoModel = new app.MedioPagoModel();
+            this.mediopagoModel.set({'id': mediopagos}, {'silent':true});
+
+            if ( this.createMedioPagoView instanceof Backbone.View ){
+                this.createMedioPagoView.stopListening();
+                this.createMedioPagoView.undelegateEvents();
+            }
+
+            this.createMedioPagoView = new app.CreateMedioPagoView({ model: this.mediopagoModel });
+            this.mediopagoModel.fetch();
+        },
+
+        // Conceptosrc
+        getConceptosrcMain: function () {
+
+            if ( this.mainConceptosrcView instanceof Backbone.View ){
+                this.mainConceptosrcView.stopListening();
+                this.mainConceptosrcView.undelegateEvents();
+            }
+
+            this.mainConceptosrcView = new app.MainConceptosrcView( );
+        },
+
+        getConceptosrcCreate: function () {
+            this.conceptosrcModel = new app.ConceptosrcModel();
+
+            if ( this.createConceptosrcView instanceof Backbone.View ){
+                this.createConceptosrcView.stopListening();
+                this.createConceptosrcView.undelegateEvents();
+            }
+
+            this.createConceptosrcView = new app.CreateConceptosrcView({ model: this.conceptosrcModel });
+            this.createConceptosrcView.render();
+        },
+
+        getConceptosrcEdit: function (conceptosrc) {
+            this.conceptosrcModel = new app.ConceptosrcModel();
+            this.conceptosrcModel.set({'id': conceptosrc}, {'silent':true});
+
+            if ( this.createConceptosrcView instanceof Backbone.View ){
+                this.createConceptosrcView.stopListening();
+                this.createConceptosrcView.undelegateEvents();
+            }
+
+            this.createConceptosrcView = new app.CreateConceptosrcView({ model: this.conceptosrcModel });
+            this.conceptosrcModel.fetch();
+        },
+
     }) );
 
 })(jQuery, this, this.document);
