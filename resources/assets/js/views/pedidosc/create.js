@@ -19,6 +19,7 @@ app || (app = {});
             
             'click .submit-pedidosc' : 'submitForm',
             'submit #form-pedidoc1' :'onStore',
+            'submit #form-detalle-pedidoc' :'onStoreItem'
         },
         parameters: {
         },
@@ -50,7 +51,7 @@ app || (app = {});
             this.$form = this.$('#form-pedidoc1');
             this.$divDetalle = this.$('#detalle-pedidoc1');
 
-            //Render form detalle ajuste
+            //Render form detalle pedidoc
             this.$divDetalle.empty().html( this.templateDetailt( ) );
 
             //Reference views
@@ -61,8 +62,7 @@ app || (app = {});
         *References the collection
         */
         referenceViews:function(){ 
-            this.$formItem = this.$('#form-detalle-ajuste');
-            this.detallePedidoc = new app.PedidocDetalleView( {
+            this.detallePedidocView = new app.PedidocDetalleView( {
                 collection: this.detallePedidoc,
                 parameters: {
                     wrapper: this.el,
@@ -90,6 +90,15 @@ app || (app = {});
                 var data = window.Misc.formToJson( e.target );
                 this.model.save( data, {patch: true, silent: true} );
             }   
+        },
+        /**
+        *
+        */
+        onStoreItem: function(e){
+            if (!e.isDefaultPrevented()) {
+                e.preventDefault();
+                this.detallePedidoc.trigger( 'store', this.$(e.target) );
+            }
         },
         /**
         * fires libraries js
@@ -136,7 +145,7 @@ app || (app = {});
                     return; 
                 }
             }
-            window.Misc.redirect( window.Misc.urlFull( Route.route('pedidosc.show', { pedidosc: resp.id})) );
+            window.Misc.redirect( window.Misc.urlFull( Route.route('pedidosc.index')) );
         }
     });
 

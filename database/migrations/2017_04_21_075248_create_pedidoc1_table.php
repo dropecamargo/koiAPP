@@ -49,6 +49,8 @@ class CreatePedidoc1Table extends Migration
             $table->foreign('pedidoc1_autorizacion_co')->references('id')->on('autorizaco')->onDelete('restrict');
 
 
+            $table->unique(['pedidoc1_sucursal', 'pedidoc1_numero'], 'pedidoc1_sucursal_numero_unique');
+
         });
     }
 

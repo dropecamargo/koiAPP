@@ -39,11 +39,11 @@ app || (app = {});
             this.listenTo( this.collection, 'request', this.loadSpinner);
             this.listenTo( this.collection, 'store', this.storeOne );
             this.listenTo( this.collection, 'sync', this.responseServer);
+
             if( !_.isUndefined(this.parameters.dataFilter.id) && !_.isNull(this.parameters.dataFilter.id) ){
                 this.confCollection.data.id = this.parameters.dataFilter.id;
                 this.collection.fetch( this.confCollection );
             }
-            
         },
 
         /*
@@ -55,17 +55,16 @@ app || (app = {});
 
         /**
         * Render view contact by model
-        * @param Object detalleAjusteModel Model instance
+        * @param Object detallePedidocModel Model instance
         */
-        addOne: function (detalleAjusteModel) {
-            
-            var view = new app.DetalleAjusteItemView({
-                model: detalleAjusteModel,
+        addOne: function (detallePedidocModel) {
+            var view = new app.DetallePedidoscItemView({
+                model: detallePedidocModel,
                 parameters: {
                     edit: this.parameters.edit
                 }
             });
-            detalleAjusteModel.view = view;
+            detallePedidocModel.view = view;
             this.$el.append( view.render().el );
         },
 
@@ -73,7 +72,6 @@ app || (app = {});
         * Render all view Marketplace of the collection
         */
         addAll: function () {
-
             this.$el.find('tbody').html('');
             this.collection.forEach( this.addOne, this );
         },
@@ -82,16 +80,17 @@ app || (app = {});
         * stores detallePedido
         * @param form element
         */
-        storeOne: function (data) {          
-            var _this = this
+        storeOne: function (form) {          
+            var _this = this,
+                data = window.Misc.formToJson( form );
+                data.id = this.parameters.dataFilter.id;
             // Set Spinner
             window.Misc.setSpinner( this.parameters.wrapper );
             
-            // Prepare data
-            data.id = this.parameters.dataFilter.id;
             // Add model in collection
-            var detalleAjusteModel = new app.AjusteDetalleModel();
-            detalleAjusteModel.save(data, {
+            var detallePedidocModel = new app.PedidoscDetalleModel();
+            
+            detallePedidocModel.save(data, {
                 success : function(model, resp) {
                     if(!_.isUndefined(resp.success)) {
                         window.Misc.removeSpinner( _this.parameters.wrapper );
@@ -106,7 +105,6 @@ app || (app = {});
                             alertify.error(text);
                             return;
                         }
-
                         // Add model in collection
                         _this.collection.add(model);
                     }

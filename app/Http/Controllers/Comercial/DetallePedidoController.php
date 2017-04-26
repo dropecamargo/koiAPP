@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use App\Models\Comercial\Pedidoc2;
+use App\Models\Inventario\Producto;
+
+use DB,Log;
+
 class DetallePedidoController extends Controller
 {
     /**
@@ -14,9 +19,13 @@ class DetallePedidoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        // if ($request->ajax()){
+        //     $pedidoc2Detalle = Pedidoc2::getPedidoc2($request->id);
+        //     return response()->json($pedidoc2Detalle);
+        // }
+        // abort(404);
     }
 
     /**
@@ -37,7 +46,25 @@ class DetallePedidoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if ($request->ajax()) {
+            $data = $request->all();
+            $pedidocDetalle = new Pedidoc2;
+            if ($pedidocDetalle->isValid($data)) {
+                try {
+
+                    $producto = Producto::where('producto_serie', $request->producto_serie)->first();
+                    if (!$producto instanceof Producto) {
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar producto, por favor verifique información o consulte con el administrador']);
+                    } 
+                    return response()->json(['success' => true, 'id' => uniqid() ]);
+                }catch (\Exception $e) {
+                    Log::error($e->getMessage());
+                    return response()->json(['success' => false, 'errors' => trans('app.exception')]);
+                }
+            }
+            return response()->json(['success' => false, 'errors' => $pedidocDetalle->errors]);
+        }
+        abort(403);
     }
 
     /**

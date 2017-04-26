@@ -46,7 +46,20 @@ class PedidoController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
+        if ($request->ajax()) {
+            $data = $request->all();
+            $pedicoComercial = new Pedidoc1;
+            if ($pedicoComercial->isValid($data)) {
+                try {
+                    return response()->json(['success' => true]);
+                } catch (\Exception $e) {
+                     Log::error($e->getMessage());
+                    return response()->json(['success' => false, 'errors' => trans('app.exception')]);
+                }
+            }
+            return response()->json(['success' => false, 'errors' => $pedicoComercial->errors]);
+        }
+        abort(403);
     }
 
     /**

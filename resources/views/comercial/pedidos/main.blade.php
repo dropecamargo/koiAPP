@@ -5,7 +5,7 @@
 @section('content')
     <section class="content-header">
         <h1>
-            Pedidos comercial <small>Administración de pedidos </small>
+            Pedido comercial <small>Administración de pedidos </small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> {{trans('app.home')}}</a></li>
@@ -147,6 +147,18 @@
                             <th width="15%">Total</th>
                         </tr>
                     </thead>
+
+                    <tfoot>
+                        <tr>
+                            <th colspan="3" class="text-right">Total: </th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </tfoot>
+
                     <tbody>
                         {{-- Render content detalle pedidoc --}}
                     </tbody>
@@ -186,7 +198,7 @@
                     <div class="form-group col-md-12 col-md-offset-2">
                         <div class=" col-md-1">
                             <label class="control-label">Descuento</label>
-                            <input type="number" name="" class="input-sm form-control">
+                            <input type="number" id="pedidoc2_descuento_porcentaje" name="pedidoc2_descuento_porcentaje" class="input-sm form-control" min="0">
                         </div>
 
                         <div class="col-md-1"><br>
@@ -195,7 +207,7 @@
                             </label>
                         </div>
                         <div class="col-md-1"><br>
-                            <input type="number" name="" class="form-control input-sm">
+                            <input type="number" id="pedidoc2_descuento_valor" name="pedidoc2_descuento_valor" class="form-control input-sm" min="0">
                         </div>
                         <div class="col-md-1"><br>
                             <label class="radio-inline without-padding" for="">
@@ -203,7 +215,7 @@
                             </label>
                         </div> 
                         <div class="col-md-1"><br>
-                            <input type="number" name="" class="form-control input-sm">
+                            <input type="number" name="" min="0" class="form-control input-sm">
                         </div>
                         <div class="col-md-1"><br>
                             <label class="radio-inline without-padding" for="">
@@ -212,7 +224,7 @@
                         </div> 
                         <div class="col-md-1">
                             <label class="control-label">Iva</label>
-                            <input type="text" class="input-sm form-control" name="">
+                            <input type="text" class="input-sm form-control" min="0" name="">
                         </div>
                         <div class="col-md-1"><br>
                             <button type="submit" class="btn btn-success btn-sm btn-block">
@@ -223,5 +235,22 @@
                 </div>
             </form>
         </div>
+    </script>
+    <script type="text/template" id="add-pedidoc-item-tpl">
+        <%if(edit){ %>
+            <td class="text-center">
+                <a class="btn btn-default btn-xs item-detalleajuste-remove" data-resource = "<%- id %>">
+                    <span><i class="fa fa-times"></i></span>
+                </a>
+            </td>
+        <% } %>
+            
+        <td><%- producto_serie %></td>
+        <td><%- producto_nombre %></td>
+        <td><%- pedidoc2_cantidad %></td>
+        <td><%-  window.Misc.currency(pedidoc2_precio_venta) %></td>
+        <td></td>
+        <td></td>
+        <td></td>
     </script>
 @stop

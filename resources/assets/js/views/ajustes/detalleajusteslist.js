@@ -39,11 +39,11 @@ app || (app = {});
             this.listenTo( this.collection, 'request', this.loadSpinner);
             this.listenTo( this.collection, 'store', this.storeOne );
             this.listenTo( this.collection, 'sync', this.responseServer);
+            
             if( !_.isUndefined(this.parameters.dataFilter.id) && !_.isNull(this.parameters.dataFilter.id) ){
                 this.confCollection.data.id = this.parameters.dataFilter.id;
                 this.collection.fetch( this.confCollection );
             }
-            
         },
 
         /*
@@ -89,6 +89,7 @@ app || (app = {});
             
             // Prepare data
             data.id = this.parameters.dataFilter.id;
+            
             // Add model in collection
             var detalleAjusteModel = new app.AjusteDetalleModel();
             detalleAjusteModel.save(data, {
@@ -106,7 +107,6 @@ app || (app = {});
                             alertify.error(text);
                             return;
                         }
-
                         // Add model in collection
                         _this.collection.add(model);
                     }

@@ -23,15 +23,25 @@ class Pedidoc1 extends BaseModel
 	*
 	* @var array
 	*/
-    protected $fillable = ['pedidoc1_numero', 'pedidoc1_fecha'];
+    protected $fillable = ['pedidoc1_numero', 'pedidoc1_fecha','pedidoc1_cuota','pedidoc1_plazo','pedidoc1_observaciones'];
 
-    protected $boolean = [];
+    protected $boolean = ['pedidoc1_anular'];
+	/**
+	* The default pediddoc if documentos.
+	*
+	* @var static string
+	*/
+	public static $default_document = 'PEDC';
 
 	public function isValid($data)
 	{
 		$rules = [
 			'pedidoc1_numero' => 'required|numeric',
-			'pedidoc1_fecha' => 'required|date'
+			'pedidoc1_fecha' => 'required|date',
+			'pedidoc1_observaciones' => 'text',
+			'pedidoc1_cuota' => 'required|numeric|min:0',
+			'pedidoc1_plazo' => 'required|numeric|min:0',
+			'pedidoc1_primerpago' => 'required|date'
 		];
 
 		$validator = Validator::make($data, $rules);

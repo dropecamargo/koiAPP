@@ -96,13 +96,8 @@
                                     <input id="producto_serie" placeholder="Producto" class="form-control producto-koi-component" name="producto_serie" type="text" maxlength="15" data-wrapper="traslados-create" data-name="producto_nombre" data-ref = "false" data-costo="ajuste2_costo" data-office="traslado1_sucursal" required>
                                 </div>
                             </div>
-                            <div class="col-sm-4 col-xs-10">
+                            <div class="col-sm-5 col-xs-10">
                                 <input id="producto_nombre" name="producto_nombre" placeholder="Nombre producto" class="form-control input-sm" type="text" maxlength="15" readonly required>
-                            </div>
-                            <div class="col-sm-1 col-xs-1">
-                                <button type="button" class="btn btn-default btn-flat btn-sm btn-add-resource-koi-component" data-resource="producto" data-field="producto_codigo">
-                                    <i class="fa fa-plus"></i>
-                                </button>
                             </div>
                             <div class="form-group col-sm-1 text-right">
                                 <label for="traslado2_cantidad" class="control-label">Unidades</label>

@@ -34,7 +34,6 @@ app || (app = {});
             this.$wraperForm = this.$('#render-form-ajuste');
 
             this.detalleAjuste = new app.AjustesDetalleCollection();
-            
             // Events
             this.listenTo( this.model, 'change', this.render );
             this.listenTo( this.model, 'sync', this.responseServer );

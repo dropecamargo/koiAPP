@@ -1,7 +1,7 @@
 @extends('comercial.pedidos.main')
 
 @section('breadcrumb')
-    <li class="active">Pedidos</li>
+    <li class="active">Pedidos comerciales</li>
 @stop
 
 @section('module')

@@ -1,5 +1,5 @@
 /**
-* Class DetalleAjusteItemView  of Backbone Router
+* Class DetallePedidoscItemView  of Backbone Router
 * @author KOI || @dropecamargo
 * @link http://koi-ti.com
 */
@@ -9,10 +9,10 @@ app || (app = {});
 
 (function ($, window, document, undefined) {
 
-    app.DetalleAjusteItemView = Backbone.View.extend({
+    app.DetallePedidoscItemView = Backbone.View.extend({
 
         tagName: 'tr',
-        template: _.template( ($('#add-ajustedetalle-item-tpl').html() || '') ),
+        template: _.template( ($('#add-pedidoc-item-tpl').html() || '') ),
         parameters: {
             edit: false
         },
@@ -34,6 +34,7 @@ app || (app = {});
         */
         render: function(){
             var attributes = this.model.toJSON();
+            console.log(attributes);
             attributes.edit = this.parameters.edit;
             this.$el.html( this.template(attributes) );
             

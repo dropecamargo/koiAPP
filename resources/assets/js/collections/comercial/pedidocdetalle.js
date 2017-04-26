@@ -14,7 +14,7 @@ app || (app = {});
         url: function() {
             return window.Misc.urlFull( Route.route('pedidosc.detalle.index') );
         },
-        model: app.Pedidosc1DetalleModel,
+        model: app.PedidoscDetalleModel,
 
         /**
         * Constructor Method
