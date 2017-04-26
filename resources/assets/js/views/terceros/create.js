@@ -61,6 +61,9 @@ app || (app = {});
             this.$checkEmployee = this.$('#tercero_empleado');
             this.$checkInternal = this.$('#tercero_interno');
 
+            this.$coordinador = this.$('#tercero_coordinador_por');
+            this.$sucursal = this.$('#tercero_sucursal');
+
             this.$username = this.$('#username');
             this.$password = this.$('#password');
             this.$password_confirmation = this.$('#password_confirmation');
@@ -136,30 +139,37 @@ app || (app = {});
 
         changedTechnical: function(e) {
             var selected = $(e.target).is(':checked');
+            this.$coordinador.trigger('change');
+            
             if( selected ) {
                 this.$wrapperCoordinador.removeClass('hide');
             }else{
                 this.$wrapperCoordinador.addClass('hide');
+                this.$coordinador.val('');
             }
         },
 
         changedVendedor: function(e) {
             var selected = $(e.target).is(':checked');
+            this.$coordinador.trigger('change');
+        
             if( selected ) {
                 this.$wrapperCoordinador.removeClass('hide');
             }else{
                 this.$wrapperCoordinador.addClass('hide');
-                this.$('#tercero_coordinador_por').prop('required', false);
-                this.$('#tercero_coordinador_por').val('');
+                this.$coordinador.val('');
             }
         },
 
         changedEmployee: function(e) {
+            this.$sucursal.trigger('change');
+
             // Active if internal or employee
             if( this.$checkInternal.is(':checked') || this.$checkEmployee.is(':checked') ) {
                 this.$wrapperEmployes.removeClass('hide')
             }else{
                 this.$wrapperEmployes.addClass('hide')
+                this.$sucursal.val('');
             }
         },
 

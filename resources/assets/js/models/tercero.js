@@ -55,6 +55,7 @@ app || (app = {});
             'tercero_vendedor': false,
             'tercero_otro': false,
             'tercero_cual': '',
+            'tercero_sucursal': '',
             'username': '',
             'actividad_tarifa' : ''
         }

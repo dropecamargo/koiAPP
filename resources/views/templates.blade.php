@@ -293,41 +293,58 @@
 						<div class="tab-pane" id="tab_empleados">
 							<form method="POST" accept-charset="UTF-8" id="form-employee" data-toggle="validator">
 								<div class="row">
-							    	<div class="form-group col-md-2">
-								    	<label class="checkbox-inline" for="tercero_activo">
-											<input type="checkbox" id="tercero_activo" name="tercero_activo" value="tercero_activo" <%- parseInt(tercero_activo) ? 'checked': ''%>> Activo
-										</label>
-									</div>
-							    	<div class="form-group col-md-2">
-								    	<label class="checkbox-inline" for="tercero_tecnico">
-											<input type="checkbox" id="tercero_tecnico" name="tercero_tecnico" value="tercero_tecnico" <%- parseInt(tercero_tecnico) ? 'checked': ''%>> Técnico
-										</label>
-									</div>
-								</div>
+							    	<div class="form-group col-md-6">
+										<div class="row">
+									    	<div class="form-group col-md-4">
+										    	<label class="checkbox-inline" for="tercero_activo">
+													<input type="checkbox" id="tercero_activo" name="tercero_activo" value="tercero_activo" <%- parseInt(tercero_activo) ? 'checked': ''%>> Activo
+												</label>
+											</div>
+									    	<div class="form-group col-md-4">
+										    	<label class="checkbox-inline" for="tercero_tecnico">
+													<input type="checkbox" id="tercero_tecnico" name="tercero_tecnico" value="tercero_tecnico" <%- parseInt(tercero_tecnico) ? 'checked': ''%>> Técnico
+												</label>
+											</div>
+										</div>
 
-								<div class="row">
-									<div class="form-group col-md-2">
-								    	<label class="checkbox-inline" for="tercero_coordinador">
-											<input type="checkbox" id="tercero_coordinador" name="tercero_coordinador" value="tercero_coordinador" <%- parseInt(tercero_coordinador) ? 'checked': ''%>> Coordinador
-										</label>
-									</div>
+										<div class="row">
+											<div class="form-group col-md-4">
+										    	<label class="checkbox-inline" for="tercero_coordinador">
+													<input type="checkbox" id="tercero_coordinador" name="tercero_coordinador" value="tercero_coordinador" <%- parseInt(tercero_coordinador) ? 'checked': ''%>> Coordinador
+												</label>
+											</div>
 
-									<div class="form-group col-md-2">
-								    	<label class="checkbox-inline" for="tercero_vendedor">
-											<input type="checkbox" id="tercero_vendedor" name="tercero_vendedor" value="tercero_vendedor" <%- parseInt(tercero_vendedor) ? 'checked': ''%>> Vendedor
-										</label>
+											<div class="form-group col-md-4">
+										    	<label class="checkbox-inline" for="tercero_vendedor">
+													<input type="checkbox" id="tercero_vendedor" name="tercero_vendedor" value="tercero_vendedor" <%- parseInt(tercero_vendedor) ? 'checked': ''%>> Vendedor
+												</label>
+											</div>
+										</div>	
+
+										<div class="row">
+										   	<div id="wrapper-coordinador" class="form-group col-md-10 col-md-offset-1 <%- parseInt(tercero_tecnico) || parseInt(tercero_vendedor) ? '' : 'hide' %>">
+												<label for="tercero_coordinador_por" class="control-label">Coordinado por</label>
+												<select name="tercero_coordinador_por" id="tercero_coordinador_por" class="form-control select2-default" data-tecnico required>
+										            @foreach( App\Models\Base\Tercero::getTechnicalAdministrators() as $key => $value)
+										                <option value="{{ $key }}" <%- tercero_coordinador_por == '{{ $key }}' ? 'selected': ''%>>{{ $value }}</option>
+										            @endforeach
+										        </select>
+										    </div>
+										</div>
 									</div>
-								</div>
-								
-								<div class="row">
-	                               	<div id="wrapper-coordinador" class="form-group col-md-6 col-md-offset-2 <%- parseInt(tercero_tecnico) || parseInt(tercero_vendedor) ? '' : 'hide' %>">
-										<label for="tercero_coordinador_por" class="control-label">Coordinado por</label>
-										<select name="tercero_coordinador_por" id="tercero_coordinador_por" class="form-control select2-default" required>
-		                                    @foreach( App\Models\Base\Tercero::getTechnicalAdministrators() as $key => $value)
-		                                        <option value="{{ $key }}" <%- tercero_coordinador_por == '{{ $key }}' ? 'selected': ''%>>{{ $value }}</option>
-		                                    @endforeach
-		                                </select>
-			                        </div>
+									
+							    	<div class="form-group col-md-6">
+										<div class="row">
+										    <div class="form-group col-md-10">
+												<label for="tercero_sucursal" class="control-label">Sucursal</label>
+										        <select name="tercero_sucursal" id="tercero_sucursal" class="form-control select2-default" required>
+											        @foreach( App\Models\Base\Sucursal::getSucursales() as $key => $value)
+											        	<option  value="{{ $key }}" <%- tercero_sucursal == '{{ $key }}' ? 'selected': ''%>>{{ $value }}</option>
+											        @endforeach
+										        </select>
+										    </div>
+										</div>
+									</div>
 								</div>
 							</form>
 
@@ -906,25 +923,26 @@
 			<label for="subcategoria_nombre" class="control-label">Nombre</label>
 			<input type="text" id="subcategoria_nombre" name="subcategoria_nombre" value="<%- subcategoria_nombre %>" placeholder="SubCategoria" class="form-control input-sm input-toupper" maxlength="25" required>
 		</div>
+    </div>
+    <div class="row">
+		<div class="form-group col-md-2">
+			<label for="subcategoria_margen_nivel1" class="control-label">Margen Nivel 1</label>
+			<input type="text" id="subcategoria_margen_nivel1" name="subcategoria_margen_nivel1" value="<%- subcategoria_margen_nivel1 %>" placeholder="Margen" class="form-control input-sm spinner-percentage" maxlength="4" required>
+		</div>
 
+		<div class="form-group col-md-2">
+			<label for="subcategoria_margen_nivel2" class="control-label">Margen Nivel 2</label>
+			<input type="text" id="subcategoria_margen_nivel2" name="subcategoria_margen_nivel2" value="<%- subcategoria_margen_nivel2 %>" placeholder="Margen" class="form-control input-sm spinner-percentage" maxlength="4" required>
+		</div>
+
+		<div class="form-group col-md-2">
+			<label for="subcategoria_margen_nivel3" class="control-label">Margen Nivel 3</label>
+			<input type="text" id="subcategoria_margen_nivel3" name="subcategoria_margen_nivel3" value="<%- subcategoria_margen_nivel3 %>" placeholder="Margen" class="form-control input-sm spinner-percentage" maxlength="4" required>
+		</div>
 		<div class="form-group col-md-2 col-xs-8 col-sm-3">
 			<br><label class="checkbox-inline" for="subcategoria_activo">
 				<input type="checkbox" id="subcategoria_activo" name="subcategoria_activo" value="subcategoria_activo" <%- parseInt(subcategoria_activo) ? 'checked': ''%>> Activo
 			</label>
-		</div>
-    </div>
-    <div class="row">
-		<div class="form-group col-md-3">
-			<label for="subcategoria_margen_nivel1" class="control-label">Margen Nivel 1</label>
-			<input type="number" id="subcategoria_margen_nivel1" name="subcategoria_margen_nivel1" value="<%- subcategoria_margen_nivel1 %>" placeholder="Margen" class="form-control input-sm " maxlength="50" required>
-		</div>
-		<div class="form-group col-md-3">
-			<label for="subcategoria_margen_nivel2" class="control-label">Margen Nivel 2</label>
-			<input type="number" id="subcategoria_margen_nivel2" name="subcategoria_margen_nivel2" value="<%- subcategoria_margen_nivel2 %>" placeholder="Margen" class="form-control input-sm " maxlength="50" required>
-		</div>
-		<div class="form-group col-md-3">
-			<label for="subcategoria_margen_nivel3" class="control-label">Margen Nivel 3</label>
-			<input type="number" id="subcategoria_margen_nivel3" name="subcategoria_margen_nivel3" value="<%- subcategoria_margen_nivel3 %>" placeholder="Margen" class="form-control input-sm " maxlength="50" required>
 		</div>
     </div>
 </script>
@@ -1091,3 +1109,120 @@
     </td>
 </script>
 
+{{-- Cartera --}}
+<script type="text/template" id="add-banco-tpl">
+	<div class="row">
+		<div class="form-group col-md-8">
+			<label for="banco_nombre" class="control-label">Nombre</label>
+			<input type="text" id="banco_nombre" name="banco_nombre" value="<%- banco_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="25" required>
+		</div>
+		<div class="form-group col-md-2 col-xs-8 col-sm-3">
+			<br><label class="checkbox-inline" for="banco_activo">
+				<input type="checkbox" id="banco_activo" name="banco_activo" value="banco_activo" <%- parseInt(banco_activo) ? 'checked': ''%>> Activo
+			</label>
+		</div>
+    </div>
+</script>
+
+<script type="text/template" id="add-mediopago-tpl">
+	<div class="row">
+		<div class="form-group col-md-8">
+			<label for="mediopago_nombre" class="control-label">Nombre</label>
+			<input type="text" id="mediopago_nombre" name="mediopago_nombre" value="<%- mediopago_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="25" required>
+		</div>
+		<div class="form-group col-md-2 col-xs-8 col-sm-3">
+			<br><label class="checkbox-inline" for="mediopago_activo">
+				<input type="checkbox" id="mediopago_activo" name="mediopago_activo" value="mediopago_activo" <%- parseInt(mediopago_activo) ? 'checked': ''%>> Activo
+			</label>
+		</div>
+    </div>
+</script>
+
+<script type="text/template" id="add-cuentabanco-tpl">
+	<div class="row">
+		<div class="form-group col-md-5">
+			<label for="cuentabanco_nombre" class="control-label">Nombre</label>
+			<input type="text" id="cuentabanco_nombre" name="cuentabanco_nombre" value="<%- cuentabanco_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="50" required>
+		</div>
+		<div class="form-group col-md-3">
+			<label for="cuentabanco_numero" class="control-label">Numero</label>
+			<input type="text" id="cuentabanco_numero" name="cuentabanco_numero" value="<%- cuentabanco_numero %>" placeholder="Numero" class="form-control input-sm input-toupper" maxlength="25" required>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="form-group col-sm-6 col-md-2">
+			<label for="cuentabanco_plancuentas" class="control-label text-right">Cuenta</label>
+      		<div class="input-group input-group-sm">
+				<span class="input-group-btn">
+					<button type="button" class="btn btn-default btn-flat btn-koi-search-plancuenta-component" data-field="cuentabanco_plancuentas">
+						<i class="fa fa-tasks"></i>
+					</button>
+				</span>
+				<input id="cuentabanco_plancuentas" placeholder="Cuenta" class="form-control plancuenta-koi-component" name="cuentabanco_plancuentas" type="text" maxlength="15" data-wrapper="asientos-create" data-name="cuenta_nombre" value="<%- plancuentas_cuenta %>">
+			</div>
+		</div>
+		<div class="col-sm-6 col-md-4"><br>
+			<input id="cuenta_nombre" name="cuenta_nombre" placeholder="Nombre cuenta" class="form-control input-sm" type="text" value="<%- plancuentas_nombre %>" maxlength="15" disabled>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="form-group col-md-3">
+			<label for="cuentabanco_banco" class="control-label">Banco</label>
+			<select name="cuentabanco_banco" id="cuentabanco_banco" class="form-control select2-default" required>
+				<option value="" selected>Seleccione</option>
+				@foreach( App\Models\Cartera\Banco::getBancos() as $key => $value)
+					<option value="{{ $key }}" <%- cuentabanco_banco == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
+				@endforeach
+			</select>
+		</div>
+ 
+		<div class="form-group col-md-2 col-xs-8 col-sm-3">
+			<br><label class="checkbox-inline" for="cuentabanco_activa">
+				<input type="checkbox" id="cuentabanco_activa" name="cuentabanco_activa" value="cuentabanco_activa" <%- parseInt(cuentabanco_activa) ? 'checked': ''%>> Activo
+			</label>
+		</div>
+	</div>
+</script>
+
+<script type="text/template" id="add-conceptosrc-tpl">
+	<div class="row">
+		<div class="form-group col-md-3">
+			<label for="conceptosrc_nombre" class="control-label">Nombre</label>
+			<input type="text" id="conceptosrc_nombre" name="conceptosrc_nombre" value="<%- conceptosrc_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="25" required>
+		</div>
+		<div class="form-group col-md-3">
+			<label for="conceptosrc_documentos" class="control-label">Documento</label>
+			<select name="conceptosrc_documentos" id="conceptosrc_documentos" class="form-control select2-default" required>
+				<option value="" selected>Seleccione</option>
+				@foreach( App\Models\Base\Documentos::getDocumentos() as $key => $value)
+					<option value="{{ $key }}" <%- conceptosrc_documentos == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
+				@endforeach
+			</select>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="form-group col-sm-6 col-md-2">
+			<label for="conceptosrc_plancuentas" class="control-label text-right">Cuenta</label>
+      		<div class="input-group input-group-sm">
+				<span class="input-group-btn">
+					<button type="button" class="btn btn-default btn-flat btn-koi-search-plancuenta-component" data-field="conceptosrc_plancuentas">
+						<i class="fa fa-tasks"></i>
+					</button>
+				</span>
+				<input id="conceptosrc_plancuentas" placeholder="Cuenta" class="form-control plancuenta-koi-component" name="conceptosrc_plancuentas" type="text" maxlength="15" data-wrapper="asientos-create" data-name="cuenta_nombre" value="<%- plancuentas_cuenta %>">
+			</div>
+		</div>
+		<div class="col-sm-6 col-md-4"><br>
+			<input id="cuenta_nombre" name="cuenta_nombre" placeholder="Nombre cuenta" class="form-control input-sm" type="text" value="<%- plancuentas_nombre %>" maxlength="15" disabled>
+		</div>
+
+		<div class="form-group col-md-2 col-xs-8 col-sm-3">
+			<br><label class="checkbox-inline" for="conceptosrc_activo">
+				<input type="checkbox" id="conceptosrc_activo" name="conceptosrc_activo" value="conceptosrc_activo" <%- parseInt(conceptosrc_activo) ? 'checked': ''%>> Activo
+			</label>
+		</div>
+	</div>
+</script>

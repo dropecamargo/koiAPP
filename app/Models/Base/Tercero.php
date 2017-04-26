@@ -42,7 +42,7 @@ class Tercero extends BaseModel implements AuthenticatableContract,
      *
      * @var array
      */
-    protected $fillable = ['tercero_nit', 'tercero_digito', 'tercero_tipo', 'tercero_regimen', 'tercero_persona', 'tercero_nombre1', 'tercero_nombre2', 'tercero_apellido1', 'tercero_apellido2', 'tercero_razonsocial', 'tercero_direccion','tercero_dir_nomenclatura', 'tercero_municipio', 'tercero_direccion', 'tercero_email', 'tercero_representante', 'tercero_cc_representante', 'tercero_telefono1', 'tercero_telefono2', 'tercero_fax', 'tercero_celular', 'tercero_actividad', 'tercero_cual', 'tercero_coordinador_por'];
+    protected $fillable = ['tercero_nit', 'tercero_digito', 'tercero_tipo', 'tercero_regimen', 'tercero_persona', 'tercero_nombre1', 'tercero_nombre2', 'tercero_apellido1', 'tercero_apellido2', 'tercero_razonsocial', 'tercero_direccion','tercero_dir_nomenclatura', 'tercero_municipio', 'tercero_direccion', 'tercero_email', 'tercero_representante', 'tercero_cc_representante', 'tercero_telefono1', 'tercero_telefono2', 'tercero_fax', 'tercero_celular', 'tercero_actividad', 'tercero_cual', 'tercero_coordinador_por','tercero_sucursal'];
 
     /**
      * The attributes that are mass boolean assignable.
@@ -56,7 +56,7 @@ class Tercero extends BaseModel implements AuthenticatableContract,
      *
      * @var array
      */
-    protected $nullable = ['tercero_coordinador_por'];
+    protected $nullable = ['tercero_coordinador_por','tercero_sucursal'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -76,7 +76,6 @@ class Tercero extends BaseModel implements AuthenticatableContract,
             'tercero_direccion' => 'required',
             'tercero_municipio' => 'required',
             'tercero_actividad' => 'required',
-            'tercero_coordinador_por' => 'required_with:tercero_vendedor',
         ];
 
         if ($this->exists){
@@ -88,6 +87,23 @@ class Tercero extends BaseModel implements AuthenticatableContract,
         $validator = Validator::make($data, $rules);
         if ($validator->passes())
         {
+            if( $this->exists ){
+                if( isset($data['tercero_empleado']) || isset($data['tercero_interno']) )  {
+                    if( empty($data['tercero_sucursal']) ){
+                        $this->errors = trans('validation.required', ['attribute' => 'Sucursal de la pestaña empleado']);
+                        return false;
+                    }
+                }
+
+                if( isset($data['tercero_tecnico']) || isset($data['tercero_vendedor']) ){
+                    if( empty($data['tercero_coordinador_por']) ){
+                        $this->errors = trans('validation.required', ['attribute' => 'Coordinado por']);
+                        return false;
+                    }
+                }
+                return true;
+            }
+
             if($data['tercero_persona'] == 'N') {
                 if(empty($data['tercero_nombre1'])) {
                     $this->errors = trans('validation.required', ['attribute' => '1er. Nombre']);
@@ -105,6 +121,7 @@ class Tercero extends BaseModel implements AuthenticatableContract,
             }
             return true;
         }
+            dd($validator);
         $this->errors = $validator->errors();
         return false;
     }
@@ -131,12 +148,13 @@ class Tercero extends BaseModel implements AuthenticatableContract,
     public static function getTercero($id)
     {
         $query = Tercero::query();
-        $query->select('tercero.*', 'actividad_nombre', 'actividad_tarifa', DB::raw("CONCAT(municipio_nombre, ' - ', departamento_nombre) as municipio_nombre"), DB::raw("(CASE WHEN tc.tercero_persona = 'N'
+        $query->select('tercero.*', 'sucursal_nombre', 'actividad_nombre', 'actividad_tarifa', DB::raw("CONCAT(municipio_nombre, ' - ', departamento_nombre) as municipio_nombre"), DB::raw("(CASE WHEN tc.tercero_persona = 'N'
                     THEN CONCAT(tc.tercero_nombre1,' ',tc.tercero_nombre2,' ',tc.tercero_apellido1,' ',tc.tercero_apellido2,
                             (CASE WHEN (tc.tercero_razonsocial IS NOT NULL AND tc.tercero_razonsocial != '') THEN CONCAT(' - ', tc.tercero_razonsocial) ELSE '' END)
                         )
                     ELSE tc.tercero_razonsocial END)
                 AS nombre_coordinador"));
+        $query->leftJoin('sucursal', 'tercero_sucursal', '=', 'sucursal.id');
         $query->leftJoin('actividad', 'tercero_actividad', '=', 'actividad.id');
         $query->leftJoin('municipio', 'tercero_municipio', '=', 'municipio.id');
         $query->leftJoin('departamento', 'municipio.departamento_codigo', '=', 'departamento.departamento_codigo');

@@ -4,7 +4,7 @@ namespace App\Models\Base;
 
 use Illuminate\Database\Eloquent\Model;
 
-use Validator;
+use Cache, Validator;
 
 class Documentos extends Model
 {
@@ -16,6 +16,13 @@ class Documentos extends Model
     protected $table = 'documentos';
 
     public $timestamps = false;
+
+    /**
+     * The key used by cache store.
+     *
+     * @var static string
+     */
+    public static $key_cache = '_documentos';
 
     /**
      * The attributes that are mass assignable.
@@ -43,5 +50,20 @@ class Documentos extends Model
         }
         $this->errors = $validator->errors();
         return false;
+    }
+
+    public static function getDocumentos()
+    {
+        if ( Cache::has(self::$key_cache)) {
+            return Cache::get(self::$key_cache);
+        }
+
+        return Cache::rememberForever( self::$key_cache , function() {
+            $query = Documentos::query();
+            $collection = $query->lists('documentos_nombre', 'id');
+
+            $collection->prepend('', '');
+            return $collection;
+        });
     }
 }

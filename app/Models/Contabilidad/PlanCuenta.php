@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 use App\Models\BaseModel;
 
-use Validator;
+use Cache, Validator;
 
 class PlanCuenta extends BaseModel
 {
@@ -18,6 +18,13 @@ class PlanCuenta extends BaseModel
     protected $table = 'plancuentas';
 
     public $timestamps = false;
+
+    /**
+     * The key used by cache store.
+     *
+     * @var static string
+     */
+    public static $key_cache = '_plancuentas';
 
     /**
      * The attributes that are mass assignable.
@@ -345,5 +352,21 @@ class PlanCuenta extends BaseModel
     public function setPlancuentasNombreAttribute($name)
     {
         $this->attributes['plancuentas_nombre'] = strtoupper($name);
+    }
+
+    public static function getPlanCuentas()
+    {
+        if ( Cache::has(self::$key_cache)) {
+            return Cache::get(self::$key_cache);
+        }
+
+        return Cache::rememberForever( self::$key_cache , function() {
+            $query = PlanCuenta::query();
+            $query->select('id','plancuentas_nombre');
+            $collection = $query->lists('plancuentas_nombre', 'id');
+
+            $collection->prepend('', '');
+            return $collection;
+        });
     }
 }

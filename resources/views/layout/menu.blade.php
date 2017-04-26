@@ -31,7 +31,6 @@
 
             {{-- Referencias administracion --}}
             <li class="{{ in_array(Request::segment(1), ['puntosventa', 'modulos', 'permisos','actividades', 'municipios', 'documento', 'tiposactividad', 'departamentos', 'sucursales','regionales']) ? 'active' : '' }}">
-
                 <a href="#">
                     <i class="fa fa-circle-o"></i> Referencias <i class="fa fa-angle-left pull-right"></i>
                 </a>
@@ -72,7 +71,7 @@
         </ul>
     </li>
     {{--Cartera--}}
-    <li class="treeview {{ in_array(Request::segment(1), ['autorizacionesca','autorizaco']) ? 'active' : '' }}"> 
+        <li class="{{ in_array(Request::segment(1), ['autorizacionesca','bancos','conceptosrc','cuentabancos','autorizaco','mediopagos']) ? 'active' : '' }}">
         <a href="#">
             <i class="fa fa-suitcase"></i> <span>Cartera</span><i class="fa fa-angle-left pull-right"></i>
         </a>
@@ -84,13 +83,25 @@
 
             </li>
 
-            <li class="{{ in_array(Request::segment(1), ['autorizacionesca','autorizaco']) ? 'active' : '' }}">
+            <li class="{{ in_array(Request::segment(1), ['autorizacionesca','bancos','conceptosrc','cuentabancos','autorizaco','mediopagos']) ? 'active' : '' }}">
                 <a href="#">
                     <i class="fa fa-circle-o"></i> Referencias <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
                     <li class="{{ Request::segment(1) == 'autorizacionesca' ? 'active' : '' }}">
                         <a href="{{route('autorizacionesca.index')}}"><i class="fa fa-circle-o"></i> Autorización Cartera</a>
+                    </li>
+                    <li class="{{ Request::segment(1) == 'bancos' ? 'active' : '' }}">
+                        <a href="{{route('bancos.index')}}"><i class="fa fa-circle-o"></i> Bancos</a>
+                    </li>
+                    <li class="{{ Request::segment(1) == 'conceptosrc' ? 'active' : '' }}">
+                        <a href="{{route('conceptosrc.index')}}"><i class="fa fa-circle-o"></i> Concepto recibo de caja</a>
+                    </li>
+                    <li class="{{ Request::segment(1) == 'cuentabancos' ? 'active' : '' }}">
+                        <a href="{{route('cuentabancos.index')}}"><i class="fa fa-circle-o"></i> Cuentas de banco</a>
+                    </li>
+                    <li class="{{ Request::segment(1) == 'mediopagos' ? 'active' : '' }}">
+                        <a href="{{route('mediopagos.index')}}"><i class="fa fa-circle-o"></i> Medios de pago</a>
                     </li>
                     {{--<li class="{{ Request::segment(1) == 'autorizaco' ? 'active' : ''}}">
                         <a href="#"><i class="fa fa-circle-o"></i> Autorización Cobro</a>
