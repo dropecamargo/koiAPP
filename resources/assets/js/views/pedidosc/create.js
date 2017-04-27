@@ -88,6 +88,7 @@ app || (app = {});
             if (!e.isDefaultPrevented()) {
                 e.preventDefault();
                 var data = window.Misc.formToJson( e.target );
+                    data.detalle = this.detallePedidoc.toJSON();
                 this.model.save( data, {patch: true, silent: true} );
             }   
         },
@@ -145,7 +146,7 @@ app || (app = {});
                     return; 
                 }
             }
-            window.Misc.redirect( window.Misc.urlFull( Route.route('pedidosc.index')) );
+            // window.Misc.redirect( window.Misc.urlFull( Route.route('pedidosc.index')) );
         }
     });
 

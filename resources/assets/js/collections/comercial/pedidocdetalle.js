@@ -20,7 +20,25 @@ app || (app = {});
         * Constructor Method
         */
         initialize : function(){
-        }
+        },
+
+        cantidad: function() {
+            return this.reduce(function(sum, model) {
+                return sum + parseFloat(model.get('pedidoc2_cantidad')) 
+            }, 0);
+        },
+
+        subtotal: function() {
+            return this.reduce(function(sum, model) {
+                return sum + parseFloat(model.get('pedidoc2_precio_venta'))
+            }, 0);
+        },
+
+        totalize: function() {
+            var cantidad = this.cantidad();
+            var subtotal = this.subtotal();
+            return { 'cantidad': cantidad, 'subtotal': subtotal}
+        },
    });
 
 })(this, this.document);

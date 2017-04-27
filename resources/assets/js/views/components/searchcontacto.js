@@ -31,13 +31,14 @@ app || (app = {});
             // References
             this.$searchContactoNombres = this.$('#koi_search_contacto_nombres');
             this.$searchContactoApellidos = this.$('#koi_search_contacto_apellidos');
+            
             // Validate tercero
-            this.$resourceTercero = this.$("#"+$(e.currentTarget).attr("data-tercero"));
-            var tercero = this.$resourceTercero.attr("data-tercero");
+            var tercero =  this.$resourceTercero = this.$('#btn-add-contact').attr("data-tercero");
             if( _.isUndefined(tercero) || _.isNull(tercero) || tercero == '') {
                 alertify.error('Por favor ingrese cliente antes agregar contacto.');
                 return;
             }
+            
             this.$contactoSearchTable = this.$modalComponent.find('#koi-search-contacto-component-table');
             this.$inputContent = this.$("#"+$(e.currentTarget).attr("data-field"));
             this.$inputName = this.$("#"+$(e.currentTarget).attr("data-name"));

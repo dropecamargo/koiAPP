@@ -48,7 +48,7 @@ app || (app = {});
             this.$inputName = this.$("#"+this.$inputContent.attr("data-name"));
             this.$btnContact = this.$("#"+this.$inputContent.attr("data-contacto"));
             this.$inputAddress = this.$("#"+this.$inputContent.attr("data-address"));
-            
+
             this.$inputCliente = this.$inputContent.attr("data-cliente");
             this.$inputVendedor = this.$inputContent.attr("data-vendedor");
             

@@ -34,8 +34,7 @@ app || (app = {});
         */
         render: function(){
             var attributes = this.model.toJSON();
-            console.log(attributes);
-            attributes.edit = this.parameters.edit;
+                attributes.edit = this.parameters.edit;
             this.$el.html( this.template(attributes) );
             
             return this;

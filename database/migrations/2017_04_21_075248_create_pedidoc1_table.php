@@ -43,10 +43,10 @@ class CreatePedidoc1Table extends Migration
             $table->foreign('pedidoc1_sucursal')->references('id')->on('sucursal')->onDelete('restrict');
             $table->foreign('pedidoc1_documentos')->references('id')->on('documentos')->onDelete('restrict');
             $table->foreign('pedidoc1_tercero')->references('id')->on('tercero')->onDelete('restrict');
-            $table->foreign('pedidoc1_contacto')->references('id')->on('tercero')->onDelete('restrict');
+            $table->foreign('pedidoc1_contacto')->references('id')->on('tcontacto')->onDelete('restrict');
             $table->foreign('pedidoc1_vendedor')->references('id')->on('tercero')->onDelete('restrict');
-            $table->foreign('pedidoc1_autorizacion_ca')->references('id')->on('autorizaca')->onDelete('restrict');
-            $table->foreign('pedidoc1_autorizacion_co')->references('id')->on('autorizaco')->onDelete('restrict');
+            // $table->foreign('pedidoc1_autorizacion_ca')->references('id')->on('autorizaca')->onDelete('restrict');
+            // $table->foreign('pedidoc1_autorizacion_co')->references('id')->on('autorizaco')->onDelete('restrict');
 
 
             $table->unique(['pedidoc1_sucursal', 'pedidoc1_numero'], 'pedidoc1_sucursal_numero_unique');

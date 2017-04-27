@@ -33,6 +33,13 @@ app || (app = {});
             //Init Attributes
             this.confCollection = { reset: true, data: {} };
 
+            // References th totalize
+            this.$cantidad = this.$('#cantidad-product');
+            this.$subtotal = this.$('#precio-product');
+            // this.$descuento = this.$('#descuento-product');
+            // this.$iva = this.$('#iva-total');
+            // this.$total = this.$('#totalize-product');
+
             // Events Listeners
             this.listenTo( this.collection, 'add', this.addOne );
             this.listenTo( this.collection, 'reset', this.addAll );
@@ -107,6 +114,9 @@ app || (app = {});
                         }
                         // Add model in collection
                         _this.collection.add(model);
+
+                        //totalize actually in collection
+                        _this.totalize();
                     }
                 },
                 error : function(model, error) {
@@ -115,17 +125,30 @@ app || (app = {});
                 }
             });
         },
+        
+        /**
+        *Render totales the collection
+        */
+        totalize: function(){
+            var data = this.collection.totalize();
 
+            this.$cantidad.empty().html( data.cantidad );
+            this.$subtotal.empty().html(window.Misc.currency(data.subtotal) );
+        },
         /**
         * Event remove item
         */
         removeOne: function (e) {
             e.preventDefault(); 
             var resource = $(e.currentTarget).attr("data-resource");
-            var model = this.collection.get(resource);
+                model = this.collection.get(resource);
+
             if ( model instanceof Backbone.Model ) {
                 model.view.remove();
                 this.collection.remove(model);
+
+                // totalize actually in collection
+                this.totalize();
             }
         },
 

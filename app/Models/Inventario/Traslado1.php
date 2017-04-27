@@ -21,7 +21,7 @@ class Traslado1 extends Model
 	*
 	* @var array
 	*/
-    protected $fillable = ['traslado1_numero', 'traslado1_observaciones', 'traslado1_fecha'];
+    protected $fillable = ['traslado1_observaciones', 'traslado1_fecha'];
 
 	/**
 	* The default pedido if documentos.
