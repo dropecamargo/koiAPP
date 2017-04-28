@@ -53,7 +53,6 @@
                     <div class="col-sm-4 col-xs-10">
                         <input id="pedidoc1_terecero_nombre" name="pedidoc1_terecero_nombre" placeholder="Nombre cliente" class="form-control input-sm" type="text" maxlength="15" value="<%- tercero_nombre %>" readonly required>
                     </div>  
-                    <!-- <label for="tercero_direccion" class="control-label col-sm-1 col-md-1"> Dirección</label> -->
                     <div class="col-sm-4 col-xs-10">
                         <input id="tercero_direccion" name="tercero_direccion" placeholder="Dirección cliente" class="form-control input-sm" type="text" readonly required>
                     </div>
@@ -135,8 +134,8 @@
                         <tr>
                             <th width="5%"></th>
                             <th width="10%">Referencia</th>
-                            <th width="30%">Nombre</th>
-                            <th width="10%">Cantidad</th>
+                            <th width="35%">Nombre</th>
+                            <th width="5%">Cantidad</th>
                             <th width="15%">Precio</th>
                             <th width="15%">Descuento</th>
                             <th width="5%">Iva</th>
@@ -175,59 +174,56 @@
                                     <i class="fa fa-barcode"></i>
                                 </button>
                             </span>
-                            <input id="producto_serie" placeholder="Serie" class="form-control producto-koi-component" name="producto_serie" type="text" maxlength="15" data-wrapper="pedidosc-create" data-name="producto_nombre" required> 
+                            <input id="producto_serie" placeholder="Serie" class="form-control producto-koi-component" name="producto_serie" type="text" maxlength="15" data-wrapper="pedidosc-create" data-name="producto_nombre" data-price="pedidoc2_costo" required> 
                         </div>
                     </div>
-                    <div class="col-sm-4">
+                    <div class="form-group col-sm-4">
                         <input id="producto_nombre" name="producto_nombre" placeholder="Nombre producto" class="form-control input-sm" type="text" maxlength="15" readonly required>
                     </div>
                         <label for="pedidoc2_cantidad" class="col-sm-1 col-md-1 control-label">Cantidad </label>
-                    <div class="col-sm-1 col-md-1">
-                        <input type="number" name="pedidoc2_cantidad" id="pedidoc2_cantidad"  class="form-control input-sm" required min="1">
+                    <div class="col-sm-1 col-md-1 form-group">
+                        <input type="number" name="pedidoc2_cantidad" id="pedidoc2_cantidad"  class="form-control  input-sm" required min="1">
                     </div>
-                        <label for="pedidoc2_precio_venta" class="col-sm-1 col-md-1 control-label">Precio </label>
-                    <div class="col-sm-2">
-                        <input type="text" name="pedidoc2_precio_venta" id="pedidoc2_precio_venta" class="form-control input-sm" data-currency required>
+                        <label for="pedidoc2_costo" class="col-sm-1 col-md-1 control-label">Precio </label>
+                    <div class="form-group col-sm-2">
+                        <input type="text" name="pedidoc2_costo" id="pedidoc2_costo" class="form-control input-sm" data-currency  required>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="form-group col-md-12 col-md-offset-1">
-                        <label class="col-md-1 control-label">Descuento</label>
-                         
-                        <div class=" col-md-1 col-sm-1">
-                            <input type="number" id="pedidoc2_descuento_porcentaje" name="pedidoc2_descuento_porcentaje" class="input-sm form-control" min="0">
-                        </div>
-
-                        <div class="col-md-1 col-sm-1">
-                            <label class="radio-inline without-padding" for="">
-                                <input type="radio" id="" name="radio_naturaleza_descuento" value="" checked> %
-                            </label>
-                        </div>
-                        <div class="col-md-1 col-sm-1">
-                            <input type="number" id="pedidoc2_descuento_valor" name="pedidoc2_descuento_valor" class="form-control input-sm" min="0">
-                        </div>
-                        <div class="col-md-1 col-sm-1">
-                            <label class="radio-inline without-padding" for="">
-                                <input type="radio" id="" name="radio_naturaleza_descuento" > Valor
-                            </label>
-                        </div> 
-                        <div class="col-md-1 col-sm-1">
-                            <input type="number" name="" min="0" class="form-control input-sm">
-                        </div>
-                        <div class="col-md-1 col-sm-1">
-                            <label class="radio-inline without-padding" for="">
-                                <input type="radio" id="" name="radio_naturaleza_descuento"> Final
-                            </label>
-                        </div> 
-                        <label class=" col-md-1 col-sm-1 control-label">Iva</label>
-                        <div class="col-md-1 col-sm-1">
-                            <input type="text" class="input-sm form-control" min="0" name="">
-                        </div>
-                        <div class="col-md-1 col-sm-1">
-                            <button type="submit" class="btn btn-success btn-sm btn-block">
-                                <i class="fa fa-plus"></i>
-                            </button>
-                        </div>
+                <div id="wrapper-discount" class="row">
+                    <label class="col-md-1 col-sm-1 control-label">Descuento</label>
+                    <div class="form-group col-md-1 col-sm-1">
+                        <input type="text" id="pedidoc2_descuento_porcentaje" name="pedidoc2_descuento_porcentaje" class="spinner-percentage  input-sm form-control desc-porcentage" min="0" required>
+                    </div>
+                    <div class="col-md-1 col-sm-1">
+                        <label class="radio-inline without-padding">
+                            <input type="radio" id="desc_porcentage"  class="desc" name="radio_naturaleza_descuento"> <b>%</b>
+                        </label>
+                    </div>
+                    <div class=" col-md-2 col-sm-2 form-group">
+                        <input type="text" id="pedidoc2_descuento_valor" name="pedidoc2_descuento_valor" class="form-control input-sm desc-value" data-currency required>
+                    </div>
+                    <div class="col-md-1 col-sm-1">
+                        <label class="radio-inline without-padding">
+                            <input type="radio" id="desc_value" class="desc" name="radio_naturaleza_descuento" > <b>Valor</b>
+                        </label>
+                    </div> 
+                        
+                    <div class="form-group col-md-2 col-sm-2">
+                        <input type="text" id="pedidoc2_precio_venta" name="pedidoc2_precio_venta" class="form-control input-sm desc-finally" data-currency  required>
+                    </div>
+                    <div class="col-md-1 col-sm-1">
+                        <label class="radio-inline without-padding">
+                            <input type="radio" id="desc_finally" class="desc" name="radio_naturaleza_descuento"> <b>Final</b>
+                        </label>
+                    </div> 
+                    <label class=" col-md-1 col-sm-1 control-label">Iva</label>
+                    <div class="form-group col-md-1 col-sm-1">
+                        <input type="number" class="input-sm form-control" min="0" id="pedidoc2_iva_porcentaje" name="pedidoc2_iva_porcentaje" required>
+                    </div>
+                    <div class="col-md-1 col-sm-1">
+                        <button type="submit" class="btn btn-success btn-sm btn-block">
+                            <i class="fa fa-plus"></i>
+                        </button>
                     </div>
                 </div>
             </form>
@@ -246,7 +242,7 @@
         <td><%- producto_serie %></td>
         <td><%- producto_nombre %></td>
         <td><%- pedidoc2_cantidad %></td>
-        <td><%-  window.Misc.currency(pedidoc2_precio_venta) %></td>
+        <td><%-  window.Misc.currency(pedidoc2_costo) %></td>
         <td></td>
         <td></td>
         <td></td>

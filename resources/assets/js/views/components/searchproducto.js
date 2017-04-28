@@ -45,9 +45,9 @@ app || (app = {});
             this.$productosSearchTable = this.$modalComponent.find('#koi-search-producto-component-table');
 			this.$inputContent = this.$("#"+$(e.currentTarget).attr("data-field"));
 			this.$inputName = this.$("#"+this.$inputContent.attr("data-name"));
-			this.$inputCosto = this.$("#"+this.$inputContent.attr("data-costo"));			
+			this.$inputCosto = this.$("#"+this.$inputContent.attr("data-costo"));
+			this.$inputPrecio1 = this.$("#"+this.$inputContent.attr("data-price"));			
 			this.$inputSucursal = this.$("#"+this.$inputContent.attr("data-office"));			
-
 			// Filters
 			this.equalsRef = this.$inputContent.attr("data-ref");
 			if((this.equalsRef == "true" || this.equalsRef == "false") && this.$('#ajuste1_sucursal').val() == '' ){
@@ -99,7 +99,9 @@ app || (app = {});
 			this.$inputContent.val( data.producto_serie );
 			this.$inputName.val( data.producto_nombre );
 
-			this.$inputCosto.val(window.Misc.currency(data.producto_costo));
+			(!_.isUndefined( this.inputCosto )) ? this.$inputCosto.val(window.Misc.currency(data.producto_costo)) : '';
+			(! _.isUndefined(this.$inputPrecio1) ) ? this.$inputPrecio1.val(window.Misc.currency(data.producto_precio1)) : '';
+
 			if(!_.isUndefined(data.producto_maneja_serie) && data.producto_maneja_serie == 1){
 				this.$('#ajuste2_cantidad_salida').val(1).prop('readonly' , true);
 				this.$('#traslado2_cantidad').val(1).prop('readonly' , true);

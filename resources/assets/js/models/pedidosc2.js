@@ -20,7 +20,8 @@ app || (app = {});
             'pedidoc2_precio_venta' : 0,
             'pedidoc2_descuento_valor': 0,
             'pedidoc2_descuento_porcentaje': 0,
-            'pedidoc2_iva_porcentaje': 0
+            'pedidoc2_iva_porcentaje': 0,
+            'pedidoc2_costo': 0
         }
     });
 

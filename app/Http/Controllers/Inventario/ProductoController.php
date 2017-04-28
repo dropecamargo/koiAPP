@@ -23,7 +23,7 @@ class ProductoController extends Controller
         if ($request->ajax()) {
 
             $query = Producto::query();
-            $query->select('producto.id as id', 'producto_serie', 'producto_nombre','producto_referencia','producto_costo');
+            $query->select('producto.id as id', 'producto_serie', 'producto_nombre','producto_referencia','producto_costo','producto_precio1');
             // Persistent data filter
             if($request->has('persistent') && $request->persistent) {
                 session(['search_producto_referencia' => $request->has('producto_referencia') ? $request->producto_referencia : '']);

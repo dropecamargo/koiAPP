@@ -19,7 +19,11 @@ app || (app = {});
             
             'click .submit-pedidosc' : 'submitForm',
             'submit #form-pedidoc1' :'onStore',
-            'submit #form-detalle-pedidoc' :'onStoreItem'
+            'submit #form-detalle-pedidoc' :'onStoreItem',
+            'change .desc-porcentage': 'changePorcentage',
+            'change .desc-value': 'changeValue',
+            'change .desc-finally': 'changeFinally',
+            'ifChecked .desc': 'changeRadioBtn',
         },
         parameters: {
         },
@@ -37,6 +41,8 @@ app || (app = {});
             this.listenTo( this.model, 'change', this.render );
             this.listenTo( this.model, 'sync', this.responseServer );
             this.listenTo( this.model, 'request', this.loadSpinner );            
+            
+            this.ready(); 
         },
 
 
@@ -53,10 +59,8 @@ app || (app = {});
 
             //Render form detalle pedidoc
             this.$divDetalle.empty().html( this.templateDetailt( ) );
-
             //Reference views
             this.referenceViews();
-            this.ready(); 
         },
         /*
         *References the collection
@@ -93,12 +97,88 @@ app || (app = {});
             }   
         },
         /**
-        *
+        *Event store item the collection
         */
         onStoreItem: function(e){
             if (!e.isDefaultPrevented()) {
                 e.preventDefault();
                 this.detallePedidoc.trigger( 'store', this.$(e.target) );
+            }
+        },
+        /**
+        *Event change input porcentage 
+        */
+        changePorcentage: function(e){
+            e.preventDefault();
+            $('#desc_porcentage').iCheck('check');
+            $('#desc_value').iCheck('uncheck');
+            $('#desc_finally').iCheck('uncheck');
+
+            var costo = this.$('#pedidoc2_costo').val() +1;
+
+            this.doDiscount('porcentaje');
+        },       
+        /**
+        *Event change  input value
+        */
+        changeValue: function(e){
+            e.preventDefault();
+            $('#desc_value').iCheck('check');
+            $('#desc_porcentage').iCheck('uncheck');
+            $('#desc_finally').iCheck('uncheck');
+        },       
+        /**
+        *Event change  input finally
+        */
+        changeFinally: function(e){
+            e.preventDefault();
+            $('#desc_finally').iCheck('check');
+            $('#desc_porcentage').iCheck('uncheck');
+            $('#desc_value').iCheck('uncheck');
+        },
+        /**
+        *Event change radio btn 
+        */
+        changeRadioBtn: function(e){
+            e.preventDefault();
+            var radioBtn = this.$(e.currentTarget).attr('id');
+
+            if( radioBtn == 'desc_porcentage'){
+                this.$('#pedidoc2_descuento_porcentaje').prop('readonly',false);
+                this.$('#pedidoc2_descuento_valor').prop('readonly',true);
+                this.$('#pedidoc2_precio_venta').prop('readonly',true);
+                this.$('#pedidoc2_precio_venta').prop('');
+            }else if(radioBtn == 'desc_value'){
+                this.$('#pedidoc2_descuento_valor').prop('readonly',false);
+                this.$('#pedidoc2_descuento_porcentaje').prop('readonly',true);
+                this.$('#pedidoc2_precio_venta').prop('readonly',true);
+            }else{
+                this.$('#pedidoc2_precio_venta').prop('readonly',false);
+                this.$('#pedidoc2_descuento_porcentaje').prop('readonly',true);
+                this.$('#pedidoc2_descuento_valor').prop('readonly',true);
+            }
+
+        },
+        /**
+        *
+        */
+        doDiscount: function(caseDiscount){
+            switch(caseDiscount){
+                case 'porcentaje':
+                    var descuento = (this.$('#pedidoc2_descuento_porcentaje').val())/100;
+                        valor = (this.$('#pedidoc2_costo').inputmask('unmaskedvalue'));    
+                        descuento = descuento * valor;
+                        console.log(descuento);
+                    this.$('#pedidoc2_descuento_valor').val(descuento);
+                    this.$('#pedidoc2_precio_venta').val(valor-descuento);
+                    break;
+                case 'value':
+                    console.log('ok2');
+                    break;
+                case 'finally':
+                    console.log('ok3');
+                    break;
+                default:      
             }
         },
         /**

@@ -30,7 +30,7 @@ app || (app = {});
 
         subtotal: function() {
             return this.reduce(function(sum, model) {
-                return sum + parseFloat(model.get('pedidoc2_precio_venta'))
+                return sum + parseFloat(model.get('pedidoc2_costo'))
             }, 0);
         },
 
