@@ -95,9 +95,16 @@ class Tercero extends BaseModel implements AuthenticatableContract,
                     }
                 }
 
+                if( !empty($data['tercero_coordinador_por']) ) {
+                    if( !isset($data['tercero_tecnico']) && !isset($data['tercero_vendedor']) ){
+                        $this->errors = trans('validation.required', ['attribute' => 'coordinador no es valido, se requiere ser vendedor o tecnico, ']);
+                        return false;
+                    }
+                }
+
                 if( isset($data['tercero_tecnico']) || isset($data['tercero_vendedor']) ){
                     if( empty($data['tercero_coordinador_por']) ){
-                        $this->errors = trans('validation.required', ['attribute' => 'Coordinado por']);
+                        $this->errors = trans('validation.required', ['attribute' => 'coordinador por es requerido cuando es vendedor o tecnico,']);
                         return false;
                     }
                 }
@@ -121,7 +128,6 @@ class Tercero extends BaseModel implements AuthenticatableContract,
             }
             return true;
         }
-            dd($validator);
         $this->errors = $validator->errors();
         return false;
     }

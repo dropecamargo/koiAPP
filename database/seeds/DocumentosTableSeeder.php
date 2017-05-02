@@ -23,5 +23,14 @@ class DocumentosTableSeeder extends Seeder
 	    	'documentos_nombre' => 'PEDIDOS NACIONAL'
     	]);
 
+        Documentos::create([
+            'documentos_codigo' => 'RECI',
+            'documentos_nombre' => 'RECIBO'
+        ]);
+
+        Documentos::create([
+            'documentos_codigo' => 'FACT',
+            'documentos_nombre' => 'FACTURA'
+        ]);
     }
 }

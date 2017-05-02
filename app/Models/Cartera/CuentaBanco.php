@@ -60,4 +60,20 @@ class CuentaBanco extends BaseModel
         return $query->first();
 	}
 
+	public static function getCuenta()
+    {
+    	if ( Cache::has(self::$key_cache)) {
+            return Cache::get(self::$key_cache);
+        }
+
+        return Cache::rememberForever( self::$key_cache , function() {
+	        $query = CuentaBanco::query();
+	        $query->select('id','cuentabanco_nombre');
+	        $query->where('cuentabanco_activa', true);
+	        $collection = $query->lists('cuentabanco_nombre', 'id');
+
+			$collection->prepend('', '');
+	    	return $collection;
+	    });
+    }
 }

@@ -176,7 +176,6 @@ var app = app || {};
         * Init initValidator
         */
         initValidator: function () {
-
             $('form[data-toggle="validator"]').each(function () {
                 var $form = $(this)
                 $.fn.validator.call($form, $form.data())

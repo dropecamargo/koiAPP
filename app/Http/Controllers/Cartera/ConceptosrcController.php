@@ -75,6 +75,8 @@ class ConceptosrcController extends Controller
                     $conceptosrc->conceptosrc_documentos = $documentos->id;
                     $conceptosrc->save();
 
+                    //Forget cache
+                    Cache::forget( Conceptosrc::$key_cache );
                     // Commit Transaction
                     DB::commit();
                     return response()->json(['success' => true, 'id' => $conceptosrc->id]);
@@ -151,6 +153,8 @@ class ConceptosrcController extends Controller
                     $conceptosrc->conceptosrc_documentos = $documentos->id;
                     $conceptosrc->save();;
 
+                    //Forget cache
+                    Cache::forget( Conceptosrc::$key_cache );
                     // Commit Transaction
                     DB::commit();
                     return response()->json(['success' => true, 'id' => $conceptosrc->id]);
@@ -174,5 +178,28 @@ class ConceptosrcController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function evaluate(Request $request)
+    {
+        // Prepare response
+        $response = new \stdClass();
+        $response->action = "";
+        $response->tipo = "";
+        $response->success = false;
+
+        $conceptosrc = Conceptosrc::getConceptosrc($request->recibo2_conceptosrc);
+        if (!$conceptosrc instanceof Conceptosrc) {
+            $response->errors = "No es posible recuperar concepto, verifique información ó por favor consulte al administrador.";
+        }
+
+        if($conceptosrc->documentos_codigo == 'FACT'){
+            $action = 'modalCartera';
+            $response->action = $action;   
+            $response->success = true;
+        }else{
+            $response->success = false;
+        }
+        return response()->json($response);
     }
 }

@@ -61,8 +61,13 @@ app || (app = {});
             this.$checkEmployee = this.$('#tercero_empleado');
             this.$checkInternal = this.$('#tercero_interno');
 
-            this.$coordinador = this.$('#tercero_coordinador_por');
+            // Reset atributes uncheck empleado o interno
+            this.$coordinador_por = this.$('#tercero_coordinador_por');
             this.$sucursal = this.$('#tercero_sucursal');
+            this.$activo = this.$('#tercero_activo');
+            this.$coordinador = this.$('#tercero_coordinador');
+            this.$tecnico = this.$('#tercero_tecnico');
+            this.$vendedor = this.$('#tercero_vendedor');
 
             this.$username = this.$('#username');
             this.$password = this.$('#password');
@@ -139,30 +144,31 @@ app || (app = {});
 
         changedTechnical: function(e) {
             var selected = $(e.target).is(':checked');
-            this.$coordinador.trigger('change');
+            this.$coordinador_por.trigger('change');
             
             if( selected ) {
                 this.$wrapperCoordinador.removeClass('hide');
             }else{
                 this.$wrapperCoordinador.addClass('hide');
-                this.$coordinador.val('');
+                this.$coordinador_por.val('');
             }
         },
 
         changedVendedor: function(e) {
             var selected = $(e.target).is(':checked');
-            this.$coordinador.trigger('change');
+            this.$coordinador_por.trigger('change');
         
             if( selected ) {
                 this.$wrapperCoordinador.removeClass('hide');
             }else{
                 this.$wrapperCoordinador.addClass('hide');
-                this.$coordinador.val('');
+                this.$coordinador_por.val('');
             }
         },
 
         changedEmployee: function(e) {
             this.$sucursal.trigger('change');
+            this.$coordinador_por.trigger('change');
 
             // Active if internal or employee
             if( this.$checkInternal.is(':checked') || this.$checkEmployee.is(':checked') ) {
@@ -170,6 +176,11 @@ app || (app = {});
             }else{
                 this.$wrapperEmployes.addClass('hide')
                 this.$sucursal.val('');
+                this.$coordinador_por.val('');
+                this.$activo.iCheck('uncheck');
+                this.$vendedor.iCheck('uncheck');
+                this.$coordinador.iCheck('uncheck');
+                this.$tecnico.iCheck('uncheck');
             }
         },
 

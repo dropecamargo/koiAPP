@@ -5,7 +5,7 @@ namespace App\Models\Cartera;
 use Illuminate\Database\Eloquent\Model;
 
 use App\Models\BaseModel;
-use Validator;
+use Cache, Validator;
 
 class Conceptosrc extends BaseModel
 {
@@ -17,6 +17,13 @@ class Conceptosrc extends BaseModel
 	protected $table = 'conceptosrc';
 
 	public $timestamps = false;
+
+	/**
+     * The key used by cache store.
+     *
+     * @var static string
+     */
+    public static $key_cache = '_conceptosrc';
 
 	/**
 	* The attributes that are mass assignable.
@@ -46,10 +53,27 @@ class Conceptosrc extends BaseModel
 	public static function getConceptosrc($id)
 	{
 		$query = Conceptosrc::query();
-		$query->select('conceptosrc.*', 'plancuentas_nombre', 'plancuentas_cuenta', 'documentos_nombre');
+		$query->select('conceptosrc.*', 'plancuentas_nombre', 'plancuentas_cuenta', 'documentos_nombre', 'documentos_codigo');
 		$query->join('plancuentas', 'conceptosrc_plancuentas', '=', 'plancuentas.id');
 		$query->join('documentos', 'conceptosrc_documentos', '=', 'documentos.id');
 		$query->where('conceptosrc.id', $id);
 		return $query->first();
 	}
+
+	public static function getConcepto()
+    {
+    	if ( Cache::has(self::$key_cache)) {
+            return Cache::get(self::$key_cache);
+        }
+
+        return Cache::rememberForever( self::$key_cache , function() {
+	        $query = Conceptosrc::query();
+	        $query->select('id','conceptosrc_nombre');
+	        $query->where('conceptosrc_activo', true);
+	        $collection = $query->lists('conceptosrc_nombre', 'id');
+
+			$collection->prepend('', '');
+	    	return $collection;
+	    });
+    }
 }

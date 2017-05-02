@@ -56,7 +56,7 @@ class CuentaBancoController extends Controller
                 DB::beginTransaction();
                 try {
                     //Recuperar Banco && plancuentas
-                    $banco = Banco::where('id', $request->cuentabanco_banco)->first();
+                    $banco = Banco::find($request->cuentabanco_banco);
                     if(!$banco instanceof Banco) {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar banco, verifique información ó por favor consulte al administrador.']);
@@ -134,13 +134,13 @@ class CuentaBancoController extends Controller
                 DB::beginTransaction();
                 try {
                     //Recuperar Banco && plancuentas
-                    $banco = Banco::where('id', $request->cuentabanco_banco)->first();
-                    $plancuentas = PlanCuenta::where('plancuentas_cuenta', $request->cuentabanco_plancuentas)->first();
-
+                    $banco = Banco::find($request->cuentabanco_banco);
                     if(!$banco instanceof Banco) {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar banco, verifique información ó por favor consulte al administrador.']);
                     }
+                    
+                    $plancuentas = PlanCuenta::where('plancuentas_cuenta', $request->cuentabanco_plancuentas)->first();
                     if(!$plancuentas instanceof PlanCuenta) {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar plan de cuenta, verifique información ó por favor consulte al administrador.']);

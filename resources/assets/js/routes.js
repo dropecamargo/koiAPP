@@ -189,6 +189,10 @@ app || (app = {});
             'conceptosrc(/)': 'getConceptosrcMain',
             'conceptosrc/create(/)': 'getConceptosrcCreate',
             'conceptosrc/:conceptosrc/edit(/)': 'getConceptosrcEdit',
+
+            'recibos(/)': 'getRecibosMain',
+            'recibos/create(/)': 'getRecibosCreate',
+            'recibos/:recibos(/)': 'getRecibosShow',
         },
 
         /**
@@ -1624,6 +1628,38 @@ app || (app = {});
             this.conceptosrcModel.fetch();
         },
 
-    }) );
+        // Recibos
+        getRecibosMain: function () {
 
+            if ( this.mainReciboView instanceof Backbone.View ){
+                this.mainReciboView.stopListening();
+                this.mainReciboView.undelegateEvents();
+            }
+
+            this.mainReciboView = new app.MainRecibosView( );
+        },
+
+        getRecibosCreate: function () {
+            this.reciboModel = new app.ReciboModel();
+
+            if ( this.createReciboView instanceof Backbone.View ){
+                this.createReciboView.stopListening();
+                this.createReciboView.undelegateEvents();
+            }
+
+            this.createReciboView = new app.CreateReciboView({ model: this.reciboModel });
+            this.createReciboView.render();
+        },
+
+        getRecibosShow: function (recibos) {
+            this.reciboModel = new app.ReciboModel();
+            this.reciboModel.set({'id': recibos}, {'silent':true});
+            if ( this.showRecibosView instanceof Backbone.View ){
+                this.showRecibosView.stopListening();
+                this.showRecibosView.undelegateEvents();
+            }
+
+            this.showRecibosView = new app.ShowRecibosView({ model: this.reciboModel });
+        },
+    }) );
 })(jQuery, this, this.document);
