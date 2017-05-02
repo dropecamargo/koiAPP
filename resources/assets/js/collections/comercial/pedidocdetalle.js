@@ -22,22 +22,38 @@ app || (app = {});
         initialize : function(){
         },
 
-        cantidad: function() {
+        iva: function(){
             return this.reduce(function(sum, model) {
-                return sum + parseFloat(model.get('pedidoc2_cantidad')) 
+                var iva = model.get('pedidoc2_iva_porcentaje')  / 100;
+                if (model.get('pedidoc2_precio_venta') > 0) {
+                    return sum + parseFloat(model.get('pedidoc2_precio_venta')) * iva * parseFloat(model.get('pedidoc2_cantidad') ) 
+                }else{
+                    return sum + parseFloat(model.get('pedidoc2_costo')) * iva * parseFloat(model.get('pedidoc2_cantidad') ) 
+                }
+            }, 0);
+        },
+        descuento: function() {
+            return this.reduce(function(sum, model) {
+                return sum + (parseFloat(model.get('pedidoc2_descuento_valor'))) * parseFloat(model.get('pedidoc2_cantidad') ) 
             }, 0);
         },
 
-        subtotal: function() {
+        totalCosto: function() {
             return this.reduce(function(sum, model) {
-                return sum + parseFloat(model.get('pedidoc2_costo'))
+                return sum + (parseFloat(model.get('pedidoc2_costo'))) * parseFloat(model.get('pedidoc2_cantidad')) 
             }, 0);
         },
-
+        total: function(){
+            return this.reduce(function(sum, model) {
+                return sum + (parseFloat(model.get('pedidoc2_subtotal')));
+            }, 0);
+        },
         totalize: function() {
-            var cantidad = this.cantidad();
-            var subtotal = this.subtotal();
-            return { 'cantidad': cantidad, 'subtotal': subtotal}
+            var totalCosto = this.totalCosto();
+                descuento = this.descuento();   
+                iva = this.iva();
+                total = this.total();
+            return {'pedidoc1_bruto': totalCosto , 'pedidoc1_descuento': descuento, 'pedidoc1_iva': iva, 'pedidoc1_total': total}
         },
    });
 

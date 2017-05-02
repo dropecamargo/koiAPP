@@ -1409,7 +1409,20 @@ app || (app = {});
             this.createPedidoscView = new app.CreatePedidoscView({ model: this.pedidoscModel });
             this.createPedidoscView.render();
         },
+        /**
+        * show view show pedido comercial
+        */
+        getPedidoscShow: function (pedidosc) {
+            this.pedidoscModel = new app.PedidoscModel();
+            this.pedidoscModel.set({'id': pedidosc}, {'silent':true});
 
+            if ( this.showPedidocView instanceof Backbone.View ){
+                this.showPedidocView.stopListening();
+                this.showPedidocView.undelegateEvents();
+            }
+
+            this.showPedidocView = new app.ShowPedidocView({ model: this.pedidoscModel });
+        },
         /**
         * show main view permisos
         */

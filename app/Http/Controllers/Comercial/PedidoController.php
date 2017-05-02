@@ -24,6 +24,22 @@ class PedidoController extends Controller
     {
         if ($request->ajax()) {
             $query = Pedidoc1::query();
+            $query = Pedidoc1::query();
+            $query->select('pedidoc1.*','tercero_nombre1','tercero_nit', 'tercero_razonsocial', 'tercero_nombre1', 'tercero_nombre2', 'tercero_apellido1', 'tercero_apellido2','sucursal_nombre', 
+                DB::raw("
+                    CONCAT(
+                        (CASE WHEN tercero_persona = 'N'
+                            THEN CONCAT(tercero_nombre1,' ',tercero_nombre2,' ',tercero_apellido1,' ',tercero_apellido2,
+                                (CASE WHEN (tercero_razonsocial IS NOT NULL AND tercero_razonsocial != '') THEN CONCAT(' - ', tercero_razonsocial) ELSE '' END)
+                            )
+                            ELSE tercero_razonsocial
+                        END)
+                    
+                    ) AS tercero_nombre"
+                )   
+            );
+            $query->join('tercero', 'pedidoc1.pedidoc1_tercero', '=', 'tercero.id');
+            $query->join('sucursal', 'pedidoc1.pedidoc1_sucursal', '=', 'sucursal.id');
             return Datatables::of($query)->make(true);
         }
         return view('comercial.pedidos.index');
@@ -132,8 +148,8 @@ class PedidoController extends Controller
                     $sucursal->sucursal_pedidoc = $consecutive;
                     $sucursal->save();
                     //Commit transaction
-                    DB::rollback();
-                    return response()->json(['success' => false , 'errors' => 'TODO OK']);
+                    DB::commit();
+                    return response()->json(['success' => true , 'id' => $pedidoComercial->id]);
                 } catch (\Exception $e) {
                      Log::error($e->getMessage());
                     return response()->json(['success' => false, 'errors' => trans('app.exception')]);
@@ -150,9 +166,18 @@ class PedidoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        //
+    public function show(Request $request, $id)
+    {   
+
+        $pedidoComercial = Pedidoc1::getPedidoc($id);
+        if(!$pedidoComercial instanceof Pedidoc1) {
+            abort(404);
+        }
+         if($request->ajax()) {
+            return response()->json($pedidoComercial);
+        }
+        return view('comercial.pedidos.show', ['pedidoComercial' => $pedidoComercial]);
+        
     }
 
     /**

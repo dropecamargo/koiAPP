@@ -132,21 +132,20 @@
                 <table id="browse-detalle-pedidoc-list" class="table table-hover table-bordered" cellspacing="0">
                     <thead>
                         <tr>
-                            <th width="5%"></th>
+                            <th width="3%"></th>
                             <th width="10%">Referencia</th>
                             <th width="35%">Nombre</th>
-                            <th width="5%">Cantidad</th>
+                            <th width="3%">Cant</th>
                             <th width="15%">Precio</th>
                             <th width="15%">Descuento</th>
-                            <th width="5%">Iva</th>
-                            <th width="15%">Total</th>
+                            <th width="9%">Iva</th>
+                            <th  width="10%">Total</th>
                         </tr>
                     </thead>
 
                     <tfoot>
                         <tr>
-                            <th colspan="3" class="text-right">Total: </th>
-                            <th id="cantidad-product"></th>
+                            <th colspan="4" class="text-right">Total: </th>
                             <th id="precio-product"></th>
                             <th id="descuento-product"></th>
                             <th id="iva-product"></th>
@@ -158,7 +157,7 @@
                         {{-- Render content detalle pedidoc --}}
                     </tbody>
                 </table>
-            </div
+            </div>
         </div>
     </script>
 
@@ -192,7 +191,7 @@
                 <div id="wrapper-discount" class="row">
                     <label class="col-md-1 col-sm-1 control-label">Descuento</label>
                     <div class="form-group col-md-1 col-sm-1">
-                        <input type="text" id="pedidoc2_descuento_porcentaje" name="pedidoc2_descuento_porcentaje" class="spinner-percentage  input-sm form-control desc-porcentage" min="0" required>
+                        <input type="text" id="pedidoc2_descuento_porcentaje" name="pedidoc2_descuento_porcentaje" class="spinner-percentage  input-sm form-control desc-porcentage" min="0" value="0" required>
                     </div>
                     <div class="col-md-1 col-sm-1">
                         <label class="radio-inline without-padding">
@@ -200,7 +199,7 @@
                         </label>
                     </div>
                     <div class=" col-md-2 col-sm-2 form-group">
-                        <input type="text" id="pedidoc2_descuento_valor" name="pedidoc2_descuento_valor" class="form-control input-sm desc-value" data-currency required>
+                        <input type="text" id="pedidoc2_descuento_valor" name="pedidoc2_descuento_valor" class="form-control input-sm desc-value" data-currency-price required>
                     </div>
                     <div class="col-md-1 col-sm-1">
                         <label class="radio-inline without-padding">
@@ -209,7 +208,7 @@
                     </div> 
                         
                     <div class="form-group col-md-2 col-sm-2">
-                        <input type="text" id="pedidoc2_precio_venta" name="pedidoc2_precio_venta" class="form-control input-sm desc-finally" data-currency  required>
+                        <input type="text" id="pedidoc2_precio_venta" name="pedidoc2_precio_venta" class="form-control input-sm desc-finally" data-currency-price required>
                     </div>
                     <div class="col-md-1 col-sm-1">
                         <label class="radio-inline without-padding">
@@ -242,9 +241,9 @@
         <td><%- producto_serie %></td>
         <td><%- producto_nombre %></td>
         <td><%- pedidoc2_cantidad %></td>
-        <td><%-  window.Misc.currency(pedidoc2_costo) %></td>
-        <td></td>
-        <td></td>
-        <td></td>
+        <td><%- window.Misc.currency(pedidoc2_costo) %></td>
+        <td><%- window.Misc.currency(pedidoc2_descuento_valor) %></td>
+        <td><%- pedidoc2_iva_porcentaje %></td>
+        <td><%- window.Misc.currency(pedidoc2_subtotal) %></td>
     </script>
 @stop

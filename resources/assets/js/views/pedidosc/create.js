@@ -91,7 +91,7 @@ app || (app = {});
             
             if (!e.isDefaultPrevented()) {
                 e.preventDefault();
-                var data = window.Misc.formToJson( e.target );
+                var data = $.extend({}, window.Misc.formToJson( e.target ) , this.detallePedidoc.totalize());
                     data.detalle = this.detallePedidoc.toJSON();
                 this.model.save( data, {patch: true, silent: true} );
             }   
@@ -114,8 +114,6 @@ app || (app = {});
             $('#desc_value').iCheck('uncheck');
             $('#desc_finally').iCheck('uncheck');
 
-            var costo = this.$('#pedidoc2_costo').val() +1;
-
             this.doDiscount('porcentaje');
         },       
         /**
@@ -126,6 +124,8 @@ app || (app = {});
             $('#desc_value').iCheck('check');
             $('#desc_porcentage').iCheck('uncheck');
             $('#desc_finally').iCheck('uncheck');
+
+            this.doDiscount('value');
         },       
         /**
         *Event change  input finally
@@ -135,6 +135,8 @@ app || (app = {});
             $('#desc_finally').iCheck('check');
             $('#desc_porcentage').iCheck('uncheck');
             $('#desc_value').iCheck('uncheck');
+
+            this.doDiscount('finally');
         },
         /**
         *Event change radio btn 
@@ -160,24 +162,31 @@ app || (app = {});
 
         },
         /**
-        *
+        *Se aplican las operaciones matematicas para allar los descuentos
         */
         doDiscount: function(caseDiscount){
             switch(caseDiscount){
                 case 'porcentaje':
                     var descuento = (this.$('#pedidoc2_descuento_porcentaje').val())/100;
-                        valor = (this.$('#pedidoc2_costo').inputmask('unmaskedvalue'));    
+                        valor = this.$('#pedidoc2_costo').inputmask('unmaskedvalue');    
                         descuento = descuento * valor;
-                        console.log(descuento);
                     this.$('#pedidoc2_descuento_valor').val(descuento);
                     this.$('#pedidoc2_precio_venta').val(valor-descuento);
                     break;
                 case 'value':
-                    console.log('ok2');
+                    var valor = this.$('#pedidoc2_descuento_valor').inputmask('unmaskedvalue');
+                        costo = this.$('#pedidoc2_costo').inputmask('unmaskedvalue');    
+                        venta = (costo-valor)*100;
+                        descuento = 100 - (venta / costo);
+                    this.$('#pedidoc2_precio_venta').val(costo-valor);
+                    this.$('#pedidoc2_descuento_porcentaje').val(descuento.toFixed(2));
                     break;
                 case 'finally':
-                    console.log('ok3');
-                    break;
+                    var valor =  (this.$('#pedidoc2_precio_venta').inputmask('unmaskedvalue'))*100;
+                        precio = this.$('#pedidoc2_costo').inputmask('unmaskedvalue');
+                        descuento = 100 - (valor/precio);
+                    this.$('#pedidoc2_descuento_porcentaje').val(descuento.toFixed(2));
+                    this.$('#pedidoc2_descuento_valor').val(precio - (valor/100));
                 default:      
             }
         },
@@ -226,7 +235,7 @@ app || (app = {});
                     return; 
                 }
             }
-            // window.Misc.redirect( window.Misc.urlFull( Route.route('pedidosc.index')) );
+            window.Misc.redirect( window.Misc.urlFull( Route.route('pedidosc.index')) );
         }
     });
 

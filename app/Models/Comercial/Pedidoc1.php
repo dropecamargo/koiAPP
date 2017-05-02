@@ -5,7 +5,7 @@ namespace App\Models\Comercial;
 use Illuminate\Database\Eloquent\Model;
 
 use App\Models\BaseModel;
-use Validator;
+use Validator,DB;
 
 class Pedidoc1 extends BaseModel
 {
@@ -23,7 +23,8 @@ class Pedidoc1 extends BaseModel
 	*
 	* @var array
 	*/
-    protected $fillable = ['pedidoc1_fecha','pedidoc1_cuotas','pedidoc1_plazo','pedidoc1_observaciones'];
+    protected $fillable = ['pedidoc1_fecha','pedidoc1_cuotas','pedidoc1_plazo','pedidoc1_observaciones', 'pedidoc1_bruto', 'pedidoc1_descuento','pedidoc1_iva','pedidoc1_retencion','pedidoc1_total'];
+
 
     protected $boolean = ['pedidoc1_anular'];
 	/**
@@ -40,7 +41,11 @@ class Pedidoc1 extends BaseModel
 			'pedidoc1_fecha' => 'required|date',
 			'pedidoc1_cuotas' => 'required|numeric|min:0',
 			'pedidoc1_plazo' => 'required|numeric|min:0',
-			'pedidoc1_primerpago' => 'required|date'
+			'pedidoc1_primerpago' => 'required|date',
+			'pedidoc1_bruto' => 'required|numeric',
+			'pedidoc1_descuento' => 'required|numeric',
+			'pedidoc1_iva' => 'required|numeric',
+			'pedidoc1_total' => 'required|numeric'
 		];
 
 		$validator = Validator::make($data, $rules);
@@ -55,5 +60,15 @@ class Pedidoc1 extends BaseModel
         }
 		$this->errors = $validator->errors();
 		return false;
+	}
+
+	public static function getPedidoc($id)
+	{
+		$query = Pedidoc1::query();
+		$query->select('pedidoc1.*','sucursal_nombre','tercero_nit',DB::raw("CONCAT(tercero_nombre1, ' ', tercero_nombre2, ' ', tercero_apellido1, ' ', tercero_apellido2) as tercero_nombre"));
+		$query->join('sucursal','pedidoc1.pedidoc1_sucursal','=', 'sucursal.id');
+		$query->join('tercero','pedidoc1.pedidoc1_tercero','=', 'tercero.id');
+		$query->where('pedidoc1.id',$id);
+		return $query->first();
 	}
 }
