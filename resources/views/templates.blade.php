@@ -673,6 +673,11 @@
 			<label for="puntoventa_resolucion_dian" class="control-label">Resolución de facturación DIAN</label>
 			<input type="text" id="puntoventa_resolucion_dian" name="puntoventa_resolucion_dian" value="<%- puntoventa_resolucion_dian %>" placeholder="Resolución de facturación DIAN" class="form-control input-sm input-toupper" maxlength="200">
 		</div>
+		<div class="col-md-3"><br>
+	    	<label class="checkbox-inline" for="puntoventa_activo">
+				<input type="checkbox" id="puntoventa_activo" name="puntoventa_activo" value="puntoventa_activo" <%- parseInt(puntoventa_activo) ? 'checked': ''%>> Activo
+			</label>
+		</div>
     </div>
 </script>
 

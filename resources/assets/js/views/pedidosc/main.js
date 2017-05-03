@@ -34,9 +34,9 @@ app || (app = {});
                 ajax: window.Misc.urlFull( Route.route('pedidosc.index') ),
                 columns: [ 
                     { data: 'id', name: 'id' },
-                    { data: 'autorizaca_tercero', name: 'autorizaca_tercero' },
-                    { data: 'autorizaca_vencimiento', name: 'autorizaca_vencimiento' },
-                    { data: 'autorizaca_plazo', name: 'autorizaca_plazo' },
+                    { data: 'tercero_nombre', name: 'tercero_nombre' },
+                    { data: 'sucursal_nombre', name: 'sucursal_nombre' },
+                    { data: 'pedidoc1_fecha', name: 'pedidoc1_fecha' },
                 ],
                 buttons: [
                     {

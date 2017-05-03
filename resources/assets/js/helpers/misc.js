@@ -307,8 +307,7 @@
                 }
 
                 if( !resp.success ) {
-                    alertify.error(text);
-                    return;
+                    return; 
                 }
 
                 // return callback

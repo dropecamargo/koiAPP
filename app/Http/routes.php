@@ -69,13 +69,13 @@ Route::group(['middleware' => 'auth'], function(){
 	| Comercial Routes
 	|--------------------------
 	*/
-	Route::resource('presupuestoasesor', 'Comercial\PresupuestoAsesorController', ['only' => ['index', 'store']]);
-	Route::resource('pedidosc', 'Comercial\PedidoController',['except' => ['destroy']]);
-
 	Route::group(['prefix' => 'pedidosc'], function()
 	{
 		Route::resource('detalle', 'Comercial\DetallePedidoController');
 	});
+	Route::resource('presupuestoasesor', 'Comercial\PresupuestoAsesorController', ['only' => ['index', 'store']]);
+	Route::resource('pedidosc', 'Comercial\PedidoController',['except' => ['destroy']]);
+
 
 	/*
 	|--------------------------

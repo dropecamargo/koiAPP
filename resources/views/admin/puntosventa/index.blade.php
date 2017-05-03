@@ -15,6 +15,7 @@
                             <th>Prefijo</th>
                             <th>Resolución de facturación DIAN</th>
                             <th>Consecutivo</th>
+                            <th>Activo</th>
                         </tr>
                     </thead>
                 </table>

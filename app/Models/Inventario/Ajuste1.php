@@ -20,7 +20,7 @@ class Ajuste1 extends Model
      *
      * @var array
      */
-    protected $fillable = ['ajuste1_numero','ajuste1_fecha','ajuste1_observaciones'];	  
+    protected $fillable = ['ajuste1_fecha','ajuste1_observaciones'];	  
 	
 	/**
 	* The default ajuste if documentos.

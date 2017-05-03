@@ -4,9 +4,10 @@ namespace App\Models\Base;
 
 use Illuminate\Database\Eloquent\Model;
 
+use App\Models\BaseModel;
 use Validator, Cache;
 
-class PuntoVenta extends Model
+class PuntoVenta extends BaseModel
 {
     /**
      * The database table used by the model.
@@ -30,6 +31,8 @@ class PuntoVenta extends Model
      * @var array
      */
     protected $fillable = ['puntoventa_nombre', 'puntoventa_prefijo', 'puntoventa_resolucion_dian'];
+
+    protected $boolean = ['puntoventa_activo'];
 
     public function isValid($data)
     {

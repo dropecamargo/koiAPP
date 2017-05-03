@@ -20,6 +20,7 @@ class CreatePuntoventaTable extends Migration
             $table->integer('puntoventa_numero')->default(0)->comment = 'Consecutivo factura';
             $table->string('puntoventa_prefijo', 4)->nullable()->unique();
             $table->string('puntoventa_resolucion_dian', 200)->nullable();
+            $table->boolean('puntoventa_activo')->default(false);
         });
     }
 

@@ -143,11 +143,21 @@ var app = app || {};
                 },
             });
 
-            $("[data-bitch]").inputmask({
-                alias: 'numeric',
-                min: 0,
-                removeMaskOnSubmit: true,
+            $("[data-currency-price]").inputmask({
+                radixPoint: ",",
+                groupSeparator: ".",
+                alias: 'currency',
+                digits: 2,
                 unmaskAsNumber: true,
+                removeMaskOnSubmit: true,
+                autoGroup: true,
+                rightAlign: false,
+                oncleared: function  (event) {
+                    var $input = $(this);
+                    if( this.inputmask.unmaskedvalue() == null || isNaN(parseFloat(this.inputmask.unmaskedvalue())) ) {
+                        $input.inputmask('setvalue', 0);
+                    }
+                },
             });
 
             $("[data-currency-precise]").inputmask({

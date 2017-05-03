@@ -585,7 +585,7 @@
 			<!-- table table-bordered table-striped -->
 			<div class="box-body table-responsive no-padding">
 				<table id="browse-concepto-factura-list" class="table table-hover table-bordered" cellspacing="0">
-					<th><input type="checkbox" id="concepto_check" name="concepto_check" value="concepto_check"></th>
+					<th></th>
 				  	<th>Fecha</th>
                 	<th>Vencimiento</th>
                 	<th>Numero</th>

@@ -7,8 +7,9 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\Models\Comercial\Pedidoc1;
-use App\Models\Base\Tercero,App\Models\Base\Sucursal,App\Models\Base\Documentos;
+use App\Models\Comercial\Pedidoc1, App\Models\Comercial\Pedidoc2;
+use App\Models\Inventario\Producto,App\Models\Inventario\SubCategoria;
+use App\Models\Base\Tercero,App\Models\Base\Sucursal,App\Models\Base\Documentos,App\Models\Base\Contacto;
 
 use DB,Log,Datatables,Auth;
 
@@ -23,6 +24,22 @@ class PedidoController extends Controller
     {
         if ($request->ajax()) {
             $query = Pedidoc1::query();
+            $query = Pedidoc1::query();
+            $query->select('pedidoc1.*','tercero_nombre1','tercero_nit', 'tercero_razonsocial', 'tercero_nombre1', 'tercero_nombre2', 'tercero_apellido1', 'tercero_apellido2','sucursal_nombre', 
+                DB::raw("
+                    CONCAT(
+                        (CASE WHEN tercero_persona = 'N'
+                            THEN CONCAT(tercero_nombre1,' ',tercero_nombre2,' ',tercero_apellido1,' ',tercero_apellido2,
+                                (CASE WHEN (tercero_razonsocial IS NOT NULL AND tercero_razonsocial != '') THEN CONCAT(' - ', tercero_razonsocial) ELSE '' END)
+                            )
+                            ELSE tercero_razonsocial
+                        END)
+                    
+                    ) AS tercero_nombre"
+                )   
+            );
+            $query->join('tercero', 'pedidoc1.pedidoc1_tercero', '=', 'tercero.id');
+            $query->join('sucursal', 'pedidoc1.pedidoc1_sucursal', '=', 'sucursal.id');
             return Datatables::of($query)->make(true);
         }
         return view('comercial.pedidos.index');
@@ -48,16 +65,97 @@ class PedidoController extends Controller
     {
         if ($request->ajax()) {
             $data = $request->all();
-            $pedicoComercial = new Pedidoc1;
-            if ($pedicoComercial->isValid($data)) {
+            $pedidoComercial = new Pedidoc1;
+            if ($pedidoComercial->isValid($data)) {
+                DB::beginTransaction();
                 try {
-                    return response()->json(['success' => true]);
+
+                    //Validar Documentos
+                    $documento = Documentos::where('documentos_codigo', Pedidoc1::$default_document)->first();
+                    if(!$documento instanceof Documentos) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar documentos,por favor verifique la información ó por favor consulte al administrador.']);
+                    }
+                    //Find Sucursal
+                    $sucursal = Sucursal::find($request->pedidoc1_sucursal);
+                    if(!$sucursal instanceof Sucursal) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar documentos,por favor verifique la información ó por favor consulte al administrador.']);
+                    }
+                    //Exits validate Tercero
+                    $tercero = Tercero::where('tercero_nit', $request->pedidoc1_tercero)->first();
+                    if (!$tercero instanceof Tercero) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar cliente, por favor verifique la información o consulte al administrador']);
+                    }
+                    // Validar contacto
+                    $contacto = Contacto::find($request->pedidoc1_contacto);
+                    if(!$contacto instanceof Contacto) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar contacto, por favor verifique la información o consulte al administrador.']);
+                    }
+                    // Validar tercero contacto
+                    if($contacto->tcontacto_tercero != $tercero->id) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'El contacto seleccionado no corresponde al tercero, por favor seleccione de nuevo el contacto o consulte al administrador.']);
+                    }
+
+                    //Validar Vendedor
+                    $vendedor = Tercero::find($request->pedidoc1_vendedor);
+                    if (!$vendedor instanceof Tercero) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar vendedor, por favor verifique la información p consulte al administrador']);
+                    }
+
+                    // Consecutive
+                    $consecutive = $sucursal->sucursal_pedidoc + 1;
+
+                    //Pedidoc1
+                    $pedidoComercial->fill($data);
+                    $pedidoComercial->pedidoc1_sucursal = $sucursal->id;
+                    $pedidoComercial->pedidoc1_numero = $consecutive;
+                    $pedidoComercial->pedidoc1_documentos = $documento->id;
+                    $pedidoComercial->pedidoc1_tercero = $tercero->id;
+                    $pedidoComercial->pedidoc1_contacto = $contacto->id;
+                    $pedidoComercial->pedidoc1_vendedor = $vendedor->id;
+                    $pedidoComercial->save();
+                    
+                    $items = isset($data['detalle']) ? $data['detalle'] : null;
+
+                    // Pedidoc2
+                    foreach ($items as $item)
+                    {
+                        // Validate Producto
+                        $producto = Producto::where('producto_serie', $item['producto_serie'])->first();
+                        if (!$producto instanceof Producto) {
+                            DB::rollback();
+                            return response()->json(['success' => false, 'errors' => 'No es posible recuperar producto, por favor verifique información o consulte al administrador']);
+                        }
+                        //SubCategoria validate
+                        $subcategoria = SubCategoria::find($producto->producto_subcategoria);
+                        if (!$subcategoria instanceof SubCategoria) {
+                            DB::rollback();
+                            return response()->json(['success' => false, 'errors' => 'No es posible recuperar subcategoria, por favor verifique información o consulte al administrador']);
+                        }
+                        $pedidoComercial2 = new Pedidoc2;
+                        $pedidoComercial2->fill($item);
+                        $pedidoComercial2->pedidoc2_pedidoc1 = $pedidoComercial->id;
+                        $pedidoComercial2->pedidoc2_producto = $producto->id;
+                        $pedidoComercial2->pedidoc2_subcategoria = $subcategoria->id;
+                        $pedidoComercial2->save();  
+                    }
+                    // Update consecutive sucursal_pedidoc in Sucursal
+                    $sucursal->sucursal_pedidoc = $consecutive;
+                    $sucursal->save();
+                    //Commit transaction
+                    DB::commit();
+                    return response()->json(['success' => true , 'id' => $pedidoComercial->id]);
                 } catch (\Exception $e) {
                      Log::error($e->getMessage());
                     return response()->json(['success' => false, 'errors' => trans('app.exception')]);
                 }
             }
-            return response()->json(['success' => false, 'errors' => $pedicoComercial->errors]);
+            return response()->json(['success' => false, 'errors' => $pedidoComercial->errors]);
         }
         abort(403);
     }
@@ -68,9 +166,18 @@ class PedidoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        //
+    public function show(Request $request, $id)
+    {   
+
+        $pedidoComercial = Pedidoc1::getPedidoc($id);
+        if(!$pedidoComercial instanceof Pedidoc1) {
+            abort(404);
+        }
+         if($request->ajax()) {
+            return response()->json($pedidoComercial);
+        }
+        return view('comercial.pedidos.show', ['pedidoComercial' => $pedidoComercial]);
+        
     }
 
     /**

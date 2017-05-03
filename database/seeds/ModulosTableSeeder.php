@@ -174,6 +174,15 @@ class ModulosTableSeeder extends Seeder
             'nivel2' => 2
         ]);
 
+        // Modulo
+        Modulo::create([
+            'name' => 'recibos',
+            'display_name' => 'Recibo de caja',
+            'nivel1' => 2,
+            'nivel2' => 1,
+            'nivel3' => 1
+        ]);
+
         // Referencia
         Modulo::create([
             'name' => 'autorizacionesca',

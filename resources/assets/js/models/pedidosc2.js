@@ -16,11 +16,14 @@ app || (app = {});
         },
         idAttribute: 'id',
         defaults: {	
-            'pedidoc2_cantidad' : '',
-            'pedidoc2_precio_venta' : '',
-            'pedidoc2_descuento_valor': '',
-            'pedidoc2_descuento_porcentaje': '',
-            'pedidoc2_iva_porcentaje': ''
+            'pedidoc2_cantidad' : 0,
+            'pedidoc2_precio_venta' : 0,
+            'pedidoc2_descuento_valor': 0,
+            'pedidoc2_descuento_porcentaje': 0,
+            'pedidoc2_iva_porcentaje': 0,
+            'pedidoc2_costo': 0,
+            'pedidoc2_subtotal': 0,
+            'pedidoc2_iva_valor':0
         }
     });
 

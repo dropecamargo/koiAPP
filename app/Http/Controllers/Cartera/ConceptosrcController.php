@@ -195,7 +195,7 @@ class ConceptosrcController extends Controller
 
         if($conceptosrc->documentos_codigo == 'FACT'){
             $action = 'modalCartera';
-            $response->action = $action;   
+            $response->action = $action;  
             $response->success = true;
         }else{
             $response->success = false;

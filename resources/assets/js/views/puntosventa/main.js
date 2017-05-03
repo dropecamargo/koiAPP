@@ -32,7 +32,8 @@ app || (app = {});
                     { data: 'puntoventa_nombre', name: 'puntoventa_nombre' },
                     { data: 'puntoventa_prefijo', name: 'puntoventa_prefijo' },
                     { data: 'puntoventa_resolucion_dian', name: 'puntoventa_resolucion_dian' },
-                    { data: 'puntoventa_numero', name: 'puntoventa_numero' }
+                    { data: 'puntoventa_numero', name: 'puntoventa_numero' },
+                    { data: 'puntoventa_activo', name: 'puntoventa_activo' },
                 ],
 				buttons: [
 					{

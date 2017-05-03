@@ -22,7 +22,7 @@ class PuntoVentaController extends Controller
     {
         if ($request->ajax()) {
             $query = PuntoVenta::query();
-            $query->select('puntoventa.id as id', 'puntoventa_nombre', 'puntoventa_prefijo', 'puntoventa_resolucion_dian', 'puntoventa_numero');
+            $query->select('puntoventa.id as id', 'puntoventa_nombre', 'puntoventa_prefijo', 'puntoventa_resolucion_dian', 'puntoventa_numero','puntoventa_activo');
             return Datatables::of($query)->make(true);
         }
         return view('admin.puntosventa.index');
@@ -55,6 +55,7 @@ class PuntoVentaController extends Controller
                 try {
                     // punto de venta
                     $puntoventa->fill($data);
+                    $puntoventa->fillBoolean($data);
                     $puntoventa->save();
 
                     // Commit Transaction
@@ -119,6 +120,7 @@ class PuntoVentaController extends Controller
                 try {
                     // sucursal
                     $puntoventa->fill($data);
+                    $puntoventa->fillBoolean($data);
                     $puntoventa->save();
 
                     // Commit Transaction

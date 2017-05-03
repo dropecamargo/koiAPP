@@ -25,12 +25,13 @@ class CreateRecibo1Table extends Migration
             $table->integer('recibo1_cuentas')->unsigned()->nullable();
             $table->integer('recibo1_documentos')->unsigned()->nullable();
             $table->text('recibo1_observaciones');
-            $table->integer('recibo1_usuario_elaboro');
+            $table->integer('recibo1_usuario_elaboro')->unsigned();
             $table->dateTime('recibo1_fh_elaboro');
 
             $table->foreign('recibo1_sucursal')->references('id')->on('sucursal')->onDelete('restrict');
             $table->foreign('recibo1_tercero')->references('id')->on('tercero')->onDelete('restrict');
             $table->foreign('recibo1_cuentas')->references('id')->on('cuentabanco')->onDelete('restrict');
+            $table->foreign('recibo1_usuario_elaboro')->references('id')->on('tercero')->onDelete('restrict');
             $table->foreign('recibo1_documentos')->references('id')->on('documentos')->onDelete('restrict');
         });
     }

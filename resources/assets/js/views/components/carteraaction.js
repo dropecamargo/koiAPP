@@ -36,6 +36,8 @@ app || (app = {});
             
             this.listenTo( this.model, 'sync', this.responseServer );
             this.listenTo( this.collection, 'sync', this.responseServer );
+
+            this.ready();
         },
 
         /*
@@ -46,15 +48,10 @@ app || (app = {});
                 _this = this,
                 stuffToDo = {
                     'modalCartera': function() {
-                        if (resp.tipo == 'E') {
-                            _this.$modal.find('.content-modal').empty().html(_this.template( ));
+                        _this.$modal.find('.content-modal').empty().html(_this.template( ));
 
-                            // Reference inventario
-                            _this.reference(resp);
-                        }else{
-                            // Reference inventario
-                            _this.reference(resp);
-                        }
+                        // Reference inventario
+                        _this.reference(resp);
                     },
                     
                 };
@@ -67,15 +64,13 @@ app || (app = {});
         */
         ready: function () {
             // to fire plugins
-            if( typeof window.initComponent.initInputMask == 'function' )
-                window.initComponent.initInputMask();
-
-            if( typeof window.initComponent.initValidator == 'function' )
-                window.initComponent.initValidator();
-
             if( typeof window.initComponent.initICheck == 'function' )
                 window.initComponent.initICheck();
+
+            if( typeof window.initComponent.initInputMask == 'function' )
+                window.initComponent.initInputMask();
         },
+
         /**
         * Reference add Series
         */
@@ -85,6 +80,7 @@ app || (app = {});
             this.$wraperError = this.$('#error-concepto-factura');
 
             this.$wraperConcepto = this.$('#browse-concepto-factura-list');
+  
             // Hide errors
             this.$wraperError.hide().empty();
             // Open modal

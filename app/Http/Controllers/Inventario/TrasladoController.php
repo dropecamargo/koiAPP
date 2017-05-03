@@ -88,6 +88,7 @@ class TrasladoController extends Controller
                     // Traslado 1
                     $traslado->fill($data);
                     $traslado->traslado1_documentos = $documento->id;
+                    $traslado->traslado1_numero = $consecutive;
                     $traslado->traslado1_tipotraslado = $tipotraslado->id;
                     $traslado->traslado1_origen = $origen->id;
                     $traslado->traslado1_destino = $destino->id;

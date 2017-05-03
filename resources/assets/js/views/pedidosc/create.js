@@ -19,7 +19,11 @@ app || (app = {});
             
             'click .submit-pedidosc' : 'submitForm',
             'submit #form-pedidoc1' :'onStore',
-            'submit #form-detalle-pedidoc' :'onStoreItem'
+            'submit #form-detalle-pedidoc' :'onStoreItem',
+            'change .desc-porcentage': 'changePorcentage',
+            'change .desc-value': 'changeValue',
+            'change .desc-finally': 'changeFinally',
+            'ifChecked .desc': 'changeRadioBtn',
         },
         parameters: {
         },
@@ -37,6 +41,8 @@ app || (app = {});
             this.listenTo( this.model, 'change', this.render );
             this.listenTo( this.model, 'sync', this.responseServer );
             this.listenTo( this.model, 'request', this.loadSpinner );            
+            
+            this.ready(); 
         },
 
 
@@ -53,10 +59,8 @@ app || (app = {});
 
             //Render form detalle pedidoc
             this.$divDetalle.empty().html( this.templateDetailt( ) );
-
             //Reference views
             this.referenceViews();
-            this.ready(); 
         },
         /*
         *References the collection
@@ -87,17 +91,103 @@ app || (app = {});
             
             if (!e.isDefaultPrevented()) {
                 e.preventDefault();
-                var data = window.Misc.formToJson( e.target );
+                var data = $.extend({}, window.Misc.formToJson( e.target ) , this.detallePedidoc.totalize());
+                    data.detalle = this.detallePedidoc.toJSON();
                 this.model.save( data, {patch: true, silent: true} );
             }   
         },
         /**
-        *
+        *Event store item the collection
         */
         onStoreItem: function(e){
             if (!e.isDefaultPrevented()) {
                 e.preventDefault();
                 this.detallePedidoc.trigger( 'store', this.$(e.target) );
+            }
+        },
+        /**
+        *Event change input porcentage 
+        */
+        changePorcentage: function(e){
+            e.preventDefault();
+            $('#desc_porcentage').iCheck('check');
+            $('#desc_value').iCheck('uncheck');
+            $('#desc_finally').iCheck('uncheck');
+
+            this.doDiscount('porcentaje');
+        },       
+        /**
+        *Event change  input value
+        */
+        changeValue: function(e){
+            e.preventDefault();
+            $('#desc_value').iCheck('check');
+            $('#desc_porcentage').iCheck('uncheck');
+            $('#desc_finally').iCheck('uncheck');
+
+            this.doDiscount('value');
+        },       
+        /**
+        *Event change  input finally
+        */
+        changeFinally: function(e){
+            e.preventDefault();
+            $('#desc_finally').iCheck('check');
+            $('#desc_porcentage').iCheck('uncheck');
+            $('#desc_value').iCheck('uncheck');
+
+            this.doDiscount('finally');
+        },
+        /**
+        *Event change radio btn 
+        */
+        changeRadioBtn: function(e){
+            e.preventDefault();
+            var radioBtn = this.$(e.currentTarget).attr('id');
+
+            if( radioBtn == 'desc_porcentage'){
+                this.$('#pedidoc2_descuento_porcentaje').prop('readonly',false);
+                this.$('#pedidoc2_descuento_valor').prop('readonly',true);
+                this.$('#pedidoc2_precio_venta').prop('readonly',true);
+                this.$('#pedidoc2_precio_venta').prop('');
+            }else if(radioBtn == 'desc_value'){
+                this.$('#pedidoc2_descuento_valor').prop('readonly',false);
+                this.$('#pedidoc2_descuento_porcentaje').prop('readonly',true);
+                this.$('#pedidoc2_precio_venta').prop('readonly',true);
+            }else{
+                this.$('#pedidoc2_precio_venta').prop('readonly',false);
+                this.$('#pedidoc2_descuento_porcentaje').prop('readonly',true);
+                this.$('#pedidoc2_descuento_valor').prop('readonly',true);
+            }
+
+        },
+        /**
+        *Se aplican las operaciones matematicas para allar los descuentos
+        */
+        doDiscount: function(caseDiscount){
+            switch(caseDiscount){
+                case 'porcentaje':
+                    var descuento = (this.$('#pedidoc2_descuento_porcentaje').val())/100;
+                        valor = this.$('#pedidoc2_costo').inputmask('unmaskedvalue');    
+                        descuento = descuento * valor;
+                    this.$('#pedidoc2_descuento_valor').val(descuento);
+                    this.$('#pedidoc2_precio_venta').val(valor-descuento);
+                    break;
+                case 'value':
+                    var valor = this.$('#pedidoc2_descuento_valor').inputmask('unmaskedvalue');
+                        costo = this.$('#pedidoc2_costo').inputmask('unmaskedvalue');    
+                        venta = (costo-valor)*100;
+                        descuento = 100 - (venta / costo);
+                    this.$('#pedidoc2_precio_venta').val(costo-valor);
+                    this.$('#pedidoc2_descuento_porcentaje').val(descuento.toFixed(2));
+                    break;
+                case 'finally':
+                    var valor =  (this.$('#pedidoc2_precio_venta').inputmask('unmaskedvalue'))*100;
+                        precio = this.$('#pedidoc2_costo').inputmask('unmaskedvalue');
+                        descuento = 100 - (valor/precio);
+                    this.$('#pedidoc2_descuento_porcentaje').val(descuento.toFixed(2));
+                    this.$('#pedidoc2_descuento_valor').val(precio - (valor/100));
+                default:      
             }
         },
         /**

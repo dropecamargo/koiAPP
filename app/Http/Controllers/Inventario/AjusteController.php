@@ -66,7 +66,7 @@ class AjusteController extends Controller
                     $sucursal = Sucursal::where('id', $request->ajuste1_sucursal)->first();
                     if(!$sucursal instanceof Sucursal) {
                         DB::rollback();
-                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar documentos,por favor verifique la información ó por favor consulte al administrador.']);
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar sucursal,por favor verifique la información ó por favor consulte al administrador.']);
                     }
                     //Validar Tipo Ajuste
                     $tipoAjuste = TipoAjuste::where('id', $request->ajuste1_tipoajuste)->first();
@@ -82,6 +82,7 @@ class AjusteController extends Controller
                     $ajuste->fill($data);
                     $ajuste->ajuste1_documentos = $documento->id;
                     $ajuste->ajuste1_sucursal = $sucursal->id;
+                    $ajuste->ajuste1_numero = $consecutive;
                     $ajuste->ajuste1_tipoajuste = $tipoAjuste->id;
                     $ajuste->ajuste1_usuario_elaboro = Auth::user()->id;
                     $ajuste->ajuste1_fh_elaboro = date('Y-m-d H:m:s'); 

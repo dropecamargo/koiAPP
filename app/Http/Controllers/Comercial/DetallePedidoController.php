@@ -21,11 +21,11 @@ class DetallePedidoController extends Controller
      */
     public function index(Request $request)
     {
-        // if ($request->ajax()){
-        //     $pedidoc2Detalle = Pedidoc2::getPedidoc2($request->id);
-        //     return response()->json($pedidoc2Detalle);
-        // }
-        // abort(404);
+        if ($request->ajax()){
+            $pedidoc2Detalle = Pedidoc2::getPedidoc2($request->id);
+            return response()->json($pedidoc2Detalle);
+        }
+        abort(404);
     }
 
     /**

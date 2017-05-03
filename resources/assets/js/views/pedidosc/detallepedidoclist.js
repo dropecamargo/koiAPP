@@ -33,6 +33,12 @@ app || (app = {});
             //Init Attributes
             this.confCollection = { reset: true, data: {} };
 
+            // References th totalize
+            this.$costo = this.$('#precio-product');
+            this.$descuento = this.$('#descuento-product');
+            this.$iva = this.$('#iva-product');
+            this.$total = this.$('#totalize-product');
+
             // Events Listeners
             this.listenTo( this.collection, 'add', this.addOne );
             this.listenTo( this.collection, 'reset', this.addAll );
@@ -66,6 +72,11 @@ app || (app = {});
             });
             detallePedidocModel.view = view;
             this.$el.append( view.render().el );
+
+            //setter subtotal de registro 
+            this.setterModel(detallePedidocModel);
+            //totalize actually in collection
+            this.totalize();
         },
 
         /**
@@ -105,8 +116,10 @@ app || (app = {});
                             alertify.error(text);
                             return;
                         }
+
                         // Add model in collection
                         _this.collection.add(model);
+
                     }
                 },
                 error : function(model, error) {
@@ -115,17 +128,42 @@ app || (app = {});
                 }
             });
         },
-
+        
+        /**
+        *Render totales the collection
+        */
+        totalize: function(){
+            var data = this.collection.totalize();
+            this.$costo.empty().html(window.Misc.currency(data.pedidoc1_bruto) );
+            this.$descuento.empty().html(window.Misc.currency(data.pedidoc1_descuento) );
+            this.$iva.empty().html(window.Misc.currency(data.pedidoc1_iva) );
+            this.$total.empty().html(window.Misc.currency(data.pedidoc1_total) );
+        },
+        /**
+        *setter pedidoc_subtotal the model
+        */
+        setterModel(model){
+            var iva = model.get('pedidoc2_iva_porcentaje')  / 100;
+                precio = parseFloat(model.get('pedidoc2_precio_venta')) * iva * parseFloat(model.get('pedidoc2_cantidad') ) ;
+                precio = precio - (parseFloat(model.get('pedidoc2_descuento_valor'))) * parseFloat(model.get('pedidoc2_cantidad') ) ;
+                costo = (parseFloat(model.get('pedidoc2_costo'))) * parseFloat(model.get('pedidoc2_cantidad'));
+            model.set('pedidoc2_subtotal', (costo + precio));
+            model.set('pedidoc2_iva_valor', (parseFloat(model.get('pedidoc2_precio_venta')) * iva));
+        },
         /**
         * Event remove item
         */
         removeOne: function (e) {
             e.preventDefault(); 
             var resource = $(e.currentTarget).attr("data-resource");
-            var model = this.collection.get(resource);
+                model = this.collection.get(resource);
+
             if ( model instanceof Backbone.Model ) {
                 model.view.remove();
                 this.collection.remove(model);
+
+                // totalize actually in collection
+                this.totalize();
             }
         },
 

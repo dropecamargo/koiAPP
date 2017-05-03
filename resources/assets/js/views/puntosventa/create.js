@@ -67,6 +67,9 @@ app || (app = {});
             // to fire plugins
             if( typeof window.initComponent.initToUpper == 'function' )
                 window.initComponent.initToUpper();
+
+            if( typeof window.initComponent.initICheck == 'function' )
+                window.initComponent.initICheck();
         },
 
         /**
@@ -94,7 +97,7 @@ app || (app = {});
                     return;
                 }
 
-                window.Misc.redirect( window.Misc.urlFull( Route.route('puntosventa.show', { puntosventa: resp.id})) );
+                window.Misc.redirect( window.Misc.urlFull( Route.route('puntosventa.index')) );
             }
         }
     });
