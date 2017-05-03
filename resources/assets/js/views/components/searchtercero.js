@@ -45,6 +45,7 @@ app || (app = {});
             this.$tercerosSearchTable = this.$modalComponent.find('#koi-search-tercero-component-table');
             
             this.$inputContent = this.$("#"+$(e.currentTarget).attr("data-field"));
+			this.$concepto = this.$("#"+$(e.currentTarget).attr("data-concepto"));
             this.$inputName = this.$("#"+this.$inputContent.attr("data-name"));
             this.$btnContact = this.$("#"+this.$inputContent.attr("data-contacto"));
             this.$inputAddress = this.$("#"+this.$inputContent.attr("data-address"));
@@ -115,6 +116,10 @@ app || (app = {});
             
             if(this.$btnContact.length > 0) {
                 this.$btnContact.attr('data-tercero', data.id);
+            }
+
+            if(this.$concepto.length > 0) {
+                this.$concepto.attr('data-tercero', data.id);
             }
 
 			this.$modalComponent.modal('hide');

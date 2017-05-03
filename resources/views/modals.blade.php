@@ -581,17 +581,24 @@
 
 <script type="text/template" id="add-concepto-factura-tpl">
 	<div class="row">
-		<div class="col-sm-8 col-md-offset-2 col-xs-12">
+		<div class="col-sm-12 col-xs-12">
 			<!-- table table-bordered table-striped -->
 			<div class="box-body table-responsive no-padding">
 				<table id="browse-concepto-factura-list" class="table table-hover table-bordered" cellspacing="0">
-					<th></th>
-				  	<th>Fecha</th>
-                	<th>Vencimiento</th>
-                	<th>Numero</th>
-                	<th>Cuota</th>
-                	<th>Valor</th>
-                	<th>A pagar</th>
+					<thead>
+						<tr>
+							<th></th>
+						  	<th>Fecha</th>
+		                	<th>Vencimiento</th>
+		                	<th>Numero</th>
+		                	<th>Cuota</th>
+		                	<th>Valor</th>
+		                	<th>A pagar</th>
+            			</tr>
+                    </thead>
+                    <tbody>
+                        {{-- Render content recibo2 --}}
+                    </tbody>
 			    </table>
 			</div>
 		</div>

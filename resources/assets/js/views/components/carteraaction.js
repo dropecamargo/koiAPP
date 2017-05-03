@@ -28,11 +28,11 @@ app || (app = {});
 
             this.$modal = this.$('#modal-concepto-factura-component');
             
-            // Collection producto vence
-            this.detalleReciboList = new app.DetalleReciboList();
+            // Collection 
+            this.detalleFacturaList = new app.DetalleFacturaList();
 
-            this.listenTo( this.detalleReciboList, 'add', this.addOne );
-            this.listenTo( this.detalleReciboList, 'reset', this.addAll );
+            this.listenTo( this.detalleFacturaList, 'add', this.addOne );
+            this.listenTo( this.detalleFacturaList, 'reset', this.addAll );
             
             this.listenTo( this.model, 'sync', this.responseServer );
             this.listenTo( this.collection, 'sync', this.responseServer );
@@ -48,9 +48,9 @@ app || (app = {});
                 _this = this,
                 stuffToDo = {
                     'modalCartera': function() {
-                        _this.$modal.find('.content-modal').empty().html(_this.template( ));
+                        _this.$modal.find('.content-modal').empty().html(_this.template());
 
-                        // Reference inventario
+                        // Reference 
                         _this.reference(resp);
                     },
                     
@@ -72,7 +72,7 @@ app || (app = {});
         },
 
         /**
-        * Reference add Series
+        * Reference
         */
         reference: function(atributes) {
             this.$wraper = this.$('#modal-wrapper-concepto-factura');
@@ -80,26 +80,28 @@ app || (app = {});
             this.$wraperError = this.$('#error-concepto-factura');
 
             this.$wraperConcepto = this.$('#browse-concepto-factura-list');
-  
+    
+            this.detalleFacturaList.fetch({ reset: true, data: { tercero: atributes.data.tercero } });
+
             // Hide errors
             this.$wraperError.hide().empty();
+
             // Open modal
             this.$modal.modal('show');
-
         },
         /**
         * Render view task by model
         * @param Object Model instance
         */
-        addOne: function (recibo2Model) {
-            var view = new app.DetalleRecibosView({
-                model: recibo2Model,
+        addOne: function (factura3Model) {
+            var view = new app.FacturaItemView({
+                model: factura3Model,
                 parameters:{
                 }
             });
             
-            recibo2Model.view = view;
-            this.$wraper.append( view.render().el );
+            factura3Model.view = view;
+            this.$wraperConcepto.append( view.render().el );
             this.ready();
         },
 
@@ -108,9 +110,13 @@ app || (app = {});
         */
         addAll:function(){
             var _this = this;
-            this.detalleReciboList.forEach(function(model, index) {
-                _this.addOne(model)
-            });
+            if( this.detalleFacturaList.length > 0){
+                this.detalleFacturaList.forEach(function(model, index) {
+                    _this.addOne(model)
+                });
+            }else{
+                _this.addOne( factura3Model = new app.Factura3Model );
+            }
         },
 
         responseServer: function ( model, resp, opts ) {

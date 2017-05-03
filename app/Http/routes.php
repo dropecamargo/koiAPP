@@ -169,6 +169,7 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::group(['prefix' => 'recibos'], function()
 	{
 		Route::resource('detalle', 'Cartera\Recibo2Controller');
+		Route::resource('factura', 'Cartera\Factura3Controller');
 	});
 
 	Route::group(['prefix' => 'conceptosrc'], function()

@@ -185,7 +185,6 @@ class ConceptosrcController extends Controller
         // Prepare response
         $response = new \stdClass();
         $response->action = "";
-        $response->tipo = "";
         $response->success = false;
 
         $conceptosrc = Conceptosrc::getConceptosrc($request->recibo2_conceptosrc);

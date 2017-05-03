@@ -60,7 +60,7 @@
                     <div class="form-group col-md-3">
                         <div class="input-group input-group-sm">
                             <span class="input-group-btn">
-                                <button type="button" class="btn btn-default btn-flat btn-koi-search-tercero-component-table" data-field="recibo1_tercero" data-contacto="true">
+                                <button type="button" class="btn btn-default btn-flat btn-koi-search-tercero-component-table" data-field="recibo1_tercero" data-concepto="recibo2_conceptosrc">
                                     <i class="fa fa-user"></i>
                                 </button>
                             </span>
@@ -97,7 +97,7 @@
                     <div class="row"> 
                         <div class="form-group col-md-3 col-md-offset-2">
                             <label for="recibo2_conceptosrc" class="control-label">Concepto</label>
-                            <select name="recibo2_conceptosrc" id="recibo2_conceptosrc" class="form-control select2-default change-concepto" data-tercero required>
+                            <select name="recibo2_conceptosrc" id="recibo2_conceptosrc" class="form-control select2-default change-concepto" required>
                             @foreach( App\Models\Cartera\Conceptosrc::getConcepto() as $key => $value)
                                 <option  value="{{ $key }}">{{ $value }}</option>
                             @endforeach

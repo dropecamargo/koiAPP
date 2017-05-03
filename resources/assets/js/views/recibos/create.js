@@ -92,12 +92,17 @@ app || (app = {});
 
         changeConcepto: function(e){
             var data = window.Misc.formToJson( e.target );
+                data.tercero = this.$('#recibo2_conceptosrc').attr('data-tercero');
 
+            if( _.isUndefined(this.$('#recibo2_conceptosrc').attr('data-tercero')) ){
+                return;
+            }
+            
             window.Misc.evaluateActionsCartera({
                 'data': data,
                 'wrap': this.$el,
                 'callback': (function (_this) {
-                    return function ( action , tipo)
+                    return function ( action )
                     {      
                         // Open CarteraActionView
                         if ( _this.carteraActionView instanceof Backbone.View ){
@@ -111,7 +116,6 @@ app || (app = {});
                             parameters: {
                                 data: data,
                                 action: action,
-                                tipo: tipo
                             }
                         });
                         _this.carteraActionView.render();
@@ -126,6 +130,11 @@ app || (app = {});
         onStoreItem: function (e) {
             if (!e.isDefaultPrevented()) {
                 e.preventDefault();
+
+                if( _.isUndefined(this.$('#recibo2_conceptosrc').attr('data-tercero')) ){
+                    alertify.error('Por favor ingrese cliente para agregar el detalle.');
+                    return;
+                }
 
                 this.detalleReciboList.trigger( 'store', this.$(e.target) );
             }
