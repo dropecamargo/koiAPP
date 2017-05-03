@@ -60,11 +60,11 @@
                     <div class="form-group col-md-3">
                         <div class="input-group input-group-sm">
                             <span class="input-group-btn">
-                                <button type="button" class="btn btn-default btn-flat btn-koi-search-tercero-component-table" data-field="recibo1_tercero">
+                                <button type="button" class="btn btn-default btn-flat btn-koi-search-tercero-component-table" data-field="recibo1_tercero" data-contacto="true">
                                     <i class="fa fa-user"></i>
                                 </button>
                             </span>
-                            <input id="recibo1_tercero" placeholder="Cliente" class="form-control tercero-koi-component" name="recibo1_tercero" type="text" maxlength="15" data-wrapper="recibos1-create" data-name="tercero_nombre" data-contacto="btn-add-contact" value="<%- tercero_nit %>" required>
+                            <input id="recibo1_tercero" placeholder="Cliente" class="form-control tercero-koi-component" name="recibo1_tercero" type="text" maxlength="15" data-wrapper="recibos1-create" data-name="tercero_nombre" value="<%- tercero_nit %>" required>
                         </div>
                     </div>
                     <div class="col-md-5 col-xs-10">
@@ -97,7 +97,7 @@
                     <div class="row"> 
                         <div class="form-group col-md-3 col-md-offset-2">
                             <label for="recibo2_conceptosrc" class="control-label">Concepto</label>
-                            <select name="recibo2_conceptosrc" id="recibo2_conceptosrc" class="form-control select2-default change-concepto" required>
+                            <select name="recibo2_conceptosrc" id="recibo2_conceptosrc" class="form-control select2-default change-concepto" data-tercero required>
                             @foreach( App\Models\Cartera\Conceptosrc::getConcepto() as $key => $value)
                                 <option  value="{{ $key }}">{{ $value }}</option>
                             @endforeach

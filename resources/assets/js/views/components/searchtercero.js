@@ -44,7 +44,7 @@ app || (app = {});
 
             this.$tercerosSearchTable = this.$modalComponent.find('#koi-search-tercero-component-table');
             
-			this.$inputContent = this.$("#"+$(e.currentTarget).attr("data-field"));
+            this.$inputContent = this.$("#"+$(e.currentTarget).attr("data-field"));
             this.$inputName = this.$("#"+this.$inputContent.attr("data-name"));
             this.$btnContact = this.$("#"+this.$inputContent.attr("data-contacto"));
             this.$inputAddress = this.$("#"+this.$inputContent.attr("data-address"));

@@ -32,6 +32,8 @@ class PuntoVenta extends BaseModel
      */
     protected $fillable = ['puntoventa_nombre', 'puntoventa_prefijo', 'puntoventa_resolucion_dian'];
 
+    protected $nullable = ['puntoventa_resolucion_dian','puntoventa_prefijo'];
+
     protected $boolean = ['puntoventa_activo'];
 
     public function isValid($data)
