@@ -22,6 +22,25 @@ app || (app = {});
         initialize : function(){
         },
 
+        validarExists : function(data){
+            var error = { success: false};
+
+            // Validate exist
+            var modelExits = _.find(this.models, function(item) {
+                return item.get('producto_serie') == data.producto_serie;
+            });
+
+            if(modelExits instanceof Backbone.Model ) {
+                var cantidad = parseInt(modelExits.get('pedidoc2_cantidad')) + parseInt(data.pedidoc2_cantidad)
+                //Setter del modelo
+                modelExits.set('pedidoc2_cantidad', cantidad ) ;
+                return error;
+            }
+
+            error.success = true;
+            return error;
+        },
+
         iva: function(){
             return this.reduce(function(sum, model) {
                 var iva = model.get('pedidoc2_iva_porcentaje')  / 100;

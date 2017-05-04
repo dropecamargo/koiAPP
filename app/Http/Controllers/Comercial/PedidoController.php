@@ -118,6 +118,8 @@ class PedidoController extends Controller
                     $pedidoComercial->pedidoc1_tercero = $tercero->id;
                     $pedidoComercial->pedidoc1_contacto = $contacto->id;
                     $pedidoComercial->pedidoc1_vendedor = $vendedor->id;
+                    $pedidoComercial->pedidoc1_usuario_elaboro = Auth::user()->id;
+                    $pedidoComercial->pedidoc1_fh_elaboro = date('Y-m-d H:m:s'); 
                     $pedidoComercial->save();
                     
                     $items = isset($data['detalle']) ? $data['detalle'] : null;
@@ -142,6 +144,7 @@ class PedidoController extends Controller
                         $pedidoComercial2->pedidoc2_pedidoc1 = $pedidoComercial->id;
                         $pedidoComercial2->pedidoc2_producto = $producto->id;
                         $pedidoComercial2->pedidoc2_subcategoria = $subcategoria->id;
+                        $pedidoComercial2->pedidoc2_margen = $subcategoria->subcategoria_margen_nivel1;
                         $pedidoComercial2->save();  
                     }
                     // Update consecutive sucursal_pedidoc in Sucursal

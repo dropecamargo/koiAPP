@@ -23,7 +23,8 @@ class ProductoController extends Controller
         if ($request->ajax()) {
 
             $query = Producto::query();
-            $query->select('producto.id as id', 'producto_serie', 'producto_nombre','producto_referencia','producto_costo','producto_precio1');
+            $query->select('producto.id as id', 'producto_serie', 'producto_nombre','producto_referencia','producto_costo','producto_precio1','impuesto.impuesto_porcentaje');
+            $query->join('impuesto', 'producto.producto_impuesto', '=', 'impuesto.id');
             // Persistent data filter
             if($request->has('persistent') && $request->persistent) {
                 session(['search_producto_referencia' => $request->has('producto_referencia') ? $request->producto_referencia : '']);
@@ -312,9 +313,13 @@ class ProductoController extends Controller
     public function search(Request $request)
     {
         if($request->has('producto_serie')) {
-            $producto = Producto::select('id', 'producto_nombre', 'producto_serie','producto_costo')->where('producto_serie', $request->producto_serie)->first();
+            $query = Producto::query();
+            $query->select('producto.id as id', 'producto_nombre', 'producto_serie','producto_costo','producto_precio1','impuesto.impuesto_porcentaje');
+            $query->join('impuesto','producto_impuesto', '=', 'impuesto.id');
+            $query->where('producto_serie', $request->producto_serie);
+            $producto = $query->first();
             if($producto instanceof Producto) {
-                return response()->json(['success' => true, 'id' => $producto->id, 'producto_nombre' => $producto->producto_nombre, 'producto_serie' => $producto->producto_serie ,'producto_costo'=>$producto->producto_costo]);
+                return response()->json(['success' => true, 'id' => $producto->id, 'producto_nombre' => $producto->producto_nombre, 'producto_serie' => $producto->producto_serie ,'producto_costo'=>$producto->producto_costo, 'producto_precio1'=>$producto->producto_precio1, 'impuesto_porcentaje'=> $producto->impuesto_porcentaje]);
             }
         }
         return response()->json(['success' => false]);

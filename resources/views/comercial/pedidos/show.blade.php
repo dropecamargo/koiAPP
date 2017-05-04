@@ -33,27 +33,40 @@
             	<div class="row">
             		<div class="form-group col-md-2">
             			<label class="control-label">Bruto</label>
-            			<div>{{$pedidoComercial->pedidoc1_bruto}}</div>
+            			<div>$ {{number_format($pedidoComercial->pedidoc1_bruto)}}</div>
             		</div>
             		<div class="form-group col-md-2">
             			<label class="control-label">Descuento</label>
-            			<div>{{$pedidoComercial->pedidoc1_descuento}}</div>
+            			<div>$ {{number_format($pedidoComercial->pedidoc1_descuento)}}</div>
             		</div>
             		<div class="form-group col-md-2">
             			<label class="control-label">Iva</label>
-            			<div>{{$pedidoComercial->pedidoc1_iva}}</div>
+            			<div>$ {{number_format($pedidoComercial->pedidoc1_iva)}}</div>
             		</div>
             		<div class="form-group col-md-2">
             			<label class="control-label">Retencion</label>
-            			<div>{{$pedidoComercial->pedidoc1_retencion}}</div>
+            			<div>$ {{number_format($pedidoComercial->pedidoc1_retencion)}}</div>
             		</div>
 
             		<div class="form-group col-md-2">
             			<label class="control-label">Total</label>
-            			<div>{{$pedidoComercial->pedidoc1_total}}</div>
+            			<div>$ {{number_format($pedidoComercial->pedidoc1_total)}}</div>
             		</div>
             	</div>
-            	<div class="row"></div>
+            	<div class="row">
+                    <div class="form-group col-md-2">
+                        <label class="control-label">Cuotas</label>
+                        <div>{{$pedidoComercial->pedidoc1_cuotas}}</div>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label class="control-label">Plazo</label>
+                        <div>{{$pedidoComercial->pedidoc1_plazo}}</div>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label class="control-label">Fecha Primer Pago</label>
+                        <div>{{$pedidoComercial->pedidoc1_primerpago}}</div>
+                    </div>   
+                </div>
             	<div class="row">
             		<div class="form-group col-md-12">
             			<label class="control-label"> Observaciones</label>

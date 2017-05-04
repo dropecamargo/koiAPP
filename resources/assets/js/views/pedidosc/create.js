@@ -187,7 +187,7 @@ app || (app = {});
                         descuento = 100 - (valor/precio);
                     this.$('#pedidoc2_descuento_porcentaje').val(descuento.toFixed(2));
                     this.$('#pedidoc2_descuento_valor').val(precio - (valor/100));
-                default:      
+                    break;
             }
         },
         /**
