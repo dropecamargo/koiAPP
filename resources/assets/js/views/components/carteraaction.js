@@ -13,7 +13,9 @@ app || (app = {});
         template: _.template( ($('#add-concepto-factura-tpl').html() || '') ),
     	events:{ 
             'submit #form-concepto-factura-component': 'onStoreItem',
-    	},
+            'ifChanged .change-check': 'changeCheck',
+            'change .change-pagar': 'changePagar'
+        },
         parameters: {
             data: { },
         },
@@ -89,6 +91,27 @@ app || (app = {});
             // Open modal
             this.$modal.modal('show');
         },
+
+        // Event change check
+        changeCheck: function(e){
+            var selected = $(e.target).is(':checked');
+            var id = this.$(e.currentTarget).attr('id');
+            
+            if( selected ) {
+                this.detalleFacturaList.agregar(id);
+            }else{
+                this.detalleFacturaList.eliminar(id);
+            }
+            this.ready();
+        },
+
+        // Event change pagar
+        changePagar: function(e){
+            // var select = this.$(e.currentTarget).attr('id');
+
+            // this.$('#'+select).iCheck('check');
+        },
+
         /**
         * Render view task by model
         * @param Object Model instance

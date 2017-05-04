@@ -1236,12 +1236,12 @@
     <% if( factura3_factura1 == '' ) { %>
         <th colspan="7" class="text-center">NO EXISTEN FACTURAS DE ESTE CLIENTE</th>
     <% }else{ %>
-	    <td><input type="checkbox" id="check_<%- id %>" name="check_<%- id %>"></td>
+	    <td><input type="checkbox" id="<%- id %>" class="change-check" name="check_<%- id %>"></td>
 	    <td>b</td>
 	    <td><%- factura3_vencimiento %></td>
 	    <td><%- factura1_numero %></td>
 	    <td><%- factura3_cuota %></td>
-	    <td><%- window.Misc.currency(factura3_valor) %></td>
-	    <td><input type="text" name="apagar_<%- id %>" class="form-control input-sm" data-currency></td>
+	    <td><%- window.Misc.currency(factura3_saldo) %></td>
+	    <td><input type="text" id="<%- id %>" name="pagar_<%- id %>" class="form-control input-sm change-pagar" data-currency value="<%- factura3_valor %>"></td>
 	<% } %>
 </script>

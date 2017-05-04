@@ -31,7 +31,6 @@ class Factura3Controller extends Controller
             $query->join('factura1', 'factura3_factura1', '=', 'factura1.id');
             $query->where('factura1_tercero', $tercero->id);
             $factura = $query->get();
-            dd($factura);
         }
         return response()->json($factura);
     }

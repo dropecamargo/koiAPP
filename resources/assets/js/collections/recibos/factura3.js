@@ -19,7 +19,29 @@ app || (app = {});
         * Constructor Method
         */
         initialize : function(){
+        },
+
+        agregar: function(id){
+            // Setter value
+            var model = _.find(this.models, function(item) {
+                return item.get('id') == id;
+            });
+
+            if(model instanceof Backbone.Model ) {
+                model.set('factura3_valor', model.get('factura3_saldo'));
+            }
+                
+        },
+
+        eliminar: function(id){
+            // Remove value
+            var model = _.find(this.models, function(item) {
+                return item.get('id') == id;
+            });
+            
+            if(model instanceof Backbone.Model ) {
+                model.set('factura3_valor', 0);
+            }
         }
-        
    });
 })(this, this.document);

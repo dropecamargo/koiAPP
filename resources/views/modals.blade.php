@@ -592,7 +592,7 @@
 		                	<th>Vencimiento</th>
 		                	<th>Numero</th>
 		                	<th>Cuota</th>
-		                	<th>Valor</th>
+		                	<th>Saldo</th>
 		                	<th>A pagar</th>
             			</tr>
                     </thead>
