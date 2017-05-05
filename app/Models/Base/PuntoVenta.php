@@ -32,6 +32,8 @@ class PuntoVenta extends BaseModel
      */
     protected $fillable = ['puntoventa_nombre', 'puntoventa_prefijo', 'puntoventa_resolucion_dian'];
 
+    protected $nullable = ['puntoventa_resolucion_dian','puntoventa_prefijo'];
+
     protected $boolean = ['puntoventa_activo'];
 
     public function isValid($data)
@@ -66,7 +68,7 @@ class PuntoVenta extends BaseModel
             $query = PuntoVenta::query();
             $query->orderby('puntoventa_nombre', 'asc');
             $collection = $query->lists('puntoventa_nombre', 'id');
-
+            $collection->prepend('', '');
             return $collection;
         });
     }

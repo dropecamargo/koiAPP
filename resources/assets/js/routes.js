@@ -190,6 +190,10 @@ app || (app = {});
             'conceptosrc/create(/)': 'getConceptosrcCreate',
             'conceptosrc/:conceptosrc/edit(/)': 'getConceptosrcEdit',
 
+            'facturas(/)': 'getFacturasMain',
+            'facturas/create(/)': 'getFacturaCreate',
+            'facturas/:facturas(/)': 'getRecibosShow',
+
             'recibos(/)': 'getRecibosMain',
             'recibos/create(/)': 'getRecibosCreate',
             'recibos/:recibos(/)': 'getRecibosShow',
@@ -235,6 +239,7 @@ app || (app = {});
             this.componentSearchCuentaView = new app.ComponentSearchCuentaView();
             this.componentSearchContactoView = new app.ComponentSearchContactoView();
             this.componentConsecutiveView = new app.ComponentConsecutiveView();
+            this.componentPedidocView = new app.ComponentSearchPedidocView();
 
       	},
 
@@ -1641,6 +1646,28 @@ app || (app = {});
             this.conceptosrcModel.fetch();
         },
 
+        // Facturas
+        getFacturasMain: function () {
+
+            if ( this.mainFacturaView instanceof Backbone.View ){
+                this.mainFacturaView.stopListening();
+                this.mainFacturaView.undelegateEvents();
+            }
+
+            this.mainFacturaView = new app.MainFacturasView( );
+        },
+
+        getFacturaCreate: function () {
+            this.facturaModel = new app.FacturaModel();
+
+            if ( this.createFacturaView instanceof Backbone.View ){
+                this.createFacturaView.stopListening();
+                this.createFacturaView.undelegateEvents();
+            }
+
+            this.createFacturaView = new app.CreateFacturaView({ model: this.facturaModel });
+            this.createFacturaView.render();
+        },
         // Recibos
         getRecibosMain: function () {
 

@@ -44,13 +44,21 @@ app || (app = {});
 
             this.$tercerosSearchTable = this.$modalComponent.find('#koi-search-tercero-component-table');
             
-			this.$inputContent = this.$("#"+$(e.currentTarget).attr("data-field"));
+            this.$inputContent = this.$("#"+$(e.currentTarget).attr("data-field"));
+            this.$concepto = this.$("#"+$(e.currentTarget).attr("data-concepto"));
             this.$inputName = this.$("#"+this.$inputContent.attr("data-name"));
             this.$btnContact = this.$("#"+this.$inputContent.attr("data-contacto"));
             this.$inputAddress = this.$("#"+this.$inputContent.attr("data-address"));
+            this.$inputPuntoVenta = this.$("#"+this.$inputContent.attr("data-punto"));
 
+            this.$changeIf = this.$inputContent.attr("data-change");
             this.$inputCliente = this.$inputContent.attr("data-cliente");
             this.$inputVendedor = this.$inputContent.attr("data-vendedor");
+
+            if (this.$inputPuntoVenta.val() == ''  && this.$inputPuntoVenta.length > 0) {
+                alertify.error('Por favor ingrese punto de venta antes seleccionar tercero.');
+                return;
+            }
             
             this.tercerosSearchTable = this.$tercerosSearchTable.DataTable({
                 dom: "<'row'<'col-sm-12'tr>>" +
@@ -117,7 +125,15 @@ app || (app = {});
                 this.$btnContact.attr('data-tercero', data.id);
             }
 
+            if(this.$concepto.length > 0) {
+                this.$concepto.attr('data-tercero', data.id);
+            }
+
 			this.$modalComponent.modal('hide');
+
+            if (this.$changeIf == "true") {
+                this.$inputContent.trigger('change');       
+            }
 		},
 
 		search: function(e) {

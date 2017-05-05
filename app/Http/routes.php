@@ -169,6 +169,7 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::group(['prefix' => 'recibos'], function()
 	{
 		Route::resource('detalle', 'Cartera\Recibo2Controller');
+		Route::resource('factura', 'Cartera\Factura3Controller');
 	});
 
 	Route::group(['prefix' => 'conceptosrc'], function()
@@ -182,4 +183,5 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::resource('mediopagos', 'Cartera\MedioPagoController', ['except' => ['destroy']]);
 	Route::resource('conceptosrc', 'Cartera\ConceptosrcController', ['except' => ['destroy']]);
 	Route::resource('recibos', 'Cartera\Recibo1Controller', ['only' => ['index','create','store','show']]);
+	Route::resource('facturas', 'Cartera\Factura1Controller', ['except' => ['destroy', 'edit' , 'update']]);
 });

@@ -13,7 +13,8 @@ app || (app = {});
 
       	el: 'body',
 		events: {
-			'change .change-sucursal-consecutive-koi-component': 'sucursalChange'
+            'change .change-sucursal-consecutive-koi-component': 'sucursalChange',
+			'change .change-puntoventa-consecutive-koi-component': 'puntoVentaChange'
 		},
 
         /**
@@ -50,6 +51,38 @@ app || (app = {});
                     if(documents == 'traslados') consecutive = resp.sucursal_tras;
                     if(documents == 'pedidoc') consecutive = resp.sucursal_pedidoc;
                     if(documents == 'recibos') consecutive = resp.sucursal_reci;
+                    
+                    // Set consecutive
+                    _this.$consecutive.val( parseInt(consecutive) + 1);
+                })
+                .fail(function(jqXHR, ajaxOptions, thrownError) {
+                    window.Misc.removeSpinner( _this.$wrapperContent );
+                    alertify.error(thrownError);
+                });
+            }
+        },
+        puntoVentaChange: function(e){
+            var _this = this;
+                puntoVenta = $(e.currentTarget).val();
+
+            // Reference to fields
+            this.$consecutive = $("#"+$(e.currentTarget).attr("data-field"));
+            this.$wrapperContent = $("#"+$(e.currentTarget).attr("data-wrapper"));
+
+            if (puntoVenta != '') {
+
+                $.ajax({
+                    url: window.Misc.urlFull(Route.route('puntosventa.show', {puntosventa: puntoVenta})),
+                    type: 'GET',
+                    beforeSend: function() {
+                        window.Misc.setSpinner( _this.$wrapperContent );
+                    }
+                })
+                .done(function(resp) {
+                    window.Misc.removeSpinner( _this.$wrapperContent );
+                    // Eval consecutive
+                    var consecutive = 0;
+                    consecutive = resp.puntoventa_numero;
                     
                     // Set consecutive
                     _this.$consecutive.val( parseInt(consecutive) + 1);

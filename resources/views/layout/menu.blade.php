@@ -71,18 +71,23 @@
         </ul>
     </li>
     {{--Cartera--}}
-        <li class="{{ in_array(Request::segment(1), ['autorizacionesca','bancos','conceptosrc','cuentabancos','autorizaco','mediopagos', 'recibos']) ? 'active' : '' }}">
+        <li class="{{ in_array(Request::segment(1), ['autorizacionesca','bancos','conceptosrc','cuentabancos','autorizaco','mediopagos', 'recibos','facturas']) ? 'active' : '' }}">
         <a href="#">
             <i class="fa fa-suitcase"></i> <span>Cartera</span><i class="fa fa-angle-left pull-right"></i>
         </a>
         <ul class="treeview-menu">
-            <li class="{{ in_array(Request::segment(1), ['recibos']) ? 'active' : '' }}">
+            <li class="{{ in_array(Request::segment(1), ['recibos','facturas']) ? 'active' : '' }}">
                 <a href="#">
                     <i class="fa fa-wpforms"></i> Módulos <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
                     <li class="{{ Request::segment(1) == 'recibos' ? 'active' : '' }}">
                         <a href="{{ route('recibos.index') }}"><i class="fa fa-file-text-o"></i> Recibo de caja</a>
+                    </li>
+                </ul>
+                <ul class="treeview-menu">
+                    <li class="{{ Request::segment(1) == 'facturas' ? 'active' : '' }}">
+                        <a href="{{ route('facturas.index') }}"><i class="fa fa-pencil-square-o"></i> Facturas</a>
                     </li>
                 </ul>
             </li>

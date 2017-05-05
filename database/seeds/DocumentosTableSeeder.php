@@ -32,5 +32,10 @@ class DocumentosTableSeeder extends Seeder
             'documentos_codigo' => 'FACT',
             'documentos_nombre' => 'FACTURA'
         ]);
+
+        Documentos::create([
+            'documentos_codigo' => 'PEDC',
+            'documentos_nombre' => 'PEDIDO COMERCIAL'
+        ]);
     }
 }

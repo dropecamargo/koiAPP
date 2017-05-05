@@ -34,10 +34,10 @@ class CreateFactura1Table extends Migration
             $table->text('factura1_observaciones');
             $table->integer('factura1_pedidoc1')->unsigned();
             $table->boolean('factura1_anulada')->default(false);
-            $table->integer('factura1_usuario_elaboro')->unsigned();
+            $table->integer('factura1_usuario_elaboro')->unsigned()->nullable();
             $table->dateTime('factura1_fh_elaboro');
-            $table->integer('factura1_usuario_anulo')->unsigned();
-            $table->dateTime('factura1_fh_anulo');
+            $table->integer('factura1_usuario_anulo')->unsigned()->nullable();
+            $table->dateTime('factura1_fh_anulo')->nullable();
 
             $table->foreign('factura1_documentos')->references('id')->on('documentos')->onDelete('restrict');
             $table->foreign('factura1_puntoventa')->references('id')->on('puntoventa')->onDelete('restrict');
