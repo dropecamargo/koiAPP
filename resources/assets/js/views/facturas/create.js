@@ -15,10 +15,10 @@ app || (app = {});
         template: _.template(($('#add-facturas-tpl').html() || '') ),
 
         events: {
-            
-            'click .submit-pedidosc' : 'submitForm',
+            'click .submit-factura' : 'submitForm',
+            'change #factura1_pedido' : 'referenceViewCollection',
             'submit #form-factura1' :'onStore',
-            // 'submit #form-factura-pedidoc' :'onStoreItem',
+            'click .a-click-modals-lotes-koi': 'renderModals',
         },
         parameters: {
         },
@@ -31,7 +31,8 @@ app || (app = {});
             // Attributes
             this.$wraperForm = this.$('#render-form-factura');
 
-            this.detallePedidoc = new app.PedidocDetalleCollection();
+            this.detalleFactura = new app.DetalleFactura2Collection();
+
             // Events
             this.listenTo( this.model, 'change', this.render );
             this.listenTo( this.model, 'sync', this.responseServer );
@@ -39,64 +40,85 @@ app || (app = {});
             
             this.ready(); 
         },
-
-
         /*
         * Render View Element
         */
         render: function() {
-                        
             var attributes = this.model.toJSON();
             this.$wraperForm.html( this.template(attributes) );
 
             this.$form = this.$('#form-factura1');
 
-            //Reference views
-            this.referenceViews();
-        },
-        /*
-        *References the collection
-        */
-        referenceViews:function(){ 
-            this.detallePedidocView = new app.PedidocDetalleView( {
-                collection: this.detallePedidoc,
-                parameters: {
-                    wrapper: this.el,
-                    edit: true,
-                    dataFilter: {
-                        'id': this.model.get('id')
-                    }
-               }
-            });
         },
         /**
-        * Event submit pedidoc1
+        * Event submit factura1
         */
         submitForm: function (e) {
             this.$form.submit();
         },
-
-        /**
-        * Event Create Ajuste
+        /*
+        *Reference fetch
         */
-        onStore: function (e) {
-            
-            if (!e.isDefaultPrevented()) {
-                e.preventDefault();
-                var data = $.extend({}, window.Misc.formToJson( e.target ) , this.detallePedidoc.totalize());
-                    data.detalle = this.detallePedidoc.toJSON();
-                this.model.save( data, {patch: true, silent: true} );
-            }   
+        referenceViewCollection: function(e, data){
+            e.preventDefault();
+            this.detalleFacturaView = new app.FacturaDetalle2View( {
+                collection: this.detalleFactura,
+                parameters: {
+                    wrapper: this.el,
+                    edit: true,
+                    dataFilter: {
+                        'id_pedido': data
+                    }
+               }
+            }); 
         },
         /**
-        *Event store item the collection
+        * Event Create facturas
         */
-        onStoreItem: function(e){
+        onStore: function (e) {
             if (!e.isDefaultPrevented()) {
                 e.preventDefault();
-                this.detallePedidoc.trigger( 'store', this.$(e.target) );
-            }
-        },    
+                var data = window.Misc.formToJson( e.target );
+                    data.factura2 = this.detalleFactura.toJSON();
+                this.model.save( data, {patch: true, silent: true} );
+            }   
+        },  
+        renderModals:function(e){
+            e.preventDefault();
+            var model = _.find(this.detalleFactura.models, function(item) {
+                return item.get('id') == this.$(e.currentTarget).attr('data-id');
+            });
+            var data = {}; 
+                data.producto_serie = model.get('producto_serie');
+                data.producto_nombre = model.get('producto_nombre');
+                data.tipo = 'S';
+                data.sucursal = this.$('#factura1_sucursal').val();
+            window.Misc.evaluateActionsInventory({
+                'data': data,
+                'wrap': this.$el,
+                'callback': (function (_this) {
+                    return function ( action , tipo)
+                    {      
+                        // Open InventarioActionView
+                        if ( _this.inventarioActionView instanceof Backbone.View ){
+                            _this.inventarioActionView.stopListening();
+                            _this.inventarioActionView.undelegateEvents();
+                        }
+
+                        _this.inventarioActionView = new app.InventarioActionView({
+                            model: _this.model,
+                            collection: _this.detalleFactura,
+                            parameters: {
+                                data: data,
+                                action: action,
+                                tipo: tipo
+                            }
+                        });
+                        _this.inventarioActionView.render();
+                    }
+                })(this)
+            });  
+        },
         /**
         * fires libraries js
         */

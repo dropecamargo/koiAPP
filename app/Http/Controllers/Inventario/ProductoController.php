@@ -202,7 +202,6 @@ class ProductoController extends Controller
     public function evaluate(Request $request)
     {       
         $tipoMovimiento = '';
-        // dd($request->all());
         // Prepare response
         $response = new \stdClass();
         $response->action = "";

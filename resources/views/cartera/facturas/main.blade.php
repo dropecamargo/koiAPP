@@ -52,7 +52,7 @@
                                     <i class="fa fa-user"></i>
                                 </button>
                             </span>
-                            <input id="factura1_tercero" placeholder="Cliente" class="form-control tercero-koi-component tercero-factura-change-koi" name="factura1_tercero" type="text" maxlength="15" data-formapago="factura1_formapago" data-plazo="factura1_plazo" data-punto="factura1_puntoventa" data-cuotas="factura1_cuotas" data-primerpago="factura1_primerpago" data-contacto="btn-add-contact" data-nameTC="tcontacto_nombre" data-dirTC="tcontacto_direccion" data-change="true" data-wrapper="factura-create" data-cliente="true" data-name="factura1_terecero_nombre" value="<%- tercero_nit %>" data-vendedorT="factura1_vendedor" data-sucursalP="factura1_sucursal" data-obs="factura1_observaciones" data-address="tercero_direccion" required>
+                            <input id="factura1_tercero" placeholder="Cliente" class="form-control tercero-koi-component tercero-factura-change-koi" name="factura1_tercero" type="text" maxlength="15" data-formapago="factura1_formapago" data-plazo="factura1_plazo" data-punto="factura1_puntoventa" data-cuotas="factura1_cuotas" data-primerpago="factura1_primerpago" data-contacto="btn-add-contact" data-nameTC="tcontacto_nombre" data-dirTC="tcontacto_direccion" data-change="true" data-wrapper="factura-create" data-cliente="true" data-name="factura1_terecero_nombre" value="<%- tercero_nit %>" data-vendedorT="factura1_vendedor" data-numPedido="factura1_pedido" data-sucursalP="factura1_sucursal" data-obs="factura1_observaciones" data-address="tercero_direccion" required>
                         </div>
                     </div>
                     <div class="col-sm-4 col-xs-10">
@@ -81,8 +81,12 @@
                     </div>
                 </div>
                 <div class="row">
+                    <label for="factura1_pedido" class="col-sm-1 col-md-1 control-label">N° Pedido</label>
+                    <div class="form-group col-sm-1">
+                        <input name="factura1_pedido" id="factura1_pedido" class="form-control" readonly="" required>
+                    </div>  
                     <label for="factura1_formapago" class="col-sm-1 col-md-1 control-label">Pago</label>
-                    <div class="form-group col-sm-2">
+                    <div class="form-group col-sm-1">
                         <input name="factura1_formapago" id="factura1_formapago" class="form-control" required>
                     </div>                                           
                     <label for="factura1_plazo" class="col-sm-1 col-md-1 control-label">Plazo</label>
@@ -115,10 +119,10 @@
             </form>
             <div class="row">
                 <div class="col-md-2 col-md-offset-4 col-sm-6 col-xs-6 text-left">
-                    <a href="{{ route('pedidosc.index') }}" class="btn btn-default btn-sm btn-block">{{ trans('app.cancel') }}</a>
+                    <a href="{{ route('facturas.index') }}" class="btn btn-default btn-sm btn-block">{{ trans('app.cancel') }}</a>
                 </div>
                 <div class="col-md-2  col-sm-5 col-xs-6 text-right">
-                    <button type="button" class="btn btn-primary btn-sm btn-block submit-pedidosc">{{ trans('app.save') }}</button>
+                    <button type="button" class="btn btn-primary btn-sm btn-block submit-factura">{{ trans('app.save') }}</button>
                 </div>
             </div>
             <br>
@@ -158,16 +162,16 @@
         </div>
     </script>
 
-    <script type="text/template" id="add-pedidoc-item-tpl">
+    <script type="text/template" id="add-factura-item-tpl">
         <%if(edit){ %>
             <td class="text-center">
-                <a class="btn btn-default btn-xs item-detalleajuste-remove" data-resource = "<%- id %>">
+                <a class="btn btn-default btn-xs item-detallefactura-remove" data-resource = "<%- id %>">
                     <span><i class="fa fa-times"></i></span>
                 </a>
             </td>
         <% } %>
             
-        <td><%- producto_serie %></td>
+        <td><a href="#" class="a-click-modals-lotes-koi" data-id = "<%- id %>"><%- producto_serie %></a></td>
         <td><%- producto_nombre %></td>
         <td><%- factura2_cantidad %></td>
         <td><%- window.Misc.currency(factura2_costo) %></td>

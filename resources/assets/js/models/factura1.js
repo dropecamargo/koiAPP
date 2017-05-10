@@ -1,5 +1,5 @@
 /**
-* Class Factura3Model extend of Backbone Model
+* Class FacturaModel extend of Backbone Model
 * @author KOI || @dropecamargo
 * @link http://koi-ti.com
 */

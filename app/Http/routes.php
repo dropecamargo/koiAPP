@@ -190,5 +190,9 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::resource('conceptonotas', 'Cartera\ConceptoNotaController', ['except' => ['destroy']]);
 	Route::resource('recibos', 'Cartera\Recibo1Controller', ['only' => ['index','create','store','show']]);
 	Route::resource('notas', 'Cartera\Nota1Controller', ['only' => ['index','create','store','show']]);
+	Route::group(['prefix' => 'facturas'], function()
+	{
+		Route::resource('detalle', 'Cartera\Factura2Controller');
+	});
 	Route::resource('facturas', 'Cartera\Factura1Controller', ['except' => ['destroy', 'edit' , 'update']]);
 });
