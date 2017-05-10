@@ -30,6 +30,7 @@ app || (app = {});
 
             // Attributes
             this.$wraperForm = this.$('#render-form-nota');
+            this.detalleNotaList = new app.DetalleNotaList();
 
             // Events
             this.listenTo( this.model, 'change', this.render );
@@ -53,33 +54,32 @@ app || (app = {});
             var data = window.Misc.formToJson( e.target );
                 data.tercero = this.$('#nota1_conceptonota').attr('data-tercero');
 
-                console.log(data);
-            // if( !_.isUndefined(data.nota1_conceptonota) && !_.isNull(data.nota1_conceptonota) && data.nota1_conceptonota != ''){
-            //     window.Misc.evaluateActionsCartera({
-            //         'data': data,
-            //         'wrap': this.$el,
-            //         'callback': (function (_this) {
-            //             return function ( action )
-            //             {      
-            //                 // Open CarteraActionView
-            //                 if ( _this.carteraActionView instanceof Backbone.View ){
-            //                     _this.carteraActionView.stopListening();
-            //                     _this.carteraActionView.undelegateEvents();
-            //                 }
+            if( !_.isUndefined(data.nota1_conceptonota) && !_.isNull(data.nota1_conceptonota) && data.nota1_conceptonota != ''){
+                window.Misc.evaluateActionsCartera({
+                    'data': data,
+                    'wrap': this.$el,
+                    'callback': (function (_this) {
+                        return function ( action )
+                        {      
+                            // Open CarteraActionView
+                            if ( _this.carteraActionView instanceof Backbone.View ){
+                                _this.carteraActionView.stopListening();
+                                _this.carteraActionView.undelegateEvents();
+                            }
 
-            //                 _this.carteraActionView = new app.CarteraActionView({
-            //                     model: _this.model,
-            //                     collection: _this.detalleReciboList,
-            //                     parameters: {
-            //                         data: data,
-            //                         action: action,
-            //                     }
-            //                 });
-            //                 _this.carteraActionView.render();
-            //             }
-            //         })(this)
-            //     });
-            // }
+                            _this.carteraActionView = new app.CarteraActionView({
+                                model: _this.model,
+                                collection: _this.detalleReciboList,
+                                parameters: {
+                                    data: data,
+                                    action: action,
+                                }
+                            });
+                            _this.carteraActionView.render();
+                        }
+                    })(this)
+                });
+            }
         },
 
         /*

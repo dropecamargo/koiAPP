@@ -83,7 +83,7 @@
                 </a>
                 <ul class="treeview-menu">
                     <li class="{{ Request::segment(1) == 'notas' ? 'active' : '' }}">
-                        <a href="{{ route('notas.index') }}"><i class="fa fa-pencil-square-o"></i> Nota</a>
+                        <a href="{{ route('notas.index') }}"><i class="fa fa-book"></i> Nota</a>
                     </li>
                     <li class="{{ Request::segment(1) == 'recibos' ? 'active' : '' }}">
                         <a href="{{ route('recibos.index') }}"><i class="fa fa-file-text-o"></i> Recibo de caja</a>

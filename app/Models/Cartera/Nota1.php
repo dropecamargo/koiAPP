@@ -33,6 +33,12 @@ class Nota1 extends BaseModel
 
 		$validator = Validator::make($data, $rules);
     	if ($validator->passes()) {
+            // Validar Carrito
+            $nota2 = isset($data['nota2']) ? $data['nota2'] : null;
+            if(!isset($nota2) || $nota2 == null || !is_array($nota2) || count($nota2) == 0) {
+                $this->errors = 'Por favor ingrese el detalle para realizar la nota.';
+                return false;
+            }
             return true;
         }
 		$this->errors = $validator->errors();
