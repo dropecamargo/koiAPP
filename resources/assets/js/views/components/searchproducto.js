@@ -100,8 +100,11 @@ app || (app = {});
 			this.$inputName.val( data.producto_nombre );
 
 			(!_.isUndefined( this.inputCosto )) ? this.$inputCosto.val(window.Misc.currency(data.producto_costo)) : '';
-			(! _.isUndefined(this.$inputPrecio1) ) ? this.$inputPrecio1.val(window.Misc.currency(data.producto_precio1)) : '';
-
+			
+			if (! _.isUndefined(this.$inputPrecio1)) {
+				this.$inputPrecio1.val(window.Misc.currency(data.producto_precio1));
+				this.$('#pedidoc2_iva_porcentaje').val(data.impuesto_porcentaje) ;
+			}
 			if(!_.isUndefined(data.producto_maneja_serie) && data.producto_maneja_serie == 1){
 				this.$('#ajuste2_cantidad_salida').val(1).prop('readonly' , true);
 				this.$('#traslado2_cantidad').val(1).prop('readonly' , true);
@@ -134,6 +137,7 @@ app || (app = {});
 			this.$inputName = this.$("#"+$(e.currentTarget).attr("data-name"));
 			this.$inputCosto = this.$("#"+$(e.currentTarget).attr("data-costo"));
 			this.$wraperConten = this.$("#"+$(e.currentTarget).attr("data-wrapper"));
+			this.$inputPrecio1 = this.$("#"+this.$inputContent.attr("data-price"));			
         	this.equalsRef = this.$inputContent.attr("data-ref");
 			if(this.equalsRef == "true" && this.$('#ajuste1_sucursal').val() == '' ){
 				alertify.error('Por favor ingrese sucursal antes agregar producto.');
@@ -166,6 +170,10 @@ app || (app = {});
 	                    }	
 	                    if(!_.isUndefined(resp.producto_costo) && !_.isNull(resp.producto_costo)){
 							_this.$inputCosto.val(window.Misc.currency(resp.producto_costo));
+	                    }
+	                    if(!_.isUndefined(resp.producto_precio1) && !_.isNull(resp.producto_precio1)){
+							_this.$inputPrecio1.val(window.Misc.currency(resp.producto_precio1));
+							_this.$('#pedidoc2_iva_porcentaje').val(resp.impuesto_porcentaje);
 	                    }	                   
 	                }
 	            })

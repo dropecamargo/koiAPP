@@ -1,7 +1,7 @@
-@extends('comercial.pedidos.main')
+@extends('cartera.facturas.main')
 
 @section('breadcrumb')
-    <li><a href="{{ route('pedidosc.index')}}">Pedidos</a></li>
+    <li><a href="{{ route('facturas.index')}}">Facturas</a></li>
     <li class="active">{{ $pedidoComercial->id }}</li>
 @stop
 

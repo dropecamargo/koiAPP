@@ -68,7 +68,7 @@ class PuntoVenta extends BaseModel
             $query = PuntoVenta::query();
             $query->orderby('puntoventa_nombre', 'asc');
             $collection = $query->lists('puntoventa_nombre', 'id');
-
+            $collection->prepend('', '');
             return $collection;
         });
     }

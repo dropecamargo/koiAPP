@@ -95,12 +95,17 @@ app || (app = {});
             var _this = this,
                 data = window.Misc.formToJson( form );
                 data.id = this.parameters.dataFilter.id;
+            
+            var valid = this.collection.validarExists(data);
+            if(!valid.success){
+                this.totalize();
+                return;
+            }
             // Set Spinner
             window.Misc.setSpinner( this.parameters.wrapper );
             
             // Add model in collection
             var detallePedidocModel = new app.PedidoscDetalleModel();
-            
             detallePedidocModel.save(data, {
                 success : function(model, resp) {
                     if(!_.isUndefined(resp.success)) {
@@ -119,7 +124,6 @@ app || (app = {});
 
                         // Add model in collection
                         _this.collection.add(model);
-
                     }
                 },
                 error : function(model, error) {
@@ -142,7 +146,7 @@ app || (app = {});
         /**
         *setter pedidoc_subtotal the model
         */
-        setterModel(model){
+        setterModel: function(model){
             var iva = model.get('pedidoc2_iva_porcentaje')  / 100;
                 precio = parseFloat(model.get('pedidoc2_precio_venta')) * iva * parseFloat(model.get('pedidoc2_cantidad') ) ;
                 precio = precio - (parseFloat(model.get('pedidoc2_descuento_valor'))) * parseFloat(model.get('pedidoc2_cantidad') ) ;

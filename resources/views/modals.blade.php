@@ -122,6 +122,21 @@
 	</div>
 </div>
 
+<!-- Modal search pedidoc -->
+<div class="modal fade" id="modal-search-pedidoc-component" data-backdrop="static" data-keyboard="false" aria-hidden="true">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header small-box {{ config('koi.template.bg') }}">
+				<button type="button" class="close icon-close-koi" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title"><strong>Pedidos comerciales</strong></h4>
+			</div>
+			<div class="content-modal"></div>
+		</div>
+	</div>
+</div>
+
 <!-- Modal concepto-factura -->
 <div class="modal fade" id="modal-concepto-factura-component" data-backdrop="static" data-keyboard="false" aria-hidden="true">
 	<div class="modal-dialog modal-lg" role="document">
@@ -346,6 +361,52 @@
 				                <th>Referencia</th>
 				                <th>Serie</th>
 			                	<th>Nombre</th>
+				            </tr>
+				        </thead>
+		            </table>
+	           	</div>
+	     	</div>
+		</div>
+	{!! Form::close() !!}
+</script>
+<script type="text/template" id="koi-search-pedidoc-component-tpl">
+
+	{!! Form::open(['id' => 'form-koi-search-pedidoc-component', 'class' => 'form-horizontal', 'data-toggle' => 'validator', 'role' => 'form']) !!}
+		<div class="modal-body">
+			<div class="form-group">
+				<label for="koi_search_pedidoc_numero" class=" col-md-offset-1 col-md-1 control-label">Numero</label>
+				<div class="col-md-3 ">
+					{!! Form::text('koi_search_pedidoc_numero', null, ['id' => 'koi_search_pedidoc_numero', 'class' => 'form-control input-sm', 'placeholder' => 'Número']) !!}
+				</div>
+				<!-- <label for="koi_search_pedidoc_cliente" class="col-md-1 control-label">Cliente</label>
+				<div class="col-md-2">
+					{!! Form::text('koi_search_pedidoc_cliente', null, ['id' => 'koi_search_pedidoc_cliente', 'class' => 'form-control input-sm', 'placeholder' => 'Cliente']) !!}
+				</div> -->
+
+				<label for="koi_search_pedidoc_sucursal" class="col-md-1 control-label">Sucursal</label>
+				<div class="col-md-5">
+					{!! Form::text('koi_search_pedidoc_sucursal', null, ['id' => 'koi_search_pedidoc_sucursal', 'class' => 'form-control input-sm input-toupper', 'placeholder' => 'Sucursal']) !!}
+				</div>
+			</div>
+
+			<div class="form-group">
+				<div class="col-md-offset-4 col-md-2 col-xs-6">
+					<button type="button" class="btn btn-primary btn-block btn-sm btn-search-koi-search-pedidoc-component">Buscar</button>
+				</div>
+				<div class="col-md-2 col-xs-6">
+					<button type="button" class="btn btn-default btn-block btn-sm btn-clear-koi-search-pedidoc-component">Limpiar</button>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<div class="col-md-12 table-responsive">
+					<table id="koi-search-pedidoc-component-table" class="table table-bordered table-striped" cellspacing="0" width="100%">
+		                <thead>
+				            <tr>
+				                <th>Numero</th>
+				                <th>Sucursal</th>
+			                	<th>Fecha</th>
+			                	<th>Vendedor</th>
 				            </tr>
 				        </thead>
 		            </table>

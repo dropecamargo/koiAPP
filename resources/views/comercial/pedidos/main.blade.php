@@ -191,7 +191,7 @@
                 <div id="wrapper-discount" class="row">
                     <label class="col-md-1 col-sm-1 control-label">Descuento</label>
                     <div class="form-group col-md-1 col-sm-1">
-                        <input type="text" id="pedidoc2_descuento_porcentaje" name="pedidoc2_descuento_porcentaje" class="spinner-percentage  input-sm form-control desc-porcentage" min="0" value="0" required>
+                        <input type="text" id="pedidoc2_descuento_porcentaje" name="pedidoc2_descuento_porcentaje" class="spinner-percentage  input-sm form-control desc-porcentage" min="0"  max ="100" value="0" required>
                     </div>
                     <div class="col-md-1 col-sm-1">
                         <label class="radio-inline without-padding">
@@ -199,7 +199,7 @@
                         </label>
                     </div>
                     <div class=" col-md-2 col-sm-2 form-group">
-                        <input type="text" id="pedidoc2_descuento_valor" name="pedidoc2_descuento_valor" class="form-control input-sm desc-value" data-currency-price required>
+                        <input type="text" id="pedidoc2_descuento_valor" name="pedidoc2_descuento_valor" value="0" class="form-control input-sm desc-value" data-currency-price required>
                     </div>
                     <div class="col-md-1 col-sm-1">
                         <label class="radio-inline without-padding">
@@ -208,7 +208,7 @@
                     </div> 
                         
                     <div class="form-group col-md-2 col-sm-2">
-                        <input type="text" id="pedidoc2_precio_venta" name="pedidoc2_precio_venta" class="form-control input-sm desc-finally" data-currency-price required>
+                        <input type="text" id="pedidoc2_precio_venta" name="pedidoc2_precio_venta" value="0" class="form-control input-sm desc-finally" data-currency-price required>
                     </div>
                     <div class="col-md-1 col-sm-1">
                         <label class="radio-inline without-padding">
@@ -217,7 +217,7 @@
                     </div> 
                     <label class=" col-md-1 col-sm-1 control-label">Iva</label>
                     <div class="form-group col-md-1 col-sm-1">
-                        <input type="number" class="input-sm form-control" min="0" id="pedidoc2_iva_porcentaje" name="pedidoc2_iva_porcentaje" required>
+                        <input type="text" class="input-sm form-control spinner-percentage" min="0" id="pedidoc2_iva_porcentaje" name="pedidoc2_iva_porcentaje" required>
                     </div>
                     <div class="col-md-1 col-sm-1">
                         <button type="submit" class="btn btn-success btn-sm btn-block">

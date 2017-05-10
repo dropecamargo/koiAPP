@@ -24,23 +24,36 @@ class PedidoController extends Controller
     {
         if ($request->ajax()) {
             $query = Pedidoc1::query();
-            $query = Pedidoc1::query();
-            $query->select('pedidoc1.*','tercero_nombre1','tercero_nit', 'tercero_razonsocial', 'tercero_nombre1', 'tercero_nombre2', 'tercero_apellido1', 'tercero_apellido2','sucursal_nombre', 
+            $query->select('pedidoc1.*', 'tcontacto_direccion','sucursal_nombre', DB::raw("CONCAT(tcontacto_nombres,' ',tcontacto_apellidos) AS tcontacto_nombre"), DB::raw("CONCAT(v.tercero_nombre1, ' ', v.tercero_nombre2, ' ',v.tercero_apellido1, ' ',v.tercero_apellido2) as vendedor_nombre"),
                 DB::raw("
                     CONCAT(
-                        (CASE WHEN tercero_persona = 'N'
-                            THEN CONCAT(tercero_nombre1,' ',tercero_nombre2,' ',tercero_apellido1,' ',tercero_apellido2,
-                                (CASE WHEN (tercero_razonsocial IS NOT NULL AND tercero_razonsocial != '') THEN CONCAT(' - ', tercero_razonsocial) ELSE '' END)
+                        (CASE WHEN t.tercero_persona = 'N'
+                            THEN CONCAT(t.tercero_nombre1,' ',t.tercero_nombre2,' ',t.tercero_apellido1,' ',t.tercero_apellido2,
+                                (CASE WHEN (t.tercero_razonsocial IS NOT NULL AND t.tercero_razonsocial != '') THEN CONCAT(' - ', t.tercero_razonsocial) ELSE '' END)
                             )
-                            ELSE tercero_razonsocial
+                            ELSE t.tercero_razonsocial
                         END)
                     
                     ) AS tercero_nombre"
                 )   
             );
-            $query->join('tercero', 'pedidoc1.pedidoc1_tercero', '=', 'tercero.id');
+            $query->join('tercero as t', 'pedidoc1.pedidoc1_tercero', '=', 't.id');
+            $query->join('tercero as v', 'pedidoc1.pedidoc1_vendedor', '=', 'v.id');
             $query->join('sucursal', 'pedidoc1.pedidoc1_sucursal', '=', 'sucursal.id');
-            return Datatables::of($query)->make(true);
+            $query->join('tcontacto', 'pedidoc1.pedidoc1_contacto', '=', 'tcontacto.id');
+            return Datatables::of($query)
+                    ->filter(function($query) use($request) {
+                        // Tercero
+                        if($request->has('tercero')) {
+                            $tercero = Tercero::where('tercero_nit', $request->tercero)->first();
+                            if(!$tercero instanceof Tercero){
+                                return response()->json(['success' => false, 'errors' => 'daniel es una bitch!!!']);
+                            }
+                            $query->where('pedidoc1_tercero', $tercero->id);
+                        }
+                    })
+                    ->make(true);
+
         }
         return view('comercial.pedidos.index');
     }
@@ -118,6 +131,8 @@ class PedidoController extends Controller
                     $pedidoComercial->pedidoc1_tercero = $tercero->id;
                     $pedidoComercial->pedidoc1_contacto = $contacto->id;
                     $pedidoComercial->pedidoc1_vendedor = $vendedor->id;
+                    $pedidoComercial->pedidoc1_usuario_elaboro = Auth::user()->id;
+                    $pedidoComercial->pedidoc1_fh_elaboro = date('Y-m-d H:m:s'); 
                     $pedidoComercial->save();
                     
                     $items = isset($data['detalle']) ? $data['detalle'] : null;
@@ -142,6 +157,7 @@ class PedidoController extends Controller
                         $pedidoComercial2->pedidoc2_pedidoc1 = $pedidoComercial->id;
                         $pedidoComercial2->pedidoc2_producto = $producto->id;
                         $pedidoComercial2->pedidoc2_subcategoria = $subcategoria->id;
+                        $pedidoComercial2->pedidoc2_margen = $subcategoria->subcategoria_margen_nivel1;
                         $pedidoComercial2->save();  
                     }
                     // Update consecutive sucursal_pedidoc in Sucursal
