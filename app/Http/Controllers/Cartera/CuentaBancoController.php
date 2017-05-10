@@ -7,8 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\Models\Cartera\CuentaBanco;
-use App\Models\Cartera\Banco;
+use App\Models\Cartera\CuentaBanco, App\Models\Cartera\Banco;
 use App\Models\Contabilidad\PlanCuenta;
 use DB, Log, Cache, Datatables;
 

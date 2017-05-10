@@ -34,12 +34,14 @@ app || (app = {});
             //Init Attributes
             this.confCollection = { reset: true, data: {} };
 
+            // References
+            this.$valor = this.$('#total');
 
             // Events Listeners
             this.listenTo( this.collection, 'add', this.addOne );
             this.listenTo( this.collection, 'reset', this.addAll );
-            this.listenTo( this.collection, 'request', this.loadSpinner);
             this.listenTo( this.collection, 'store', this.storeOne );
+            this.listenTo( this.collection, 'request', this.loadSpinner);
             this.listenTo( this.collection, 'sync', this.responseServer);
             
             if( !_.isUndefined(this.parameters.dataFilter.recibo2) && !_.isNull(this.parameters.dataFilter.recibo2) ){
@@ -61,6 +63,9 @@ app || (app = {});
             });
             recibo2Model.view = view;
             this.$el.append( view.render().el );
+
+            // Update total
+            this.totalize();
         },
 
         /**
@@ -74,10 +79,15 @@ app || (app = {});
         * stores recibi
         * @param form element
         */
-        storeOne: function (form) {          
+        storeOne: function ( data ) {        
             var _this = this;
-            data = window.Misc.formToJson( form );
-            
+
+            var valid = this.collection.validar(data);
+            if(!valid.success){
+                this.totalize();
+                return;
+            }
+
             // Set Spinner
             window.Misc.setSpinner( this.parameters.wrapper );
 
@@ -96,6 +106,7 @@ app || (app = {});
                             alertify.error(text);
                             return;
                         }
+
                         // Add model in collection
                         _this.collection.add(model);
                     }
@@ -112,26 +123,25 @@ app || (app = {});
         */
         removeOne: function (e) {
             e.preventDefault(); 
-
             var resource = $(e.currentTarget).attr("data-resource");
             var model = this.collection.get(resource);
-            
             if ( model instanceof Backbone.Model ) {
-                model.destroy({
-                    success : function(model, resp) {
-                        if(!_.isUndefined(resp.success)) {
-                            window.Misc.removeSpinner( _this.parameters.wrapper );
+                model.view.remove();
+                this.collection.remove(model);
+                
+                // Update total
+                this.totalize();
+            }
+        },
 
-                            if( !resp.success ) {
-                                alertify.error(resp.errors);
-                                return;
-                            }
+        /**
+        * Render totalize valor
+        */
+        totalize: function () {
+            var data = this.collection.totalize();
 
-                            model.view.remove();
-                            _this.collection.remove(model);
-                        }
-                    }
-                });
+            if(this.$valor.length) {
+                this.$valor.html( window.Misc.currency(data.valor) );
             }
         },
 

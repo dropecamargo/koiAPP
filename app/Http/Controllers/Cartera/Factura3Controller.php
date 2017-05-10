@@ -27,9 +27,13 @@ class Factura3Controller extends Controller
             }
 
             $query = Factura3::query();
-            $query->select('factura3.*','factura1_tercero','factura1_numero');
+            $query->select('factura3.*','factura1_tercero','factura1_numero','factura1_fh_elaboro','factura1_prefijo','factura3_vencimiento','documentos_nombre', 
+                        DB::raw("DATEDIFF(factura3_vencimiento, NOW() ) as days"));
             $query->join('factura1', 'factura3_factura1', '=', 'factura1.id');
+            $query->join('documentos', 'factura1_documentos', '=', 'documentos.id');
             $query->where('factura1_tercero', $tercero->id);
+            $query->where('factura3_saldo', '<>',  0);
+            $query->orderBy('factura3_vencimiento', 'desc');
             $factura = $query->get();
         }
         return response()->json($factura);

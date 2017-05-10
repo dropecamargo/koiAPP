@@ -12,7 +12,6 @@ app || (app = {});
     app.ShowTerceroView = Backbone.View.extend({
 
         el: '#terceros-main',
-
         /**
         * Constructor Method
         */
@@ -22,6 +21,7 @@ app || (app = {});
 
                 this.contactsList = new app.ContactsList();
                 this.rolList = new app.RolList();
+                this.detalleFacturaList = new app.DetalleFactura3List();
 
                 // Reference views
                 this.referenceViews();
@@ -52,6 +52,19 @@ app || (app = {});
                         'tercero_id': this.model.get('id')
                     }
                }
+            });
+
+            // Detalle list
+            this.Factura3ListView = new app.Factura3ListView({
+                collection: this.detalleFacturaList,
+                parameters: {
+                    wrapper: this.el,
+                    edit: false,
+                    call: 'tercero',
+                    dataFilter: {
+                        'tercero': this.model.get('id'),
+                    }
+                }
             });
         }
     });

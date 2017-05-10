@@ -12,8 +12,8 @@ app || (app = {});
 
         template: _.template( ($('#add-concepto-factura-tpl').html() || '') ),
     	events:{ 
-            'submit #form-concepto-factura-component': 'onStoreItem',
-            'ifChanged .change-check': 'changeCheck',
+            'submit #form-concepto-factura-component': 'onStore',
+            'ifClicked .change-check': 'changeCheck',
             'change .change-pagar': 'changePagar'
         },
         parameters: {
@@ -31,7 +31,8 @@ app || (app = {});
             this.$modal = this.$('#modal-concepto-factura-component');
             
             // Collection 
-            this.detalleFacturaList = new app.DetalleFacturaList();
+            this.detalleFacturaList = new app.DetalleFactura3List();
+            this.$concepto = this.$('#recibo2_conceptosrc');
 
             this.listenTo( this.detalleFacturaList, 'add', this.addOne );
             this.listenTo( this.detalleFacturaList, 'reset', this.addAll );
@@ -73,6 +74,16 @@ app || (app = {});
                 window.initComponent.initInputMask();
         },
 
+        onStore: function(e){
+            if (!e.isDefaultPrevented()) {
+                e.preventDefault();
+
+                // Hide modal && reset select
+                this.$concepto.val('').trigger('change');
+                this.$modal.modal('hide');                
+            }
+        },
+
         /**
         * Reference
         */
@@ -80,7 +91,6 @@ app || (app = {});
             this.$wraper = this.$('#modal-wrapper-concepto-factura');
             this.$wraperForm = this.$modal.find('.content-modal');
             this.$wraperError = this.$('#error-concepto-factura');
-
             this.$wraperConcepto = this.$('#browse-concepto-factura-list');
     
             this.detalleFacturaList.fetch({ reset: true, data: { tercero: atributes.data.tercero } });
@@ -94,22 +104,35 @@ app || (app = {});
 
         // Event change check
         changeCheck: function(e){
-            var selected = $(e.target).is(':checked');
+            var selected = this.$(e.currentTarget).prop('checked');
             var id = this.$(e.currentTarget).attr('id');
-            
-            if( selected ) {
-                this.detalleFacturaList.agregar(id);
+            id = id.split("_");
+
+            if( !selected ) {
+                var modelo = this.detalleFacturaList.agregar(id[1], this.parameters.data, 'check');
+                this.$('#pagar_'+id[1]).val(modelo.recibo2_valor);
+                this.collection.trigger('store', modelo );
             }else{
-                this.detalleFacturaList.eliminar(id);
+                var modelo = this.detalleFacturaList.eliminar(id[1]);
+                this.collection.trigger('store', modelo );
+                this.$('#pagar_'+id[1]).val('');
             }
+              
+            this.$concepto.val('').trigger('change');
             this.ready();
         },
 
         // Event change pagar
         changePagar: function(e){
-            // var select = this.$(e.currentTarget).attr('id');
+            var valor = this.$(e.currentTarget).inputmask('unmaskedvalue');
+            var id = this.$(e.currentTarget).attr('id');
+            id = id.split("_");
 
-            // this.$('#'+select).iCheck('check');
+            this.$('#check_'+id[1]).iCheck('check');
+            var modelo = this.detalleFacturaList.agregar(id[1], this.parameters.data, 'input', valor);
+            this.collection.trigger('store', modelo );
+
+            this.ready();
         },
 
         /**
@@ -122,7 +145,7 @@ app || (app = {});
                 parameters:{
                 }
             });
-            
+
             factura3Model.view = view;
             this.$wraperConcepto.append( view.render().el );
             this.ready();
@@ -133,22 +156,19 @@ app || (app = {});
         */
         addAll:function(){
             var _this = this;
+                    
             if( this.detalleFacturaList.length > 0){
-                this.detalleFacturaList.forEach(function(model, index) {
-                    _this.addOne(model)
+                this.detalleFacturaList.forEach(function(model) {
+                    _this.addOne(model);
+                    var modelo = _this.collection.validarC(model.get('factura1_numero'));
+                    if(modelo.success){
+                        _this.$("#check_"+model.get('id')).iCheck('check');
+                        _this.$("#pagar_"+model.get('id')).val( modelo.valor );
+                    } 
                 });
             }else{
                 _this.addOne( factura3Model = new app.Factura3Model );
             }
         },
-
-        responseServer: function ( model, resp, opts ) {
-            if(!_.isUndefined(resp.success)) {
-                if( resp.success ) {
-                    // Close modals
-                    this.$modal.modal('hide');
-                }
-            }
-        }
-    });
+        });
 })(jQuery, this, this.document);

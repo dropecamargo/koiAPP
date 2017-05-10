@@ -40,7 +40,7 @@ app || (app = {});
                 ],
                 buttons: [
                     {
-                        text: '<i class="fa fa-plus"></i> Nuevo pedido',
+                        text: '<i class="fa fa-plus"></i> Nueva factura',
                         className: 'btn-sm',
                         action: function ( e, dt, node, config ) {
                             window.Misc.redirect( window.Misc.urlFull( Route.route('facturas.create') ) )

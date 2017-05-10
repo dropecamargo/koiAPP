@@ -5,7 +5,8 @@ namespace App\Models\Cartera;
 use Illuminate\Database\Eloquent\Model;
 
 use App\Models\BaseModel;
-Use Validator;
+use App\Models\Cartera\Conceptosrc;
+use Validator;
 
 class Recibo2 extends BaseModel
 {
@@ -23,7 +24,7 @@ class Recibo2 extends BaseModel
 	*
 	* @var array
 	*/
-    protected $fillable = ['recibo2_naturaleza', 'recibo2_conceptosrc', 'recibo2_valor','recibo2_documentos_doc','recibo2_id_doc'];
+    protected $fillable = ['recibo2_naturaleza', 'recibo2_conceptosrc', 'recibo2_valor','recibo2_documentos_doc'];
 
     /**
      * The attributes that are mass nullable fields to null.

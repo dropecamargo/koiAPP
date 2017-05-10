@@ -17,7 +17,7 @@
         @yield ('module')
     </section>
 
-    <script type="text/template" id="add-recibo1-tpl">
+    <script type="text/template" id="add-recibo-tpl">
         <div class="box-body">
             <form method="POST" accept-charset="UTF-8" id="form-recibo1" data-toggle="validator"> 
                 <div class="row"> 
@@ -60,7 +60,7 @@
                     <div class="form-group col-md-3">
                         <div class="input-group input-group-sm">
                             <span class="input-group-btn">
-                                <button type="button" class="btn btn-default btn-flat btn-koi-search-tercero-component-table" data-field="recibo1_tercero" data-concepto="recibo2_conceptosrc">
+                                <button type="button" class="btn btn-default btn-flat btn-koi-search-tercero-component-table" data-field="recibo1_tercero" data-concepto="recibo2_conceptosrc" data-wrap="wrapper-recibo2">
                                     <i class="fa fa-user"></i>
                                 </button>
                             </span>
@@ -91,7 +91,7 @@
             </div>
         </div>
 
-        <div class="box box-success" id="wrapper-recibo2"><br>
+        <div class="box box-success" id="wrapper-recibo2" hidden><br>
             <div class="box-body">
                 <form method="POST" accept-charset="UTF-8" id="form-recibo2" data-toggle="validator"> 
                     <div class="row"> 
@@ -141,6 +141,13 @@
                         <tbody>
                                 {{-- Render content recibo2 --}}
                         </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="5"></td>
+                                <th class="text-left">Total</td>
+                                <th class="text-right"  id="total">0</td>
+                            </tr>
+                        </tfoot>
                     </table>
                 </div>
             </div>
@@ -157,9 +164,9 @@
         <% } %>
             
         <td><%- conceptosrc_nombre %></td>
-        <td></td>
-        <td></td>
-        <td></td>
+        <td><%- documentos_nombre %></td>
+        <td><%- recibo2_numero %></td>
+        <td><%- recibo2_cuota %></td>
         <td class="text-left"><%- recibo2_naturaleza == 'D' ? 'Debito' : 'Credito' %></td>
         <td class="text-right"><%- window.Misc.currency( recibo2_valor )  %></td>
     </script>

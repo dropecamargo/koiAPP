@@ -7,12 +7,9 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use Log, DB;
-
-use App\Models\Cartera\Conceptosrc;
-use App\Models\Cartera\Recibo1;
-use App\Models\Cartera\Recibo2;
+use App\Models\Cartera\Conceptosrc, App\Models\Cartera\Recibo1, App\Models\Cartera\Recibo2;
 use App\Models\Base\Documentos;
+use Log, DB;
 
 class Recibo2Controller extends Controller
 {
@@ -27,8 +24,11 @@ class Recibo2Controller extends Controller
             $recibo2 = [];
             if($request->has('recibo2')) {
                 $query = Recibo2::query();
-                $query->select('recibo2.*','conceptosrc_nombre','conceptosrc_documentos');
+                $query->select('recibo2.*','conceptosrc_nombre','documentos_nombre','factura3_cuota as recibo2_cuota', 'factura1_numero as recibo2_numero');
                 $query->join('conceptosrc','recibo2_conceptosrc', '=', 'conceptosrc.id');
+                $query->join('documentos','recibo2_documentos_doc', '=', 'documentos.id');
+                $query->leftJoin('factura3','recibo2_id_doc', '=', 'factura3.id');
+                $query->leftJoin('factura1','factura3_factura1', '=', 'factura1.id');
                 $query->where('recibo2_recibo1', $request->recibo2);
                 $recibo2 = $query->get();
             }
@@ -66,7 +66,12 @@ class Recibo2Controller extends Controller
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar concepto, verifique información ó por favor consulte al administrador.']);
                     }
 
-                    return response()->json(['success' => true, 'id' => uniqid(), 'conceptosrc_nombre' => $conceptosrc->conceptosrc_nombre]);
+                    $documentos = Documentos::find($conceptosrc->conceptosrc_documentos);
+                    if(!$documentos instanceof Documentos) {
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar documento del concepto, verifique información ó por favor consulte al administrador.']);
+                    }
+
+                    return response()->json(['success' => true, 'id' => uniqid(), 'conceptosrc_nombre' => $conceptosrc->conceptosrc_nombre, 'documentos_nombre' => $documentos->documentos_nombre ,'recibo2_documentos_doc' => $documentos->id]);
                 }catch(\Exception $e){
                     Log::error($e->getMessage());
                     return response()->json(['success' => false, 'errors' => trans('app.exception')]);

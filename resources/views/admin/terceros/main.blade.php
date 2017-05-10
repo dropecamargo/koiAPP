@@ -16,4 +16,14 @@
 	<section class="content">
     	@yield('module')
     </section>    
+
+    <script type="text/template" id="add-tercero-cartera-tpl">
+		<td><%- factura1_numero %></td>
+	    <td><%- factura1_prefijo %></td>
+	    <td><%- factura3_cuota %></td>
+	    <td><%- moment(factura1_fh_elaboro).format('YYYY-MM-DD') %></td>
+		<td><%- factura3_vencimiento %></td>
+		<td><%- days %></td>
+	    <td class="text-right"><%- window.Misc.currency(factura3_saldo) %></td>
+	</script>
 @stop

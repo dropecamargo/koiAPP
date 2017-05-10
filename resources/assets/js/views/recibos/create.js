@@ -12,12 +12,12 @@ app || (app = {});
     app.CreateReciboView = Backbone.View.extend({
 
         el: '#recibo1-create',
-        template: _.template(($('#add-recibo1-tpl').html() || '') ),
+        template: _.template(($('#add-recibo-tpl').html() || '') ),
         events: {
             'click .submit-recibo' :'submitFormRecibo',
             'submit #form-recibo1' :'onStore',
             'submit #form-recibo2' :'onStoreItem',
-            'change .change-concepto' :'changeConcepto'
+            'change .change-concepto' :'changeConcepto',
         },
         parameters: {
         },
@@ -50,6 +50,10 @@ app || (app = {});
             var attributes = this.model.toJSON();
             this.$wraperForm.html( this.template(attributes) );
             this.$form = this.$('#form-recibo1');
+
+            this.$concepto = this.$('#recibo2_conceptosrc');
+            this.$naturaleza = this.$('#recibo2_naturaleza');
+            this.$valor = this.$('#recibo2_valor');
             
             this.referenceViews();
         },
@@ -85,58 +89,56 @@ app || (app = {});
             if (!e.isDefaultPrevented()) {
                 e.preventDefault();
                 var data = window.Misc.formToJson( e.target );
-                data.recibo2 = this.detalleReciboList.toJSON();
+                    data.recibo2 = this.detalleReciboList.toJSON();
                 this.model.save( data, {patch: true, silent: true} );
             }   
+        },
+
+        /**
+        * Event add item detalle recibo
+        */
+        onStoreItem: function(e) {
+            if (!e.isDefaultPrevented()) {
+                e.preventDefault();
+
+                var data = window.Misc.formToJson( e.target );
+                this.detalleReciboList.trigger( 'store', data );
+
+                this.$concepto.val('').trigger('change');
+                this.$naturaleza.val('').trigger('change');
+                this.$valor.val('');
+            }
         },
 
         changeConcepto: function(e){
             var data = window.Misc.formToJson( e.target );
                 data.tercero = this.$('#recibo2_conceptosrc').attr('data-tercero');
 
-            if( _.isUndefined(this.$('#recibo2_conceptosrc').attr('data-tercero')) ){
-                return;
-            }
-            
-            window.Misc.evaluateActionsCartera({
-                'data': data,
-                'wrap': this.$el,
-                'callback': (function (_this) {
-                    return function ( action )
-                    {      
-                        // Open CarteraActionView
-                        if ( _this.carteraActionView instanceof Backbone.View ){
-                            _this.carteraActionView.stopListening();
-                            _this.carteraActionView.undelegateEvents();
-                        }
-
-                        _this.carteraActionView = new app.CarteraActionView({
-                            model: _this.model,
-                            collection: _this.detalleReciboList,
-                            parameters: {
-                                data: data,
-                                action: action,
+            if( !_.isUndefined(data.recibo2_conceptosrc) && !_.isNull(data.recibo2_conceptosrc) && data.recibo2_conceptosrc != ''){
+                window.Misc.evaluateActionsCartera({
+                    'data': data,
+                    'wrap': this.$el,
+                    'callback': (function (_this) {
+                        return function ( action )
+                        {      
+                            // Open CarteraActionView
+                            if ( _this.carteraActionView instanceof Backbone.View ){
+                                _this.carteraActionView.stopListening();
+                                _this.carteraActionView.undelegateEvents();
                             }
-                        });
-                        _this.carteraActionView.render();
-                    }
-                })(this)
-            });
-        },
 
-        /**
-        * Event add item detalle traslado
-        */
-        onStoreItem: function (e) {
-            if (!e.isDefaultPrevented()) {
-                e.preventDefault();
-
-                if( _.isUndefined(this.$('#recibo2_conceptosrc').attr('data-tercero')) ){
-                    alertify.error('Por favor ingrese cliente para agregar el detalle.');
-                    return;
-                }
-
-                this.detalleReciboList.trigger( 'store', this.$(e.target) );
+                            _this.carteraActionView = new app.CarteraActionView({
+                                model: _this.model,
+                                collection: _this.detalleReciboList,
+                                parameters: {
+                                    data: data,
+                                    action: action,
+                                }
+                            });
+                            _this.carteraActionView.render();
+                        }
+                    })(this)
+                });
             }
         },
 
@@ -156,7 +158,6 @@ app || (app = {});
             
             if( typeof window.initComponent.initSelect2 == 'function' )
                 window.initComponent.initSelect2();
-            
 
             if( typeof window.initComponent.initDatePicker == 'function' )
                 window.initComponent.initDatePicker();

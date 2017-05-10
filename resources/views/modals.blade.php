@@ -142,8 +142,10 @@
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header small-box {{ config('koi.template.bg') }}">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title">Concepto</h4>
+				<button type="button" class="close icon-close-koi" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title"><b>Factura de venta</b></h4>
 			</div>
 			
 			<form id="form-concepto-factura-component" data-toggle="validator">

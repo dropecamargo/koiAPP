@@ -177,12 +177,19 @@ Route::group(['middleware' => 'auth'], function(){
 		Route::post('evaluate',['as' =>'conceptosrc.evaluate','uses'=>'Cartera\ConceptosrcController@evaluate'] );
 	});
 
+	Route::group(['prefix' => 'notas'], function()
+	{
+		Route::resource('detalle', 'Cartera\Nota2Controller');
+	});
+
 	Route::resource('autorizacionesca', 'Cartera\AutorizaCaController', ['only' => ['index']]);
 	Route::resource('bancos', 'Cartera\BancoController', ['except' => ['destroy']]);
 	Route::resource('cuentabancos', 'Cartera\CuentaBancoController', ['except' => ['destroy']]);
 	Route::resource('mediopagos', 'Cartera\MedioPagoController', ['except' => ['destroy']]);
 	Route::resource('conceptosrc', 'Cartera\ConceptosrcController', ['except' => ['destroy']]);
+	Route::resource('conceptonotas', 'Cartera\ConceptoNotaController', ['except' => ['destroy']]);
 	Route::resource('recibos', 'Cartera\Recibo1Controller', ['only' => ['index','create','store','show']]);
+	Route::resource('notas', 'Cartera\Nota1Controller', ['only' => ['index','create','store','show']]);
 	Route::group(['prefix' => 'facturas'], function()
 	{
 		Route::resource('detalle', 'Cartera\Factura2Controller');

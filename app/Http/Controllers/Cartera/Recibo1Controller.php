@@ -7,13 +7,9 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\Models\Cartera\Recibo1;
-use App\Models\Cartera\Recibo2;
-use App\Models\Base\Documentos;
-use App\Models\Base\Sucursal;
-use App\Models\Base\Tercero;
-use App\Models\Cartera\Conceptosrc;
-use App\Models\Cartera\CuentaBanco;
+use App\Models\Cartera\Recibo1, App\Models\Cartera\Recibo2, App\Models\Cartera\Factura3, App\Models\Cartera\Factura1;
+use App\Models\Base\Documentos, App\Models\Base\Sucursal, App\Models\Base\Tercero;
+use App\Models\Cartera\Conceptosrc, App\Models\Cartera\CuentaBanco;
 use DB, Log, Auth, Datatables;
 
 class Recibo1Controller extends Controller
@@ -109,6 +105,26 @@ class Recibo1Controller extends Controller
                         $recibo2 = new Recibo2;
                         $recibo2->fill($item);
                         $recibo2->recibo2_recibo1 = $recibo1->id;
+
+                        if( isset($item['recibo2_factura1']) ){
+                            $factura3 = Factura3::where( 'factura3_factura1', $item['recibo2_factura1'] )->join('factura1', 'factura3_factura1', '=', 'factura1.id')->select('factura3.*', 'factura1_numero')->first();
+                            if( !$factura3 instanceof Factura3 ){
+                                DB::rollback();
+                                return response()->json(['success'=>false, 'errors'=>'No es posible recuperar el numero de la factura, por favor verifique ó consulte con el administrador.']);
+                            }
+
+                            $factura = Factura1::where( 'id', $factura3->factura3_factura1 )->where('factura1_tercero', $tercero->id)->first();
+                            if( !$factura instanceof Factura1 ){
+                                DB::rollback();
+                                return response()->json(['success'=>false, 'errors'=>"La factura #$factura3->factura1_numero ingresada no corresponde al cliente, por favor verifique ó consulte con el administrador."]);   
+                            }
+
+                            $factura3->factura3_saldo = $factura3->factura3_saldo <= 0 ? $factura3->factura3_saldo + $item['recibo2_valor'] : $factura3->factura3_saldo - $item['recibo2_valor'];
+                            $factura3->save();
+
+                            $recibo2->recibo2_id_doc = $factura3->id;
+                        }
+
                         $recibo2->save();
                     }
 

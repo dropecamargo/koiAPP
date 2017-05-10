@@ -190,6 +190,14 @@ app || (app = {});
             'conceptosrc/create(/)': 'getConceptosrcCreate',
             'conceptosrc/:conceptosrc/edit(/)': 'getConceptosrcEdit',
 
+            'conceptonotas(/)': 'getConceptoNotasMain',
+            'conceptonotas/create(/)': 'getConceptoNotasCreate',
+            'conceptonotas/:conceptonotas/edit(/)': 'getConceptoNotasEdit',
+
+            'notas(/)': 'getNotasMain',
+            'notas/create(/)': 'getNotasCreate',
+            'notas/:notas/edit(/)': 'getNotasEdit',
+            
             'facturas(/)': 'getFacturasMain',
             'facturas/create(/)': 'getFacturaCreate',
             'facturas/:facturas(/)': 'getRecibosShow',
@@ -1700,6 +1708,77 @@ app || (app = {});
             }
 
             this.showRecibosView = new app.ShowRecibosView({ model: this.reciboModel });
+        },
+
+        // Conceptonotas
+        getConceptoNotasMain: function () {
+
+            if ( this.mainConceptoNotaView instanceof Backbone.View ){
+                this.mainConceptoNotaView.stopListening();
+                this.mainConceptoNotaView.undelegateEvents();
+            }
+
+            this.mainConceptoNotaView = new app.MainConceptoNotaView( );
+        },
+
+        getConceptoNotasCreate: function () {
+            this.conceptonotaModel = new app.ConceptoNotaModel();
+
+            if ( this.createConceptoNotaView instanceof Backbone.View ){
+                this.createConceptoNotaView.stopListening();
+                this.createConceptoNotaView.undelegateEvents();
+            }
+
+            this.createConceptoNotaView = new app.CreateConceptoNotaView({ model: this.conceptonotaModel });
+            this.createConceptoNotaView.render();
+        },
+
+        getConceptoNotasEdit: function (conceptonotaModel) {
+            this.conceptonotaModel = new app.ConceptoNotaModel();
+            this.conceptonotaModel.set({'id': conceptonotaModel}, {'silent':true});
+
+            if ( this.createConceptoNotaView instanceof Backbone.View ){
+                this.createConceptoNotaView.stopListening();
+                this.createConceptoNotaView.undelegateEvents();
+            }
+
+            this.createConceptoNotaView = new app.CreateConceptoNotaView({ model: this.conceptonotaModel });
+            this.conceptonotaModel.fetch();
+        },
+
+        // Notas
+        getNotasMain: function () {
+            if ( this.mainNotaView instanceof Backbone.View ){
+                this.mainNotaView.stopListening();
+                this.mainNotaView.undelegateEvents();
+            }
+
+            this.mainNotaView = new app.MainNotaView();
+        },
+
+        getNotasCreate: function () {
+            this.notaModel = new app.NotaModel();
+
+            if ( this.createNotaView instanceof Backbone.View ){
+                this.createNotaView.stopListening();
+                this.createNotaView.undelegateEvents();
+            }
+
+            this.createNotaView = new app.CreateNotaView({ model: this.notaModel });
+            this.createNotaView.render();
+        },
+
+        getNotasEdit: function (notaModel) {
+            this.notaModel = new app.NotaModel();
+            this.notaModel.set({'id': notaModel}, {'silent':true});
+
+            if ( this.createNotaView instanceof Backbone.View ){
+                this.createNotaView.stopListening();
+                this.createNotaView.undelegateEvents();
+            }
+
+            this.createNotaView = new app.CreateNotaView({ model: this.notaModel });
+            this.notaModel.fetch();
         },
     }) );
 })(jQuery, this, this.document);

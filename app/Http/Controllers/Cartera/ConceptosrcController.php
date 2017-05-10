@@ -191,7 +191,7 @@ class ConceptosrcController extends Controller
         if (!$conceptosrc instanceof Conceptosrc) {
             $response->errors = "No es posible recuperar concepto, verifique información ó por favor consulte al administrador.";
         }
-
+        
         if($conceptosrc->documentos_codigo == 'FACT'){
             $action = 'modalCartera';
             $response->action = $action;  

@@ -7,13 +7,6 @@
 
 @section('module')
     <div class="box box-success" id="recibo-show">
-        <div class="box-header with-border">
-            <div class="row">
-                <div class="col-md-2 col-sm-6 col-xs-6 text-left">
-                    <a href=" {{ route('recibos.index') }}" class="btn btn-default btn-sm btn-block">{{ trans('app.comeback') }}</a>
-                </div>
-            </div>
-        </div>
         <div class="box-body">
             <div class="row">
                 <div class="form-group col-md-3">
@@ -76,7 +69,21 @@
                     <tbody>
                             {{-- Render content recibo2 --}}
                     </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="4"></td>
+                            <th class="text-left">Total</th>
+                            <th class="text-right" id="total">0</th>
+                        </tr>
+                    </tfoot>
                 </table>
+            </div>
+        </div>
+        <div class="box-header with-border">
+            <div class="row">
+                <div class="col-md-offset-5 col-md-2 col-sm-6 col-xs-6 text-left">
+                    <a href=" {{ route('recibos.index') }}" class="btn btn-default btn-sm btn-block">{{ trans('app.comeback') }}</a>
+                </div>
             </div>
         </div>
     </div>
