@@ -14,7 +14,9 @@ app || (app = {});
         tagName: 'tr',
         template: _.template( ($('#add-concepto-item-tpl').html() || '') ),
         parameters: {
-            edit: false
+            edit: false,
+            call: null,
+            template: null,
         },
 
         /**
@@ -35,7 +37,26 @@ app || (app = {});
         render: function(){
             var attributes = this.model.toJSON();
             attributes.edit = this.parameters.edit;
-            this.$el.html( this.template(attributes) );
+            attributes.call = this.parameters.call;
+
+            if( attributes.call == 'tercero' ){
+                if( attributes.days <= 0 && attributes.days >= -30 ){
+                    this.$el.addClass('bg-menor30');
+                }else if ( attributes.days <= -31 && attributes.days >= -60 ){
+                    this.$el.addClass('bg-menor60');
+                }else if ( attributes.days <= -61 && attributes.days >= -90 ){
+                    this.$el.addClass('bg-menor90');
+                }else if ( attributes.days <= -91 && attributes.days >= -180 ){
+                    this.$el.addClass('bg-menor180');
+                }else if ( attributes.days <=   -181 && attributes.days >= -360 ){
+                    this.$el.addClass('bg-menor360');
+                }else if ( attributes.days < -360 ){
+                    this.$el.addClass('bg-mayor360');
+                }
+                this.$el.html( this.parameters.template(attributes) );
+            }else{
+                this.$el.html( this.template(attributes) );
+            }
             return this;
         }
     });

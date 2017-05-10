@@ -1235,13 +1235,46 @@
 <script type="text/template" id="add-concepto-item-tpl"> 
     <% if( factura3_factura1 == '' ) { %>
         <th colspan="7" class="text-center">NO EXISTEN FACTURAS DE ESTE CLIENTE</th>
-    <% }else{ %>
-	    <td><input type="checkbox" id="<%- id %>" class="change-check" name="check_<%- id %>"></td>
-	    <td>b</td>
+	<% }else{ %>
+	    <td><input type="checkbox" id="check_<%- id %>" name="check_<%- id %>" class="change-check"></td>
+	    <td><%- moment(factura1_fh_elaboro).format('YYYY-MM-DD') %></td>
 	    <td><%- factura3_vencimiento %></td>
 	    <td><%- factura1_numero %></td>
 	    <td><%- factura3_cuota %></td>
 	    <td><%- window.Misc.currency(factura3_saldo) %></td>
-	    <td><input type="text" id="<%- id %>" name="pagar_<%- id %>" class="form-control input-sm change-pagar" data-currency value="<%- factura3_valor %>"></td>
+	    <td><input type="text" id="pagar_<%- id %>" name="pagar_<%- id %>" class="form-control input-sm change-pagar" data-currency-negative></td>
 	<% } %>
+</script>
+
+
+
+<script type="text/template" id="add-conceptonota-tpl">
+	<div class="row">
+		<div class="form-group col-md-8">
+			<label for="conceptonota_nombre" class="control-label">Nombre</label>
+			<input type="text" id="conceptonota_nombre" name="conceptonota_nombre" value="<%- conceptonota_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="25" required>
+		</div>
+    </div>
+    <div class="row">
+		<div class="form-group col-sm-6 col-md-2">
+			<label for="conceptonota_plancuentas" class="control-label text-right">Cuenta</label>
+      		<div class="input-group input-group-sm">
+				<span class="input-group-btn">
+					<button type="button" class="btn btn-default btn-flat btn-koi-search-plancuenta-component" data-field="conceptonota_plancuentas">
+						<i class="fa fa-tasks"></i>
+					</button>
+				</span>
+				<input id="conceptonota_plancuentas" placeholder="Cuenta" class="form-control plancuenta-koi-component" name="conceptonota_plancuentas" type="text" maxlength="15" data-wrapper="conceptonota-create" data-name="cuenta_nombre" value="<%- plancuentas_cuenta %>">
+			</div>
+		</div>
+		<div class="col-sm-6 col-md-4"><br>
+			<input id="cuenta_nombre" name="cuenta_nombre" placeholder="Nombre cuenta" class="form-control input-sm" type="text" value="<%- plancuentas_nombre %>" maxlength="15" disabled>
+		</div>
+
+		<div class="form-group col-md-2 col-xs-8 col-sm-3">
+			<br><label class="checkbox-inline" for="conceptonota_activo">
+				<input type="checkbox" id="conceptonota_activo" name="conceptonota_activo" value="conceptonota_activo" <%- parseInt(conceptonota_activo) ? 'checked': ''%>> Activo
+			</label>
+		</div>
+	</div>
 </script>

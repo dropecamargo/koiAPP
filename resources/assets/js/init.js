@@ -160,6 +160,15 @@ var app = app || {};
                 },
             });
 
+            $("[data-currency-negative]").inputmask({
+                radixPoint: ",",
+                alias: 'currency',
+                prefix: '',
+                removeMaskOnSubmit: true,
+                unmaskAsNumber: true,
+            });
+            
+
             $("[data-currency-precise]").inputmask({
                 radixPoint: ",",
                 alias: 'currency',

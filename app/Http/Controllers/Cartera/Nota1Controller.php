@@ -7,11 +7,10 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\Models\Cartera\Factura3;
-use App\Models\Base\Tercero;
-use DB;
+use App\Models\Cartera\Nota1, App\Models\Cartera\Nota2;
+use DB, Log, Auth, Datatables;
 
-class Factura3Controller extends Controller
+class Nota1Controller extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,23 +19,11 @@ class Factura3Controller extends Controller
      */
     public function index(Request $request)
     {
-        if($request->ajax()){
-            $tercero = Tercero::find($request->tercero);
-            if(!$tercero instanceof Tercero){
-                return response()->json(['success' => false, 'errors' => 'No se pudo recuperar el cliente, por favor verifique la informacion o consulte al administrador']);
-            }
-
-            $query = Factura3::query();
-            $query->select('factura3.*','factura1_tercero','factura1_numero','factura1_fh_elaboro','factura1_prefijo','factura3_vencimiento','documentos_nombre', 
-                        DB::raw("DATEDIFF(factura3_vencimiento, NOW() ) as days"));
-            $query->join('factura1', 'factura3_factura1', '=', 'factura1.id');
-            $query->join('documentos', 'factura1_documentos', '=', 'documentos.id');
-            $query->where('factura1_tercero', $tercero->id);
-            $query->where('factura3_saldo', '<>',  0);
-            $query->orderBy('factura3_vencimiento', 'desc');
-            $factura = $query->get();
+        if ($request->ajax()) {
+            $query = Nota1::query();
+            return Datatables::of($query)->make(true);
         }
-        return response()->json($factura);
+        return view('cartera.notas.index');  
     }
 
     /**
@@ -46,7 +33,7 @@ class Factura3Controller extends Controller
      */
     public function create()
     {
-        //
+        return view('cartera.notas.create');
     }
 
     /**
@@ -57,7 +44,29 @@ class Factura3Controller extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if ($request->ajax()) {
+            $data = $request->all();
+            $nota = new Nota1;
+            if ($nota->isValid($data)) {
+                DB::beginTransaction();
+                try {
+                    // Nota
+                    $nota->fill($data);
+                    $nota->fillBoolean($data);
+                    $nota->save();
+
+                    // Commit Transaction
+                    DB::commit();
+                    return response()->json(['success' => true, 'id' => $nota->id]);
+                }catch(\Exception $e){
+                    DB::rollback();
+                    Log::error($e->getMessage());
+                    return response()->json(['success' => false, 'errors' => trans('app.exception')]);
+                }
+            }
+            return response()->json(['success' => false, 'errors' => $nota->errors]);
+        }
+        abort(403);
     }
 
     /**
@@ -66,9 +75,13 @@ class Factura3Controller extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        //
+        $nota = Nota1::findOrFail($id);
+        if ($request->ajax()) {
+            return response()->json($nota);
+        }
+        return view('cartera.notas.show', ['nota' => $nota]);
     }
 
     /**

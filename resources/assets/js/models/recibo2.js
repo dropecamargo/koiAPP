@@ -20,7 +20,10 @@ app || (app = {});
         	'recibo2_id_doc': '',	
         	'recibo2_naturaleza': '',	
             'recibo2_valor': '',
-            'conceptosrc_nombre': ''
+            'recibo2_numero': '',
+            'recibo2_cuota': '',
+            'conceptosrc_nombre': '',
+            'documentos_nombre': ''
         }
     });
 })(this, this.document);
