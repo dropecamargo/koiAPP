@@ -47,7 +47,7 @@ class PedidoController extends Controller
                         if($request->has('tercero')) {
                             $tercero = Tercero::where('tercero_nit', $request->tercero)->first();
                             if(!$tercero instanceof Tercero){
-                                return response()->json(['success' => false, 'errors' => 'daniel es una bitch!!!']);
+                                return response()->json(['success' => false, 'errors' => 'Tercero no encontrado']);
                             }
                             $query->where('pedidoc1_tercero', $tercero->id);
                         }

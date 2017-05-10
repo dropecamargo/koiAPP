@@ -84,8 +84,6 @@
                     <li class="{{ Request::segment(1) == 'recibos' ? 'active' : '' }}">
                         <a href="{{ route('recibos.index') }}"><i class="fa fa-file-text-o"></i> Recibo de caja</a>
                     </li>
-                </ul>
-                <ul class="treeview-menu">
                     <li class="{{ Request::segment(1) == 'facturas' ? 'active' : '' }}">
                         <a href="{{ route('facturas.index') }}"><i class="fa fa-pencil-square-o"></i> Facturas</a>
                     </li>

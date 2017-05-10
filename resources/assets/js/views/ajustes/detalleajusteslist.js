@@ -79,7 +79,7 @@ app || (app = {});
         },
 
         /**
-        * stores detallePedido
+        * stores detalleAjuste
         * @param form element
         */
         storeOne: function (data) {          

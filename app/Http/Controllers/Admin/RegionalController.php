@@ -124,7 +124,6 @@ class RegionalController extends Controller
 
                     // Commit Transaction
                     DB::commit();
-                
                     return response()->json(['success' => true, 'id' => $regional->id]);
                 }catch(\Exception $e){
                     DB::rollback();

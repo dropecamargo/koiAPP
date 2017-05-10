@@ -232,7 +232,7 @@
     <script type="text/template" id="add-pedidoc-item-tpl">
         <%if(edit){ %>
             <td class="text-center">
-                <a class="btn btn-default btn-xs item-detalleajuste-remove" data-resource = "<%- id %>">
+                <a class="btn btn-default btn-xs item-detallepedidoc-remove" data-resource = "<%- id %>">
                     <span><i class="fa fa-times"></i></span>
                 </a>
             </td>

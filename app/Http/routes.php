@@ -183,5 +183,9 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::resource('mediopagos', 'Cartera\MedioPagoController', ['except' => ['destroy']]);
 	Route::resource('conceptosrc', 'Cartera\ConceptosrcController', ['except' => ['destroy']]);
 	Route::resource('recibos', 'Cartera\Recibo1Controller', ['only' => ['index','create','store','show']]);
+	Route::group(['prefix' => 'facturas'], function()
+	{
+		Route::resource('detalle', 'Cartera\Factura2Controller');
+	});
 	Route::resource('facturas', 'Cartera\Factura1Controller', ['except' => ['destroy', 'edit' , 'update']]);
 });

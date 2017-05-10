@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Cartera\Factura2;
+use App\Models\Comercial\Pedidoc2;
 use DB, Log;
 class Factura2Controller extends Controller
 {
@@ -17,7 +18,21 @@ class Factura2Controller extends Controller
      */
     public function index(Request $request)
     {
-        //
+        if ($request->ajax()){
+            if ($request->has('codigo_pedido')) {
+                $pediodoc2 = Pedidoc2::getPedidoc2($request->codigo_pedido);
+                $object = new \stdClass();
+                $object->model = [];
+                foreach ($pediodoc2 as $value) {
+                    $factura2 = Factura2::modelCreate($value);
+                    $object->model[] = $factura2;
+                }
+                return response()->json($object->model);
+            }
+            $factura2Detalle = Factura2::getFactura2($request->id);
+            return response()->json($factura2Detalle);
+        }
+        abort(404);
     }
 
     /**
@@ -38,7 +53,7 @@ class Factura2Controller extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return response()->json(['success' => true, 'id' => uniqid()]);
     }
 
     /**
@@ -71,8 +86,9 @@ class Factura2Controller extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
-        //
+    {   
+        return response()->json(['success' => true, 'id' => $id]);
+        
     }
 
     /**

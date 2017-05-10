@@ -31,7 +31,6 @@ app || (app = {});
 		},
 
 		searchTercero: function(e) {
-            
             e.preventDefault();
             var _this = this;
 
@@ -50,7 +49,6 @@ app || (app = {});
             this.$btnContact = this.$("#"+this.$inputContent.attr("data-contacto"));
             this.$inputAddress = this.$("#"+this.$inputContent.attr("data-address"));
             this.$inputPuntoVenta = this.$("#"+this.$inputContent.attr("data-punto"));
-
             this.$changeIf = this.$inputContent.attr("data-change");
             this.$inputCliente = this.$inputContent.attr("data-cliente");
             this.$inputVendedor = this.$inputContent.attr("data-vendedor");
@@ -115,7 +113,6 @@ app || (app = {});
 
 		setTercero: function(e) {
 			e.preventDefault();
-
 	        var data = this.tercerosSearchTable.row( $(e.currentTarget).parents('tr') ).data();
 			this.$inputContent.val( data.tercero_nit );
             this.$inputName.val( data.tercero_nombre );
@@ -132,7 +129,7 @@ app || (app = {});
 			this.$modalComponent.modal('hide');
 
             if (this.$changeIf == "true") {
-                this.$inputContent.trigger('change');       
+                this.$inputContent.trigger('change');
             }
 		},
 
@@ -153,12 +150,11 @@ app || (app = {});
 
 		terceroChanged: function(e) {
 			var _this = this;
-
-			this.$inputContent = $(e.currentTarget);
+            this.$inputContent = $(e.currentTarget);
 			this.$inputName = this.$("#"+$(e.currentTarget).attr("data-name"));
 			this.$wraperConten = this.$("#"+$(e.currentTarget).attr("data-wrapper"));
             this.$inputAddress = this.$("#"+this.$inputContent.attr("data-address"));
-
+            this.$changeIf = this.$inputContent.attr("data-change");
             this.$btnContact = this.$("#"+this.$inputContent.attr("data-contacto"));
 
             if(this.$btnContact.length > 0) {
@@ -184,7 +180,7 @@ app || (app = {});
 	            })
 	            .done(function(resp) {
 	                window.Misc.removeSpinner( _this.$wraperConten );
-	                if(resp.success) {
+                    if(resp.success) {
 	                    if(!_.isUndefined(resp.tercero_nombre) && !_.isNull(resp.tercero_nombre)){
                             _this.$inputName.val(resp.tercero_nombre);
                         } 
