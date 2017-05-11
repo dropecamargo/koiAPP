@@ -18,6 +18,33 @@ class Factura2 extends BaseModel
 
 	public $timestamps = false;
 
+	/**
+	* The attributes that are mass assignable.
+	*
+	* @var array
+	*/
+    protected $fillable = ['factura2_cantidad', 'factura2_precio_venta','factura2_descuento_porcentaje','factura2_descuento_valor','factura2_costo','factura2_iva_porcentaje','factura2_iva_valor'];
+    
+	public function isValid($data)
+	{
+		$rules = [
+			'factura2_cantidad' => 'required|numeric|min:1',
+			'factura2_precio_venta' => 'required|numeric|min:0',
+			'factura2_descuento_porcentaje' => 'numeric|min:0|required',
+			'factura2_descuento_valor' => 'required|numeric|min:0',
+			'factura2_costo' => 'required|numeric|min:1',
+			'factura2_iva_porcentaje' => 'required|numeric|min:0',
+			'factura2_iva_valor' => 'numeric|min:0'
+		];
+
+		$validator = Validator::make($data, $rules);
+    	if ($validator->passes()) {
+            return true;
+        }
+		$this->errors = $validator->errors();
+		return false;
+	}
+
 	public static function getFactura2($id)
 	{
 		$query = Factura2::query();

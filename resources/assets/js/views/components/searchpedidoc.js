@@ -52,6 +52,7 @@ app || (app = {});
             this.$vendedor = this.$("#"+$(e.currentTarget).attr("data-vendedorT"));
             this.$observaciones = this.$("#"+$(e.currentTarget).attr("data-obs"));
             this.$numPedido = this.$("#"+$(e.currentTarget).attr("data-numPedido"));
+            this.$contact = this.$("#"+this.$inputContent.attr("data-idTC"));
             this.$dataChange = this.$inputContent.attr("data-change");
 
             var tercero = this.$inputContent.val();
@@ -114,7 +115,8 @@ app || (app = {});
                 this.$observaciones.val(data.pedidoc1_observaciones);
                 this.$sucursal.select2({ data: select2 });
                 this.$vendedor.select2({ data: select2Vendedor });
-
+                this.$contact.val(data.pedidoc1_contacto);
+                
                 this.$numPedido.trigger('change',[data.id]);
             }
 			this.$modalComponent.modal('hide');

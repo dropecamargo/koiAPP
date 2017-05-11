@@ -33,10 +33,17 @@ app || (app = {});
                 language: window.Misc.dataTableES(),
                 ajax: window.Misc.urlFull( Route.route('facturas.index') ),
                 columns: [ 
-                    { data: 'id', name: 'id' },
-                    { data: 'tercero_nombre', name: 'tercero_nombre' },
+                    { data: 'factura1_numero', name: 'factura1_numero' },
+                    { data: 'puntoventa_prefijo', name: 'puntoventa_prefijo' },
                     { data: 'sucursal_nombre', name: 'sucursal_nombre' },
-                    { data: 'pedidoc1_fecha', name: 'pedidoc1_fecha' },
+                    { data: 'tercero_nit', name: 'tercero_nit' },
+                    { data: 'tercero_nombre', name: 'factura1_tercero' },
+                    { data: 'tercero_razonsocial', name: 'tercero_razonsocial'},
+                    { data: 'tercero_nombre1', name: 'tercero_nombre1' },
+                    { data: 'tercero_nombre2', name: 'tercero_nombre2' },
+                    { data: 'tercero_apellido1', name: 'tercero_apellido1' },
+                    { data: 'tercero_apellido2', name: 'tercero_apellido2' },
+                    { data: 'factura1_fh_elaboro', name: 'factura1_fh_elaboro' },
                 ],
                 buttons: [
                     {
@@ -50,12 +57,16 @@ app || (app = {});
                 columnDefs: [
                     {
                         targets: 0,
-                        width: '25%',
+                        width: '15%',
                         render: function ( data, type, full, row ) {
                            return '<a href="'+ window.Misc.urlFull( Route.route('facturas.show', {facturas: full.id }) )  +'">' + data + '</a>';
                         },
                        
-                    }, 
+                    },
+                    {
+                        targets: [5,6,7,8,9],
+                        visible: false,
+                    },
                 ]
             });
         }

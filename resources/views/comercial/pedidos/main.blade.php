@@ -173,7 +173,7 @@
                                     <i class="fa fa-barcode"></i>
                                 </button>
                             </span>
-                            <input id="producto_serie" placeholder="Serie" class="form-control producto-koi-component" name="producto_serie" type="text" maxlength="15" data-wrapper="pedidosc-create" data-name="producto_nombre" data-price="pedidoc2_costo" required> 
+                            <input id="producto_serie" placeholder="Serie" class="form-control producto-koi-component" name="producto_serie" type="text" maxlength="15" data-wrapper="pedidosc-create" data-name="producto_nombre" data-ref=false data-price="pedidoc2_costo" required> 
                         </div>
                     </div>
                     <div class="form-group col-sm-4">

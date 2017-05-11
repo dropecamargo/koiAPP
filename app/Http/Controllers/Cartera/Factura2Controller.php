@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Cartera\Factura2;
-use App\Models\Comercial\Pedidoc2;
+use App\Models\Comercial\Pedidoc2, App\Models\Comercial\Pedidoc1;
 use DB, Log;
 class Factura2Controller extends Controller
 {
@@ -20,6 +20,7 @@ class Factura2Controller extends Controller
     {
         if ($request->ajax()){
             if ($request->has('codigo_pedido')) {
+
                 $pediodoc2 = Pedidoc2::getPedidoc2($request->codigo_pedido);
                 $object = new \stdClass();
                 $object->model = [];

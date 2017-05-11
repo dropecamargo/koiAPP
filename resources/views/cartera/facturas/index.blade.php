@@ -11,9 +11,16 @@
                 <table id="facturas-search-table" class="table table-bordered table-striped" cellspacing="0" width="100%">
                     <thead>
                         <tr>
-                            <th>Id</th>
-                            <th>Tercero</th>
+                            <th>Numero</th>
+                            <th>Prefijo</th>
                             <th>Sucursal</th>
+                            <th>Nit</th>
+                            <th>Cliente</th>
+                            <th>Razon Social</th>
+                            <th>Nombre1</th>
+                            <th>Nombre2</th>
+                            <th>Apellido1</th>
+                            <th>Apellido2</th>
                             <th>Fecha</th>
                         </tr>
                     </thead>

@@ -42,17 +42,17 @@ class PedidoController extends Controller
             $query->join('sucursal', 'pedidoc1.pedidoc1_sucursal', '=', 'sucursal.id');
             $query->join('tcontacto', 'pedidoc1.pedidoc1_contacto', '=', 'tcontacto.id');
             return Datatables::of($query)
-                    ->filter(function($query) use($request) {
-                        // Tercero
-                        if($request->has('tercero')) {
-                            $tercero = Tercero::where('tercero_nit', $request->tercero)->first();
-                            if(!$tercero instanceof Tercero){
-                                return response()->json(['success' => false, 'errors' => 'Tercero no encontrado']);
-                            }
-                            $query->where('pedidoc1_tercero', $tercero->id);
+                ->filter(function($query) use($request) {
+                    // Tercero
+                    if($request->has('tercero')) {
+                        $tercero = Tercero::where('tercero_nit', $request->tercero)->first();
+                        if(!$tercero instanceof Tercero){
+                            return response()->json(['success' => false, 'errors' => 'Tercero no encontrado']);
                         }
-                    })
-                    ->make(true);
+                        $query->where('pedidoc1_tercero', $tercero->id);
+                    }
+                })
+                ->make(true);
 
         }
         return view('comercial.pedidos.index');
