@@ -433,7 +433,6 @@ class AjusteController extends Controller
                                     }
                                 }
                             }
-
                         }else{
                             DB::rollback();
                             return response()->json(['success' => false,'errors'=>'No es posible definir movitmiento tipo ajuste, por favor verifique la información ó por favor consulte al administrador']);

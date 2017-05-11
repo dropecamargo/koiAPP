@@ -52,7 +52,7 @@ class ProductoController extends Controller
                         if($request->equalsRef == "true"){
                             $query->whereRaw('producto_serie = producto_referencia');
                         }else{
-                            $query->select('producto.id as id','producto_maneja_serie','producto_serie', 'producto_nombre','producto_referencia','producto_costo','prodbode.id','prodbode.prodbode_cantidad','prodbode_serie', 'prodbode_sucursal');
+                            $query->select('producto.id as id','impuesto.impuesto_porcentaje','producto_maneja_serie','producto_serie', 'producto_nombre','producto_referencia','producto_costo','prodbode.id','producto_precio1','prodbode.prodbode_cantidad','prodbode_serie', 'prodbode_sucursal');
                             $query->join('prodbode', 'producto.id','=','prodbode.prodbode_serie');
                             $query->whereRaw('prodbode_cantidad > 0');
                             $sucursal = Sucursal::find($request->officeSucursal);

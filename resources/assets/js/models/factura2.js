@@ -23,7 +23,8 @@ app || (app = {});
             'factura2_iva_porcentaje': 0,
             'factura2_costo': 0,
             'factura2_subtotal': 0,
-            'factura2_iva_valor':0
+            'factura2_iva_valor':0,
+            'pedido1_id': '',
         }
     });
 })(this, this.document);

@@ -200,7 +200,7 @@ app || (app = {});
             
             'facturas(/)': 'getFacturasMain',
             'facturas/create(/)': 'getFacturaCreate',
-            'facturas/:facturas(/)': 'getRecibosShow',
+            'facturas/:facturas(/)': 'getFacturaShow',
 
             'recibos(/)': 'getRecibosMain',
             'recibos/create(/)': 'getRecibosCreate',
@@ -1667,7 +1667,6 @@ app || (app = {});
 
         getFacturaCreate: function () {
             this.facturaModel = new app.FacturaModel();
-
             if ( this.createFacturaView instanceof Backbone.View ){
                 this.createFacturaView.stopListening();
                 this.createFacturaView.undelegateEvents();
@@ -1675,6 +1674,16 @@ app || (app = {});
 
             this.createFacturaView = new app.CreateFacturaView({ model: this.facturaModel });
             this.createFacturaView.render();
+        },
+        getFacturaShow:function(facturas){
+            this.facturaModel = new app.FacturaModel();
+            this.facturaModel.set({'id': facturas}, {'silent':true});
+            if ( this.showFacturasView instanceof Backbone.View ){
+                this.showFacturasView.stopListening();
+                this.showFacturasView.undelegateEvents();
+            }
+
+            this.showFacturasView = new app.ShowFacturaView({ model: this.facturaModel });
         },
         // Recibos
         getRecibosMain: function () {

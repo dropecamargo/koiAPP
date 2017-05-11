@@ -78,7 +78,7 @@ app || (app = {});
         onStore: function (e) {
             if (!e.isDefaultPrevented()) {
                 e.preventDefault();
-                var data = window.Misc.formToJson( e.target );
+                var data = $.extend({}, window.Misc.formToJson( e.target ) , this.detalleFactura.totalize());
                     data.factura2 = this.detalleFactura.toJSON();
                 this.model.save( data, {patch: true, silent: true} );
             }   
