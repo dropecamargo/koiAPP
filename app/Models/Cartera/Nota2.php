@@ -17,4 +17,11 @@ class Nota2 extends BaseModel
 	protected $table = 'nota2';
 
 	public $timestamps = false;
+
+	/**
+	* The attributes that are mass assignable.
+	*
+	* @var array
+	*/
+    protected $fillable = ['nota2_valor'];
 }

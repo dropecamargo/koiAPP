@@ -20,6 +20,7 @@ app || (app = {});
             'ifChanged .change_employee': 'changedEmployee',
             'ifChanged #tercero_tecnico': 'changedTechnical',
             'ifChanged #tercero_vendedor': 'changedVendedor',
+            'ifChanged #tercero_coordinador': 'changedCordinador',
             'click .btn-add-tcontacto': 'addContacto'
         },
 
@@ -151,6 +152,19 @@ app || (app = {});
             }else{
                 this.$wrapperCoordinador.addClass('hide');
                 this.$coordinador_por.val('');
+            }
+        },
+
+        changedCordinador: function(e){
+            var selected = $(e.target).is(':checked');
+            var nombre = this.model.get('tercero_nombre1')+' '+this.model.get('tercero_nombre2')+' '+this.model.get('tercero_apellido1')+' '+this.model.get('tercero_apellido2');
+            var select = [{id: this.model.get('id') , text: nombre}];
+
+            if( selected ) {
+                this.$coordinador_por.select2({ data: select }).trigger('change');
+                this.$coordinador_por.select2({ language: 'es', placeholder: 'Seleccione', allowClear: false });
+            }else{
+                this.$coordinador_por.find('option[value='+this.model.get('id')+']').remove();
             }
         },
 

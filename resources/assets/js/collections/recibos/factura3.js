@@ -27,29 +27,53 @@ app || (app = {});
                 return item.get('id') == id;
             });
 
-            //setter recibo2Model
-            var modelo = {
-                'recibo2_conceptosrc': concepto.recibo2_conceptosrc,
-                'recibo2_naturaleza': 'C',
-                'recibo2_numero': model.get('factura1_numero'), 
-                'recibo2_cuota': model.get('factura3_cuota'),
-                'recibo2_factura1': model.get('factura3_factura1'),
-                'recibo2_valor': type == 'input' ? valor : model.get('factura3_saldo')
+            //setter recibo2Model || nota2Model
+            if( concepto.call == 'recibo' ){
+                var modelo = {
+                    'recibo2_conceptosrc': concepto.recibo2_conceptosrc,
+                    'recibo2_naturaleza': 'C',
+                    'recibo2_numero': model.get('factura1_numero'), 
+                    'recibo2_cuota': model.get('factura3_cuota'),
+                    'recibo2_factura1': model.get('factura3_factura1'),
+                    'recibo2_valor': type == 'input' ? valor : model.get('factura3_saldo'),
+                    'call': concepto.call,
+                }
+            }
+
+            if( concepto.call == 'nota' ){
+                var modelo = {
+                    'nota2_conceptonota': concepto.nota1_conceptonota,
+                    'nota2_numero': model.get('factura1_numero'), 
+                    'nota2_cuota': model.get('factura3_cuota'),
+                    'nota2_factura1': model.get('factura3_factura1'),
+                    'nota2_documentos_doc': model.get('factura1_documentos'),
+                    'nota2_valor': type == 'input' ? valor : model.get('factura3_saldo'),
+                    'call': concepto.call,
+                }   
             }
 
             return modelo;
         },
 
-        eliminar: function(id){
+        eliminar: function(id, concepto){
             // Remove value
             var model = _.find(this.models, function(item) {
                 return item.get('id') == id;
             });
 
-            //setter recibo2Model
-            var modelo = {
-                'recibo2_numero': model.get('factura1_numero'),
-                'deleted': true
+            //setter recibo2Model || nota2Model
+            if( concepto.call == 'recibo' ){
+                var modelo = {
+                    'recibo2_numero': model.get('factura1_numero'),
+                    'deleted': true
+                }
+            }
+
+            if( concepto.call == 'nota' ){
+                var modelo = {
+                    'nota2_numero': model.get('factura1_numero'),
+                    'deleted': true
+                }   
             }
 
             return modelo;

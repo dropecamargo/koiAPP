@@ -5,7 +5,7 @@ namespace App\Models\Cartera;
 use Illuminate\Database\Eloquent\Model;
 
 use App\Models\BaseModel;
-use Validator;
+use Validator, DB;
 
 class Nota1 extends BaseModel
 {
@@ -25,6 +25,8 @@ class Nota1 extends BaseModel
 	*/
     protected $fillable = ['nota1_numero', 'nota1_fecha', 'nota1_observaciones'];
 
+    public static $default_document = 'NOTA';
+
     public function isValid($data)
 	{
 		$rules = [
@@ -43,5 +45,21 @@ class Nota1 extends BaseModel
         }
 		$this->errors = $validator->errors();
 		return false;
+	}
+
+	public static function getNota($id){
+		$query = Nota1::query();
+		$query->select('nota1.*', 'conceptonota_nombre', 'sucursal_nombre', DB::raw("(CASE WHEN tercero_persona = 'N'
+                    THEN CONCAT(tercero_nombre1,' ',tercero_nombre2,' ',tercero_apellido1,' ',tercero_apellido2,
+                            (CASE WHEN (tercero_razonsocial IS NOT NULL AND tercero_razonsocial != '') THEN CONCAT(' - ', tercero_razonsocial) ELSE '' END)
+                        )
+                    ELSE tercero_razonsocial END)
+                AS tercero_nombre")
+            );
+		$query->join('sucursal','nota1_sucursal','=','sucursal.id');
+		$query->join('tercero','nota1_tercero','=','tercero.id');
+		$query->join('conceptonota','nota1_conceptonota','=','conceptonota.id');
+		$query->where('nota1.id', $id);
+		return $query->first();
 	}
 }

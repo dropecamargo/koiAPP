@@ -196,7 +196,7 @@ app || (app = {});
 
             'notas(/)': 'getNotasMain',
             'notas/create(/)': 'getNotasCreate',
-            'notas/:notas/edit(/)': 'getNotasEdit',
+            'notas/:notas(/)': 'getNotasShow',
             
             'facturas(/)': 'getFacturasMain',
             'facturas/create(/)': 'getFacturaCreate',
@@ -1768,17 +1768,15 @@ app || (app = {});
             this.createNotaView.render();
         },
 
-        getNotasEdit: function (notaModel) {
+        getNotasShow: function (notaModel) {
             this.notaModel = new app.NotaModel();
             this.notaModel.set({'id': notaModel}, {'silent':true});
-
-            if ( this.createNotaView instanceof Backbone.View ){
-                this.createNotaView.stopListening();
-                this.createNotaView.undelegateEvents();
+            if ( this.showNotaView instanceof Backbone.View ){
+                this.showNotaView.stopListening();
+                this.showNotaView.undelegateEvents();
             }
 
-            this.createNotaView = new app.CreateNotaView({ model: this.notaModel });
-            this.notaModel.fetch();
+            this.showNotaView = new app.ShowNotaView({ model: this.notaModel });
         },
     }) );
 })(jQuery, this, this.document);

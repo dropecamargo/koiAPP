@@ -37,5 +37,10 @@ class DocumentosTableSeeder extends Seeder
             'documentos_codigo' => 'PEDC',
             'documentos_nombre' => 'PEDIDO COMERCIAL'
         ]);
+
+        Documentos::create([
+            'documentos_codigo' => 'NOTA',
+            'documentos_nombre' => 'NOTA'
+        ]);
     }
 }

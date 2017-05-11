@@ -32,7 +32,7 @@ app || (app = {});
             
             // Collection 
             this.detalleFacturaList = new app.DetalleFactura3List();
-            this.$concepto = this.$('#recibo2_conceptosrc');
+            this.$concepto = this.parameters.data.call == 'recibo' ? this.$('#recibo2_conceptosrc') : this.$('#nota1_conceptonota');
 
             this.listenTo( this.detalleFacturaList, 'add', this.addOne );
             this.listenTo( this.detalleFacturaList, 'reset', this.addAll );
@@ -79,7 +79,9 @@ app || (app = {});
                 e.preventDefault();
 
                 // Hide modal && reset select
-                this.$concepto.val('').trigger('change');
+                if(this.parameters.data.call == 'recibo'){
+                    this.$concepto.val('').trigger('change');
+                }
                 this.$modal.modal('hide');                
             }
         },
@@ -110,15 +112,14 @@ app || (app = {});
 
             if( !selected ) {
                 var modelo = this.detalleFacturaList.agregar(id[1], this.parameters.data, 'check');
-                this.$('#pagar_'+id[1]).val(modelo.recibo2_valor);
+                this.$('#pagar_'+id[1]).val( modelo.call == 'recibo' ? modelo.recibo2_valor : modelo.nota2_valor );
                 this.collection.trigger('store', modelo );
             }else{
-                var modelo = this.detalleFacturaList.eliminar(id[1]);
+                var modelo = this.detalleFacturaList.eliminar(id[1], this.parameters.data);
                 this.collection.trigger('store', modelo );
                 this.$('#pagar_'+id[1]).val('');
             }
               
-            this.$concepto.val('').trigger('change');
             this.ready();
         },
 
@@ -156,10 +157,11 @@ app || (app = {});
         */
         addAll:function(){
             var _this = this;
-                    
+
             if( this.detalleFacturaList.length > 0){
                 this.detalleFacturaList.forEach(function(model) {
                     _this.addOne(model);
+
                     var modelo = _this.collection.validarC(model.get('factura1_numero'));
                     if(modelo.success){
                         _this.$("#check_"+model.get('id')).iCheck('check');

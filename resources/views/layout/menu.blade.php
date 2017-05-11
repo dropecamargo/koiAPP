@@ -82,14 +82,14 @@
                     <i class="fa fa-wpforms"></i> Módulos <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
-                    <li class="{{ Request::segment(1) == 'notas' ? 'active' : '' }}">
-                        <a href="{{ route('notas.index') }}"><i class="fa fa-book"></i> Nota</a>
-                    </li>
-                    <li class="{{ Request::segment(1) == 'recibos' ? 'active' : '' }}">
-                        <a href="{{ route('recibos.index') }}"><i class="fa fa-file-text-o"></i> Recibo de caja</a>
-                    </li>
                     <li class="{{ Request::segment(1) == 'facturas' ? 'active' : '' }}">
                         <a href="{{ route('facturas.index') }}"><i class="fa fa-pencil-square-o"></i> Facturas</a>
+                    </li>
+                    <li class="{{ Request::segment(1) == 'notas' ? 'active' : '' }}">
+                        <a href="{{ route('notas.index') }}"><i class="fa fa-book"></i> Notas</a>
+                    </li>
+                    <li class="{{ Request::segment(1) == 'recibos' ? 'active' : '' }}">
+                        <a href="{{ route('recibos.index') }}"><i class="fa fa-file-text-o"></i> Recibos de caja</a>
                     </li>
                 </ul>
             </li>
@@ -105,14 +105,14 @@
                     <li class="{{ Request::segment(1) == 'bancos' ? 'active' : '' }}">
                         <a href="{{route('bancos.index')}}"><i class="fa fa-circle-o"></i> Bancos</a>
                     </li>
+                    <li class="{{ Request::segment(1) == 'cuentabancos' ? 'active' : '' }}">
+                        <a href="{{route('cuentabancos.index')}}"><i class="fa fa-circle-o"></i> Cuentas de banco</a>
+                    </li>
                     <li class="{{ Request::segment(1) == 'conceptonotas' ? 'active' : '' }}">
                         <a href="{{route('conceptonotas.index')}}"><i class="fa fa-circle-o"></i> Concepto de nota</a>
                     </li>
                     <li class="{{ Request::segment(1) == 'conceptosrc' ? 'active' : '' }}">
                         <a href="{{route('conceptosrc.index')}}"><i class="fa fa-circle-o"></i> Concepto recibo de caja</a>
-                    </li>
-                    <li class="{{ Request::segment(1) == 'cuentabancos' ? 'active' : '' }}">
-                        <a href="{{route('cuentabancos.index')}}"><i class="fa fa-circle-o"></i> Cuentas de banco</a>
                     </li>
                     <li class="{{ Request::segment(1) == 'mediopagos' ? 'active' : '' }}">
                         <a href="{{route('mediopagos.index')}}"><i class="fa fa-circle-o"></i> Medios de pago</a>

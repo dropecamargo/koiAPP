@@ -176,11 +176,27 @@ class ModulosTableSeeder extends Seeder
 
         // Modulo
         Modulo::create([
+            'name' => 'facturas',
+            'display_name' => 'Facturas',
+            'nivel1' => 2,
+            'nivel2' => 1,
+            'nivel3' => 1
+        ]);
+
+        Modulo::create([
+            'name' => 'notas',
+            'display_name' => 'Notas',
+            'nivel1' => 2,
+            'nivel2' => 1,
+            'nivel3' => 2
+        ]);
+
+        Modulo::create([
             'name' => 'recibos',
             'display_name' => 'Recibo de caja',
             'nivel1' => 2,
             'nivel2' => 1,
-            'nivel3' => 1
+            'nivel3' => 3
         ]);
 
         // Referencia
@@ -199,18 +215,25 @@ class ModulosTableSeeder extends Seeder
             'nivel3' => 2
         ]);
         Modulo::create([
-            'name' => 'conceptosrc',
-            'display_name' => 'Concepto recibo de caja',
+            'name' => 'cuentabancos',
+            'display_name' => 'Cuentas de banco',
             'nivel1' => 2,
             'nivel2' => 2,
             'nivel3' => 3
         ]);
         Modulo::create([
-            'name' => 'cuentabancos',
-            'display_name' => 'Cuentas de banco',
+            'name' => 'conceptonotas',
+            'display_name' => 'Concepto de nota',
             'nivel1' => 2,
             'nivel2' => 2,
             'nivel3' => 4
+        ]);
+        Modulo::create([
+            'name' => 'conceptosrc',
+            'display_name' => 'Concepto recibo de caja',
+            'nivel1' => 2,
+            'nivel2' => 2,
+            'nivel3' => 5
         ]);
         Modulo::create([
             'name' => 'mediopagos',
@@ -235,8 +258,6 @@ class ModulosTableSeeder extends Seeder
             'nivel2' => 1,
             'nivel3' => 1
         ]);
-
-        //Modulos
         Modulo::create([
             'name' => 'presupuestoasesor',
             'display_name' => 'Presupuesto',

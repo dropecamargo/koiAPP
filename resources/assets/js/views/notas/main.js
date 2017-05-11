@@ -52,7 +52,7 @@ app || (app = {});
                         targets: 0,
                         width: '10%',
                         render: function ( data, type, full, row ) {
-                            return '<a href="'+ window.Misc.urlFull( Route.route('conceptonotas.show', {conceptonotas: full.id }) )  +'">' + data + '</a>';
+                            return '<a href="'+ window.Misc.urlFull( Route.route('notas.show', {notas: full.id }) )  +'">' + data + '</a>';
                         }
                     }
                 ]

@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\Models\Cartera\Conceptosrc;
+use App\Models\Cartera\Conceptosrc, App\Models\Cartera\ConceptoNota;
 use App\Models\Base\Documentos;
 use App\Models\Contabilidad\PlanCuenta;
 use DB, Log, Cache, Datatables;
@@ -187,18 +187,34 @@ class ConceptosrcController extends Controller
         $response->action = "";
         $response->success = false;
 
-        $conceptosrc = Conceptosrc::getConceptosrc($request->recibo2_conceptosrc);
-        if (!$conceptosrc instanceof Conceptosrc) {
-            $response->errors = "No es posible recuperar concepto, verifique información ó por favor consulte al administrador.";
+        if($request->has('call')){
+            if($request->call == 'recibo'){
+                $conceptosrc = Conceptosrc::getConceptosrc($request->recibo2_conceptosrc);
+                if (!$conceptosrc instanceof Conceptosrc) {
+                    $response->errors = "No es posible recuperar concepto, verifique información ó por favor consulte al administrador.";
+                }
+
+                if($conceptosrc->documentos_codigo == 'FACT'){
+                    $action = 'modalCartera';
+                    $response->action = $action;  
+                    $response->success = true;
+                }else{
+                    $response->success = false;
+                }
+            }
+
+            if($request->call == 'nota'){
+                $conceptonota = ConceptoNota::getConceptoNota($request->nota1_conceptonota);
+                if (!$conceptonota instanceof ConceptoNota) {
+                    $response->errors = "No es posible recuperar concepto, verifique información ó por favor consulte al administrador.";
+                }
+
+                $action = 'modalCartera';
+                $response->action = $action;  
+                $response->success = true;
+            }
         }
         
-        if($conceptosrc->documentos_codigo == 'FACT'){
-            $action = 'modalCartera';
-            $response->action = $action;  
-            $response->success = true;
-        }else{
-            $response->success = false;
-        }
         return response()->json($response);
     }
 }

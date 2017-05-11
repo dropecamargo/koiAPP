@@ -51,6 +51,7 @@ app || (app = {});
                     if(documents == 'traslados') consecutive = resp.sucursal_tras;
                     if(documents == 'pedidoc') consecutive = resp.sucursal_pedidoc;
                     if(documents == 'recibos') consecutive = resp.sucursal_reci;
+                    if(documents == 'notas') consecutive = resp.sucursal_nota;
                     
                     // Set consecutive
                     _this.$consecutive.val( parseInt(consecutive) + 1);

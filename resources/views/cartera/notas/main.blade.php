@@ -81,7 +81,7 @@
                     <a href="{{ route('recibos.index') }}" class="btn btn-default btn-sm btn-block">{{ trans('app.cancel') }}</a>
                 </div>
                 <div class="col-md-2  col-sm-5 col-xs-6 text-right">
-                    <button type="button" class="btn btn-primary btn-sm btn-block submit-recibo">{{ trans('app.save') }}</button>
+                    <button type="button" class="btn btn-primary btn-sm btn-block submit-nota">{{ trans('app.save') }}</button>
                 </div>
             </div>
         </div>
@@ -104,9 +104,32 @@
                         <tbody>
                                 {{-- Render content recibo2 --}}
                         </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="4"></td>
+                                <th class="text-left">Total</td>
+                                <th class="text-right"  id="total">0</td>
+                            </tr>
+                        </tfoot>
                     </table>
                 </div>
             </div>
         </div>
+    </script>
+
+    <script type="text/template" id="add-detalle-nota-tpl">
+        <%if(edit){ %>
+            <td class="text-center">
+                <a class="btn btn-default btn-xs item-nota-remove" data-resource="<%- id %>">
+                    <span><i class="fa fa-times"></i></span>
+                </a>
+            </td>
+        <% } %>
+            
+        <td><%- conceptonota_nombre %></td>
+        <td><%- documentos_nombre %></td>
+        <td><%- nota2_numero %></td>
+        <td><%- nota2_cuota %></td>
+        <td class="text-right"><%- window.Misc.currency( nota2_valor )  %></td>
     </script>
 @stop

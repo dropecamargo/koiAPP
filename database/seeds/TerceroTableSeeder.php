@@ -43,7 +43,7 @@ class TerceroTableSeeder extends Seeder
             'tercero_activo'   => true,
             'tercero_interno'   => true,
             'tercero_cliente'   => false,
-            'tercero_vendedor'   => true,
+            'tercero_vendedor'   => false,
             'tercero_email'    => str_random(10).'@gmail.com',
             'username'    => 'machadoo00',
             'password' => bcrypt('123321')

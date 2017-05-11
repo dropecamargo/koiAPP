@@ -90,7 +90,7 @@ class Tercero extends BaseModel implements AuthenticatableContract,
             if( $this->exists ){
                 if( isset($data['tercero_empleado']) || isset($data['tercero_interno']) )  {
                     if( empty($data['tercero_sucursal']) ){
-                        $this->errors = trans('validation.required', ['attribute' => 'Sucursal de la pestaña empleado']);
+                        $this->errors = trans('validation.required', ['attribute' => 'sucursal de la pestaña empleado']);
                         return false;
                     }
                 }
@@ -108,7 +108,6 @@ class Tercero extends BaseModel implements AuthenticatableContract,
                         return false;
                     }
                 }
-                return true;
             }
 
             if($data['tercero_persona'] == 'N') {
@@ -126,6 +125,7 @@ class Tercero extends BaseModel implements AuthenticatableContract,
                     return false;
                 }
             }
+
             return true;
         }
         $this->errors = $validator->errors();

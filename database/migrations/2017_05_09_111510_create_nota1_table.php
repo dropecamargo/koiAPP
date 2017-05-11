@@ -19,6 +19,7 @@ class CreateNota1Table extends Migration
             $table->integer('nota1_sucursal')->unsigned();
             $table->integer('nota1_numero');
             $table->integer('nota1_tercero')->unsigned();
+            $table->integer('nota1_documentos')->unsigned();
             $table->date('nota1_fecha');
             $table->text('nota1_observaciones');
             $table->integer('nota1_conceptonota')->unsigned();
@@ -27,6 +28,7 @@ class CreateNota1Table extends Migration
 
             $table->foreign('nota1_sucursal')->references('id')->on('sucursal')->onDelete('restrict');
             $table->foreign('nota1_tercero')->references('id')->on('tercero')->onDelete('restrict');
+            $table->foreign('nota1_documentos')->references('id')->on('documentos')->onDelete('restrict');
             $table->foreign('nota1_conceptonota')->references('id')->on('conceptonota')->onDelete('restrict');
             $table->foreign('nota1_usuario_elaboro')->references('id')->on('tercero')->onDelete('restrict');
         });

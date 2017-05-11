@@ -113,6 +113,7 @@ app || (app = {});
         changeConcepto: function(e){
             var data = window.Misc.formToJson( e.target );
                 data.tercero = this.$('#recibo2_conceptosrc').attr('data-tercero');
+                data.call = 'recibo';
 
             if( !_.isUndefined(data.recibo2_conceptosrc) && !_.isNull(data.recibo2_conceptosrc) && data.recibo2_conceptosrc != ''){
                 window.Misc.evaluateActionsCartera({

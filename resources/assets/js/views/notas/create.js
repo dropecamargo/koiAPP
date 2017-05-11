@@ -14,6 +14,7 @@ app || (app = {});
         el: '#nota-create',
         template: _.template( ($('#add-nota-tpl').html() || '') ),
         events: {
+            'click .submit-nota': 'submitNota',
             'submit #form-nota': 'onStore',
             'change .change-concepto': 'changeConcepto',
         },
@@ -36,6 +37,26 @@ app || (app = {});
             this.listenTo( this.model, 'change', this.render );
             this.listenTo( this.model, 'sync', this.responseServer );
             this.listenTo( this.model, 'request', this.loadSpinner );
+
+            this.ready();
+        },
+
+        /*
+        * Render View Element
+        */
+        render: function() {
+            var attributes = this.model.toJSON();
+            this.$wraperForm.html( this.template(attributes) );
+            this.$form = this.$('#form-nota');
+
+            this.referenceViews();
+        },
+
+        /**
+        * Event submit nota
+        */
+        submitNota: function (e) {
+            this.$form.submit();
         },
 
         /**
@@ -46,13 +67,35 @@ app || (app = {});
 
                 e.preventDefault();
                 var data = window.Misc.formToJson( e.target );
+                    data.nota2 = this.detalleNotaList.toJSON();
                 this.model.save( data, {patch: true, silent: true} );
             }
         },
 
+        /**
+        * reference to views
+        */
+        referenceViews: function () {
+            //DetalleNotaList
+            this.detalleNotasView = new app.DetalleNotasView( {
+                collection: this.detalleNotaList,
+                parameters: {
+                    wrapper: this.$('#wrapper-detalle'),
+                    edit: true,
+                    dataFilter: {
+                        'nota2': this.model.get('id')
+                    }
+               }
+            });
+        },
+
         changeConcepto: function(e){
+            this.$el.find('tbody').html('');
+            this.detalleNotaList.reset();
+
             var data = window.Misc.formToJson( e.target );
                 data.tercero = this.$('#nota1_conceptonota').attr('data-tercero');
+                data.call = 'nota';
 
             if( !_.isUndefined(data.nota1_conceptonota) && !_.isNull(data.nota1_conceptonota) && data.nota1_conceptonota != ''){
                 window.Misc.evaluateActionsCartera({
@@ -69,7 +112,7 @@ app || (app = {});
 
                             _this.carteraActionView = new app.CarteraActionView({
                                 model: _this.model,
-                                collection: _this.detalleReciboList,
+                                collection: _this.detalleNotaList,
                                 parameters: {
                                     data: data,
                                     action: action,
@@ -80,16 +123,6 @@ app || (app = {});
                     })(this)
                 });
             }
-        },
-
-        /*
-        * Render View Element
-        */
-        render: function() {
-            var attributes = this.model.toJSON();
-            this.$wraperForm.html( this.template(attributes) );
-
-            this.ready();
         },
 
         /**

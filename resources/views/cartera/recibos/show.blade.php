@@ -41,10 +41,6 @@
                     <label class="control-label">Cliente</label>
                     <div>{{ $recibo->tercero_nombre }}</div>
                 </div>
-                <div class="form-group col-md-4">
-                    <label class="control-label">Valor</label>
-                    <div>{{ $recibo->recibo1_valor }}</div>
-                </div>
             </div>
             <div class="row">
                 <div class="form-group col-md-8">

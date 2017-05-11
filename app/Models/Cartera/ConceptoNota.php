@@ -38,6 +38,7 @@ class ConceptoNota extends BaseModel
 	{
 		$rules = [
 		    'conceptonota_nombre' => 'required',
+		    'conceptonota_plancuentas' => 'required',
 		];
 
 		$validator = Validator::make($data, $rules);
