@@ -8,7 +8,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Models\Cartera\Factura1, App\Models\Cartera\Factura2, App\Models\Cartera\Factura3;
-use App\Models\Comercial\Pedidoc1;
+use App\Models\Comercial\Pedidoc1,App\Models\Comercial\Pedidoc2;
 use App\Models\Inventario\Producto,App\Models\Inventario\SubCategoria,App\Models\Inventario\Lote,App\Models\Inventario\Ajuste2,App\Models\Inventario\Prodbode,App\Models\Inventario\Inventario,App\Models\Inventario\Inventariorollo,App\Models\Inventario\Prodboderollo,App\Models\Inventario\Prodbodelote,App\Models\Inventario\Prodbodevence;
 use App\Models\Base\Tercero,App\Models\Base\PuntoVenta,App\Models\Base\Documentos,App\Models\Base\Sucursal, App\Models\Base\Contacto; 
 use DB, Log, Datatables,Auth;
@@ -139,40 +139,55 @@ class Factura1Controller extends Controller
                             DB::rollback();
                             return response()->json(['success' => false, 'errors' => 'No es posible recuperar subcategoria, por favor verifique información o consulte al administrador']);
                         }
+                        //prepare detalle2
+                        $pedidoc2 = Pedidoc2::where('pedidoc2_pedidoc1', $pedidoc1->id)->where('pedidoc2_producto',$producto->id)->first();
+                        if (!$pedidoc2 instanceof Pedidoc2) {
+                            DB::rollback();
+                            return response()->json(['success'=>false , 'errors'=> 'No es posible recuperar subcategoria, por favor verifique información o consulte al administrador']);
+                        }
                         // Maneja serie
                         if ($producto->producto_maneja_serie == true) {
+                            $items = isset($item['items']) ? $item['items'] : null;
 
-                            $prodbodelote = Prodbodelote::where('prodbodelote_serie', $producto->id)->where('prodbodelote_saldo', 1)->first();
-                            if (!$prodbodelote instanceof Prodbodelote) {
-                                DB::rollback();
-                                return response()->json(['success' => false,'errors' => 'No es posible recuperar el LOTE,por favor verifique la información ó por favor consulte al administrador']);
-                            }
-                            $lote = Lote::find($prodbodelote->prodbodelote_lote);
-                            if (!$lote instanceof Lote) {
-                                DB::rollback();
-                                return response()->json(['success' => false,'errors' => 'No es posible recuperar el LOTE,por favor verifique la información ó por favor consulte al administrador']);
-                            }
-                            // Detalle factura
-                            $factura2 = new Factura2;
-                            $factura2->fill($item);
-                            $factura2->factura2_factura1 = $factura1->id;
-                            $factura2->factura2_producto = $producto->id;
-                            $factura2->factura2_subcategoria = $subcategoria->id;
-                            $factura2->factura2_margen = $subcategoria->subcategoria_margen_nivel1;
-                            $factura2->save();
-                            
-                            // Movimiento salidaManejaSerie
-                            $movimiento = Inventario::salidaManejaSerie($producto, $sucursal, $lote);
-                            if($movimiento != 'OK') {
-                                DB::rollback();
-                                return response()->json(['success' => false, 'errors' => $movimiento]);
-                            }
+                            foreach ($items as $value) {
+                                $serie = Producto::find($value);
+                                if (!$serie instanceof Producto) {
+                                    DB::rollback();
+                                    return response()->json(['success' => false , 'errors' => 'No es posible recuperar producto hijo, por favor verifique la información ó por favor consulte al administrador.']);
+                                }
 
-                            // Inventario
-                            $inventario = Inventario::movimiento($producto, $sucursal->id, 'FACT', $factura1->id, 0, $factura2->factura2_cantidad, $factura2->factura2_costo, $factura2->factura2_costo);
-                            if (!$inventario instanceof Inventario) {
-                                DB::rollback();
-                                return response()->json(['success' => false,'errors' => $inventario]);
+                                $prodbodelote = Prodbodelote::where('prodbodelote_serie', $serie->id)->where('prodbodelote_saldo', 1)->first();
+                                if (!$prodbodelote instanceof Prodbodelote) {
+                                    DB::rollback();
+                                    return response()->json(['success' => false,'errors' => 'No es posible recuperar el LOTE,por favor verifique la información ó por favor consulte al administrador']);
+                                }
+                                $lote = Lote::find($prodbodelote->prodbodelote_lote);
+                                if (!$lote instanceof Lote) {
+                                    DB::rollback();
+                                    return response()->json(['success' => false,'errors' => 'No es posible recuperar el LOTE,por favor verifique la información ó por favor consulte al administrador']);
+                                }
+                                // Detalle factura
+                                $factura2 = new Factura2;
+                                $factura2->fill($item);
+                                $factura2->factura2_factura1 = $factura1->id;
+                                $factura2->factura2_producto = $serie->id;
+                                $factura2->factura2_subcategoria = $subcategoria->id;
+                                $factura2->factura2_margen = $subcategoria->subcategoria_margen_nivel1;
+                                $factura2->save();
+                                
+                                // Movimiento salidaManejaSerie
+                                $movimiento = Inventario::salidaManejaSerie($serie, $sucursal, $lote);
+                                if($movimiento != 'OK') {
+                                    DB::rollback();
+                                    return response()->json(['success' => false, 'errors' => $movimiento]);
+                                }
+
+                                // Inventario
+                                $inventario = Inventario::movimiento($serie, $sucursal->id, 'FACT', $factura1->id, 0, $factura2->factura2_cantidad, $factura2->factura2_costo, $factura2->factura2_costo);
+                                if (!$inventario instanceof Inventario) {
+                                    DB::rollback();
+                                    return response()->json(['success' => false,'errors' => $inventario]);
+                                }
                             }
                         // Metrado
                         }else if ($producto->producto_metrado == true) {

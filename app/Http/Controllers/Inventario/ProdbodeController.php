@@ -28,8 +28,11 @@ class ProdbodeController extends Controller
             $query = Prodbode::query();
             $query->join('producto', 'prodbode.prodbode_serie', '=', 'producto.id');
             $query->join('sucursal', 'prodbode.prodbode_sucursal', '=', 'sucursal.id');
+            if ($request->has('sucursal')) {
+                $query->where('prodbode_sucursal', $request->sucursal)->where('prodbode_cantidad' ,'>', 0);
+            }
             $query->where('producto_referencia', $producto->producto_serie);
-            $query->select('producto_serie','producto_nombre', 'sucursal_nombre');
+            $query->select('producto_serie','producto_nombre', 'sucursal_nombre','producto.id');
             return response()->json(['success' => true, 'series' => $query->get()]);
         }
     }

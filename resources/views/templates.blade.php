@@ -1278,3 +1278,38 @@
 		</div>
 	</div>
 </script>
+
+    <script type="text/template" id="add-seriesprodbode-tpl">
+        <table id="prodbod-search-table" class="table table-striped">
+            <tbody>
+                <tr>
+	               	<% if (edit){ %>
+                		<th></th>
+                	<% } %>
+                    <th>Serie</th>
+                    <th colspan="2">Nombre</th>
+                    <th>Sucursal</th>
+                </tr>
+
+                <% if( series == '') { %>
+                    <tr>
+                        <th colspan="4" class="text-center">NO EXISTEN SERIES ASOCIADAS</th>
+                    </tr>
+                <% } %>
+
+                <% _.each(series, function(serie) { %>
+                    <tr>
+	               	<% if (edit){ %>
+                		<td width="10%">
+                			<label class="checkbox-inline" for="serie_hija_<%-serie.id %>">
+								<input type="checkbox" id="serie_hija_<%-serie.id %>" name="serie_hija_<%-serie.id %>" value="<%- serie.id %>">
+							</label>
+						</td>
+                	<% } %>
+                        <td><%- serie.producto_serie %></td>
+                        <td colspan="2"><%- serie.producto_nombre %></td>
+                        <td><%- serie.sucursal_nombre %></td>
+                    </tr>
+                <% }); %>
+            </tbody>
+    </script>

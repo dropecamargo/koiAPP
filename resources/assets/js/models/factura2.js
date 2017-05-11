@@ -24,7 +24,7 @@ app || (app = {});
             'factura2_costo': 0,
             'factura2_subtotal': 0,
             'factura2_iva_valor':0,
-            'pedido1_id': '',
+            'producto_id': '',
         }
     });
 })(this, this.document);

@@ -218,7 +218,7 @@
         </div>
     </script>
 
-    <script type="text/template" id="add-series-tpl">
+    <script type="text/template" id="add-seriesprodbode-tpl">
         <table id="prodbod-search-table" class="table table-striped">
             <tbody>
                 <tr>

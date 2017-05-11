@@ -14,6 +14,9 @@ app || (app = {});
         templateAddSeries: _.template( ($('#add-series-tpl').html() || '') ),
     	templateSeriesLotes: _.template( ($('#add-series-lotes-tpl').html() || '') ),
         templateAddItemRollo: _.template( ($('#add-itemrollo-tpl').html() || '') ),
+
+        templateAddISerieFactu: _.template( ($('#add-series-factu-tpl').html() || '') ),
+
         templateChooseItemsRollo: _.template( ($('#choose-itemrollo-tpl').html() || '') ),
         templateAddItemsProductVence: _.template( ($('#product-vence-tpl').html() || '') ),
         templateChooseItemsProductVence: _.template( ($('#product-choose-vence-tpl').html() || '') ),
@@ -46,6 +49,8 @@ app || (app = {});
             this.LotesProducto = new app.ProductoLote();
             // Collection producto vence
             this.productoVenceList = new app.ProductoVenceList();
+            // Collection prodbode
+            this.prodbodeList = new app.ProdbodeList();
 
             // Events Listeners
             this.listenTo( this.LotesProducto, 'reset', this.addAllProductoLote );
@@ -58,6 +63,7 @@ app || (app = {});
             
             this.listenTo( this.model, 'sync', this.responseServer );
             this.listenTo( this.collection, 'sync', this.responseServer );
+            this.ready();
         },
 
         /*
@@ -80,7 +86,13 @@ app || (app = {});
                         }
 
                     },
-                    
+                    'ProductoReferencia':function(){
+                        _this.$modalIn.find('.content-modal').empty().html(_this.templateAddISerieFactu( ));
+                        _this.$modalIn.find('.modal-title').text('Producto - Series'); 
+
+                        _this.referenceSerieFactura(resp);
+                        
+                    },
                     'ProductoMetrado': function(){
                         if (resp.tipo  == 'E') {
                             _this.$modalIn.find('.content-modal').empty().html(_this.templateAddItemRollo(resp) );
@@ -180,6 +192,33 @@ app || (app = {});
             // Open modal
             this.$modalIn.modal('show');
   
+        },
+        /**
+        *
+        */
+        referenceSerieFactura:function(atributes){
+            this.$wraper = this.$('#modal-wrapper-inventario');
+            this.$wraperFormIn = this.$modalIn.find('.content-modal');
+            this.$wraperErrorIn = this.$('#error-inventario');
+            this.$wraperProdbode = this.$('#render-series');
+
+            var view = new app.ProdbodeListView( {
+                collection: this.prodbodeList,
+                parameters: {
+                    wrapper: this.el,
+                    edit: true,
+                    dataFilter: {
+                        'producto_id': atributes.data.producto_id,
+                        'sucursal': atributes.data.sucursal,
+                    }
+               }
+            }); 
+
+            // Hide errors
+            this.$wraperErrorIn.hide().empty();
+
+            // Open modal
+            this.$modalIn.modal('show');
         },
       	/**
         * Reference add RolloMetrado
@@ -364,6 +403,7 @@ app || (app = {});
                 }else{
                     var items = [];
                     items =  window.Misc.formToJson( e.target );
+                    console.log(items, 'ho');
                     this.parameters.data = $.extend({}, this.parameters.data);
                     this.parameters.data.items =  items;
                     this.collection.trigger('store', this.parameters.data);
