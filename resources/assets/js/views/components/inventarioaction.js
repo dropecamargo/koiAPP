@@ -403,7 +403,6 @@ app || (app = {});
                 }else{
                     var items = [];
                     items =  window.Misc.formToJson( e.target );
-                    console.log(items, 'ho');
                     this.parameters.data = $.extend({}, this.parameters.data);
                     this.parameters.data.items =  items;
                     this.collection.trigger('store', this.parameters.data);

@@ -21,7 +21,16 @@ app || (app = {});
         */
         initialize : function(){
         },
+        valid: function(){
+            var error = { success: false};
 
+            // Validate exist
+            var modelExits = _.each(this.models, function(item) {
+                return item.has('items');
+            });
+            console.log(modelExits);
+            return error;
+        },
         iva: function(){
             return this.reduce(function(sum, model) {
                 var iva = model.get('factura2_iva_porcentaje')  / 100;
