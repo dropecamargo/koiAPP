@@ -33,7 +33,7 @@ class Factura3 extends BaseModel
 				
 				// Prepare interval each 30 days
 				$fecha =  $factura3->factura3_vencimiento;
-				$fecha = date_create($fecha);
+				$fecha = date_create($fecha + '');
 				date_add($fecha, date_interval_create_from_date_string('30 days'));
 			}
 			return true;
