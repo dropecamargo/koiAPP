@@ -78,6 +78,9 @@ app || (app = {});
         onStore: function (e) {
             if (!e.isDefaultPrevented()) {
                 e.preventDefault();
+                if (!this.detalleFactura.valid().success) {
+                    return alertify.error('Por favor seleccionar LOTES en el vinculo de la serie del producto');
+                }
                 var data = $.extend({}, window.Misc.formToJson( e.target ) , this.detalleFactura.totalize());
                     data.factura2 = this.detalleFactura.toJSON();
                 this.model.save( data, {patch: true, silent: true} );
@@ -165,7 +168,8 @@ app || (app = {});
                     return; 
                 }
             }
-            window.Misc.redirect( window.Misc.urlFull( Route.route('facturas.index')) );
+            window.Misc.redirect( window.Misc.urlFull( Route.route('facturas.show', { facturas: resp.id})) );
+
         }
     });
 

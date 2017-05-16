@@ -53,7 +53,7 @@ app || (app = {});
             this.listenTo( this.collection, 'request', this.loadSpinner);
             this.listenTo( this.collection, 'sync', this.responseServer);
 
-            this.collection.fetch({ data: {tercero: this.parameters.dataFilter.tercero}, reset: true });
+            this.collection.fetch({ data: {tercero: this.parameters.dataFilter.tercero , factura1: this.parameters.dataFilter.factura1}, reset: true });
         },
 
         /*
@@ -68,7 +68,7 @@ app || (app = {});
         * @param Object contactModel Model instance
         */
         addOne: function (factura3Model) {
-            var view = new app.FacturaItemView({
+            var view = new app.Factura3ItemView({
                 model: factura3Model,
                 parameters: {
                     edit: this.parameters.edit,

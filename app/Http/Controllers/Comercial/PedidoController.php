@@ -45,11 +45,8 @@ class PedidoController extends Controller
                 ->filter(function($query) use($request) {
                     // Tercero
                     if($request->has('tercero')) {
-                        $tercero = Tercero::where('tercero_nit', $request->tercero)->first();
-                        if(!$tercero instanceof Tercero){
-                            return response()->json(['success' => false, 'errors' => 'Tercero no encontrado']);
-                        }
-                        $query->where('pedidoc1_tercero', $tercero->id);
+                        $query->where('t.tercero_nit', $request->tercero);
+                        $query->whereNull('pedidoc1_factura1');
                     }
                 })
                 ->make(true);

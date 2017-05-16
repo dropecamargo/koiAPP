@@ -138,7 +138,7 @@ app || (app = {});
         * @param Object Model instance
         */
         addOne: function (factura3Model) {
-            var view = new app.FacturaItemView({
+            var view = new app.Factura3ItemView({
                 model: factura3Model,
                 parameters:{
                 }

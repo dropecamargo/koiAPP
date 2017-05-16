@@ -47,7 +47,7 @@ class Pedidoc2 extends Model
 	public static function getPedidoc2($id)
 	{
 		$query = Pedidoc2::query();
-		$query->select('pedidoc2.*','producto_serie','producto_nombre')->where('pedidoc2_pedidoc1',$id);
+		$query->select('pedidoc2.*','producto_serie','producto_nombre','producto_maneja_serie')->where('pedidoc2_pedidoc1',$id);
         $query->join('producto', 'pedidoc2_producto', '=' ,'producto.id');
         $query->orderBy('pedidoc2.id', 'asc');
 		return  $query->get();

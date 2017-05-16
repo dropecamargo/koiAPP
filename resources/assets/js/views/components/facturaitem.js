@@ -9,7 +9,7 @@ app || (app = {});
 
 (function ($, window, document, undefined) {
 
-    app.FacturaItemView = Backbone.View.extend({
+    app.Factura3ItemView = Backbone.View.extend({
 
         tagName: 'tr',
         template: _.template( ($('#add-concepto-item-tpl').html() || '') ),
@@ -53,6 +53,8 @@ app || (app = {});
                 }else if ( attributes.days < -360 ){
                     this.$el.addClass('bg-mayor360');
                 }
+                this.$el.html( this.parameters.template(attributes) );
+            }else if( attributes.call == 'detalle' ){
                 this.$el.html( this.parameters.template(attributes) );
             }else{
                 this.$el.html( this.template(attributes) );

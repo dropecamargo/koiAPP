@@ -35,17 +35,22 @@ class Recibo2 extends BaseModel
 	
 	public function isValid($data)
 	{
-		$rules = [
-			'recibo2_conceptosrc' => 'required',
-			'recibo2_naturaleza' => 'required',
-		];
+		$rules = [];
 
 		$validator = Validator::make($data, $rules);
     	if ($validator->passes()) {
-    		if(!isset($data['factura1_numero'])){
-    			$rules['recibo2_conceptosrc'] .= '|required';
-    			$rules['recibo2_naturaleza'] .= '|required';
+    		if(!isset($data['recibo2_factura1'])){
+	    		if(empty($data['recibo2_valor'])){
+	    			$this->errors = trans('validation.required', ['attribute' => 'valor']);
+	                return false;
+	    		}
+
+	    		if(empty($data['recibo2_naturaleza'])){
+	    			$this->errors = trans('validation.required', ['attribute' => 'naturaleza']);
+	                return false;
+	    		}
     		}
+
             return true;
         }
 		$this->errors = $validator->errors();

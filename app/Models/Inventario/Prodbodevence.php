@@ -57,13 +57,13 @@ class Prodbodevence extends Model
                 case 'S':
                     // Validar disponibles
                     if($cantidad > $prodbodevence->prodbodevence_saldo){
-                        return "No existen suficientes unidades para salida item rollo producto {$producto->producto_serie}, item {$item}, por favor verifique la información o consulte al administrador.";
+                        return "No existen suficientes unidades para salida prodbode vence {$producto->producto_serie}, item {$item}, por favor verifique la información o consulte al administrador.";
                     }
                     $prodbodevence->prodbodevence_saldo = ($prodbodevence->prodbodevence_saldo - $cantidad);
                 break;
 
                 default:
-                    return "No es posible recuperar tipo movimiento prodbode rollo, por favor verifique la información o consulte al administrador.";
+                    return "No es posible recuperar tipo movimiento prodbode vence, por favor verifique la información o consulte al administrador.";
                 break;
             }
         }
@@ -81,6 +81,7 @@ class Prodbodevence extends Model
             $query->where('prodbodevence_lote', $lote->id);
             $query->whereNotIn('id', $stocktaking);
             $query->whereRaw('prodbodevence_saldo > 0');
+
             $prodbodevence = $query->first();
 
             if (!$prodbodevence instanceof Prodbodevence) {

@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Models\Comercial\Pedidoc2;
+use App\Models\Base\Sucursal;
 use App\Models\Inventario\Producto;
 
 use DB,Log;
@@ -51,11 +52,18 @@ class DetallePedidoController extends Controller
             $pedidocDetalle = new Pedidoc2;
             if ($pedidocDetalle->isValid($data)) {
                 try {
-
+                    $sucursal = Sucursal::find($request->sucursal);
+                    if (!$sucursal instanceof Sucursal) {
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar sucursal, por favor verifique información o consulte con el administrador' ]);
+                    }
                     $producto = Producto::where('producto_serie', $request->producto_serie)->first();
                     if (!$producto instanceof Producto) {
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar producto, por favor verifique información o consulte con el administrador']);
-                    } 
+                    }
+                    $prodbode = DB::table('prodbode')->select('prodbode_cantidad')->where('prodbode_serie',$producto->id)->where('prodbode_sucursal', $sucursal->id )->first();
+                    if ($prodbode->prodbode_cantidad < $request->pedidoc2_cantidad) {
+                        return response()->json(['success'=> false, 'errors' => 'No existe cantidad suficiente en bodega, por favor verifique información o consulte con el administrador']);
+                    }
                     return response()->json(['success' => true, 'id' => uniqid() ]);
                 }catch (\Exception $e) {
                     Log::error($e->getMessage());

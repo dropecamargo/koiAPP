@@ -147,48 +147,40 @@ class Factura1Controller extends Controller
                         }
                         // Maneja serie
                         if ($producto->producto_maneja_serie == true) {
-                            $items = isset($item['items']) ? $item['items'] : null;
 
-                            foreach ($items as $value) {
-                                $serie = Producto::find($value);
-                                if (!$serie instanceof Producto) {
-                                    DB::rollback();
-                                    return response()->json(['success' => false , 'errors' => 'No es posible recuperar producto hijo, por favor verifique la información ó por favor consulte al administrador.']);
-                                }
-
-                                $prodbodelote = Prodbodelote::where('prodbodelote_serie', $serie->id)->where('prodbodelote_saldo', 1)->first();
-                                if (!$prodbodelote instanceof Prodbodelote) {
-                                    DB::rollback();
-                                    return response()->json(['success' => false,'errors' => 'No es posible recuperar el LOTE,por favor verifique la información ó por favor consulte al administrador']);
-                                }
-                                $lote = Lote::find($prodbodelote->prodbodelote_lote);
-                                if (!$lote instanceof Lote) {
-                                    DB::rollback();
-                                    return response()->json(['success' => false,'errors' => 'No es posible recuperar el LOTE,por favor verifique la información ó por favor consulte al administrador']);
-                                }
-                                // Detalle factura
-                                $factura2 = new Factura2;
-                                $factura2->fill($item);
-                                $factura2->factura2_factura1 = $factura1->id;
-                                $factura2->factura2_producto = $serie->id;
-                                $factura2->factura2_subcategoria = $subcategoria->id;
-                                $factura2->factura2_margen = $subcategoria->subcategoria_margen_nivel1;
-                                $factura2->save();
-                                
-                                // Movimiento salidaManejaSerie
-                                $movimiento = Inventario::salidaManejaSerie($serie, $sucursal, $lote);
-                                if($movimiento != 'OK') {
-                                    DB::rollback();
-                                    return response()->json(['success' => false, 'errors' => $movimiento]);
-                                }
-
-                                // Inventario
-                                $inventario = Inventario::movimiento($serie, $sucursal->id, 'FACT', $factura1->id, 0, $factura2->factura2_cantidad, $factura2->factura2_costo, $factura2->factura2_costo);
-                                if (!$inventario instanceof Inventario) {
-                                    DB::rollback();
-                                    return response()->json(['success' => false,'errors' => $inventario]);
-                                }
+                            $prodbodelote = Prodbodelote::where('prodbodelote_serie', $producto->id)->where('prodbodelote_saldo', 1)->first();
+                            if (!$prodbodelote instanceof Prodbodelote) {
+                                DB::rollback();
+                                return response()->json(['success' => false,'errors' => 'No es posible recuperar el LOTE,por favor verifique la información ó por favor consulte al administrador']);
                             }
+                            $lote = Lote::find($prodbodelote->prodbodelote_lote);
+                            if (!$lote instanceof Lote) {
+                                DB::rollback();
+                                return response()->json(['success' => false,'errors' => 'No es posible recuperar el LOTE,por favor verifique la información ó por favor consulte al administrador']);
+                            }
+                            // Detalle factura
+                            $factura2 = new Factura2;
+                            $factura2->fill($item);
+                            $factura2->factura2_factura1 = $factura1->id;
+                            $factura2->factura2_producto = $producto->id;
+                            $factura2->factura2_subcategoria = $subcategoria->id;
+                            $factura2->factura2_margen = $subcategoria->subcategoria_margen_nivel1;
+                            $factura2->save();
+                            
+                            // Movimiento salidaManejaSerie
+                            $movimiento = Inventario::salidaManejaSerie($producto, $sucursal, $lote);
+                            if($movimiento != 'OK') {
+                                DB::rollback();
+                                return response()->json(['success' => false, 'errors' => $movimiento]);
+                            }
+
+                            // Inventario
+                            $inventario = Inventario::movimiento($producto, $sucursal->id, 'FACT', $factura1->id, 0, $factura2->factura2_cantidad, $factura2->factura2_costo, $factura2->factura2_costo);
+                            if (!$inventario instanceof Inventario) {
+                                DB::rollback();
+                                return response()->json(['success' => false,'errors' => $inventario]);
+                            }
+                            
                         // Metrado
                         }else if ($producto->producto_metrado == true) {
                             // ProdBode
@@ -341,6 +333,10 @@ class Factura1Controller extends Controller
                     // Update consecutive puntoventa_numero in PuntoVenta
                     $puntoventa->puntoventa_numero = $consecutive;
                     $puntoventa->save();
+
+                    // Update pedidoc1_factura1 in pedidoc1
+                    $pedidoc1->pedidoc1_factura1 = $factura1->id;
+                    $pedidoc1->save();
                     DB::commit();
                     return response()->json(['success'=>true , 'id' => $factura1->id]);
                 } catch (\Exception $e) {

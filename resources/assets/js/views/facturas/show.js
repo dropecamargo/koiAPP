@@ -19,10 +19,13 @@ app || (app = {});
         initialize : function() {
             // Attributes
             this.$wraperForm = this.$('#render-factura-show');
+            this.$templateFactura3 = _.template( ($('#add-factura3-item-tpl').html() || '') ); 
             // Model exist
             if( this.model.id != undefined ) {
 
                 this.detalleFactura = new app.DetalleFactura2Collection();
+                this.detalleFacturaList = new app.DetalleFactura3List();
+
                 // Reference views
                 this.referenceViews();
             }
@@ -40,6 +43,20 @@ app || (app = {});
                     edit: false,
                     dataFilter: {
                         id: this.model.get('id')
+                    }
+                }
+            });
+
+            // Detalle list
+            this.Factura3ListView = new app.Factura3ListView({
+                collection: this.detalleFacturaList,
+                parameters: {
+                    wrapper: this.el,
+                    edit: false,
+                    call: 'detalle',
+                    template : this.$templateFactura3,
+                    dataFilter: {
+                        'factura1': this.model.get('id'),
                     }
                 }
             });

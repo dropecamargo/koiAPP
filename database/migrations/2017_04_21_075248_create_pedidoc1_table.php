@@ -22,6 +22,7 @@ class CreatePedidoc1Table extends Migration
             $table->integer('pedidoc1_documentos')->unsigned();
             $table->integer('pedidoc1_tercero')->unsigned();
             $table->integer('pedidoc1_contacto')->unsigned();
+            $table->integer('pedidoc1_factura1')->unsigned()->nullable();
             $table->integer('pedidoc1_cuotas')->unsigned();
             $table->integer('pedidoc1_plazo')->unsigned();
             $table->date('pedidoc1_primerpago');

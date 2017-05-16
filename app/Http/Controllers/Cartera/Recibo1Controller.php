@@ -106,7 +106,6 @@ class Recibo1Controller extends Controller
                         $recibo2->fill($item);
                         $recibo2->recibo2_recibo1 = $recibo1->id;
 
-
                         if( isset($item['recibo2_factura1']) ){
                             $factura3 = Factura3::where( 'factura3_factura1', $item['recibo2_factura1'] )->join('factura1', 'factura3_factura1', '=', 'factura1.id')->select('factura3.*', 'factura1_numero')->first();
                             if( !$factura3 instanceof Factura3 ){
