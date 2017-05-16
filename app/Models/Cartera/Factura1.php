@@ -30,7 +30,7 @@ class Factura1 extends BaseModel
 	*
 	* @var array
 	*/
-    protected $fillable = ['factura1_cuotas','factura1_primerpago','factura1_plazo','factura1_observaciones','factura1_descuento','factura1_iva','factura1_retencion','factura1_total'];
+    protected $fillable = ['factura1_cuotas','factura1_primerpago','factura1_plazo','factura1_observaciones','factura1_bruto','factura1_descuento','factura1_iva','factura1_retencion','factura1_total'];
 
 
     protected $boolean = ['factura1_anular'];
@@ -45,6 +45,7 @@ class Factura1 extends BaseModel
 			'factura1_plazo' => 'required|numeric|min:0',
 			'factura1_primerpago' => 'required|date',
 			'factura1_descuento' => 'required|numeric',
+			'factura1_bruto' => 'required|numeric',
 			'factura1_iva' => 'required|numeric',
 			'factura1_total' => 'required|numeric'
 		];

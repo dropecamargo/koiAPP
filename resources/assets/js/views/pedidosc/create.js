@@ -102,7 +102,9 @@ app || (app = {});
         onStoreItem: function(e){
             if (!e.isDefaultPrevented()) {
                 e.preventDefault();
-                this.detallePedidoc.trigger( 'store', this.$(e.target) );
+                var data = $.extend({}, window.Misc.formToJson( e.target ) );
+                    data.sucursal = this.$('#pedidoc1_sucursal').val();
+                this.detallePedidoc.trigger( 'store', data);
             }
         },
         /**

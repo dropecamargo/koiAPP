@@ -50,8 +50,8 @@ app || (app = {});
 			this.$inputSucursal = this.$("#"+this.$inputContent.attr("data-office"));
 
 			// Filters
-			this.equalsRef = this.$inputContent.attr("data-ref");
-			if((this.equalsRef == "true" || this.equalsRef == "false") && this.$('#ajuste1_sucursal').val() == '' ){
+			this.$equalsRef = this.$inputContent.attr("data-ref");
+			if((this.$equalsRef == "true" || this.$equalsRef == "false") && this.$inputSucursal.val() == '' ){
 				alertify.error('Por favor ingrese sucursal antes agregar producto.');
                 return;
 			}
@@ -67,7 +67,7 @@ app || (app = {});
                         data.producto_serie = _this.$searchSerie.val();
                         data.producto_nombre = _this.$searchNombre.val();                     
                         data.producto_referencia = _this.$searchReferencia.val();                                            
-                        data.equalsRef = _this.equalsRef;                                            
+                        data.equalsRef = _this.$equalsRef;                                            
                         data.officeSucursal = _this.$inputSucursal.val();                                            
                     }
                 },

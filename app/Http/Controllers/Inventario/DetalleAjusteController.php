@@ -80,7 +80,7 @@ class DetalleAjusteController extends Controller
                                 foreach ($items as $key => $item) {
                                     $cantidadItems += $item;
                                 }
-                                if ($cantidadItems > $request->ajuste2_cantidad_salida  || $cantidadItems == 0  ) {
+                                if ($cantidadItems > $request->ajuste2_cantidad_salida || $cantidadItems < $request->ajuste2_cantidad_salida  || $cantidadItems == 0  ) {
                                     return response()->json(['success' => false,'errors' => "Cantidad de items de  {$request->producto_nombre} no coincide con el valor de SALIDA, por favor verifique información."]);
                                 }
                             }

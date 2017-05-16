@@ -275,11 +275,6 @@ class ProductoController extends Controller
                         $response->errors = "No hay unidades en BODEGA de esta SUCURSAL,verifique información ó por favor consulte al administrador.";
                         $response->success = false;
                     }            
-                }elseif($producto->producto_serie == $producto->producto_referencia){
-                    $action = 'ProductoReferencia';
-                    $response->action = $action;   
-                    $response->tipo = $tipoMovimiento;
-                    $response->success = true;
                 }else{
                     $response->errors = "No es posible recuperar PRODUCTO en PRODBODE,verifique información ó por favor consulte al administrador.";
                     $response->success = false;

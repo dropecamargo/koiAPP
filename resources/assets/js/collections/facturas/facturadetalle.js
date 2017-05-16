@@ -25,10 +25,10 @@ app || (app = {});
             var error = { success: false};
 
             // Validate exist
-            var modelExits = _.each(this.models, function(item) {
-                return item.has('items');
+            _.each(this.models, function(item) {
+                (item.has('items')) ? error.success = true: error.success = false;
+                (item.get('maneja_serie') == 1) ? error.success = true: '';
             });
-            console.log(modelExits);
             return error;
         },
         iva: function(){

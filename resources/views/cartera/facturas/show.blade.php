@@ -103,6 +103,29 @@
 		                </table>
             		</div>
             	</div>
+                <div class="box box-success">
+                    <div class="box-body table-responsive">
+                        <table id="browse-factura3-list" class="table table-hover table-bordered" cellspacing="0" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>Cuota</th>
+                                    <th>Vencimiento</th>
+                                    <th>Saldo</th>
+                                </tr>
+                           </thead>
+                           <tbody>
+                                {{-- Render factura3 list --}}
+                           </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box-footer with-border">
+            <div class="row">
+                <div class="col-md-2 col-md-offset-5 col-sm-6 col-xs-6 text-left">
+                    <a href=" {{ route('facturas.index') }}" class="btn btn-default btn-sm btn-block">{{ trans('app.comeback') }}</a>
+                </div>
             </div>
         </div>
     </div>        

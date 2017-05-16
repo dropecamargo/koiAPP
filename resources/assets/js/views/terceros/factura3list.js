@@ -30,7 +30,6 @@ app || (app = {});
             // References
             this.$valor = this.$('.total');
             this.$totalCount = this.$('#total_count');
-            this.$templateTercero = _.template( ($('#add-tercero-cartera-tpl').html() || '') );
 
 
             // Info adicional
@@ -55,7 +54,7 @@ app || (app = {});
             this.listenTo( this.collection, 'request', this.loadSpinner);
             this.listenTo( this.collection, 'sync', this.responseServer);
 
-            this.collection.fetch({ data: {tercero: this.parameters.dataFilter.tercero}, reset: true });
+            this.collection.fetch({ data: {tercero: this.parameters.dataFilter.tercero , factura1: this.parameters.dataFilter.factura1}, reset: true });
         },
 
         /*
@@ -70,12 +69,12 @@ app || (app = {});
         * @param Object contactModel Model instance
         */
         addOne: function (factura3Model) {
-            var view = new app.FacturaItemView({
+            var view = new app.Factura3ItemView({
                 model: factura3Model,
                 parameters: {
                     edit: this.parameters.edit,
                     call: this.parameters.call,
-                    template: this.$templateTercero,
+                    template: this.parameters.template,
                 }
             });
             factura3Model.view = view;

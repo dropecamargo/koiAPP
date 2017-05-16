@@ -93,7 +93,7 @@ app || (app = {});
         */
         storeOne: function (form) {          
             var _this = this,
-                data = window.Misc.formToJson( form );
+                data = form ;
                 data.id = this.parameters.dataFilter.id;
             
             var valid = this.collection.validarExists(data);

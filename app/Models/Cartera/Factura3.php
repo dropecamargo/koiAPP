@@ -22,13 +22,15 @@ class Factura3 extends BaseModel
 		if ($factura1->factura1_cuotas > 0) {
 			$valor = $factura1->factura1_total / $factura1->factura1_cuotas;
 			$fecha = $factura1->factura1_primerpago; 
-			for ($i=0; $i < $factura1->factura1_cuotas; $i++) {
+			for ($i=1; $i <= $factura1->factura1_cuotas; $i++) {
 				$factura3 = new Factura3;
 				$factura3->factura3_factura1 = $factura1->id;
 				$factura3->factura3_cuota = $i;
 				$factura3->factura3_valor = $valor;
 				$factura3->factura3_saldo = $valor;
 				$factura3->factura3_vencimiento = $fecha;
+				$fechavencimiento = date('Y-m-d',strtotime('+1 months', strtotime($fecha)));
+				$fecha = $fechavencimiento;
 				$factura3->save();
 			}
 			return true;

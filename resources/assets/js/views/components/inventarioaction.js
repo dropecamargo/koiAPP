@@ -86,13 +86,6 @@ app || (app = {});
                         }
 
                     },
-                    'ProductoReferencia':function(){
-                        _this.$modalIn.find('.content-modal').empty().html(_this.templateAddISerieFactu( ));
-                        _this.$modalIn.find('.modal-title').text('Producto - Series'); 
-
-                        _this.referenceSerieFactura(resp);
-                        
-                    },
                     'ProductoMetrado': function(){
                         if (resp.tipo  == 'E') {
                             _this.$modalIn.find('.content-modal').empty().html(_this.templateAddItemRollo(resp) );
@@ -193,33 +186,7 @@ app || (app = {});
             this.$modalIn.modal('show');
   
         },
-        /**
-        *
-        */
-        referenceSerieFactura:function(atributes){
-            this.$wraper = this.$('#modal-wrapper-inventario');
-            this.$wraperFormIn = this.$modalIn.find('.content-modal');
-            this.$wraperErrorIn = this.$('#error-inventario');
-            this.$wraperProdbode = this.$('#render-series');
 
-            var view = new app.ProdbodeListView( {
-                collection: this.prodbodeList,
-                parameters: {
-                    wrapper: this.el,
-                    edit: true,
-                    dataFilter: {
-                        'producto_id': atributes.data.producto_id,
-                        'sucursal': atributes.data.sucursal,
-                    }
-               }
-            }); 
-
-            // Hide errors
-            this.$wraperErrorIn.hide().empty();
-
-            // Open modal
-            this.$modalIn.modal('show');
-        },
       	/**
         * Reference add RolloMetrado
         */

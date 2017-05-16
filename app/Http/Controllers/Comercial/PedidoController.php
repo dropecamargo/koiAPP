@@ -46,6 +46,7 @@ class PedidoController extends Controller
                     // Tercero
                     if($request->has('tercero')) {
                         $query->where('t.tercero_nit', $request->tercero);
+                        $query->whereNull('pedidoc1_factura1');
                     }
                 })
                 ->make(true);

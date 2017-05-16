@@ -56,7 +56,6 @@ class Factura2 extends BaseModel
 
 	public static function modelCreate($data){
 		$factura2 = new Factura2;
-
 	    $factura2->id = uniqid();
 	    $factura2->producto_nombre = $data->producto_nombre;
 	    $factura2->producto_serie = $data->producto_serie;
@@ -70,6 +69,7 @@ class Factura2 extends BaseModel
 	    $factura2->factura2_subcategoria = $data->pedidoc2_subcategoria;
 	    $factura2->factura2_margen = $data->pedidoc2_margen;
 	    $factura2->producto_id = $data->pedidoc2_producto;
+	    $factura2->maneja_serie = $data->producto_maneja_serie;
 	    return $factura2;
 	}
 }
