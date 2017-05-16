@@ -24,6 +24,11 @@
                         <input type="checkbox" id="mediopago_activo" name="mediopago_activo" value="mediopago_activo" disabled {{ $mediopago->mediopago_activo ? 'checked': '' }}> Activo
                     </label>
                 </div>
+                <div class="form-group col-md-2 col-xs-8 col-sm-3"><br>
+                    <label class="checkbox-inline" for="mediopago_ch">
+                        <input type="checkbox" id="mediopago_ch" name="mediopago_ch" value="mediopago_ch" disabled {{ $mediopago->mediopago_ch ? 'checked': '' }}> Cheque
+                    </label>
+                </div>
             </div>
         </div>
         <div class="box-footer with-border">

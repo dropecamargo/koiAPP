@@ -92,6 +92,7 @@ app || (app = {});
                 data.producto_serie = model.get('producto_serie');
                 data.producto_nombre = model.get('producto_nombre');
                 data.tipo = 'S';
+                data.producto_id = model.get('producto_id');
                 data.sucursal = this.$('#factura1_sucursal').val();
             window.Misc.evaluateActionsInventory({
                 'data': data,

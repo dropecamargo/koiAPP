@@ -1131,13 +1131,20 @@
 
 <script type="text/template" id="add-mediopago-tpl">
 	<div class="row">
-		<div class="form-group col-md-8">
+		<div class="form-group col-md-4">
 			<label for="mediopago_nombre" class="control-label">Nombre</label>
 			<input type="text" id="mediopago_nombre" name="mediopago_nombre" value="<%- mediopago_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="25" required>
 		</div>
+	</div>
+	<div class="row">
 		<div class="form-group col-md-2 col-xs-8 col-sm-3">
 			<br><label class="checkbox-inline" for="mediopago_activo">
 				<input type="checkbox" id="mediopago_activo" name="mediopago_activo" value="mediopago_activo" <%- parseInt(mediopago_activo) ? 'checked': ''%>> Activo
+			</label>
+		</div>
+		<div class="form-group col-md-2 col-xs-8 col-sm-3">
+			<br><label class="checkbox-inline" for="mediopago_ch">
+				<input type="checkbox" id="mediopago_ch" name="mediopago_ch" value="mediopago_ch" <%- parseInt(mediopago_ch) ? 'checked': ''%>> Cheque
 			</label>
 		</div>
     </div>
@@ -1246,8 +1253,6 @@
 	<% } %>
 </script>
 
-
-
 <script type="text/template" id="add-conceptonota-tpl">
 	<div class="row">
 		<div class="form-group col-md-8">
@@ -1274,6 +1279,78 @@
 		<div class="form-group col-md-2 col-xs-8 col-sm-3">
 			<br><label class="checkbox-inline" for="conceptonota_activo">
 				<input type="checkbox" id="conceptonota_activo" name="conceptonota_activo" value="conceptonota_activo" <%- parseInt(conceptonota_activo) ? 'checked': ''%>> Activo
+			</label>
+		</div>
+	</div>
+</script>
+
+<script type="text/template" id="add-seriesprodbode-tpl">
+    <table id="prodbod-search-table" class="table table-striped">
+        <tbody>
+            <tr>
+               	<% if (edit){ %>
+            		<th></th>
+            	<% } %>
+                <th>Serie</th>
+                <th colspan="2">Nombre</th>
+                <th>Sucursal</th>
+            </tr>
+
+            <% if( series == '') { %>
+                <tr>
+                    <th colspan="4" class="text-center">NO EXISTEN SERIES ASOCIADAS</th>
+                </tr>
+            <% } %>
+
+            <% _.each(series, function(serie) { %>
+                <tr>
+               	<% if (edit){ %>
+            		<td width="10%">
+            			<label class="checkbox-inline" for="serie_hija_<%-serie.id %>">
+							<input type="checkbox" id="serie_hija_<%-serie.id %>" name="serie_hija_<%-serie.id %>" value="<%- serie.id %>">
+						</label>
+					</td>
+            	<% } %>
+                    <td><%- serie.producto_serie %></td>
+                    <td colspan="2"><%- serie.producto_nombre %></td>
+                    <td><%- serie.sucursal_nombre %></td>
+                </tr>
+            <% }); %>
+        </tbody>
+</script>
+
+<script type="text/template" id="add-conceptoajustec-tpl">
+	<div class="row">
+		<div class="form-group col-md-8">
+			<label for="conceptoajustec_nombre" class="control-label">Nombre</label>
+			<input type="text" id="conceptoajustec_nombre" name="conceptoajustec_nombre" value="<%- conceptoajustec_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="25" required>
+		</div>
+    </div>
+    <div class="row">
+		<div class="form-group col-sm-6 col-md-2">
+			<label for="conceptoajustec_plancuentas" class="control-label text-right">Cuenta</label>
+      		<div class="input-group input-group-sm">
+				<span class="input-group-btn">
+					<button type="button" class="btn btn-default btn-flat btn-koi-search-plancuenta-component" data-field="conceptoajustec_plancuentas">
+						<i class="fa fa-tasks"></i>
+					</button>
+				</span>
+				<input id="conceptoajustec_plancuentas" placeholder="Cuenta" class="form-control plancuenta-koi-component" name="conceptoajustec_plancuentas" type="text" maxlength="15" data-wrapper="conceptoajustec-create" data-name="cuenta_nombre" value="<%- plancuentas_cuenta %>">
+			</div>
+		</div>
+		<div class="col-sm-6 col-md-4"><br>
+			<input id="cuenta_nombre" name="cuenta_nombre" placeholder="Nombre cuenta" class="form-control input-sm" type="text" value="<%- plancuentas_nombre %>" maxlength="15" disabled>
+		</div>
+
+		<div class="form-group col-md-2 col-xs-8 col-sm-3">
+			<br><label class="checkbox-inline" for="conceptoajustec_activo">
+				<input type="checkbox" id="conceptoajustec_activo" name="conceptoajustec_activo" value="conceptoajustec_activo" <%- parseInt(conceptoajustec_activo) ? 'checked': ''%>> Activo
+			</label>
+		</div>
+
+		<div class="form-group col-md-2 col-xs-8 col-sm-3">
+			<br><label class="checkbox-inline" for="conceptoajustec_sumas_iguales">
+				<input type="checkbox" id="conceptoajustec_sumas_iguales" name="conceptoajustec_sumas_iguales" value="conceptoajustec_sumas_iguales" <%- parseInt(conceptoajustec_sumas_iguales) ? 'checked': ''%>> Sumas igual
 			</label>
 		</div>
 	</div>

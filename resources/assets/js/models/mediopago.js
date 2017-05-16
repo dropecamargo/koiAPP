@@ -17,7 +17,8 @@ app || (app = {});
         idAttribute: 'id',
         defaults: {
         	'mediopago_nombre': '',
-        	'mediopago_activo': 1
+            'mediopago_activo': 1,
+        	'mediopago_ch': 1
         }
     });
 

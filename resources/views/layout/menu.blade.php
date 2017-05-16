@@ -72,7 +72,7 @@
     </li>
 
     {{--Cartera--}}
-    <li class="{{ in_array(Request::segment(1), ['autorizacionesca','bancos','conceptosrc','cuentabancos','autorizaco','mediopagos', 'recibos', 'conceptonotas', 'notas','facturas']) ? 'active' : '' }}">
+    <li class="{{ in_array(Request::segment(1), ['autorizacionesca','bancos','conceptosrc','cuentabancos','autorizaco','mediopagos', 'recibos', 'conceptonotas', 'notas','facturas','conceptosajustec']) ? 'active' : '' }}">
     <a href="#">
             <i class="fa fa-suitcase"></i> <span>Cartera</span><i class="fa fa-angle-left pull-right"></i>
         </a>
@@ -94,7 +94,7 @@
                 </ul>
             </li>
 
-            <li class="{{ in_array(Request::segment(1), ['autorizacionesca','bancos','conceptosrc','cuentabancos','autorizaco','mediopagos', 'conceptonotas']) ? 'active' : '' }}">
+            <li class="{{ in_array(Request::segment(1), ['autorizacionesca','bancos','conceptosrc','cuentabancos','autorizaco','mediopagos', 'conceptonotas','conceptosajustec']) ? 'active' : '' }}">
                 <a href="#">
                     <i class="fa fa-circle-o"></i> Referencias <i class="fa fa-angle-left pull-right"></i>
                 </a>
@@ -110,6 +110,9 @@
                     </li>
                     <li class="{{ Request::segment(1) == 'conceptonotas' ? 'active' : '' }}">
                         <a href="{{route('conceptonotas.index')}}"><i class="fa fa-circle-o"></i> Concepto de nota</a>
+                    </li>
+                    <li class="{{ Request::segment(1) == 'conceptosajustec' ? 'active' : '' }}">
+                        <a href="{{route('conceptosajustec.index')}}"><i class="fa fa-circle-o"></i> Concepto ajuste de cartera</a>
                     </li>
                     <li class="{{ Request::segment(1) == 'conceptosrc' ? 'active' : '' }}">
                         <a href="{{route('conceptosrc.index')}}"><i class="fa fa-circle-o"></i> Concepto recibo de caja</a>

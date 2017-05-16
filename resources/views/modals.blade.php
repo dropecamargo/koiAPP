@@ -467,6 +467,11 @@
 		</div>
 	</div>
 </script>
+<script type="text/template" id="add-series-factu-tpl">
+	<div id="render-series">
+		
+	</div>
+</script>
 
 <script type="text/template" id="choose-itemrollo-tpl">
 	<div class="row">

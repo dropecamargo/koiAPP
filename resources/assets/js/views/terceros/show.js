@@ -23,6 +23,8 @@ app || (app = {});
                 this.rolList = new app.RolList();
                 this.detalleFacturaList = new app.DetalleFactura3List();
 
+                this.$templateTercero = _.template( ($('#add-tercero-cartera-tpl').html() || '') );
+
                 // Reference views
                 this.referenceViews();
             }
@@ -55,12 +57,13 @@ app || (app = {});
             });
 
             // Detalle list
-            this.Factura3ListView = new app.Factura3ListView({
+            this.factura3ListView = new app.Factura3ListView({
                 collection: this.detalleFacturaList,
                 parameters: {
                     wrapper: this.el,
                     edit: false,
                     call: 'tercero',
+                    template: this.$templateTercero,
                     dataFilter: {
                         'tercero': this.model.get('id'),
                     }

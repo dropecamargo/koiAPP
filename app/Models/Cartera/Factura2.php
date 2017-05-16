@@ -69,6 +69,7 @@ class Factura2 extends BaseModel
 	    $factura2->factura2_iva_porcentaje = $data->pedidoc2_iva_porcentaje;
 	    $factura2->factura2_subcategoria = $data->pedidoc2_subcategoria;
 	    $factura2->factura2_margen = $data->pedidoc2_margen;
+	    $factura2->producto_id = $data->pedidoc2_producto;
 	    return $factura2;
 	}
 }

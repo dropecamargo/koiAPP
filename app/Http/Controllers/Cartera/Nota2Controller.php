@@ -24,7 +24,7 @@ class Nota2Controller extends Controller
             $nota2 = [];
             if($request->has('nota2')) {
                 $query = Nota2::query();
-                $query->select('nota2.*','conceptonota_nombre','documentos_nombre','factura3_cuota as nota2_cuota', 'factura1_numero as nota2_numero');
+                $query->select('nota2.*','conceptonota_nombre','nota2_valor as factura3_valor','documentos_nombre','factura3_cuota', 'factura1_numero');
                 $query->join('nota1','nota2_nota1', '=', 'nota1.id');
                 $query->join('conceptonota','nota1_conceptonota', '=', 'conceptonota.id');
                 $query->join('documentos','nota2_documentos_doc', '=', 'documentos.id');

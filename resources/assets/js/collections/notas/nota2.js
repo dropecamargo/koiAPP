@@ -27,7 +27,7 @@ app || (app = {});
             var error = { success: false };
 
             var model = _.find(this.models, function(item){
-                return item.get('nota2_numero') == data.nota2_numero;
+                return item.get('factura1_numero') == data.factura1_numero;
             });
 
             if(data.deleted){
@@ -38,7 +38,7 @@ app || (app = {});
             }
 
             if(model instanceof Backbone.Model){
-                model.set('nota2_valor', data.nota2_valor);
+                model.set('factura3_valor', data.factura3_valor);
                 return error;
             }
 
@@ -48,7 +48,7 @@ app || (app = {});
 
         valor: function() {
             return this.reduce(function(sum, model) {
-                return sum + parseFloat(model.get('nota2_valor'))
+                return sum + parseFloat(model.get('factura3_valor'))
             }, 0);
         },
 
@@ -61,12 +61,12 @@ app || (app = {});
             var error = { success: false, valor: ''};
 
             var model = _.find(this.models, function(item){
-                return item.get('nota2_numero') == data;
+                return item.get('factura1_numero') == data;
             });
 
             if (model instanceof Backbone.Model ){
                 error.success = true;
-                error.valor = model.get('nota2_valor');
+                error.valor = model.get('factura3_valor');
             }
 
             return error;

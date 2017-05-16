@@ -165,9 +165,9 @@
             
         <td><%- conceptosrc_nombre %></td>
         <td><%- documentos_nombre %></td>
-        <td><%- recibo2_numero %></td>
-        <td><%- recibo2_cuota %></td>
+        <td><%- !_.isUndefined(factura1_numero) && !_.isNull(factura1_numero) && factura1_numero != '' ? factura1_numero : '' %></td>
+        <td><%- !_.isUndefined(factura3_cuota) && !_.isNull(factura3_cuota) && factura3_cuota != '' ? factura3_cuota : '' %></td>
         <td class="text-left"><%- recibo2_naturaleza == 'D' ? 'Debito' : 'Credito' %></td>
-        <td class="text-right"><%- window.Misc.currency( recibo2_valor )  %></td>
+        <td class="text-right"><%- !_.isUndefined(factura3_valor) && !_.isNull(factura3_valor) && factura3_valor != '' ? window.Misc.currency( factura3_valor ) : window.Misc.currency( recibo2_valor ) %></td>
     </script>
 @stop

@@ -20,10 +20,9 @@ app || (app = {});
         	'recibo2_id_doc': '',	
         	'recibo2_naturaleza': '',	
             'recibo2_valor': '',
-            'recibo2_numero': '',
-            'recibo2_cuota': '',
-            'conceptosrc_nombre': '',
-            'documentos_nombre': ''
+            'factura1_numero': '',
+            'factura3_cuota': '',
+            'factura3_valor': '',
         }
     });
 })(this, this.document);

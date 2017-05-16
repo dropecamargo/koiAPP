@@ -30,8 +30,6 @@ app || (app = {});
             // References
             this.$valor = this.$('.total');
             this.$totalCount = this.$('#total_count');
-            this.$templateTercero = _.template( ($('#add-tercero-cartera-tpl').html() || '') );
-
 
             // Info adicional
             this.$porvencer = this.$('#porvencer');
@@ -75,7 +73,7 @@ app || (app = {});
                 parameters: {
                     edit: this.parameters.edit,
                     call: this.parameters.call,
-                    template: this.$templateTercero,
+                    template: this.parameters.template,
                 }
             });
             factura3Model.view = view;

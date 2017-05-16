@@ -35,7 +35,8 @@ app || (app = {});
             this.listenTo( this.collection, 'request', this.loadSpinner);
             this.listenTo( this.collection, 'sync', this.responseServer);
 
-            this.collection.fetch({ data: {producto_id: this.parameters.dataFilter.producto_id}, reset: true });
+            this.collection.fetch({ data: {producto_id: this.parameters.dataFilter.producto_id, sucursal: this.parameters.dataFilter.sucursal}, reset: true });
+
         },
 
         /*
@@ -43,7 +44,11 @@ app || (app = {});
         */
         render: function() {
         },
+ready:function(){
 
+            if( typeof window.initComponent.initICheck == 'function' )
+                window.initComponent.initICheck();
+},
         /**
         * Render view contact by model
         * @param Object prodbodeModel Model instance
@@ -57,6 +62,7 @@ app || (app = {});
             });
             prodbodeModel.view = view;
             this.$el.prepend( view.render().el );
+                        this.ready();
         },
 
         /**

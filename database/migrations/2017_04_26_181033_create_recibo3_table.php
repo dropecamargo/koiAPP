@@ -16,11 +16,11 @@ class CreateRecibo3Table extends Migration
             $table->engine = 'InnoDB';
 
             $table->increments('id');
-            $table->integer('recibo3_recibo1')->unsigned()->nullable();
-            $table->integer('recibo3_mediopago')->unsigned()->nullable();
+            $table->integer('recibo3_recibo1')->unsigned();
+            $table->integer('recibo3_mediopago')->unsigned();
             $table->string('recibo3_numero_medio', 25);
             $table->dateTime('recibo3_vence_medio');
-            $table->integer('recibo3_banco_medio')->unsigned()->nullable();
+            $table->integer('recibo3_banco_medio')->unsigned();
             $table->double('recibo3_valor');
 
             $table->foreign('recibo3_recibo1')->references('id')->on('recibo1')->onDelete('restrict');

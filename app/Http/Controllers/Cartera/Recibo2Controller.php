@@ -24,7 +24,7 @@ class Recibo2Controller extends Controller
             $recibo2 = [];
             if($request->has('recibo2')) {
                 $query = Recibo2::query();
-                $query->select('recibo2.*','conceptosrc_nombre','documentos_nombre','factura3_cuota as recibo2_cuota', 'factura1_numero as recibo2_numero');
+                $query->select('recibo2.*','conceptosrc_nombre','documentos_nombre','factura3_cuota','factura1_numero', 'recibo2_valor as factura3_valor');
                 $query->join('conceptosrc','recibo2_conceptosrc', '=', 'conceptosrc.id');
                 $query->join('documentos','recibo2_documentos_doc', '=', 'documentos.id');
                 $query->leftJoin('factura3','recibo2_id_doc', '=', 'factura3.id');

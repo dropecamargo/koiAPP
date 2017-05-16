@@ -5,7 +5,7 @@ namespace App\Models\Cartera;
 use Illuminate\Database\Eloquent\Model;
 
 use App\Models\BaseModel;
-use Cache, Validator;
+use Validator;
 
 class MedioPago extends BaseModel
 {
@@ -19,20 +19,13 @@ class MedioPago extends BaseModel
 	public $timestamps = false;
 
 	/**
-     * The key used by cache store.
-     *
-     * @var static string
-     */
-    public static $key_cache = '_mediopagos';
-
-	/**
 	* The attributes that are mass assignable.
 	*
 	* @var array
 	*/
     protected $fillable = ['mediopago_nombre'];
 
-    protected $boolean = ['mediopago_activo'];
+    protected $boolean = ['mediopago_activo','mediopago_ch'];
 
 	public function isValid($data)
 	{

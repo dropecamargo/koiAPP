@@ -33,7 +33,6 @@ app || (app = {});
         * Render View Element
         */
         render: function(){
-            console.log(this.parameters.type)
             this.template = _.template( ($( this.parameters.type == 'E' ? '#add-itemsvencimiento-tpl' : '#chooses-itemsvencimiento-tpl' ).html() || '') );
             var attributes = this.model.toJSON();
             this.$el.html( this.template(attributes) );

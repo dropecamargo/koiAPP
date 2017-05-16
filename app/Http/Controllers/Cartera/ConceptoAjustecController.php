@@ -7,10 +7,11 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\Models\Cartera\MedioPago;
+use App\Models\Cartera\ConceptoAjustec;
+use App\Models\Contabilidad\PlanCuenta;
 use DB, Log, Datatables;
-    
-class MedioPagoController extends Controller
+
+class ConceptoAjustecController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,10 +21,12 @@ class MedioPagoController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $query = MedioPago::query();
+            $query = ConceptoAjustec::query();
+            $query->select('conceptoajustec.*','plancuentas_nombre');
+            $query->join('plancuentas','conceptoajustec_plancuentas', '=','plancuentas.id');
             return Datatables::of($query)->make(true);
         }
-        return view('cartera.mediopagos.index');
+        return view('cartera.conceptosajustec.index');
     }
 
     /**
@@ -33,7 +36,7 @@ class MedioPagoController extends Controller
      */
     public function create()
     {
-        return view('cartera.mediopagos.create');
+        return view('cartera.conceptosajustec.create');
     }
 
     /**
@@ -46,25 +49,33 @@ class MedioPagoController extends Controller
     {
         if ($request->ajax()) {
             $data = $request->all();
-            $mediopago = new MedioPago;
-            if ($mediopago->isValid($data)) {
+            $conceptoajustec = new ConceptoAjustec;
+            if ($conceptoajustec->isValid($data)) {
                 DB::beginTransaction();
                 try {
-                    // MedioPago
-                    $mediopago->fill($data);
-                    $mediopago->fillBoolean($data);
-                    $mediopago->save();
+                    // Recuperar cuenta
+                    $plancuentas = PlanCuenta::where('plancuentas_cuenta', $request->conceptoajustec_plancuentas)->first();
+                    if(!$plancuentas instanceof PlanCuenta){
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar plan de cuenta, verifique información ó por favor consulte al administrador.']);
+                    }
+
+                    // ConceptoAjustec
+                    $conceptoajustec->fill($data);
+                    $conceptoajustec->fillBoolean($data);
+                    $conceptoajustec->conceptoajustec_plancuentas = $plancuentas->id;
+                    $conceptoajustec->save();
 
                     // Commit Transaction
                     DB::commit();
-                    return response()->json(['success' => true, 'id' => $mediopago->id]);
+                    return response()->json(['success' => true, 'id' => $conceptoajustec->id]);
                 }catch(\Exception $e){
                     DB::rollback();
                     Log::error($e->getMessage());
                     return response()->json(['success' => false, 'errors' => trans('app.exception')]);
                 }
             }
-            return response()->json(['success' => false, 'errors' => $mediopago->errors]);
+            return response()->json(['success' => false, 'errors' => $conceptoajustec->errors]);
         }
         abort(403);
     }
@@ -77,11 +88,11 @@ class MedioPagoController extends Controller
      */
     public function show(Request $request, $id)
     {
-        $mediopago = MedioPago::findOrFail($id);
+        $conceptoajustec = ConceptoAjustec::getConcepto($id);
         if ($request->ajax()) {
-            return response()->json($mediopago);
+            return response()->json($conceptoajustec);
         }
-        return view('cartera.mediopagos.show', ['mediopago' => $mediopago]);
+        return view('cartera.conceptosajustec.show', ['conceptoajustec' => $conceptoajustec]);
     }
 
     /**
@@ -92,8 +103,8 @@ class MedioPagoController extends Controller
      */
     public function edit($id)
     {
-        $mediopago = MedioPago::findOrFail($id);
-        return view('cartera.mediopagos.edit', ['mediopago' => $mediopago]);
+        $conceptoajustec = ConceptoAjustec::getConcepto($id);
+        return view('cartera.conceptosajustec.edit', ['conceptoajustec' => $conceptoajustec]);
     }
 
     /**
@@ -107,25 +118,25 @@ class MedioPagoController extends Controller
     {
         if ($request->ajax()) {
             $data = $request->all();
-            $mediopago = MedioPago::findOrFail($id);
-            if ($mediopago->isValid($data)) {
+            $conceptoajustec = ConceptoAjustec::findOrFail($id);
+            if ($conceptoajustec->isValid($data)) {
                 DB::beginTransaction();
                 try {
-                    // MedioPago
-                    $mediopago->fill($data);
-                    $mediopago->fillBoolean($data);
-                    $mediopago->save();
+                    // ConceptoAjustec
+                    $conceptoajustec->fill($data);
+                    $conceptoajustec->fillBoolean($data);
+                    $conceptoajustec->save();
 
                     // Commit Transaction
                     DB::commit();
-                    return response()->json(['success' => true, 'id' => $mediopago->id]);
+                    return response()->json(['success' => true, 'id' => $conceptoajustec->id]);
                 }catch(\Exception $e){
                     DB::rollback();
                     Log::error($e->getMessage());
                     return response()->json(['success' => false, 'errors' => trans('app.exception')]);
                 }
             }
-            return response()->json(['success' => false, 'errors' => $mediopago->errors]);
+            return response()->json(['success' => false, 'errors' => $conceptoajustec->errors]);
         }
         abort(403);
     }

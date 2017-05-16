@@ -10,7 +10,7 @@ app || (app = {});
 (function ($, window, document, undefined) {
 
     app.ProdbodeItemView = Backbone.View.extend({
-        template: _.template( ($('#add-series-tpl').html() || '') ),
+        template: _.template( ($('#add-seriesprodbode-tpl').html() || '') ),
 
         /**
         * Constructor Method
@@ -29,6 +29,7 @@ app || (app = {});
         */
         render: function(){
             var attributes = this.model.toJSON();
+            attributes.edit = this.parameters.edit;
             this.$el.html( this.template(attributes) );
             return this;
         }

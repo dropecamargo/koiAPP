@@ -128,8 +128,8 @@
             
         <td><%- conceptonota_nombre %></td>
         <td><%- documentos_nombre %></td>
-        <td><%- nota2_numero %></td>
-        <td><%- nota2_cuota %></td>
-        <td class="text-right"><%- window.Misc.currency( nota2_valor )  %></td>
+        <td><%- factura1_numero %></td>
+        <td><%- factura3_cuota %></td>
+        <td class="text-right"><%- window.Misc.currency( factura3_valor )  %></td>
     </script>
 @stop

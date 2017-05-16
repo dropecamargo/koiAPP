@@ -106,6 +106,7 @@ class Recibo1Controller extends Controller
                         $recibo2->fill($item);
                         $recibo2->recibo2_recibo1 = $recibo1->id;
 
+
                         if( isset($item['recibo2_factura1']) ){
                             $factura3 = Factura3::where( 'factura3_factura1', $item['recibo2_factura1'] )->join('factura1', 'factura3_factura1', '=', 'factura1.id')->select('factura3.*', 'factura1_numero')->first();
                             if( !$factura3 instanceof Factura3 ){
@@ -119,12 +120,17 @@ class Recibo1Controller extends Controller
                                 return response()->json(['success'=>false, 'errors'=>"La factura #$factura3->factura1_numero ingresada no corresponde al cliente, por favor verifique ó consulte con el administrador."]);   
                             }
 
-                            $factura3->factura3_saldo = $factura3->factura3_saldo <= 0 ? $factura3->factura3_saldo + $item['recibo2_valor'] : $factura3->factura3_saldo - $item['recibo2_valor'];
+                            $factura3->factura3_saldo = $factura3->factura3_saldo <= 0 ? $factura3->factura3_saldo + $item['factura3_valor'] : $factura3->factura3_saldo - $item['factura3_valor'];
                             $factura3->save();
 
                             $recibo2->recibo2_id_doc = $factura3->id;
                         }
 
+                        if(!empty($item['factura3_valor'])){
+                            $recibo2->recibo2_valor = $item['factura3_valor'];
+                        }else{
+                            $recibo2->recibo2_valor = $item['recibo2_valor'];
+                        }
                         $recibo2->save();
                     }
 

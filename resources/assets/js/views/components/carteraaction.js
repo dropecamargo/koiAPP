@@ -36,9 +36,6 @@ app || (app = {});
 
             this.listenTo( this.detalleFacturaList, 'add', this.addOne );
             this.listenTo( this.detalleFacturaList, 'reset', this.addAll );
-            
-            this.listenTo( this.model, 'sync', this.responseServer );
-            this.listenTo( this.collection, 'sync', this.responseServer );
 
             this.ready();
         },
@@ -112,7 +109,7 @@ app || (app = {});
 
             if( !selected ) {
                 var modelo = this.detalleFacturaList.agregar(id[1], this.parameters.data, 'check');
-                this.$('#pagar_'+id[1]).val( modelo.call == 'recibo' ? modelo.recibo2_valor : modelo.nota2_valor );
+                this.$('#pagar_'+id[1]).val( modelo.factura3_valor );
                 this.collection.trigger('store', modelo );
             }else{
                 var modelo = this.detalleFacturaList.eliminar(id[1], this.parameters.data);
@@ -172,5 +169,5 @@ app || (app = {});
                 _this.addOne( factura3Model = new app.Factura3Model );
             }
         },
-        });
+    });
 })(jQuery, this, this.document);

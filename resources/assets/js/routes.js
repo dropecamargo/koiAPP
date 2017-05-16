@@ -205,6 +205,10 @@ app || (app = {});
             'recibos(/)': 'getRecibosMain',
             'recibos/create(/)': 'getRecibosCreate',
             'recibos/:recibos(/)': 'getRecibosShow',
+
+            'conceptosajustec(/)': 'getConceptosAjustecMain',
+            'conceptosajustec/create(/)': 'getConceptosAjustecCreate',
+            'conceptosajustec/:conceptosajustec/edit(/)': 'getConceptosAjustecEdit',
         },
 
         /**
@@ -1786,6 +1790,42 @@ app || (app = {});
             }
 
             this.showNotaView = new app.ShowNotaView({ model: this.notaModel });
+        },
+
+        //ConceptoAjustec
+        getConceptosAjustecMain: function () {
+
+            if ( this.mainConceptoAjustecView instanceof Backbone.View ){
+                this.mainConceptoAjustecView.stopListening();
+                this.mainConceptoAjustecView.undelegateEvents();
+            }
+
+            this.mainConceptoAjustecView = new app.MainConceptoAjustecView( );
+        },
+
+        getConceptosAjustecCreate: function () {
+            this.conceptoajustecModel = new app.ConceptoAjustecModel();
+
+            if ( this.createConceptoAjustecView instanceof Backbone.View ){
+                this.createConceptoAjustecView.stopListening();
+                this.createConceptoAjustecView.undelegateEvents();
+            }
+
+            this.createConceptoAjustecView = new app.CreateConceptoAjustecView({ model: this.conceptoajustecModel });
+            this.createConceptoAjustecView.render();
+        },
+
+        getConceptosAjustecEdit: function (conceptoajustecModel) {
+            this.conceptoajustecModel = new app.ConceptoAjustecModel();
+            this.conceptoajustecModel.set({'id': conceptoajustecModel}, {'silent':true});
+
+            if ( this.createConceptoAjustecView instanceof Backbone.View ){
+                this.createConceptoAjustecView.stopListening();
+                this.createConceptoAjustecView.undelegateEvents();
+            }
+
+            this.createConceptoAjustecView = new app.CreateConceptoAjustecView({ model: this.conceptoajustecModel });
+            this.conceptoajustecModel.fetch();
         },
     }) );
 })(jQuery, this, this.document);
