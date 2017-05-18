@@ -209,6 +209,10 @@ app || (app = {});
             'conceptosajustec(/)': 'getConceptosAjustecMain',
             'conceptosajustec/create(/)': 'getConceptosAjustecCreate',
             'conceptosajustec/:conceptosajustec/edit(/)': 'getConceptosAjustecEdit',
+
+            'ajustesc(/)': 'getAjustescMain',
+            'ajustesc/create(/)': 'getAjustescCreate',
+            'ajustesc/:ajustesc(/)': 'getAjustescShow',
         },
 
         /**
@@ -1826,6 +1830,38 @@ app || (app = {});
 
             this.createConceptoAjustecView = new app.CreateConceptoAjustecView({ model: this.conceptoajustecModel });
             this.conceptoajustecModel.fetch();
+        },
+
+        //Ajustec
+        getAjustescMain: function () {
+            if ( this.mainAjustecView instanceof Backbone.View ){
+                this.mainAjustecView.stopListening();
+                this.mainAjustecView.undelegateEvents();
+            }
+            this.mainAjustecView = new app.MainAjustecView();
+        },
+
+        getAjustescCreate: function () {
+            this.ajustec1Model = new app.Ajustec1Model();
+
+            if ( this.createAjustecView instanceof Backbone.View ){
+                this.createAjustecView.stopListening();
+                this.createAjustecView.undelegateEvents();
+            }
+
+            this.createAjustecView = new app.CreateAjustecView({ model: this.ajustec1Model });
+            this.createAjustecView.render();
+        },
+
+        getAjustescShow: function (ajustec1Model) {
+            this.ajustec1Model = new app.Ajustec1Model();
+            this.ajustec1Model.set({'id': ajustec1Model}, {'silent':true});
+            if ( this.showAjustecView instanceof Backbone.View ){
+                this.showAjustecView.stopListening();
+                this.showAjustecView.undelegateEvents();
+            }
+
+            this.showAjustecView = new app.ShowAjustecView({ model: this.ajustec1Model });
         },
     }) );
 })(jQuery, this, this.document);

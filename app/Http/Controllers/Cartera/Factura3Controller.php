@@ -21,7 +21,6 @@ class Factura3Controller extends Controller
     public function index(Request $request)
     {
         if($request->ajax()){
-
             $query = Factura3::query();
             if ($request->has('tercero')) {
                 $tercero = Tercero::find($request->tercero);

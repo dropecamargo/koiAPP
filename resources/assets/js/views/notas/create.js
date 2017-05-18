@@ -94,7 +94,7 @@ app || (app = {});
             this.detalleNotaList.reset();
 
             var data = window.Misc.formToJson( e.target );
-                data.tercero = this.$('#nota1_conceptonota').attr('data-tercero');
+                data.tercero = this.$(e.currentTarget).attr('data-tercero');
                 data.call = 'nota';
 
             if( !_.isUndefined(data.nota1_conceptonota) && !_.isNull(data.nota1_conceptonota) && data.nota1_conceptonota != ''){
@@ -167,7 +167,7 @@ app || (app = {});
                     return;
                 }
 
-                window.Misc.redirect( window.Misc.urlFull( Route.route('notas.index')) );
+                window.Misc.redirect( window.Misc.urlFull( Route.route('notas.show', { notas: resp.id}), { trigger:true }) );
             }
         }
     });

@@ -103,7 +103,7 @@ class Nota1Controller extends Controller
                     $nota2 = isset($data['nota2']) ? $data['nota2'] : null;
                     foreach ($nota2 as $item)
                     {
-                        $factura3 = Factura3::where( 'factura3_factura1', $item['nota2_factura1'] )->join('factura1', 'factura3_factura1', '=', 'factura1.id')->select('factura3.*', 'factura1_numero')->first();
+                        $factura3 = Factura3::where('id',$item['factura3_id'])->where('factura3_factura1', $item['nota2_factura1'])->first();
                         if( !$factura3 instanceof Factura3 ){
                             DB::rollback();
                             return response()->json(['success'=>false, 'errors'=>'No es posible recuperar el numero de la factura, por favor verifique ó consulte con el administrador.']);

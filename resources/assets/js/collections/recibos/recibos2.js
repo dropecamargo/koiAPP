@@ -25,7 +25,7 @@ app || (app = {});
             var error = { success: false };
 
             var model = _.find(this.models, function(item){
-                return item.get('factura1_numero') == data.factura1_numero;
+                return item.get('factura3_id') == data.factura3_id;
             });
 
             if(data.deleted){
@@ -53,21 +53,6 @@ app || (app = {});
         totalize: function() {
             var valor = this.valor();
             return { 'valor': valor }
-        },
-
-        validarC: function(data){
-            var error = { success: false, valor: ''};
-
-            var model = _.find(this.models, function(item){
-                return item.get('factura1_numero') == data;
-            });
-
-            if (model instanceof Backbone.Model ){
-                error.success = true;
-                error.valor = model.get('factura3_valor');
-            }
-
-            return error;
         },
    });
 })(this, this.document);

@@ -82,10 +82,12 @@ app || (app = {});
         storeOne: function ( data ) {        
             var _this = this;
 
-            var valid = this.collection.validar(data);
-            if(!valid.success){
-                this.totalize();
-                return;
+            if( !_.isUndefined(data.factura3_id) ){
+                var valid = this.collection.validar(data);
+                if(!valid.success){
+                    this.totalize();
+                    return;
+                }
             }
 
             // Set Spinner

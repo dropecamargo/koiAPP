@@ -5,7 +5,7 @@ namespace App\Models\Cartera;
 use Illuminate\Database\Eloquent\Model;
 
 use App\Models\BaseModel;
-use Validator;
+use Validator, Cache;
 
 class ConceptoAjustec extends BaseModel
 {
@@ -17,6 +17,13 @@ class ConceptoAjustec extends BaseModel
 	protected $table = 'conceptoajustec';
 
 	public $timestamps = false;
+
+	/**
+     * The key used by cache store.
+     *
+     * @var static string
+     */
+    public static $key_cache = '_conceptoajustec';
 
 	/**
 	* The attributes that are mass assignable.
@@ -31,6 +38,7 @@ class ConceptoAjustec extends BaseModel
 	{
 		$rules = [
 			'conceptoajustec_nombre' => 'required|max:25',
+			'conceptoajustec_plancuentas' => 'required',
 		];
 
 		$validator = Validator::make($data, $rules);
@@ -51,4 +59,21 @@ class ConceptoAjustec extends BaseModel
 
 		return $concepto;
 	}
+
+	public static function getConceptoAjustec()
+    {
+        if ( Cache::has(self::$key_cache)) {
+            return Cache::get(self::$key_cache);
+        }
+
+        return Cache::rememberForever( self::$key_cache , function() {
+            $query = ConceptoAjustec::query();
+            $query->select('id','conceptoajustec_nombre');
+            $query->where('conceptoajustec_activo', true);
+            $collection = $query->lists('conceptoajustec_nombre', 'id');
+
+			$collection->prepend('', '');
+        	return $collection;
+        });
+    }
 }

@@ -27,31 +27,38 @@ app || (app = {});
                 return item.get('id') == id;
             });
 
-            //setter recibo2Model || nota2Model
+            var object = {
+                'factura1_numero': model.get('factura1_numero'), 
+                'factura3_id': model.get('id'),
+                'factura3_valor': type == 'input' ? valor : model.get('factura3_saldo'),
+                'factura3_cuota': model.get('factura3_cuota')
+            }
+
+            // Setter attributes to model
             if( concepto.call == 'recibo' ){
-                var modelo = {
+                modelo = $.extend(object, {
                     'recibo2_conceptosrc': concepto.recibo2_conceptosrc,
                     'recibo2_naturaleza': 'C',
-                    'factura1_numero': model.get('factura1_numero'), 
-                    'factura3_cuota': model.get('factura3_cuota'),
                     'recibo2_factura1': model.get('factura3_factura1'),
-                    'factura3_valor': type == 'input' ? valor : model.get('factura3_saldo'),
                     'call': concepto.call,
-                }
-            }
-
-            if( concepto.call == 'nota' ){
-                var modelo = {
+                }); 
+            }else if ( concepto.call == 'nota' ){
+                modelo = $.extend(object, {
                     'nota2_conceptonota': concepto.nota1_conceptonota,
-                    'factura1_numero': model.get('factura1_numero'), 
-                    'factura3_cuota': model.get('factura3_cuota'),
                     'nota2_factura1': model.get('factura3_factura1'),
                     'nota2_documentos_doc': model.get('factura1_documentos'),
-                    'factura3_valor': type == 'input' ? valor : model.get('factura3_saldo'),
                     'call': concepto.call,
-                }   
+                }); 
+            }else if ( concepto.call == 'ajustesc'){
+                modelo = $.extend(object, {
+                    'ajustec2_valor': model.get('factura3_saldo'),
+                    'ajustec2_documentos_doc': concepto.ajustec2_documentos_doc,
+                    'ajustec2_factura1': model.get('factura3_factura1'),
+                    'ajustec2_tercero': concepto.tercero,
+                    'ajustec2_naturaleza': type == 'D' ? 'D' : 'C',
+                    'call': concepto.call,
+                }); 
             }
-
             return modelo;
         },
 
@@ -61,9 +68,9 @@ app || (app = {});
                 return item.get('id') == id;
             });
 
-            //setter recibo2Model || nota2Model
+            //setter recibo2Model || nota2Model || ajustec2Model
             var modelo = {
-                'factura1_numero': model.get('factura1_numero'),
+                'factura3_id': model.get('id'),
                 'deleted': true
             }
 

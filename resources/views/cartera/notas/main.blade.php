@@ -49,7 +49,7 @@
                                     <i class="fa fa-user"></i>
                                 </button>
                             </span>
-                            <input id="nota1_tercero" placeholder="Cliente" class="form-control tercero-koi-component" name="nota1_tercero" type="text" maxlength="15" data-wrapper="nota1-create" data-name="tercero_nombre" value="<%- tercero_nit %>" required>
+                            <input id="nota1_tercero" placeholder="Cliente" class="form-control tercero-koi-component" name="nota1_tercero" type="text" maxlength="15" data-cliente="true" data-wrapper="nota1-create" data-name="tercero_nombre" value="<%- tercero_nit %>" required>
                         </div>
                     </div>
                     <div class="col-md-5 col-xs-10">

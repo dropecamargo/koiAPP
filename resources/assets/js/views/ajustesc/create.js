@@ -1,5 +1,5 @@
 /**
-* Class CreateReciboView  of Backbone Router
+* Class CreateAjustecView  of Backbone Router
 * @author KOI || @dropecamargo
 * @link http://koi-ti.com
 */
@@ -9,15 +9,16 @@ app || (app = {});
 
 (function ($, window, document, undefined) {
 
-    app.CreateReciboView = Backbone.View.extend({
+    app.CreateAjustecView = Backbone.View.extend({
 
-        el: '#recibo1-create',
-        template: _.template(($('#add-recibo-tpl').html() || '') ),
+        el: '#ajustec-create',
+        template: _.template( ($('#add-ajustec-tpl').html() || '') ),
+        templateDetailt: _.template( ($('#add-detail-tpl').html() || '') ),
         events: {
-            'click .submit-recibo' :'submitFormRecibo',
-            'submit #form-recibo1' :'onStore',
-            'submit #form-recibo2' :'onStoreItem',
-            'change .change-concepto' :'changeConcepto',
+            'click .submit-ajustec' :'submitFormAjustec',
+            'submit #form-ajustec': 'onStore',
+            'submit #form-detail-ajustec': 'onStoreItem',
+            'change .change-documento': 'changeDocumento',
         },
         parameters: {
         },
@@ -25,23 +26,21 @@ app || (app = {});
         /**
         * Constructor Method
         */
-        initialize : function(opts) {
+        initialize : function(opts) {      
             // Initialize
             if( opts !== undefined && _.isObject(opts.parameters) )
                 this.parameters = $.extend({}, this.parameters, opts.parameters);
-
-            // Attributes
-            this.$wraperForm = this.$('#render-form-recibo1');
-            this.detalleReciboList = new app.DetalleReciboList();
+            
+            // Attributes 
+            this.$wraperForm = this.$('#render-form-ajustec');
+            this.detalleAjustec = new app.AjustecDetalleList();
+            this.$templateFact = _.template( ($('#add-ajustec-factura-tpl').html() || '') );
 
             // Events
             this.listenTo( this.model, 'change', this.render );
             this.listenTo( this.model, 'sync', this.responseServer );
-            this.listenTo( this.model, 'request', this.loadSpinner );            
-            
-            this.ready();
+            this.listenTo( this.model, 'request', this.loadSpinner );
         },
-
 
         /*
         * Render View Element
@@ -49,73 +48,36 @@ app || (app = {});
         render: function() {
             var attributes = this.model.toJSON();
             this.$wraperForm.html( this.template(attributes) );
-            this.$form = this.$('#form-recibo1');
 
-            this.$concepto = this.$('#recibo2_conceptosrc');
-            this.$naturaleza = this.$('#recibo2_naturaleza');
-            this.$valor = this.$('#recibo2_valor');
-            
+            this.$wraperDetail = this.$('#render-form-detail');
+            this.$wraperDetail.html( this.templateDetailt({}) );
+
+            this.$form = this.$('#form-ajustec');
+
+            // Reference views
             this.referenceViews();
+            this.ready();  
         },
 
-        /**
-        * Event submit recibo1
-        */
-        submitFormRecibo: function (e) {
-            this.$form.submit();
-        },
-
-        /**
-        * reference to views
-        */
-        referenceViews: function () {
-            //DetalleReciboList
-            this.detalleRecibosView = new app.DetalleRecibosView( {
-                collection: this.detalleReciboList,
+        referenceViews:function(){ 
+            this.detalleAjustecView = new app.DetalleAjustecView( {
+                collection: this.detalleAjustec,
                 parameters: {
-                    wrapper: this.$('#wrapper-recibo2'),
+                    wrapper: this.el,
                     edit: true,
                     dataFilter: {
-                        'recibo2': this.model.get('id')
+                        'id': this.model.get('id')
                     }
                }
             });
         },
 
-        /*
-        * Event Create recibo
-        */
-        onStore: function (e) {
-            if (!e.isDefaultPrevented()) {
-                e.preventDefault();
-                var data = window.Misc.formToJson( e.target );
-                    data.recibo2 = this.detalleReciboList.toJSON();
-                this.model.save( data, {patch: true, silent: true} );
-            }   
-        },
-
-        /**
-        * Event add item detalle recibo
-        */
-        onStoreItem: function(e) {
-            if (!e.isDefaultPrevented()) {
-                e.preventDefault();
-
-                var data = window.Misc.formToJson( e.target );
-                this.detalleReciboList.trigger( 'store', data );
-
-                this.$concepto.val('').trigger('change');
-                this.$naturaleza.val('').trigger('change');
-                this.$valor.val('');
-            }
-        },
-
-        changeConcepto: function(e){
+        changeDocumento: function (e){
             var data = window.Misc.formToJson( e.target );
                 data.tercero = this.$(e.currentTarget).attr('data-tercero');
-                data.call = 'recibo';
+                data.call = 'ajustesc';
 
-            if( !_.isUndefined(data.recibo2_conceptosrc) && !_.isNull(data.recibo2_conceptosrc) && data.recibo2_conceptosrc != ''){
+            if( !_.isUndefined(data.ajustec2_documentos_doc) && !_.isNull(data.ajustec2_documentos_doc) && data.ajustec2_documentos_doc != ''){
                 window.Misc.evaluateActionsCartera({
                     'data': data,
                     'wrap': this.$el,
@@ -130,8 +92,9 @@ app || (app = {});
 
                             _this.carteraActionView = new app.CarteraActionView({
                                 model: _this.model,
-                                collection: _this.detalleReciboList,
+                                collection: _this.detalleAjustec,
                                 parameters: {
+                                    template: _this.$templateFact,
                                     data: data,
                                     action: action,
                                 }
@@ -144,24 +107,54 @@ app || (app = {});
         },
 
         /**
+        * Event submit recibo1
+        */
+        submitFormAjustec: function (e) {
+            this.$form.submit();
+        },
+
+        /**
+        * Event Create Folder
+        */
+        onStore: function (e) {
+            if (!e.isDefaultPrevented()) {
+                e.preventDefault();
+
+                var data = window.Misc.formToJson( e.target );
+                    data.detalle = this.detalleAjustec.toJSON();
+                this.model.save( data, {patch: true, silent: true} );                
+            }
+        },
+
+        /**
+        *   Evenet Submit item
+        */ 
+        onStoreItem: function (e) {
+            if (!e.isDefaultPrevented()) {
+                e.preventDefault();
+
+                var data = window.Misc.formToJson( e.target );
+                this.detalleAjustec.trigger( 'store', data );
+
+                this.$('#ajustec2_documentos_doc').val(0).trigger('change');
+                this.$('#ajustec2_naturaleza').val('');
+                this.$('#ajustec2_valor').val('');
+            }
+        },
+        
+        /**
         * fires libraries js
         */
         ready: function () {
             // to fire plugins
-            if( typeof window.initComponent.initValidator == 'function' )
-                window.initComponent.initValidator();
-
-            if( typeof window.initComponent.initInputMask == 'function' )
-                window.initComponent.initInputMask();
-            
             if( typeof window.initComponent.initToUpper == 'function' )
                 window.initComponent.initToUpper();
-            
+
             if( typeof window.initComponent.initSelect2 == 'function' )
                 window.initComponent.initSelect2();
 
-            if( typeof window.initComponent.initDatePicker == 'function' )
-                window.initComponent.initDatePicker();
+            if( typeof window.initComponent.initValidator == 'function' )
+                window.initComponent.initValidator();
         },
 
         /**
@@ -176,6 +169,7 @@ app || (app = {});
         */
         responseServer: function ( model, resp, opts ) {
             window.Misc.removeSpinner( this.el );
+
             if(!_.isUndefined(resp.success)) {
                 // response success or error
                 var text = resp.success ? '' : resp.errors;
@@ -185,10 +179,11 @@ app || (app = {});
 
                 if( !resp.success ) {
                     alertify.error(text);
-                    return; 
+                    return;
                 }
+
+                window.Misc.redirect( window.Misc.urlFull( Route.route('ajustesc.show', { ajustesc: resp.id}), { trigger:true }) );
             }
-            window.Misc.redirect( window.Misc.urlFull( Route.route('recibos.show', { recibos: resp.id}), { trigger:true }) );
         }
     });
 
