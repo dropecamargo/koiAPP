@@ -121,12 +121,6 @@ app || (app = {});
             this.$el.find('tbody').html('');
             this.collection.forEach( this.addOne, this );
         },
-        /**
-        *Render modals inventario lotes
-        */
-        renderModals: function(e){
-
-        },
 
         /**
         *Render totales the collection

@@ -369,6 +369,32 @@ class Factura1Controller extends Controller
     }
 
     /**
+     * Show the form for search the specified resource.
+     *
+     * @param  Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function search(Request $request)
+    {
+        if ($request->ajax()) {
+            $query = Factura1::query();
+            $query->select('factura1.id as id','factura1_numero', 'factura1_sucursal', 'factura1_tercero',DB::raw("(CASE WHEN tercero_persona = 'N'
+                    THEN CONCAT(tercero_nombre1,' ',tercero_nombre2,' ',tercero_apellido1,' ',tercero_apellido2,
+                            (CASE WHEN (tercero_razonsocial IS NOT NULL AND tercero_razonsocial != '') THEN CONCAT(' - ', tercero_razonsocial) ELSE '' END)
+                        )
+                    ELSE tercero_razonsocial END)
+                AS tercero_nombre"), 'tercero.tercero_nit');
+            $query->where('factura1_sucursal', $request->factura_sucursal)->where('factura1_numero', $request->factura_numero);
+            $query->join('tercero' , 'factura1.factura1_tercero', '=', 'tercero.id');
+            $factura1 = $query->first();
+            if (!$factura1 instanceof Factura1) {
+                return response()->json([ 'success' => false ]);
+            }            
+            return response()->json(['success' => true , 'id' => $factura1->id , 'cliente' => $factura1->tercero_nombre, 'nit' => $factura1->tercero_nit  ]);
+        }
+        abort(403);
+    }
+    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id

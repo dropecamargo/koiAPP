@@ -209,6 +209,9 @@ app || (app = {});
             'conceptosajustec(/)': 'getConceptosAjustecMain',
             'conceptosajustec/create(/)': 'getConceptosAjustecCreate',
             'conceptosajustec/:conceptosajustec/edit(/)': 'getConceptosAjustecEdit',
+
+            'devoluciones(/)': 'getDevolucionesMain',
+            'devoluciones/create(/)': 'getDevolucionesCreate',
         },
 
         /**
@@ -252,6 +255,7 @@ app || (app = {});
             this.componentSearchContactoView = new app.ComponentSearchContactoView();
             this.componentConsecutiveView = new app.ComponentConsecutiveView();
             this.componentPedidocView = new app.ComponentSearchPedidocView();
+            this.componentFacturaView = new app.ComponentSearchFacturaView();
 
       	},
 
@@ -1827,5 +1831,28 @@ app || (app = {});
             this.createConceptoAjustecView = new app.CreateConceptoAjustecView({ model: this.conceptoajustecModel });
             this.conceptoajustecModel.fetch();
         },
-    }) );
+
+        getDevolucionesMain: function(){
+
+            if (this.mainDevolucionesView instanceof Backbone.View) {
+                this.mainDevolucionesView.stopListening();
+                this.mainDevolucionesView.undelegateEvents();
+            }
+
+            this.mainDevolucionesView = new app.MainDevolucionesView( );
+        },
+
+        getDevolucionesCreate: function(){
+            this.devolucionModel = new app.DevolucionModel();
+
+            if (this.createDevolucionView instanceof Backbone.View) {
+                this.createDevolucionView.stopListening();
+                this.createDevolucionView.undelegateEvents();
+            }
+            
+            this.createDevolucionView = new app.CreateDevolucionView({ model: this.devolucionModel });
+            this.createDevolucionView.render();
+        },
+
+    }));
 })(jQuery, this, this.document);

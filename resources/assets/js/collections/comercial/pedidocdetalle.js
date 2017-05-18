@@ -72,7 +72,7 @@ app || (app = {});
                 descuento = this.descuento();   
                 iva = this.iva();
                 total = this.total();
-            return {'pedidoc1_bruto': totalCosto , 'pedidoc1_descuento': descuento, 'pedidoc1_iva': iva, 'pedidoc1_total': total}
+            return { 'pedidoc1_bruto': totalCosto , 'pedidoc1_descuento': descuento, 'pedidoc1_iva': iva, 'pedidoc1_total': total }
         },
    });
 
