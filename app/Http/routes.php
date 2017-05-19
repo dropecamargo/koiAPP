@@ -186,6 +186,7 @@ Route::group(['middleware' => 'auth'], function(){
 	{
 		Route::resource('detalle', 'Cartera\Factura2Controller');
 		Route::get('search', ['as' => 'facturas.search', 'uses' => 'Cartera\Factura1Controller@search']);
+		Route::get('anular/{facturas}', ['as' => 'facturas.anular', 'uses' => 'Cartera\Factura1Controller@anular']);
 	});
 	Route::group(['prefix' => 'devoluciones'], function()
 	{

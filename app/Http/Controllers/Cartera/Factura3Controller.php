@@ -33,6 +33,7 @@ class Factura3Controller extends Controller
                 $query->join('factura1', 'factura3_factura1', '=', 'factura1.id');
                 $query->join('documentos', 'factura1_documentos', '=', 'documentos.id');
                 $query->where('factura1_tercero', $tercero->id);
+                $query->where('factura3_saldo', '<>',  0);
             }
 
             if ($request->has('factura1')) {
@@ -42,7 +43,6 @@ class Factura3Controller extends Controller
                 }
                 $query->where('factura3_factura1', $factura1->id);
             }
-            $query->where('factura3_saldo', '<>',  0);
             $query->orderBy('factura3_vencimiento', 'desc');
             $factura = $query->get();
 

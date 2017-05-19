@@ -161,8 +161,10 @@ class PedidoController extends Controller
                     $sucursal->sucursal_pedidoc = $consecutive;
                     $sucursal->save();
                     //Commit transaction
-                    DB::commit();
-                    return response()->json(['success' => true , 'id' => $pedidoComercial->id]);
+                    DB::rollback();
+                    return response()->json(['success' => false, 'errors' => 'TODO OK']);
+                    // DB::commit();
+                    // return response()->json(['success' => true , 'id' => $pedidoComercial->id]);
                 } catch (\Exception $e) {
                      Log::error($e->getMessage());
                     return response()->json(['success' => false, 'errors' => trans('app.exception')]);

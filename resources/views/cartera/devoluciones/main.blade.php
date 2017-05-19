@@ -40,7 +40,7 @@
                 </div>
                 <div class="row">
                     <label for="devolucion_factura1" class="col-sm-1 control-label">Factura</label>
-                    <div class="form-group col-sm-4">
+                    <div class="form-group col-sm-2">
                         <div class="input-group input-group-sm">
                             <span class="input-group-btn">
                                 <button type="button" class="btn btn-default btn-flat" data-field="devolucion1_factura1">

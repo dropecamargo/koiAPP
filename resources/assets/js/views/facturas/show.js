@@ -13,6 +13,11 @@ app || (app = {});
 
         el: '#factura-show',
 
+        events:{
+            'click .anular-factura': 'anularFactura',
+            'click .export-factura': 'exportFactura'
+        },
+
         /**
         * Constructor Method
         */
@@ -60,6 +65,60 @@ app || (app = {});
                     }
                 }
             });
+        },
+
+        /*
+        * Redirect anular factura
+        */  
+        anularFactura:function(e){
+            e.preventDefault();
+            var _this = this;
+            var anularConfirm = new window.app.ConfirmWindow({
+                parameters: {
+                    dataFilter: { id: _this.model.get('id') },
+                    template: _.template( ($('#factura-close-confirm-tpl').html() || '') ),
+                    titleConfirm: 'Anular factura de venta',
+                    onConfirm: function () {
+                        // Anular factura
+                        $.ajax({
+                            url: window.Misc.urlFull( Route.route('facturas.anular', { facturas: _this.model.get('id') }) ),
+                            type: 'GET',
+                            beforeSend: function() {
+                                window.Misc.setSpinner( _this.el );
+                            }
+                        })
+                        .done(function(resp) {
+                            window.Misc.removeSpinner( _this.el );
+
+                            if(!_.isUndefined(resp.success)) {
+                                // response success or error
+                                var text = resp.success ? '' : resp.errors;
+                                if( _.isObject( resp.errors ) ) {
+                                    text = window.Misc.parseErrors(resp.errors);
+                                }
+
+                                if( !resp.success ) {
+                                    alertify.error(text);
+                                    return;
+                                }
+
+                                window.Misc.successRedirect( resp.msg, window.Misc.urlFull(Route.route('facturas.show', { facturas: _this.model.get('id') })) );
+                            }
+                        })
+                        .fail(function(jqXHR, ajaxOptions, thrownError) {
+                            window.Misc.removeSpinner( _this.el );
+                            alertify.error(thrownError);
+                        });
+                    }
+                }
+            });
+            anularConfirm.render();
+        },
+
+        /*
+        * Redirect export pdf
+        */
+        exportFactura:function(e){
         }
     });
 

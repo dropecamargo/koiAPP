@@ -82,7 +82,7 @@
                     <i class="fa fa-wpforms"></i> Módulos <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
-                    <li class="{{ Request::segment(1) == 'facturas' ? 'active' : '' }}">
+                    <li class="{{ Request::segment(1) == 'devoluciones' ? 'active' : '' }}">
                         <a href="{{ route('devoluciones.index') }}"><i class="fa fa-reply"></i> Devoluciones</a>
                     </li>
                     <li class="{{ Request::segment(1) == 'facturas' ? 'active' : '' }}">

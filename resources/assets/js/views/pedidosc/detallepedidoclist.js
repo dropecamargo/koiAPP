@@ -144,15 +144,15 @@ app || (app = {});
             this.$total.empty().html(window.Misc.currency(data.pedidoc1_total) );
         },
         /**
-        *setter pedidoc_subtotal the model
+        *setter pedidoc_subtotal and iva_valor the model
         */
         setterModel: function(model){
             var iva = model.get('pedidoc2_iva_porcentaje')  / 100;
-                precio = parseFloat(model.get('pedidoc2_precio_venta')) * iva * parseFloat(model.get('pedidoc2_cantidad') ) ;
-                precio = precio - (parseFloat(model.get('pedidoc2_descuento_valor'))) * parseFloat(model.get('pedidoc2_cantidad') ) ;
+                descuento = (parseFloat(model.get('pedidoc2_descuento_valor'))) * parseFloat(model.get('pedidoc2_cantidad') ) ;
                 costo = (parseFloat(model.get('pedidoc2_costo'))) * parseFloat(model.get('pedidoc2_cantidad'));
-            model.set('pedidoc2_subtotal', (costo + precio));
-            model.set('pedidoc2_iva_valor', (parseFloat(model.get('pedidoc2_precio_venta')) * iva));
+                ivaValor = (costo-descuento) * iva ;
+            model.set('pedidoc2_iva_valor', ivaValor);
+            model.set('pedidoc2_subtotal', (costo - descuento) + model.get('pedidoc2_iva_valor'));
         },
         /**
         * Event remove item

@@ -337,8 +337,10 @@ class Factura1Controller extends Controller
                     // Update pedidoc1_factura1 in pedidoc1
                     $pedidoc1->pedidoc1_factura1 = $factura1->id;
                     $pedidoc1->save();
-                    DB::commit();
-                    return response()->json(['success'=>true , 'id' => $factura1->id]);
+                    DB::rollback();
+                    return response()->json(['success' => false, 'errors' => 'TODO OK']);
+                    // DB::commit();
+                    // return response()->json(['success'=>true , 'id' => $factura1->id]);
                 } catch (\Exception $e) {
                     DB::rollback();
                     Log::error($e->getMessage());
@@ -394,6 +396,8 @@ class Factura1Controller extends Controller
         }
         abort(403);
     }
+
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -426,5 +430,38 @@ class Factura1Controller extends Controller
     public function destroy($id)
     {
         //
+    }
+    /**
+     * Anular the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function anular(Request $request, $id)
+    {
+        if ($request->ajax()) {
+            $factura1 = Factura1::findOrFail($id);
+            DB::beginTransaction();
+            try {
+                if(!$factura1->validar()){
+                    DB::rollback();
+                    return response()->json(['success' => false , 'errors' => 'Factura NO puede ser anulada']);
+                }
+                // Factura
+                $factura1->factura1_anulada = true;
+                $factura1->factura1_usuario_anulo = Auth::user()->id;
+                $factura1->factura1_fh_anulo = date('Y-m-d H:m:s');
+                $factura1->save();
+
+                // Commit Transaction
+                DB::commit();
+                return response()->json(['success' => true, 'msg' => 'Factura anulada con exito.']);
+            }catch(\Exception $e){
+                DB::rollback();
+                Log::error($e->getMessage());
+                return response()->json(['success' => false, 'errors' => trans('app.exception')]);
+            }
+        }
+        abort(403);
     }
 }

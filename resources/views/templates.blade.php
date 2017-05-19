@@ -1256,6 +1256,7 @@
 <script type="text/template" id="add-factura3-item-tpl"> 
     <td><%- factura3_cuota %></td>
     <td><%- factura3_vencimiento %></td>
+    <td><%- window.Misc.currency(factura3_valor) %></td>
     <td><%- window.Misc.currency(factura3_saldo) %></td>
 </script>
 

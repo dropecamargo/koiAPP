@@ -195,7 +195,7 @@
                     </div>
                     <div class="col-md-1 col-sm-1">
                         <label class="radio-inline without-padding">
-                            <input type="radio" id="desc_porcentage"  class="desc" name="radio_naturaleza_descuento"> <b>%</b>
+                            <input type="radio" id="desc_porcentage"  class="desc" checked name="radio_naturaleza_descuento"> <b>%</b>
                         </label>
                     </div>
                     <div class=" col-md-2 col-sm-2 form-group">
@@ -203,7 +203,7 @@
                     </div>
                     <div class="col-md-1 col-sm-1">
                         <label class="radio-inline without-padding">
-                            <input type="radio" id="desc_value" class="desc" name="radio_naturaleza_descuento" > <b>Valor</b>
+                            <input type="radio" id="desc_value" class="desc" name="radio_naturaleza_descuento"> <b>Valor</b>
                         </label>
                     </div> 
                         

@@ -76,4 +76,30 @@ class Factura1 extends BaseModel
 		return $query->first();
 	}
 
+	public function validar(){
+		// Valido Fecha
+		$diferencia =  strtotime('now')-strtotime($this->factura1_fh_elaboro);
+		$diferencia_dias = intval((($diferencia/60)/60)/24);
+		if ($diferencia_dias > 30) {
+			return false;
+		}
+		// Valido atributos de estos models
+		$factura2 = Factura2::where('factura2_factura1', $this->id)->first();
+		$factura3 = Factura3::where('factura3_factura1', $this->id)->get();
+
+		if ($factura2->factura2_devueltas > 0) {
+			return false;
+		}
+		// Update saldo factura3
+		foreach ($factura3 as $value) {
+			if (($value->factura3_valor - $value->factura3_saldo) > 0) {
+				return false;
+			}
+			$value->factura3_saldo = 0;
+			$value->save();
+		}
+
+		return true;
+	}
+
 }
