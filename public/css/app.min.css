@@ -142,6 +142,9 @@ label {
   opacity: 1;
   color: #FFFFFF; }
 
+.modal-title {
+  font-weight: bold; }
+
 .add-ubicacion {
   padding: 1px 1px 1px 1px; }
   .add-ubicacion .btn {

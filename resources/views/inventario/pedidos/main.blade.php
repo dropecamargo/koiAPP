@@ -41,7 +41,7 @@
                         </ul>
                     </li>
                 <% } %>
-            </ul><br>
+            </ul>
             <div class="tab-content">
                 {{-- Content pedidos --}}
                 <div class="tab-pane active" id="tab_pedido">
