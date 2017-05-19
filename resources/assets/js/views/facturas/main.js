@@ -67,7 +67,14 @@ app || (app = {});
                         targets: [5,6,7,8,9],
                         visible: false,
                     },
-                ]
+                ],
+                fnRowCallback: function( row, data ) {
+                    if ( data.factura1_anulada == 1 ) {
+                        $(row).css( {"color":"red"} );
+                    }else{
+                        $(row).css( {"color":"green"} );
+                    }
+                }
             });
         }
     });

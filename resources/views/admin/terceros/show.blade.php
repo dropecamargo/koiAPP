@@ -244,7 +244,7 @@
 	        	<div class="row">
 		        	<div class="form-group col-md-8 col-md-offset-1">
 		        		<label class="control-label">Actividad Económica</label>
-		        		<div>{{ $tercero->actividad_nombre }}</div>
+		        		<div>{{ $tercero->actividad_codigo }} - {{ $tercero->actividad_nombre }}</div>
 		        	</div>
 		        	<div class="form-group col-md-2">
 		        		<label class="control-label">% Cree</label>

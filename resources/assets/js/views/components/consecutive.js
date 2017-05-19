@@ -52,6 +52,7 @@ app || (app = {});
                     if(documents == 'pedidoc') consecutive = resp.sucursal_pedidoc;
                     if(documents == 'recibos') consecutive = resp.sucursal_reci;
                     if(documents == 'notas') consecutive = resp.sucursal_nota;
+                    if(documents == 'ajustec') consecutive = resp.sucursal_ajuc;
                     if(documents == 'devolucion') consecutive = resp.sucursal_devo;
                     
                     // Set consecutive

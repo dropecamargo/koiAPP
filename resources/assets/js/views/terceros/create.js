@@ -20,7 +20,7 @@ app || (app = {});
             'ifChanged .change_employee': 'changedEmployee',
             'ifChanged #tercero_tecnico': 'changedTechnical',
             'ifChanged #tercero_vendedor': 'changedVendedor',
-            'ifChanged #tercero_coordinador': 'changedCordinador',
+            'ifChanged #tercero_coordinador': 'changedCoordinador',
             'click .btn-add-tcontacto': 'addContacto'
         },
 
@@ -155,7 +155,7 @@ app || (app = {});
             }
         },
 
-        changedCordinador: function(e){
+        changedCoordinador: function(e){
             var selected = $(e.target).is(':checked');
             var nombre = this.model.get('tercero_nombre1')+' '+this.model.get('tercero_nombre2')+' '+this.model.get('tercero_apellido1')+' '+this.model.get('tercero_apellido2');
             var select = [{id: this.model.get('id') , text: nombre}];

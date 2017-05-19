@@ -42,5 +42,15 @@ class DocumentosTableSeeder extends Seeder
             'documentos_codigo' => 'NOTA',
             'documentos_nombre' => 'NOTA'
         ]);
+
+        Documentos::create([
+            'documentos_codigo' => 'DEVO',
+            'documentos_nombre' => 'DEVOLUCION'
+        ]);
+
+        Documentos::create([
+            'documentos_codigo' => 'AJUC',
+            'documentos_nombre' => 'AJUSTE CARTERA'
+        ]);
     }
 }

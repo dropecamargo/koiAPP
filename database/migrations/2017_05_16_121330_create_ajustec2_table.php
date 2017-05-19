@@ -19,7 +19,7 @@ class CreateAjustec2Table extends Migration
             $table->integer('ajustec2_ajustec1')->unsigned();
             $table->integer('ajustec2_tercero')->unsigned();
             $table->integer('ajustec2_documentos_doc')->unsigned();
-            $table->integer('ajustec2_id_doc')->unsigned();
+            $table->integer('ajustec2_id_doc')->unsigned()->nullable();
             $table->string('ajustec2_naturaleza',1);
             $table->double('ajustec2_valor');
 

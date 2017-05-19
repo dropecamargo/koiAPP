@@ -9,7 +9,7 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Cartera\ConceptoAjustec;
 use App\Models\Contabilidad\PlanCuenta;
-use DB, Log, Datatables;
+use DB, Log, Cache, Datatables;
 
 class ConceptoAjustecController extends Controller
 {
@@ -66,6 +66,8 @@ class ConceptoAjustecController extends Controller
                     $conceptoajustec->conceptoajustec_plancuentas = $plancuentas->id;
                     $conceptoajustec->save();
 
+                    //Forget cache
+                    Cache::forget( ConceptoAjustec::$key_cache );
                     // Commit Transaction
                     DB::commit();
                     return response()->json(['success' => true, 'id' => $conceptoajustec->id]);
@@ -127,6 +129,8 @@ class ConceptoAjustecController extends Controller
                     $conceptoajustec->fillBoolean($data);
                     $conceptoajustec->save();
 
+                    //Forget cache
+                    Cache::forget( ConceptoAjustec::$key_cache );
                     // Commit Transaction
                     DB::commit();
                     return response()->json(['success' => true, 'id' => $conceptoajustec->id]);

@@ -72,16 +72,20 @@
     </li>
 
     {{--Cartera--}}
-    <li class="{{ in_array(Request::segment(1), ['autorizacionesca','bancos','conceptosrc','cuentabancos','autorizaco','mediopagos', 'recibos', 'conceptonotas', 'notas','facturas','conceptosajustec','devoluciones']) ? 'active' : '' }}">
+    <li class="{{ in_array(Request::segment(1), ['autorizacionesca','bancos','conceptosrc','cuentabancos','autorizaco','mediopagos', 'recibos', 'conceptonotas', 'notas','facturas','conceptosajustec','ajustesc','devoluciones']) ? 'active' : '' }}">
     <a href="#">
             <i class="fa fa-suitcase"></i> <span>Cartera</span><i class="fa fa-angle-left pull-right"></i>
         </a>
         <ul class="treeview-menu">
-            <li class="{{ in_array(Request::segment(1), ['recibos', 'notas','facturas','devoluciones']) ? 'active' : '' }}">
+            <li class="{{ in_array(Request::segment(1), ['recibos', 'notas','facturas', 'ajustesc', 'devoluciones']) ? 'active' : '' }}">
                 <a href="#">
                     <i class="fa fa-wpforms"></i> Módulos <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
+
+                    <li class="{{ Request::segment(1) == 'ajustesc' ? 'active' : '' }}">
+                        <a href="{{ route('ajustesc.index') }}"><i class="fa fa-adjust"></i> Ajuste cartera</a>
+                    </li>
                     <li class="{{ Request::segment(1) == 'devoluciones' ? 'active' : '' }}">
                         <a href="{{ route('devoluciones.index') }}"><i class="fa fa-reply"></i> Devoluciones</a>
                     </li>
@@ -115,7 +119,7 @@
                         <a href="{{route('conceptonotas.index')}}"><i class="fa fa-circle-o"></i> Concepto de nota</a>
                     </li>
                     <li class="{{ Request::segment(1) == 'conceptosajustec' ? 'active' : '' }}">
-                        <a href="{{route('conceptosajustec.index')}}"><i class="fa fa-circle-o"></i> Concepto ajuste de cartera</a>
+                        <a href="{{route('conceptosajustec.index')}}"><i class="fa fa-circle-o"></i> Concepto ajuste</a>
                     </li>
                     <li class="{{ Request::segment(1) == 'conceptosrc' ? 'active' : '' }}">
                         <a href="{{route('conceptosrc.index')}}"><i class="fa fa-circle-o"></i> Concepto recibo de caja</a>

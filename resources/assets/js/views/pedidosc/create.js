@@ -55,6 +55,7 @@ app || (app = {});
             this.$wraperForm.html( this.template(attributes) );
 
             this.$form = this.$('#form-pedidoc1');
+            this.$formDetalle = this.$('#form-detalle-pedidoc');
             this.$divDetalle = this.$('#detalle-pedidoc1');
 
             //Render form detalle pedidoc

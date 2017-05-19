@@ -193,6 +193,11 @@ Route::group(['middleware' => 'auth'], function(){
 		Route::resource('detalle', 'Cartera\Devolucion2Controller');
 	});
 
+	Route::group(['prefix' => 'ajustesc'], function()
+	{
+		Route::resource('detalle', 'Cartera\Ajustec2Controller');
+	});
+
 	Route::resource('autorizacionesca', 'Cartera\AutorizaCaController', ['only' => ['index']]);
 	Route::resource('bancos', 'Cartera\BancoController', ['except' => ['destroy']]);
 	Route::resource('cuentabancos', 'Cartera\CuentaBancoController', ['except' => ['destroy']]);
@@ -204,4 +209,5 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::resource('facturas', 'Cartera\Factura1Controller', ['except' => ['destroy', 'edit' , 'update']]);
 	Route::resource('devoluciones', 'Cartera\Devolucion1Controller', ['except' => ['destroy', 'edit' , 'update']]);
 	Route::resource('conceptosajustec', 'Cartera\ConceptoAjustecController', ['except' => ['destroy']]);
+	Route::resource('ajustesc', 'Cartera\Ajustec1Controller', ['except' => ['destroy']]);
 });

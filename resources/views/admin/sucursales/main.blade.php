@@ -27,7 +27,7 @@
         <div class="row">
             <div class="form-group col-md-4">
                 <label for="sucursal_telefono" class="control-label">Teléfono</label>
-                <input type="text" id="sucursal_telefono" name="sucursal_telefono" value="<%- sucursal_telefono %>" placeholder="Telefono" class="form-control input-sm" data-inputmask="'mask': '(+99) 999-99-99'" data-mask>
+                <input type="text" id="sucursal_telefono" name="sucursal_telefono" value="<%- sucursal_telefono %>" placeholder="Telefono" class="form-control input-sm" data-inputmask="'mask': '(999) 999-99-99'" data-mask>
             </div>
             <div class="form-group col-md-4">
                 <label for="sucursal_direccion" class="control-label">Dirección</label> <small id="sucursal_dir_nomenclatura"><%- sucursal_direccion_nomenclatura %></small>

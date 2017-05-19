@@ -21,13 +21,36 @@ class MunicipioController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-
             $query = Municipio::query();
-            $query->select('departamento.departamento_codigo', 'municipio_codigo', 'municipio_nombre', 'departamento_nombre', 'departamento.id as departamento_id');
             $query->join('departamento', 'municipio.departamento_codigo', '=', 'departamento.departamento_codigo');
-            
-            return Datatables::of($query)->make(true);
 
+            if( $request->has('datatables') ) {
+                $query->select('departamento.departamento_codigo', 'municipio_codigo', 'municipio_nombre', 'departamento_nombre', 'departamento.id as departamento_id');
+                return Datatables::of($query)->make(true);
+            }
+
+            $data = [];
+            $query->select('municipio.id as id', DB::raw("CONCAT(municipio_nombre, ' - ', departamento_nombre) as text"));
+            if($request->has('id')){
+                $query->where('municipio.id', $request->id);
+            }
+
+            if($request->has('q')) {
+                $query->where( function($query) use($request) {
+                    $query->whereRaw("municipio_nombre like '%".$request->q."%'");
+                    $query->orWhereRaw("departamento_nombre like '%".$request->q."%'");
+                });
+            }
+
+            if(empty($request->q) && empty($request->id)) {
+                $query->take(50);
+            }
+
+            $query->orderby('departamento_nombre','asc');
+            $query->orderby('municipio_nombre','asc');
+            return response()->json($query->get());
+
+            return $data;
         }
         return view('admin.municipios.index');
     }

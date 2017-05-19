@@ -15,8 +15,6 @@ app || (app = {});
         template: _.template( ($('#add-concepto-item-tpl').html() || '') ),
         parameters: {
             edit: false,
-            call: null,
-            template: null,
         },
 
         /**
@@ -26,6 +24,10 @@ app || (app = {});
 	        // Extends parameters
             if( opts !== undefined && _.isObject(opts.parameters) )
                 this.parameters = $.extend({},this.parameters, opts.parameters);
+
+            if(this.parameters.call == 'ajustesc'){
+                this.template = _.template( ($('#add-item-ajustec-tpl').html() || '') );
+            }
 
             // Events Listener
             this.listenTo( this.model, 'change', this.render );

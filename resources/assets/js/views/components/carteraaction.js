@@ -14,7 +14,8 @@ app || (app = {});
     	events:{ 
             'submit #form-concepto-factura-component': 'onStore',
             'ifClicked .change-check': 'changeCheck',
-            'change .change-pagar': 'changePagar'
+            'change .change-pagar': 'changePagar',
+            'ifClicked .change-naturaleza': 'changeNaturaleza',
         },
         parameters: {
             data: { },
@@ -27,6 +28,10 @@ app || (app = {});
             // extends parameters
             if( opts !== undefined && _.isObject(opts.parameters) )
                 this.parameters = $.extend({}, this.parameters, opts.parameters);
+
+            if( this.parameters.data.call == 'ajustesc'){
+                this.template = this.parameters.template;
+            }
 
             this.$modal = this.$('#modal-concepto-factura-component');
             
@@ -48,7 +53,7 @@ app || (app = {});
                 _this = this,
                 stuffToDo = {
                     'modalCartera': function() {
-                        _this.$modal.find('.content-modal').empty().html(_this.template());
+                        _this.$modal.find('.content-modal').empty().html( _this.template() );
 
                         // Reference 
                         _this.reference(resp);
@@ -120,6 +125,35 @@ app || (app = {});
             this.ready();
         },
 
+        // Event change naturaleza D->debito C->credito
+        changeNaturaleza: function (e){
+            var selected = this.$(e.currentTarget).is(':checked');
+            var id = this.$(e.currentTarget).attr('id');
+            var naturaleza = '';
+            id = id.split("_");
+
+            if( !selected ){
+                if( id[0] == 'debito'){
+                    this.$('#credito_'+id[1]).iCheck('uncheck');
+                    naturaleza = 'D';
+                }else{
+                    this.$('#debito_'+id[1]).iCheck('uncheck');
+                    naturaleza = 'C';
+                }
+
+                var modelo = this.detalleFacturaList.agregar(id[1], this.parameters.data, naturaleza);
+                this.$('#pagar_'+id[1]).val( modelo.factura3_valor );
+                this.$('#check_'+id[1]).iCheck('check');
+                this.collection.trigger('store', modelo );
+            }else{
+                var modelo = this.detalleFacturaList.eliminar(id[1], this.parameters.data);
+                this.collection.trigger('store', modelo );
+                this.$('#check_'+id[1]).iCheck('uncheck');
+                this.$('#pagar_'+id[1]).val('');
+                return;
+            }
+        },
+
         // Event change pagar
         changePagar: function(e){
             var valor = this.$(e.currentTarget).inputmask('unmaskedvalue');
@@ -141,6 +175,7 @@ app || (app = {});
             var view = new app.Factura3ItemView({
                 model: factura3Model,
                 parameters:{
+                    call: this.parameters.data.call,
                 }
             });
 
@@ -159,11 +194,21 @@ app || (app = {});
                 this.detalleFacturaList.forEach(function(model) {
                     _this.addOne(model);
 
-                    var modelo = _this.collection.validarC(model.get('factura1_numero'));
-                    if(modelo.success){
+                    var modelo = _.find(_this.collection.models, function(item){
+                        return item.get('factura3_id') == model.get('id');
+                    });
+                    
+                    if (modelo instanceof Backbone.Model ){
+                        if( _this.parameters.data.call == 'ajustesc'){
+                            if( modelo.get('ajustec2_naturaleza') == 'D' ){
+                                _this.$('#debito_'+model.get('id')).iCheck('check');
+                            }else if( modelo.get('ajustec2_naturaleza') == 'C' ){
+                                _this.$('#credito_'+model.get('id')).iCheck('check');
+                            }
+                        }
                         _this.$("#check_"+model.get('id')).iCheck('check');
-                        _this.$("#pagar_"+model.get('id')).val( modelo.valor );
-                    } 
+                        _this.$("#pagar_"+model.get('id')).val( modelo.get('factura3_valor') );
+                    }
                 });
             }else{
                 _this.addOne( factura3Model = new app.Factura3Model );

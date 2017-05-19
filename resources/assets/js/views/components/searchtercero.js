@@ -123,7 +123,7 @@ app || (app = {});
                 this.$btnContact.attr('data-tercero', data.id);
             }
             
-            if(this.$concepto.length > 0 && this.$wrap.length > 0) {
+            if(this.$concepto.length > 0 && this.$wrap.length > 0 || this.$concepto.length > 0) {
                 this.$wrap.removeAttr('hidden');
                 this.$concepto.attr('data-tercero', data.id);
                 this.$concepto.removeAttr('disabled');

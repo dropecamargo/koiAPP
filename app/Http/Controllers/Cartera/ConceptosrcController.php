@@ -203,6 +203,21 @@ class ConceptosrcController extends Controller
                 }
             }
 
+            if($request->call == 'ajustesc'){
+                $documentos = Documentos::find($request->ajustec2_documentos_doc);
+                if (!$documentos instanceof Documentos) {
+                    $response->errors = "No es posible recuperar documento, verifique información ó por favor consulte al administrador.";
+                }
+
+                if($documentos->documentos_codigo == 'FACT'){
+                    $action = 'modalCartera';
+                    $response->action = $action;  
+                    $response->success = true;
+                }else{
+                    $response->success = false;
+                }
+            }
+
             if($request->call == 'nota'){
                 $conceptonota = ConceptoNota::getConceptoNota($request->nota1_conceptonota);
                 if (!$conceptonota instanceof ConceptoNota) {

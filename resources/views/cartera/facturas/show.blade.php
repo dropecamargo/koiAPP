@@ -156,6 +156,6 @@
         </div>
     </div>   
     <script type="text/template" id="factura-close-confirm-tpl">
-        <p>¿Está seguro que desea cerrar la factura de venta número <b> 1 </b>?</p>
+        <p>¿Está seguro que desea cerrar la factura de venta número <b> <%- id %> </b>?</p>
     </script>     
 @stop
