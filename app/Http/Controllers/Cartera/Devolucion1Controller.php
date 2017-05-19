@@ -91,7 +91,7 @@ class Devolucion1Controller extends Controller
                     $sucursal->sucursal_devo = $consecutive;
                     $sucursal->save();
                     DB::rollback();
-                    return response()->json(['success' => false, 'errors' => 'TODO OK']);
+                    return response()->json(['success' => true, 'errors' => 'TODO OK']);
                 } catch (\Exception $e) {
                     DB::rollback();
                     Log::error($e->getMessage());

@@ -337,10 +337,10 @@ class Factura1Controller extends Controller
                     // Update pedidoc1_factura1 in pedidoc1
                     $pedidoc1->pedidoc1_factura1 = $factura1->id;
                     $pedidoc1->save();
-                    DB::rollback();
-                    return response()->json(['success' => false, 'errors' => 'TODO OK']);
-                    // DB::commit();
-                    // return response()->json(['success'=>true , 'id' => $factura1->id]);
+                    // DB::rollback();
+                    // return response()->json(['success' => false, 'errors' => 'TODO OK']);
+                    DB::commit();
+                    return response()->json(['success'=>true , 'id' => $factura1->id]);
                 } catch (\Exception $e) {
                     DB::rollback();
                     Log::error($e->getMessage());

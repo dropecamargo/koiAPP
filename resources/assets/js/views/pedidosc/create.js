@@ -238,7 +238,7 @@ app || (app = {});
                     return; 
                 }
             }
-            // window.Misc.redirect( window.Misc.urlFull( Route.route('pedidosc.index')) );
+            window.Misc.redirect( window.Misc.urlFull( Route.route('pedidosc.index')) );
         }
     });
 
