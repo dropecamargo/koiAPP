@@ -1,5 +1,5 @@
 /**
-* Class MainFacturasView
+* Class MainDevolucionesView
 * @author KOI || @dropecamargo
 * @link http://koi-ti.com
 */
@@ -9,9 +9,9 @@ app || (app = {});
 
 (function ($, window, document, undefined) {
 
-    app.MainFacturasView = Backbone.View.extend({
+    app.MainDevolucionesView = Backbone.View.extend({
 
-        el: '#facturas-main',
+        el: '#devoluciones-main',
         events: {
         },
 
@@ -22,21 +22,19 @@ app || (app = {});
             var _this = this;
 
             // Rerefences
-            this.$facturasSearchTable = this.$('#facturas-search-table');
+            this.$devolucionesSearchTable = this.$('#devoluciones-search-table');
             
-            this.$facturasSearchTable.DataTable({
+            this.$devolucionesSearchTable.DataTable({
                 dom: "<'row'<'col-sm-4'B><'col-sm-4 text-center'l><'col-sm-4'f>>" +
                     "<'row'<'col-sm-12'tr>>" +
                     "<'row'<'col-sm-5'i><'col-sm-7'p>>",
                 processing: true,
                 serverSide: true,
                 language: window.Misc.dataTableES(),
-                ajax: window.Misc.urlFull( Route.route('facturas.index') ),
+                ajax: window.Misc.urlFull( Route.route('devoluciones.index') ),
                 columns: [ 
-                    { data: 'factura1_numero', name: 'factura1_numero' },
-                    { data: 'puntoventa_prefijo', name: 'puntoventa_prefijo' },
-                    { data: 'sucursal_nombre', name: 'sucursal_nombre' },
-                    { data: 'tercero_nit', name: 'tercero_nit' },
+                    { data: 'devolucion1_numero', name: 'devolucion1_numero' },
+                    { data: 'devolucion1_sucursal', name: 'devolucion1_sucursal' },
                     { data: 'tercero_nombre', name: 'factura1_tercero' },
                     { data: 'tercero_razonsocial', name: 'tercero_razonsocial'},
                     { data: 'tercero_nombre1', name: 'tercero_nombre1' },
@@ -47,10 +45,10 @@ app || (app = {});
                 ],
                 buttons: [
                     {
-                        text: '<i class="fa fa-plus"></i> Nueva factura',
+                        text: '<i class="fa fa-plus"></i> Nueva devolucion',
                         className: 'btn-sm',
                         action: function ( e, dt, node, config ) {
-                            window.Misc.redirect( window.Misc.urlFull( Route.route('facturas.create') ) )
+                            window.Misc.redirect( window.Misc.urlFull( Route.route('devoluciones.create') ) )
                         }
                     }
                 ],
@@ -59,12 +57,12 @@ app || (app = {});
                         targets: 0,
                         width: '15%',
                         render: function ( data, type, full, row ) {
-                           return '<a href="'+ window.Misc.urlFull( Route.route('facturas.show', {facturas: full.id }) )  +'">' + data + '</a>';
+                           return '<a href="'+ window.Misc.urlFull( Route.route('devoluciones.show', {devoluciones: full.id }) )  +'">' + data + '</a>';
                         },
                        
                     },
                     {
-                        targets: [5,6,7,8,9],
+                        targets: [3,4,5,6,7],
                         visible: false,
                     },
                 ]

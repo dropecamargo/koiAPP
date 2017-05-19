@@ -110,19 +110,21 @@ class Tercero extends BaseModel implements AuthenticatableContract,
                 }
             }
 
-            if($data['tercero_persona'] == 'N') {
-                if(empty($data['tercero_nombre1'])) {
-                    $this->errors = trans('validation.required', ['attribute' => '1er. Nombre']);
-                    return false;
-                }
-                if(empty($data['tercero_apellido1'])) {
-                    $this->errors = trans('validation.required', ['attribute' => '1er. Apellido']);
-                    return false;
-                }
-            }else{
-                if(empty($data['tercero_razonsocial'])) {
-                    $this->errors = trans('validation.required', ['attribute' => 'Razón Social, Comercial o Establecimiento']);
-                    return false;
+            if(!isset($data['empresa_niif'])){
+                if($data['tercero_persona'] == 'N') {
+                    if(empty($data['tercero_nombre1'])) {
+                        $this->errors = trans('validation.required', ['attribute' => '1er. Nombre']);
+                        return false;
+                    }
+                    if(empty($data['tercero_apellido1'])) {
+                        $this->errors = trans('validation.required', ['attribute' => '1er. Apellido']);
+                        return false;
+                    }
+                }else{
+                    if(empty($data['tercero_razonsocial'])) {
+                        $this->errors = trans('validation.required', ['attribute' => 'Razón Social, Comercial o Establecimiento']);
+                        return false;
+                    }
                 }
             }
 
@@ -154,7 +156,7 @@ class Tercero extends BaseModel implements AuthenticatableContract,
     public static function getTercero($id)
     {
         $query = Tercero::query();
-        $query->select('tercero.*', 'sucursal_nombre', 'actividad_nombre', 'actividad_tarifa', DB::raw("CONCAT(municipio_nombre, ' - ', departamento_nombre) as municipio_nombre"), DB::raw("(CASE WHEN tc.tercero_persona = 'N'
+        $query->select('tercero.*', 'sucursal_nombre', 'actividad_nombre','actividad_codigo', 'actividad_tarifa', DB::raw("CONCAT(municipio_nombre, ' - ', departamento_nombre) as municipio_nombre"), DB::raw("(CASE WHEN tc.tercero_persona = 'N'
                     THEN CONCAT(tc.tercero_nombre1,' ',tc.tercero_nombre2,' ',tc.tercero_apellido1,' ',tc.tercero_apellido2,
                             (CASE WHEN (tc.tercero_razonsocial IS NOT NULL AND tc.tercero_razonsocial != '') THEN CONCAT(' - ', tc.tercero_razonsocial) ELSE '' END)
                         )

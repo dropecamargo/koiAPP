@@ -1,7 +1,7 @@
 @extends('admin.tiposactividad.main')
 
 @section('breadcrumb')
-    <li><a href="{{ route('tiposactividad.index')}}">Tipo actividad</a></li>
+    <li><a href="{{ route('tiposactividad.index')}}">Tipo de actividad</a></li>
     <li class="active">{{ $tipoactividad->id }}</li>
 @stop
 

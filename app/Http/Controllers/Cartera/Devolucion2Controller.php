@@ -1,17 +1,15 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Cartera;
 
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Models\Cartera\Devolucion2, App\Models\Cartera\Devolucion1, App\Models\Cartera\Factura2;
+use DB, Log;
 
-use Datatables, DB;
-
-use App\Models\Base\Municipio;
-
-class MunicipioController extends Controller
+class Devolucion2Controller extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -21,38 +19,20 @@ class MunicipioController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $query = Municipio::query();
-            $query->join('departamento', 'municipio.departamento_codigo', '=', 'departamento.departamento_codigo');
+            if ($request->has('id_factura2')) {
 
-            if( $request->has('datatables') ) {
-                $query->select('departamento.departamento_codigo', 'municipio_codigo', 'municipio_nombre', 'departamento_nombre', 'departamento.id as departamento_id');
-                return Datatables::of($query)->make(true);
+                $pediodoc2 = Factura2::getFactura2($request->id_factura2);
+                $object = new \stdClass();
+                $object->model = [];
+                foreach ($pediodoc2 as $value) {
+                    $factura2 = Devolucion2::modelCreate($value);
+                    $object->model[] = $factura2;
+                }
+                return response()->json($object->model);
             }
-
-            $data = [];
-            $query->select('municipio.id as id', DB::raw("CONCAT(municipio_nombre, ' - ', departamento_nombre) as text"));
-            if($request->has('id')){
-                $query->where('municipio.id', $request->id);
-            }
-
-            if($request->has('q')) {
-                $query->where( function($query) use($request) {
-                    $query->whereRaw("municipio_nombre like '%".$request->q."%'");
-                    $query->orWhereRaw("departamento_nombre like '%".$request->q."%'");
-                });
-            }
-
-            if(empty($request->q) && empty($request->id)) {
-                $query->take(50);
-            }
-
-            $query->orderby('departamento_nombre','asc');
-            $query->orderby('municipio_nombre','asc');
-            return response()->json($query->get());
-
-            return $data;
+            $factura2Detalle = Devolucion2::getDevolucion2($request->id);
+            return response()->json($factura2Detalle);
         }
-        return view('admin.municipios.index');
     }
 
     /**

@@ -1,7 +1,7 @@
 @extends('admin.tiposactividad.main')
 
 @section('breadcrumb')
-    <li class="active">Tipos actividad</li>
+    <li class="active">Tipos de actividad</li>
 @stop
 
 @section('module')

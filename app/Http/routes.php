@@ -185,6 +185,11 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::group(['prefix' => 'facturas'], function()
 	{
 		Route::resource('detalle', 'Cartera\Factura2Controller');
+		Route::get('search', ['as' => 'facturas.search', 'uses' => 'Cartera\Factura1Controller@search']);
+	});
+	Route::group(['prefix' => 'devoluciones'], function()
+	{
+		Route::resource('detalle', 'Cartera\Devolucion2Controller');
 	});
 
 	Route::group(['prefix' => 'ajustesc'], function()
@@ -201,6 +206,7 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::resource('recibos', 'Cartera\Recibo1Controller', ['only' => ['index','create','store','show']]);
 	Route::resource('notas', 'Cartera\Nota1Controller', ['only' => ['index','create','store','show']]);
 	Route::resource('facturas', 'Cartera\Factura1Controller', ['except' => ['destroy', 'edit' , 'update']]);
+	Route::resource('devoluciones', 'Cartera\Devolucion1Controller', ['except' => ['destroy', 'edit' , 'update']]);
 	Route::resource('conceptosajustec', 'Cartera\ConceptoAjustecController', ['except' => ['destroy']]);
 	Route::resource('ajustesc', 'Cartera\Ajustec1Controller', ['except' => ['destroy']]);
 });

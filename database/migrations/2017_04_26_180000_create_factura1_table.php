@@ -47,6 +47,8 @@ class CreateFactura1Table extends Migration
             $table->foreign('factura1_tercerocontacto')->references('id')->on('tcontacto')->onDelete('restrict');
             $table->foreign('factura1_vendedor')->references('id')->on('tercero')->onDelete('restrict');
             $table->foreign('factura1_pedidoc1')->references('id')->on('pedidoc1')->onDelete('restrict');
+
+            $table->unique(['factura1_sucursal','factura1_numero']);
         });
     }
 
