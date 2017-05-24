@@ -13,7 +13,8 @@ app || (app = {});
 
         el: '#browse-detalle-devolucion-list',
         events: {
-            'click .item-detalledevolucion-remove': 'removeOne',
+            'change input.change-cant-devo' : 'cantidadDevolucion', 
+            'click .all-devoluciones' : 'clickAll', 
         },
         parameters: {
             wrapper: null,
@@ -32,6 +33,11 @@ app || (app = {});
             //Init Attributes
             this.confCollection = { reset: true, data: {} };
 
+            // reference input totales show
+            this.$total = this.$('#total');
+            this.$devueltas = this.$('#total_devueltas');
+            this.$price = this.$('#total_price');
+                    
             // Events Listeners
             this.listenTo( this.collection, 'add', this.addOne );
             this.listenTo( this.collection, 'reset', this.addAll );
@@ -66,18 +72,11 @@ app || (app = {});
             });
             detalleDevolucionModel.view = view;
             this.$el.append( view.render().el );
-        },
-        /**
-        * stores detalleDevolucion
-        * @param form element
-        */
-        storeOne: function (data) {      
-            var _this = this;
-                
-            // Set Spinner
-            window.Misc.setSpinner( this.parameters.wrapper );
 
+            this.setModel(detalleDevolucionModel);
+            this.totalize();
         },
+
         /**
         * Render all view Marketplace of the collection
         */
@@ -85,22 +84,52 @@ app || (app = {});
             this.$el.find('tbody').html('');
             this.collection.forEach( this.addOne, this );
         },
-
         /**
-        * Event remove item
+        *Evalua cantidad del input
         */
-        removeOne: function (e) {
+        cantidadDevolucion: function(e){
             e.preventDefault();
-            console.log(e); 
-            var resource = $(e.currentTarget).attr("data-resource");
-                model = this.collection.get(resource);
+            this.$cantidad = this.$(e.currentTarget);
+            var id = this.$cantidad.attr('id').split('_');
+            var model = this.collection.get(id[2]);
 
-            if ( model instanceof Backbone.Model ) {
-                model.view.remove();
-                this.collection.remove(model);
-            }
+            if (this.$cantidad.val() > model.get('factura2_cantidad') ) {
+                return alertify.error('Cantidad no puede ser mayor a lo que se encuentra en la factura');
+            }    
+
+            model.set('devolucion2_cantidad', this.$cantidad.val());
+            this.setModel(model);
+
+            this.totalize();
+        },
+        /*
+        *setea cantidad al modelo ya evaluada y render subtotal 
+        */
+        setModel:function(model){
+            var subtotal = model.get('devolucion2_costo') -  model.get('devolucion2_descuento');
+                iva = (subtotal * (model.get('devolucion2_iva') / 100));
+                subtotal = subtotal + iva;
+                subtotal = subtotal * model.get('devolucion2_cantidad');
+            this.$('#total_'+model.get('id')).empty().html(window.Misc.currency(subtotal));
         },
 
+        /**
+        *Render totales the collection
+        */
+        totalize: function(){
+            var data = this.collection.totalize();
+            this.$devueltas.empty().html(data.devueltasTotal );
+            this.$total.empty().html(window.Misc.currency(data.devolucion1_total) );
+            this.$price.empty().html(window.Misc.currency(data.devolucion1_bruto) );
+        },
+        /*
+        *Function devuelve todos los items
+        */
+        clickAll:function(e){
+            e.preventDefault();
+            this.collection.devolverTodo();
+            this.addAll();
+        },
         /**
         * Load spinner on the request
         */

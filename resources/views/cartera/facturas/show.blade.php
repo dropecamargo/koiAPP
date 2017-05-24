@@ -98,7 +98,7 @@
             			<div>{{ $factura->factura1_observaciones }}</div>
             		</div>
             	</div>
-            	<div id="" class="box box-success">
+            	<div class="box box-success">
 		            <div class="table-responsive no-padding">
 		                <table id="browse-detalle-factura-list" class="table table-hover table-bordered" cellspacing="0">
 		                    <thead>

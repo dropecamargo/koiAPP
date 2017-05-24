@@ -14,13 +14,13 @@
                             <th>Numero</th>
                             <th>Sucursal</th>
                             <th>Cliente</th>
+                            <th>Factura</th>
                             <th>Razon Social</th>
                             <th>Nombre1</th>
                             <th>Nombre2</th>
                             <th>Apellido1</th>
                             <th>Apellido2</th>
                             <th>Fecha</th>
-                            <th>Usuario</th>
                         </tr>
                     </thead>
                 </table>

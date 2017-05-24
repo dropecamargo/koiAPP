@@ -18,7 +18,6 @@ app || (app = {});
             'click .submit-devolucion' : 'submitForm',
             'submit #form-devolucion1' : 'onStore',
             'change #devolucion1_tercero' : 'referenceView', 
-            'change input.change-cant-devo' : 'cantidadDevolucion', 
         },
         parameters: {
         },
@@ -64,8 +63,7 @@ app || (app = {});
         onStore: function (e) {
             if (!e.isDefaultPrevented()) {
                 e.preventDefault();
-                var data = $.extend({}, window.Misc.formToJson( e.target ), this.detalleDevolucion.totalize());
-                    data.devolucion2 = this.detalleDevolucion.toJSON();
+                var data = window.Misc.formToJson( e.target );
                 this.model.save( data, {patch: true, silent: true} );
             }   
         },  
@@ -86,28 +84,7 @@ app || (app = {});
             }); 
         },
 
-        /**
-        *
-        */
-        cantidadDevolucion: function(e){
-            e.preventDefault();
-            //reference Totales
-            this.$total = this.$('#total');
-            this.$tdevueltas = this.$('#total_devueltas');
-            this.$cantidad = this.$(e.currentTarget);
 
-            var id = (this.$cantidad.attr('id')).split('_');
-            var item = this.detalleDevolucion.ValidCantidad(this.$cantidad.val(),id[2]);
-            if (!item.success) {
-                alertify.error(item.error);
-                return;
-            }
-            this.$totalItem = this.$('#total_'+id[2]);
-            this.$totalItem.empty().html(window.Misc.currency(item.total) );
-            this.$total.empty().html(window.Misc.currency(item.totales.devolucion1_bruto) );
-            this.$tdevueltas.empty().html( item.totales.devueltasTotal );
-
-        },
         /**
         * fires libraries js
         */
@@ -154,7 +131,6 @@ app || (app = {});
                 }
             }
             window.Misc.redirect( window.Misc.urlFull( Route.route('devoluciones.show', { devoluciones: resp.id})) );
-
         }
     });
 

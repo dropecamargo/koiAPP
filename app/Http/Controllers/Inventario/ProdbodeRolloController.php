@@ -8,7 +8,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Inventario\Prodboderollo, App\Models\Inventario\Producto;
 use App\Models\Base\Sucursal;
-
+use DB;
 
 class ProdbodeRolloController extends Controller
 {

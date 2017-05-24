@@ -21,17 +21,19 @@ class Devolucion2Controller extends Controller
         if ($request->ajax()) {
             if ($request->has('id_factura2')) {
 
-                $pediodoc2 = Factura2::getFactura2($request->id_factura2);
+                $factura2 = Factura2::getFactura2($request->id_factura2);
                 $object = new \stdClass();
                 $object->model = [];
-                foreach ($pediodoc2 as $value) {
-                    $factura2 = Devolucion2::modelCreate($value);
-                    $object->model[] = $factura2;
+                foreach ($factura2 as $value) {
+                    if (($value->factura2_cantidad - $value->factura2_devueltas) > 0) {
+                        $factura2 = Devolucion2::modelCreate($value);
+                        $object->model[] = $factura2;
+                    }
                 }
                 return response()->json($object->model);
             }
-            $factura2Detalle = Devolucion2::getDevolucion2($request->id);
-            return response()->json($factura2Detalle);
+            $devolucion2 = Devolucion2::getDevolucion2($request->id);
+            return response()->json($devolucion2);
         }
     }
 

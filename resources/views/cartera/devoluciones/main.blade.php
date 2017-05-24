@@ -63,6 +63,41 @@
                     <div class="form-group col-sm-11">
                     <textarea id="devolucion1_observacion" name="devolucion1_observacion" class="form-control" rows="2" placeholder="Observaciones"></textarea>
                     </div>
+                </div><br>
+
+                <div class="box box-body box-success">
+                    <div class="table-responsive no-padding">
+                        <table id="browse-detalle-devolucion-list" class="table table-hover table-bordered" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th colspan="6" class="text-center">
+                                    <button type="button" class="btn btn-default btn-sm all-devoluciones">Devolver todas</button> 
+                                </th>
+                            </tr>
+                        </thead>
+                            <thead>
+                                <tr>
+                                    <th width="15%">Referencia</th>
+                                    <th width="40%">Nombre</th>
+                                    <th width="5%">Cantidad</th>
+                                    <th width="15%">Precio</th>
+                                    <th width="10%">Devueltas</th>
+                                    <th width="15%">Total
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{--Render content detalle--}}
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th colspan="4" class="text-right">Total</th>
+                                    <th id="total_devueltas"> </th>
+                                    <th id="total"></th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
                 </div>
             </form>
             <div class="row">
@@ -73,50 +108,28 @@
                     <button type="button" class="btn btn-primary btn-sm btn-block submit-devolucion">{{ trans('app.save') }}</button>
                 </div>
             </div>
-            <br>
-            <div class="table-responsive no-padding">
-                <table id="browse-detalle-devolucion-list" class="table table-hover table-bordered" cellspacing="0">
-                    <thead>
-                        <tr>
-                            <th width="5%"></th>
-                            <th width="15%">Referencia</th>
-                            <th width="30%">Nombre</th>
-                            <th width="10%">Cantidad</th>
-                            <th width="15%">Precio</th>
-                            <th width="10%">Devueltas</th>
-                            <th width="15%">Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {{--Render content detalle--}}
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <th colspan="5" class="text-right">Totales</th>
-                            <th id="total_devueltas"> </th>
-                            <th id="total"></th>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
         </div>
     </script>
-    <script type="text/template" id="add-devoluciones-item-tpl">
-        <%if(edit){ %>
-            <td class="text-center">
-                <a class="btn btn-default btn-xs item-detalledevolucion-remove" data-resource = "<%- id %>">
-                    <span><i class="fa fa-times"></i></span>
-                </a>
-            </td>
-        <% } %>
 
+    <script type="text/template" id="add-devoluciones-item-tpl">
+        <!-- <td></td> -->
         <td><%- producto_serie %></td>
         <td><%- producto_nombre %></td>
-        <td><%- devolucion2_cantidad %></td>
+
+        <% if(edit){ %>
+            <td><%- factura2_cantidad %></td>
+        <% }else{ %>
+            <td><%- devolucion2_cantidad %></td>
+        <% } %>
+
         <td><%- window.Misc.currency(devolucion2_costo) %></td>
-        <td>
-            <input type="number" name="devolucion2_cantidad_<%- id %>" id="devolucion2_cantidad_<%- id %>" max="<%- devolucion2_cantidad %>" min="0" class="form-control input-sm change-cant-devo" value="<%- devolucion2_devueltas %>">
-        </td>
+
+        <% if(edit){ %>
+            <td>
+                <input type="number" name="devolucion2_cantidad_<%- id %>" id="devolucion2_cantidad_<%- id %>" max="<%- factura2_cantidad %>" min="0" class="form-control input-sm change-cant-devo" value="<%-devolucion2_cantidad %>" step="1">
+            </td>
+        <% } %>
+        
         <td id="total_<%- id %>"><%- window.Misc.currency(devolucion2_total) %></td>
     </script>
 @stop

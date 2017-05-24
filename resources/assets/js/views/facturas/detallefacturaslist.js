@@ -134,15 +134,16 @@ app || (app = {});
         },
 
         /**
-        *setter pedidoc_subtotal the model
+        *setter factura_subtotal the model
         */
         setterModel: function(model){
             var iva = model.get('factura2_iva_porcentaje')  / 100;
-                precio = parseFloat(model.get('factura2_precio_venta')) * iva * parseFloat(model.get('factura2_cantidad') ) ;
-                precio = precio - (parseFloat(model.get('factura2_descuento_valor'))) * parseFloat(model.get('factura2_cantidad') ) ;
                 costo = (parseFloat(model.get('factura2_costo'))) * parseFloat(model.get('factura2_cantidad'));
-            model.set('factura2_subtotal', (costo + precio));
-            model.set('factura2_iva_valor', (parseFloat(model.get('factura2_precio_venta')) * iva));
+                descuento = (parseFloat(model.get('factura2_descuento_valor'))) * parseFloat(model.get('factura2_cantidad') ) ;
+                ivaValor = (costo-descuento) * iva ;
+
+            model.set('factura2_subtotal', (costo - descuento) + model.get('factura2_iva_valor'));
+            model.set('factura2_iva_valor', ivaValor);
         },
         /**
         * Event remove item

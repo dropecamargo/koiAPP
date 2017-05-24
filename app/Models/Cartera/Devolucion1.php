@@ -29,32 +29,31 @@ class Devolucion1 extends Model
 	*
 	* @var array
 	*/
-    protected $fillable = ['devolucion1_observaciones','devolucion1_bruto','devolucion1_descuento','devolucion1_iva','devolucion1_retencion','devolucion1_total','devolucion1_fecha'];
+    protected $fillable = ['devolucion1_observaciones','devolucion1_fecha'];
 
 	public function isValid($data)
 	{
 		$rules = [
-		    'devolucion1_numero' => 'required|numeric',
-			'devolucion1_descuento' => 'required|numeric',
-			'devolucion1_bruto' => 'required|numeric',
-			'devolucion1_iva' => 'required|numeric',
-			'devolucion1_total' => 'required|numeric'
+		    'devolucion1_numero' => 'required|numeric'
 		];
 
 		$validator = Validator::make($data, $rules);
     	if ($validator->passes()) {
-            // Validar Carrito
-            $devolucion2 = isset($data['devolucion2']) ? $data['devolucion2'] : null;
-            if(!isset($devolucion2) || $devolucion2 == null || !is_array($devolucion2) || count($devolucion2) == 0) {
-                $this->errors = 'Por favor ingrese el detalle para realizar la devolucion.';
-                return false;
-            }
-
             return true;
         }
 
 		$this->errors = $validator->errors();
 		return false;
+	}
+
+	public static function getDevolucion($id)
+	{
+		$query = Devolucion1::query();
+		$query->select('devolucion1.*','sucursal_nombre','tercero_nit',DB::raw("CONCAT(tercero_nombre1, ' ', tercero_nombre2, ' ', tercero_apellido1, ' ', tercero_apellido2) as tercero_nombre"));
+		$query->join('sucursal','devolucion1.devolucion1_sucursal','=', 'sucursal.id');
+		$query->join('tercero','devolucion1.devolucion1_tercero','=', 'tercero.id');
+		$query->where('devolucion1.id',$id);
+		return $query->first();
 	}
 
 }

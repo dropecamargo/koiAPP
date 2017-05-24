@@ -16,13 +16,13 @@ app || (app = {});
         },
         idAttribute: 'id',
         defaults: {
-            'devolucion2_cantidad' : '',
+            'devolucion2_cantidad' : 0,
             'devolucion2_precio' : '',
             'devolucion2_costo' : '',
         	'producto_serie' : '',
             'producto_nombre' : '',
-        	'devolucion2_total' : 0,
-            'devolucion2_devueltas': 0,
+            'devolucion2_total' : 0,
+        	'factura2_cantidad' : 0,
         }
     });
 })(this, this.document);

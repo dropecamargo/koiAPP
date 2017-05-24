@@ -190,7 +190,7 @@ Route::group(['middleware' => 'auth'], function(){
 	});
 	Route::group(['prefix' => 'devoluciones'], function()
 	{
-		Route::resource('detalle', 'Cartera\Devolucion2Controller');
+		Route::resource('detalle', 'Cartera\Devolucion2Controller',['execpt' => ['destroy']]);
 	});
 
 	Route::group(['prefix' => 'ajustesc'], function()

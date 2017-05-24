@@ -34,14 +34,15 @@ app || (app = {});
                 ajax: window.Misc.urlFull( Route.route('devoluciones.index') ),
                 columns: [ 
                     { data: 'devolucion1_numero', name: 'devolucion1_numero' },
-                    { data: 'devolucion1_sucursal', name: 'devolucion1_sucursal' },
-                    { data: 'tercero_nombre', name: 'factura1_tercero' },
+                    { data: 'sucursal_nombre', name: 'sucursal_nombre' },
+                    { data: 'tercero_nombre', name: 'devolucion1_tercero' },
+                    { data: 'devolucion1_factura', name: 'devolucion1_factura' },
                     { data: 'tercero_razonsocial', name: 'tercero_razonsocial'},
                     { data: 'tercero_nombre1', name: 'tercero_nombre1' },
                     { data: 'tercero_nombre2', name: 'tercero_nombre2' },
                     { data: 'tercero_apellido1', name: 'tercero_apellido1' },
                     { data: 'tercero_apellido2', name: 'tercero_apellido2' },
-                    { data: 'factura1_fh_elaboro', name: 'factura1_fh_elaboro' },
+                    { data: 'devolucion1_fh_elaboro', name: 'devolucion1_fh_elaboro' },
                 ],
                 buttons: [
                     {
@@ -62,7 +63,7 @@ app || (app = {});
                        
                     },
                     {
-                        targets: [3,4,5,6,7],
+                        targets: [4,5,6,7,8],
                         visible: false,
                     },
                 ]

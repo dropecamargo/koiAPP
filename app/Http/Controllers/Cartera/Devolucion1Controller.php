@@ -6,8 +6,9 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\Cartera\Devolucion1,App\Models\Cartera\Devolucion2,App\Models\Cartera\Factura1;
+use App\Models\Cartera\Devolucion1,App\Models\Cartera\Devolucion2,App\Models\Cartera\Factura1,App\Models\Cartera\Factura2;
 use App\Models\Base\Documentos,App\Models\Base\Sucursal,App\Models\Base\Tercero;
+use App\Models\Inventario\Producto;
 use DB, Log, Datatables,Auth;
 
 class Devolucion1Controller extends Controller
@@ -21,6 +22,15 @@ class Devolucion1Controller extends Controller
     {
         if ($request->ajax()) {
             $query = Devolucion1::query();
+            $query->select('devolucion1.*', 'tercero_nit', 'tercero_razonsocial', 'tercero_nombre1', 'tercero_nombre2', 'tercero_apellido1', 'tercero_apellido2','sucursal.sucursal_nombre',DB::raw("(CASE WHEN tercero_persona = 'N'
+                    THEN CONCAT(tercero_nombre1,' ',tercero_nombre2,' ',tercero_apellido1,' ',tercero_apellido2,
+                            (CASE WHEN (tercero_razonsocial IS NOT NULL AND tercero_razonsocial != '') THEN CONCAT(' - ', tercero_razonsocial) ELSE '' END)
+                        )
+                    ELSE tercero_razonsocial END)
+                AS tercero_nombre")
+            );
+            $query->join('tercero','devolucion1_tercero', '=', 'tercero.id');
+            $query->join('sucursal','devolucion1_sucursal', '=', 'sucursal.id');
             return Datatables::of($query)->make(true);
         }
         return view('cartera.devoluciones.index');
@@ -84,14 +94,39 @@ class Devolucion1Controller extends Controller
                     $devolucion1->devolucion1_tercero = $cliente->id;
                     $devolucion1->devolucion1_factura = $factura1->id;
                     $devolucion1->devolucion1_usuario_elaboro = Auth::user()->id;
-                    $devolucion1->devolucion1_fh_elaboro = date('Y-m-d H:m:s');
+                    $devolucion1->devolucion1_fh_elaboro = date('Y-m-d H:i:s');
                     $devolucion1->save();
+
+                    $factura2 = Factura2::where('factura2_factura1', $request->devolucion1_factura1)->get();
+
+                    foreach ($factura2 as $value) {
+
+                        // Producto
+                        $producto = Producto::find($value->factura2_producto);
+                        if (!$producto instanceof Producto) {
+                            DB::rollback();
+                            return response()->json(['success' => false, 'errors' => 'No es posible recuperar producto, por favor verifique la información ó por favor consulte al administrador.']);
+                        }
+                        // Concateno request
+                        $cantidad = "devolucion2_cantidad_$value->id";
+
+                        // Devolucion2
+                        $devolucion2 = new Devolucion2;
+                        $result = $devolucion2->store($value, $producto->id, $devolucion1->id, $request->$cantidad);
+
+                        if ( $result != 'OK' ) {
+                            DB::rollback();
+                            return response()->json(['success' => false, 'errors' => $result ]);
+                        }
+                        // Inventario
+                    }
 
                     // Update consecutive sucursal_devo in Sucursal
                     $sucursal->sucursal_devo = $consecutive;
                     $sucursal->save();
-                    DB::rollback();
-                    return response()->json(['success' => true, 'errors' => 'TODO OK']);
+
+                    DB::commit();
+                    return response()->json(['success' => true, 'id' => $devolucion1->id ]);
                 } catch (\Exception $e) {
                     DB::rollback();
                     Log::error($e->getMessage());
@@ -109,9 +144,16 @@ class Devolucion1Controller extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        //
+        $devolucion1 = Devolucion1::getDevolucion($id);
+        if(!$devolucion1 instanceof Devolucion1) {
+            abort(404);
+        }
+         if($request->ajax()) {
+            return response()->json($devolucion1);
+        }
+        return view('cartera.devoluciones.show', ['devolucion' => $devolucion1]);
     }
 
     /**

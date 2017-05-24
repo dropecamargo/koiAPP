@@ -216,6 +216,7 @@ app || (app = {});
 
             'devoluciones(/)': 'getDevolucionesMain',
             'devoluciones/create(/)': 'getDevolucionesCreate',
+            'devoluciones/:devoluciones(/)': 'getDevolucionesShow',
         },
 
         /**
@@ -1889,6 +1890,18 @@ app || (app = {});
             
             this.createDevolucionView = new app.CreateDevolucionView({ model: this.devolucionModel });
             this.createDevolucionView.render();
+        },
+
+        getDevolucionesShow:function(devoluciones){
+            this.devolucionModel = new app.DevolucionModel();
+            this.devolucionModel.set({'id': devoluciones}, {'silent':true});
+            
+            if ( this.showDevolucionView instanceof Backbone.View ){
+                this.showDevolucionView.stopListening();
+                this.showDevolucionView.undelegateEvents();
+            }
+
+            this.showDevolucionView = new app.ShowDevolucionView({ model: this.devolucionModel });
         },
 
     }));

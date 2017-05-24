@@ -21,50 +21,34 @@ app || (app = {});
         */
         initialize : function(){
         },
-
-        /**
-        *
-        */
-        ValidCantidad:function(cant,id){
-            var error = { success: false};
-            var item = _.find(this.models,function(model){
-                return model.get('id') == id;
+        devolverTodo: function(){
+            _.each(this.models, function(item){
+                item.set('devolucion2_cantidad', item.get('factura2_cantidad'));
             });
-            if ( cant > item.get('devolucion2_cantidad')) {
-                error.error = 'Cantidad a devolver no corresponde con las cantidades que fueron facturadas';
-                return error;
-            }
-            var totalItem = cant * item.get('devolucion2_costo');
-            item.set('devolucion2_devueltas', cant);
-            item.set('devolucion2_total', totalItem);
-            error.success = true;
-            error.total = item.get('devolucion2_total');
-            error.totales = this.totalize();
-            return error;
         },
         descontadas:function(){
             return this.reduce(function(sum, model) {
-                return sum + (parseFloat(model.get('devolucion2_devueltas'))) 
+                return sum + (parseFloat(model.get('devolucion2_cantidad'))) 
             }, 0);
         },
         totalBruto:function(){
             return this.reduce(function(sum, model) {
-                return sum + (parseFloat(model.get('devolucion2_total'))) 
-            }, 0);
+                return sum + (parseFloat(model.get('devolucion2_costo'))) * parseFloat(model.get('devolucion2_cantidad')) 
+            },0);
         },
         iva:function(){
             return this.reduce(function(sum, model) {
                 var iva = model.get('devolucion2_iva')  / 100;
                 if (model.get('devolucion2_precio') > 0) {
-                    return sum + parseFloat(model.get('devolucion2_precio')) * iva * parseFloat(model.get('devolucion2_devueltas') ) 
+                    return sum + parseFloat(model.get('devolucion2_precio')) * iva * parseFloat(model.get('devolucion2_cantidad') ) 
                 }else{
-                    return sum + parseFloat(model.get('devolucion2_costo')) * iva * parseFloat(model.get('devolucion2_devueltas') ) 
+                    return sum + parseFloat(model.get('devolucion2_costo')) * iva * parseFloat(model.get('devolucion2_cantidad') ) 
                 }
             }, 0);
         },
         descuento:function(){
             return this.reduce(function(sum, model) {
-                return sum + (parseFloat(model.get('devolucion2_descuento'))) * parseFloat(model.get('devolucion2_devueltas') ) 
+                return sum + (parseFloat(model.get('devolucion2_descuento'))) * parseFloat(model.get('devolucion2_cantidad') ) 
             }, 0);
         },
         totalize:function(){
