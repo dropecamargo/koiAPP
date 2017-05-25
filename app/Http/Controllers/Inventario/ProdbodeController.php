@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
 use App\Models\Inventario\Prodbode, App\Models\Inventario\Producto;
 use DB, Log;
 
@@ -90,7 +89,7 @@ class ProdbodeController extends Controller
     public function update(Request $request, $id)
     {
         if ($request->ajax()) {
-            $prodbode = ProdBode::findOrFail($id);
+            $prodbode = Prodbode::findOrFail($id);
             DB::beginTransaction();
             try {
                 // Producto

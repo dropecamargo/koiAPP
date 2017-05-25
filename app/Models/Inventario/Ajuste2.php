@@ -42,9 +42,8 @@ class Ajuste2 extends Model
 	public static function getAjuste2($id)
 	{
 		$query = Ajuste2::query();
-		$query->select('ajuste2.*','producto_serie','producto_nombre', 'lote_nombre','lote_fecha')->where('ajuste2_ajuste1',$id);
+		$query->select('ajuste2.*','producto_serie','producto_nombre')->where('ajuste2_ajuste1',$id);
         $query->join('producto', 'ajuste2_producto', '=' ,'producto.id');
-        $query->join('lote', 'ajuste2_lote', '=', 'lote.id');
         $query->orderBy('ajuste2.id', 'asc');
 		return  $query->get();
 	}

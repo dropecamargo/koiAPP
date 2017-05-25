@@ -105,10 +105,6 @@
             
         <td><%- producto_serie %></td>
         <td><%- producto_nombre %></td>
-        <% if(!edit){ %>
-            <td><%- lote_nombre %></td>
-       <% } %>
-
         <td><%-(ajuste2_cantidad_entrada <= 0) ? '0' : ajuste2_cantidad_entrada %></td>
         <td><%- (ajuste2_cantidad_salida <= 0) ? '0' : ajuste2_cantidad_salida %></td>
         <td><%- window.Misc.currency(ajuste2_costo) %></td>

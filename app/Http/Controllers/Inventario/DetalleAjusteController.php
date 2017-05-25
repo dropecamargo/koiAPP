@@ -120,7 +120,7 @@ class DetalleAjusteController extends Controller
                                 $items = isset($data['items']) ? $data['items'] : null;
                                 $metradoItem = 0;
                                 foreach ($items as $key => $item) {
-                                    $metradoItem += $item['prodboderollo_metros'] * $item['prodboderollo_cantidad'];
+                                    $metradoItem += $item['rollo_metros'] * $item['rollo_cantidad'];
                                 }
                                 
                                 if ($metradoItem != $request->ajuste2_cantidad_entrada) {
@@ -132,12 +132,7 @@ class DetalleAjusteController extends Controller
                                 $numUnidades = 0;
                                 $lotes = [];
                                 foreach ($items as $key => $item) {
-                                    $numUnidades += $item['prodbodevence_unidades'];
-                                    // Validar series ingresadas repetidas
-                                    if(in_array($item['prodbodevence_lote'], $lotes)){
-                                        return response()->json(['success' => false,'errors' => "No es posible registrar dos lotes iguales"]);  
-                                    }
-                                    $lotes[] = $item['prodbodevence_lote'];
+                                    $numUnidades += $item['lote_cantidad'];
                                 }
 
                                 if ($numUnidades != $request->ajuste2_cantidad_entrada) {

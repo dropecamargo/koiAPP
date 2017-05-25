@@ -68,13 +68,13 @@
                 <div class="box box-body box-success">
                     <div class="table-responsive no-padding">
                         <table id="browse-detalle-devolucion-list" class="table table-hover table-bordered" cellspacing="0">
-                        <thead>
-                            <tr>
-                                <th colspan="6" class="text-center">
-                                    <button type="button" class="btn btn-default btn-sm all-devoluciones">Devolver todas</button> 
-                                </th>
-                            </tr>
-                        </thead>
+                            <thead>
+                                <tr>
+                                    <th colspan="6" class="text-center">
+                                        <button type="button" class="btn btn-default btn-sm all-devoluciones">Devolver todas</button> 
+                                    </th>
+                                </tr>
+                            </thead>
                             <thead>
                                 <tr>
                                     <th width="15%">Referencia</th>

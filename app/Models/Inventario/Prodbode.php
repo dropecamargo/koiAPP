@@ -4,7 +4,7 @@ namespace App\Models\Inventario;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Base\Sucursal;
-use DB;
+
 class Prodbode extends Model
 {
 	/**
@@ -23,17 +23,16 @@ class Prodbode extends Model
 	    $query->where('prodbode_sucursal', $sucursal);
 	    return $query->first();
     }
-
-    public  static function actualizar(Producto $producto, $sucursal, $tipo, $unidades)
-    {
-        // Validar suucursal
+    public  static function actualizar(Producto $producto, $sucursal, $tipo, $cantidad)
+ 	{
+        // Validar sucursal
         $sucursal = Sucursal::find($sucursal);
         if(!$sucursal instanceof Sucursal) {
             return "No es posible recuperar sucursal prodbode, por favor verifique la información o consulte al administrador.";
         }
 
         // Validar unidades
-        if(!is_numeric($unidades) || $unidades <= 0){
+        if(!is_numeric($cantidad) || $cantidad <= 0){
             return "No es posible recuperar unidades prodbode, por favor verifique la información o consulte al administrador.";
         }
 
@@ -46,14 +45,23 @@ class Prodbode extends Model
     	}
         switch ($tipo) {
             case 'E':
-                $prodbode->prodbode_cantidad = ($prodbode->prodbode_cantidad + $unidades);
+            	if ($producto->producto_metrado == true) {
+                	$prodbode->prodbode_metros = ($prodbode->prodbode_metros + $cantidad);
+            	}
+                $prodbode->prodbode_cantidad = ($prodbode->prodbode_cantidad + $cantidad);
             break;
             case 'S':
                 // Validar disponibles
-                if($unidades > $prodbode->prodbode_cantidad){
-                    return "No existen suficientes unidades para salida producto {$producto->producto_nombre}, disponibles {$prodbode->prodbode_cantidad}, salida $unidades, por favor verifique la información o consulte al administrador.";
+	            if ($producto->producto_metrado == true) {
+	            	if ($cantidad > $prodbode->prodbode_metros) {
+                    	return "No existen suficientes unidades para salida producto {$producto->producto_nombre}, disponibles {$prodbode->prodbode_metros}, salida $cantidad, por favor verifique la información o consulte al administrador.";
+	            	}
+                	$prodbode->prodbode_metros = ($prodbode->prodbode_metros - $cantidad);
+	            }
+                if($cantidad > $prodbode->prodbode_cantidad){
+                    return "No existen suficientes unidades para salida producto {$producto->producto_nombre}, disponibles {$prodbode->prodbode_cantidad}, salida $cantidad, por favor verifique la información o consulte al administrador.";
                 }
-                $prodbode->prodbode_cantidad = ($prodbode->prodbode_cantidad - $unidades);
+                $prodbode->prodbode_cantidad = ($prodbode->prodbode_cantidad - $cantidad);
             break;
 
             default:

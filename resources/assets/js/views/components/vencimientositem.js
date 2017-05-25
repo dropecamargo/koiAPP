@@ -12,7 +12,7 @@ app || (app = {});
     app.ProductoVenceINListView = Backbone.View.extend({
 
         tagName: 'tr',
-        template: null,
+        template: _.template( ($( '#add-itemsvencimiento-tpl').html() || '') ),
         parameters: {
             type: 'E'
         },
@@ -33,7 +33,6 @@ app || (app = {});
         * Render View Element
         */
         render: function(){
-            this.template = _.template( ($( this.parameters.type == 'E' ? '#add-itemsvencimiento-tpl' : '#chooses-itemsvencimiento-tpl' ).html() || '') );
             var attributes = this.model.toJSON();
             this.$el.html( this.template(attributes) );
 

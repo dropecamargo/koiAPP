@@ -1037,22 +1037,26 @@
 </script>
 
 <script type="text/template" id="exit-lotes-tpl">
-    <td class="text-left"><%- lote_nombre %></td>
+    <td class="text-left"><%- lote_numero %></td>
     <td class="text-left"><%- lote_fecha %></td>
-    <td class="text-left"><%- prodbodelote_saldo %></td>
+    <% if(lote_vencimiento != null) { %>
+    	<td class="text-left"><%- lote_vencimiento %></td>
+    <% } %> 
+    <td class="text-left"><%- lote_cantidad %></td>
+    <td class="text-left"><%- lote_saldo %></td>
     <td>
     	<div class="form-group">
-    		<input type="number" id="item_<%- id %>" name="item_<%- id %>" class="form-control input-sm input-toupper cantidad-salidau-koi-inventario" value="0" min="0" max="<%- prodbodelote_saldo %>">
+    		<input type="number" id="item_<%- id %>" name="item_<%- id %>" class="form-control input-sm input-toupper cantidad-salidau-koi-inventario" value="0" min="0" max="<%- lote_saldo %>">
     	</div>
     </td>
 </script>
 
 <script type="text/template" id="add-itemsrollos-tpl">
 	<td>
-		<input type="number" id="rollos_<%- id %>" name="rollos_<%- id %>" class="form-control input-sm" min="1" value="<%- prodboderollo_cantidad %>">
+		<input type="number" id="rollos_<%- id %>" name="rollos_<%- id %>" class="form-control input-sm" min="1" value="<%- rollo_cantidad %>">
 	</td>
     <td>
-		<input id="itemrollo_metros_<%- id %>" name="itemrollo_metros_<%- id %>" class="form-control input-sm" type="number" value="<%- prodboderollo_metros %>" min="0" step="0.01" required>
+		<input id="itemrollo_metros_<%- id %>" name="itemrollo_metros_<%- id %>" class="form-control input-sm" type="number" value="<%- rollo_metros %>" min="0" step="0.01" required>
     </td>
     <td class="text-center">
 		<button type="button" class="btn btn-default btn-xs btn-remove-itemrollo-koi-inventario" data-resource="<%- id %>">
@@ -1063,13 +1067,13 @@
 
 <script type="text/template" id="add-itemsvencimiento-tpl">
 	<td>
-		<input type="text" id="prodbodevence_lote_<%- id %>" name="prodbodevence_lote_<%- id %>" class="form-control input-sm input-toupper" value="<%- prodbodevence_lote %>">
+		<input type="text" id="prodbodevence_lote_<%- id %>" name="prodbodevence_lote_<%- id %>" class="form-control input-sm input-toupper" value="<%- lote_numero %>">
 	</td>
     <td>
-		<input id="prodbodevence_unidades_<%- id %>" name="prodbodevence_unidades_<%- id %>" class="form-control input-sm" type="number" value="<%- prodbodevence_unidades %>" min="0" required>
+		<input id="prodbodevence_unidades_<%- id %>" name="prodbodevence_unidades_<%- id %>" class="form-control input-sm" type="number" value="<%- lote_cantidad %>" min="0" required>
     </td>
     <td>
-    	<input type="text" id="prodbodevence_fecha_<%- id %>" name="prodbodevence_fecha_<%- id %>" class="form-control datepicker input-sm" value="<%- prodbodevence_fecha %>">
+    	<input type="text" id="prodbodevence_fecha_<%- id %>" name="prodbodevence_fecha_<%- id %>" class="form-control datepicker input-sm" value="<%- lote_fecha %>">
     </td>
     <td class="text-center">
 		<button type="button" class="btn btn-default btn-xs btn-remove-itemvencimiento-koi-inventario" data-resource="<%- id %>">
@@ -1080,27 +1084,27 @@
 
 
 <script type="text/template" id="chooses-itemsvencimiento-tpl">
-    <td class="text-left"><%- lote_nombre %></td>
+    <td class="text-left"><%- lote_numero %></td>
     <td class="text-left"><%- lote_fecha %></td>
-    <td class="text-left"> <%- lote_fecha_vencimiento %></td>
-    <td class="text-left"><%- prodbodevence_cantidad %></td>
-    <td class="text-left"><%- prodbodevence_saldo %></td>
+    <td class="text-left"> <%- lote_vencimiento %></td>
+    <td class="text-left"><%- lote_cantidad %></td>
+    <td class="text-left"><%- lote_saldo %></td>
     <td>
     	<div class="form-group">
-			<input id="item_<%- id %>" name="item_<%- id %>" class="form-control input-sm cantidad-salidau-koi-inventario" type="number" value="0" min="0" max="<%- prodbodevence_saldo %>">
+			<input id="item_<%- id %>" name="item_<%- id %>" class="form-control input-sm cantidad-salidau-koi-inventario" type="number" value="0" min="0" max="<%- lote_saldo %>">
     	</div>
     </td>
 </script>
 
 <script type="text/template" id="chooses-itemsrollos-tpl">
-    <td class="text-left"><%- prodboderollo_item %></td>
-    <td class="text-left"><%- lote_nombre %></td>
-    <td class="text-left"><%- lote_fecha %></td>
-    <td class="text-left"><%- prodboderollo_metros %></td>
-    <td class="text-left"><%- prodboderollo_saldo %></td>
+    <td class="text-left"><%- id %></td>
+    <td class="text-left"><%- rollo_lote %></td>
+    <td class="text-left"><%- rollo_fecha %></td>
+    <td class="text-left"><%- rollo_metros %></td>
+    <td class="text-left"><%- rollo_saldo %></td>
     <td>
     	<div class="form-group">
-			<input id="item_<%- id %>" name="item_<%- id %>" class="form-control input-sm cantidad-salidau-koi-inventario" type="number" value="0" min="0" max="<%- prodboderollo_saldo %>" step="0.1">
+			<input id="item_<%- id %>" name="item_<%- id %>" class="form-control input-sm cantidad-salidau-koi-inventario" type="number" value="0" min="0" max="<%- rollo_saldo %>" step="0.1">
     	</div>
     </td>
 </script>

@@ -47,20 +47,16 @@ app || (app = {});
             this.itemRolloINList = new app.ItemRolloINList();
             //Collectio lotes
             this.LotesProducto = new app.ProductoLote();
-            // Collection producto vence
-            this.productoVenceList = new app.ProductoVenceList();
             // Collection prodbode
             this.prodbodeList = new app.ProdbodeList();
 
             // Events Listeners
             this.listenTo( this.LotesProducto, 'reset', this.addAllProductoLote );
+            this.listenTo( this.LotesProducto, 'add', this.addOneVencimientoInventario );
 
             this.listenTo( this.itemRolloINList, 'add', this.addOneItemRolloInventario );
             this.listenTo( this.itemRolloINList, 'reset', this.addAllItemRolloInventario );
 
-            this.listenTo( this.productoVenceList, 'add', this.addOneVencimientoInventario );
-            this.listenTo( this.productoVenceList, 'reset', this.addAllVencimientoInventario );
-            
             this.listenTo( this.model, 'sync', this.responseServer );
             this.listenTo( this.collection, 'sync', this.responseServer );
             this.ready();
@@ -223,11 +219,11 @@ app || (app = {});
              if(atributes.tipo == 'E' ){
                 // Items vence view
                 this.$wraperVence = this.$('#browse-product-vence-list');
-                this.productoVenceList.add( new app.ProductVencenModel({ id: shortid.uuid() }) );
+                this.LotesProducto.add( new app.LoteModel({ id: shortid.uuid() }) );
              }else{
                 //salidas
-                this.$wraperVence = this.$('#browse-chooseproduct-vence-list');
-                this.productoVenceList.fetch({reset: true, data: { producto: atributes.data.producto_serie, sucursal: atributes.data.sucursal } } );
+                this.$wraperSeries = this.$('#browse-chooseproduct-vence-list');
+                this.LotesProducto.fetch({reset: true, data: { producto: atributes.data.producto_serie, sucursal: atributes.data.sucursal } } );
 
              }
 
@@ -243,11 +239,9 @@ app || (app = {});
         * @param Object ProductoLote Model instance
         */
         addOneProductoLote: function (ProductoLote) {
-            
             var view = new app.ProductoLotesINListView({
                 model: ProductoLote,
             });
-
             this.$wraperSeries.append( view.render().el );
             this.ready();
             
@@ -293,15 +287,6 @@ app || (app = {});
             this.ready();
         },
 
-        /*
-        *Render all view tast of the collection
-        */
-        addAllVencimientoInventario:function(){
-            var _this = this;
-            this.productoVenceList.forEach(function(model, index) {
-                _this.addOneVencimientoInventario(model)
-            });
-        },
         /**
         * Render all view tast of the collection
         */
@@ -346,7 +331,7 @@ app || (app = {});
                     _.each(this.itemRolloINList.models,function(model){
                         metros = this.$('#itemrollo_metros_'+ model.get('id')).val();
                         cantidad = this.$('#rollos_'+ model.get('id')).val();
-                        model.set({prodboderollo_metros: metros , prodboderollo_cantidad: cantidad });
+                        model.set({rollo_metros: metros , rollo_cantidad: cantidad });
                     });
                     this.parameters.data = $.extend({}, this.parameters.data);
                     this.parameters.data.items = this.itemRolloINList;
@@ -358,14 +343,14 @@ app || (app = {});
                         fecha = 0;
 
                     //Prepare and setter models of collection
-                    _.each(this.productoVenceList.models,function(model){
+                    _.each(this.LotesProducto.models,function(model){
                         lote = this.$('#prodbodevence_lote_'+ model.get('id')).val();
                         unidades = this.$('#prodbodevence_unidades_'+ model.get('id')).val();
                         fecha = this.$('#prodbodevence_fecha_'+ model.get('id')).val();
-                        model.set({prodbodevence_lote: lote , prodbodevence_unidades: unidades, prodbodevence_fecha: fecha });
+                        model.set({lote_numero: lote , lote_cantidad: unidades, lote_fecha: fecha });
                     });
                     this.parameters.data = $.extend({}, this.parameters.data);
-                    this.parameters.data.items = this.productoVenceList;
+                    this.parameters.data.items = this.LotesProducto;
                     this.collection.trigger('store', this.parameters.data);
                 }else{
                     var items = [];
@@ -388,16 +373,13 @@ app || (app = {});
                      // Valid total
                     var ingresadas = 0;
                     var result =_.every(this.itemRolloINList.models, function(itemRolloModel) { 
-                        
-                        if( itemRolloModel.get('prodboderollo_saldo') < parseFloat( this.$('#item_'+itemRolloModel.get('id')).val() ) ) {
-                            alertify.error("Cantidad insuficiente para este item, (" + itemRolloModel.get('prodboderollo_saldo') + ") SALDO, (" + this.$('#item_'+itemRolloModel.get('id')).val() + ") INGRESADAS, por favor verifique información.");
+                        if( itemRolloModel.get('rollo_saldo') < parseFloat( this.$('#item_'+itemRolloModel.get('id')).val() ) ) {
+                            alertify.error("Cantidad insuficiente para este item, (" + itemRolloModel.get('rollo_saldo') + ") SALDO, (" + this.$('#item_'+itemRolloModel.get('id')).val() + ") INGRESADAS, por favor verifique información.");
                             return false;
                         }
                         return  true; 
                     });
-
                 }else{
-
                      // Valid total
                     var ingresadas = 0;
                     var result =_.every(this.LotesProducto.models, function(modelProdbodeLote) { 
@@ -438,8 +420,8 @@ app || (app = {});
             e.preventDefault();
             // Valid total
             var unidades = 0;
-            _.each(this.productoVenceList.models, function(ProductVencenModel){ 
-                unidades+= parseFloat( this.$('#prodbodevence_unidades_'+ProductVencenModel.get('id')).val());
+            _.each(this.LotesProducto.models, function(productVencenModel){ 
+                unidades+= parseFloat( this.$('#prodbodevence_unidades_'+productVencenModel.get('id')).val());
             });
             
             if(unidades >= this.parameters.data.ajuste2_cantidad_entrada) {
@@ -447,7 +429,7 @@ app || (app = {});
                 return;
             }
          
-            this.productoVenceList.add( new app.ProductVencenModel({ id: shortid.uuid() }) );
+            this.LotesProducto.add( new app.LoteModel({ id: shortid.uuid() }) );
         },
         /*
         * Remove item unidades de entrada
@@ -456,10 +438,10 @@ app || (app = {});
             e.preventDefault();
 
             var resource = $(e.currentTarget).attr("data-resource"),
-                model = this.productoVenceList.get(resource);
+                model = this.LotesProducto.get(resource);
 
             if ( model instanceof Backbone.Model ) {
-                this.productoVenceList.remove(model);                
+                this.LotesProducto.remove(model);                
                 model.view.remove();
             }
         },

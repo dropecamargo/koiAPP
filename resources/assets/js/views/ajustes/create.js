@@ -73,7 +73,7 @@ app || (app = {});
                     wrapper: this.el,
                     edit: true,
                     dataFilter: {
-                        'id': this.model.get('id')
+                        'id': this.model.get('id'),
                     }
                }
             });

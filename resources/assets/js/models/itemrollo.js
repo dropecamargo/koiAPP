@@ -16,12 +16,11 @@ app || (app = {});
         },
         idAttribute: 'id',
         defaults: {
-        	'prodboderollo_item': 0,
-            'prodboderollo_metros': 0,
-        	'prodboderollo_cantidad': 0, //cantidad input form modal 
-            'prodboderollo_saldo': 0,
-            'prodboderollo_lote': '',
-        	'prodboderollo_fecha_lote': ''
+            'rollo_metros': 0,
+        	'rollo_cantidad': 0, //cantidad input form modal 
+            'rollo_saldo': 0,
+            'rollo_lote': '',
+        	'rollo_fecha_lote': ''
         }
     });
 

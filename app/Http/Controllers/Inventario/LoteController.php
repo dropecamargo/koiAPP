@@ -1,13 +1,15 @@
 <?php
 
 namespace App\Http\Controllers\Inventario;
+
 use Illuminate\Http\Request;
+
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\Inventario\Prodbodelote, App\Models\Inventario\Producto;
+use App\Models\Inventario\Lote, App\Models\Inventario\Producto;
 use App\Models\Base\Sucursal;
 
-class ProdbodeLoteController extends Controller
+class LoteController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -27,12 +29,10 @@ class ProdbodeLoteController extends Controller
             }
             $lotes = [];
             if($request->has('producto') && $request->has('sucursal')) {
-                $query = Prodbodelote::query();
-                $query->select('prodbodelote.*','lote_fecha', 'lote_nombre');
-                $query->where('prodbodelote_serie', $producto->id);
-                $query->where('prodbodelote_sucursal', $sucursal->id);
-                $query->whereRaw('prodbodelote_saldo > 0');
-                $query->join('lote','prodbodelote_lote', '=', 'lote.id');
+                $query = Lote::query();
+                $query->where('lote_serie', $producto->id);
+                $query->where('lote_sucursal', $sucursal->id);
+                $query->whereRaw('lote_saldo > 0');
                 $query->orderby('lote_fecha', 'asc');
                 $lotes = $query->get();
             }
@@ -40,7 +40,6 @@ class ProdbodeLoteController extends Controller
         }
         abort(404);
     }
-
 
     /**
      * Show the form for creating a new resource.

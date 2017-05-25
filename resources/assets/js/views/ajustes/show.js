@@ -34,7 +34,7 @@ app || (app = {});
         /**
         * reference to views
         */
-        referenceViews: function () {   
+        referenceViews: function () {
             this.detalleAjustesView = new app.DetalleAjustesView( {
                 collection: this.detalleAjuste,
                 parameters: {

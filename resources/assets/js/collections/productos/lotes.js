@@ -14,7 +14,7 @@ app || (app = {});
         url: function() {
             return window.Misc.urlFull( Route.route('productos.lotes.index') );
         },
-        model: app.ProdBodeloteModel,
+        model: app.LoteModel,
 
         /**
         * Constructor Method

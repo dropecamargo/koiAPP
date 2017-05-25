@@ -17,13 +17,11 @@ class CreateTraslado2Table extends Migration
             $table->increments('id');
             $table->integer('traslado2_traslado1')->unsigned();
             $table->integer('traslado2_producto')->unsigned();
-            $table->integer('traslado2_lote')->unsigned();
             $table->integer('traslado2_item')->unsigned();
             $table->integer('traslado2_cantidad')->unsigned();
             $table->double('traslado2_costo');
 
             $table->foreign('traslado2_traslado1')->references('id')->on('traslado1')->onDelete('restrict');
-            $table->foreign('traslado2_lote')->references('id')->on('lote')->onDelete('restrict');
             $table->foreign('traslado2_producto')->references('id')->on('producto')->onDelete('restrict');
 
         });

@@ -6,11 +6,10 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\Inventario\Prodboderollo, App\Models\Inventario\Producto;
+use App\Models\Inventario\Rollo, App\Models\Inventario\Producto;
 use App\Models\Base\Sucursal;
-use DB;
 
-class ProdbodeRolloController extends Controller
+class RolloController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -30,13 +29,11 @@ class ProdbodeRolloController extends Controller
             }
             $rollos = [];
             if($request->has('producto') && $request->has('sucursal')) {
-                $query = Prodboderollo::query();
-                $query->select('prodboderollo.*','lote_fecha', 'lote_nombre');
-                $query->where('prodboderollo_serie', $producto->id);
-                $query->where('prodboderollo_sucursal', $sucursal->id);
-                $query->whereRaw('prodboderollo_saldo > 0');
-                $query->join('lote','prodboderollo_lote', '=', 'lote.id');
-                $query->orderby('lote_fecha', 'asc');
+                $query = Rollo::query();
+                $query->where('rollo_serie', $producto->id);
+                $query->where('rollo_sucursal', $sucursal->id);
+                $query->whereRaw('rollo_saldo > 0');
+                $query->orderby('rollo_fecha', 'asc');
                 $rollos = $query->get();
             }
             return response()->json($rollos);

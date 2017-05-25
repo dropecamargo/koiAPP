@@ -435,12 +435,13 @@
 
 <script type="text/template" id="add-series-lotes-tpl">
 	<div class="row">
-		<div class="col-sm-8 col-md-offset-2 col-xs-12">
+		<div class="col-sm-10 col-md-offset-1 col-xs-12">
 			<!-- table table-bordered table-striped -->
 			<div class="box-body table-responsive no-padding">
 				<table id="browse-series-lotes-list" class="table table-hover table-bordered" cellspacing="0">
 				  	<th>Lote</th>
                 	<th>Fecha</th>
+                	<th>Cantidad</th>
                 	<th>Saldo</th>
                 	<th class="text-center"> <label id="cantidad-salidau" class="label bg-green"><%- data.ajuste2_cantidad_salida %></label></th>
 			    </table>

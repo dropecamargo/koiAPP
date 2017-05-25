@@ -17,14 +17,12 @@ class CreateAjuste2Table extends Migration
             $table->increments('id');
             $table->integer('ajuste2_ajuste1')->unsigned();
             $table->integer('ajuste2_producto')->unsigned();
-            $table->integer('ajuste2_lote')->unsigned();
             $table->integer('ajuste2_cantidad_entrada')->unsigned();
             $table->integer('ajuste2_cantidad_salida')->unsigned();
             $table->double('ajuste2_costo');      
             $table->double('ajuste2_costo_promedio');
 
             $table->foreign('ajuste2_ajuste1')->references('id')->on('ajuste1')->onDelete('restrict');
-            $table->foreign('ajuste2_lote')->references('id')->on('lote')->onDelete('restrict');
             $table->foreign('ajuste2_producto')->references('id')->on('producto')->onDelete('restrict');
 
         });
