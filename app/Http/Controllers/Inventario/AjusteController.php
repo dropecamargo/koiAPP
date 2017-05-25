@@ -98,11 +98,10 @@ class AjusteController extends Controller
 
                         if ($tipoAjuste->tipoajuste_tipo == 'E') {
 
-                            // Costo promedio
-
                             // Detalle ajuste != Manejaserie
                             if ($producto->producto_maneja_serie != true) {
 
+                                // Costo promedio
                                 $costopromedio = $producto->costopromedio($item['ajuste2_costo'], $item['ajuste2_cantidad_entrada']);
 
                                 $ajusteDetalle = new Ajuste2;
@@ -263,6 +262,7 @@ class AjusteController extends Controller
                                 $items = isset($item['items']) ? $item['items'] : null;
                                 foreach ($items as $key => $valueItem) {
                                     if ($valueItem > 0) {
+                                        
                                          list($text, $rollo) = explode("_", $key);
                                         // Individualiza en rollo --- $rollo hace las veces de lote 
                                         $rollo = Rollo::actualizar($producto, $sucursal->id, 'S', $rollo, $ajuste->ajuste1_fecha, $valueItem);

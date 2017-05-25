@@ -41,7 +41,13 @@ class Lote extends Model
                 $lote->lote_saldo = ($lote->lote_cantidad + $lote->lote_saldo);
             break;
             case 'S':
-               $lote = Lote::find($loteNumero);
+            
+                if ($producto->producto_maneja_serie == true) {
+                    $lote = Lote::where('lote_serie',$producto->id)->where('lote_sucursal', $sucursal->id)->first();
+                }else{
+                    $lote = Lote::find($loteNumero);
+                }
+
                 if(!$lote instanceof Lote){
                     return "No es posible recuperar lote del producto $producto->producto_nombre en la sucursal $sucursal->sucursal_nombre";
                 }

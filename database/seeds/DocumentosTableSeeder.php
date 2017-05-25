@@ -52,5 +52,9 @@ class DocumentosTableSeeder extends Seeder
             'documentos_codigo' => 'AJUC',
             'documentos_nombre' => 'AJUSTE CARTERA'
         ]);
+        Documentos::create([
+            'documentos_codigo' => 'TRAS',
+            'documentos_nombre' => 'TRASLADOS'
+        ]);
     }
 }
