@@ -41,7 +41,6 @@ app || (app = {});
             // extends parameters
             if( opts !== undefined && _.isObject(opts.parameters) )
                 this.parameters = $.extend({}, this.parameters, opts.parameters);
-
             this.$modalIn = this.$('#modal-inventario-component');
             // Collection item rollo
             this.itemRolloINList = new app.ItemRolloINList();
@@ -101,7 +100,7 @@ app || (app = {});
                         }
                         else{
                             _this.$modalIn.find('.content-modal').empty().html(_this.templateChooseItemsProductVence(resp) );
-                            _this.$modalIn.find('.modal-title').text('Inventario - Salidas de productos metrados');
+                            _this.$modalIn.find('.modal-title').text('Inventario - Salida de productos con fecha de vencimiento');
                             _this.referenceVencimiento(resp);
                         }
                     },
@@ -216,7 +215,8 @@ app || (app = {});
             this.$wraper = this.$('#modal-wrapper-inventario');
             this.$wraperFormIn = this.$modalIn.find('.content-modal');
             this.$wraperErrorIn = this.$('#error-inventario');
-             if(atributes.tipo == 'E' ){
+
+            if(atributes.tipo == 'E' ){
                 // Items vence view
                 this.$wraperVence = this.$('#browse-product-vence-list');
                 this.LotesProducto.add( new app.LoteModel({ id: shortid.uuid() }) );
@@ -275,6 +275,9 @@ app || (app = {});
         * @param Object Producto Model instance
         */
         addOneVencimientoInventario: function (productoModel) {
+            // prepare lote encabezado
+            productoModel.set({lote_numero: this.parameters.data.lote});
+
             var view = new app.ProductoVenceINListView({
                 model: productoModel,
                 parameters:{
@@ -302,6 +305,9 @@ app || (app = {});
         * @param Object ItemRolloModel Model instance
         */
         addOneItemRolloInventario: function (itemRolloModel) {
+            // prepare lote encabezado
+            itemRolloModel.set({rollo_lote: this.parameters.data.lote});
+
             var view = new app.ItemRolloINListView({
                 model: itemRolloModel,
                 parameters: {

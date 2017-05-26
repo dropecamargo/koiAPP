@@ -164,9 +164,9 @@ class AjusteController extends Controller
                             }else if ($producto->producto_metrado == true) {
                                 $items = isset($item['items']) ? $item['items'] : null;
                                 foreach ($items as $value) {
-                                    for ($i=0; $i < $value['rollo_cantidad']; $i++) { 
+                                    for ($i=0; $i < $value['rollo_cantidad']; $i++) {   
                                         // Individualiza en rollo
-                                        $rollo = Rollo::actualizar($producto, $sucursal->id, 'E', $request->ajuste1_lote, $ajuste->ajuste1_fecha, $value['rollo_metros']);
+                                        $rollo = Rollo::actualizar($producto, $sucursal->id, 'E', $value['rollo_lote'], $ajuste->ajuste1_fecha, $value['rollo_metros']);
                                         if (!$rollo instanceof Rollo) {
                                             DB::rollback();
                                             return response()->json(['success' => false, 'errors' => $rollo]);
@@ -245,8 +245,7 @@ class AjusteController extends Controller
                                 $ajusteDetalle->ajuste2_cantidad_salida = 1;
                                 $ajusteDetalle->ajuste2_producto = $producto->id;
                                 $ajusteDetalle->save();
-
-                                $lote = Lote::actualizar($producto, $sucursal->id, $request->ajuste1_lote, 'S', 1, $ajuste->ajuste1_fecha, null);
+                                $lote = Lote::actualizar($producto, $sucursal->id, "", 'S', 1, $ajuste->ajuste1_fecha, null);
                                 if (!$lote instanceof Lote) {
                                     DB::rollback();
                                     return response()->json(['success' => false, 'errors' => 'No es posible recuperar lote, por favor verifique la información ó por favor consulte al administrador']);

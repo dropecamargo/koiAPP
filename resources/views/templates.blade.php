@@ -1053,6 +1053,9 @@
 
 <script type="text/template" id="add-itemsrollos-tpl">
 	<td>
+		<input type="text" id="rollos_lote_<%- id %>" name="rollos_lote_<%- id %>" class="form-control input-sm" min="1" value="<%- rollo_lote %>">
+	</td>
+	<td>
 		<input type="number" id="rollos_<%- id %>" name="rollos_<%- id %>" class="form-control input-sm" min="1" value="<%- rollo_cantidad %>">
 	</td>
     <td>

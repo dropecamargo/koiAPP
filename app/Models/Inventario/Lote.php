@@ -1,34 +1,27 @@
 <?php
-
 namespace App\Models\Inventario;
-
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Base\Sucursal;
-
 class Lote extends Model
 {
-	/**
-	* The database table used by the model.
-	*
-	* @var string
-	*/
+    /**
+    * The database table used by the model.
+    *
+    * @var string
+    */
     protected $table = 'lote';
-
     public $timestamps = false;
-
     public static function actualizar(Producto $producto, $sucursal, $loteNumero, $tipo, $cantidad, $fecha = null, $fechaVencimiento = null)
     {
-		// Validar sucursal
+        // Validar sucursal
         $sucursal = Sucursal::find($sucursal);
         if(!$sucursal instanceof Sucursal) {
             return "No es posible recuperar sucursal lote, por favor verifique la información o consulte al administrador.";
         }
-
         // Validar unidades
         if(!is_numeric($cantidad) || $cantidad <= 0){
             return "No es posible recuperar unidades lote, por favor verifique la información o consulte al administrador.";
         }
-
         switch ($tipo) {
             case 'E':
                 $lote = new Lote;
@@ -47,7 +40,6 @@ class Lote extends Model
                 }else{
                     $lote = Lote::find($loteNumero);
                 }
-
                 if(!$lote instanceof Lote){
                     return "No es posible recuperar lote del producto $producto->producto_nombre en la sucursal $sucursal->sucursal_nombre";
                 }
@@ -57,13 +49,11 @@ class Lote extends Model
                 }
                 $lote->lote_saldo = ($lote->lote_saldo - $cantidad);
             break;
-
             default:
                 return "No es posible recuperar tipo movimiento en lote, por favor verifique la información o consulte al administrador.";
             break;
         }
-		$lote->save();
-
+        $lote->save();
         return $lote;
     }
 }

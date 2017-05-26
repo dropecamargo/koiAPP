@@ -419,7 +419,7 @@
 
 <script type="text/template" id="add-series-tpl">
 	<div class="row">
-		<div class="col-sm-8 col-md-offset-2 col-xs-12">
+		<div class="col-sm-12 col-xs-12">
 			<!-- table table-bordered table-striped -->
 			<div class="box-body table-responsive no-padding">
 				<table id="browse-series-list" class="table table-hover table-bordered" cellspacing="0">
@@ -435,7 +435,7 @@
 
 <script type="text/template" id="add-series-lotes-tpl">
 	<div class="row">
-		<div class="col-sm-10 col-md-offset-1 col-xs-12">
+		<div class="col-sm-12 col-xs-12">
 			<!-- table table-bordered table-striped -->
 			<div class="box-body table-responsive no-padding">
 				<table id="browse-series-lotes-list" class="table table-hover table-bordered" cellspacing="0">
@@ -452,11 +452,12 @@
 
 <script type="text/template" id="add-itemrollo-tpl">
 	<div class="row">
-		<div class="col-sm-8 col-md-offset-2 col-xs-12">
+		<div class="col-sm-12 col-xs-12">
 			<!-- table table-bordered table-striped -->
 			<div class="box-body table-responsive no-padding">
 				<table id="browse-itemtollo-list" class="table table-hover table-bordered" cellspacing="0">
 		            <tr>
+		            	<th>Lote</th>	
 		            	<th>Rollos</th>
 		                <th>Metros  (m)</th>
 		                <th class="text-center">
@@ -504,15 +505,15 @@
 
 <script type="text/template" id="product-vence-tpl">
 	<div class="row">
-		<div class="col-sm-8 col-md-offset-2 col-xs-12">
+		<div class="col-sm-12 col-xs-12">
 			<!-- table table-bordered table-striped -->
 			<div class="box-body table-responsive no-padding">
 				<table id="browse-product-vence-list" class="table table-hover table-bordered" cellspacing="0">
 		            <tr>
-		                <th width="30%">Lote</th>
+		                <th width="40%">Lote</th>
 		                <th  width="20%">Unidades</th>
-		                <th width="30%">Fecha De Vencimiento</th>
-		                <th class="text-center">		               		
+		                <th width="35%">Fecha De Vencimiento</th>
+		                <th width="5%" class="text-center">		               		
 		                	<button id="btn-vencimiento-entradau-koi-inventario" type="button" class="btn btn-success btn-sm">
 								<i class="fa fa-plus"></i>
 							</button>
@@ -536,12 +537,12 @@
 			<div class="box-body table-responsive no-padding">
 				<table id="browse-chooseproduct-vence-list" class="table table-hover table-bordered" cellspacing="0">
 		            <tr>
-		                <th>Lote</th>
-		                <th>F.Ingreso</th>
-		                <th>F. Vencimiento</th>
-		                <th>Cantidad</th>
-		                <th>Saldo</th>
-		                <th></th>
+		                <th width="20%">Lote</th>
+		                <th width="25%">F.Ingreso</th>
+		                <th width="25%">F. Vencimiento</th>
+		                <th width="5%">Cantidad</th>
+		                <th width="5%">Saldo</th>
+		                <th width="20%"></th>
 		            </tr>
 		            <tfoot>
 		            	<tr>

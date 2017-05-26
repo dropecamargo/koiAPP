@@ -37,7 +37,7 @@ app || (app = {});
             'producto_costo': 0,
             'producto_vidautil': 0,
             'producto_vence': 0,
-            'producto_maneja_serie': 1,
+            'producto_maneja_serie': 0,
             'producto_metrado': 0,
             'producto_unidadnegocio':'',
             'producto_subcategoria':'', 

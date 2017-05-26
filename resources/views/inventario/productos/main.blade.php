@@ -158,7 +158,7 @@
                 <div><input type="checkbox" id="producto_vence" name="producto_vence" value="producto_vence" <%- parseInt(producto_vence) ? 'checked': ''%>></div>
             </div>
             <div class="form-group col-md-2 col-xs-6">
-                <label for="producto_unidad" class="control-label">¿Maneja Unidades?</label>
+                <label for="producto_unidad" class="control-label">¿Controla inventario?</label>
                 <div><input type="checkbox" id="producto_unidad" name="producto_unidad" value="producto_unidad" <%- parseInt(producto_unidad) ? 'checked': ''%>></div>
             </div>
 

@@ -107,6 +107,7 @@ app || (app = {});
                 var data = window.Misc.formToJson( e.target );
                     data.tipoajuste = this.$selectTipoAjuste.val();
                     data.sucursal = this.$('#ajuste1_sucursal').val();
+                    data.lote = this.$('#ajuste1_lote').val();
                 window.Misc.evaluateActionsInventory({
                     'data': data,
                     'wrap': this.$el,
@@ -118,7 +119,6 @@ app || (app = {});
                                 _this.inventarioActionView.stopListening();
                                 _this.inventarioActionView.undelegateEvents();
                             }
-
                             _this.inventarioActionView = new app.InventarioActionView({
                                 model: _this.model,
                                 collection: _this.detalleAjuste,

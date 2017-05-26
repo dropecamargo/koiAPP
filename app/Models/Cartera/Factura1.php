@@ -101,5 +101,4 @@ class Factura1 extends BaseModel
 
 		return true;
 	}
-
 }

@@ -9,7 +9,7 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Cartera\Factura1, App\Models\Cartera\Factura2, App\Models\Cartera\Factura3;
 use App\Models\Comercial\Pedidoc1,App\Models\Comercial\Pedidoc2;
-use App\Models\Inventario\Producto,App\Models\Inventario\SubCategoria,App\Models\Inventario\Lote,App\Models\Inventario\Ajuste2,App\Models\Inventario\Prodbode,App\Models\Inventario\Inventario,App\Models\Inventario\Inventariorollo,App\Models\Inventario\Prodboderollo,App\Models\Inventario\Prodbodelote,App\Models\Inventario\Prodbodevence;
+use App\Models\Inventario\Producto,App\Models\Inventario\SubCategoria,App\Models\Inventario\Lote,App\Models\Inventario\Prodbode,App\Models\Inventario\Inventario,App\Models\Inventario\Rollo;
 use App\Models\Base\Tercero,App\Models\Base\PuntoVenta,App\Models\Base\Documentos,App\Models\Base\Sucursal, App\Models\Base\Contacto; 
 use DB, Log, Datatables,Auth;
 
@@ -145,18 +145,30 @@ class Factura1Controller extends Controller
                             DB::rollback();
                             return response()->json(['success'=>false , 'errors'=> 'No es posible recuperar subcategoria, por favor verifique información o consulte al administrador']);
                         }
-                        // Maneja serie
+                        if ($producto->producto_maneja_serie != true) {
+
+                            //Detalle factura
+                            $factura2 = new Factura2;
+                            $factura2->fill($item);
+                            $factura2->factura2_factura1 = $factura1->id;
+                            $factura2->factura2_producto = $producto->id;
+                            $factura2->factura2_subcategoria = $subcategoria->id;
+                            $factura2->factura2_margen = $subcategoria->subcategoria_margen_nivel1;
+                            $factura2->save();
+                            // Prodbode
+                            $result = Prodbode::actualizar($producto, $sucursal->id, 'S', $factura2->factura2_cantidad);
+                            if($result != 'OK') {
+                                DB::rollback();
+                                return response()->json(['success' => false, 'errors'=> $result]);
+                            }
+                        }
                         if ($producto->producto_maneja_serie == true) {
 
-                            $prodbodelote = Prodbodelote::where('prodbodelote_serie', $producto->id)->where('prodbodelote_saldo', 1)->first();
-                            if (!$prodbodelote instanceof Prodbodelote) {
+                            // Prodbode
+                            $result = Prodbode::actualizar($producto, $sucursal->id, 'S', 1);
+                            if($result != 'OK') {
                                 DB::rollback();
-                                return response()->json(['success' => false,'errors' => 'No es posible recuperar el LOTE,por favor verifique la información ó por favor consulte al administrador']);
-                            }
-                            $lote = Lote::find($prodbodelote->prodbodelote_lote);
-                            if (!$lote instanceof Lote) {
-                                DB::rollback();
-                                return response()->json(['success' => false,'errors' => 'No es posible recuperar el LOTE,por favor verifique la información ó por favor consulte al administrador']);
+                                return response()->json(['success' => false, 'errors'=> $result]);
                             }
                             // Detalle factura
                             $factura2 = new Factura2;
@@ -166,161 +178,56 @@ class Factura1Controller extends Controller
                             $factura2->factura2_subcategoria = $subcategoria->id;
                             $factura2->factura2_margen = $subcategoria->subcategoria_margen_nivel1;
                             $factura2->save();
-                            
-                            // Movimiento salidaManejaSerie
-                            $movimiento = Inventario::salidaManejaSerie($producto, $sucursal, $lote);
-                            if($movimiento != 'OK') {
+                            $lote = Lote::actualizar($producto, $sucursal->id, "", 'S', 1, $factura1->factura1_fecha, null);
+                            if (!$lote instanceof Lote) {
                                 DB::rollback();
-                                return response()->json(['success' => false, 'errors' => $movimiento]);
+                                return response()->json(['success' => false, 'errors' => 'No es posible recuperar lote, por favor verifique la información ó por favor consulte al administrador']);
                             }
-
                             // Inventario
-                            $inventario = Inventario::movimiento($producto, $sucursal->id, 'FACT', $factura1->id, 0, $factura2->factura2_cantidad, $factura2->factura2_costo, $factura2->factura2_costo);
+                            $inventario = Inventario::movimiento($producto, $sucursal->id, 'FACT', $factura1->id, 0, 1, 0, 0,$factura2->factura2_costo, $factura2->factura2_costo,$lote->id);
                             if (!$inventario instanceof Inventario) {
                                 DB::rollback();
-                                return response()->json(['success' => false,'errors' => $inventario]);
+                                return response()->json(['success' => false,'errors '=> $inventario]);
                             }
-                            
-                        // Metrado
-                        }else if ($producto->producto_metrado == true) {
-                            // ProdBode
-                            $result = Prodbode::actualizar($producto, $sucursal->id, 'S', $item['factura2_cantidad']);
-                            if($result != 'OK') {                                            
-                                DB::rollback();
-                                return response()->json(['success' => false, 'errors' => $result]);
-                            }
-
-                            // Inventario
-                            $inventario = Inventario::movimiento($producto, $sucursal->id, 'FACT', $factura1->id, 0, $item['factura2_cantidad'], $producto->producto_costo, $producto->producto_costo);
-                            if (!$inventario instanceof Inventario) {
-                                DB::rollback();
-                                return response()->json(['success' => false,'errors' => $inventario]);
-                            }
+                        }else if($producto->producto_metrado == true){
 
                             $items = isset($item['items']) ? $item['items'] : null;
-                            foreach ($items as $key => $value) 
-                            {
-                                if($value > 0) {
-                                    // Recuperar lote
-                                    list($text, $lote) = explode("_", $key);
-                                    $prodboderollo = Prodboderollo::find($lote);
-                                    if(!$prodboderollo instanceof Prodboderollo){
-                                        DB::rollback();
-                                        return response()->json(['success'=> false, 'errors'=> 'No es posible encontrar lote , por favor verifique la información ó por favor consulte al administrador']);
-                                    }
-                                    $lote = Lote::find($prodboderollo->prodboderollo_lote);
-                                    if (!$lote instanceof Lote) {
-                                        DB::rollback();
-                                        return response()->json(['success' => false,'errors' => 'No es posible recuperar el LOTE,por favor verifique la información ó por favor consulte al administrador']);
-                                    }
-                                    // Prodbode rollo
-                                    $prodboderollo = Prodboderollo::actualizar($producto, $sucursal->id, 'S', $prodboderollo->prodboderollo_item,$lote,$value, $producto->producto_costo);
-                                    if(!$prodboderollo instanceof Prodboderollo) {
-                                        DB::rollback();
-                                        return response()->json(['success' => false, 'errors'=>$prodboderollo]);
-                                    }
-
-                                    // Inventario rollo
-                                    $result = Inventariorollo::movimiento($inventario, $prodboderollo, $item['factura2_costo'], $producto->producto_costo, 0, $value);
-                                    if(!$result instanceof Inventariorollo) {
-                                        DB::rollback();
-                                        return response()->json(['success' => false, 'errors' => $result]);
-                                    }
+                            foreach ($items as $key => $valueItem) {
+                                if ($valueItem > 0) {
                                     
-                                    // Detalle factura
-                                    $factura2 = new Factura2;
-                                    $factura2->fill($item);
-                                    $factura2->factura2_factura1 = $factura1->id;
-                                    $factura2->factura2_producto = $producto->id;
-                                    $factura2->factura2_subcategoria = $subcategoria->id;
-                                    $factura2->factura2_margen = $subcategoria->subcategoria_margen_nivel1;
-                                    $factura2->save();
-                                }
-                            }
-                        //Producto vence
-                        }else if($producto->producto_vence == true){
-                            // ProdBode
-                            $result = Prodbode::actualizar($producto, $sucursal->id, 'S', $item['factura2_cantidad']);
-                            if($result != 'OK') {                                            
-                                DB::rollback();
-                                return response()->json(['success' => false, 'errors' => $result]);
-                            }
-                            $items = isset($item['items']) ? $item['items'] : null;
-
-                            foreach ($items as $key => $value) {
-                                if ($value > 0) {
-                                    list($text, $stockid) = explode("_", $key);
-
-                                    $prodbodevence = prodbodevence::find($stockid);
-                                    if (!$prodbodevence instanceof Prodbodevence) {
+                                     list($text, $rollo) = explode("_", $key);
+                                    // Individualiza en rollo --- $rollo hace las veces de lote 
+                                    $rollo = Rollo::actualizar($producto, $sucursal->id, 'S', $rollo, $factura1->factura1_fecha, $valueItem);
+                                    if (!$rollo instanceof Rollo) {
                                         DB::rollback();
-                                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar PRODBODEVENCE por favor verificar información o consulte con el administrador']);
+                                        return response()->json(['success' => false, 'errors' => $rollo]);
                                     }
-                                    $loteVence = Lote::find($prodbodevence->prodbodevence_lote);
-                                    if (!$loteVence instanceof Lote) {
-                                        DB::rollback();
-                                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar LOTE por favor verificar información o consulte con el administrador']);
-                                    }
-                                    $result = Prodbodevence::firstExit($producto, $sucursal->id, $loteVence ,$value);
-                                    if ($result != 'OK') {
-                                        DB::rollback();
-                                        return response()->json(['success'=> false, 'errors' => $result]);
-                                    }
-                                    // Detalle factura
-                                    $factura2 = new Factura2;
-                                    $factura2->fill($item);
-                                    $factura2->factura2_factura1 = $factura1->id;
-                                    $factura2->factura2_producto = $producto->id;
-                                    $factura2->factura2_subcategoria = $subcategoria->id;
-                                    $factura2->factura2_margen = $subcategoria->subcategoria_margen_nivel1;
-                                    $factura2->save();
-                                }
-                            }
-                        // Normal
-                        }else {
-                            $items = isset($item['items']) ? $item['items'] : null;
-                            foreach ($items as $key => $value) 
-                            {
-                                if($value > 0) {
-                                    // Recuperar lote
-                                    list($text, $lote) = explode("_", $key);
-                                    $prodbodelote = Prodbodelote::find($lote);
-                                    if (!$prodbodelote instanceof Prodbodelote) {
-                                        DB::rollback();
-                                        return response()->json(['success' => false,'errors'=>'No es posible recuperar el LOTE, por favor verifique la información ó por favor consulte al administrador']);
-                                    }
-                                    $lote = Lote::find($prodbodelote->prodbodelote_lote);
-                                    if (!$lote instanceof Lote) {
-                                        DB::rollback();
-                                        return response()->json(['success' => false,'errors' => 'No es posible recuperar el LOTE,por favor verifique la información ó por favor consulte al administrador']);
-                                    }   
-                                    // ProdBode
-                                    $result = Prodbode::actualizar($producto, $sucursal->id, 'S', $value);
-                                    if($result != 'OK') {                                            
-                                        DB::rollback();
-                                        return response()->json(['success' => false, 'errors'=>$result]);
-                                    }
-
-                                    //ProdBodeLote
-                                    $result = Prodbodelote::actualizar($producto, $sucursal->id, $lote,'S', $value);
-                                    if($result != 'OK') {
-                                        DB::rollback();
-                                        return response()->json(['success' => false, 'errors' => $result]);
-                                    }
-
-                                    $inventario = Inventario::movimiento($producto, $sucursal->id, 'FACT', $factura1->id, 0, $value, $producto->producto_costo, $producto->producto_costo);
+                                    // Inventario
+                                    $inventario = Inventario::movimiento($producto, $sucursal->id, 'FACT', $factura1->id, 0, 0, 0, $valueItem, $factura2->factura2_costo, $factura2->factura2_costo,0,$rollo->id);
                                     if (!$inventario instanceof Inventario) {
                                         DB::rollback();
-                                        return response()->json(['success' => false,'errors'=>'No es posible realizar inventario,por favor verifique la información ó por favor consulte al administrador']);
+                                        return response()->json(['success' => false,'errors '=> $inventario]);
                                     }
-                                    // Detalle factura
-                                    $factura2 = new Factura2;
-                                    $factura2->fill($item);
-                                    $factura2->factura2_factura1 = $factura1->id;
-                                    $factura2->factura2_producto = $producto->id;
-                                    $factura2->factura2_subcategoria = $subcategoria->id;
-                                    $factura2->factura2_margen = $subcategoria->subcategoria_margen_nivel1;
-                                    $factura2->save();
+                                }
+                            }
+                        }else{
+                            $items = isset($item['items']) ? $item['items'] : null;
+                            foreach ($items as $key => $value) {
+                                list($text, $lote) = explode("_", $key);
+
+                                if ($value > 0) {
+                                    // Individualiza en lote
+                                    $lote = Lote::actualizar($producto, $sucursal->id, $lote, 'S', $value);
+                                    if (!$lote instanceof Lote) {
+                                        DB::rollback();
+                                        return response()->json(['success' => false, 'errors' => $lote]);
+                                    }
+                                    // Inventario
+                                    $inventario = Inventario::movimiento($producto, $sucursal->id, 'FACT', $factura1->id, 0, $value, 0, 0, $factura2->factura2_costo, $factura2->factura2_costo,$lote->id);
+                                    if (!$inventario instanceof Inventario) {
+                                        DB::rollback();
+                                        return response()->json(['success' => false,'errors '=> $inventario]);
+                                    }
                                 }
                             }
                         }

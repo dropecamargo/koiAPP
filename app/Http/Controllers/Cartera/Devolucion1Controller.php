@@ -8,7 +8,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Cartera\Devolucion1,App\Models\Cartera\Devolucion2,App\Models\Cartera\Factura1,App\Models\Cartera\Factura2;
 use App\Models\Base\Documentos,App\Models\Base\Sucursal,App\Models\Base\Tercero;
-use App\Models\Inventario\Producto;
+use App\Models\Inventario\Producto, App\Models\Inventario\Inventario, App\Models\Inventario\Prodbode, App\Models\Inventario\Lote, App\Models\Inventario\Rollo;
 use DB, Log, Datatables,Auth;
 
 class Devolucion1Controller extends Controller
@@ -97,28 +97,109 @@ class Devolucion1Controller extends Controller
                     $devolucion1->devolucion1_fh_elaboro = date('Y-m-d H:i:s');
                     $devolucion1->save();
 
-                    $factura2 = Factura2::where('factura2_factura1', $request->devolucion1_factura1)->get();
-
+                    $factura2 = Factura2::where('factura2_factura1', $factura1->id)->get();
                     foreach ($factura2 as $value) {
-
-                        // Producto
-                        $producto = Producto::find($value->factura2_producto);
-                        if (!$producto instanceof Producto) {
-                            DB::rollback();
-                            return response()->json(['success' => false, 'errors' => 'No es posible recuperar producto, por favor verifique la información ó por favor consulte al administrador.']);
-                        }
                         // Concateno request
                         $cantidad = "devolucion2_cantidad_$value->id";
+                        if ($request->$cantidad > 0) {
+                            // Valido colleccion de factura2
+                            if (!$value instanceof Factura2) {
+                                DB::rollback();
+                                return response()->json(['success' => false, 'errors' => 'No es posible recuperar detalle de factura, por favor verifique la información o consulte al administrador']);
+                            }
+                            // Producto
+                            $producto = Producto::find($value->factura2_producto);
+                            if (!$producto instanceof Producto) {
+                                DB::rollback();
+                                return response()->json(['success' => false, 'errors' => 'No es posible recuperar producto, por favor verifique la información ó por favor consulte al administrador.']);
+                            }
 
-                        // Devolucion2
-                        $devolucion2 = new Devolucion2;
-                        $result = $devolucion2->store($value, $producto->id, $devolucion1->id, $request->$cantidad);
+                            // Devolucion2
+                            $devolucion2 = new Devolucion2;
+                            $result = $devolucion2->store($value, $producto->id, $devolucion1->id, $request->$cantidad);
 
-                        if ( $result != 'OK' ) {
-                            DB::rollback();
-                            return response()->json(['success' => false, 'errors' => $result ]);
+                            if ( $result != 'OK' ) {
+                                DB::rollback();
+                                return response()->json(['success' => false, 'errors' => $result ]);
+                            }
+                            // Inventario
+                            $inventario = Inventario::where('inventario_documentos',$factura1->factura1_documentos)->where('inventario_id_documento',$factura1->id)->where('inventario_serie', $producto->id)->where('inventario_sucursal', $sucursal->id)->first();
+                            if (!$inventario instanceof Inventario) {
+                                DB::rollback();
+                                return response()->json(['success' => false, 'errors' => 'No es posible recuperar inventario, por favor verifique la información ó por favor consulte al administrador.']);
+                            }
+                            if ($producto->producto_maneja_serie == true) {
+
+                                // Prodbode
+                                $result = Prodbode::actualizar($producto, $sucursal->id, 'E', 1);
+                                if($result != 'OK') {
+                                    DB::rollback();
+                                    return response()->json(['success' => false, 'errors'=> $result]);
+                                }
+                                // lote
+                                $lote = Lote::find($inventario->inventario_lote);
+                                if (!$lote instanceof Lote) {
+                                    DB::rollback();
+                                    return response()->json(['success' => false, 'errors' => 'No es posible recuperar lote, por favor verifique la información ó por favor consulte al administrador']);
+                                }
+                                $lote->lote_saldo = 1;
+
+                                // Inventario
+                                $inventario = Inventario::movimiento($producto, $sucursal->id, 'DEVO', $devolucion1->id, 1, 0, 0, 0, $value->factura2_costo, $value->factura2_costo, $lote->id);
+                                if (!$inventario instanceof Inventario) {
+                                    DB::rollback();
+                                    return response()->json(['success' => false,'errors '=> $inventario]);
+                                }
+                            }else if ($producto->producto_metrado == true){
+                                // Prodbode metros
+                                $result = Prodbode::actualizar($producto, $sucursal->id, 'E', $request->$cantidad);
+                                if($result != 'OK') {
+                                    DB::rollback();
+                                    return response()->json(['success' => false, 'errors'=> $result]);
+                                }
+                                // Rollo
+                                $rollo = Rollo::find($inventario->inventario_rollo);
+                                if (!$rollo instanceof Rollo) {
+                                    DB::rollback();
+                                  return response()->json(['success' => false, 'errors' => 'No es posible recuperar rollo, por favor verifique la información ó por favor consulte al administrador']);
+                                }
+                                $rollo->rollo_saldo = ($rollo->rollo_saldo + $request->$cantidad);  
+                                // Inventario
+                                $inventario = Inventario::movimiento($producto, $sucursal->id, 'DEVO', $devolucion1->id, 0, 0, $request->$cantidad, 0, $value->factura2_costo, $value->factura2_costo, $rollo->id);
+                                if (!$inventario instanceof Inventario) {
+                                    DB::rollback();
+                                    return response()->json(['success' => false,'errors '=> $inventario]);
+                                }
+                            }else{
+                                // Prodbode
+                                $result = Prodbode::actualizar($producto, $sucursal->id, 'E', $request->$cantidad);
+                                if($result != 'OK') {
+                                    DB::rollback();
+                                    return response()->json(['success' => false, 'errors'=> $result]);
+                                }
+                                // lote
+                                $lote = Lote::find($inventario->inventario_lote);
+                                if (!$lote instanceof Lote) {
+                                    DB::rollback();
+                                    return response()->json(['success' => false, 'errors' => 'No es posible recuperar lote, por favor verifique la información ó por favor consulte al administrador']);
+                                }
+                                $lote->lote_saldo = $request->$cantidad;
+
+                                // Inventario
+                                $inventario = Inventario::movimiento($producto, $sucursal->id, 'DEVO', $devolucion1->id, $request->$cantidad, 0, 0, 0, $value->factura2_costo, $value->factura2_costo, $lote->id);
+                                if (!$inventario instanceof Inventario) {
+                                    DB::rollback();
+                                    return response()->json(['success' => false,'errors '=> $inventario]);
+                                }
+                            }
+                            // Valido cantidad que sera modificada
+                            if ( ($value->factura2_devultas + $cantidad) > $value->factura2_cantidad ) {
+                                DB::rollback();
+                                return response()->json([ 'success' => false,'errors'=>"No es posible devolver ($cantidad) cantidad del producto $producto->producto_nombre, por favor verifique la información ó por favor consulte al administrador."]);
+                            }
+                            // Update cantidad en factura2
+                            $value->factura2_devultas = ($value->factura2_devultas + $cantidad);
                         }
-                        // Inventario
                     }
 
                     // Update consecutive sucursal_devo in Sucursal

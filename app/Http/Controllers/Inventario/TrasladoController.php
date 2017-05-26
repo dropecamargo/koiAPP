@@ -83,7 +83,7 @@ class TrasladoController extends Controller
                     }
 
                     // Recuperar consecutivo
-                    $consecutive = $origen->sucursal_traslado + 1;
+                    $consecutive = $origen->sucursal_tras + 1;
 
                     // Traslado 1
                     $traslado->fill($data);
