@@ -17,7 +17,7 @@ app || (app = {});
         idAttribute: 'id',
         defaults: {
             'puntoventa_nombre': '',
-            'puntoventa_numero': '',
+            'puntoventa_numero': 0,
             'puntoventa_prefijo': '',
             'puntoventa_resolucion_dian': '',
             'puntoventa_activo': 1

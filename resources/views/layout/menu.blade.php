@@ -72,12 +72,12 @@
     </li>
 
     {{--Cartera--}}
-    <li class="{{ in_array(Request::segment(1), ['autorizacionesca','bancos','conceptosrc','cuentabancos','autorizaco','mediopagos', 'recibos', 'conceptonotas', 'notas','facturas','conceptosajustec','ajustesc','devoluciones']) ? 'active' : '' }}">
+    <li class="{{ in_array(Request::segment(1), ['autorizacionesca','bancos','conceptosrc','cuentabancos','autorizaco','mediopagos', 'recibos', 'conceptonotas', 'notas','facturas','conceptosajustec','ajustesc','devoluciones','anticipos']) ? 'active' : '' }}">
     <a href="#">
             <i class="fa fa-suitcase"></i> <span>Cartera</span><i class="fa fa-angle-left pull-right"></i>
         </a>
         <ul class="treeview-menu">
-            <li class="{{ in_array(Request::segment(1), ['recibos', 'notas','facturas', 'ajustesc', 'devoluciones']) ? 'active' : '' }}">
+            <li class="{{ in_array(Request::segment(1), ['recibos', 'notas','facturas', 'ajustesc', 'devoluciones','anticipos']) ? 'active' : '' }}">
                 <a href="#">
                     <i class="fa fa-wpforms"></i> Módulos <i class="fa fa-angle-left pull-right"></i>
                 </a>
@@ -85,6 +85,9 @@
 
                     <li class="{{ Request::segment(1) == 'ajustesc' ? 'active' : '' }}">
                         <a href="{{ route('ajustesc.index') }}"><i class="fa fa-adjust"></i> Ajuste cartera</a>
+                    </li>
+                    <li class="{{ Request::segment(1) == 'anticipos' ? 'active' : '' }}">
+                        <a href="{{ route('anticipos.index') }}"><i class="fa fa-caret-square-o-left"></i> Anticipos</a>
                     </li>
                     <li class="{{ Request::segment(1) == 'devoluciones' ? 'active' : '' }}">
                         <a href="{{ route('devoluciones.index') }}"><i class="fa fa-reply"></i> Devoluciones</a>
@@ -100,7 +103,7 @@
                     </li>
                 </ul>
             </li>
-
+            {{--Referencias Cartera--}}
             <li class="{{ in_array(Request::segment(1), ['autorizacionesca','bancos','conceptosrc','cuentabancos','autorizaco','mediopagos', 'conceptonotas','conceptosajustec']) ? 'active' : '' }}">
                 <a href="#">
                     <i class="fa fa-circle-o"></i> Referencias <i class="fa fa-angle-left pull-right"></i>
@@ -281,6 +284,46 @@
                     </li>
                     <li class="{{ Request::segment(1) == 'unidadesnegocio' ? 'active' : '' }}">
                         <a href="{{ route('unidadesnegocio.index') }}"><i class="fa fa-circle-o"></i> Unidades Negocio</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+    {{-- Tecnico --}}
+    <li class="treeview {{ in_array(Request::segment(1), ['contratos','ordenes','tiposorden','solicitantes','danos','prioridades']) ? 'active' : '' }}">
+        <a href="#">
+            <i class="fa fa-cogs"></i> <span>Tecnico</span><i class="fa fa-angle-left pull-right"></i>
+        </a>
+        <ul class="treeview-menu">
+            {{-- Modulos Tecnico --}}
+            <li class="{{ in_array(Request::segment(1), ['ordenes']) ? 'active' : '' }}">
+                <a href="#">
+                    <i class="fa fa-wpforms"></i> Modulos <i class="fa fa-angle-left pull-right"></i>
+                </a>
+                    <ul class="treeview-menu">
+                    <li class="{{ Request::segment(1) == 'ordenes' ? 'active' : '' }}">
+                        <a href="{{ route('ordenes.index') }}"><i class="fa fa-building-o"></i> Ordenes</a>
+                    </li>
+                </ul>
+            </li>
+      
+            {{-- Referencias Tecnico --}}
+            <li class="{{ in_array(Request::segment(1), ['tiposorden','solicitantes','danos','prioridades']) ? 'active' : '' }}">
+                <a href="#">
+                    <i class="fa fa-circle-o"></i> Referencias <i class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="treeview-menu">
+                    <li class="{{ Request::segment(1) == 'danos' ? 'active' : '' }}">
+                        <a href="{{ route('danos.index') }}"><i class="fa fa-circle-o"></i> Daños</a>
+                    </li>
+                    <li class="{{ Request::segment(1) == 'prioridades' ? 'active' : '' }}">
+                        <a href="{{ route('prioridades.index') }}"><i class="fa fa-circle-o"></i> Prioridades</a>
+                    </li>
+                    <li class="{{ Request::segment(1) == 'solicitantes' ? 'active' : '' }}">
+                        <a href="{{ route('solicitantes.index') }}"><i class="fa fa-circle-o"></i> Solicitantes</a>
+                    </li>
+                    <li class="{{ Request::segment(1) == 'tiposorden' ? 'active' : '' }}">
+                        <a href="{{ route('tiposorden.index') }}"><i class="fa fa-circle-o"></i> Tipo de Orden</a>
                     </li>
                 </ul>
             </li>

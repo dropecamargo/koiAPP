@@ -24,14 +24,20 @@ class Lote extends Model
         }
         switch ($tipo) {
             case 'E':
-                $lote = new Lote;
-                $lote->lote_serie = $producto->id;
-                $lote->lote_sucursal = $sucursal->id;
-                $lote->lote_numero = $loteNumero;
-                $lote->lote_fecha = $fecha;
-                $lote->lote_vencimiento = $fechaVencimiento;
-                $lote->lote_cantidad = ($lote->lote_cantidad + $cantidad);
-                $lote->lote_saldo = ($lote->lote_cantidad + $lote->lote_saldo);
+                $lote = Lote::where('lote_serie', $producto->id)->where('lote_sucursal', $sucursal->id)->where('lote_vencimiento', $fechaVencimiento)->first();
+                if (!$lote instanceof Lote) {
+                    $lote = new Lote;
+                    $lote->lote_serie = $producto->id;
+                    $lote->lote_sucursal = $sucursal->id;
+                    $lote->lote_numero = $loteNumero;
+                    $lote->lote_fecha = $fecha;
+                    $lote->lote_vencimiento = $fechaVencimiento;
+                    $lote->lote_cantidad = ($lote->lote_cantidad + $cantidad);
+                    $lote->lote_saldo = ($lote->lote_cantidad + $lote->lote_saldo);
+                }else{
+                    $lote->lote_cantidad = ($lote->lote_cantidad + $cantidad);
+                    $lote->lote_saldo = ($cantidad + $lote->lote_saldo);
+                }
             break;
             case 'S':
             

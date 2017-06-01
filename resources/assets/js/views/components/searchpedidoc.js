@@ -92,10 +92,6 @@ app || (app = {});
             // Modal show
             this.ready();
 			this.$modalComponent.modal('show');
-
-            if(this.$modalComponent.length > 0){
-                setTimeout( function () { _this.$el.addClass('modal-open') }, 500);
-            }
 		},
 
 		setPedidoc: function(e) {

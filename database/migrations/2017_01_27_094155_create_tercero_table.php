@@ -31,6 +31,7 @@ class CreateTerceroTable extends Migration
             $table->string('tercero_dir_nomenclatura', 200)->nullable();
             $table->string('tercero_postal', 100)->nullable();
             $table->integer('tercero_municipio')->unsigned()->nullable();
+            $table->integer('tercero_pais')->unsigned()->nullable();
             $table->string('tercero_email', 200)->nullable();
 
             $table->string('tercero_telefono1', 15)->nullable();
@@ -69,6 +70,7 @@ class CreateTerceroTable extends Migration
             $table->string('password', 60);
 
             $table->foreign('tercero_municipio')->references('id')->on('municipio')->onDelete('restrict');
+            $table->foreign('tercero_pais')->references('id')->on('pais')->onDelete('restrict');
             $table->foreign('tercero_actividad')->references('id')->on('actividad')->onDelete('restrict');
             $table->foreign('tercero_sucursal')->references('id')->on('sucursal')->onDelete('restrict');
             $table->foreign('tercero_coordinador_por')->references('id')->on('tercero')->onDelete('restrict');

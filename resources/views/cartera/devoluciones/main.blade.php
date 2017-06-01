@@ -23,7 +23,7 @@
                 <div class="row">
                     <label for="devolucion1_sucursal" class="col-sm-1 col-md-1 control-label">Sucursal</label>
                     <div class="form-group col-sm-2">
-                        <select name="devolucion1_sucursal" id="devolucion1_sucursal" class="form-control select2-default change-sucursal-consecutive-koi-component" data-wrapper="factura-create" data-field="devolucion1_numero" data-document ="devolucion">
+                        <select name="devolucion1_sucursal" id="devolucion1_sucursal" class="form-control select2-default change-sucursal-consecutive-koi-component" data-wrapper="devolucion-create" data-field="devolucion1_numero" data-document ="devolucion">
                             @foreach( App\Models\Base\Sucursal::getSucursales() as $key => $value)
                             <option  value="{{ $key }}" <%- devolucion1_sucursal == '{{ $key }}' ? 'selected': ''%>>{{ $value }}</option>
                             @endforeach

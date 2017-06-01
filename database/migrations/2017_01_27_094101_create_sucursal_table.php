@@ -31,7 +31,10 @@ class CreateSucursalTable extends Migration
             $table->integer('sucursal_nota')->unsigned();
             $table->integer('sucursal_devo')->unsigned();
             $table->integer('sucursal_ajuc')->unsigned();
-            
+            $table->integer('sucursal_anti')->unsigned();
+            $table->integer('sucursal_chp')->unsigned();
+            $table->integer('sucursal_chd')->unsigned();
+
             $table->foreign('sucursal_regional')->references('id')->on('regional')->onDelete('restrict');
         });
     }

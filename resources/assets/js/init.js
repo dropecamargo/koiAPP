@@ -40,6 +40,7 @@ var app = app || {};
             this.initSpinner();
             this.initInputMask();
             this.initDatePicker();
+            this.initTimePicker();
         },
 
         /**
@@ -269,6 +270,16 @@ var app = app || {};
                 autoclose: true,
                 language: 'es',
                 format: 'yyyy-mm-dd'
+            });
+        },
+        /**
+        * Init Timepicker
+        */
+        initTimePicker: function () {
+
+            $(".timepicker").timepicker({
+                showInputs: false,
+                showMeridian: false
             });
         }
     };

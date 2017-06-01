@@ -60,6 +60,7 @@ class Documentos extends Model
 
         return Cache::rememberForever( self::$key_cache , function() {
             $query = Documentos::query();
+            $query->orderBy('documentos_nombre', 'asc');
             $collection = $query->lists('documentos_nombre', 'id');
 
             $collection->prepend('', '');

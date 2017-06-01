@@ -7,9 +7,9 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use Datatables, DB;
-
 use App\Models\Base\Municipio;
+
+use Datatables, DB;
 
 class MunicipioController extends Controller
 {

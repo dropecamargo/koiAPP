@@ -13,7 +13,9 @@ app || (app = {});
 
       	el: 'body',
 		events: {
-            'click .sidebar-toggle': 'clickSidebar'
+            'click .sidebar-toggle': 'clickSidebar',
+            'click .history-back': 'clickHistoryBack',
+            'hidden.bs.modal': 'multiModal'
 		},
 
         /**
@@ -31,7 +33,19 @@ app || (app = {});
 
 			// Create or update the cookie:
 			document.cookie = "sidebar_toggle=" + (this.$el.hasClass('sidebar-collapse') ? '' : 'sidebar-collapse') + "; path=/; expires=" + expiration.toUTCString();
-		}
+		},
+
+		clickHistoryBack: function(e) {
+            e.preventDefault();
+
+            window.history.back();
+        },
+
+		multiModal: function(){
+            if( $('.modal.in').length > 0){
+                $('body').addClass('modal-open');
+            }
+        },
     });
 
 

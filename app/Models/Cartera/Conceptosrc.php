@@ -34,12 +34,14 @@ class Conceptosrc extends BaseModel
 
     protected $boolean = ['conceptosrc_activo'];
 
+    protected $nullable = ['conceptosrc_documentos'];
+
+
 	public function isValid($data)
 	{
 		$rules = [
 			'conceptosrc_nombre' => 'required|max:25',
 			'conceptosrc_plancuentas' => 'required',
-			'conceptosrc_documentos' => 'required',
 		];
 
 		$validator = Validator::make($data, $rules);
@@ -55,7 +57,7 @@ class Conceptosrc extends BaseModel
 		$query = Conceptosrc::query();
 		$query->select('conceptosrc.*', 'plancuentas_nombre', 'plancuentas_cuenta', 'documentos_nombre', 'documentos_codigo');
 		$query->join('plancuentas', 'conceptosrc_plancuentas', '=', 'plancuentas.id');
-		$query->join('documentos', 'conceptosrc_documentos', '=', 'documentos.id');
+		$query->leftJoin('documentos', 'conceptosrc_documentos', '=', 'documentos.id');
 		$query->where('conceptosrc.id', $id);
 		return $query->first();
 	}

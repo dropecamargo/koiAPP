@@ -25,7 +25,7 @@ class ConceptosrcController extends Controller
             $query = Conceptosrc::query();
             $query->select('conceptosrc.*', 'plancuentas_nombre', 'documentos_nombre');
             $query->join('plancuentas', 'conceptosrc_plancuentas', '=', 'plancuentas.id');
-            $query->join('documentos', 'conceptosrc_documentos', '=', 'documentos.id');
+            $query->leftJoin('documentos', 'conceptosrc_documentos', '=', 'documentos.id');
             return Datatables::of($query)->make(true);
         }
         return view('cartera.conceptosrc.index');
@@ -61,18 +61,19 @@ class ConceptosrcController extends Controller
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar plan de cuenta, verifique información ó por favor consulte al administrador.']);
                     }
-
-                    $documentos = Documentos::find($request->conceptosrc_documentos);
-                    if(!$documentos instanceof Documentos){
-                        DB::rollback();
-                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar documento, verifique información ó por favor consulte al administrador.']);
+                    if ($request->has('conceptosrc_documentos')) {
+                        $documentos = Documentos::find($request->conceptosrc_documentos);
+                        if(!$documentos instanceof Documentos){
+                            DB::rollback();
+                            return response()->json(['success' => false, 'errors' => 'No es posible recuperar documento, verifique información ó por favor consulte al administrador.']);
+                        }
+                        $conceptosrc->conceptosrc_documentos = $documentos->id;
                     }
 
                     // conceptosrc
                     $conceptosrc->fill($data);
                     $conceptosrc->fillBoolean($data);
                     $conceptosrc->conceptosrc_plancuentas = $plancuentas->id;
-                    $conceptosrc->conceptosrc_documentos = $documentos->id;
                     $conceptosrc->save();
 
                     //Forget cache

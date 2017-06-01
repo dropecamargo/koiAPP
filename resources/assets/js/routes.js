@@ -167,7 +167,6 @@ app || (app = {});
             |-----------------------
             */
             'autorizacionesca(/)': 'getAutorizacionesCaMain',
-            // 'autorizacionesca/create(/)': 'getAutorizacionCaCreate',
             'autorizacionesca/:autorizacionesca(/)': 'getAutorizacionesCaShow',
 
             'pedidosc(/)': 'getPedidoscMain',
@@ -217,6 +216,37 @@ app || (app = {});
             'devoluciones(/)': 'getDevolucionesMain',
             'devoluciones/create(/)': 'getDevolucionesCreate',
             'devoluciones/:devoluciones(/)': 'getDevolucionesShow',
+    
+            'anticipos(/)': 'getAnticiposMain',
+            'anticipos/create(/)': 'getAnticipoCreate',
+            'anticipos/:anticipos(/)': 'getAnticiposShow',
+            /*
+            |----------------------
+            | Tecnico
+            |----------------------
+            */
+
+            'tiposorden(/)': 'getTiposOrdenMain',
+            'tiposorden/create(/)': 'getTiposOrdenCreate',
+            'tiposorden/:tiposorden/edit(/)': 'getTiposOrdenEdit',
+
+            'solicitantes(/)': 'getSolicitantesMain',
+            'solicitantes/create(/)': 'getSolicitantesCreate',
+            'solicitantes/:solicitantes/edit(/)': 'getSolicitantesEdit',
+
+            'danos(/)': 'getDanosMain',
+            'danos/create(/)': 'getDanosCreate',
+            'danos/:danos/edit(/)': 'getDanosEdit',
+
+            'ordenes(/)': 'getOrdenesMain',
+            'ordenes/create(/)': 'getOrdenesCreate',
+            'ordenes/:orden/edit(/)': 'getOrdenesEdit',
+            'ordenes/:orden(/)': 'getOrdenesShow',
+
+            'prioridades(/)': 'getPrioridadesMain',
+            'prioridades/create(/)': 'getPrioridadesCreate',
+            'prioridades/:prioridades/edit(/)': 'getPrioridadesEdit',
+
         },
 
         /**
@@ -1903,6 +1933,251 @@ app || (app = {});
 
             this.showDevolucionView = new app.ShowDevolucionView({ model: this.devolucionModel });
         },
+        // Anticipo
+        getAnticiposMain: function(){
 
+            if (this.mainAnticiposView instanceof Backbone.View) {
+                this.mainAnticiposView.stopListening();
+                this.mainAnticiposView.undelegateEvents();
+            }
+            this.mainAnticiposView = new app.MainAnticiposView( );
+        },
+        getAnticipoCreate: function(){
+            this.anticipoModel = new app.AnticipoModel();
+
+            if (this.createAnticipoView instanceof Backbone.View) {
+                this.createAnticipoView.stopListening();
+                this.createAnticipoView.undelegateEvents();
+            }
+            this.createAnticipoView = new app.CreateAnticipoView({ model: this.anticipoModel });
+            this.createAnticipoView.render();
+        },
+        getAnticiposShow: function(anticipos){
+            this.anticipoModel = new app.AnticipoModel();
+            this.anticipoModel.set({'id' : anticipos }, {'silent' : true });
+
+            if ( this.showAnticipoView instanceof Backbone.View ){
+                this.showAnticipoView.stopListening();
+                this.showAnticipoView.undelegateEvents();
+            }
+            
+            // this.showAnticipoView = new app.ShowDevolucionView({ model: this.devolucionModel });
+        },
+
+        /*---------------------
+        | Tecnicos
+        /*--------------------*/
+
+        // Tipo de Orden
+        getTiposOrdenMain: function () {
+
+            if ( this.mainTipoOrdenView instanceof Backbone.View ){
+                this.mainTipoOrdenView.stopListening();
+                this.mainTipoOrdenView.undelegateEvents();
+            }
+
+            this.mainTipoOrdenView = new app.MainTiposOrdenView( );
+        },
+
+        getTiposOrdenCreate: function () {
+            this.tipoordenModel = new app.TipoOrdenModel();
+
+            if ( this.createTipoOrdenView instanceof Backbone.View ){
+                this.createTipoOrdenView.stopListening();
+                this.createTipoOrdenView.undelegateEvents();
+            }
+
+            this.createTipoOrdenView = new app.CreateTipoOrdenView({ model: this.tipoordenModel });
+            this.createTipoOrdenView.render();
+        },
+
+        getTiposOrdenEdit: function (tiposorden) {
+            this.tipoordenModel = new app.TipoOrdenModel();
+            this.tipoordenModel.set({'id': tiposorden}, {'silent':true});
+
+            if ( this.createTipoOrdenView instanceof Backbone.View ){
+                this.createTipoOrdenView.stopListening();
+                this.createTipoOrdenView.undelegateEvents();
+            }
+
+            this.createTipoOrdenView = new app.CreateTipoOrdenView({ model: this.tipoordenModel });
+            this.tipoordenModel.fetch();
+        },
+
+        // Solicitante
+        getSolicitantesMain: function () {
+
+            if ( this.mainSolicitanteView instanceof Backbone.View ){
+                this.mainSolicitanteView.stopListening();
+                this.mainSolicitanteView.undelegateEvents();
+            }
+
+            this.mainSolicitanteView = new app.MainSolicitantesView( );
+        },
+
+        getSolicitantesCreate: function () {
+            this.solicitanteModel = new app.SolicitanteModel();
+
+            if ( this.createSolicitanteView instanceof Backbone.View ){
+                this.createSolicitanteView.stopListening();
+                this.createSolicitanteView.undelegateEvents();
+            }
+
+            this.createSolicitanteView = new app.CreateSolicitanteView({ model: this.solicitanteModel });
+            this.createSolicitanteView.render();
+        },
+
+        getSolicitantesEdit: function (solicitantes) {
+            this.solicitanteModel = new app.SolicitanteModel();
+            this.solicitanteModel.set({'id': solicitantes}, {'silent':true});
+
+            if ( this.createSolicitanteView instanceof Backbone.View ){
+                this.createSolicitanteView.stopListening();
+                this.createSolicitanteView.undelegateEvents();
+            }
+
+            this.createSolicitanteView = new app.CreateSolicitanteView({ model: this.solicitanteModel });
+            this.solicitanteModel.fetch();
+        },
+
+        // Daños
+        getDanosMain: function () {
+
+            if ( this.mainDanoView instanceof Backbone.View ){
+                this.mainDanoView.stopListening();
+                this.mainDanoView.undelegateEvents();
+            }
+
+            this.mainDanoView = new app.MainDanosView( );
+        },
+
+        getDanosCreate: function () {
+            this.danoModel = new app.DanoModel();
+
+            if ( this.createDanoView instanceof Backbone.View ){
+                this.createDanoView.stopListening();
+                this.createDanoView.undelegateEvents();
+            }
+
+            this.createDanoView = new app.CreateDanoView({ model: this.danoModel });
+            this.createDanoView.render();
+        },
+
+        getDanosEdit: function (danos) {
+            this.danoModel = new app.DanoModel();
+            this.danoModel.set({'id': danos}, {'silent':true});
+
+            if ( this.createDanoView instanceof Backbone.View ){
+                this.createDanoView.stopListening();
+                this.createDanoView.undelegateEvents();
+            }
+
+            this.createDanoView = new app.CreateDanoView({ model: this.danoModel });
+            this.danoModel.fetch();
+        },
+
+        // Prioridad
+        getPrioridadesMain: function () {
+
+            if ( this.mainPrioridadView instanceof Backbone.View ){
+                this.mainPrioridadView.stopListening();
+                this.mainPrioridadView.undelegateEvents();
+            }
+
+            this.mainPrioridadView = new app.MainPrioridadesView( );
+        },
+
+        getPrioridadesCreate: function () {
+            this.prioridadModel = new app.PrioridadModel();
+
+            if ( this.createPrioridadView instanceof Backbone.View ){
+                this.createPrioridadView.stopListening();
+                this.createPrioridadView.undelegateEvents();
+            }
+
+            this.createPrioridadView = new app.CreatePrioridadView({ model: this.prioridadModel });
+            this.createPrioridadView.render();
+        },
+
+        getPrioridadesEdit: function (prioridades) {
+            this.prioridadModel = new app.PrioridadModel();
+            this.prioridadModel.set({'id': prioridades}, {'silent':true});
+
+            if ( this.createPrioridadView instanceof Backbone.View ){
+                this.createPrioridadView.stopListening();
+                this.createPrioridadView.undelegateEvents();
+            }
+
+            this.createPrioridadView = new app.CreatePrioridadView({ model: this.prioridadModel });
+            this.prioridadModel.fetch();
+        },
+
+        //Contratos
+        getContratosMain: function(){
+            if ( this.mainContratoView instanceof Backbone.View ){
+                this.mainContratoView.stopListening();
+                this.mainContratoView.undelegateEvents();
+            }
+            this.mainContratoView = new app.MainContratosView( );
+
+        },
+
+        /**
+        * show view main ordenes
+        */
+        getOrdenesMain: function () {
+            if ( this.mainOrdenesView instanceof Backbone.View ){
+                this.mainOrdenesView.stopListening();
+                this.mainOrdenesView.undelegateEvents();
+            }
+
+            this.mainOrdenesView = new app.MainOrdenesView( );
+        },
+
+        /**
+        * show view create ordenes
+        */
+        getOrdenesCreate: function () {
+            this.ordenModel = new app.OrdenModel();
+
+            if ( this.createOrdenView instanceof Backbone.View ){
+                this.createOrdenView.stopListening();
+                this.createOrdenView.undelegateEvents();
+            }
+
+            this.createOrdenView = new app.CreateOrdenView({ model: this.ordenModel });
+            this.createOrdenView.render();
+        },
+
+        /**
+        * show view edit ordenes
+        */
+        getOrdenesEdit: function (orden) {
+            this.ordenModel = new app.OrdenModel();
+            this.ordenModel.set({'id': orden}, {'silent':true});
+
+            if ( this.createOrdenView instanceof Backbone.View ){
+                this.createOrdenView.stopListening();
+                this.createOrdenView.undelegateEvents();
+            }
+
+            this.createOrdenView = new app.CreateOrdenView({ model: this.ordenModel });
+            this.ordenModel.fetch();
+        },
+
+        /**
+        * show view show tercero
+        */
+        getOrdenesShow: function (orden) {
+            this.ordenModel = new app.OrdenModel();
+            this.ordenModel.set({'id': orden}, {silent: true});
+
+            if ( this.showOrdenView instanceof Backbone.View ){
+                this.showOrdenView.stopListening();
+                this.showOrdenView.undelegateEvents();
+            }
+
+            this.showOrdenView = new app.ShowOrdenView({ model: this.ordenModel });
+        },
     }));
 })(jQuery, this, this.document);

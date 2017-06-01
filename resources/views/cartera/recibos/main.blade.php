@@ -64,7 +64,7 @@
                                     <i class="fa fa-user"></i>
                                 </button>
                             </span>
-                            <input id="recibo1_tercero" placeholder="Cliente" class="form-control tercero-koi-component" name="recibo1_tercero" type="text" maxlength="15" data-cliente="true" data-wrapper="recibos1-create" data-name="tercero_nombre" value="<%- tercero_nit %>" required>
+                            <input id="recibo1_tercero" placeholder="Cliente" class="form-control tercero-koi-component" name="recibo1_tercero" type="text" maxlength="15" data-wrapper="recibos1-create" data-name="tercero_nombre" value="<%- tercero_nit %>" required>
                         </div>
                     </div>
                     <div class="col-md-5 col-xs-10">

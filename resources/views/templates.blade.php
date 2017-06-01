@@ -93,6 +93,11 @@
 				<select name="tercero_municipio" id="tercero_municipio" class="form-control choice-select-autocomplete" data-ajax-url="<%- window.Misc.urlFull(Route.route('municipios.index'))%>" data-placeholder="Seleccione" placeholder="Seleccione" data-initial-value="<%- tercero_municipio %>">
 				</select>
 			</div>
+			<div class="form-group col-md-3">
+				<label for="tercero_pais" class="control-label">Pais</label>
+				<select name="tercero_pais" id="tercero_pais" class="form-control choice-select-autocomplete" data-ajax-url="<%- window.Misc.urlFull(Route.route('paises.index'))%>" data-placeholder="Seleccione" placeholder="Seleccione" data-initial-value="<%- tercero_pais %>">
+				</select>
+			</div>
 
 			<div class="form-group col-md-3">
 				<label for="tercero_email" class="control-label">Email</label>
@@ -652,6 +657,10 @@
 			<label for="puntoventa_nombre" class="control-label">Nombre</label>
 			<input type="text" id="puntoventa_nombre" name="puntoventa_nombre" value="<%- puntoventa_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="200" required>
 		</div>
+		<div class="form-group col-md-2">
+			<label for="puntoventa_numero" class="control-label">Consecutivo</label>
+			<input type="number" id="puntoventa_numero" name="puntoventa_numero" value="<%- puntoventa_numero %>" class="form-control input-sm" min="0">
+		</div>
     </div>
 
     <div class="row">
@@ -1204,7 +1213,7 @@
 		</div>
 		<div class="form-group col-md-3">
 			<label for="conceptosrc_documentos" class="control-label">Documento</label>
-			<select name="conceptosrc_documentos" id="conceptosrc_documentos" class="form-control select2-default" required>
+			<select name="conceptosrc_documentos" id="conceptosrc_documentos" class="form-control select2-default">
 				<option value="" selected>Seleccione</option>
 				@foreach( App\Models\Base\Documentos::getDocumentos() as $key => $value)
 					<option value="{{ $key }}" <%- conceptosrc_documentos == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
@@ -1359,4 +1368,64 @@
 			</label>
 		</div>
 	</div>
+</script>
+
+{{-- templeates Tecnicos --}}
+<script type="text/template" id="add-tipoorden-tpl">
+	<div class="row">
+		<div class="form-group col-md-8">
+			<label for="tipoorden_nombre" class="control-label">Nombre</label>
+			<input type="text" id="tipoorden_nombre" name="tipoorden_nombre" value="<%- tipoorden_nombre %>" placeholder="Tipo de Orden" class="form-control input-sm input-toupper" maxlength="200" required>
+		</div>
+
+		<div class="form-group col-md-2 col-xs-8 col-sm-3">
+			<br><label class="checkbox-inline" for="tipoorden_activo">
+				<input type="checkbox" id="tipoorden_activo" name="tipoorden_activo" value="tipoorden_activo" <%- tipoorden_activo ? 'checked': ''%>> Activo
+			</label>
+		</div>
+    </div>
+</script>
+
+<script type="text/template" id="add-solicitante-tpl">
+	<div class="row">
+		<div class="form-group col-md-8">
+			<label for="solicitante_nombre" class="control-label">Nombre</label>
+			<input type="text" id="solicitante_nombre" name="solicitante_nombre" value="<%- solicitante_nombre %>" placeholder="Solicitante" class="form-control input-sm input-toupper" maxlength="200" required>
+		</div>
+
+		<div class="form-group col-md-2 col-xs-8 col-sm-3">
+			<br><label class="checkbox-inline" for="solicitante_activo">
+				<input type="checkbox" id="solicitante_activo" name="solicitante_activo" value="solicitante_activo" <%- solicitante_activo ? 'checked': ''%>> Activo
+			</label>
+		</div>
+    </div>
+</script>
+<script type="text/template" id="add-dano-tpl">
+	<div class="row">
+		<div class="form-group col-md-8">
+			<label for="dano_nombre" class="control-label">Nombre</label>
+			<input type="text" id="dano_nombre" name="dano_nombre" value="<%- dano_nombre %>" placeholder="Daño" class="form-control input-sm input-toupper" maxlength="200" required>
+		</div>
+
+		<div class="form-group col-md-2 col-xs-8 col-sm-3">
+			<br><label class="checkbox-inline" for="dano_activo">
+				<input type="checkbox" id="dano_activo" name="dano_activo" value="dano_activo" <%- dano_activo ? 'checked': ''%>> Activo
+			</label>
+		</div>
+    </div>
+</script>
+
+<script type="text/template" id="add-prioridad-tpl">
+	<div class="row">
+		<div class="form-group col-md-8">
+			<label for="prioridad_nombre" class="control-label">Nombre</label>
+			<input type="text" id="prioridad_nombre" name="prioridad_nombre" value="<%- prioridad_nombre %>" placeholder="Prioridad" class="form-control input-sm input-toupper" maxlength="200" required>
+		</div>
+
+		<div class="form-group col-md-2 col-xs-8 col-sm-3">
+			<br><label class="checkbox-inline" for="prioridad_activo">
+				<input type="checkbox" id="prioridad_activo" name="prioridad_activo" value="prioridad_activo" <%- prioridad_activo ? 'checked': ''%>> Activo
+			</label>
+		</div>
+    </div>
 </script>

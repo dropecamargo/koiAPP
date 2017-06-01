@@ -172,8 +172,9 @@ class TrasladoController extends Controller
                                         DB::rollback();
                                         return response()->json(['success' => false,'errors '=> $inventario]);
                                     }
-
-                                    // Individualiza en rollo
+                                    /**
+                                    * Entrada de rollo sucursal destino
+                                    */
                                     $rollo = Rollo::actualizar($producto, $destino->id, 'E', $rollo->rollo_lote, $traslado->traslado1_fecha, $valueItem);
                                     if (!$rollo instanceof Rollo) {
                                         DB::rollback();
