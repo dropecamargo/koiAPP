@@ -22,7 +22,7 @@ app || (app = {});
             'recibo2_valor': '',
             'factura1_numero': '',
             'factura3_cuota': '',
-            'factura3_valor': '',
+            'factura3_valor': ''
         }
     });
 })(this, this.document);

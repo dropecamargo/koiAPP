@@ -19,6 +19,7 @@ app || (app = {});
             // Model exist
             if( this.model.id != undefined ) {
             	this.detalleReciboList = new app.DetalleReciboList();
+                this.detalleReciboMedioPagoList = new app.DetalleRecibo3List();
                 
                 // Reference views
                 this.referenceViews();
@@ -39,6 +40,16 @@ app || (app = {});
                     	recibo2: this.model.get('id')
                     }
                 }
+            });
+            //DetalleRecibo3List
+            this.detalleRecibos3View = new app.DetalleMedioPagoReciboView( {
+                collection: this.detalleReciboMedioPagoList,
+                parameters: {
+                    edit: false,
+                    dataFilter: {
+                        'recibo3': this.model.get('id')
+                    }
+               }
             });
         }
     });

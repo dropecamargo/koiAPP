@@ -72,12 +72,12 @@
     </li>
 
     {{--Cartera--}}
-    <li class="{{ in_array(Request::segment(1), ['autorizacionesca','bancos','conceptosrc','cuentabancos','autorizaco','mediopagos', 'recibos', 'conceptonotas', 'notas','facturas','conceptosajustec','ajustesc','devoluciones','anticipos']) ? 'active' : '' }}">
+    <li class="{{ in_array(Request::segment(1), ['autorizacionesca','bancos','conceptosrc','cuentabancos','autorizaco','mediopagos', 'recibos', 'conceptonotas', 'notas','facturas','conceptosajustec','ajustesc','devoluciones','anticipos','cheques']) ? 'active' : '' }}">
     <a href="#">
             <i class="fa fa-suitcase"></i> <span>Cartera</span><i class="fa fa-angle-left pull-right"></i>
         </a>
         <ul class="treeview-menu">
-            <li class="{{ in_array(Request::segment(1), ['recibos', 'notas','facturas', 'ajustesc', 'devoluciones','anticipos']) ? 'active' : '' }}">
+            <li class="{{ in_array(Request::segment(1), ['recibos', 'notas','facturas', 'ajustesc', 'devoluciones','anticipos','cheques']) ? 'active' : '' }}">
                 <a href="#">
                     <i class="fa fa-wpforms"></i> Módulos <i class="fa fa-angle-left pull-right"></i>
                 </a>
@@ -88,6 +88,9 @@
                     </li>
                     <li class="{{ Request::segment(1) == 'anticipos' ? 'active' : '' }}">
                         <a href="{{ route('anticipos.index') }}"><i class="fa fa-caret-square-o-left"></i> Anticipos</a>
+                    </li>
+                    <li class="{{ Request::segment(1) == 'cheques' ? 'active' : '' }}">
+                        <a href="{{ route('cheques.index') }}"><i class="fa fa-list-alt"></i> Cheques posfechados</a>
                     </li>
                     <li class="{{ Request::segment(1) == 'devoluciones' ? 'active' : '' }}">
                         <a href="{{ route('devoluciones.index') }}"><i class="fa fa-reply"></i> Devoluciones</a>

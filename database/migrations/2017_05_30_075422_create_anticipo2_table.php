@@ -19,8 +19,8 @@ class CreateAnticipo2Table extends Migration
             $table->integer('anticipo2_anticipo1')->unsigned();
             $table->integer('anticipo2_mediopago')->unsigned();
             $table->string('anticipo2_numero_medio',25);
-            $table->dateTime('anticipo2_vence_medio');
-            $table->integer('anticipo2_banco_medio')->unsigned();
+            $table->dateTime('anticipo2_vence_medio')->nullable();
+            $table->integer('anticipo2_banco_medio')->unsigned()->nullable();
             $table->double('anticipo2_valor');
 
             $table->foreign('anticipo2_anticipo1')->references('id')->on('anticipo1')->onDelete('restrict');

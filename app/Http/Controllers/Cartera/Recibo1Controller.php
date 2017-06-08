@@ -7,9 +7,9 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\Models\Cartera\Recibo1, App\Models\Cartera\Recibo2, App\Models\Cartera\Factura3, App\Models\Cartera\Factura1;
+use App\Models\Cartera\Recibo1, App\Models\Cartera\Recibo2, App\Models\Cartera\Recibo3, App\Models\Cartera\Factura3, App\Models\Cartera\Factura1;
 use App\Models\Base\Documentos, App\Models\Base\Sucursal, App\Models\Base\Tercero;
-use App\Models\Cartera\Conceptosrc, App\Models\Cartera\CuentaBanco;
+use App\Models\Cartera\Conceptosrc, App\Models\Cartera\CuentaBanco, App\Models\Cartera\MedioPago;
 use DB, Log, Auth, Datatables;
 
 class Recibo1Controller extends Controller
@@ -130,6 +130,32 @@ class Recibo1Controller extends Controller
                             $recibo2->recibo2_valor = $item['recibo2_valor'];
                         }
                         $recibo2->save();
+                    }
+                    foreach ($data['recibo3'] as $value) {
+                        // Recupero instancia de MedioPago
+                        $mediopago = MedioPago::find($value['recibo3_mediopago']);
+                        if (!$mediopago instanceof MedioPago) {
+                            DB::rollback();
+                            return response()->json(['success' => false, 'errors' => 'No es posible recuperar medio de pago, verifique información ó por favor consulte al administrador.']);
+                        }
+                        // Cuando es cheque o tarjeta estos vienen con datos que hay que guardar
+                        if ( !isset($value['recibo3_banco_medio']) && isset($value['recibo3_numero_medio']) && isset($value['recibo3_vence_medio']) ) {
+
+                            // Recupero instancia de Banco
+                            $banco = Banco::find($value['recibo3_banco_medio']);
+                            if (!$banco instanceof Banco) {
+                                DB::rollback();
+                                return response()->json(['success' => false, 'errors' => 'No es posible recuperar banco, verifique información ó por favor consulte al administrador.']);
+                            }
+                        }
+                        $recibo3 = new Recibo3;
+                        $recibo3->recibo3_recibo1 = $recibo1->id;
+                        $recibo3->recibo3_mediopago = $mediopago->id;
+                        $recibo3->recibo3_valor = $value['recibo3_valor'];
+                        $recibo3->recibo3_banco_medio = ($value['recibo3_banco_medio'] == "") ? null : $value['recibo3_banco_medio'] ;
+                        $recibo3->recibo3_numero_medio = $value['recibo3_numero_medio'];
+                        $recibo3->recibo3_vence_medio = ($value['recibo3_vence_medio'] == "") ? null : $value['recibo3_vence_medio'];
+                        $recibo3->save();
                     }
 
                     // Update consecutive sucursal_reci in Sucursal

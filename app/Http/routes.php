@@ -170,6 +170,13 @@ Route::group(['middleware' => 'auth'], function(){
 	{
 		Route::resource('detalle', 'Cartera\Recibo2Controller');
 		Route::resource('factura', 'Cartera\Factura3Controller');
+		Route::resource('mediopago', 'Cartera\Recibo3Controller');
+	});
+	
+	Route::group(['prefix' => 'anticipos'], function()
+	{
+		Route::resource('mediopago', 'Cartera\Anticipo2Controller');
+		Route::resource('detalle', 'Cartera\Anticipo3Controller');
 	});
 
 	Route::group(['prefix' => 'conceptosrc'], function()
@@ -211,6 +218,7 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::resource('conceptosajustec', 'Cartera\ConceptoAjustecController', ['except' => ['destroy']]);
 	Route::resource('ajustesc', 'Cartera\Ajustec1Controller', ['except' => ['destroy']]);
 	Route::resource('anticipos', 'Cartera\AnticipoController', ['except' => ['destroy']]);
+	Route::resource('cheques', 'Cartera\ChposFechado1Controller', ['except' => ['destroy']]);
 
 	/*
 	|-------------------------

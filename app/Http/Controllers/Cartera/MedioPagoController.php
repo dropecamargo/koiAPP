@@ -8,7 +8,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Models\Cartera\MedioPago;
-use DB, Log, Datatables;
+use Cache, DB, Log, Datatables;
     
 class MedioPagoController extends Controller
 {
@@ -55,6 +55,9 @@ class MedioPagoController extends Controller
                     $mediopago->fillBoolean($data);
                     $mediopago->save();
 
+                    //Forget cache
+                    Cache::forget( MedioPago::$key_cache );
+
                     // Commit Transaction
                     DB::commit();
                     return response()->json(['success' => true, 'id' => $mediopago->id]);
@@ -76,7 +79,7 @@ class MedioPagoController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show(Request $request, $id)
-    {
+    {   
         $mediopago = MedioPago::findOrFail($id);
         if ($request->ajax()) {
             return response()->json($mediopago);
@@ -116,6 +119,9 @@ class MedioPagoController extends Controller
                     $mediopago->fillBoolean($data);
                     $mediopago->save();
 
+                    //Forget cache
+                    Cache::forget( MedioPago::$key_cache );
+                    
                     // Commit Transaction
                     DB::commit();
                     return response()->json(['success' => true, 'id' => $mediopago->id]);

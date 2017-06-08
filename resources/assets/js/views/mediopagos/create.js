@@ -14,7 +14,9 @@ app || (app = {});
         el: '#mediopago-create',
         template: _.template( ($('#add-mediopago-tpl').html() || '') ),
         events: {
-            'submit #form-mediopago': 'onStore'
+            'submit #form-mediopago': 'onStore',
+            'ifChecked #mediopago_ef': 'checkedEfectvo',
+            'ifChecked #mediopago_ch': 'checkedCheque'
         },
         parameters: {
         },
@@ -55,9 +57,34 @@ app || (app = {});
             var attributes = this.model.toJSON();
             this.$wraperForm.html( this.template(attributes) );
 
+            // References check
+
+            this.$checkch = this.$('#mediopago_ch');
+            this.$checkef = this.$('#mediopago_ef');
             this.ready();
         },
-
+        /**
+        *
+        */
+        checkedCheque:function(e){
+            e.preventDefault();
+            var selected = $(e.target).is(':checked');
+            
+            if ( selected ) {
+                this.$checkef.iCheck('uncheck');
+            }
+        },
+        /**
+        *
+        */
+        checkedEfectvo: function(e){
+            e.preventDefault();
+            var selected = $(e.target).is(':checked');
+            
+            if ( selected ) {
+                this.$checkch.iCheck('uncheck');
+            }
+        },
         /**
         * fires libraries js
         */

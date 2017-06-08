@@ -13,11 +13,14 @@ app || (app = {});
 
         el: '#recibo1-create',
         template: _.template(($('#add-recibo-tpl').html() || '') ),
+        templateDetalleRecibo3: _.template(($('#add-recibomedio-tpl').html() || '') ),
         events: {
             'click .submit-recibo' :'submitFormRecibo',
             'submit #form-recibo1' :'onStore',
             'submit #form-recibo2' :'onStoreItem',
+            'submit #form-recibo3' :'onStoreItem3',
             'change .change-concepto' :'changeConcepto',
+            'change .change-medio-pago' :'changeMedioPago',
         },
         parameters: {
         },
@@ -32,7 +35,9 @@ app || (app = {});
 
             // Attributes
             this.$wraperForm = this.$('#render-form-recibo1');
+            
             this.detalleReciboList = new app.DetalleReciboList();
+            this.detalleReciboMedioPagoList = new app.DetalleRecibo3List();
 
             // Events
             this.listenTo( this.model, 'change', this.render );
@@ -80,6 +85,17 @@ app || (app = {});
                     }
                }
             });
+            
+            //DetalleRecibo3List
+            this.detalleRecibos3View = new app.DetalleMedioPagoReciboView( {
+                collection: this.detalleReciboMedioPagoList,
+                parameters: {
+                    edit: true,
+                    dataFilter: {
+                        'recibo3': this.model.get('id')
+                    }
+               }
+            });
         },
 
         /*
@@ -90,6 +106,7 @@ app || (app = {});
                 e.preventDefault();
                 var data = window.Misc.formToJson( e.target );
                     data.recibo2 = this.detalleReciboList.toJSON();
+                    data.recibo3 = this.detalleReciboMedioPagoList.toJSON();
                 this.model.save( data, {patch: true, silent: true} );
             }   
         },
@@ -109,7 +126,20 @@ app || (app = {});
                 this.$valor.val('');
             }
         },
+        /**
+        * Event add item detalle recibo3
+        */
+        onStoreItem3: function(e) {
+            if (!e.isDefaultPrevented()) {
+                e.preventDefault();
 
+                var data = window.Misc.formToJson( e.target );
+                this.detalleReciboMedioPagoList.trigger( 'store', data );
+            }
+        },
+        /*
+        * Render concepo
+        */
         changeConcepto: function(e){
             var data = window.Misc.formToJson( e.target );
                 data.tercero = this.$(e.currentTarget).attr('data-tercero');
@@ -142,7 +172,40 @@ app || (app = {});
                 });
             }
         },
+        /**
+        * Render detalle del medio de pago 
+        */
+        changeMedioPago:function(e){
+            e.preventDefault();
+            
+            // References
+            this.$detailMedio = this.$('#detail-medio-pago');
+            var _this = this;
+                medio = _this.$(e.currentTarget).val();
+                attributes = this.model.toJSON();
+            $.ajax({
+                type: 'GET',
+                url: window.Misc.urlFull(Route.route('mediopagos.show',{ mediopagos: medio })),
+                beforeSend: function() {
+                    window.Misc.setSpinner( _this.el );
+                }
+            })
+            .done(function(resp) {
 
+                window.Misc.removeSpinner( _this.el );
+                
+                attributes.resp = resp;
+
+                //Render form detalle medioPago
+                _this.$detailMedio.empty().html( _this.templateDetalleRecibo3( attributes, resp ) );
+
+                _this.ready();
+            })       
+            .fail(function(jqXHR, ajaxOptions, thrownError) {
+                window.Misc.removeSpinner( _this.el );
+                alertify.error(thrownError);
+            });
+        },
         /**
         * fires libraries js
         */

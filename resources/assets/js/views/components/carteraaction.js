@@ -110,7 +110,7 @@ app || (app = {});
         changeCheck: function(e){
             var selected = this.$(e.currentTarget).prop('checked');
             var id = this.$(e.currentTarget).attr('id');
-            id = id.split("_");
+                id = id.split("_");
 
             if( !selected ) {
                 var modelo = this.detalleFacturaList.agregar(id[1], this.parameters.data, 'check');

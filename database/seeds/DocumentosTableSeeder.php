@@ -56,5 +56,9 @@ class DocumentosTableSeeder extends Seeder
             'documentos_codigo' => 'TRAS',
             'documentos_nombre' => 'TRASLADOS'
         ]);
+        Documentos::create([
+            'documentos_codigo' => 'ANTI',
+            'documentos_nombre' => 'ANTICIPOS'
+        ]);
     }
 }

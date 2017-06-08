@@ -220,6 +220,11 @@ app || (app = {});
             'anticipos(/)': 'getAnticiposMain',
             'anticipos/create(/)': 'getAnticipoCreate',
             'anticipos/:anticipos(/)': 'getAnticiposShow',
+
+            'cheques(/)': 'getChequesMain',
+            'cheques/create(/)': 'getChequeCreate',
+            'cheques/:cheques(/)': 'getChequeShow',
+
             /*
             |----------------------
             | Tecnico
@@ -1961,9 +1966,31 @@ app || (app = {});
                 this.showAnticipoView.undelegateEvents();
             }
             
-            // this.showAnticipoView = new app.ShowDevolucionView({ model: this.devolucionModel });
+            this.showAnticipoView = new app.ShowAnticiposView({ model: this.anticipoModel });
         },
 
+        // Cheques posfechados
+        getChequesMain: function (){
+
+            if (this.mainChequesView instanceof Backbone.View) {
+                this.mainChequesView.stopListening();
+                this.mainChequesView.undelegateEvents();
+            }
+            this.mainChequesView = new app.MainChequesView( );
+        },
+
+        getChequeCreate: function (){
+
+            this.chequeModel = new app.ChequeModel();
+            
+            if (this.createChequesView instanceof Backbone.View) {
+                this.createChequesView.stopListening();
+                this.createChequesView.undelegateEvents();
+            }
+            this.createChequesView = new app.CreateChequesView({ model: this.chequeModel });
+            this.createChequesView.render();
+        },
+        
         /*---------------------
         | Tecnicos
         /*--------------------*/

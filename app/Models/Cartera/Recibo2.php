@@ -5,7 +5,6 @@ namespace App\Models\Cartera;
 use Illuminate\Database\Eloquent\Model;
 
 use App\Models\BaseModel;
-use App\Models\Cartera\Conceptosrc;
 use Validator;
 
 class Recibo2 extends BaseModel

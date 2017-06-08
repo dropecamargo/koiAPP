@@ -1144,12 +1144,17 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="form-group col-md-2 col-xs-8 col-sm-3">
+		<div class="form-group col-md-1 col-xs-8 col-sm-2">
 			<br><label class="checkbox-inline" for="mediopago_activo">
 				<input type="checkbox" id="mediopago_activo" name="mediopago_activo" value="mediopago_activo" <%- parseInt(mediopago_activo) ? 'checked': ''%>> Activo
 			</label>
 		</div>
-		<div class="form-group col-md-2 col-xs-8 col-sm-3">
+		<div class="form-group col-md-1 col-xs-8 col-sm-2">
+			<br><label class="checkbox-inline" for="mediopago_ef">
+				<input type="checkbox" id="mediopago_ef" name="mediopago_ef" value="mediopago_ef" <%- parseInt(mediopago_ef) ? 'checked': ''%>> Efectivo
+			</label>
+		</div>
+		<div class="form-group col-md-1 col-xs-8 col-sm-2">
 			<br><label class="checkbox-inline" for="mediopago_ch">
 				<input type="checkbox" id="mediopago_ch" name="mediopago_ch" value="mediopago_ch" <%- parseInt(mediopago_ch) ? 'checked': ''%>> Cheque
 			</label>

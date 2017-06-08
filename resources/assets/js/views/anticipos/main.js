@@ -36,8 +36,12 @@ app || (app = {});
                     { data: 'anticipo1_numero', name: 'anticipo1_numero' },
                     { data: 'sucursal_nombre', name: 'sucursal_nombre' },
                     { data: 'tercero_nit', name: 'tercero_nit' },
-                    { data: 'tercero_nombre', name: 'devolucion1_tercero' },
+                    { data: 'tercero_nombre', name: 'anticipo1_tercero' },
                     { data: 'anticipo1_fecha', name: 'anticipo1_fecha' },
+                    { data: 'tercero_nombre1', name: 'tercero_nombre1' },
+                    { data: 'tercero_nombre2', name: 'tercero_nombre2' },
+                    { data: 'tercero_apellido1', name: 'tercero_apellido1' },
+                    { data: 'tercero_apellido2', name: 'tercero_apellido2' },
                 ],
                 buttons: [
                     {
@@ -55,6 +59,10 @@ app || (app = {});
                         render: function ( data, type, full, row ) {
                            return '<a href="'+ window.Misc.urlFull( Route.route('anticipos.show', {anticipos: full.id }) )  +'">' + data + '</a>';
                         },
+                    },
+                    {
+                        targets: [5,6,7,8],
+                        visible: false
                     }
                 ]
             });

@@ -74,6 +74,31 @@
                     </tfoot>
                 </table>
             </div>
+
+            <!-- table table-bordered table-striped --><br>
+            <div class="box-body table-responsive no-padding">
+                <table table id="browse-recibo3-list" class="table table-hover table-bordered" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Medio de pago</th>
+                            <th>Banco</th>
+                            <th>Numero</th>
+                            <th>Fecha</th>
+                            <th>Valor</th>
+                        </tr>
+                    </thead>   
+                    <tbody>
+                        {{-- Render content recibo3 --}}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th colspan="3"></th>
+                            <th class="text-left">Total</th>
+                            <th class="text-right"  id="total">0</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
         </div>
         <div class="box-header with-border">
             <div class="row">

@@ -42,7 +42,12 @@ class Recibo1 extends BaseModel
             // Validar Carrito
             $recibo2 = isset($data['recibo2']) ? $data['recibo2'] : null;
             if(!isset($recibo2) || $recibo2 == null || !is_array($recibo2) || count($recibo2) == 0) {
-                $this->errors = 'Por favor ingrese el detalle para realizar el recibo.';
+                $this->errors = 'Por favor ingrese el concepto para realizar el recibo.';
+                return false;
+            }
+            $recibo3 = isset($data['recibo3']) ? $data['recibo3'] : null;
+            if(!isset($recibo3) || $recibo3 == null || !is_array($recibo3) || count($recibo3) == 0) {
+                $this->errors = 'Por favor ingrese el medio de pago para realizar el recibo.';
                 return false;
             }
             return true;

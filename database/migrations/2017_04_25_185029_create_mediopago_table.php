@@ -19,6 +19,7 @@ class CreateMediopagoTable extends Migration
             $table->string('mediopago_nombre', 25);
             $table->boolean('mediopago_activo')->default(false);
             $table->boolean('mediopago_ch')->default(false);
+            $table->boolean('mediopago_ef')->default(false);
         });
     }
 

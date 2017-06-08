@@ -79,7 +79,7 @@ app || (app = {});
         * stores recibi
         * @param form element
         */
-        storeOne: function ( data ) {        
+        storeOne: function ( data ) {    
             var _this = this;
 
             if( !_.isUndefined(data.factura3_id) ){

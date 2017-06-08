@@ -12,10 +12,14 @@
                     <thead>
                         <tr>
                             <th>Número</th>
+                            <th>Sucursal</th>
                             <th>Identificación</th>
                             <th>Cliente</th>
-                            <th>Valor</th>
                             <th>Fecha</th>
+                            <th>Nombre1</th>
+                            <th>Nombre2</th>
+                            <th>Apellido1</th>
+                            <th>Apellido2</th>
                         </tr>
                     </thead>
                 </table>

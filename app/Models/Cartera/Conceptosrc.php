@@ -71,9 +71,26 @@ class Conceptosrc extends BaseModel
         return Cache::rememberForever( self::$key_cache , function() {
 	        $query = Conceptosrc::query();
 	        $query->select('id','conceptosrc_nombre');
+	        $query->whereNotNull('conceptosrc_documentos');
 	        $query->where('conceptosrc_activo', true);
 	        $collection = $query->lists('conceptosrc_nombre', 'id');
 
+			$collection->prepend('', '');
+	    	return $collection;
+	    });
+    }
+	public static function getConceptoAnticipo()
+    {
+    	if ( Cache::has(self::$key_cache)) {
+            return Cache::get(self::$key_cache);
+        }
+
+        return Cache::rememberForever( self::$key_cache , function() {
+	        $query = Conceptosrc::query();
+	        $query->select('id','conceptosrc_nombre');
+	        $query->whereNull('conceptosrc_documentos');
+	        $query->where('conceptosrc_activo', true);
+	        $collection = $query->lists('conceptosrc_nombre', 'id');
 			$collection->prepend('', '');
 	    	return $collection;
 	    });

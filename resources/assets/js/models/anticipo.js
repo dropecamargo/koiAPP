@@ -24,7 +24,7 @@ app || (app = {});
 			'tercero_nit':'',
 			'tercero_nombre':'',
 			'anticipo1_vendedor':'',
-			'anticipo1_observacion':'',
+			'anticipo1_observaciones':'',
         }
     });
 
