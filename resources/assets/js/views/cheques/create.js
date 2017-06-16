@@ -17,7 +17,7 @@ app || (app = {});
         events: {
             'click .submit-cheque1' : 'submitForm',
             'submit #form-cheque1' : 'onStore',
-            'submit #form-cheque2' : 'onStoreItem',
+            'change .change-concepto' : 'changeConcepto',
         },
         parameters: {
         },
@@ -34,6 +34,8 @@ app || (app = {});
             // Attributes
             this.$wraperForm = this.$('#render-form-cheque');
 
+            this.detalleChposFechado = new app.DetalleChposFechadoList();
+
             // Events
             this.listenTo( this.model, 'change', this.render );
             this.listenTo( this.model, 'sync', this.responseServer );
@@ -46,17 +48,16 @@ app || (app = {});
         * Render View Element
         */
         render: function() {
+            
             var attributes = this.model.toJSON();
             this.$wraperForm.html( this.template(attributes) );
 
             this.$form = this.$('#form-cheque1');
 
-            // References fields          
-
             this.referenceView();
         },
         /**
-        * Event submit devolucion1
+        * Event submit cheque
         */
         submitForm: function (e) {
             this.$form.submit();
@@ -70,6 +71,7 @@ app || (app = {});
                 e.preventDefault();
 
                 var data = window.Misc.formToJson( e.target );
+                    data.detalle = this.detalleChposFechado.toJSON();
                 this.model.save( data, {patch: true, silent: true} );
             }   
         },  
@@ -78,39 +80,49 @@ app || (app = {});
         */
         referenceView:function(){
 
+          //DetalleChequesList
+            this.detalleChequesView = new app.DetalleChequesView( {
+                collection: this.detalleChposFechado,
+                parameters: {
+                    wrapper: this.$('#detail-chposfechado'),
+                    edit: true,
+                    dataFilter: {
+                        'chposfechado2': this.model.get('id')
+                    }
+               }
+            });
         },
 
-        /**
-        *
-        */
-        onStoreItem: function(e){
-            
-            if (!e.isDefaultPrevented()) {
-                e.preventDefault();
+        changeConcepto:function(e){
+            var data = window.Misc.formToJson( e.target );
+                data.tercero = this.$(e.currentTarget).attr('data-tercero');
+                data.call = 'chposfechado';
 
-                var data = window.Misc.formToJson( e.target );
-                // this.detalleAnticipoMedioPagoList.trigger( 'store', data );
+            if( !_.isUndefined(data.chposfechado2_conceptosrc) && !_.isNull(data.chposfechado2_conceptosrc) && data.chposfechado2_conceptosrc != ''){
+                window.Misc.evaluateActionsCartera({
+                    'data': data,
+                    'wrap': this.$el,
+                    'callback': (function (_this) {
+                        return function ( action )
+                        {      
+                            // Open CarteraActionView
+                            if ( _this.carteraActionView instanceof Backbone.View ){
+                                _this.carteraActionView.stopListening();
+                                _this.carteraActionView.undelegateEvents();
+                            }
 
-                // Clean fields
-                this.cleanFields();
-            }
-        },
-
-        /**
-        *  Clean fields del carros temporales
-        */
-        cleanFields: function(){
-
-            this.$concepto.val('').trigger('change.select2');
-            this.$naturaleza.val('');
-            this.$valorConcepto.val('');
-
-            if (this.detalleAnticipoMedioPagoList.length > 0) {
-                this.$banco.val('').trigger('change.select2');
-                this.$numeroMedio.val('');
-                this.$fecha.val(moment().format('YYYY-MM-DD'));
-                this.$medio.val('').trigger('change.select2');
-                this.$valorMedio.val('');
+                            _this.carteraActionView = new app.CarteraActionView({
+                                model: _this.model,
+                                collection: _this.detalleChposFechado,
+                                parameters: {
+                                    data: data,
+                                    action: action,
+                                }
+                            });
+                            _this.carteraActionView.render();
+                        }
+                    })(this)
+                });
             }
         },
         /**
@@ -161,8 +173,7 @@ app || (app = {});
                     return; 
                 }
             }
-            // window.Misc.redirect( window.Misc.urlFull( Route.route('cheques.show', { cheques: resp.id})) );
-            // window.Misc.redirect( window.Misc.urlFull( Route.route('cheques.index')));
+            window.Misc.redirect( window.Misc.urlFull( Route.route('cheques.show', { cheques: resp.id})) );
         }
     });
 

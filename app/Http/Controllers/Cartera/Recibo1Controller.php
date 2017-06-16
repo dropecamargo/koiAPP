@@ -131,6 +131,7 @@ class Recibo1Controller extends Controller
                         }
                         $recibo2->save();
                     }
+                    
                     foreach ($data['recibo3'] as $value) {
                         // Recupero instancia de MedioPago
                         $mediopago = MedioPago::find($value['recibo3_mediopago']);

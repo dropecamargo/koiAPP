@@ -171,39 +171,60 @@ class ModulosTableSeeder extends Seeder
             'nivel3' => 1
         ]);
         Modulo::create([
-            'name' => 'anticipo',
+            'name' => 'anticipos',
             'display_name' => 'Anticipos',
             'nivel1' => 2,
             'nivel2' => 1,
             'nivel3' => 2
         ]);
         Modulo::create([
+            'name' => 'chequesdevueltos',
+            'display_name' => 'Cheques devueltos',
+            'nivel1' => 2,
+            'nivel2' => 1,
+            'nivel3' => 3
+        ]);
+        Modulo::create([
+            'name' => 'cheques',
+            'display_name' => 'Cheques posfechados',
+            'nivel1' => 2,
+            'nivel2' => 1,
+            'nivel3' => 4
+        ]);
+        Modulo::create([
             'name' => 'devoluciones',
             'display_name' => 'Devoluciones',
             'nivel1' => 2,
             'nivel2' => 1,
-            'nivel3' => 3
+            'nivel3' => 5
         ]);
         Modulo::create([
             'name' => 'facturas',
             'display_name' => 'Facturas',
             'nivel1' => 2,
             'nivel2' => 1,
-            'nivel3' => 4
+            'nivel3' => 6
+        ]);
+        Modulo::create([
+            'name' => 'gestioncobros',
+            'display_name' => 'Gestion cobro',
+            'nivel1' => 2,
+            'nivel2' => 1,
+            'nivel3' => 7
         ]);
         Modulo::create([
             'name' => 'notas',
             'display_name' => 'Notas',
             'nivel1' => 2,
             'nivel2' => 1,
-            'nivel3' => 5
+            'nivel3' => 8
         ]);
         Modulo::create([
             'name' => 'recibos',
             'display_name' => 'Recibo de caja',
             'nivel1' => 2,
             'nivel2' => 1,
-            'nivel3' => 6
+            'nivel3' => 9
         ]);
 
         // Referencia
@@ -222,39 +243,53 @@ class ModulosTableSeeder extends Seeder
             'nivel3' => 2
         ]);
         Modulo::create([
+            'name' => 'causas',
+            'display_name' => 'Causas',
+            'nivel1' => 2,
+            'nivel2' => 2,
+            'nivel3' => 3
+        ]);
+        Modulo::create([
             'name' => 'cuentabancos',
             'display_name' => 'Cuentas de banco',
             'nivel1' => 2,
             'nivel2' => 2,
-            'nivel3' => 3
+            'nivel3' => 4
         ]);
         Modulo::create([
             'name' => 'conceptonotas',
             'display_name' => 'Concepto de nota',
             'nivel1' => 2,
             'nivel2' => 2,
-            'nivel3' => 4
+            'nivel3' => 5
+        ]);
+        Modulo::create([
+            'name' => 'conceptocobros',
+            'display_name' => 'Concepto cobro',
+            'nivel1' => 2,
+            'nivel2' => 2,
+            'nivel3' => 6
         ]);
         Modulo::create([
             'name' => 'conceptosajustec',
             'display_name' => 'Concepto ajuste de cartera',
             'nivel1' => 2,
             'nivel2' => 2,
-            'nivel3' => 5
+            'nivel3' => 7
         ]);
         Modulo::create([
             'name' => 'conceptosrc',
             'display_name' => 'Concepto recibo de caja',
             'nivel1' => 2,
             'nivel2' => 2,
-            'nivel3' => 6
+            'nivel3' => 8
         ]);
         Modulo::create([
             'name' => 'mediopagos',
             'display_name' => 'Medios de pago',
             'nivel1' => 2,
             'nivel2' => 2,
-            'nivel3' => 7
+            'nivel3' => 9
         ]);
 
     	// Comercial

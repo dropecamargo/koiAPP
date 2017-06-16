@@ -195,9 +195,29 @@ app || (app = {});
                 window.Misc.removeSpinner( _this.el );
                 
                 attributes.resp = resp;
+                if (resp.mediopago_ch == 1) {
+                    // Open CarteraActionView
+                    if ( _this.carteraActionView instanceof Backbone.View ){
+                        _this.carteraActionView.stopListening();
+                        _this.carteraActionView.undelegateEvents();
+                    }
+                    // Obtengo id tercero del attr del select de concepto
+                    resp.tercero = _this.$('#recibo2_conceptosrc').attr('data-tercero');
 
+                    _this.carteraActionView = new app.CarteraActionView({
+                        model: _this.model,
+                        collection: _this.detalleReciboMedioPagoList,
+                        parameters: {
+                            data: resp,
+                            action: 'mediopago',
+                        }
+                    });
+                    _this.carteraActionView.render();
+
+                }else{  
+                    _this.$detailMedio.empty().html( _this.templateDetalleRecibo3( attributes ) );
+                }
                 //Render form detalle medioPago
-                _this.$detailMedio.empty().html( _this.templateDetalleRecibo3( attributes, resp ) );
 
                 _this.ready();
             })       

@@ -16,14 +16,12 @@
 	<section class="content">
     	@yield('module')
     </section>    
+    <script type="text/template" id="add-gestioncobro-item-tpl">
+    	<td><%- conceptocob_nombre %></td>
+    	<td><%- gestioncobro_fh %></td>
+    	<td><%- gestioncobro_proxima %></td>
+    	<td><%- gestioncobro_observaciones %></td>
+    	<td><%- usuario_nombre %></td>
+    </script>
 
-    <script type="text/template" id="add-tercero-cartera-tpl">
-		<td><%- factura1_numero %></td>
-	    <td><%- factura1_prefijo %></td>
-	    <td><%- factura3_cuota %></td>
-	    <td><%- moment(factura1_fh_elaboro).format('YYYY-MM-DD') %></td>
-		<td><%- factura3_vencimiento %></td>
-		<td><%- days %></td>
-	    <td class="text-right"><%- window.Misc.currency(factura3_saldo) %></td>
-	</script>
 @stop

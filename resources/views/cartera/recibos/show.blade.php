@@ -48,8 +48,8 @@
                     <div>{{ $recibo->recibo1_observaciones }}</div>
                 </div>
             </div>
-            
-            <!-- table table-bordered table-striped --><br>
+            <br>
+            <!-- table table-bordered table-striped -->
             <div class="box-body table-responsive no-padding">
                 <table id="browse-recibo-list" class="table table-hover table-bordered" cellspacing="0">
                     <thead>
@@ -100,7 +100,7 @@
                 </table>
             </div>
         </div>
-        <div class="box-header with-border">
+        <div class="box-footer with-border">
             <div class="row">
                 <div class="col-md-offset-5 col-md-2 col-sm-6 col-xs-6 text-left">
                     <a href=" {{ route('recibos.index') }}" class="btn btn-default btn-sm btn-block">{{ trans('app.comeback') }}</a>

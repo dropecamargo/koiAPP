@@ -11,9 +11,11 @@ app || (app = {});
     	el: 'body',
 
         template: _.template( ($('#add-concepto-factura-tpl').html() || '') ),
+        templateMedioCh: _.template( ($('#add-ch-recibo-tpl').html() || '') ),
     	events:{ 
             'submit #form-concepto-factura-component': 'onStore',
             'ifClicked .change-check': 'changeCheck',
+            'ifClicked .change-check-medio': 'changeCheckMedio',
             'change .change-pagar': 'changePagar',
             'ifClicked .change-naturaleza': 'changeNaturaleza',
         },
@@ -34,13 +36,19 @@ app || (app = {});
             }
 
             this.$modal = this.$('#modal-concepto-factura-component');
+            this.$modalMedio = this.$('#modal-mediopago-component');
             
             // Collection 
             this.detalleFacturaList = new app.DetalleFactura3List();
+            this.detalleChposFechado = new app.DetalleChposFechadoList();
+
             this.$concepto = this.parameters.data.call == 'recibo' ? this.$('#recibo2_conceptosrc') : this.$('#nota1_conceptonota');
 
             this.listenTo( this.detalleFacturaList, 'add', this.addOne );
             this.listenTo( this.detalleFacturaList, 'reset', this.addAll );
+
+            this.listenTo( this.detalleChposFechado, 'add', this.addOneCh );
+            this.listenTo( this.detalleChposFechado, 'reset', this.addAllCh );
 
             this.ready();
         },
@@ -57,6 +65,11 @@ app || (app = {});
 
                         // Reference 
                         _this.reference(resp);
+                    },
+                    'mediopago': function(){
+                        _this.$modalMedio.find('.content-modal').empty().html( _this.templateMedioCh() );
+                        // Reference 
+                        _this.referenceMedioPago(resp);
                     },
                     
                 };
@@ -106,12 +119,25 @@ app || (app = {});
             this.$modal.modal('show');
         },
 
+        /**
+        * Reference medio de pago cheque 
+        */
+        referenceMedioPago: function(atributes){
+            this.$wraper = this.$('#modal-wrapper-concepto-factura');
+            this.$wraperForm = this.$modal.find('.content-modal');
+            this.$wraperCh = this.$('#browse-cheque-list');
+
+            this.detalleChposFechado.fetch({ reset: true, data: { tercero: atributes.data.tercero }})
+
+            // Open modal
+            this.$modalMedio.modal('show');
+        },
+
         // Event change check
         changeCheck: function(e){
             var selected = this.$(e.currentTarget).prop('checked');
             var id = this.$(e.currentTarget).attr('id');
                 id = id.split("_");
-
             if( !selected ) {
                 var modelo = this.detalleFacturaList.agregar(id[1], this.parameters.data, 'check');
                 this.$('#pagar_'+id[1]).val( modelo.factura3_valor );
@@ -124,7 +150,18 @@ app || (app = {});
               
             this.ready();
         },
-
+        // 
+        changeCheckMedio: function(e){
+            var selected = this.$(e.currentTarget).prop('checked');
+            var id = this.$(e.currentTarget).attr('id');
+                id = id.split("_");
+            if( !selected ) {
+                var modelo = this.detalleChposFechado.findModel(id[1]);
+                this.collection.trigger('store', modelo );
+            }
+              
+            this.ready();    
+        },
         // Event change naturaleza D->debito C->credito
         changeNaturaleza: function (e){
             var selected = this.$(e.currentTarget).is(':checked');
@@ -213,6 +250,26 @@ app || (app = {});
             }else{
                 _this.addOne( factura3Model = new app.Factura3Model );
             }
+        },
+        /**
+        *
+        */
+        addOneCh: function(chposfechado2){
+            var view = new app.DetalleChequeItemView({
+                model: chposfechado2,
+                parameters: {
+                    call: true
+                }
+            });
+            chposfechado2.view = view;
+            this.$wraperCh.append( view.render().el );
+            this.ready();
+        },
+        /**
+        *
+        */
+        addAllCh:function(){
+            this.detalleChposFechado.forEach( this.addOneCh, this );
         },
     });
 })(jQuery, this, this.document);

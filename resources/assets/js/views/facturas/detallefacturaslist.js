@@ -142,7 +142,7 @@ app || (app = {});
                 descuento = (parseFloat(model.get('factura2_descuento_valor'))) * parseFloat(model.get('factura2_cantidad') ) ;
                 ivaValor = (costo-descuento) * iva ;
 
-            model.set('factura2_subtotal', (costo - descuento) + model.get('factura2_iva_valor'));
+            model.set('factura2_subtotal', (costo - descuento) + parseFloat(model.get('factura2_iva_valor')));
             model.set('factura2_iva_valor', ivaValor);
         },
         /**

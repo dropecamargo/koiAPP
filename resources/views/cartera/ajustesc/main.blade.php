@@ -92,11 +92,11 @@
                         <div class="form-group col-md-3">
                             <div class="input-group input-group-sm">
                                 <span class="input-group-btn">
-                                    <button type="button" class="btn btn-default btn-flat btn-koi-search-tercero-component-table" data-field="ajustec2_tercero" data-concepto="ajustec2_documentos_doc">
+                                    <button type="button" class="btn btn-default btn-flat btn-koi-search-tercero-component-table" data-field="ajustec2_tercero">
                                         <i class="fa fa-user"></i>
                                     </button>
                                 </span>
-                                <input id="ajustec2_tercero" placeholder="Cliente" class="form-control tercero-koi-component" name="ajustec2_tercero" type="text" maxlength="15" data-wrapper="detail-create" data-name="terceroc_nombre" required>
+                                <input id="ajustec2_tercero" placeholder="Cliente" class="form-control tercero-koi-component" name="ajustec2_tercero" data-concepto="ajustec2_documentos_doc" type="text" maxlength="15" data-name="terceroc_nombre" required>
                             </div>
                         </div>
                         <div class="col-md-6 col-xs-10">

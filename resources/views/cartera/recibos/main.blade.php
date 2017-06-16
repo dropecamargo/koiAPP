@@ -60,11 +60,11 @@
                     <div class="form-group col-md-3">
                         <div class="input-group input-group-sm">
                             <span class="input-group-btn">
-                                <button type="button" class="btn btn-default btn-flat btn-koi-search-tercero-component-table" data-field="recibo1_tercero" data-concepto="recibo2_conceptosrc" data-wrap="wrapper-recibo2">
+                                <button type="button" class="btn btn-default btn-flat btn-koi-search-tercero-component-table" data-field="recibo1_tercero">
                                     <i class="fa fa-user"></i>
                                 </button>
                             </span>
-                            <input id="recibo1_tercero" placeholder="Cliente" class="form-control tercero-koi-component" name="recibo1_tercero" type="text" maxlength="15" data-wrapper="recibos1-create" data-name="tercero_nombre" value="<%- tercero_nit %>" required>
+                            <input id="recibo1_tercero" placeholder="Cliente" class="form-control tercero-koi-component" name="recibo1_tercero" type="text" maxlength="15" data-concepto="recibo2_conceptosrc" data-wrap="wrapper-recibo2" data-name="tercero_nombre" value="<%- tercero_nit %>" required>
                         </div>
                     </div>
                     <div class="col-md-5 col-xs-10">
@@ -107,9 +107,9 @@
                         <div class="form-group col-md-3">
                             <select name="recibo2_naturaleza" id="recibo2_naturaleza" class="form-control input-sm" required>
                             <option  value="">Seleccione</option>
-                            @foreach( config('koi.recibos.naturaleza') as $key => $value )
-                                <option  value="{{ $key }}">{{ $value }}</option>
-                            @endforeach
+                                @foreach( config('koi.recibos.naturaleza') as $key => $value )
+                                    <option  value="{{ $key }}">{{ $value }}</option>
+                                @endforeach
                             </select>
                         </div> 
                         <label for="recibo2_valor" class="control-label col-md-1">Valor</label>

@@ -26,13 +26,14 @@ class CreateChposfechado1Table extends Migration
             $table->integer('chposfechado1_banco')->unsigned();    
             $table->string('chposfechado1_girador',100); 
             $table->boolean('chposfechado1_central_riesgo')->default(0);   
-            $table->boolean('chposfechado1_activo')->default(0);   
+            $table->boolean('chposfechado1_activo')->default(1);   
             $table->boolean('chposfechado1_anulado')->default(0);  
+            $table->boolean('chposfechado1_devuelto')->default(0);  
             $table->double('chposfechado1_valor');  
             $table->text('chposfechado1_observaciones');  
             $table->integer('chposfechado1_usuario_elaboro')->unsigned();    
             $table->dateTime('chposfechado1_fh_elaboro');    
-            $table->integer('chposfechado1_usuario_anulo')->unsigned();    
+            $table->integer('chposfechado1_usuario_anulo')->unsigned()->nullable();    
             $table->dateTime('chposfechado1_fh_anulo');    
 
             $table->foreign('chposfechado1_sucursal')->references('id')->on('sucursal')->onDelete('restrict');

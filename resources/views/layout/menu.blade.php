@@ -72,12 +72,12 @@
     </li>
 
     {{--Cartera--}}
-    <li class="{{ in_array(Request::segment(1), ['autorizacionesca','bancos','conceptosrc','cuentabancos','autorizaco','mediopagos', 'recibos', 'conceptonotas', 'notas','facturas','conceptosajustec','ajustesc','devoluciones','anticipos','cheques']) ? 'active' : '' }}">
+    <li class="{{ in_array(Request::segment(1), ['autorizacionesca','bancos','conceptosrc','conceptocobros','cuentabancos','autorizaco','mediopagos', 'recibos', 'conceptonotas', 'notas','facturas','conceptosajustec','ajustesc','devoluciones','anticipos','cheques','chequesdevueltos','gestioncobros','causas']) ? 'active' : '' }}">
     <a href="#">
             <i class="fa fa-suitcase"></i> <span>Cartera</span><i class="fa fa-angle-left pull-right"></i>
         </a>
         <ul class="treeview-menu">
-            <li class="{{ in_array(Request::segment(1), ['recibos', 'notas','facturas', 'ajustesc', 'devoluciones','anticipos','cheques']) ? 'active' : '' }}">
+            <li class="{{ in_array(Request::segment(1), ['recibos', 'notas','facturas', 'ajustesc', 'devoluciones','anticipos','cheques','gestioncobros','chequesdevueltos']) ? 'active' : '' }}">
                 <a href="#">
                     <i class="fa fa-wpforms"></i> Módulos <i class="fa fa-angle-left pull-right"></i>
                 </a>
@@ -89,14 +89,20 @@
                     <li class="{{ Request::segment(1) == 'anticipos' ? 'active' : '' }}">
                         <a href="{{ route('anticipos.index') }}"><i class="fa fa-caret-square-o-left"></i> Anticipos</a>
                     </li>
+                    <li class="{{ Request::segment(1) == 'chequesdevueltos' ? 'active' : '' }}">
+                        <a href="{{ route('chequesdevueltos.index') }}"><i class="fa fa-list-alt"></i> Cheques devueltos</a>
+                    </li>
                     <li class="{{ Request::segment(1) == 'cheques' ? 'active' : '' }}">
-                        <a href="{{ route('cheques.index') }}"><i class="fa fa-list-alt"></i> Cheques posfechados</a>
+                        <a href="{{ route('cheques.index') }}"><i class="fa fa fa-credit-card"></i> Cheques posfechados</a>
                     </li>
                     <li class="{{ Request::segment(1) == 'devoluciones' ? 'active' : '' }}">
                         <a href="{{ route('devoluciones.index') }}"><i class="fa fa-reply"></i> Devoluciones</a>
                     </li>
                     <li class="{{ Request::segment(1) == 'facturas' ? 'active' : '' }}">
                         <a href="{{ route('facturas.index') }}"><i class="fa fa-pencil-square-o"></i> Facturas</a>
+                    </li>
+                    <li class="{{ Request::segment(1) == 'gestioncobros' ? 'active' : '' }}">
+                        <a href="{{ route('gestioncobros.index') }}"><i class="fa fa-volume-control-phone"></i> Gestion Cobros</a>
                     </li>
                     <li class="{{ Request::segment(1) == 'notas' ? 'active' : '' }}">
                         <a href="{{ route('notas.index') }}"><i class="fa fa-book"></i> Notas</a>
@@ -107,7 +113,7 @@
                 </ul>
             </li>
             {{--Referencias Cartera--}}
-            <li class="{{ in_array(Request::segment(1), ['autorizacionesca','bancos','conceptosrc','cuentabancos','autorizaco','mediopagos', 'conceptonotas','conceptosajustec']) ? 'active' : '' }}">
+            <li class="{{ in_array(Request::segment(1), ['autorizacionesca','bancos','conceptosrc','cuentabancos','autorizaco','mediopagos', 'conceptonotas','conceptosajustec','conceptocobros', 'causas']) ? 'active' : '' }}">
                 <a href="#">
                     <i class="fa fa-circle-o"></i> Referencias <i class="fa fa-angle-left pull-right"></i>
                 </a>
@@ -118,11 +124,17 @@
                     <li class="{{ Request::segment(1) == 'bancos' ? 'active' : '' }}">
                         <a href="{{route('bancos.index')}}"><i class="fa fa-circle-o"></i> Bancos</a>
                     </li>
+                    <li class="{{ Request::segment(1) == 'causas' ? 'active' : '' }}">
+                        <a href="{{route('causas.index')}}"><i class="fa fa-circle-o"></i> Causas</a>
+                    </li>
                     <li class="{{ Request::segment(1) == 'cuentabancos' ? 'active' : '' }}">
                         <a href="{{route('cuentabancos.index')}}"><i class="fa fa-circle-o"></i> Cuentas de banco</a>
                     </li>
                     <li class="{{ Request::segment(1) == 'conceptonotas' ? 'active' : '' }}">
                         <a href="{{route('conceptonotas.index')}}"><i class="fa fa-circle-o"></i> Concepto de nota</a>
+                    </li>
+                    <li class="{{ Request::segment(1) == 'conceptocobros' ? 'active' : '' }}">
+                        <a href="{{route('conceptocobros.index')}}"><i class="fa fa-circle-o"></i> Concepto cobro</a>
                     </li>
                     <li class="{{ Request::segment(1) == 'conceptosajustec' ? 'active' : '' }}">
                         <a href="{{route('conceptosajustec.index')}}"><i class="fa fa-circle-o"></i> Concepto ajuste</a>

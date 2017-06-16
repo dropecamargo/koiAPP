@@ -189,8 +189,23 @@ class ConceptosrcController extends Controller
         $response->success = false;
 
         if($request->has('call')){
+
             if($request->call == 'recibo'){
                 $conceptosrc = Conceptosrc::getConceptosrc($request->recibo2_conceptosrc);
+                if (!$conceptosrc instanceof Conceptosrc) {
+                    $response->errors = "No es posible recuperar concepto, verifique información ó por favor consulte al administrador.";
+                }
+
+                if($conceptosrc->documentos_codigo == 'FACT'){
+                    $action = 'modalCartera';
+                    $response->action = $action;  
+                    $response->success = true;
+                }else{
+                    $response->success = false;
+                }
+            }
+            if($request->call == 'chposfechado'){
+                $conceptosrc = Conceptosrc::getConceptosrc($request->chposfechado2_conceptosrc);
                 if (!$conceptosrc instanceof Conceptosrc) {
                     $response->errors = "No es posible recuperar concepto, verifique información ó por favor consulte al administrador.";
                 }

@@ -97,6 +97,7 @@ class AnticipoController extends Controller
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar sucursal, verifique información ó por favor consulte al administrador.']);
                     }
                     $consecutive = $sucursal->sucursal_anti + 1;
+                    
                     $anticipo1->fill($data);
                     $anticipo1->anticipo1_sucursal = $sucursal->id;  
                     $anticipo1->anticipo1_numero = $consecutive;
@@ -161,7 +162,6 @@ class AnticipoController extends Controller
                     // Commit Transaction
                     DB::commit();
                     return response()->json(['success' => true, 'id' => $anticipo1->id]);
-                    // return response()->json(['success' => false, 'errors' => 'TODO OK']);
                 } catch (\Exception $e) {
                     Log::error($e->getMessage());
                     return response()->json(['success' => false, 'errors' => trans('app.exception')]);

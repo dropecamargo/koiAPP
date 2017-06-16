@@ -44,8 +44,7 @@ app || (app = {});
             this.$tercerosSearchTable = this.$modalComponent.find('#koi-search-tercero-component-table');
             
             this.$inputContent = this.$("#"+$(e.currentTarget).attr("data-field"));
-            this.$concepto = this.$("#"+$(e.currentTarget).attr("data-concepto"));
-			this.$wrap = this.$("#"+$(e.currentTarget).attr("data-wrap"));
+            this.$wraperConten = this.$("#"+this.$inputContent.attr("data-wrapper"));
             this.$inputName = this.$("#"+this.$inputContent.attr("data-name"));
             this.$btnContact = this.$("#"+this.$inputContent.attr("data-contacto"));
             this.$inputAddress = this.$("#"+this.$inputContent.attr("data-address"));
@@ -53,6 +52,9 @@ app || (app = {});
             this.$changeIf = this.$inputContent.attr("data-change");
             this.$inputCliente = this.$inputContent.attr("data-cliente");
             this.$inputVendedor = this.$inputContent.attr("data-vendedor");
+
+            this.$concepto = this.$("#"+this.$inputContent.attr("data-concepto"));
+            this.$wrap = this.$("#"+this.$inputContent.attr("data-wrap"));
 
             if (this.$changeIf == "true" && (this.$inputPuntoVenta.val() == ''  && this.$inputPuntoVenta.length > 0)) {
                 alertify.error('Por favor ingrese punto de venta antes seleccionar tercero.');
@@ -130,10 +132,13 @@ app || (app = {});
             }
 
 			this.$modalComponent.modal('hide');
-
             if (this.$changeIf == "true") {
-                this.$inputContent.removeClass('tercero-koi-component').addClass('tercero-factura-change-koi');
+                if (this.$wraperConten.attr('id') == "gestioncobro-create") {
+                    this.$inputContent.attr('data-tercero', data.id)
+                }
+                this.$inputContent.removeClass('tercero-koi-component');
                 this.$inputContent.trigger('change');
+                this.$inputContent.addClass('tercero-koi-component');
             }
 		},
 
@@ -161,6 +166,10 @@ app || (app = {});
             this.$changeIf = this.$inputContent.attr("data-change");
             this.$btnContact = this.$("#"+this.$inputContent.attr("data-contacto"));
             this.$inputPuntoVenta = this.$("#"+this.$inputContent.attr("data-punto"));
+
+            this.$concepto = this.$("#"+this.$inputContent.attr("data-concepto"));
+            this.$wrap = this.$("#"+this.$inputContent.attr("data-wrap"));
+
 
             if(this.$btnContact.length > 0) {
                 this.$btnContact.attr('data-tercero', '');
@@ -192,10 +201,12 @@ app || (app = {});
                 .done(function(resp) {
                     window.Misc.removeSpinner( _this.$wraperConten );
                     if(resp.success) {
-                        if (_this.$changeIf == "true") {
-                            _this.$inputContent.removeClass('tercero-koi-component').addClass('tercero-factura-change-koi');
-                            _this.$inputContent.trigger('change');
+                        if(_this.$concepto.length > 0 && _this.$wrap.length > 0 || _this.$concepto.length > 0) {
+                            _this.$wrap.removeAttr('hidden');
+                            _this.$concepto.attr('data-tercero', resp.id);
+                            _this.$concepto.removeAttr('disabled');
                         }
+
                         if(!_.isUndefined(resp.tercero_nombre) && !_.isNull(resp.tercero_nombre)){
                             _this.$inputName.val(resp.tercero_nombre);
                         } 

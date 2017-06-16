@@ -21,6 +21,7 @@ app || (app = {});
 			'chposfechado1_sucursal':'',
 			'chposfechado1_numero':'',
 			'chposfechado1_tercero':'',
+			'chposfechado1_valor': 0,
 			'chposfechado1_observaciones':'',
 			'tercero_nit':'',
 			'tercero_nombre':'',

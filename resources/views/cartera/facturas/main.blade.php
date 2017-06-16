@@ -48,11 +48,11 @@
                     <div class="form-group col-sm-2">
                         <div class="input-group input-group-sm">
                             <span class="input-group-btn">
-                                <button type="button" class="btn btn-default btn-flat btn-koi-search-tercero-component-table " data-field="factura1_tercero">
+                                <button type="button" class="btn btn-default btn-flat btn-koi-search-tercero-component-table" data-field="factura1_tercero">
                                     <i class="fa fa-user"></i>
                                 </button>
                             </span>
-                            <input id="factura1_tercero" placeholder="Cliente" class="form-control tercero-koi-component" name="factura1_tercero" type="text" maxlength="15" data-formapago="factura1_formapago" data-plazo="factura1_plazo" data-punto="factura1_puntoventa" data-cuotas="factura1_cuotas" data-primerpago="factura1_primerpago" data-contacto="btn-add-contact" data-idTC ="factura1_tercerocontacto" data-nameTC="tcontacto_nombre" data-dirTC="tcontacto_direccion" data-change="true" data-wrapper="factura-create" data-name="factura1_terecero_nombre" value="<%- tercero_nit %>" data-vendedorT="factura1_vendedor" data-numPedido="factura1_pedido" data-sucursalP="factura1_sucursal" data-obs="factura1_observaciones" data-address="tercero_direccion" required>
+                            <input id="factura1_tercero" placeholder="Cliente" class="form-control tercero-koi-component tercero-factura-change-koi" name="factura1_tercero" type="text" maxlength="15" data-formapago="factura1_formapago" data-plazo="factura1_plazo" data-punto="factura1_puntoventa" data-cuotas="factura1_cuotas" data-primerpago="factura1_primerpago" data-contacto="btn-add-contact" data-idTC ="factura1_tercerocontacto" data-nameTC="tcontacto_nombre" data-dirTC="tcontacto_direccion" data-change="true" data-wrapper="factura-create" data-name="factura1_terecero_nombre" value="<%- tercero_nit %>" data-vendedorT="factura1_vendedor" data-numPedido="factura1_pedido" data-sucursalP="factura1_sucursal" data-obs="factura1_observaciones" data-address="tercero_direccion" required>
                         </div>
                     </div>
                     <div class="col-sm-4 col-xs-10">

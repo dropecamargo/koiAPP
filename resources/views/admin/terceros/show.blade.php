@@ -140,6 +140,7 @@
             <div class="nav-tabs-custom tab-success tab-whithout-box-shadow">
 	            <ul class="nav nav-tabs">
 					<li class="active"><a href="#tab_cartera" data-toggle="tab">Cartera</a></li>
+					<li><a href="#tab_gestioncobro" data-toggle="tab">Gestión Cobro</a></li>
 				</ul>
 			</div>
 
@@ -147,93 +148,48 @@
 	            <div class="tab-pane active" id="tab_cartera">
 					<div class="box-body">
 						<div class="box-body table-responsive">
-							<table id="browse-factura3-list" class="table table-hover table-bordered" cellspacing="0" width="100%">
+							<table id="browse-factura3-list" class="table table-bordered" cellspacing="0" width="100%">
 					            <thead>
 						            <tr>
-		                                <th width="95px">Numero</th>
-		                                <th width="95px">Prefijo</th>
-		                                <th width="95px">Cuota</th>
-		                                <th width="95px">Fecha</th>
-		                                <th width="95px">Vencimiento</th>
-		                                <th width="50px">N. Dias</th>
-		                                <th width="95px">Saldo</th>
+		                                <th>Documento</th>
+		                                <th>Numero</th>
+		                                <th>Sucursal</th>
+		                                <th>Cuota</th>
+		                                <th>Fecha</th>
+		                                <th>Vencimiento</th>
+		                                <th>N. Dias</th>
+		                                <th>Saldo</th>
+		                                <th></th>
 		                            </tr>
 					           </thead>
 					           <tbody>
-									{{-- Render contact list --}}
+									{{-- Render facura3 list --}}
 					           </tbody>
 					           <tfoot>
-					           		<tr>
-					           			<td colspan="5"></td>
-					           			<th>Total</th>
-					           			<th class="text-right total">0</th>
-					           		</tr>
-					           		<tr>
-					           			<th colspan="2" class="text-center">Acumulados</th>
-					           			<th>Tipo</th>
-					           			<th class="text-center">N</th>
-					           			<th class="text-right">Valor T.</th>
-					           			<th colspan="2"></th>
-					           		</tr>
-					           		<tr class="bg-table">
-					           			<td colspan="2"></td>
-					           			<td>Por vencer</td>
-					           			<td class="text-center" id="porvencer">0</td>
-					           			<td class="text-right" id="porvencer_saldo">0</td>
-					           			<td colspan="2"></td>
-					           		</tr>
-					           		<tr class="bg-menor30">
-					           			<td colspan="2"></td>
-					           			<td>Menor a 30</td>
-					           			<td class="text-center" id="menor30">0</td>
-					           			<td class="text-right" id="menor30_saldo">0</td>
-					           			<td colspan="2"></td>
-					           		</tr>
-					           		<tr class="bg-menor60">
-					           			<td colspan="2"></td>
-					           			<td>De 31 a 60</td>
-					           			<td class="text-center" id="menor60">0</td>
-					           			<td class="text-right" id="menor60_saldo">0</td>
-					           			<td colspan="2"></td>
-					           		</tr>
-					           		<tr class="bg-menor90">
-					           			<td colspan="2"></td>
-					           			<td>De 61 a 90</td>
-					           			<td class="text-center" id="menor90">0</td>
-					           			<td class="text-right" id="menor90_saldo">0</td>
-					           			<td colspan="2"></td>
-					           		</tr>
-					           		<tr class="bg-menor180">
-					           			<td colspan="2"></td>
-					           			<td>De 91 a 180</td>
-					           			<td class="text-center" id="menor180">0</td>
-					           			<td class="text-right" id="menor180_saldo">0</td>
-					           			<td colspan="2"></td>
-					           		</tr>
-					           		<tr class="bg-menor360">
-					           			<td colspan="2"></td>
-					           			<td>De 181 a 360</td>
-					           			<td class="text-center" id="menor360">0</td>
-					           			<td class="text-right" id="menor360_saldo">0</td>
-					           			<td colspan="2"></td>
-					           		</tr>
-					           		<tr class="bg-mayor360">
-					           			<td colspan="2"></td>
-					           			<td>Mayor a 360</td>
-					           			<td class="text-center" id="mayor360">0</td>
-					           			<td class="text-right" id="mayor360_saldo">0</td>
-					           			<td colspan="2"></td>
-					           		</tr>
-					           		<tr>
-					           			<td colspan="2"></td>
-					           			<th>Total</th>
-					           			<th class="text-center" id="total_count">0</th>
-					           			<th class="text-right total">0</th>
-					           			<td colspan="2"></td>
-					           		</tr>
+
 					           </tfoot>
 						    </table>
 						</div>
+					</div>
+				</div>
+				<div class="tab-pane" id="tab_gestioncobro">
+					<div class="box-body table-responsive">
+						<table id="browse-gestioncobro-list" class="table table-hover table-bordered" cellspacing="0">
+							<thead>
+								<thead>
+									<tr>
+										<th width="15%">Concepto</th>
+										<th width="15%">Fecha</th>
+										<th width="15%">Fecha Proxima</th>
+										<th width="35%">Observaciones</th>
+										<th width="20%">Elaboro</th>
+									</tr>
+								</thead>
+							</thead>
+							<tbody>
+								{{--Render gestion cobro--}}
+							</tbody>
+						</table>
 					</div>
 				</div>
 			</div>

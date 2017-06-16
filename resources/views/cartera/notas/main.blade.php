@@ -23,7 +23,7 @@
                 <div class="row"> 
                     <label for="nota1_sucursal" class="col-md-1 control-label">Sucursal</label>
                     <div class="form-group col-md-3">
-                        <select name="nota1_sucursal" id="nota1_sucursal" class="form-control select2-default change-sucursal-consecutive-koi-component" data-field="nota1_numero" data-document ="notas" data-wrapper="nota1-create" required>
+                        <select name="nota1_sucursal" id="nota1_sucursal" class="form-control select2-default change-sucursal-consecutive-koi-component" data-field="nota1_numero" data-document ="notas" data-concepto="nota1_conceptonota" data-wrap="wrapper-detalle" required>
                         @foreach( App\Models\Base\Sucursal::getSucursales() as $key => $value)
                             <option  value="{{ $key }}" <%- nota1_sucursal == '{{ $key }}' ? 'selected': ''%>>{{ $value }}</option>
                         @endforeach
@@ -45,11 +45,11 @@
                     <div class="form-group col-md-3">
                         <div class="input-group input-group-sm">
                             <span class="input-group-btn">
-                                <button type="button" class="btn btn-default btn-flat btn-koi-search-tercero-component-table" data-field="nota1_tercero" data-concepto="nota1_conceptonota" data-wrap="wrapper-detalle">
+                                <button type="button" class="btn btn-default btn-flat btn-koi-search-tercero-component-table" data-field="nota1_tercero">
                                     <i class="fa fa-user"></i>
                                 </button>
                             </span>
-                            <input id="nota1_tercero" placeholder="Cliente" class="form-control tercero-koi-component" name="nota1_tercero" type="text" maxlength="15" data-wrapper="nota1-create" data-name="tercero_nombre" value="<%- tercero_nit %>" required>
+                            <input id="nota1_tercero" placeholder="Cliente" class="form-control tercero-koi-component" name="nota1_tercero" type="text" maxlength="15" data-concepto="nota1_conceptonota" data-wrap="wrapper-detalle" data-name="tercero_nombre" value="<%- tercero_nit %>" required>
                         </div>
                     </div>
                     <div class="col-md-5 col-xs-10">

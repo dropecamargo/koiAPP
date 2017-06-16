@@ -1,0 +1,39 @@
+@extends('cartera.gestioncobros.main')
+
+@section('breadcrumb')
+    <li><a href="{{ route('gestioncobros.index')}}">Gestion cobro</a></li>
+    <li class="active">{{ $gestioncobro->id }}</li>
+@stop
+
+@section('module')
+	<div class="box box-success">
+		<div class="box-body">
+			<div class="row">
+				<div class="form-group col-md-5">
+					<label class="control-label">Cliente</label>
+                    <div><a href="{{ route('terceros.show', ['terceros' =>  $gestioncobro->gestioncobro_tercero ]) }}" title="Ver tercero">{{ $gestioncobro->tercero_nit }} </a> - {{ $gestioncobro->tercero_nombre }} </div>
+				</div>
+				<div class="form-group col-md-4">
+					<label class="control-label">Concepto cobro</label>
+					<div>{{ $gestioncobro->conceptocob_nombre }}</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="form-group col-md-5">
+					<label class="control-label">Fecha</label>
+					<div>{{ $gestioncobro->gestioncobro_fh }}</div>
+				</div>
+				<div class="form-group col-md-5">
+					<label class="control-label">Fecha proxima</label>
+					<div>{{ $gestioncobro->gestioncobro_proxima }}</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="form-group col-md-12">
+					<label class="control-label">Observaciones</label>
+					<div>{{ $gestioncobro->gestioncobro_observaciones }}</div>
+				</div>
+			</div>
+		</div>
+	</div>
+@stop

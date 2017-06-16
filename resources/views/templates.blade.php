@@ -1135,6 +1135,32 @@
 		</div>
     </div>
 </script>
+<script type="text/template" id="add-causa-tpl">
+	<div class="row">
+		<div class="form-group col-md-8">
+			<label for="causal_nombre" class="control-label">Nombre</label>
+			<input type="text" id="causal_nombre" name="causal_nombre" value="<%- causal_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="25" required>
+		</div>
+		<div class="form-group col-md-2 col-xs-8 col-sm-3">
+			<br><label class="checkbox-inline" for="causal_activo">
+				<input type="checkbox" id="causal_activo" name="causal_activo" value="causal_activo" <%- parseInt(causal_activo) ? 'checked': ''%>> Activo
+			</label>
+		</div>
+    </div>
+</script>
+<script type="text/template" id="add-conceptocob-tpl">
+	<div class="row">
+		<div class="form-group col-md-8">
+			<label for="conceptocob_nombre" class="control-label">Nombre</label>
+			<input type="text" id="conceptocob_nombre" name="conceptocob_nombre" value="<%- conceptocob_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="25" required>
+		</div>
+		<div class="form-group col-md-2 col-xs-8 col-sm-3">
+			<br><label class="checkbox-inline" for="conceptocob_activo">
+				<input type="checkbox" id="conceptocob_activo" name="conceptocob_activo" value="conceptocob_activo" <%- parseInt(conceptocob_activo) ? 'checked': ''%>> Activo
+			</label>
+		</div>
+    </div>
+</script>
 
 <script type="text/template" id="add-mediopago-tpl">
 	<div class="row">
@@ -1263,6 +1289,24 @@
 	    <td><%- window.Misc.currency(factura3_saldo) %></td>
 	    <td><input type="text" id="pagar_<%- id %>" name="pagar_<%- id %>" class="form-control input-sm change-pagar" data-currency-negative></td>
 	<% } %>
+</script>
+
+<script type="text/template" id="add-cheque-item-tpl">
+    <%if(edit){ %>
+        <td class="text-center">
+            <a class="btn btn-default btn-xs item-cheque-remove" data-resource="<%- id %>">
+                <span><i class="fa fa-times"></i></span>
+            </a>
+        </td>
+    <% }else if(call){ %> 
+	    <td><input type="checkbox" id="check_<%- id %>" name="check_<%- id %>" class="change-check-medio"></td>
+    <% } %>
+        	
+    <td><%- conceptosrc_nombre %></td>
+    <td><%- documentos_nombre %></td>
+    <td><%- !_.isUndefined(factura1_numero) && !_.isNull(factura1_numero) && factura1_numero != '' ? factura1_numero : '' %></td>
+    <td><%- !_.isUndefined(factura3_cuota) && !_.isNull(factura3_cuota) && factura3_cuota != '' ? factura3_cuota : '' %></td>
+    <td class="text-right"><%- !_.isUndefined(factura3_valor) && !_.isNull(factura3_valor) && factura3_valor != '' ? window.Misc.currency( factura3_valor ) : '' %></td>
 </script>
 
 <script type="text/template" id="add-factura3-item-tpl"> 
@@ -1433,4 +1477,90 @@
 			</label>
 		</div>
     </div>
+</script>
+<script type="text/template" id="add-tercero-cartera-tpl">
+	<td><%- documentos_nombre %></td>
+	<td><%- factura1_numero %> </td>
+    <td><%- sucursal_nombre %></td>
+    <td><%- factura3_cuota %></td>
+    <td><%- moment(factura1_fh_elaboro).format('YYYY-MM-DD') %></td>
+	<td><%- factura3_vencimiento %></td>
+	<td><%- days %></td>
+    <td class="text-right"><%- window.Misc.currency(factura3_saldo) %></td>
+    <td>
+    	<% if(factura3_chposfechado1 != null){ %>
+    		<a href=" <%- window.Misc.urlFull( Route.route('cheques.show', {cheques: factura3_chposfechado1} ))%>" target="_blank" class="btn-default btn-xs" >CHP</a>
+    	<% } %>  
+    </td>
+</script>
+<script type="text/template" id="tfoot-tercero-deuda">
+    <tr>
+        <td colspan="6"></td>
+        <th>Total</th>
+        <th class="text-right total">0</th>
+        <th></th>
+    </tr>
+    <tr>
+        <th colspan="3" class="text-center">Acumulados</th>
+        <th>Tipo</th>
+        <th class="text-center">N</th>
+        <th class="text-right">Valor T.</th>
+        <th colspan="3"></th>
+    </tr>
+    <tr class="bg-table">
+        <td colspan="3"></td>
+        <td>Por vencer</td>
+        <td class="text-center" id="porvencer">0</td>
+        <td class="text-right" id="porvencer_saldo">0</td>
+        <td colspan="3"></td>
+    </tr>
+    <tr class="bg-menor30">
+        <td colspan="3"></td>
+        <td>Menor a 30</td>
+        <td class="text-center" id="menor30">0</td>
+        <td class="text-right" id="menor30_saldo">0</td>
+        <td colspan="3"></td>
+    </tr>
+    <tr class="bg-menor60">
+        <td colspan="3"></td>
+        <td>De 31 a 60</td>
+        <td class="text-center" id="menor60">0</td>
+        <td class="text-right" id="menor60_saldo">0</td>
+        <td colspan="3"></td>
+    </tr>
+    <tr class="bg-menor90">
+        <td colspan="3"></td>
+        <td>De 61 a 90</td>
+        <td class="text-center" id="menor90">0</td>
+        <td class="text-right" id="menor90_saldo">0</td>
+        <td colspan="3"></td>
+    </tr>
+    <tr class="bg-menor180">
+        <td colspan="3"></td>
+        <td>De 91 a 180</td>
+        <td class="text-center" id="menor180">0</td>
+        <td class="text-right" id="menor180_saldo">0</td>
+        <td colspan="3"></td>
+    </tr>
+    <tr class="bg-menor360">
+        <td colspan="3"></td>
+        <td>De 181 a 360</td>
+        <td class="text-center" id="menor360">0</td>
+        <td class="text-right" id="menor360_saldo">0</td>
+        <td colspan="3"></td>
+    </tr>
+    <tr class="bg-mayor360">
+        <td colspan="3"></td>
+        <td>Mayor a 360</td>
+        <td class="text-center" id="mayor360">0</td>
+        <td class="text-right" id="mayor360_saldo">0</td>
+        <td colspan="3"></td>
+    </tr>
+    <tr>
+        <td colspan="3"></td>
+        <th>Total</th>
+        <th class="text-center" id="total_count">0</th>
+        <th class="text-right total">0</th>
+        <td colspan="3"></td>
+    </tr>
 </script>

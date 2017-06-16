@@ -178,6 +178,11 @@ Route::group(['middleware' => 'auth'], function(){
 		Route::resource('mediopago', 'Cartera\Anticipo2Controller');
 		Route::resource('detalle', 'Cartera\Anticipo3Controller');
 	});
+	Route::group(['prefix' => 'cheques'], function()
+	{
+		Route::resource('detalle', 'Cartera\ChposFechado2Controller');
+		Route::get('anular/{cheques}', ['as' => 'cheques.anular', 'uses' => 'Cartera\ChposFechado1Controller@anular']);
+	});
 
 	Route::group(['prefix' => 'conceptosrc'], function()
 	{
@@ -207,18 +212,23 @@ Route::group(['middleware' => 'auth'], function(){
 
 	Route::resource('autorizacionesca', 'Cartera\AutorizaCaController', ['only' => ['index']]);
 	Route::resource('bancos', 'Cartera\BancoController', ['except' => ['destroy']]);
+	Route::resource('causas', 'Cartera\CausalController', ['except' => ['destroy']]);
 	Route::resource('cuentabancos', 'Cartera\CuentaBancoController', ['except' => ['destroy']]);
 	Route::resource('mediopagos', 'Cartera\MedioPagoController', ['except' => ['destroy']]);
 	Route::resource('conceptosrc', 'Cartera\ConceptosrcController', ['except' => ['destroy']]);
 	Route::resource('conceptonotas', 'Cartera\ConceptoNotaController', ['except' => ['destroy']]);
+	Route::resource('conceptocobros', 'Cartera\ConceptoCobroController', ['except' => ['destroy']]);
 	Route::resource('recibos', 'Cartera\Recibo1Controller', ['only' => ['index','create','store','show']]);
 	Route::resource('notas', 'Cartera\Nota1Controller', ['only' => ['index','create','store','show']]);
 	Route::resource('facturas', 'Cartera\Factura1Controller', ['except' => ['destroy', 'edit' , 'update']]);
 	Route::resource('devoluciones', 'Cartera\Devolucion1Controller', ['except' => ['destroy', 'edit' , 'update']]);
+	Route::resource('gestioncobros', 'Cartera\GestionCobroController', ['except' => ['destroy', 'edit' , 'update']]);
 	Route::resource('conceptosajustec', 'Cartera\ConceptoAjustecController', ['except' => ['destroy']]);
 	Route::resource('ajustesc', 'Cartera\Ajustec1Controller', ['except' => ['destroy']]);
 	Route::resource('anticipos', 'Cartera\AnticipoController', ['except' => ['destroy']]);
 	Route::resource('cheques', 'Cartera\ChposFechado1Controller', ['except' => ['destroy']]);
+	Route::resource('chequesdevueltos', 'Cartera\ChDevueltoController', ['except' => ['destroy']]);
+	Route::resource('carteraterceros', 'Cartera\CarteraController', ['only' => ['index']]);
 
 	/*
 	|-------------------------

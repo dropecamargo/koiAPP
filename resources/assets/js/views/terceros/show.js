@@ -21,7 +21,8 @@ app || (app = {});
 
                 this.contactsList = new app.ContactsList();
                 this.rolList = new app.RolList();
-                this.detalleFacturaList = new app.DetalleFactura3List();
+                this.detalleCarteraTercero = new app.DetalleCarteraTercero();
+                this.gestionCobroList = new app.GestionCobrosCollection();
                 this.$templateTercero = _.template( ($('#add-tercero-cartera-tpl').html() || '') );
 
                 // Reference views
@@ -42,6 +43,15 @@ app || (app = {});
                     }
                }
             });
+            // Gestion Cobro list
+            this.gestionCobroListView = new app.GestionCobroListView( {
+                collection: this.gestionCobroList,
+                parameters: {
+                    dataFilter: {
+                        'tercero': this.model.get('id')
+                    }
+               }
+            });
 
             // Rol list
             this.rolesListView = new app.RolesListView( {
@@ -57,7 +67,7 @@ app || (app = {});
 
             // Detalle list
             this.factura3ListView = new app.Factura3ListView({
-                collection: this.detalleFacturaList,
+                collection: this.detalleCarteraTercero,
                 parameters: {
                     wrapper: this.el,
                     edit: false,

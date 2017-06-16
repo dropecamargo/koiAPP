@@ -177,6 +177,10 @@ app || (app = {});
             'bancos/create(/)': 'getBancosCreate',
             'bancos/:bancos/edit(/)': 'getBancosEdit',
 
+            'causas(/)': 'getCausasMain',
+            'causas/create(/)': 'getCausaCreate',
+            'causas/:causas/edit(/)': 'getCausaEdit',
+
             'cuentabancos(/)': 'getCuentaBancosMain',
             'cuentabancos/create(/)': 'getCuentaBancosCreate',
             'cuentabancos/:cuentabancos/edit(/)': 'getCuentaBancosEdit',
@@ -184,6 +188,10 @@ app || (app = {});
             'mediopagos(/)': 'getMedioPagosMain',
             'mediopagos/create(/)': 'getMedioPagosCreate',
             'mediopagos/:mediopagos/edit(/)': 'getMedioPagosEdit',
+
+            'conceptocobros(/)': 'getConceptosCobMain',
+            'conceptocobros/create(/)': 'getConceptoCobCreate',
+            'conceptocobros/:conceptocobros/edit(/)': 'getConceptoCobEdit',
 
             'conceptosrc(/)': 'getConceptosrcMain',
             'conceptosrc/create(/)': 'getConceptosrcCreate',
@@ -224,6 +232,11 @@ app || (app = {});
             'cheques(/)': 'getChequesMain',
             'cheques/create(/)': 'getChequeCreate',
             'cheques/:cheques(/)': 'getChequeShow',
+
+            'chequesdevueltos(/)': 'getChequesDevueltosMain',
+
+            'gestioncobros(/)': 'getGestionCobrosMain',
+            'gestioncobros/create(/)': 'getGestionCobroCreate',
 
             /*
             |----------------------
@@ -1593,6 +1606,41 @@ app || (app = {});
             this.createBancoView = new app.CreateBancoView({ model: this.bancoModel });
             this.bancoModel.fetch();
         },
+        // Causa
+        getCausasMain: function () {
+
+            if ( this.mainCausasView instanceof Backbone.View ){
+                this.mainCausasView.stopListening();
+                this.mainCausasView.undelegateEvents();
+            }
+
+            this.mainCausasView = new app.MainCausasView( );
+        },
+
+        getCausaCreate: function () {
+            this.causaModel = new app.CausaModel();
+
+            if ( this.createCausaView instanceof Backbone.View ){
+                this.createCausaView.stopListening();
+                this.createCausaView.undelegateEvents();
+            }
+
+            this.createCausaView = new app.CreateCausaView({ model: this.causaModel });
+            this.createCausaView.render();
+        },
+
+        getCausaEdit: function (causas) {
+            this.causaModel = new app.CausaModel();
+            this.causaModel.set({'id': causas}, {'silent':true});
+
+            if ( this.createCausaView instanceof Backbone.View ){
+                this.createCausaView.stopListening();
+                this.createCausaView.undelegateEvents();
+            }
+
+            this.createCausaView = new app.CreateCausaView({ model: this.causaModel });
+            this.causaModel.fetch();
+        },
 
         // Cuenta de banco
         getCuentaBancosMain: function () {
@@ -1665,7 +1713,41 @@ app || (app = {});
             this.createMedioPagoView = new app.CreateMedioPagoView({ model: this.mediopagoModel });
             this.mediopagoModel.fetch();
         },
+        // Concepto Cobro
+        getConceptosCobMain: function () {
 
+            if ( this.mainConceptoCobView instanceof Backbone.View ){
+                this.mainConceptoCobView.stopListening();
+                this.mainConceptoCobView.undelegateEvents();
+            }
+
+            this.mainConceptoCobView = new app.MainConceptosCobView( );
+        },
+
+        getConceptoCobCreate: function () {
+            this.conceptoCobModel = new app.ConceptoCobModel();
+
+            if ( this.createConceptoCobView instanceof Backbone.View ){
+                this.createConceptoCobView.stopListening();
+                this.createConceptoCobView.undelegateEvents();
+            }
+
+            this.createConceptoCobView = new app.CreateConceptoCobView({ model: this.conceptoCobModel });
+            this.createConceptoCobView.render();
+        },
+
+        getConceptoCobEdit: function (conceptocobros) {
+            this.conceptoCobModel = new app.ConceptoCobModel();
+            this.conceptoCobModel.set({'id': conceptocobros}, {'silent':true});
+
+            if ( this.createConceptoCobView instanceof Backbone.View ){
+                this.createConceptoCobView.stopListening();
+                this.createConceptoCobView.undelegateEvents();
+            }
+
+            this.createConceptoCobView = new app.CreateConceptoCobView({ model: this.conceptoCobModel });
+            this.conceptoCobModel.fetch();
+        },
         // Conceptosrc
         getConceptosrcMain: function () {
 
@@ -1982,13 +2064,52 @@ app || (app = {});
         getChequeCreate: function (){
 
             this.chequeModel = new app.ChequeModel();
-            
+
             if (this.createChequesView instanceof Backbone.View) {
                 this.createChequesView.stopListening();
                 this.createChequesView.undelegateEvents();
             }
             this.createChequesView = new app.CreateChequesView({ model: this.chequeModel });
             this.createChequesView.render();
+        },
+
+        getChequeShow: function(cheques){
+            this.chequeModel = new app.ChequeModel();
+            this.chequeModel.set({'id' : cheques }, {'silent' : true });
+
+            if ( this.showChequeView instanceof Backbone.View ){
+                this.showChequeView.stopListening();
+                this.showChequeView.undelegateEvents();
+            }
+            
+            this.showChequeView = new app.ShowChequeView({ model: this.chequeModel });
+        },
+        // Cheques Devueltos
+        getChequesDevueltosMain: function(){
+            if (this.mainChequesDevueltosView instanceof Backbone.View) {
+                this.mainChequesDevueltosView.stopListening();
+                this.mainChequesDevueltosView.undelegateEvents();
+            }
+            this.mainChequesDevueltosView = new app.MainChequesDevueltosView( );
+        },
+        // Gestion Cobro
+        getGestionCobrosMain: function(){
+
+            if (this.mainGestionCobrosView instanceof Backbone.View) {
+                this.mainGestionCobrosView.stopListening();
+                this.mainGestionCobrosView.undelegateEvents();
+            }
+            this.mainGestionCobrosView = new app.MainGestionCobrosView( );
+        },
+        getGestionCobroCreate: function(){
+            this.gestionCobroModel = new app.GestionCobroModel();
+
+            if (this.createGestionCobroView instanceof Backbone.View) {
+                this.createGestionCobroView.stopListening();
+                this.createGestionCobroView.undelegateEvents();
+            }
+            this.createGestionCobroView = new app.CreateGestionCobroView({ model: this.gestionCobroModel });
+            this.createGestionCobroView.render();
         },
         
         /*---------------------

@@ -35,7 +35,7 @@ app || (app = {});
                 columns: [ 
                     { data: 'chposfechado1_numero', name: 'chposfechado1_numero' },
                     { data: 'sucursal_nombre', name: 'sucursal_nombre' },
-                    { data: 'chposfechado1_banco', name: 'chposfechado1_banco' },
+                    { data: 'banco_nombre', name: 'chposfechado1_banco' },
                     { data: 'tercero_nombre', name: 'chposfechado1_tercero' },
                     { data: 'chposfechado1_fecha', name: 'chposfechado1_fecha' },
                     { data: 'tercero_nombre1', name: 'tercero_nombre1' },

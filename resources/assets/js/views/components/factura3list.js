@@ -12,6 +12,7 @@ app || (app = {});
     app.Factura3ListView = Backbone.View.extend({
 
         el: '#browse-factura3-list',
+        template: _.template( ($('#tfoot-tercero-deuda').html() || '') ),
         parameters: {
             wrapper: null,
             edit: false,
@@ -26,26 +27,6 @@ app || (app = {});
             // extends parameters
             if( opts !== undefined && _.isObject(opts.parameters) )
                 this.parameters = $.extend({},this.parameters, opts.parameters);
-
-            // References
-            this.$valor = this.$('.total');
-            this.$totalCount = this.$('#total_count');
-
-            // Info adicional
-            this.$porvencer = this.$('#porvencer');
-            this.$porvencer_saldo = this.$('#porvencer_saldo');
-            this.$menor30 = this.$('#menor30');
-            this.$menor30_saldo = this.$('#menor30_saldo');
-            this.$menor60 = this.$('#menor60');
-            this.$menor60_saldo = this.$('#menor60_saldo');
-            this.$menor90 = this.$('#menor90');
-            this.$menor90_saldo = this.$('#menor90_saldo');
-            this.$menor180 = this.$('#menor180');
-            this.$menor180_saldo = this.$('#menor180_saldo');
-            this.$menor360 = this.$('#menor360');
-            this.$menor360_saldo = this.$('#menor360_saldo');
-            this.$mayor360 = this.$('#mayor360');
-            this.$mayor360_saldo = this.$('#mayor360_saldo');
 
             // Events Listeners
             this.listenTo( this.collection, 'add', this.addOne );
@@ -87,6 +68,30 @@ app || (app = {});
         * Render all view Marketplace of the collection
         */
         addAll: function () {
+
+            this.$el.find('tbody').html('');
+            this.$el.find('tfoot').html( this.template() );
+
+            // References
+            this.$valor = this.$('.total');
+            this.$totalCount = this.$('#total_count');
+
+            // Info adicional
+            this.$porvencer = this.$('#porvencer');
+            this.$porvencer_saldo = this.$('#porvencer_saldo');
+            this.$menor30 = this.$('#menor30');
+            this.$menor30_saldo = this.$('#menor30_saldo');
+            this.$menor60 = this.$('#menor60');
+            this.$menor60_saldo = this.$('#menor60_saldo');
+            this.$menor90 = this.$('#menor90');
+            this.$menor90_saldo = this.$('#menor90_saldo');
+            this.$menor180 = this.$('#menor180');
+            this.$menor180_saldo = this.$('#menor180_saldo');
+            this.$menor360 = this.$('#menor360');
+            this.$menor360_saldo = this.$('#menor360_saldo');
+            this.$mayor360 = this.$('#mayor360');
+            this.$mayor360_saldo = this.$('#mayor360_saldo');
+
             this.collection.forEach( this.addOne, this );
         },
 
@@ -135,7 +140,6 @@ app || (app = {});
                 this.$mayor360.html( data.mayor360.count );
                 this.$mayor360_saldo.html( window.Misc.currency( data.mayor360.saldo ) );
             }
-
         },
 
         /**

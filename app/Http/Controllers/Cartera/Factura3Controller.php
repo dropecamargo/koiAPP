@@ -34,7 +34,7 @@ class Factura3Controller extends Controller
                 $query->where('factura1_tercero', $tercero->id);
                 $query->where('factura3_saldo', '<>',  0);
             }
-
+            // Show factura collection
             if ($request->has('factura1')) {
                 $factura1 = Factura1::find($request->factura1);
                 if (!$factura1 instanceof Factura1) {
@@ -44,7 +44,6 @@ class Factura3Controller extends Controller
             }
             $query->orderBy('factura3_vencimiento', 'desc');
             $factura = $query->get();
-
         }
         return response()->json($factura);
     }

@@ -52,6 +52,7 @@ class Recibo3Controller extends Controller
      */
     public function store(Request $request)
     {
+        dd('hola');
         if ($request->ajax()) {
             $data = $request->all();
             $recibo3 = new Recibo3;

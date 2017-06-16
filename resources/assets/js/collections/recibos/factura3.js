@@ -33,7 +33,6 @@ app || (app = {});
                 'factura3_valor': type == 'input' ? valor : model.get('factura3_saldo'),
                 'factura3_cuota': model.get('factura3_cuota')
             }
-
             // Setter attributes to model
             if( concepto.call == 'recibo' ){
                 modelo = $.extend(object, {
@@ -42,6 +41,13 @@ app || (app = {});
                     'recibo2_factura1': model.get('factura3_factura1'),
                     'call': concepto.call,
                 }); 
+            }else if(concepto.call == 'chposfechado'){
+                modelo = $.extend(object,{
+                    'chposfechado2_conceptosrc':concepto.chposfechado2_conceptosrc,
+                    'chposfechado2_factura1': model.get('factura3_factura1'),
+                    'chposfechado2_tercero':concepto.tercero,
+                    'call': concepto.call,
+                });
             }else if ( concepto.call == 'nota' ){
                 modelo = $.extend(object, {
                     'nota2_conceptonota': concepto.nota1_conceptonota,
