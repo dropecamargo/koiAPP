@@ -73,7 +73,7 @@
 
     {{--Cartera--}}
     <li class="{{ in_array(Request::segment(1), ['autorizacionesca','bancos','conceptosrc','conceptocobros','cuentabancos','autorizaco','mediopagos', 'recibos', 'conceptonotas', 'notas','facturas','conceptosajustec','ajustesc','devoluciones','anticipos','cheques','chequesdevueltos','gestioncobros','causas']) ? 'active' : '' }}">
-    <a href="#">
+        <a href="#">
             <i class="fa fa-suitcase"></i> <span>Cartera</span><i class="fa fa-angle-left pull-right"></i>
         </a>
         <ul class="treeview-menu">
@@ -154,23 +154,37 @@
     </li>
 
     {{-- Comercial --}}
-    <li class="treeview {{ in_array(Request::segment(1), ['presupuestoasesor', 'pedidosc']) ? 'active' : '' }}">
+    <li class="treeview {{ in_array(Request::segment(1), ['presupuestoasesor', 'pedidosc', 'gestionescomercial' ,'conceptoscomercial']) ? 'active' : '' }}">
         <a href="#">
             <i class="fa fa-globe"></i> <span>Comercial</span><i class="fa fa-angle-left pull-right"></i>
         </a>
 
         <ul class="treeview-menu">
             {{-- Modulos comercial --}}
-            <li class="{{ in_array(Request::segment(1), ['presupuestoasesor', 'pedidosc']) ? 'active' : '' }}">
+            <li class="{{ in_array(Request::segment(1), ['presupuestoasesor', 'pedidosc','gestionescomercial']) ? 'active' : '' }}">
                 <a href="#">
                     <i class="fa fa-wpforms"></i> Módulos <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
+                    <li class="{{ Request::segment(1) == 'gestionescomercial' ? 'active' : '' }}">
+                        <a href="{{route('gestionescomercial.index')}}"><i class="fa fa-volume-control-phone"></i> Gestión comercial</a>
+                    </li>
                     <li class="{{ Request::segment(1) == 'pedidosc' ? 'active' : '' }}">
                         <a href="{{route('pedidosc.index')}}"><i class="fa fa-cube"></i> Pedidos</a>
                     </li>
                     <li class="{{ Request::segment(1) == 'presupuestoasesor' ? 'active' : '' }}">
                         <a href="{{ route('presupuestoasesor.index') }}"><i class="fa fa-handshake-o"></i> Presupuesto</a>
+                    </li>
+                </ul>
+            </li>
+            {{--Referencias--}}
+            <li class="{{ in_array(Request::segment(1), ['conceptoscomercial']) ? 'active' : '' }}">
+                <a href="#">
+                    <i class="fa fa-circle-o"></i> Referencias <i class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="treeview-menu">
+                    <li class="{{ Request::segment(1) == 'conceptoscomercial' ? 'active' : '' }}">
+                        <a href="{{route('conceptoscomercial.index')}}"> <i class="fa fa-circle-o"></i> Concepto comercial</a>
                     </li>
                 </ul>
             </li>
@@ -305,17 +319,20 @@
         </ul>
     </li>
     {{-- Tecnico --}}
-    <li class="treeview {{ in_array(Request::segment(1), ['contratos','ordenes','tiposorden','solicitantes','danos','prioridades']) ? 'active' : '' }}">
+    <li class="treeview {{ in_array(Request::segment(1), ['contratos','ordenes','tiposorden','solicitantes','danos','prioridades','conceptostecnico','gestionestecnico']) ? 'active' : '' }}">
         <a href="#">
             <i class="fa fa-cogs"></i> <span>Tecnico</span><i class="fa fa-angle-left pull-right"></i>
         </a>
         <ul class="treeview-menu">
             {{-- Modulos Tecnico --}}
-            <li class="{{ in_array(Request::segment(1), ['ordenes']) ? 'active' : '' }}">
+            <li class="{{ in_array(Request::segment(1), ['ordenes','gestionestecnico']) ? 'active' : '' }}">
                 <a href="#">
                     <i class="fa fa-wpforms"></i> Modulos <i class="fa fa-angle-left pull-right"></i>
                 </a>
                     <ul class="treeview-menu">
+                    <li class="{{ Request::segment(1) == 'gestionestecnico' ? 'active' : '' }}">
+                        <a href="{{ route('gestionestecnico.index') }}"><i class="fa fa-volume-control-phone"></i> Gestión tecnico</a>
+                    </li>
                     <li class="{{ Request::segment(1) == 'ordenes' ? 'active' : '' }}">
                         <a href="{{ route('ordenes.index') }}"><i class="fa fa-building-o"></i> Ordenes</a>
                     </li>
@@ -323,11 +340,14 @@
             </li>
       
             {{-- Referencias Tecnico --}}
-            <li class="{{ in_array(Request::segment(1), ['tiposorden','solicitantes','danos','prioridades']) ? 'active' : '' }}">
+            <li class="{{ in_array(Request::segment(1), ['tiposorden','solicitantes','danos','prioridades','conceptostecnico']) ? 'active' : '' }}">
                 <a href="#">
                     <i class="fa fa-circle-o"></i> Referencias <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
+                    <li class="{{ Request::segment(1) == 'conceptostecnico' ? 'active' : '' }}">
+                        <a href="{{ route('conceptostecnico.index') }}"><i class="fa fa-circle-o"></i> Concepto tecnico</a>
+                    </li>
                     <li class="{{ Request::segment(1) == 'danos' ? 'active' : '' }}">
                         <a href="{{ route('danos.index') }}"><i class="fa fa-circle-o"></i> Daños</a>
                     </li>

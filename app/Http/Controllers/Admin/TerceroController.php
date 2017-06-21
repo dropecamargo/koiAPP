@@ -105,6 +105,7 @@ class TerceroController extends Controller
                     Cache::forget( Tercero::$key_cache_tadministrators );
                     Cache::forget( Tercero::$key_cache_badvisors );
                     Cache::forget( Tercero::$key_cache_sellers );
+                    Cache::forget( Tercero::$key_cache_technicals );
 
                     return response()->json(['success' => true, 'id' => $tercero->id]);
                 }catch(\Exception $e){
@@ -171,6 +172,7 @@ class TerceroController extends Controller
                     Cache::forget( Tercero::$key_cache_tadministrators );
                     Cache::forget( Tercero::$key_cache_badvisors );
                     Cache::forget( Tercero::$key_cache_sellers );
+                    Cache::forget( Tercero::$key_cache_technicals );
 
                     return response()->json(['success' => true, 'id' => $tercero->id]);
                 }catch(\Exception $e){

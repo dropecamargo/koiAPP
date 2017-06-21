@@ -21,12 +21,13 @@ class Orden extends Model
 	* The attributes that are mass assignable.
 	* @var array
 	*/
-    protected $fillable =['orden_fecha','orden_tipoorden','orden_solicitante','orden_persona','orden_dano','orden_prioridad','orden_problema'];
+    protected $fillable =['orden_tipoorden','orden_solicitante','orden_llamo','orden_dano','orden_prioridad','orden_problema'];
+
+    public static $default_document = 'ORD';
 
     public function isValid($data)
     {
         $rules = [  
-        	'orden_fecha'=>'required|date_format:Y-m-d',
         	'orden_tipoorden'=>'required',
         	'orden_solicitante'=>'required',
         	'orden_tercero'=>'required',
@@ -56,7 +57,7 @@ class Orden extends Model
         $query->join('tipoorden', 'orden.orden_tipoorden', '=', 'tipoorden.id');
         $query->join('solicitante', 'orden.orden_solicitante', '=', 'solicitante.id');
         $query->join('prioridad', 'orden.orden_prioridad', '=', 'prioridad.id');
-        $query->join('producto', 'orden.orden_placa', '=', 'producto.id');
+        $query->join('producto', 'orden.orden_serie', '=', 'producto.id');
      
         $query->where('orden.id', $id);
         return $query->first();

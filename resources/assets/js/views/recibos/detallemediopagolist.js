@@ -82,10 +82,9 @@ app || (app = {});
         */
         storeOne: function ( data ) {    
             var _this = this;
-
+            console.log(data);
             // Set Spinner
             window.Misc.setSpinner( this.parameters.wrapper );
-
             // Add model in collection
             var recibo3Model = new app.Recibo3Model();
             recibo3Model.save(data, {

@@ -48,7 +48,7 @@ app || (app = {});
                 },
                 columns: [
                     { data: 'id', name: 'id' },
-                    { data: 'orden_fecha', name: 'orden_fecha' },
+                    { data: 'orden_fh_elaboro', name: 'orden_fh_elaboro' },
                     { data: 'tercero_nombre', name: 'tercero_nombre' },
                     { data: 'orden_abierta', name: 'orden_abierta' },
 

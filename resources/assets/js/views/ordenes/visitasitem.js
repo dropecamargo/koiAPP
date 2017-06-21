@@ -34,17 +34,14 @@ app || (app = {});
 
             //this.parameters.wrapper
             this.$modalInfo = $('#modal-visita-show-info-component');
-            this.visitap = new app.VisitapCollection();
-            // this.contadoresp = new app.ContadorespCollection();
+            this.remrepu = new app.RemRepuCollection();
             
             // Events Listener
             this.listenTo( this.model, 'change', this.render );
             
             // addAll de visitasp
-            this.listenTo( this.visitap, 'reset', this.addAllVisitasp );
+            this.listenTo( this.remrepu, 'reset', this.addAllVisitasp );
 
-            // // addAll de contadoresp
-            // this.listenTo( this.contadoresp, 'reset', this.addAllContadoresp );
         },
 
         /*
@@ -69,11 +66,9 @@ app || (app = {});
             // Render info
             this.$modalInfo.find('.content-modal').empty().html( this.templateInfo( attributes ) );
             this.$wrapperVisitasp = this.$modalInfo.find('#browse-orden-visitasp-show-list');
-            this.$wrapperContadoresp = this.$modalInfo.find('#browse-orden-contadoresp-show-list');
-    
+
             //fetch vistas 
-            this.visitap.fetch({ reset: true, data: { visitap: this.model.get('id') } });
-            // this.contadoresp.fetch({ reset: true, data: { contadoresp: this.model.get('id') } });
+            // this.remrepu.fetch({ reset: true, data: { visitap: this.model.get('id') } });
             // Open modal
            
             this.$modalInfo.modal('show');
@@ -91,30 +86,13 @@ app || (app = {});
             this.$wrapperVisitasp.append( view.render().el );           
         },
 
-        addOneContadoresp: function (ContadorespModel) {
-            var view = new app.ContadoresItemView({
-                model: ContadorespModel,
-                parameters:{
-                    edit:false
-                }
-            });
-
-            this.$wrapperContadoresp.append( view.render().el );
-
-          
-                    
-        },
-
         /**
         * Render all view tast of the collection
         */
         addAllVisitasp: function () {
-            this.visitap.forEach( this.addOneVisitasp, this );
+            this.remrepu.forEach( this.addOneVisitasp, this );
         },
 
-        addAllContadoresp: function () {
-            this.contadoresp.forEach( this.addOneContadoresp, this );
-        },
     });
 
 })(jQuery, this, this.document);

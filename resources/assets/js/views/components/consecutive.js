@@ -56,6 +56,7 @@ app || (app = {});
                     if(documents == 'devolucion') consecutive = resp.sucursal_devo;
                     if(documents == 'anticipo') consecutive = resp.sucursal_anti;
                     if(documents == 'chequepos') consecutive = resp.sucursal_chp;
+                    if(documents == 'orden') consecutive = resp.sucursal_ord;
                     
                     // Set consecutive
                     _this.$consecutive.val( parseInt(consecutive) + 1);

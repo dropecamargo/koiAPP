@@ -18,9 +18,7 @@ app || (app = {});
             'submit #form-orden': 'onStore',
             'click .submit-visitas': 'submitVisita',
             'submit #form-visitas': 'onStoreVisita',
-            'submit #form-contadoresp': 'onStoreContadoresp',
-            'submit #form-visitasp': 'onStoreVisitap',
-            
+            'submit #form-remrepu': 'onStoreRemRepu',
         },
         parameters: {
         },
@@ -41,7 +39,7 @@ app || (app = {});
             if( this.model.id != undefined ) {
                 
                 this.visita = new app.VisitaCollection();
-                this.visitap = new app.VisitapCollection();
+                this.remrepu = new app.RemRepuCollection();
             }
             // Events
             this.listenTo( this.model, 'change', this.render );
@@ -58,8 +56,7 @@ app || (app = {});
             this.$wraperForm.html( this.template(attributes) );
             this.$form = this.$('#form-orden');
             this.$formvisitasp = this.$('#form-visitas');
-            this.$formcontadoresp = this.$('#form-contadoresp');
-            
+
             // Model exist
             if( this.model.id != undefined ) {
                 // Reference views
@@ -80,8 +77,8 @@ app || (app = {});
                 }
             });
 
-            this.visitaspView = new app.VisitaspView( {
-                collection: this.visitap,
+            this.remRepuView = new app.RemRepuView( {
+                collection: this.remrepu,
                 parameters: {
                     edit: true,
                     wrapper: this.$('#wrapper-visitasp'),
@@ -123,27 +120,19 @@ app || (app = {});
                 e.preventDefault();
 
                 var data = window.Misc.formToJson( e.target );
-                data.visita_orden = this.model.get('id');
-                
-                // Contadores
-                data = $.extend({}, data, window.Misc.formToJson( this.$formcontadoresp ));
-
-                // Repuestos
-                data.visitap = this.visitap.toJSON();
                 this.visita.trigger( 'store', data );
             }
         },  
 
         /**
-        * Event Create visitap
+        * Event Create remrepu
         */
-
-        onStoreVisitap: function (e) {
+        onStoreRemRepu: function (e) {
             if (!e.isDefaultPrevented()) {
                 e.preventDefault();
 
                 var data = window.Misc.formToJson( e.target );
-                this.visitap.trigger( 'store', data );
+                this.remrepu.trigger( 'store', data );
             }
         },   
 

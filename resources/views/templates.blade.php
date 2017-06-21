@@ -1120,7 +1120,20 @@
     	</div>
     </td>
 </script>
-
+{{-- Comercial --}}
+<script type="text/template" id="add-conceptocom-tpl">
+	<div class="row">
+		<div class="form-group col-md-8">
+			<label for="conceptocom_nombre" class="control-label">Nombre</label>
+			<input type="text" id="conceptocom_nombre" name="conceptocom_nombre" value="<%- conceptocom_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="25" required>
+		</div>
+		<div class="form-group col-md-2 col-xs-8 col-sm-3">
+			<br><label class="checkbox-inline" for="conceptocom_activo">
+				<input type="checkbox" id="conceptocom_activo" name="conceptocom_activo" value="conceptocom_activo" <%- parseInt(conceptocom_activo) ? 'checked': ''%>> Activo
+			</label>
+		</div>
+    </div>
+</script>
 {{-- Cartera --}}
 <script type="text/template" id="add-banco-tpl">
 	<div class="row">
@@ -1430,6 +1443,20 @@
 		<div class="form-group col-md-2 col-xs-8 col-sm-3">
 			<br><label class="checkbox-inline" for="tipoorden_activo">
 				<input type="checkbox" id="tipoorden_activo" name="tipoorden_activo" value="tipoorden_activo" <%- tipoorden_activo ? 'checked': ''%>> Activo
+			</label>
+		</div>
+    </div>
+</script>
+
+<script type="text/template" id="add-conceptotec-tpl">
+	<div class="row">
+		<div class="form-group col-md-8">
+			<label for="conceptotec_nombre" class="control-label">Nombre</label>
+			<input type="text" id="conceptotec_nombre" name="conceptotec_nombre" value="<%- conceptotec_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="25" required>
+		</div>
+		<div class="form-group col-md-2 col-xs-8 col-sm-3">
+			<br><label class="checkbox-inline" for="conceptotec_activo">
+				<input type="checkbox" id="conceptotec_activo" name="conceptotec_activo" value="conceptotec_activo" <%- parseInt(conceptotec_activo) ? 'checked': ''%>> Activo
 			</label>
 		</div>
     </div>

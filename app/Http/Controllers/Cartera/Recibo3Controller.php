@@ -52,13 +52,11 @@ class Recibo3Controller extends Controller
      */
     public function store(Request $request)
     {
-        dd('hola');
         if ($request->ajax()) {
             $data = $request->all();
             $recibo3 = new Recibo3;
             if ($recibo3->isValid($data)) {
                 try {
-
                     $mediopago = MedioPago::find($request->recibo3_mediopago);
                     if (!$mediopago instanceof MedioPago) {
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar medio de pago, verifique información ó por favor consulte al administrador.']);
@@ -112,7 +110,7 @@ class Recibo3Controller extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        
     }
 
     /**

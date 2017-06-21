@@ -8,7 +8,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Models\Cartera\ChDevuelto,App\Models\Cartera\ChposFechado1,App\Models\Cartera\Causal;
-use App\Models\Base\Tercero,App\Models\Base\Documentos;
+use App\Models\Base\Tercero,App\Models\Base\Documentos,App\Models\Base\Sucursal;
 
 use DB, Log, Datatables,Auth;
 
@@ -33,7 +33,7 @@ class ChDevueltoController extends Controller
             $query->join('tercero','chdevuelto_tercero', '=', 'tercero.id');
             $query->join('chposfechado1', 'chdevuelto_chposfechado1', '=', 'chposfechado1.id');
             $query->join('banco','chposfechado1_banco', '=', 'banco.id');
-            $query->join('sucursal','chposfechado1_sucursal', '=', 'sucursal.id');
+            $query->join('sucursal','chdevuelto_sucursal', '=', 'sucursal.id');
             return Datatables::of($query)->make(true);
         }
         return view('cartera.chequesdevueltos.index');
@@ -75,6 +75,12 @@ class ChDevueltoController extends Controller
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar cheque a devolver,por favor verifique la información ó por favor consulte al administrador.']);
                     }
+                    // Recupero sucursal de cheque a devolver
+                    $sucursal = Sucursal::find($cheque1->chposfechado1_sucursal);
+                    if (!$sucursal instanceof Sucursal) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar sucuesal de cheque a devolver,por favor verifique la información ó por favor consulte al administrador.']);
+                    }
                     // Causa de devolucion
                     $causal = Causal::find($request->chdevuelto_causal);
                     if (!$causal instanceof Causal) {
@@ -83,7 +89,13 @@ class ChDevueltoController extends Controller
                     }
                     // clear marcacion en factura3
                     $cheque1->clearKey();
+
+                    // Consecutive sucursal_chd
+                    $consecutive = $sucursal->sucursal_chd + 1;
+
                     $chdevuelto->chdevuelto_chposfechado1 = $cheque1->id;
+                    $chdevuelto->chdevuelto_sucursal = $sucursal->id;
+                    $chdevuelto->chdevuelto_numero = $consecutive;
                     $chdevuelto->chdevuelto_documentos = $documento->id;
                     $chdevuelto->chdevuelto_fecha = date('Y-m-d');
                     $chdevuelto->chdevuelto_valor = $cheque1->chposfechado1_valor;
@@ -98,6 +110,11 @@ class ChDevueltoController extends Controller
                     $cheque1->chposfechado1_activo = false;
                     $cheque1->chposfechado1_devuelto = true;
                     $cheque1->save();
+
+                    // Update consecutive sucursal_chd in Sucursal
+                    $sucursal->sucursal_chd = $consecutive;
+                    $sucursal->save();
+
                     // Commit Transaction
                     DB::commit();
                     // return response()->json(['success' => false, 'errors' => 'todo OK']);
@@ -119,9 +136,13 @@ class ChDevueltoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        //
+        $chdevuelto = ChDevuelto::getChequeDevuelto($id);
+        if ($request->ajax()) {
+            return response()->json($chdevuelto);
+        }
+        return view('cartera.chequesdevueltos.show', ['chdevuelto' => $chdevuelto]);
     }
 
     /**

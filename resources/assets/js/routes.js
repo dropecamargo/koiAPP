@@ -80,11 +80,28 @@ app || (app = {});
             'roles/:rol/edit(/)': 'getRolesEdit',
 
             /*
+            |----------------------
+            | Comercial
+            |----------------------
+            */
+            'presupuestoasesor(/)': 'getPresupuestoAsesorMain',
+
+            'pedidosc(/)': 'getPedidoscMain',
+            'pedidosc/create(/)': 'getPedidoscCreate',
+            'pedidosc/:pedidosc(/)': 'getPedidoscShow',
+
+            'conceptoscomercial(/)': 'getConceptosComMain',
+            'conceptoscomercial/create(/)': 'getConceptoComCreate',
+            'conceptoscomercial/:conceptoscomercial/edit(/)': 'getConceptoComEdit',
+
+            'gestionescomercial(/)': 'getGestionesComercialMain',
+            'gestionescomercial/create(/)': 'getGestionComercialCreate',
+
+            /*
             |-----------------------
             | Contabilidad
             |-----------------------
             */
-            'presupuestoasesor(/)': 'getPresupuestoAsesorMain',
             'documentos(/)': 'getDocumentosMain',
             'documentos/create(/)': 'getDocumentosCreate',
             'documentos/:documento/edit(/)':'getDocumentosEdit',
@@ -169,10 +186,6 @@ app || (app = {});
             'autorizacionesca(/)': 'getAutorizacionesCaMain',
             'autorizacionesca/:autorizacionesca(/)': 'getAutorizacionesCaShow',
 
-            'pedidosc(/)': 'getPedidoscMain',
-            'pedidosc/create(/)': 'getPedidoscCreate',
-            'pedidosc/:pedidosc(/)': 'getPedidoscShow',
-
             'bancos(/)': 'getBancosMain',
             'bancos/create(/)': 'getBancosCreate',
             'bancos/:bancos/edit(/)': 'getBancosEdit',
@@ -243,6 +256,9 @@ app || (app = {});
             | Tecnico
             |----------------------
             */
+            'conceptostecnico(/)': 'getConceptosTecMain',
+            'conceptostecnico/create(/)': 'getConceptoTecCreate',
+            'conceptostecnico/:conceptostecnico/edit(/)': 'getConceptoTecEdit',
 
             'tiposorden(/)': 'getTiposOrdenMain',
             'tiposorden/create(/)': 'getTiposOrdenCreate',
@@ -264,6 +280,9 @@ app || (app = {});
             'prioridades(/)': 'getPrioridadesMain',
             'prioridades/create(/)': 'getPrioridadesCreate',
             'prioridades/:prioridades/edit(/)': 'getPrioridadesEdit',
+
+            'gestionestecnico(/)': 'getGestionesTecnicoMain',
+            'gestionestecnico/create(/)': 'getGestionTecnicoCreate',
 
         },
 
@@ -756,12 +775,66 @@ app || (app = {});
             this.mainPresupuestoAsesorView = new app.MainPresupuestoAsesorView( );
         },
 
+        getConceptosComMain: function () {
+
+            if ( this.mainConceptoComView instanceof Backbone.View ){
+                this.mainConceptoComView.stopListening();
+                this.mainConceptoComView.undelegateEvents();
+            }
+
+            this.mainConceptoComView = new app.MainConceptosComView( );
+        },
+
+        getConceptoComCreate: function () {
+            this.conceptoComModel = new app.ConceptoComModel();
+
+            if ( this.createConceptoComView instanceof Backbone.View ){
+                this.createConceptoComView.stopListening();
+                this.createConceptoComView.undelegateEvents();
+            }
+
+            this.createConceptoComView = new app.CreateConceptoComView({ model: this.conceptoComModel });
+            this.createConceptoComView.render();
+        },
+
+        getConceptoComEdit: function (conceptoscomercial) {
+            this.conceptoComModel = new app.ConceptoComModel();
+            this.conceptoComModel.set({'id': conceptoscomercial}, {'silent':true});
+
+            if ( this.createConceptoComView instanceof Backbone.View ){
+                this.createConceptoComView.stopListening();
+                this.createConceptoComView.undelegateEvents();
+            }
+
+            this.createConceptoComView = new app.CreateConceptoComView({ model: this.conceptoComModel });
+            this.conceptoComModel.fetch();
+        },
+
+        getGestionesComercialMain: function(){
+
+            if (this.mainGestionesComercialView instanceof Backbone.View) {
+                this.mainGestionesComercialView.stopListening();
+                this.mainGestionesComercialView.undelegateEvents();
+            }
+            this.mainGestionesComercialView = new app.MainGestionesComercialView( );
+        },
+        getGestionComercialCreate: function(){
+            this.gestionComercialModel = new app.GestionComercialModel();
+
+            if (this.createGestionComercialView instanceof Backbone.View) {
+                this.createGestionComercialView.stopListening();
+                this.createGestionComercialView.undelegateEvents();
+            }
+            this.createGestionComercialView = new app.CreateGestionComercialView({ model: this.gestionComercialModel });
+            this.createGestionComercialView.render();
+        },
+
         /*
         |-----------------------
         | Contabilidad
         |-----------------------
         */
-        //Folder
+
         getFoldersMain: function () {
 
             if ( this.mainFoldersView instanceof Backbone.View ){
@@ -2326,6 +2399,59 @@ app || (app = {});
             }
 
             this.showOrdenView = new app.ShowOrdenView({ model: this.ordenModel });
+        },
+        getConceptosTecMain: function () {
+
+            if ( this.mainConceptoTecView instanceof Backbone.View ){
+                this.mainConceptoTecView.stopListening();
+                this.mainConceptoTecView.undelegateEvents();
+            }
+
+            this.mainConceptoTecView = new app.MainConceptosTecView( );
+        },
+
+        getConceptoTecCreate: function () {
+            this.conceptoTecModel = new app.ConceptoTecModel();
+
+            if ( this.createConceptoTecView instanceof Backbone.View ){
+                this.createConceptoTecView.stopListening();
+                this.createConceptoTecView.undelegateEvents();
+            }
+
+            this.createConceptoTecView = new app.CreateConceptoTecView({ model: this.conceptoTecModel });
+            this.createConceptoTecView.render();
+        },
+
+        getConceptoTecEdit: function (conceptotecnico) {
+            this.conceptoTecModel = new app.ConceptoTecModel();
+            this.conceptoTecModel.set({'id': conceptotecnico}, {'silent':true});
+
+            if ( this.createConceptoTecView instanceof Backbone.View ){
+                this.createConceptoTecView.stopListening();
+                this.createConceptoTecView.undelegateEvents();
+            }
+
+            this.createConceptoTecView = new app.CreateConceptoTecView({ model: this.conceptoTecModel });
+            this.conceptoTecModel.fetch();
+        },
+
+        getGestionesTecnicoMain: function(){
+
+            if (this.mainGestionesTecnicoView instanceof Backbone.View) {
+                this.mainGestionesTecnicoView.stopListening();
+                this.mainGestionesTecnicoView.undelegateEvents();
+            }
+            this.mainGestionesTecnicoView = new app.MainGestionesTecnicoView( );
+        },
+        getGestionTecnicoCreate: function(){
+            this.gestionTecnicoModel = new app.GestionTecnicoModel();
+
+            if (this.createGestionTecnicoView instanceof Backbone.View) {
+                this.createGestionTecnicoView.stopListening();
+                this.createGestionTecnicoView.undelegateEvents();
+            }
+            this.createGestionTecnicoView = new app.CreateGestionTecnicoView({ model: this.gestionTecnicoModel });
+            this.createGestionTecnicoView.render();
         },
     }));
 })(jQuery, this, this.document);

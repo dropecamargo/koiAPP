@@ -157,7 +157,7 @@ app || (app = {});
                 id = id.split("_");
             if( !selected ) {
                 var modelo = this.detalleChposFechado.findModel(id[1]);
-                this.collection.trigger('store', modelo );
+                this.collection.trigger('store', modelo.attributes );
             }
               
             this.ready();    

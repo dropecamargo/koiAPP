@@ -19,8 +19,11 @@ class CreateVisitaiTable extends Migration
             $table->integer('visitai_orden')->unsigned();
             $table->integer('visitai_item')->unsigned();
             $table->string('visitai_archivo',100);
+            $table->integer('visitai_usuario_elaboro')->unsigned();
+            $table->dateTime('visitai_fh_elaboro');
 
             $table->foreign('visitai_orden')->references('id')->on('orden')->onDelete('restrict');
+            $table->foreign('visitai_usuario_elaboro')->references('id')->on('tercero')->onDelete('restrict');
         });
     }
 

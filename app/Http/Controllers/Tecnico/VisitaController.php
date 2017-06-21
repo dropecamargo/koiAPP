@@ -86,7 +86,7 @@ class VisitaController extends Controller
                     }
 
                     // Validar maquina
-                    $producto = Producto::find($orden->orden_placa);
+                    $producto = Producto::find($orden->orden_serie);
                     if(!$producto instanceof Producto) {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar maquina, por favor verifique la información o consulte al administrador.']);
@@ -105,55 +105,6 @@ class VisitaController extends Controller
                     $visita->visita_usuario_elaboro = Auth::user()->id;
                     $visita->visita_fh_elaboro = date('Y-m-d H:m:s');
                     $visita->save();
-                    
-                    // // Contadores
-                    // foreach ($producto->contadores as $contador) 
-                    // {
-                    //     if(!$request->has("contadoresp_valor_$contador->id")) {
-                    //         DB::rollback();
-                    //         return response()->json(['success' => false, 'errors' =>"Contador {$contador->contador->contador_nombre} es requerido, por favor verifique la información o consulte al administrador."]);
-                    //     }
-
-                    //     $contadoresp = new Contadoresp;
-                    //     $contadoresp->contadoresp_documento = $visita->document;
-                    //     $contadoresp->contadoresp_documento_numero = $visita->id;
-                    //     $contadoresp->contadoresp_producto_contador = $contador->id;
-                    //     $contadoresp->contadoresp_fh = date('Y-m-d');
-                    //     $contadoresp->contadoresp_valor = $request->get("contadoresp_valor_$contador->id");
-                    //     $contadoresp->save();  
-                    // }
-
-                    // Visitas
-                    $visitasp = $request->has('visitap') ? $request->visitap : [];
-                    foreach ($visitasp as $item)
-                    {
-                        // Recuperar producto
-                        $productov = Producto::where('producto_referencia', $item['visitap_codigo'])->first();
-                        if (!$productov instanceof Producto) {
-                        DB::rollback();
-                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar producto, por favor verifique la información o consulte al administrador.']);
-                        }
-
-                        // $tipo = Tipo::find($productov->producto_tipo);
-                       
-                        // if (!$tipo instanceof Tipo) {
-                        //     DB::rollback();
-                        //     return response()->json(['success' => false, 'errors' => 'No es posible recuperar producto, por favor verifique la información o consulte al administrador.']);
-                        // }
-                      
-
-                        // if(!in_array($tipo->tipo_codigo, ['RP', 'CO', 'IN'])){
-                        //     DB::rollback();
-                        //     return response()->json(['success' => false, 'errors' => 'No es posible recuperar tipo, por favor verifique la información o consulte al administrador.']);  
-                        // }
-
-                        $visitap = new Visitap;
-                        $visitap->visitap_orden = $orden->id;
-                        $visitap->visitap_numero = $visita->id;
-                        $visitap->visitap_cantidad = $item['visitap_cantidad'];
-                        $visitap->visitap_producto = $productov->id;
-                        $visitap->save();
-                    }
 
                     // Commit Transaction
                     DB::commit();

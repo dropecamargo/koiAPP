@@ -1,5 +1,5 @@
 /**
-* Class visitap of Backbone Collection
+* Class RemRepuCollection of Backbone Collection
 * @author KOI || @dropecamargo
 * @link http://koi-ti.com
 */
@@ -9,12 +9,12 @@ app || (app = {});
 
 (function (window, document, undefined) {
 
-    app.VisitapCollection = Backbone.Collection.extend({
+    app.RemRepuCollection = Backbone.Collection.extend({
 
         url: function() {
-            return window.Misc.urlFull( Route.route('ordenes.visitasp.index') );
+            return window.Misc.urlFull( Route.route('ordenes.remrepuestos.index') );
         },
-        model: app.VisitapModel,
+        model: app.RemRepuModel,
 
         /**
         * Constructor Method

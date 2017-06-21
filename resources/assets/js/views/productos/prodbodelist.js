@@ -44,11 +44,11 @@ app || (app = {});
         */
         render: function() {
         },
-ready:function(){
+        ready:function(){
 
-            if( typeof window.initComponent.initICheck == 'function' )
-                window.initComponent.initICheck();
-},
+                    if( typeof window.initComponent.initICheck == 'function' )
+                        window.initComponent.initICheck();
+        },
         /**
         * Render view contact by model
         * @param Object prodbodeModel Model instance

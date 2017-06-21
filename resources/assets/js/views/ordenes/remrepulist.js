@@ -1,5 +1,5 @@
 /**
-* Class VisitasView  of Backbone Router
+* Class RemRepuView  of Backbone Router
 * @author KOI || @dropecamargo
 * @link http://koi-ti.com
 */
@@ -9,11 +9,11 @@ app || (app = {});
 
 (function ($, window, document, undefined) {
 
-    app.VisitaspView = Backbone.View.extend({
+    app.RemRepuView = Backbone.View.extend({
 
-        el: '#browse-orden-visitasp-list',
+        el: '#browse-orden-remrepu-list',
         events: {
-               'click .item-visitap-remove': 'removeOne'
+               'click .item-remrepu-remove': 'removeOne'
         },
         parameters: {
             wrapper:false,
@@ -35,6 +35,8 @@ app || (app = {});
             this.listenTo( this.collection, 'store', this.storeOne );
             this.listenTo( this.collection, 'request', this.loadSpinner);
             this.listenTo( this.collection, 'sync', this.responseServer);
+
+            this.collection.fetch({ data: {orden_id: this.parameters.dataFilter.orden_id}, reset: true });
         },
 
         /*
@@ -47,14 +49,14 @@ app || (app = {});
         * Render view contact by model
         * @param Object contactModel Model instance
         */
-        addOne: function (visitapModel) {
-            var view = new app.VisitaspItemView({
-                model: visitapModel,
+        addOne: function (remRepuModel) {
+            var view = new app.RemRepuItemView({
+                model: remRepuModel,
                 parameters: {
                     edit: this.parameters.edit
                 }
             });
-            visitapModel.view = view;
+            remRepuModel.view = view;
             this.$el.prepend( view.render().el );
         },
 
@@ -72,11 +74,11 @@ app || (app = {});
             window.Misc.setSpinner( this.parameters.wrapper );
 
             // Prepare data
-            data.visitap_orden = this.parameters.dataFilter.orden_id;
+            data.remrepu_orden = this.parameters.dataFilter.orden_id;
 
             // Add model in collection
-            var visitapModel = new app.VisitapModel();
-            visitapModel.save(data, {
+            var remRepuModel = new app.RemRepuModel();
+            remRepuModel.save(data, {
                 success : function(model, resp) {
                     if(!_.isUndefined(resp.success)) {
                         window.Misc.removeSpinner( _this.parameters.wrapper );

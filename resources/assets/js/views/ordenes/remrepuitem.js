@@ -9,10 +9,10 @@ app || (app = {});
 
 (function ($, window, document, undefined) {
 
-    app.VisitaspItemView = Backbone.View.extend({
+    app.RemRepuItemView = Backbone.View.extend({
 
         tagName: 'tr',
-        template: _.template( ($('#visitap-item-list-tpl').html() || '') ),
+        template: _.template( ($('#remrepu-item-list-tpl').html() || '') ),
         events: {
         },
         parameters: {
@@ -32,7 +32,6 @@ app || (app = {});
 
             //Init Attributes
             this.$modalInfo = $('#modal-visita-show-info-component');
-            
 
             this.parameters.wrapper
 

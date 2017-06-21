@@ -17,6 +17,8 @@ class CreateChdevueltoTable extends Migration
 
             $table->increments('id');
             $table->integer('chdevuelto_chposfechado1')->unsigned();
+            $table->integer('chdevuelto_sucursal')->unsigned();
+            $table->integer('chdevuelto_numero')->unsigned();
             $table->integer('chdevuelto_tercero')->unsigned();
             $table->integer('chdevuelto_causal')->unsigned();
             $table->integer('chdevuelto_documentos')->unsigned();
@@ -30,8 +32,8 @@ class CreateChdevueltoTable extends Migration
             $table->foreign('chdevuelto_tercero')->references('id')->on('tercero')->onDelete('restrict');
             $table->foreign('chdevuelto_causal')->references('id')->on('causal')->onDelete('restrict');
             $table->foreign('chdevuelto_documentos')->references('id')->on('documentos')->onDelete('restrict');
+            $table->foreign('chdevuelto_sucursal')->references('id')->on('documentos')->onDelete('restrict');
             $table->foreign('chdevuelto_usuario_elaboro')->references('id')->on('tercero')->onDelete('restrict');
-
         });
     }
 
