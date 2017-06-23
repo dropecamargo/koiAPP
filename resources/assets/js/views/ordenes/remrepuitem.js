@@ -1,5 +1,5 @@
 /**
-* Class VisitapItemView  of Backbone Router
+* Class RemRepuItemView  of Backbone Router
 * @author KOI || @dropecamargo
 * @link http://koi-ti.com
 */

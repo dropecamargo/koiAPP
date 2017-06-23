@@ -1,5 +1,5 @@
 /**
-* Class RemRepuView  of Backbone Router
+* Class RemisionView  of Backbone Router
 * @author KOI || @dropecamargo
 * @link http://koi-ti.com
 */
@@ -9,11 +9,11 @@ app || (app = {});
 
 (function ($, window, document, undefined) {
 
-    app.RemRepuView = Backbone.View.extend({
+    app.RemisionView = Backbone.View.extend({
 
-        el: '#browse-orden-remrepu-list',
+        el: '#browse-orden-remision-list',
         events: {
-               'click .item-remrepu-remove': 'removeOne'
+               // 'click .item-remrepu-remove': 'removeOne'
         },
         parameters: {
             wrapper:false,
@@ -32,9 +32,10 @@ app || (app = {});
             // Events Listeners
             this.listenTo( this.collection, 'add', this.addOne );
             this.listenTo( this.collection, 'reset', this.addAll );
-            this.listenTo( this.collection, 'store', this.storeOne );
             this.listenTo( this.collection, 'request', this.loadSpinner);
             this.listenTo( this.collection, 'sync', this.responseServer);
+
+            this.collection.fetch({ data: {orden_id: this.parameters.dataFilter.orden_id}, reset: true });
         },
 
         /*
@@ -47,14 +48,11 @@ app || (app = {});
         * Render view contact by model
         * @param Object contactModel Model instance
         */
-        addOne: function (remRepu2Model) {
-            var view = new app.RemRepuItemView({
-                model: remRepu2Model,
-                parameters: {
-                    edit: this.parameters.edit
-                }
+        addOne: function (remRepuModel) {
+            var view = new app.RemisionItemView({
+                model: remRepuModel,
             });
-            remRepu2Model.view = view;
+            remRepuModel.view = view;
             this.$el.prepend( view.render().el );
         },
 
@@ -64,45 +62,6 @@ app || (app = {});
         addAll: function () {
             this.collection.forEach( this.addOne, this );
         },
-
-        storeOne: function (data) {
-            var _this = this;
-
-            // Set Spinner
-            window.Misc.setSpinner( this.parameters.wrapper );
-
-            // Prepare data
-            data.remrepu_orden = this.parameters.dataFilter.orden_id;
-
-            // Add model in collection
-            var remRepu2Model = new app.RemRepu2Model();
-            remRepu2Model.save(data, {
-                success : function(model, resp) {
-                    if(!_.isUndefined(resp.success)) {
-                        window.Misc.removeSpinner( _this.parameters.wrapper );
-
-                        // response success or error
-                        var text = resp.success ? '' : resp.errors;
-                        if( _.isObject( resp.errors ) ) {
-                            text = window.Misc.parseErrors(resp.errors);
-                        }
-
-                        if( !resp.success ) {
-                            alertify.error(text);
-                            return;
-                        }
-
-                        // Add model in collection
-                        _this.collection.add(model);
-                    }
-                },
-                error : function(model, error) {
-                    window.Misc.removeSpinner( _this.parameters.wrapper );
-                    alertify.error(error.statusText)
-                }
-            });
-        },
-
 
         /**
         * Event remove item

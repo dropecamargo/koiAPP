@@ -1,5 +1,5 @@
 /**
-* Class RemRepuCollection of Backbone Collection
+* Class RemisionCollection of Backbone Collection
 * @author KOI || @dropecamargo
 * @link http://koi-ti.com
 */
@@ -9,12 +9,12 @@ app || (app = {});
 
 (function (window, document, undefined) {
 
-    app.RemRepuCollection = Backbone.Collection.extend({
+    app.RemisionCollection = Backbone.Collection.extend({
 
         url: function() {
-            return window.Misc.urlFull( Route.route('ordenes.detalle.remrepuestos.index') );
+            return window.Misc.urlFull( Route.route('ordenes.remrepuestos.index') );
         },
-        model: app.RemRepu2Model,
+        model: app.RemRepuModel,
 
         /**
         * Constructor Method

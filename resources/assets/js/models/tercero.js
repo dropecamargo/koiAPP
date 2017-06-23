@@ -30,6 +30,7 @@ app || (app = {});
             'tercero_dir_nomenclatura' : '',
             'tercero_municipio' : '',
             'tercero_pais' : '',
+            'tercero_familia' : '',
             'tercero_email' : '',
             'tercero_telefono1' : '',
             'tercero_telefono2' : '',

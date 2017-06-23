@@ -9,7 +9,7 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Base\Pais;
 
-use DB;
+use DB, Datatables;
 
 class PaisController extends Controller
 {
@@ -22,8 +22,9 @@ class PaisController extends Controller
     {
         if ($request->ajax()) {
             $query = Pais::query();
-            // dd($request->all());
-            $data = [];
+            if( $request->has('datatables') ) {
+                return Datatables::of($query)->make(true);
+            }
             $query->select('pais.id as id', DB::raw("CONCAT(pais_nombre, ' - ', pais_codigo) as text"));
             if($request->has('id')){
                 $query->where('pais.id', $request->id);
@@ -38,9 +39,9 @@ class PaisController extends Controller
             if(empty($request->q) && empty($request->id)) {
                 $query->take(50);
             }
-
             return response()->json($query->get());
         }
+        return view('admin.paises.index');
     }
 
     /**

@@ -53,6 +53,9 @@ app || (app = {});
             'departamentos(/)': 'getDepartamentosMain',
             'municipios(/)': 'getMunicipiosMain',
 
+            // Paises
+            'paises(/)': 'getPaisesMain',
+
             'puntosventa(/)': 'getPuntosVentaMain',
             'puntosventa/create(/)': 'getPuntosVentaCreate',
             'puntosventa/:puntoventa/edit(/)': 'getPuntosVentaEdit',
@@ -592,6 +595,15 @@ app || (app = {});
             }
 
             this.mainMunicipioView = new app.MainMunicipioView( );
+        },
+        // Vistas de Paises
+        getPaisesMain: function () {
+
+            if ( this.mainPaisesView instanceof Backbone.View ){
+                this.mainPaisesView.stopListening();
+                this.mainPaisesView.undelegateEvents();
+            }
+            this.mainPaisesView = new app.MainPaisesView( );
         },
 
         // Puntos de Venta

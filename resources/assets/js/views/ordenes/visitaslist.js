@@ -61,7 +61,6 @@ app || (app = {});
                 }
             });
             visitaModel.view = view;
-            
             this.$el.prepend( view.render().el );
         },
 

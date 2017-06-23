@@ -157,6 +157,10 @@
 	    		<label for="tercero_cc_representante" class="control-label">Cédula</label>
 	    		<input id="tercero_cc_representante" value="<%- tercero_cc_representante %>" placeholder="Cédula" class="form-control input-sm" name="tercero_cc_representante" type="text" maxlength="15">
 	    	</div>
+			<div class="form-group col-md-3">
+	    		<label for="tercero_familia" class="control-label">Familia</label>
+	    		<input id="tercero_familia" value="<%- tercero_familia %>" placeholder="Familia" class="form-control input-sm input-toupper" name="tercero_familia" type="text" maxlength="10">
+	    	</div>
 		</div>
 
 	    <div class="row">

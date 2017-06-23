@@ -34,13 +34,13 @@ app || (app = {});
 
             //this.parameters.wrapper
             this.$modalInfo = $('#modal-visita-show-info-component');
-            this.remrepu = new app.RemRepuCollection();
+            // this.remrepu = new app.RemRepuCollection();
             
             // Events Listener
             this.listenTo( this.model, 'change', this.render );
             
             // addAll de visitasp
-            this.listenTo( this.remrepu, 'reset', this.addAllVisitasp );
+            // this.listenTo( this.remrepu, 'reset', this.addAllVisitasp );
 
         },
 
@@ -70,28 +70,9 @@ app || (app = {});
             //fetch vistas 
             // this.remrepu.fetch({ reset: true, data: { visitap: this.model.get('id') } });
             // Open modal
-           
             this.$modalInfo.modal('show');
         },
 
-        /**
-        * Render view task by model
-        * @param Object mentoringTaskModel Model instance
-        */
-        addOneVisitasp: function (VisitapModel) {
-            var view = new app.VisitaspItemView({
-                model: VisitapModel,
-            });
-
-            this.$wrapperVisitasp.append( view.render().el );           
-        },
-
-        /**
-        * Render all view tast of the collection
-        */
-        addAllVisitasp: function () {
-            this.remrepu.forEach( this.addOneVisitasp, this );
-        },
 
     });
 

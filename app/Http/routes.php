@@ -241,6 +241,10 @@ Route::group(['middleware' => 'auth'], function(){
 	{
 		Route::resource('visitas','Tecnico\VisitaController',['only'=>['index', 'store', 'destroy']]);
 		Route::resource('remrepuestos','Tecnico\RemRepuController',['only'=>['index', 'store']]);
+		
+		Route::group(['prefix' => 'detalle'],function(){
+			Route::resource('remrepuestos','Tecnico\RemRepuDetalleController',['only'=>['index', 'store']]);
+		});
 	});
 	
 	Route::resource('ordenes', 'Tecnico\OrdenController', ['except' => ['destroy']]);

@@ -13,12 +13,14 @@ app || (app = {});
 
         el: '#ordenes-create',
         template: _.template( ($('#add-orden-tpl').html() || '') ),
+        templateRemision: _.template( ($('#show-remision-tpl').html() || '') ),
         events: {
             'click .submit-orden': 'submitOrden',
             'submit #form-orden': 'onStore',
             'click .submit-visitas': 'submitVisita',
             'submit #form-visitas': 'onStoreVisita',
-            'submit #form-remrepu': 'onStoreRemRepu',
+            'click .click-add-remision': 'clickAddRemision',
+            'click .click-consult-remision': 'clickConsultRemision',
         },
         parameters: {
         },
@@ -37,9 +39,9 @@ app || (app = {});
 
             //Model Exists
             if( this.model.id != undefined ) {
-                
+
                 this.visita = new app.VisitaCollection();
-                this.remrepu = new app.RemRepuCollection();
+                this.remision = new app.RemisionCollection();
             }
             // Events
             this.listenTo( this.model, 'change', this.render );
@@ -52,7 +54,6 @@ app || (app = {});
         */
         render: function() {
             var attributes = this.model.toJSON();
-             
             this.$wraperForm.html( this.template(attributes) );
             this.$form = this.$('#form-orden');
             this.$formvisitasp = this.$('#form-visitas');
@@ -77,20 +78,9 @@ app || (app = {});
                 }
             });
 
-            this.remRepuView = new app.RemRepuView( {
-                collection: this.remrepu,
-                parameters: {
-                    edit: true,
-                    wrapper: this.$('#wrapper-visitasp'),
-                    dataFilter: {
-                        'orden_id': this.model.get('id')
-                    }
-                }
-            });
         },
-        
         /**
-        *Event Click to Button
+        *Event Click to Button from orden
         */
         submitOrden:function(e){
             this.$form.submit();
@@ -123,19 +113,42 @@ app || (app = {});
                 this.visita.trigger( 'store', data );
             }
         },  
-
-        /**
-        * Event Create remrepu
+        /*
+        * Event add remision
         */
-        onStoreRemRepu: function (e) {
-            if (!e.isDefaultPrevented()) {
-                e.preventDefault();
-
-                var data = window.Misc.formToJson( e.target );
-                this.remrepu.trigger( 'store', data );
+        clickAddRemision:function(e){
+            // Weapper show remisones
+            this.$wrapperRemsion = $('#render-main-remisiones');
+            this.$wrapperRemsion.find('table').html('');
+            // Open TecnicoActionView
+            if ( this.tecnicoActionView instanceof Backbone.View ){
+                this.tecnicoActionView.stopListening();
+                this.tecnicoActionView.undelegateEvents();
             }
-        },   
 
+            this.tecnicoActionView = new app.TecnicoActionView({
+                model: this.model,
+                // collection: this.remrepu,
+                parameters:{
+                    action:'add'
+                }
+            });
+            this.tecnicoActionView.render();
+        },
+        clickConsultRemision: function(e){
+            // Weapper show remisones
+            this.$wrapperRemsion = $('#render-main-remisiones');
+            this.$wrapperRemsion.html( this.templateRemision() );
+
+            this.remisionView = new app.RemisionView( {
+                collection: this.remision,
+                parameters: {
+                    dataFilter: {
+                        'orden_id': this.model.get('id')
+                    }
+                }
+            });
+        },
         /**
         * fires libraries js
         */

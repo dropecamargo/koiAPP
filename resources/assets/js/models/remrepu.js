@@ -15,9 +15,6 @@ app || (app = {});
         },
         idAttribute: 'id',
         defaults: {
-            'remrepu_cantidad': '',
- 			'remrepu_nombre': '',
- 			'remrepu_serie': ''
         }
     });
 
