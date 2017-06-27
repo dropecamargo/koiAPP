@@ -241,6 +241,7 @@ Route::group(['middleware' => 'auth'], function(){
 	{
 		Route::resource('visitas','Tecnico\VisitaController',['only'=>['index', 'store', 'destroy']]);
 		Route::resource('remrepuestos','Tecnico\RemRepuController',['only'=>['index', 'store']]);
+		Route::get('cerrar/{ordenes}', ['as' => 'ordenes.cerrar', 'uses' => 'Tecnico\OrdenController@cerrar']);
 		
 		Route::group(['prefix' => 'detalle'],function(){
 			Route::resource('remrepuestos','Tecnico\RemRepuDetalleController',['only'=>['index', 'store']]);
@@ -248,7 +249,6 @@ Route::group(['middleware' => 'auth'], function(){
 	});
 	
 	Route::resource('ordenes', 'Tecnico\OrdenController', ['except' => ['destroy']]);
-	
 	Route::resource('danos', 'Tecnico\DanoController', ['except' => ['destroy']]);
 	Route::resource('tiposorden', 'Tecnico\TipoOrdenController', ['except' => ['destroy']]);
 	Route::resource('solicitantes', 'Tecnico\SolicitanteController', ['except' => ['destroy']]);

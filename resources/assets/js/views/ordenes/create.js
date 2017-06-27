@@ -21,6 +21,7 @@ app || (app = {});
             'submit #form-visitas': 'onStoreVisita',
             'click .click-add-remision': 'clickAddRemision',
             'click .click-consult-remision': 'clickConsultRemision',
+            'click .click-cerrar-orden': 'clickCloseOrden',
         },
         parameters: {
         },
@@ -70,6 +71,7 @@ app || (app = {});
             this.visitasView = new app.VisitasView( {
                 collection: this.visita,
                 parameters: {
+                    call: 'create',
                     edit: true,
                     wrapper: this.$('#wrapper-visitas'),
                     dataFilter: {
@@ -135,6 +137,9 @@ app || (app = {});
             });
             this.tecnicoActionView.render();
         },
+        /**
+        *
+        */
         clickConsultRemision: function(e){
             // Weapper show remisones
             this.$wrapperRemsion = $('#render-main-remisiones');
@@ -147,6 +152,43 @@ app || (app = {});
                         'orden_id': this.model.get('id')
                     }
                 }
+            });
+        },
+        /**
+        *
+        */
+        clickCloseOrden: function(e){
+            e.preventDefault();
+            var _this = this;
+            // Cerrar orden
+            $.ajax({
+                url: window.Misc.urlFull( Route.route('ordenes.cerrar', { ordenes: _this.model.get('id') }) ),
+                type: 'GET',
+                beforeSend: function() {
+                    window.Misc.setSpinner( _this.el );
+                }
+            })
+            .done(function(resp) {
+                window.Misc.removeSpinner( _this.el );
+
+                if(!_.isUndefined(resp.success)) {
+                    // response success or error
+                    var text = resp.success ? '' : resp.errors;
+                    if( _.isObject( resp.errors ) ) {
+                        text = window.Misc.parseErrors(resp.errors);
+                    }
+
+                    if( !resp.success ) {
+                        alertify.error(text);
+                        return;
+                    }
+
+                    window.Misc.successRedirect( resp.msg, window.Misc.urlFull(Route.route('ordenes.show', { ordenes: _this.model.get('id') })) );
+                }
+            })
+            .fail(function(jqXHR, ajaxOptions, thrownError) {
+                window.Misc.removeSpinner( _this.el );
+                alertify.error(thrownError);
             });
         },
         /**

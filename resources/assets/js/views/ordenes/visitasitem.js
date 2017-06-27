@@ -20,7 +20,7 @@ app || (app = {});
         },
         parameters: {
             edit: false,
-
+            last: false
         },
 
         /**
@@ -34,14 +34,9 @@ app || (app = {});
 
             //this.parameters.wrapper
             this.$modalInfo = $('#modal-visita-show-info-component');
-            // this.remrepu = new app.RemRepuCollection();
             
             // Events Listener
             this.listenTo( this.model, 'change', this.render );
-            
-            // addAll de visitasp
-            // this.listenTo( this.remrepu, 'reset', this.addAllVisitasp );
-
         },
 
         /*
@@ -49,10 +44,14 @@ app || (app = {});
         */
         render: function(){
             var attributes = this.model.toJSON();
-            attributes.edit = this.parameters.edit;
-
+                attributes.edit = this.parameters.edit;
+                attributes.last = false;
+                
+            if (this.parameters.last == this.model.get('id')) {
+                attributes.last = true;
+            }
             this.$el.html( this.template(attributes) );
-
+            
             return this;
         },
 
@@ -62,13 +61,9 @@ app || (app = {});
 
         showInfoVisita: function(){
             var attributes = this.model.toJSON();
-
             // Render info
             this.$modalInfo.find('.content-modal').empty().html( this.templateInfo( attributes ) );
-            this.$wrapperVisitasp = this.$modalInfo.find('#browse-orden-visitasp-show-list');
-
-            //fetch vistas 
-            // this.remrepu.fetch({ reset: true, data: { visitap: this.model.get('id') } });
+            // this.$wrapperVisitasp = this.$modalInfo.find('#browse-orden-visitasp-show-list');
             // Open modal
             this.$modalInfo.modal('show');
         },

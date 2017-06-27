@@ -157,7 +157,7 @@ class Tercero extends BaseModel implements AuthenticatableContract,
     public static function getTercero($id)
     {
         $query = Tercero::query();
-        $query->select('tercero.*', 'sucursal_nombre', 'actividad_nombre','actividad_codigo', 'actividad_tarifa', DB::raw("CONCAT(municipio_nombre, ' - ', departamento_nombre) as municipio_nombre"), DB::raw("(CASE WHEN tc.tercero_persona = 'N'
+        $query->select('tercero.*', 'sucursal_nombre', 'actividad_nombre','actividad_codigo', 'actividad_tarifa', DB::raw("CONCAT(municipio_nombre, ' - ', departamento_nombre) as municipio_nombre"), DB::raw("CONCAT(pais_codigo, ' - ', pais_nombre) as pais_nombre"),DB::raw("(CASE WHEN tc.tercero_persona = 'N'
                     THEN CONCAT(tc.tercero_nombre1,' ',tc.tercero_nombre2,' ',tc.tercero_apellido1,' ',tc.tercero_apellido2,
                             (CASE WHEN (tc.tercero_razonsocial IS NOT NULL AND tc.tercero_razonsocial != '') THEN CONCAT(' - ', tc.tercero_razonsocial) ELSE '' END)
                         )
@@ -166,6 +166,7 @@ class Tercero extends BaseModel implements AuthenticatableContract,
         $query->leftJoin('sucursal', 'tercero_sucursal', '=', 'sucursal.id');
         $query->leftJoin('actividad', 'tercero_actividad', '=', 'actividad.id');
         $query->leftJoin('municipio', 'tercero_municipio', '=', 'municipio.id');
+        $query->leftJoin('pais', 'tercero_pais', '=', 'pais.id');
         $query->leftJoin('departamento', 'municipio.departamento_codigo', '=', 'departamento.departamento_codigo');
         $query->leftJoin('tercero as tc', 'tercero.tercero_coordinador_por', '=', 'tc.id');
         $query->where('tercero.id', $id);

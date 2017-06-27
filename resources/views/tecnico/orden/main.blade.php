@@ -455,7 +455,7 @@
                                                         <th width="25%">F. Llegada</th>                                                    
                                                         <th width="25%">F. Inicio</th>                                                    
                                                         <th width="30%">N. Tecnico</th>                                                    
-                                                        <th width="5%"></th>                                                    
+                                                        <th width="5%">Info</th>                                                    
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -493,7 +493,6 @@
                                 <div class="box-body">
                                     <div class="row">
                                         <label for="imagen_visita" class="control-label col-sm-1">Archivo</label>
-                                                                                              
                                     </div>
                                 </div>
                             </div>
@@ -506,7 +505,7 @@
                                         <span class="info-box-icon bg-red"><i class="fa fa-hand-paper-o"></i></span>
                                         <div class="info-box-content">
                                             <span class="info-box-text"><strong>¿Está seguro que desea cerrar la orden ?</strong></span><br>
-                                            <div class="col-md-1 col-md-offset-1 col-sm-6 col-xs-6">
+                                            <div class="col-md-1 col-md-offset-1 col-sm-6 col-xs-6 click-cerrar-orden">
                                                 <a href="#" class="btn btn-sm btn-default btn-block">SI</a>
                                             </div>
                                         </div>
@@ -522,13 +521,16 @@
 </script>
 
 <script type="text/template" id="visita-item-list-tpl">       
-    <% if(edit) { %>
-        <td class="text-center">
+    <% if(edit && last) { %>
+        <td id="td_<%- id %>" class="text-center">
             <a class="btn btn-default btn-xs item-visita-remove" data-resource="<%- id %>">
                 <span><i class="fa fa-times"></i></span>
             </a>
         </td>
+    <% }else if(edit){ %> 
+        <td id="td_<%- id %>" class="text-center"></td>
     <% } %>
+
     
     <td><%-  visita_numero %></td>
     <td><%-  visita_fh_llegada %></td>

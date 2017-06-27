@@ -53,11 +53,12 @@ app || (app = {});
         * @param Object contactModel Model instance
         */
         addOne: function (visitaModel) {
-            
+            var model = this.collection.at(this.collection.length -1);
             var view = new app.VisitasItemView({
                 model: visitaModel,
                 parameters: {
-                    edit: this.parameters.edit
+                    edit: this.parameters.edit,
+                    last: model.get('id')
                 }
             });
             visitaModel.view = view;
@@ -68,8 +69,7 @@ app || (app = {});
         * Render all view Marketplace of the collection
         */
         addAll: function () {
-            
-             this.collection.forEach( this.addOne, this );
+            this.collection.forEach( this.addOne, this );
         },
 
         storeOne: function (data) {
@@ -101,6 +101,10 @@ app || (app = {});
 
                         // Add model in collection
                         _this.collection.add(model);
+
+                        var model = _this.collection.at(_this.collection.length -2);
+                        _this.$wrappertd = _this.$el.find("#td_"+model.get('id'));
+                        _this.$wrappertd.find('a').remove();
                     }
                 },
                 error : function(model, error) {
@@ -110,12 +114,11 @@ app || (app = {});
             });
         },
 
-
         /**
         * Event remove item
         */
         removeOne: function (e) {
-          e.preventDefault();
+            e.preventDefault();
 
             var resource = $(e.currentTarget).attr("data-resource"),
                 model = this.collection.get(resource),
@@ -126,17 +129,17 @@ app || (app = {});
                     success : function(model, resp) {
                         if(!_.isUndefined(resp.success)) {
                             window.Misc.removeSpinner( _this.parameters.wrapper );
-
                             if( !resp.success ) {
                                 alertify.error(resp.errors);
                                 return;
                             }
-
                             model.view.remove();
+                            var model = _this.collection.at(_this.collection.length -1);
+                            _this.$wrappertd = _this.$el.find("#td_"+model.get('id'));
+                            _this.$wrappertd.html("<a class='btn btn-default btn-xs item-visita-remove' data-resource='"+ model.get('id')+"'><span><i class='fa fa-times'></i></span></a>");
                         }
                     }
                 });
-
             }
         },
 

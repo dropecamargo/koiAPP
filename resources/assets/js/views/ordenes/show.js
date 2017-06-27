@@ -20,7 +20,7 @@ app || (app = {});
             // Model exist
             if( this.model.id != undefined ) {
                 this.visita = new app.VisitaCollection();
-
+                this.remision = new app.RemisionCollection();
                 // Reference views
                 this.referenceViews();
             }
@@ -33,12 +33,22 @@ app || (app = {});
             this.visitasView = new app.VisitasView( {
                 collection: this.visita,
                 parameters: {
-                    edit: false,
+                    call: 'show',
+                    edit:false,
                     wrapper: this.$('#wrapper-visitas'),
                     dataFilter: {
                         'orden_id': this.model.get('id')
                     }
                }
+            });
+
+            this.remisionView = new app.RemisionView( {
+                collection: this.remision,
+                parameters: {
+                    dataFilter: {
+                        'orden_id': this.model.get('id')
+                    }
+                }
             });
         }
     });

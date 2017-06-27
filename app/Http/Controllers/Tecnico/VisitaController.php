@@ -40,7 +40,7 @@ class VisitaController extends Controller
                 ));
             $query->join('orden', 'visita_orden', '=', 'orden.id');
             $query->join('tercero', 'visita_tecnico', '=', 'tercero.id');
-            $query->orderBy('id', 'desc');
+            $query->orderBy('id', 'asc');
 
             return response()->json( $query->get() );          
         }

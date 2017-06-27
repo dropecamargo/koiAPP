@@ -57,6 +57,12 @@
 							<label class="control-label">2do. Apellido</label>
 							<div>{{ $tercero->tercero_apellido2 }}</div>
 						</div>
+						@if($tercero->tercero_familia != "")
+							<div class="form-group col-md-2">
+								<label class="control-label">Familia</label>
+								<div>{{ $tercero->tercero_familia }}</div>
+							</div>
+						@endif
 					</div>
 					<div class="row">
 						<div class="form-group col-md-2">
@@ -65,10 +71,20 @@
 						</div>
 						@endif
 
-						<div class="form-group col-md-10">
+						<div class="form-group col-md-4">
 							<label class="control-label">Dirección</label> <small>{{ $tercero->tercero_dir_nomenclatura }}</small>
 							<div>{{ $tercero->tercero_direccion }}</div>
 						</div>
+						<div class="form-group col-md-2">
+							<label class="control-label">Municipio</label>
+							<div>{{ $tercero->municipio_nombre }}</div>
+						</div>
+						@if($tercero->tercero_pais != "")
+							<div class="form-group col-md-2">
+								<label class="control-label">País</label>
+								<div>{{ $tercero->pais_nombre }}</div>
+							</div>
+						@endif
                     </div>
             	</div>
         	</div>
