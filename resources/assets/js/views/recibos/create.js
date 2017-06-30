@@ -177,7 +177,12 @@ app || (app = {});
         */
         changeMedioPago:function(e){
             e.preventDefault();
-            
+
+            // Preparo sucursal
+            var sucursal = this.$('#recibo1_sucursal').val();
+            if (sucursal == '')
+                return alertify.error('Campo de sucursal se encuentra vacío por favor ingrese una sucursal');
+
             // References
             this.$detailMedio = this.$('#detail-medio-pago');
             var _this = this;
@@ -203,6 +208,8 @@ app || (app = {});
                     }
                     // Obtengo id tercero del attr del select de concepto
                     resp.tercero = _this.$('#recibo2_conceptosrc').attr('data-tercero');
+                    // Adjunto sucursal
+                    resp.sucursal = sucursal;
 
                     _this.carteraActionView = new app.CarteraActionView({
                         model: _this.model,
@@ -218,7 +225,6 @@ app || (app = {});
                     _this.$detailMedio.empty().html( _this.templateDetalleRecibo3( attributes ) );
                 }
                 //Render form detalle medioPago
-
                 _this.ready();
             })       
             .fail(function(jqXHR, ajaxOptions, thrownError) {

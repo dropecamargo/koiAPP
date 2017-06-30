@@ -14,6 +14,7 @@ app || (app = {});
         templateMedioCh: _.template( ($('#add-ch-recibo-tpl').html() || '') ),
     	events:{ 
             'submit #form-concepto-factura-component': 'onStore',
+            'submit #form-mediopago-component': 'onStoreMedio',
             'ifClicked .change-check': 'changeCheck',
             'ifClicked .change-check-medio': 'changeCheckMedio',
             'change .change-pagar': 'changePagar',
@@ -101,6 +102,10 @@ app || (app = {});
             }
         },
 
+        onStoreMedio: function(e){
+            e.preventDefault();
+            this.$modalMedio.modal('hide');
+        },
         /**
         * Reference
         */
@@ -122,12 +127,12 @@ app || (app = {});
         /**
         * Reference medio de pago cheque 
         */
-        referenceMedioPago: function(atributes){
+        referenceMedioPago: function(attributes){
             this.$wraper = this.$('#modal-wrapper-concepto-factura');
             this.$wraperForm = this.$modal.find('.content-modal');
             this.$wraperCh = this.$('#browse-cheque-list');
 
-            this.detalleChposFechado.fetch({ reset: true, data: { tercero: atributes.data.tercero }})
+            this.detalleChposFechado.fetch({ reset: true, data: { tercero: attributes.data.tercero, sucursal: attributes.data.sucursal }})
 
             // Open modal
             this.$modalMedio.modal('show');
@@ -150,14 +155,14 @@ app || (app = {});
               
             this.ready();
         },
-        // 
+        // Evente change click check-box
         changeCheckMedio: function(e){
-            var selected = this.$(e.currentTarget).prop('checked');
+            var selected = this.$(e.target).is(':checked');
             var id = this.$(e.currentTarget).attr('id');
                 id = id.split("_");
             if( !selected ) {
-                var modelo = this.detalleChposFechado.findModel(id[1]);
-                this.collection.trigger('store', modelo.attributes );
+                var modelo = this.detalleChposFechado.findModel(id[1],this.parameters.data.id);
+                this.collection.trigger('store', modelo );
             }
               
             this.ready();    

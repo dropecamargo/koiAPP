@@ -121,7 +121,8 @@ app || (app = {});
                                 parameters: {
                                     data: data,
                                     action: action,
-                                    tipo: tipo
+                                    tipo: tipo,
+                                    form:_this.$formItem 
                                 }
                             });
                             _this.inventarioActionView.render();

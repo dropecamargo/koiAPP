@@ -20,7 +20,7 @@
             <div class="box-body">
                 <div class="row">
                     <div class="form-group col-md-2">
-                        <label class="control-label">Número</label>
+                        <label class="control-label">Sucursal</label>
                         <div>{{ $orden->sucursal_nombre }}</div>
                     </div>
                     <div class="form-group col-md-2">

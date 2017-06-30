@@ -92,7 +92,7 @@
                     </div>
                     <label for="chposfechado1_valor" class="control-label col-sm-1">Valor</label>
                     <div class="form-group col-sm-2">
-                        <input type="text" name="chposfechado1_valor" id="chposfechado1_valor" class="form-control input-sm" value="<%- chposfechado1_valor %>" data-currency required readonly>
+                        <input type="text" name="chposfechado1_valor" id="chposfechado1_valor" class="form-control input-sm" value="<%- chposfechado1_valor %>" data-currency-price required readonly>
                     </div>
                     <label for="chposfechado1_ch_fecha" class="control-label col-sm-1">Fecha cheque</label>
                     <div class="form-group col-sm-2">

@@ -41,6 +41,7 @@ app || (app = {});
             // extends parameters
             if( opts !== undefined && _.isObject(opts.parameters) )
                 this.parameters = $.extend({}, this.parameters, opts.parameters);
+
             this.$modalIn = this.$('#modal-inventario-component');
             // Collection item rollo
             this.itemRolloINList = new app.ItemRolloINList();
@@ -471,6 +472,10 @@ app || (app = {});
                 if( resp.success ) {
                     // Close modals
                     this.$modalIn.modal('hide');
+
+                    // Clear Form of car temp
+                    if (!_.isUndefined(this.parameters.form)) 
+                        window.Misc.clearForm(this.parameters.form);
                 }
             }
         }

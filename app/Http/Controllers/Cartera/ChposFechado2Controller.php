@@ -22,19 +22,20 @@ class ChposFechado2Controller extends Controller
     {
         if ($request->ajax()) {
             $chposfechado2 = [];
-            $query = ChposFechado2::query();
-            $query->select('chposfechado2.*','conceptosrc_nombre','documentos_nombre','factura3_cuota','factura1_numero', 'chposfechado2_valor as factura3_valor');
-            $query->join('conceptosrc','chposfechado2_conceptosrc', '=', 'conceptosrc.id');
-            $query->join('documentos','chposfechado2_documentos_doc', '=', 'documentos.id');
-            $query->leftJoin('factura3','chposfechado2_id_doc', '=', 'factura3.id');
-            $query->leftJoin('factura1','factura3_factura1', '=', 'factura1.id');
-
             if($request->has('chposfechado2')) {
+                $query = ChposFechado2::query();
+                $query->select('chposfechado2.*','conceptosrc_nombre','documentos_nombre','factura3_cuota','factura1_numero', 'chposfechado2_valor as factura3_valor');
+                $query->join('conceptosrc','chposfechado2_conceptosrc', '=', 'conceptosrc.id');
+                $query->join('documentos','chposfechado2_documentos_doc', '=', 'documentos.id');
+                $query->leftJoin('factura3','chposfechado2_id_doc', '=', 'factura3.id');
+                $query->leftJoin('factura1','factura3_factura1', '=', 'factura1.id');
                 $query->where('chposfechado2_chposfechado1', $request->chposfechado2);
             }
             if ($request->has('tercero')) {
-                $query->join('chposfechado1','chposfechado2_chposfechado1', '=','chposfechado1.id');
-                $query->where('chposfechado1_tercero', $request->tercero);
+                $query = ChposFechado1::select('chposfechado1.id as id_cheque', 'chposfechado1_ch_fecha','chposfechado1_ch_numero','banco_nombre','banco.id as id_banco','chposfechado1_valor');
+                $query->join('banco','chposfechado1_banco', '=','banco.id');
+                $query->where('chposfechado1_activo', true);
+                $query->where('chposfechado1_tercero', $request->tercero)->where('chposfechado1_sucursal', $request->sucursal);
             }
             $chposfechado2 = $query->get();
             return response()->json($chposfechado2);

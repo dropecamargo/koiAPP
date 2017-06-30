@@ -545,7 +545,7 @@
 		            <tfoot>
 		            	<tr>
 		            		<th colspan="3" class="text-right">Total: </th>
-		            		<th id="metro_residuo" class="text-right"> <label class="label bg-green"> <%- data.ajuste2_cantidad_entrada %> (m)</label></th>
+		            		<th id="metro_residuo" class="text-right"> <label class="label bg-green"> <%- data.ajuste2_cantidad_entrada %> </label></th>
 		            	</tr>
 	            	</tfoot>
 			    </table>
@@ -706,12 +706,11 @@
 				<table id="browse-cheque-list" class="table table-hover table-bordered" cellspacing="0">
 					<thead>
 						<tr>
-							<th></th>
-						  	<th>Concepto</th>
-		                	<th>Documento</th>
-		                	<th>Factura Numero</th>
-		                	<th>Cuota</th>
-		                	<th>Valor</th>
+							<th width="5%"></th>
+						  	<th width="40%">Banco</th>
+		                	<th width="20%">N° cheque</th>
+		                	<th width="15%">Valor</th>
+		                	<th width="15%">Fecha</th>
             			</tr>
                     </thead>
                     <tbody>

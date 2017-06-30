@@ -15,7 +15,6 @@ app || (app = {});
         template: _.template(($('#add-ajuste-tpl').html() || '') ),
         templateDetailt: _.template(($('#add-detailt-ajuste-tpl').html() || '') ),
         events: {
-            
             'click .submit-ajuste': 'submitFormAjuste', 
             'submit #form-ajustes' :'onStore',
             'submit #form-detalle-ajuste' :'onStoreItem',
@@ -34,6 +33,7 @@ app || (app = {});
             this.$wraperForm = this.$('#render-form-ajuste');
 
             this.detalleAjuste = new app.AjustesDetalleCollection();
+            
             // Events
             this.listenTo( this.model, 'change', this.render );
             this.listenTo( this.model, 'sync', this.responseServer );
@@ -66,7 +66,6 @@ app || (app = {});
 
 
         referenceViews:function(){ 
-            this.$formItem = this.$('#form-detalle-ajuste');
             this.detalleAjustesView = new app.DetalleAjustesView( {
                 collection: this.detalleAjuste,
                 parameters: {
@@ -98,12 +97,13 @@ app || (app = {});
             }   
         },
         /**
-        *Event store ajuste2 validate temporal carDetail
+        * Event store ajuste2 validate temporal carDetail
         */
         onStoreItem: function(e){
 
             if (!e.isDefaultPrevented()) {
                 e.preventDefault();
+                this.$formItem = this.$('#form-detalle-ajuste');
                 var data = window.Misc.formToJson( e.target );
                     data.tipoajuste = this.$selectTipoAjuste.val();
                     data.sucursal = this.$('#ajuste1_sucursal').val();
@@ -125,18 +125,19 @@ app || (app = {});
                                 parameters: {
                                     data: data,
                                     action: action,
-                                    tipo: tipo
+                                    tipo: tipo,
+                                    form: _this.$formItem
                                 }
                             });
                             _this.inventarioActionView.render();
                         }
                     })(this)
-                });                
+                });
             }
         },
         
         /**
-        *Event define tipoAjuste
+        * Event define tipoAjuste
         */
         changeTipoAjuste:function(e){
             var _this = this;
@@ -168,7 +169,7 @@ app || (app = {});
             });
         },
         /**
-        *change tipo reclacificacion
+        * Change tipo reclacificacion
         */
         changeReclacification:function(e){
             if (!e.isDefaultPrevented()) {

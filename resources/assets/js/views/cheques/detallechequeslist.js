@@ -144,7 +144,6 @@ app || (app = {});
             if(this.$valor.length) {
                 this.$valor.html( window.Misc.currency(data.valor) );
             }
-
             $('#chposfechado1_valor').val(data.valor);
             $('#chposfechado2_conceptosrc').val('').trigger('change.select2');
         },

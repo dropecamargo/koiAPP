@@ -12,7 +12,7 @@ app || (app = {});
     app.DetalleChequeItemView = Backbone.View.extend({
         
         tagName: 'tr',
-        template: _.template( ($('#add-cheque-item-tpl').html() || '') ),
+        template: null,
         parameters: {
             edit: false,
             call:false
@@ -34,9 +34,9 @@ app || (app = {});
         * Render View Element
         */
         render: function(){
+            this.template = _.template( ($( !this.parameters.call ? '#add-cheque-item-tpl' : '#choose-cheque-item-tpl' ).html() || '') );
             var attributes = this.model.toJSON();
                 attributes.edit = this.parameters.edit;
-                attributes.call = this.parameters.call;
             this.$el.html( this.template(attributes) );
             return this;
         }

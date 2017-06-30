@@ -55,16 +55,17 @@ app || (app = {});
             this.$wraperForm.html( this.template(attributes) );
 
             this.$form = this.$('#form-pedidoc1');
-            this.$formDetalle = this.$('#form-detalle-pedidoc');
             this.$divDetalle = this.$('#detalle-pedidoc1');
 
             //Render form detalle pedidoc
             this.$divDetalle.empty().html( this.templateDetailt( ) );
+            
+            this.$formDetalle = this.$('#form-detalle-pedidoc');
             //Reference views
             this.referenceViews();
         },
         /*
-        *References the collection
+        * References the collection
         */
         referenceViews:function(){ 
             this.detallePedidocView = new app.PedidocDetalleView( {
@@ -106,6 +107,7 @@ app || (app = {});
                 var data = $.extend({}, window.Misc.formToJson( e.target ) );
                     data.sucursal = this.$('#pedidoc1_sucursal').val();
                 this.detallePedidoc.trigger( 'store', data);
+                window.Misc.clearForm(this.$formDetalle);
             }
         },
         /**
@@ -117,6 +119,7 @@ app || (app = {});
             $('#desc_value').iCheck('uncheck');
             $('#desc_finally').iCheck('uncheck');
 
+            // Make discount 
             this.doDiscount('porcentaje');
         },       
         /**
@@ -165,7 +168,7 @@ app || (app = {});
 
         },
         /**
-        *Se aplican las operaciones matematicas para allar los descuentos
+        *   Se aplican las operaciones matematicas para allar los descuentos
         */
         doDiscount: function(caseDiscount){
             switch(caseDiscount){

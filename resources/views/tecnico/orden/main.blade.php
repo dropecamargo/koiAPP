@@ -100,7 +100,7 @@
                                 <% if( typeof(id) != 'undefined' && !_.isUndefined(id) && !_.isNull(id) && id != '') { %>
                                     <div class="row">
                                         <div class="form-group col-md-2">
-                                            <label class="control-label">Número</label>
+                                            <label class="control-label">Sucursal</label>
                                             <div><%- sucursal_nombre %></div>
                                         </div>
                                         <div class="form-group col-md-2">
@@ -200,11 +200,11 @@
                                                 <input id="orden_numero" name="orden_numero" class="form-control input-sm" type="number" min="1" value="<%- orden_numero %>" required readonly>
                                             </div>
                                             <label for="orden_fecha_servicio" class="col-md-1 control-label">F. Servicio</label>
-                                            <div class="form-group col-md-1">
+                                            <div class="form-group col-md-2">
                                                 <input type="text" id="orden_fecha_servicio" name="orden_fecha_servicio" class="form-control input-sm datepicker" value="<%- orden_fecha_servicio %>" required>
                                             </div> 
                                             <label for="orden_hora_servicio" class="col-md-1 control-label">H. Servicio</label>
-                                            <div class="form-group col-md-1">
+                                            <div class="form-group col-md-2">
                                                 <div class="bootstrap-timepicker">
                                                     <div class="input-group">
                                                         <input type="text" id="orden_hora_servicio" name="orden_hora_servicio" placeholder="Fecha servicio" class="form-control input-sm timepicker" value="<%- orden_hora_servicio %>" required>
@@ -227,7 +227,7 @@
                                                     <input id="orden_tercero" placeholder="Cliente" class="form-control tercero-koi-component" name="orden_tercero" type="text" maxlength="15" data-wrapper="ordenes-create" data-name="tercero_nombre" data-contacto="btn-add-contact" data-activo="true" value="<%- tercero_nit %>" required>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6 col-xs-10">
+                                            <div class="col-md-8 col-xs-12">
                                                 <input id="tercero_nombre" name="tercero_nombre" placeholder="Nombre cliente" class="form-control input-sm" type="text" maxlength="15" value="<%- tercero_nombre %>" readonly required>
                                             </div>
                                         </div>
@@ -245,7 +245,7 @@
                                                     <input id="orden_serie" placeholder="Serie" class="form-control producto-koi-component" name="orden_serie" type="text" maxlength="15" data-wrapper="producto_create" data-tercero="true" data-name="orden_nombre_producto" value="<%- producto_serie %>" required>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6 col-xs-10">
+                                            <div class="col-md-8 col-xs-12">
                                                 <input id="orden_nombre_producto" name="orden_nombre_producto" placeholder="Nombre producto" class="form-control input-sm" type="text" value="<%- producto_nombre %>" readonly required>
                                             </div>
                                         </div>
@@ -262,14 +262,14 @@
                                                     <input id="orden_tecnico" placeholder="Tecnico" class="form-control tercero-koi-component" name="orden_tecnico" type="text" maxlength="15" data-wrapper="ordenes-create" data-type="tecnico" data-name="orden_tecnico_nombre" data-contacto="btn-add-contact" value="<%- tecnico_nit %>" required>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6 col-xs-10">
+                                            <div class="col-md-8 col-xs-12">
                                                 <input id="orden_tecnico_nombre" name="orden_tecnico_nombre" placeholder="Nombre Tecnico" class="form-control input-sm" type="text" maxlength="15" value="<%- tecnico_nombre %>" readonly required>
                                             </div>
                                         </div>
                                         {{--selects--}}
                                         <div class="row">
-                                            <label for="orden_tipoorden" class="col-md-1 control-label">Tipo</label>
-                                            <div class="form-group col-md-3">
+                                            <label for="orden_tipoorden" class="col-md-1 col-xs-12 control-label">Tipo</label>
+                                            <div class="form-group col-md-3 col-xs-11">
                                                 <select name="orden_tipoorden" id="orden_tipoorden" class="form-control select2-default" required>
                                                     <option value="" selected>Seleccione</option>
                                                     @foreach( App\Models\Tecnico\TipoOrden::getTiposOrden() as $key => $value)
@@ -277,14 +277,13 @@
                                                     @endforeach
                                                 </select>
                                             </div>
-                                            <div class="form-group col-md-1">
+                                            <div class="form-group col-md-1 col-xs-1">
                                                 <button type="button" class="btn btn-default btn-flat btn-sm btn-add-resource-koi-component" data-resource="tipoorden" data-field="orden_tipoorden">
                                                     <i class="fa fa-plus"></i>
                                                 </button>
                                             </div>
-
-                                            <label for="orden_solicitante" class="col-md-1 control-label">Solicitante</label>
-                                            <div class="form-group col-md-3">
+                                            <label for="orden_solicitante" class="col-md-1 col-xs-12 control-label">Solicitante</label>
+                                            <div class="form-group col-md-3 col-xs-11">
                                                 <select name="orden_solicitante" id="orden_solicitante" class="form-control select2-default" required>
                                                     <option value="" selected>Seleccione</option>
                                                     @foreach( App\Models\Tecnico\Solicitante::getSolicitantes() as $key => $value)
@@ -292,16 +291,15 @@
                                                     @endforeach
                                                 </select>
                                             </div>
-                                            <div class="form-group col-md-1">
+                                            <div class="form-group col-md-1 col-xs-1">
                                                 <button type="button" class="btn btn-default btn-flat btn-sm btn-add-resource-koi-component" data-resource="solicitante" data-field="orden_solicitante">
                                                     <i class="fa fa-plus"></i>
                                                 </button>
                                             </div>
                                         </div>   
-                                        
                                         <div class="row">
-                                            <label for="orden_dano" class="col-md-1 control-label">Daño</label>
-                                            <div class="form-group col-md-3">
+                                            <label for="orden_dano" class="col-md-1 col-xs-12 control-label">Daño</label>
+                                            <div class="form-group col-md-3 col-xs-11">
                                                 <select name="orden_dano" id="orden_dano" class="form-control select2-default" required>
                                                     <option value="" selected>Seleccione</option>
                                                     @foreach( App\Models\Tecnico\Dano::getDanos() as $key => $value)
@@ -309,14 +307,13 @@
                                                     @endforeach
                                                 </select>
                                             </div>
-                                            <div class="form-group col-md-1">
+                                            <div class="form-group col-md-1 col-xs-1">
                                                 <button type="button" class="btn btn-default btn-flat btn-sm btn-add-resource-koi-component" data-resource="dano" data-field="orden_dano">
                                                     <i class="fa fa-plus"></i>
                                                 </button>
                                             </div>
-
-                                            <label for="orden_prioridad" class="col-md-1 control-label">Prioridad</label>
-                                            <div class="form-group col-md-3">
+                                            <label for="orden_prioridad" class="col-md-1 col-xs-12 control-label">Prioridad</label>
+                                            <div class="form-group col-md-3 col-xs-11">
                                                 <select name="orden_prioridad" id="orden_prioridad" class="form-control select2-default" required>
                                                     <option value="" selected="">Seleccione</option>
                                                     @foreach( App\Models\Tecnico\Prioridad::getPrioridad() as $key => $value)
@@ -324,22 +321,21 @@
                                                     @endforeach
                                                 </select>
                                             </div>
-                                            <div class="form-group col-md-1">
+                                            <div class="form-group col-md-1 col-xs-1">
                                                 <button type="button" class="btn btn-default btn-flat btn-sm btn-add-resource-koi-component" data-resource="prioridad" data-field="orden_prioridad">
                                                     <i class="fa fa-plus"></i>
                                                 </button>
                                             </div>
                                         </div>
-                                        
                                         <div class="row">
                                             <label for="orden_llamo" class="col-md-1 control-label">Persona</label>
-                                            <div class="form-group col-md-9">
+                                            <div class="form-group col-md-11">
                                                 <input id="orden_llamo" type="text" name="orden_llamo" class="form-control" placeholder="Persona" value="<%- orden_llamo %>">
                                             </div>
                                         </div>
                                         <div class="row">
                                             <label for="orden_problema" class="col-md-1 control-label">Problema</label>
-                                            <div class="form-group col-md-9">
+                                            <div class="form-group col-md-11">
                                                 <textarea id="orden_problema" name="orden_problema" class="form-control" rows="2" placeholder="Problema ..."><%- orden_problema %></textarea>
                                             </div>
                                         </div>

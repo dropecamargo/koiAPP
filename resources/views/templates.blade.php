@@ -1315,8 +1315,6 @@
                 <span><i class="fa fa-times"></i></span>
             </a>
         </td>
-    <% }else if(call){ %> 
-	    <td><input type="checkbox" id="check_<%- id %>" name="check_<%- id %>" class="change-check-medio"></td>
     <% } %>
         	
     <td><%- conceptosrc_nombre %></td>
@@ -1324,6 +1322,16 @@
     <td><%- !_.isUndefined(factura1_numero) && !_.isNull(factura1_numero) && factura1_numero != '' ? factura1_numero : '' %></td>
     <td><%- !_.isUndefined(factura3_cuota) && !_.isNull(factura3_cuota) && factura3_cuota != '' ? factura3_cuota : '' %></td>
     <td class="text-right"><%- !_.isUndefined(factura3_valor) && !_.isNull(factura3_valor) && factura3_valor != '' ? window.Misc.currency( factura3_valor ) : '' %></td>
+</script>
+<script type="text/template" id="choose-cheque-item-tpl">
+    <td class="text-center">
+    	<input type="checkbox" name="check_<%- id_cheque %>" id="check_<%- id_cheque %>" class="change-check-medio">
+    </td>
+        	
+    <td><%- banco_nombre %></td>
+    <td><%- chposfechado1_ch_numero %></td>
+    <td><%- window.Misc.currency( chposfechado1_valor ) %></td>
+    <td><%- chposfechado1_ch_fecha %></td>
 </script>
 
 <script type="text/template" id="add-factura3-item-tpl"> 

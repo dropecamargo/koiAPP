@@ -55,7 +55,6 @@ app || (app = {});
         * @param Object detalleReciboModel Model instance
         */
         addOne: function (recibo3Model) {
-            console.log(recibo3Model);
             var view = new app.DetalleMedioPagoItemView({
                 model: recibo3Model,
                 parameters: {
@@ -82,7 +81,6 @@ app || (app = {});
         */
         storeOne: function ( data ) {    
             var _this = this;
-            console.log(data);
             // Set Spinner
             window.Misc.setSpinner( this.parameters.wrapper );
             // Add model in collection
