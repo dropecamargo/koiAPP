@@ -14,9 +14,7 @@ app || (app = {});
         templateAddSeries: _.template( ($('#add-series-tpl').html() || '') ),
     	templateSeriesLotes: _.template( ($('#add-series-lotes-tpl').html() || '') ),
         templateAddItemRollo: _.template( ($('#add-itemrollo-tpl').html() || '') ),
-
         templateAddISerieFactu: _.template( ($('#add-series-factu-tpl').html() || '') ),
-
         templateChooseItemsRollo: _.template( ($('#choose-itemrollo-tpl').html() || '') ),
         templateAddItemsProductVence: _.template( ($('#product-vence-tpl').html() || '') ),
         templateChooseItemsProductVence: _.template( ($('#product-choose-vence-tpl').html() || '') ),
@@ -24,6 +22,7 @@ app || (app = {});
     	events:{ 
             'submit #form-create-inventario-entrada-component-source': 'onStoreItemInventario',
             'change .cantidad-salidau-koi-inventario': 'changedCantidadUnidadesSalida',
+            'change .unidades-vence-koi-inventario': 'changeUnidadeVeceEntrada',
             'click #btn-itemrollo-entradau-koi-inventario': 'clickAddItemRollo',
             'click .btn-remove-itemrollo-koi-inventario': 'clickRemoveItemRollo',
             'click #btn-vencimiento-entradau-koi-inventario': 'clickAddVencimiento',
@@ -225,9 +224,7 @@ app || (app = {});
                 //salidas
                 this.$wraperSeries = this.$('#browse-chooseproduct-vence-list');
                 this.LotesProducto.fetch({reset: true, data: { producto: atributes.data.producto_serie, sucursal: atributes.data.sucursal } } );
-
              }
-
             // Hide errors
             this.$wraperErrorIn.hide().empty();
 
@@ -266,7 +263,6 @@ app || (app = {});
             var view = new app.ProductoSeriesINListView({
                 model: ProductoModel
             });
-
             this.$wraperSeries.append( view.render().el );
             this.ready();
         },
@@ -278,7 +274,6 @@ app || (app = {});
         addOneVencimientoInventario: function (productoModel) {
             // prepare lote encabezado
             productoModel.set({lote_numero: this.parameters.data.lote});
-
             var view = new app.ProductoVenceINListView({
                 model: productoModel,
                 parameters:{
@@ -296,7 +291,7 @@ app || (app = {});
         */
         addAllItemRolloInventario: function () {
             var _this = this;
-            this.itemRolloINList.forEach(function(model, index) {
+            this.itemRolloINList.forEach(function(model) {
                 _this.addOneItemRolloInventario(model)
             });
         },
@@ -306,8 +301,9 @@ app || (app = {});
         * @param Object ItemRolloModel Model instance
         */
         addOneItemRolloInventario: function (itemRolloModel) {
-            // prepare lote encabezado
-            itemRolloModel.set({rollo_lote: this.parameters.data.lote});
+            // Prepare lote encabezado
+            if (this.parameters.tipo == 'E') 
+                itemRolloModel.set({rollo_lote: this.parameters.data.lote});
 
             var view = new app.ItemRolloINListView({
                 model: itemRolloModel,
@@ -315,13 +311,12 @@ app || (app = {});
                     type: this.parameters.tipo
                 }
             });
-
             itemRolloModel.view = view;
             this.$wraperItemRollo.append( view.render().el );
             this.ready();
         },
         /*
-        *Validate Carro temporal
+        * Validate Carro temporal
         */
         onStoreItemInventario: function (e){
             if (!e.isDefaultPrevented()) {
@@ -376,7 +371,6 @@ app || (app = {});
                 e.preventDefault();
                 
                 if (this.parameters.action == 'ProductoMetrado' ) {
-
                      // Valid total
                     var ingresadas = 0;
                     var result =_.every(this.itemRolloINList.models, function(itemRolloModel) { 
@@ -389,10 +383,9 @@ app || (app = {});
                 }else{
                      // Valid total
                     var ingresadas = 0;
-                    var result =_.every(this.LotesProducto.models, function(modelProdbodeLote) { 
-                        
-                        if( modelProdbodeLote.get('prodbodelote_saldo') < parseFloat( this.$('#item_'+modelProdbodeLote.get('id')).val() ) ) {
-                            alertify.error("Cantidad insuficiente para este item, (" + modelProdbodeLote.get('prodbodelote_saldo') + ") SALDO, (" + this.$('#item_'+modelProdbodeLote.get('id')).val() + ") INGRESADAS, por favor verifique información.");
+                    var result =_.every(this.LotesProducto.models, function(lote) { 
+                        if( lote.get('lote_saldo') < parseFloat( this.$('#item_'+lote.get('id')).val() ) ) {
+                            alertify.error("Cantidad insuficiente para este item, (" + lote.get('lote_saldo') + ") SALDO, (" + this.$('#item_'+lote.get('id')).val() + ") INGRESADAS, por favor verifique información.");
                             return false;
                         }
                         return  true; 
@@ -425,18 +418,12 @@ app || (app = {});
         */
         clickAddVencimiento: function(e){
             e.preventDefault();
-            // Valid total
-            var unidades = 0;
-            _.each(this.LotesProducto.models, function(productVencenModel){ 
-                unidades+= parseFloat( this.$('#prodbodevence_unidades_'+productVencenModel.get('id')).val());
-            });
-            
-            if(unidades >= this.parameters.data.ajuste2_cantidad_entrada) {
-                alertify.error("No puede superar la cantidad de unidades(" + this.parameters.data.ajuste2_cantidad_entrada +") a ingresar, por favor verifique información.");
+            var data = this.LotesProducto.validEntrada(this.parameters.data.ajuste2_cantidad_entrada);
+            if (data.success == true) {
+                this.LotesProducto.add( new app.LoteModel({ id: shortid.uuid() }) );
                 return;
             }
-         
-            this.LotesProducto.add( new app.LoteModel({ id: shortid.uuid() }) );
+            return alertify.error(data.success);
         },
         /*
         * Remove item unidades de entrada
@@ -466,7 +453,18 @@ app || (app = {});
                 model.view.remove();
             }
         },
-
+        /**
+        * Unidades vence
+        */
+        changeUnidadeVeceEntrada:function(e){
+            e.preventDefault();
+            var data = this.LotesProducto.validEntrada(this.parameters.data.ajuste2_cantidad_entrada);
+            if (data.unidades <= this.parameters.data.ajuste2_cantidad_entrada) {
+                this.$('#total-vencimiento').html(data.unidades);
+                return;
+            }
+            return alertify.error(data.success);
+        },
         responseServer: function ( model, resp, opts ) {
             if(!_.isUndefined(resp.success)) {
                 if( resp.success ) {

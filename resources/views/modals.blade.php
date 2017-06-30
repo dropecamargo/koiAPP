@@ -402,11 +402,6 @@
 				<div class="col-md-3 ">
 					{!! Form::text('koi_search_pedidoc_numero', null, ['id' => 'koi_search_pedidoc_numero', 'class' => 'form-control input-sm', 'placeholder' => 'Número']) !!}
 				</div>
-				<!-- <label for="koi_search_pedidoc_cliente" class="col-md-1 control-label">Cliente</label>
-				<div class="col-md-2">
-					{!! Form::text('koi_search_pedidoc_cliente', null, ['id' => 'koi_search_pedidoc_cliente', 'class' => 'form-control input-sm', 'placeholder' => 'Cliente']) !!}
-				</div> -->
-
 				<label for="koi_search_pedidoc_sucursal" class="col-md-1 control-label">Sucursal</label>
 				<div class="col-md-5">
 					{!! Form::text('koi_search_pedidoc_sucursal', null, ['id' => 'koi_search_pedidoc_sucursal', 'class' => 'form-control input-sm input-toupper', 'placeholder' => 'Sucursal']) !!}
@@ -489,8 +484,16 @@
 							</button>
 		                </th>
 		            </tr>
+		            <tbody>
+		            	
+		            </tbody>
+		            <tfoot>
+		            	<tr>
+		            		<th colspan="3" class="text-right">Total(m): </th>
+		            		<th id="" class="text-center"> <label class="label bg-green"> <%- data.ajuste2_cantidad_entrada %>  </label></th>
+		            	</tr>
+		            </tfoot>
 			    </table>
-				<label id="cantidad-entradau" class="label pull-right bg-green" ><%- data.ajuste2_cantidad_entrada %> (m)</label>
 			</div>
 		</div>
 	</div>
@@ -516,8 +519,8 @@
 		            <tfoot>
 		            	<tr>
 		            		<th colspan ="4"></th>
-		            		<th class="text-right">Total: </th>
-		            		<th id="metro_residuo" class="text-right"> <label class="label bg-green"> <%- data.ajuste2_cantidad_salida %> (m)</label></th>
+		            		<th class="text-right">Total(m): </th>
+		            		<th id="metro_residuo" class="text-right"> <label class="label bg-green"> <%- data.ajuste2_cantidad_salida %></label></th>
 		            	</tr>
 	            	</tfoot>
 			    </table>
@@ -542,10 +545,14 @@
 							</button>
 						</th>
 		            </tr>
+		            <tbody>
+		            	
+		            </tbody>
 		            <tfoot>
 		            	<tr>
-		            		<th colspan="3" class="text-right">Total: </th>
-		            		<th id="metro_residuo" class="text-right"> <label class="label bg-green"> <%- data.ajuste2_cantidad_entrada %> </label></th>
+		            		<th colspan="2" class="text-right">Cant de entrada: <%- data.ajuste2_cantidad_entrada %></th>
+		            		<th class="text-right">Total:</th>
+		            		<th id="total-vencimiento" class="text-center">0</th>
 		            	</tr>
 	            	</tfoot>
 			    </table>
@@ -561,16 +568,16 @@
 				<table id="browse-chooseproduct-vence-list" class="table table-hover table-bordered" cellspacing="0">
 		            <tr>
 		                <th width="20%">Lote</th>
-		                <th width="25%">F.Ingreso</th>
-		                <th width="25%">F. Vencimiento</th>
-		                <th width="5%">Cantidad</th>
-		                <th width="5%">Saldo</th>
+		                <th width="20%">F.Ingreso</th>
+		                <th width="20%">F. Vencimiento</th>
+		                <th width="10%">Cant</th>
+		                <th width="10%">Saldo</th>
 		                <th width="20%"></th>
 		            </tr>
 		            <tfoot>
 		            	<tr>
 		            		<th colspan="5" class="text-right">Total: </th>
-		            		<th id="metro_residuo" class="text-right"> <label class="label bg-green"> <%- data.ajuste2_cantidad_salida %> (m)</label></th>
+		            		<th id="metro_residuo" class="text-center">0</th>
 		            	</tr>
 	            	</tfoot>
 			    </table>

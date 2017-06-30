@@ -93,4 +93,33 @@ class Devolucion2 extends Model
 		
 		return 'OK';
 	}
+
+	public static function doCalculate(Devolucion1 $devolucion1, Factura1 $factura1)
+	{
+        $devolucion2 = Devolucion2::where('devolucion2_devolucion1',$devolucion1->id)->get();
+        if ($devolucion2->isEmpty()) {
+            return 'No es posible recuperar detalle de la devolución, por favor verifique la información ó por favor consulte al administrador';
+        }
+        $total = 0;
+        foreach ($devolucion2 as $value) {
+        	$tbruto = $value->devolucion2_costo * $value->devolucion2_cantidad;
+            $iva = $value->devolucion2_iva / 100;
+            if ($value->devolucion2_precio > 0) {
+                $iva = $value->devolucion2_precio * $iva * $value->devolucion2_cantidad; 
+            }else{
+                $iva = $value->devolucion2_costo * $iva * $value->devolucion2_cantidad; 
+            }
+
+            $descuento = $value->devolucion2_descuento * $value->devolucion2_cantidad; 
+        	$total += ($tbruto + $iva) - $descuento;
+        }
+        $factura3 = Factura3::where('factura3_factura1', $factura1->id)->first();
+        if (!$factura3 instanceof Factura3) {
+            return 'No es posible recuperar cuotas de factura, por favor verifique la información ó por favor consulte al administrador';
+        }
+        // Update saldo
+        $factura3->factura3_saldo = $factura3->factura3_saldo - $total;
+        $factura3->save();
+		return 'OK';
+	}
 }

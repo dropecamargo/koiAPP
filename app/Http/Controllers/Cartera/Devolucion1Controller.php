@@ -102,22 +102,15 @@ class Devolucion1Controller extends Controller
                         // Concateno request
                         $cantidad = "devolucion2_cantidad_$value->id";
                         if ($request->$cantidad > 0) {
-                            // Valido colleccion de factura2
-                            if (!$value instanceof Factura2) {
-                                DB::rollback();
-                                return response()->json(['success' => false, 'errors' => 'No es posible recuperar detalle de factura, por favor verifique la información o consulte al administrador']);
-                            }
                             // Producto
                             $producto = Producto::find($value->factura2_producto);
                             if (!$producto instanceof Producto) {
                                 DB::rollback();
                                 return response()->json(['success' => false, 'errors' => 'No es posible recuperar producto, por favor verifique la información ó por favor consulte al administrador.']);
                             }
-
                             // Devolucion2
                             $devolucion2 = new Devolucion2;
                             $result = $devolucion2->store($value, $producto->id, $devolucion1->id, $request->$cantidad);
-
                             if ( $result != 'OK' ) {
                                 DB::rollback();
                                 return response()->json(['success' => false, 'errors' => $result ]);
@@ -129,7 +122,6 @@ class Devolucion1Controller extends Controller
                                 return response()->json(['success' => false, 'errors' => 'No es posible recuperar inventario, por favor verifique la información ó por favor consulte al administrador.']);
                             }
                             if ($producto->producto_maneja_serie == true) {
-
                                 // Prodbode
                                 $result = Prodbode::actualizar($producto, $sucursal->id, 'E', 1);
                                 if($result != 'OK') {
@@ -189,23 +181,20 @@ class Devolucion1Controller extends Controller
                                 $inventario = Inventario::movimiento($producto, $sucursal->id, 'DEVO', $devolucion1->id, $request->$cantidad, 0, 0, 0, $value->factura2_costo, $value->factura2_costo, $lote->id);
                                 if (!$inventario instanceof Inventario) {
                                     DB::rollback();
-                                    return response()->json(['success' => false,'errors '=> $inventario]);
+                                    return response()->json(['success' => false,'errors'=> $inventario]);
                                 }
                             }
-                            // Valido cantidad que sera modificada
-                            if ( ($value->factura2_devultas + $cantidad) > $value->factura2_cantidad ) {
-                                DB::rollback();
-                                return response()->json([ 'success' => false,'errors'=>"No es posible devolver ($cantidad) cantidad del producto $producto->producto_nombre, por favor verifique la información ó por favor consulte al administrador."]);
-                            }
-                            // Update cantidad en factura2
-                            $value->factura2_devultas = ($value->factura2_devultas + $cantidad);
                         }
                     }
-
+                    // Update saldo cuota 1 de factura 3
+                    $devolucion2 = Devolucion2::doCalculate($devolucion1,$factura1);
+                    if ($devolucion2 != 'OK') {
+                        DB::rollback();
+                        return response()->json(['success' => false,'errors'=> $devolucion2]);
+                    }
                     // Update consecutive sucursal_devo in Sucursal
                     $sucursal->sucursal_devo = $consecutive;
                     $sucursal->save();
-
                     DB::commit();
                     return response()->json(['success' => true, 'id' => $devolucion1->id ]);
                 } catch (\Exception $e) {
