@@ -147,7 +147,7 @@ app || (app = {});
         /**
         * Reference ChDevuelto
         */
-        referenceChDevuelto(attributes){
+        referenceChDevuelto: function(attributes){
             this.$wraper = this.$('#modal-wrapper-ch-devuelto');
             this.$wraperChd = this.$('#browse-chd-list');
     
