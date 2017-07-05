@@ -31,9 +31,6 @@
                                     <a role="menuitem" tabindex="-1" href="#" class="anular-cheque">
                                         <i class="fa fa-ban"></i>Anular cheque
                                     </a>
-                                    <a role="menuitem" tabindex="-1" href="#" class="devolver-cheque">
-                                        <i class="fa fa-reply"></i>Devolver cheque
-                                    </a>
                                 </li>
                             </ul>
                         </div>           
@@ -45,6 +42,19 @@
                 @elseif( $chposfechado1->chposfechado1_anulado )
                     <div class="form-group col-md-5">
                         <label class="label label-danger col-md-3 col-md-offset-9">CHEQUE ANULADO</label>          
+                    </div>
+                @else
+                    <div class="form-group col-md-5">
+                        <div class="dropdown pull-right">
+                            <a href="#" class="dropdown-toggle a-color" data-toggle="dropdown">Opciones <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li role="presentation">
+                                    <a role="menuitem" tabindex="-1" href="#" class="devolver-cheque">
+                                        <i class="fa fa-ban"></i>Devolver cheque
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>           
                     </div>
                 @endif
 			</div>
@@ -131,7 +141,6 @@
     <script type="text/template" id="cheque-devolver-confirm-tpl">
         <p>¿Está seguro que desea devolver el cheque posfechado número <b> <%- id %> </b>?</p>
     </script>
-
     <script type="text/template" id="koi-select-causa">
         <div class="row">
             <div class="form-group col-sm-12">

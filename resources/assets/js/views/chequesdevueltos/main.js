@@ -28,7 +28,12 @@ app || (app = {});
                 processing: true,
                 serverSide: true,
                 language: window.Misc.dataTableES(),
-                ajax: window.Misc.urlFull( Route.route('chequesdevueltos.index') ),
+                ajax: {
+                    url: window.Misc.urlFull( Route.route('chequesdevueltos.index') ),
+                    data: function( data ) {
+                        data.datatables = true;
+                    }
+                },
                 columns: [ 
                     { data: 'id', name: 'id' },
                     { data: 'sucursal_nombre', name: 'sucursal_nombre' },

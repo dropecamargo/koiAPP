@@ -161,7 +161,7 @@
 		</div>
 	</div>
 </div>
-<!-- Modal concepto-factura -->
+<!-- Modal medio-pago -->
 <div class="modal fade" id="modal-mediopago-component" data-backdrop="static" data-keyboard="false" aria-hidden="true">
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
@@ -174,6 +174,29 @@
 			
 			<form id="form-mediopago-component" data-toggle="validator">
 				<div class="modal-body" id="modal-wrapper-mediopago">
+					<div class="content-modal"></div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancelar</button>
+					<button type="submit" class="btn btn-primary btn-sm">Continuar</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<!-- Modal cheques devueltos -->
+<div class="modal fade" id="modal-chdevueltos-component" data-backdrop="static" data-keyboard="false" aria-hidden="true">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header small-box {{ config('koi.template.bg') }}">
+				<button type="button" class="close icon-close-koi" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="inner-title-modal modal-title">Cheques devueltos - tercero</h4>
+			</div>
+			
+			<form id="form-chd-component" data-toggle="validator">
+				<div class="modal-body" id="modal-wrapper-chd">
 					<div class="content-modal"></div>
 				</div>
 				<div class="modal-footer">
@@ -711,6 +734,29 @@
 			<!-- table table-bordered table-striped -->
 			<div class="box-body table-responsive no-padding">
 				<table id="browse-cheque-list" class="table table-hover table-bordered" cellspacing="0">
+					<thead>
+						<tr>
+							<th width="5%"></th>
+						  	<th width="40%">Banco</th>
+		                	<th width="20%">N° cheque</th>
+		                	<th width="15%">Valor</th>
+		                	<th width="15%">Fecha</th>
+            			</tr>
+                    </thead>
+                    <tbody>
+                        {{-- Render content recibo2 --}}
+                    </tbody>
+			    </table>
+			</div>
+		</div>
+	</div>
+</script>
+<script type="text/template" id="add-ch-devuelto-tpl">
+	<div class="row">
+		<div class="col-sm-12 col-xs-12">
+			<!-- table table-bordered table-striped -->
+			<div class="box-body table-responsive no-padding">
+				<table id="browse-chd-list" class="table table-hover table-bordered" cellspacing="0">
 					<thead>
 						<tr>
 							<th width="5%"></th>

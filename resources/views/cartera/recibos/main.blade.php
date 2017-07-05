@@ -97,7 +97,7 @@
                     <div class="row"> 
                         <label for="recibo2_conceptosrc" class="control-label col-md-1">Concepto</label>
                         <div class="form-group col-md-3">
-                            <select name="recibo2_conceptosrc" id="recibo2_conceptosrc" class="form-control select2-default change-concepto" required>
+                            <select name="recibo2_conceptosrc" id="recibo2_conceptosrc" class="form-control select2-default-clear change-concepto" required>
                             @foreach( App\Models\Cartera\Conceptosrc::getConcepto() as $key => $value)
                                 <option  value="{{ $key }}">{{ $value }}</option>
                             @endforeach
@@ -157,7 +157,7 @@
                             <div class="col-sm-2">
                                 <div class="form-group col-sm-12">
                                 <label for="recibo3_mediopago" class="control-label">Medio de pago</label>
-                                    <select name="recibo3_mediopago" id="recibo3_mediopago" class="form-control select2-default change-medio-pago" required>
+                                    <select name="recibo3_mediopago" id="recibo3_mediopago" class="form-control select2-default-clear change-medio-pago" required>
                                         @foreach( App\Models\Cartera\MedioPago::getMedioPago() as $key => $value)
                                             <option  value="{{ $key }}">{{ $value }}</option>
                                         @endforeach
@@ -241,7 +241,7 @@
             
         <td><%- conceptosrc_nombre %></td>
         <td><%- documentos_nombre %></td>
-        <td><%- !_.isUndefined(factura1_numero) && !_.isNull(factura1_numero) && factura1_numero != '' ? factura1_numero : '' %></td>
+        <td><%- !_.isUndefined(factura1_numero) && !_.isNull(factura1_numero) && factura1_numero != '' ? factura1_numero : recibo2_numero %></td>
         <td><%- !_.isUndefined(factura3_cuota) && !_.isNull(factura3_cuota) && factura3_cuota != '' ? factura3_cuota : '' %></td>
         <td class="text-left"><%- recibo2_naturaleza == 'D' ? 'Debito' : 'Credito' %></td>
         <td class="text-right"><%- !_.isUndefined(factura3_valor) && !_.isNull(factura3_valor) && factura3_valor != '' ? window.Misc.currency( factura3_valor ) : window.Misc.currency( recibo2_valor ) %></td>

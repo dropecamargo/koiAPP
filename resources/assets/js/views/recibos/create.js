@@ -134,6 +134,7 @@ app || (app = {});
                 e.preventDefault();
 
                 var data = window.Misc.formToJson( e.target );
+                    data.recibo2 = this.detalleReciboList.toJSON();
                 this.detalleReciboMedioPagoList.trigger( 'store', data );
             }
         },
@@ -185,52 +186,57 @@ app || (app = {});
 
             // References
             this.$detailMedio = this.$('#detail-medio-pago');
+            this.$detailMedio.empty();
             var _this = this;
                 medio = _this.$(e.currentTarget).val();
                 attributes = this.model.toJSON();
-            $.ajax({
-                type: 'GET',
-                url: window.Misc.urlFull(Route.route('mediopagos.show',{ mediopagos: medio })),
-                beforeSend: function() {
-                    window.Misc.setSpinner( _this.el );
-                }
-            })
-            .done(function(resp) {
-
-                window.Misc.removeSpinner( _this.el );
-                
-                attributes.resp = resp;
-                if (resp.mediopago_ch == 1) {
-                    // Open CarteraActionView
-                    if ( _this.carteraActionView instanceof Backbone.View ){
-                        _this.carteraActionView.stopListening();
-                        _this.carteraActionView.undelegateEvents();
+            if (!_.isUndefined(medio) && !_.isNull(medio) && medio != '') {
+                $.ajax({
+                    type: 'GET',
+                    url: window.Misc.urlFull(Route.route('mediopagos.show',{ mediopagos: medio })),
+                    beforeSend: function() {
+                        window.Misc.setSpinner( _this.el );
                     }
-                    // Obtengo id tercero del attr del select de concepto
-                    resp.tercero = _this.$('#recibo2_conceptosrc').attr('data-tercero');
-                    // Adjunto sucursal
-                    resp.sucursal = sucursal;
+                })
+                .done(function(resp) {
 
-                    _this.carteraActionView = new app.CarteraActionView({
-                        model: _this.model,
-                        collection: _this.detalleReciboMedioPagoList,
-                        parameters: {
-                            data: resp,
-                            action: 'mediopago',
+                    window.Misc.removeSpinner( _this.el );
+                    
+                    attributes.resp = resp;
+                    if (resp.mediopago_ch == 1) {
+                        // Open CarteraActionView
+                        if ( _this.carteraActionView instanceof Backbone.View ){
+                            _this.carteraActionView.stopListening();
+                            _this.carteraActionView.undelegateEvents();
                         }
-                    });
-                    _this.carteraActionView.render();
+                        // Obtengo id tercero del attr del select de concepto
+                        resp.tercero = _this.$('#recibo2_conceptosrc').attr('data-tercero');
+                        resp.recibo2 = _this.detalleReciboList.toJSON();
+                        // Adjunto sucursal
+                        resp.sucursal = sucursal;
+                        
+                        _this.carteraActionView = new app.CarteraActionView({
+                            model: _this.model,
+                            collection: _this.detalleReciboMedioPagoList,
+                            parameters: {
+                                data: resp,
+                                action: 'mediopago',
+                            }
+                        });
+                        _this.carteraActionView.render();
 
-                }else{  
-                    _this.$detailMedio.empty().html( _this.templateDetalleRecibo3( attributes ) );
-                }
-                //Render form detalle medioPago
-                _this.ready();
-            })       
-            .fail(function(jqXHR, ajaxOptions, thrownError) {
-                window.Misc.removeSpinner( _this.el );
-                alertify.error(thrownError);
-            });
+                    }else{  
+                        _this.$detailMedio.empty().html( _this.templateDetalleRecibo3( attributes ) );
+                    }
+
+                    //Render form detalle medioPago
+                    _this.ready();
+                })       
+                .fail(function(jqXHR, ajaxOptions, thrownError) {
+                    window.Misc.removeSpinner( _this.el );
+                    alertify.error(thrownError);
+                });
+            }
         },
         /**
         * fires libraries js

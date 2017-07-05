@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\Models\Cartera\Factura3, App\Models\Cartera\Anticipo1;
+use App\Models\Cartera\Factura3, App\Models\Cartera\Anticipo1,App\Models\Cartera\ChDevuelto;
 use App\Models\Base\Tercero;
 use DB;
 
@@ -44,7 +44,14 @@ class CarteraController extends Controller
                 $anticipo->join('sucursal as sa', 'anticipo1_sucursal', '=', 'sa.id');
                 $anticipo->where('anticipo1_tercero', $tercero->id);
 
+                $chdevuelto = ChDevuelto::query();
+                $chdevuelto->select( 'chdevuelto.id as chdevuelto_id',DB::raw('null'),'chdevuelto_fecha','chdevuelto_numero',DB::raw('1'), 'chdevuelto_saldo', 'chdevuelto_fecha','schd.sucursal_nombre','dch.documentos_nombre',DB::raw("DATEDIFF(chdevuelto_fecha, NOW() ) as days"));
+                $chdevuelto->join('documentos as dch' , 'chdevuelto_documentos', '=' , 'dch.id');
+                $chdevuelto->join('sucursal as schd', 'chdevuelto_sucursal', '=', 'schd.id');
+                $chdevuelto->where('chdevuelto_tercero', $tercero->id);
+
                 $factura3->unionAll($anticipo);
+                $factura3->unionAll($chdevuelto);
                 $factura3->orderBy('factura3_vencimiento', 'desc');
                 $cartera = $factura3->get();
             }

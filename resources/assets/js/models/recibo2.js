@@ -14,7 +14,8 @@ app || (app = {});
         },
         idAttribute: 'id',
         defaults: {
-        	'recibo2_recibo1': '',	
+            'recibo2_recibo1': '',  
+        	'recibo2_numero': '',	
         	'recibo2_conceptosrc': '',	
         	'recibo2_documentos_doc': '',	
         	'recibo2_id_doc': '',	

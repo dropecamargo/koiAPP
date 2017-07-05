@@ -29,6 +29,7 @@ app || (app = {});
             // Preparo objeto
             modelo =  {
                 'recibo3_mediopago': mediopago,
+                'recibo3_cheque_id': model.get('id_cheque'),
                 'recibo3_banco_medio': model.get('id_banco'),
                 'recibo3_valor': model.get('chposfechado1_valor'),
                 'recibo3_numero_medio': model.get('chposfechado1_ch_numero'),

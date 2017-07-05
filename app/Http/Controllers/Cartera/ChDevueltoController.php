@@ -23,18 +23,32 @@ class ChDevueltoController extends Controller
     {
         if ($request->ajax()) {
             $query = ChDevuelto::query();
-            $query->select('chdevuelto.*', 'tercero_nit', 'tercero_razonsocial', 'tercero_nombre1', 'tercero_nombre2', 'tercero_apellido1', 'tercero_apellido2','sucursal_nombre','banco_nombre',DB::raw("(CASE WHEN tercero_persona = 'N'
-                    THEN CONCAT(tercero_nombre1,' ',tercero_nombre2,' ',tercero_apellido1,' ',tercero_apellido2,
-                            (CASE WHEN (tercero_razonsocial IS NOT NULL AND tercero_razonsocial != '') THEN CONCAT(' - ', tercero_razonsocial) ELSE '' END)
-                        )
-                    ELSE tercero_razonsocial END)
-                AS tercero_nombre"), 'chposfechado1_banco', 'chposfechado1_sucursal'
-            );
-            $query->join('tercero','chdevuelto_tercero', '=', 'tercero.id');
-            $query->join('chposfechado1', 'chdevuelto_chposfechado1', '=', 'chposfechado1.id');
-            $query->join('banco','chposfechado1_banco', '=', 'banco.id');
-            $query->join('sucursal','chdevuelto_sucursal', '=', 'sucursal.id');
-            return Datatables::of($query)->make(true);
+
+            if ( $request->has('datatables') ) {
+                $query->select('chdevuelto.*', 'tercero_nit', 'tercero_razonsocial', 'tercero_nombre1', 'tercero_nombre2', 'tercero_apellido1', 'tercero_apellido2','sucursal_nombre','banco_nombre',DB::raw("(CASE WHEN tercero_persona = 'N'
+                        THEN CONCAT(tercero_nombre1,' ',tercero_nombre2,' ',tercero_apellido1,' ',tercero_apellido2,
+                                (CASE WHEN (tercero_razonsocial IS NOT NULL AND tercero_razonsocial != '') THEN CONCAT(' - ', tercero_razonsocial) ELSE '' END)
+                            )
+                        ELSE tercero_razonsocial END)
+                    AS tercero_nombre"), 'chposfechado1_banco', 'chposfechado1_sucursal','chposfechado1_ch_numero'
+                );
+                $query->join('tercero','chdevuelto_tercero', '=', 'tercero.id');
+                $query->join('chposfechado1', 'chdevuelto_chposfechado1', '=', 'chposfechado1.id');
+                $query->join('banco','chposfechado1_banco', '=', 'banco.id');
+                $query->join('sucursal','chdevuelto_sucursal', '=', 'sucursal.id');
+                return Datatables::of($query)->make(true);
+            }
+
+            // Fetch desde cartera action
+            if ($request->has('tercero')) {
+                $chdevuelto = [];
+                $query->select('chdevuelto.*','banco_nombre','chposfechado1_banco','chposfechado1_ch_numero');
+                $query->join('chposfechado1', 'chdevuelto_chposfechado1', '=', 'chposfechado1.id');
+                $query->join('banco','chposfechado1_banco', '=', 'banco.id');
+                $query->where('chdevuelto_tercero',$request->tercero);
+                $chdevuelto = $query->get();
+                return response()->json($chdevuelto);
+            }
         }
         return view('cartera.chequesdevueltos.index');
     }
@@ -97,7 +111,7 @@ class ChDevueltoController extends Controller
                     $chdevuelto->chdevuelto_sucursal = $sucursal->id;
                     $chdevuelto->chdevuelto_numero = $consecutive;
                     $chdevuelto->chdevuelto_documentos = $documento->id;
-                    $chdevuelto->chdevuelto_fecha = date('Y-m-d');
+                    $chdevuelto->chdevuelto_fecha = $cheque1->chposfechado1_ch_fecha;
                     $chdevuelto->chdevuelto_valor = $cheque1->chposfechado1_valor;
                     $chdevuelto->chdevuelto_saldo = $cheque1->chposfechado1_valor;
                     $chdevuelto->chdevuelto_tercero = $cheque1->chposfechado1_tercero;
@@ -107,7 +121,6 @@ class ChDevueltoController extends Controller
                     $chdevuelto->save();
 
                     // Cambio de indicativos del cheque a devolver
-                    $cheque1->chposfechado1_activo = false;
                     $cheque1->chposfechado1_devuelto = true;
                     $cheque1->save();
 

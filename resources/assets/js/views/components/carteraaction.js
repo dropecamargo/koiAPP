@@ -12,13 +12,16 @@ app || (app = {});
 
         template: _.template( ($('#add-concepto-factura-tpl').html() || '') ),
         templateMedioCh: _.template( ($('#add-ch-recibo-tpl').html() || '') ),
+        templateChd: _.template( ($('#add-ch-devuelto-tpl').html() || '') ),
     	events:{ 
             'submit #form-concepto-factura-component': 'onStore',
             'submit #form-mediopago-component': 'onStoreMedio',
+            'submit #form-chd-component': 'onStoreChd',
             'ifClicked .change-check': 'changeCheck',
             'ifClicked .change-check-medio': 'changeCheckMedio',
-            'change .change-pagar': 'changePagar',
+            'ifClicked .click-concepto-chd': 'changeCheckChd',
             'ifClicked .change-naturaleza': 'changeNaturaleza',
+            'change .change-pagar': 'changePagar',
         },
         parameters: {
             data: { },
@@ -38,10 +41,12 @@ app || (app = {});
 
             this.$modal = this.$('#modal-concepto-factura-component');
             this.$modalMedio = this.$('#modal-mediopago-component');
+            this.$modalChd = this.$('#modal-chdevueltos-component');
             
             // Collection 
             this.detalleFacturaList = new app.DetalleFactura3List();
             this.detalleChposFechado = new app.DetalleChposFechadoList();
+            this.chDevueltoList = new app.ChDevueltoList();
 
             this.$concepto = this.parameters.data.call == 'recibo' ? this.$('#recibo2_conceptosrc') : this.$('#nota1_conceptonota');
 
@@ -50,6 +55,9 @@ app || (app = {});
 
             this.listenTo( this.detalleChposFechado, 'add', this.addOneCh );
             this.listenTo( this.detalleChposFechado, 'reset', this.addAllCh );
+
+            this.listenTo( this.chDevueltoList, 'add', this.addOneChd );
+            this.listenTo( this.chDevueltoList, 'reset', this.addAllChd );
 
             this.ready();
         },
@@ -66,6 +74,11 @@ app || (app = {});
 
                         // Reference 
                         _this.reference(resp);
+                    },
+                    'modalChequesDevueltos' : function(){
+                        _this.$modalChd.find('.content-modal').empty().html( _this.templateChd() );
+                        // Reference
+                        _this.referenceChDevuelto(resp);
                     },
                     'mediopago': function(){
                         _this.$modalMedio.find('.content-modal').empty().html( _this.templateMedioCh() );
@@ -106,6 +119,14 @@ app || (app = {});
             e.preventDefault();
             this.$modalMedio.modal('hide');
         },
+        onStoreChd: function(e){
+            e.preventDefault();
+            // Hide modal && reset select
+            if(this.parameters.data.call == 'recibo'){
+                this.$concepto.val('').trigger('change');
+            }
+            this.$modalChd.modal('hide');
+        },
         /**
         * Reference
         */
@@ -123,7 +144,18 @@ app || (app = {});
             // Open modal
             this.$modal.modal('show');
         },
+        /**
+        * Reference ChDevuelto
+        */
+        referenceChDevuelto(attributes){
+            this.$wraper = this.$('#modal-wrapper-ch-devuelto');
+            this.$wraperChd = this.$('#browse-chd-list');
+    
+            this.chDevueltoList.fetch({ reset: true, data: { tercero: attributes.data.tercero } });
 
+            // Open modal
+            this.$modalChd.modal('show');
+        },
         /**
         * Reference medio de pago cheque 
         */
@@ -155,6 +187,18 @@ app || (app = {});
               
             this.ready();
         },
+        // Event change click chd
+        changeCheckChd: function(e){
+            var selected = this.$(e.currentTarget).prop('checked');
+            var id = this.$(e.currentTarget).attr('id');
+                id = id.split("_");
+            if( !selected ) {
+                var modelo = this.chDevueltoList.agregar( id[1], this.parameters.data );
+                this.collection.trigger('store', modelo );
+            }
+              
+            this.ready();
+        },
         // Evente change click check-box
         changeCheckMedio: function(e){
             var selected = this.$(e.target).is(':checked');
@@ -162,6 +206,7 @@ app || (app = {});
                 id = id.split("_");
             if( !selected ) {
                 var modelo = this.detalleChposFechado.findModel(id[1],this.parameters.data.id);
+                    modelo.recibo2 = this.parameters.data.recibo2;
                 this.collection.trigger('store', modelo );
             }
               
@@ -227,7 +272,7 @@ app || (app = {});
         },
 
         /*
-        *Render all view tast of the collection
+        * Render all view tast of the collection
         */
         addAll:function(){
             var _this = this;
@@ -275,6 +320,25 @@ app || (app = {});
         */
         addAllCh:function(){
             this.detalleChposFechado.forEach( this.addOneCh, this );
+        },
+        /**
+        * Add one chequedevuelto modal
+        */
+        addOneChd: function(chdevuelto){
+            var view = new app.DetalleChdItemView({
+                model: chdevuelto,
+                parameters: {
+                }
+            });
+            chdevuelto.view = view;
+            this.$wraperChd.append( view.render().el );
+            this.ready();
+        },
+        /**
+        * foreach collection the chdevuelto
+        */
+        addAllChd:function(){
+            this.chDevueltoList.forEach( this.addOneChd, this );
         },
     });
 })(jQuery, this, this.document);

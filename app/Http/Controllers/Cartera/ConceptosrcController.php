@@ -200,6 +200,10 @@ class ConceptosrcController extends Controller
                     $action = 'modalCartera';
                     $response->action = $action;  
                     $response->success = true;
+                }else if ($conceptosrc->documentos_codigo == 'CHD'){
+                    $action = 'modalChequesDevueltos';
+                    $response->action = $action;  
+                    $response->success = true;
                 }else{
                     $response->success = false;
                 }

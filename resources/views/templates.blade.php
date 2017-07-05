@@ -1309,6 +1309,7 @@
     <td><%- !_.isUndefined(factura3_cuota) && !_.isNull(factura3_cuota) && factura3_cuota != '' ? factura3_cuota : '' %></td>
     <td class="text-right"><%- !_.isUndefined(factura3_valor) && !_.isNull(factura3_valor) && factura3_valor != '' ? window.Misc.currency( factura3_valor ) : '' %></td>
 </script>
+
 <script type="text/template" id="choose-cheque-item-tpl">
     <td class="text-center">
     	<input type="checkbox" name="check_<%- id_cheque %>" id="check_<%- id_cheque %>" class="change-check-medio">
@@ -1318,6 +1319,16 @@
     <td><%- chposfechado1_ch_numero %></td>
     <td><%- window.Misc.currency( chposfechado1_valor ) %></td>
     <td><%- chposfechado1_ch_fecha %></td>
+</script>
+
+<script type="text/template" id="choose-chd-item-tpl">
+    <td class="text-center">
+    	<input type="checkbox" name="check_<%- id %>" id="check_<%- id %>" class="click-concepto-chd">
+    </td>
+    <td><%- banco_nombre %></td>
+    <td><%- chposfechado1_ch_numero %></td>
+    <td><%- window.Misc.currency( chdevuelto_valor ) %></td>
+    <td><%- chdevuelto_fecha %></td>
 </script>
 
 <script type="text/template" id="add-factura3-item-tpl"> 

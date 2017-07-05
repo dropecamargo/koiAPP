@@ -57,24 +57,34 @@ class Recibo3Controller extends Controller
             $recibo3 = new Recibo3;
             if ($recibo3->isValid($data)) {
                 try {
+                    // Recupero medio de pago
                     $mediopago = MedioPago::find($request->recibo3_mediopago);
                     if (!$mediopago instanceof MedioPago) {
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar medio de pago, verifique información ó por favor consulte al administrador.']);
                     }
-                    if ($request->has('recibo3_banco_medio')) {
+                    // Cheque o Tarjeta 
+                    if ( $request->has('recibo3_banco_medio') ) {
+                        // Recupero instancia de banco
                         $banco = Banco::find($request->recibo3_banco_medio);
                         if (!$banco instanceof Banco) {
                             return response()->json(['success' => false, 'errors' => 'No es posible recuperar banco, verifique información ó por favor consulte al administrador.']);
                         }
+
+                        if ( $mediopago->mediopago_ch ) {
+                            $result = $recibo3->validarCheque( $data );
+                            if( $result != 'OK'){
+                                return response()->json(['success' => false, 'errors' => $result ]);
+                            }
+                        }
                         return response()->json(['success' => true, 'id' => uniqid() , 'mediopago' => $mediopago->mediopago_nombre, 'banco' =>  $banco->banco_nombre]);
                     }
                     return response()->json(['success' => true, 'id' => uniqid() , 'mediopago' => $mediopago->mediopago_nombre, 'banco'=> '']);
-                    
                 } catch (\Exception $e) {
                     Log::error($e->getMessage());
                     return response()->json(['success' => false, 'errors' => trans('app.exception')]);
                 }
             }
+            return response()->json(['success' => false, 'errors' => $recibo3->errors]);
         }
         abort(403);
     }

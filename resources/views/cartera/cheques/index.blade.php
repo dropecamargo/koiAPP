@@ -12,8 +12,8 @@
                     <thead>
                         <tr>
                             <th>Número</th>
-                            <th>Sucursal</th>
                             <th>Banco</th>
+                            <th>Sucursal</th>
                             <th>Cliente</th>
                             <th>Fecha</th>
                             <th>Nombre1</th>

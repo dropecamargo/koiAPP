@@ -7,9 +7,9 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\Models\Cartera\Recibo1, App\Models\Cartera\Recibo2, App\Models\Cartera\Recibo3, App\Models\Cartera\Factura3, App\Models\Cartera\Factura1;
+use App\Models\Cartera\Recibo1, App\Models\Cartera\Recibo2, App\Models\Cartera\Recibo3, App\Models\Cartera\Factura3, App\Models\Cartera\Factura1,App\Models\Cartera\ChposFechado1;
+use App\Models\Cartera\Conceptosrc, App\Models\Cartera\CuentaBanco, App\Models\Cartera\MedioPago,App\Models\Cartera\Banco;
 use App\Models\Base\Documentos, App\Models\Base\Sucursal, App\Models\Base\Tercero;
-use App\Models\Cartera\Conceptosrc, App\Models\Cartera\CuentaBanco, App\Models\Cartera\MedioPago;
 use DB, Log, Auth, Datatables;
 
 class Recibo1Controller extends Controller
@@ -84,12 +84,10 @@ class Recibo1Controller extends Controller
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar sucursal, verifique información ó por favor consulte al administrador.']);
                     }                    
-                    //
-
                     // Consecutive
                     $consecutive = $sucursal->sucursal_reci + 1;
 
-                    // recibo1
+                    // Recibo1
                     $recibo1->fill($data);
                     $recibo1->recibo1_tercero = $tercero->id;
                     $recibo1->recibo1_sucursal = $sucursal->id;
@@ -99,6 +97,7 @@ class Recibo1Controller extends Controller
                     $recibo1->recibo1_fh_elaboro = date('Y-m-d H:m:s');
                     $recibo1->save();
 
+                    // Recibo2
                     $recibo2 = isset($data['recibo2']) ? $data['recibo2'] : null;
                     foreach ($recibo2 as $item)
                     {
@@ -140,8 +139,18 @@ class Recibo1Controller extends Controller
                             return response()->json(['success' => false, 'errors' => 'No es posible recuperar medio de pago, verifique información ó por favor consulte al administrador.']);
                         }
                         // Cuando es cheque o tarjeta estos vienen con datos que hay que guardar
-                        if ( !isset($value['recibo3_banco_medio']) && isset($value['recibo3_numero_medio']) && isset($value['recibo3_vence_medio']) ) {
-
+                        if ( $value['recibo3_banco_medio'] != "" && $value['recibo3_numero_medio'] != "" && $value['recibo3_vence_medio'] != "" ) {
+                            // Recupero instancia de cheque para cambiar indicativo de activo 
+                            if ($mediopago->mediopago_ch) {
+                                $cheque = ChposFechado1::where('chposfechado1_ch_numero',$value['recibo3_numero_medio'])->first();
+                                if (!$cheque instanceof ChposFechado1) {
+                                    DB::rollback();
+                                    return response()->json(['success' => false, 'errors' => 'No es posible recuperar cheque, verifique información ó por favor consulte al administrador.']);
+                                }
+                                // Update estado del cheque
+                                $cheque->chposfechado1_activo = false;
+                                $cheque->save();
+                            }
                             // Recupero instancia de Banco
                             $banco = Banco::find($value['recibo3_banco_medio']);
                             if (!$banco instanceof Banco) {
@@ -153,7 +162,7 @@ class Recibo1Controller extends Controller
                         $recibo3->recibo3_recibo1 = $recibo1->id;
                         $recibo3->recibo3_mediopago = $mediopago->id;
                         $recibo3->recibo3_valor = $value['recibo3_valor'];
-                        $recibo3->recibo3_banco_medio = ($value['recibo3_banco_medio'] == "") ? null : $value['recibo3_banco_medio'] ;
+                        $recibo3->recibo3_banco_medio = ($value['recibo3_banco_medio'] == "") ? null : $banco->id;
                         $recibo3->recibo3_numero_medio = $value['recibo3_numero_medio'];
                         $recibo3->recibo3_vence_medio = ($value['recibo3_vence_medio'] == "") ? null : $value['recibo3_vence_medio'];
                         $recibo3->save();
