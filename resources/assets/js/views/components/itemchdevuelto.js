@@ -33,6 +33,7 @@ app || (app = {});
         */
         render: function(){
             var attributes = this.model.toJSON();
+                attributes.call = this.parameters.call;
             this.$el.html( this.template(attributes) );
             return this;
         }

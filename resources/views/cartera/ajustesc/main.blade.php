@@ -106,7 +106,7 @@
                     <div class="row">
                         <label for="ajustec2_documentos_doc" class="col-md-1 control-label">Documento</label>
                         <div class="form-group col-md-3">
-                            <select name="ajustec2_documentos_doc" id="ajustec2_documentos_doc" class="form-control select2-default change-documento" required disabled>
+                            <select name="ajustec2_documentos_doc" id="ajustec2_documentos_doc" class="form-control select2-default-clear change-documento" required disabled>
                             @foreach( App\Models\Base\Documentos::getDocumentos() as $key => $value)
                                 <option  value="{{ $key }}">{{ $value }}</option>
                             @endforeach
@@ -231,7 +231,7 @@
             <td><%- factura3_cuota %></td>
             <td><%- window.Misc.currency(factura3_saldo) %></td>
             <td><input type="checkbox" id="debito_<%- id %>" name="debito_<%- id %>" class="change-naturaleza"></td>
-            <td><input type="checkbox" id="credito_<%- id %>" name="credito_<%- id %>" class="change-naturaleza"></td>
+            <td><input type="checkbox" id="credito_<%- id %>" name="credito_<%- id %>" class="change-naturaleza" checked></td>
             <td><input type="text" id="pagar_<%- id %>" name="pagar_<%- id %>" class="form-control input-sm change-pagar" data-currency-negative></td>
         <% } %>
     </script>

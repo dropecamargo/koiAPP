@@ -229,8 +229,12 @@ class ConceptosrcController extends Controller
                     $response->errors = "No es posible recuperar documento, verifique información ó por favor consulte al administrador.";
                 }
 
-                if($documentos->documentos_codigo == 'FACT'){
+                if( $documentos->documentos_codigo == 'FACT' ){
                     $action = 'modalCartera';
+                    $response->action = $action;  
+                    $response->success = true;
+                }else if ( $documentos->documentos_codigo == 'CHD' ){
+                    $action = 'modalChequesDevueltos';
                     $response->action = $action;  
                     $response->success = true;
                 }else{

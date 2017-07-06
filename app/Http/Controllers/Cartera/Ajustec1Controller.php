@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\Models\Cartera\Ajustec1, App\Models\Cartera\Ajustec2, App\Models\Cartera\ConceptoAjustec, App\Models\Cartera\Factura3;
+use App\Models\Cartera\Ajustec1, App\Models\Cartera\Ajustec2, App\Models\Cartera\ConceptoAjustec, App\Models\Cartera\Factura3, App\Models\Cartera\ChDevuelto;
 use App\Models\Base\Tercero, App\Models\Base\Sucursal, App\Models\Base\Documentos;
 use DB, Log, Cache, Datatables, Auth;
 
@@ -100,52 +100,67 @@ class Ajustec1Controller extends Controller
                     $detalle = isset($data['detalle']) ? $data['detalle'] : null;
                     foreach ($detalle as $item)
                     {
-
-                        // Recuperar tercero || factura3 || documento
-                        if(isset($item['factura3_id'])){
-                            $tercero = Tercero::getTercero($item['ajustec2_tercero']);
-                        }else{
-                            $tercero = Tercero::where('tercero_nit',$item['ajustec2_tercero'])->first();
-                        }
-                        if(!$tercero instanceof Tercero){
-                            DB::rollback();
-                            return response()->json(['success'=>false, 'errors'=>'No es posible recuperar cliente, verifique información ó por favor consulte al administrador.']);
-                        }
-
+                        // Recupero instancia de Documentos
                         $documentos = Documentos::find($item['ajustec2_documentos_doc']);
                         if(!$documentos instanceof Documentos){
                             DB::rollback();
                             return response()->json(['success'=>false, 'errors'=>'No es posible recuperar documento, verifique información ó por favor consulte al administrador.']);
                         }
-                            
+                        // Ajuste2
                         $ajustec2 = new Ajustec2;
                         $ajustec2->ajustec2_ajustec1 = $ajustec->id;
                         $ajustec2->ajustec2_naturaleza = $item['ajustec2_naturaleza'];
-                        $ajustec2->ajustec2_tercero = $tercero->id;
                         $ajustec2->ajustec2_documentos_doc = $documentos->id;
-
-                        if(isset($item['factura3_id'])){
-                            $factura3 = Factura3::where('id',$item['factura3_id'])->where('factura3_factura1', $item['ajustec2_factura1'])->first();
-                            if( !$factura3 instanceof Factura3 ){
-                                DB::rollback();
-                                return response()->json(['success'=>false, 'errors'=>'No es posible recuperar el numero de la factura, por favor verifique ó consulte con el administrador.']);
-                            }
-
-                            if($item['ajustec2_naturaleza'] == 'D'){
-                                $factura3->factura3_saldo = $factura3->factura3_saldo - $item['factura3_valor'];
-                            }else{
-                                $factura3->factura3_saldo = $factura3->factura3_saldo + $item['factura3_valor'];
-                            }
-                            $factura3->save();
-
-                            $ajustec2->ajustec2_id_doc = $factura3->id;
-                        }
                         
-                        if( !empty($item['factura3_valor']) ){
-                            $ajustec2->ajustec2_valor = $item['factura3_valor'];
-                        }else{
-                            $ajustec2->ajustec2_valor = $item['ajustec2_valor'];
+                        switch ($documentos->documentos_codigo) {
+                            case 'FACT':
+                                $tercero = Tercero::getTercero($item['ajustec2_tercero']);
+                                if(isset($item['factura3_id'])){
+                                    $factura3 = Factura3::where('id',$item['factura3_id'])->where('factura3_factura1', $item['ajustec2_factura1'])->first();
+                                    if( !$factura3 instanceof Factura3 ){
+                                        DB::rollback();
+                                        return response()->json(['success'=>false, 'errors'=>'No es posible recuperar el numero de la factura, por favor verifique ó consulte con el administrador.']);
+                                    }
+
+                                    if($item['ajustec2_naturaleza'] == 'D'){
+                                        $factura3->factura3_saldo = $factura3->factura3_saldo - $item['factura3_valor'];
+                                    }else{
+                                        $factura3->factura3_saldo = $factura3->factura3_saldo + $item['factura3_valor'];
+                                    }
+
+                                    $factura3->save();
+                                    $ajustec2->ajustec2_id_doc = $factura3->id;
+                                    $ajustec2->ajustec2_valor = $item['factura3_valor'];
+                                }
+                                break;
+                            case 'CHD':
+                                $tercero = Tercero::getTercero($item['ajustec2_tercero']);
+                                $chdevuelto = ChDevuelto::find($item['ajustec2_chdevuelto']);
+                                if ( !$chdevuelto instanceof ChDevuelto ) {
+                                    DB::rollback();
+                                    return response()->json(['success'=>false, 'errors'=>"No es posible recuperar cheque devuelto, por favor verifique ó consulte con el administrador."]);   
+                                }
+
+                                if($item['ajustec2_naturaleza'] == 'D'){
+                                    $chdevuelto->chdevuelto_saldo = $chdevuelto->chdevuelto_saldo - $item['ajustec2_valor'];
+                                }else{
+                                    $chdevuelto->chdevuelto_saldo = $chdevuelto->chdevuelto_saldo + $item['ajustec2_valor'];
+                                }
+                                $chdevuelto->save();
+                                $ajustec2->ajustec2_id_doc = $chdevuelto->id;
+                                $ajustec2->ajustec2_valor = $item['ajustec2_valor'];
+                                break;
+                            default:
+                                $tercero = Tercero::where('tercero_nit',$item['ajustec2_tercero'])->first();
+                                $ajustec2->ajustec2_valor = $item['ajustec2_valor'];
+                                break;
                         }
+                        // Recupero instancia de Tercero 
+                        if(!$tercero instanceof Tercero){
+                            DB::rollback();
+                            return response()->json(['success'=>false, 'errors'=>'No es posible recuperar cliente, verifique información ó por favor consulte al administrador.']);
+                        }
+                        $ajustec2->ajustec2_tercero = $tercero->id;
                         $ajustec2->save();
                     }
 
@@ -155,6 +170,7 @@ class Ajustec1Controller extends Controller
 
                     // Commit Transaction
                     DB::commit();
+                    // return response()->json(['success' => false, 'errors' => 'TODO OK']);
                     return response()->json(['success' => true, 'id' => $ajustec->id]);
                 }catch(\Exception $e){
                     DB::rollback();

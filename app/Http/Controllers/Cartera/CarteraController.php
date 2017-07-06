@@ -27,6 +27,7 @@ class CarteraController extends Controller
                 if(!$tercero instanceof Tercero){
                     return response()->json(['success' => false, 'errors' => 'No se pudo recuperar el cliente, por favor verifique la informacion o consulte al administrador']);
                 }
+                // Factura3 - cuotas
                 $factura3 = Factura3::query();
                 $factura3->select('factura3.id as factura3_id','factura3_chposfechado1','factura3_vencimiento','factura1_numero','factura3_cuota','factura3_saldo','factura1_fh_elaboro','sf.sucursal_nombre','df.documentos_nombre', 
                             DB::raw("DATEDIFF(factura3_vencimiento, NOW() ) as days"));
@@ -34,22 +35,25 @@ class CarteraController extends Controller
                 $factura3->join('factura1', 'factura3_factura1', '=', 'factura1.id');
                 $factura3->join('documentos as df', 'factura1_documentos', '=', 'df.id');
                 $factura3->join('sucursal as sf', 'factura1_sucursal', '=', 'sf.id');
-
                 $factura3->where('factura3_saldo', '<>',  0);
                 $factura3->where('factura1_tercero', $tercero->id);
 
+                // Anticipos 
                 $anticipo = Anticipo1::query();
                 $anticipo->select( 'anticipo1.id as anticipo1_id',DB::raw('null'),'anticipo1_fecha','anticipo1_numero',DB::raw('1'),DB::raw('anticipo1_saldo * -1'), 'anticipo1_fecha','sa.sucursal_nombre','da.documentos_nombre',DB::raw("DATEDIFF(anticipo1_fecha, NOW() ) as days"));
                 $anticipo->join('documentos as da' , 'anticipo1_documentos', '=' , 'da.id');
                 $anticipo->join('sucursal as sa', 'anticipo1_sucursal', '=', 'sa.id');
                 $anticipo->where('anticipo1_tercero', $tercero->id);
 
+                // Cheques devueltos
                 $chdevuelto = ChDevuelto::query();
                 $chdevuelto->select( 'chdevuelto.id as chdevuelto_id',DB::raw('null'),'chdevuelto_fecha','chdevuelto_numero',DB::raw('1'), 'chdevuelto_saldo', 'chdevuelto_fecha','schd.sucursal_nombre','dch.documentos_nombre',DB::raw("DATEDIFF(chdevuelto_fecha, NOW() ) as days"));
                 $chdevuelto->join('documentos as dch' , 'chdevuelto_documentos', '=' , 'dch.id');
                 $chdevuelto->join('sucursal as schd', 'chdevuelto_sucursal', '=', 'schd.id');
+                $chdevuelto->where('chdevuelto_saldo', '<>',  0);
                 $chdevuelto->where('chdevuelto_tercero', $tercero->id);
 
+                // Make the unions
                 $factura3->unionAll($anticipo);
                 $factura3->unionAll($chdevuelto);
                 $factura3->orderBy('factura3_vencimiento', 'desc');

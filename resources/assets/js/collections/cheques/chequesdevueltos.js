@@ -22,18 +22,31 @@ app || (app = {});
         
         },
 
-        agregar: function(id,data){
+        agregar: function(id, data, valor, naturaleza){
             var model =  _.find(this.models, function(item){
                 return item.get('id') == id;
             });
+
             // Preparo objeto
-            modelo = {
-                'recibo2_conceptosrc': data.recibo2_conceptosrc,
-                'recibo2_naturaleza': 'C',
-                'recibo2_chdevuelto': model.get('id'),
-                'recibo2_valor': model.get('chdevuelto_valor'),
-                'recibo2_numero': model.get('chdevuelto_numero'),
-            }; 
+            if (data.call == 'recibo') {
+                modelo = {
+                    'recibo2_conceptosrc': data.recibo2_conceptosrc,
+                    'recibo2_naturaleza': (naturaleza == 'D') ? 'D' : 'C',
+                    'recibo2_chdevuelto': model.get('id'),
+                    'recibo2_valor': (valor == 0 ) ? model.get('chdevuelto_saldo') : valor,
+                    'valor': (valor == 0 ) ? model.get('chdevuelto_saldo') : valor,
+                    'recibo2_numero': model.get('chdevuelto_numero'),
+                }; 
+            }else if(data.call == 'ajustesc'){
+                modelo = {
+                    'ajustec2_valor': (valor == 0 ) ? model.get('chdevuelto_saldo') : valor,
+                    'valor': (valor == 0 ) ? model.get('chdevuelto_saldo') : valor,
+                    'ajustec2_documentos_doc': data.ajustec2_documentos_doc,
+                    'ajustec2_chdevuelto': model.get('id'),
+                    'ajustec2_tercero': data.tercero,
+                    'ajustec2_naturaleza': (naturaleza == 'D') ? 'D' : 'C',
+                };
+            }
             return modelo;
         },
    });

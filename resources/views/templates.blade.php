@@ -1327,8 +1327,14 @@
     </td>
     <td><%- banco_nombre %></td>
     <td><%- chposfechado1_ch_numero %></td>
-    <td><%- window.Misc.currency( chdevuelto_valor ) %></td>
     <td><%- chdevuelto_fecha %></td>
+    <% if( call == 'ajustesc' ) { %> 
+    	<td><input type="checkbox" id="debito_<%- id %>" name="debito_<%- id %>" class="change-naturalezachd"></td>
+    	<td><input type="checkbox" id="credito_<%- id %>" name="credito_<%- id %>" class="change-naturalezachd" checked></td>
+    <% } %>
+    <td><%- window.Misc.currency( chdevuelto_saldo ) %></td>
+    <td><input type="text" id="pagar_<%- id %>" name="pagar_<%- id %>" class="form-control input-sm change-pagar-chd" data-currency-negative></td>
+
 </script>
 
 <script type="text/template" id="add-factura3-item-tpl"> 

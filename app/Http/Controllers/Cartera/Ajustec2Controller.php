@@ -56,21 +56,26 @@ class Ajustec2Controller extends Controller
             $ajustec2 = new Ajustec2;
             if ($ajustec2->isValid($data)) {
                 try {
-                    //Recuperar Tercero
-                    if($request->has('factura3_id')){
-                        $tercero = Tercero::getTercero($request->ajustec2_tercero);
-                    }else{
-                        $tercero = Tercero::where('tercero_nit', $request->ajustec2_tercero)->first();
-                    }
-                    if(!$tercero instanceof Tercero) {
-                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar el cliente, verifique información ó por favor consulte al administrador.']);
-                    }
-
+                    
                     $documentos = Documentos::find($request->ajustec2_documentos_doc);
                     if(!$documentos instanceof Documentos) {
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar documento, verifique información ó por favor consulte al administrador.']);
                     }
-
+                    switch ($documentos->documentos_codigo) {
+                        case 'FACT':
+                            $tercero = Tercero::getTercero($request->ajustec2_tercero);
+                            break;
+                        case 'CHD':
+                            $tercero = Tercero::getTercero($request->ajustec2_tercero);
+                            break;
+                        default:
+                            $tercero = Tercero::where('tercero_nit', $request->ajustec2_tercero)->first();
+                            break;
+                    }
+                    //Recuperar Tercero
+                    if(!$tercero instanceof Tercero) {
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar el cliente, verifique información ó por favor consulte al administrador.']);
+                    }
                     return response()->json(['success' => true, 'id' => uniqid(), 'documentos_nombre' => $documentos->documentos_nombre, 'tercero_nombre' => $tercero->getName()]);
                 }catch(\Exception $e){
                     Log::error($e->getMessage());

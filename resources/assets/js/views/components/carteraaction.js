@@ -21,7 +21,9 @@ app || (app = {});
             'ifClicked .change-check-medio': 'changeCheckMedio',
             'ifClicked .click-concepto-chd': 'changeCheckChd',
             'ifClicked .change-naturaleza': 'changeNaturaleza',
+            'ifClicked .change-naturalezachd': 'changeNaturalezaChd',
             'change .change-pagar': 'changePagar',
+            'change .change-pagar-chd': 'changePagarChd',
         },
         parameters: {
             data: { },
@@ -76,7 +78,7 @@ app || (app = {});
                         _this.reference(resp);
                     },
                     'modalChequesDevueltos' : function(){
-                        _this.$modalChd.find('.content-modal').empty().html( _this.templateChd() );
+                        _this.$modalChd.find('.content-modal').empty().html( _this.templateChd( _this.parameters.data ) );
                         // Reference
                         _this.referenceChDevuelto(resp);
                     },
@@ -193,7 +195,8 @@ app || (app = {});
             var id = this.$(e.currentTarget).attr('id');
                 id = id.split("_");
             if( !selected ) {
-                var modelo = this.chDevueltoList.agregar( id[1], this.parameters.data );
+                var modelo = this.chDevueltoList.agregar( id[1], this.parameters.data, 0, '' );
+                this.$('#pagar_'+id[1]).val( modelo.valor );
                 this.collection.trigger('store', modelo );
             }
               
@@ -240,6 +243,28 @@ app || (app = {});
                 return;
             }
         },
+        // Event change naturaleza D->debito C->credito
+        changeNaturalezaChd: function (e){
+            var selected = this.$(e.currentTarget).is(':checked');
+            var id = this.$(e.currentTarget).attr('id');
+            var naturaleza = '';
+            id = id.split("_");
+
+            if( !selected ){
+                if( id[0] == 'debito'){
+                    this.$('#credito_'+id[1]).iCheck('uncheck');
+                    naturaleza = 'D';
+                }else{
+                    this.$('#debito_'+id[1]).iCheck('uncheck');
+                    naturaleza = 'C';
+                }
+
+                var modelo = this.chDevueltoList.agregar(id[1], this.parameters.data, 0,naturaleza);
+                this.$('#pagar_'+id[1]).val( modelo.valor );
+                this.$('#check_'+id[1]).iCheck('check');
+                this.collection.trigger('store', modelo );
+            }
+        },
 
         // Event change pagar
         changePagar: function(e){
@@ -253,7 +278,18 @@ app || (app = {});
 
             this.ready();
         },
+        // Event changePagarChd
+        changePagarChd: function(e){
+            var valor = this.$(e.currentTarget).inputmask('unmaskedvalue');
+            var id = this.$(e.currentTarget).attr('id');
+            id = id.split("_");
 
+            this.$('#check_'+id[1]).iCheck('check');
+            var modelo = this.chDevueltoList.agregar(id[1], this.parameters.data, valor);
+            this.collection.trigger('store', modelo );
+
+            this.ready();
+        },
         /**
         * Render view task by model
         * @param Object Model instance
@@ -328,6 +364,7 @@ app || (app = {});
             var view = new app.DetalleChdItemView({
                 model: chdevuelto,
                 parameters: {
+                    call: this.parameters.data.call
                 }
             });
             chdevuelto.view = view;
