@@ -142,8 +142,14 @@ app || (app = {});
         * Render concepo
         */
         changeConcepto: function(e){
+            // Preparo sucursal
+            var sucursal = this.$('#recibo1_sucursal').val();
+            if (sucursal == '')
+                return alertify.error('Campo de sucursal se encuentra vacío por favor ingrese una sucursal');
+
             var data = window.Misc.formToJson( e.target );
                 data.tercero = this.$(e.currentTarget).attr('data-tercero');
+                data.sucursal = sucursal;
                 data.call = 'recibo';
 
             if( !_.isUndefined(data.recibo2_conceptosrc) && !_.isNull(data.recibo2_conceptosrc) && data.recibo2_conceptosrc != ''){

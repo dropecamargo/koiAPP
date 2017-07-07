@@ -1334,7 +1334,21 @@
     <% } %>
     <td><%- window.Misc.currency( chdevuelto_saldo ) %></td>
     <td><input type="text" id="pagar_<%- id %>" name="pagar_<%- id %>" class="form-control input-sm change-pagar-chd" data-currency-negative></td>
+</script>
 
+<script type="text/template" id="choose-anticipo-item-tpl">
+    <td class="text-center">
+    	<input type="checkbox" name="check_<%- id %>" id="check_<%- id %>" class="">
+    </td>
+    <td><%- cuentabanco_nombre %></td>
+    <td><%- anticipo1_numero %></td>
+    <td><%- anticipo1_fecha %></td>
+    <% if( call == 'ajustesc' ) { %> 
+    	<td><input type="checkbox" id="debito_<%- id %>" name="debito_<%- id %>" class="change-naturalezachd"></td>
+    	<td><input type="checkbox" id="credito_<%- id %>" name="credito_<%- id %>" class="change-naturalezachd" checked></td>
+    <% } %>
+    <td><%- window.Misc.currency( anticipo1_saldo ) %></td>
+    <td><input type="text" id="pagar_<%- id %>" name="pagar_<%- id %>" class="form-control input-sm" data-currency-negative></td>
 </script>
 
 <script type="text/template" id="add-factura3-item-tpl"> 

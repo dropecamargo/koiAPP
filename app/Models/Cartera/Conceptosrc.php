@@ -71,7 +71,6 @@ class Conceptosrc extends BaseModel
         return Cache::rememberForever( self::$key_cache , function() {
 	        $query = Conceptosrc::query();
 	        $query->select('id','conceptosrc_nombre');
-	        $query->whereNotNull('conceptosrc_documentos');
 	        $query->where('conceptosrc_activo', true);
 	        $collection = $query->lists('conceptosrc_nombre', 'id');
 

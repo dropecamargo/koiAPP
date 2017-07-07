@@ -137,20 +137,20 @@
 	</div>
 </div>
 
-<!-- Modal concepto-factura -->
-<div class="modal fade" id="modal-concepto-factura-component" data-backdrop="static" data-keyboard="false" aria-hidden="true">
+<!-- Modal concepto-cartera -->
+<div class="modal fade" id="modal-concepto-cartera-component" data-backdrop="static" data-keyboard="false" aria-hidden="true">
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header small-box {{ config('koi.template.bg') }}">
 				<button type="button" class="close icon-close-koi" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
-				<h4 class="inner-title-modal modal-title">Factura de venta</h4>
+				<h4 class="inner-title-modal modal-title"></h4>
 			</div>
 			
-			<form id="form-concepto-factura-component" data-toggle="validator">
-				<div class="modal-body" id="modal-wrapper-concepto-factura">
-					<div id="error-concepto-factura" class="alert alert-danger"></div>
+			<form id="form-concepto-cartera-component" data-toggle="validator">
+				<div class="modal-body" id="modal-wrapper-concepto-cartera">
+					<div id="error-concepto-cartera" class="alert alert-danger"></div>
 					<div class="content-modal"></div>
 				</div>
 				<div class="modal-footer">
@@ -787,6 +787,30 @@
                     </thead>
                     <tbody>
                         {{-- Render content recibo2 --}}
+                    </tbody>
+			    </table>
+			</div>
+		</div>
+	</div>
+</script>
+<script type="text/template" id="add-anticipo-cartera-tpl">
+	<div class="row">
+		<div class="col-sm-12 col-xs-12">
+			<!-- table table-bordered table-striped -->
+			<div class="box-body table-responsive no-padding">
+				<table id="browse-anticipo-cartera-list" class="table table-hover table-bordered" cellspacing="0">
+					<thead>
+						<tr>
+							<th width="5%"></th>
+						  	<th>Cuenta banco</th>
+		                	<th>Número</th>
+		                	<th>Fecha</th>
+		                	<th>Saldo</th>
+		                	<th>A pagar</th>
+            			</tr>
+                    </thead>
+                    <tbody>
+                        {{-- Render content anticipo --}}
                     </tbody>
 			    </table>
 			</div>

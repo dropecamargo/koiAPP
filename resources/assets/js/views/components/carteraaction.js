@@ -13,10 +13,9 @@ app || (app = {});
         template: _.template( ($('#add-concepto-factura-tpl').html() || '') ),
         templateMedioCh: _.template( ($('#add-ch-recibo-tpl').html() || '') ),
         templateChd: _.template( ($('#add-ch-devuelto-tpl').html() || '') ),
+        templateAnticipo: _.template( ($('#add-anticipo-cartera-tpl').html() || '') ),
     	events:{ 
-            'submit #form-concepto-factura-component': 'onStore',
-            'submit #form-mediopago-component': 'onStoreMedio',
-            'submit #form-chd-component': 'onStoreChd',
+            'submit #form-concepto-cartera-component': 'onStore',
             'ifClicked .change-check': 'changeCheck',
             'ifClicked .change-check-medio': 'changeCheckMedio',
             'ifClicked .click-concepto-chd': 'changeCheckChd',
@@ -41,14 +40,13 @@ app || (app = {});
                 this.template = this.parameters.template;
             }
 
-            this.$modal = this.$('#modal-concepto-factura-component');
-            this.$modalMedio = this.$('#modal-mediopago-component');
-            this.$modalChd = this.$('#modal-chdevueltos-component');
+            this.$modal = this.$('#modal-concepto-cartera-component');
             
             // Collection 
             this.detalleFacturaList = new app.DetalleFactura3List();
             this.detalleChposFechado = new app.DetalleChposFechadoList();
             this.chDevueltoList = new app.ChDevueltoList();
+            this.anticiposlist = new app.AnticiposList();
 
             this.$concepto = this.parameters.data.call == 'recibo' ? this.$('#recibo2_conceptosrc') : this.$('#nota1_conceptonota');
 
@@ -60,6 +58,9 @@ app || (app = {});
 
             this.listenTo( this.chDevueltoList, 'add', this.addOneChd );
             this.listenTo( this.chDevueltoList, 'reset', this.addAllChd );
+
+            this.listenTo( this.anticiposlist, 'add', this.addOneAnticipo );
+            this.listenTo( this.anticiposlist, 'reset', this.addAllAnticipo );
 
             this.ready();
         },
@@ -73,17 +74,29 @@ app || (app = {});
                 stuffToDo = {
                     'modalCartera': function() {
                         _this.$modal.find('.content-modal').empty().html( _this.template() );
+                        _this.$modal.find('.modal-title').text('Facturas venta - Tercero');
 
                         // Reference 
-                        _this.reference(resp);
+                        _this.referenceFactura(resp);
                     },
                     'modalChequesDevueltos' : function(){
-                        _this.$modalChd.find('.content-modal').empty().html( _this.templateChd( _this.parameters.data ) );
+                        _this.$modal.find('.content-modal').empty().html( _this.templateChd( _this.parameters.data ) );
+                        _this.$modal.find('.modal-title').text('Cheques devueltos - Tercero');
+
                         // Reference
                         _this.referenceChDevuelto(resp);
                     },
+                    'modalAnticipos':function(){
+                        _this.$modal.find('.content-modal').empty().html( _this.templateAnticipo() );
+                        _this.$modal.find('.modal-title').text('Anticipos tercero');
+
+                        // Reference
+                        _this.referenceAnticipo(resp);
+                    },
                     'mediopago': function(){
-                        _this.$modalMedio.find('.content-modal').empty().html( _this.templateMedioCh() );
+                        _this.$modal.find('.content-modal').empty().html( _this.templateMedioCh() );
+                        _this.$modal.find('.modal-title').text('Cheques tercero -  Medio de pago');
+
                         // Reference 
                         _this.referenceMedioPago(resp);
                     },
@@ -104,6 +117,9 @@ app || (app = {});
             if( typeof window.initComponent.initInputMask == 'function' )
                 window.initComponent.initInputMask();
         },
+        /**
+        * onStore , hide modal 
+        */
 
         onStore: function(e){
             if (!e.isDefaultPrevented()) {
@@ -117,25 +133,11 @@ app || (app = {});
             }
         },
 
-        onStoreMedio: function(e){
-            e.preventDefault();
-            this.$modalMedio.modal('hide');
-        },
-        onStoreChd: function(e){
-            e.preventDefault();
-            // Hide modal && reset select
-            if(this.parameters.data.call == 'recibo'){
-                this.$concepto.val('').trigger('change');
-            }
-            this.$modalChd.modal('hide');
-        },
         /**
-        * Reference
+        * Reference Factura venta - Tercero
         */
-        reference: function(atributes) {
-            this.$wraper = this.$('#modal-wrapper-concepto-factura');
-            this.$wraperForm = this.$modal.find('.content-modal');
-            this.$wraperError = this.$('#error-concepto-factura');
+        referenceFactura: function(atributes) {
+            this.$wraperError = this.$('#error-concepto-cartera');
             this.$wraperConcepto = this.$('#browse-concepto-factura-list');
             this.detalleFacturaList.fetch({ reset: true, data: { tercero: atributes.data.tercero } });
 
@@ -149,26 +151,47 @@ app || (app = {});
         * Reference ChDevuelto
         */
         referenceChDevuelto: function(attributes){
-            this.$wraper = this.$('#modal-wrapper-ch-devuelto');
             this.$wraperChd = this.$('#browse-chd-list');
+            this.$wraperError = this.$('#error-concepto-cartera');
     
             this.chDevueltoList.fetch({ reset: true, data: { tercero: attributes.data.tercero } });
 
+            // Hide errors
+            this.$wraperError.hide().empty();
+
             // Open modal
-            this.$modalChd.modal('show');
+            this.$modal.modal('show');
+        },
+        /**
+        * Reference Anticipo tercero
+        */
+        referenceAnticipo: function(attributes){
+            this.$wraperAnticipo = this.$('#browse-anticipo-cartera-list');
+            this.$wraperError = this.$('#error-concepto-cartera');
+            
+            this.anticiposlist.fetch({ reset: true, data: { tercero: attributes.data.tercero, sucursal:attributes.data.sucursal } });
+
+            // Hide errors
+            this.$wraperError.hide().empty();
+
+            // Open modal
+            this.$modal.modal('show');
         },
         /**
         * Reference medio de pago cheque 
         */
         referenceMedioPago: function(attributes){
-            this.$wraper = this.$('#modal-wrapper-concepto-factura');
-            this.$wraperForm = this.$modal.find('.content-modal');
+            this.$wraper = this.$('#modal-wrapper-concepto-cartera');
+            this.$wraperError = this.$('#error-concepto-cartera');
             this.$wraperCh = this.$('#browse-cheque-list');
 
             this.detalleChposFechado.fetch({ reset: true, data: { tercero: attributes.data.tercero, sucursal: attributes.data.sucursal }})
 
+            // Hide errors
+            this.$wraperError.hide().empty();
+
             // Open modal
-            this.$modalMedio.modal('show');
+            this.$modal.modal('show');
         },
 
         // Event change check
@@ -337,7 +360,8 @@ app || (app = {});
             }
         },
         /**
-        *
+        * Render view task by model
+        * @param Object Model instance
         */
         addOneCh: function(chposfechado2){
             var view = new app.DetalleChequeItemView({
@@ -351,13 +375,14 @@ app || (app = {});
             this.ready();
         },
         /**
-        *
+        * Render all view tast of the collection
         */
         addAllCh:function(){
             this.detalleChposFechado.forEach( this.addOneCh, this );
         },
         /**
-        * Add one chequedevuelto modal
+        * Render view task by model
+        * @param Object Model instance
         */
         addOneChd: function(chdevuelto){
             var view = new app.DetalleChdItemView({
@@ -371,10 +396,31 @@ app || (app = {});
             this.ready();
         },
         /**
-        * foreach collection the chdevuelto
+        * Render all view tast of the collection
         */
         addAllChd:function(){
             this.chDevueltoList.forEach( this.addOneChd, this );
+        },
+        /**
+        * Render view task by model
+        * @param Object Model instance
+        */
+        addOneAnticipo: function(anticipoModel){
+            var view = new app.AnticipoItemView({
+                model: anticipoModel,
+                parameters: {
+                    call: this.parameters.data.call
+                }
+            });
+            anticipoModel.view = view;
+            this.$wraperAnticipo.append( view.render().el );
+            this.ready();
+        },
+        /**
+        * Render all view tast of the collection
+        */
+        addAllAnticipo:function(){
+            this.anticiposlist.forEach( this.addOneAnticipo, this );
         },
     });
 })(jQuery, this, this.document);

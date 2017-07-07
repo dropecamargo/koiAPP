@@ -112,50 +112,50 @@ class Recibo1Controller extends Controller
                         }
 
                         $documento = Documentos::find($conceptorc->conceptosrc_documentos);
-                        if (!$documento instanceof Documentos) {
-                            DB::rollback();
-                            return response()->json(['success' => false, 'errors' => 'No es posible recuperar documento, por favor verifique ó consulte con el administrador.']);
-                        }
-                        switch ($documento->documentos_codigo) {
-                            case 'FACT':
-                                if( isset($item['factura3_id']) ) {
-                                    $factura3 = Factura3::where('id',$item['factura3_id'])->where('factura3_factura1', $item['recibo2_factura1'])->first();
-                                    if( !$factura3 instanceof Factura3 ){
-                                        DB::rollback();
-                                        return response()->json(['success'=>false, 'errors'=>'No es posible recuperar el numero de la factura, por favor verifique ó consulte con el administrador.']);
+                        if ($documento instanceof Documentos) {
+                            switch ($documento->documentos_codigo) {
+                                case 'FACT':
+                                    if( isset($item['factura3_id']) ) {
+                                        $factura3 = Factura3::where('id',$item['factura3_id'])->where('factura3_factura1', $item['recibo2_factura1'])->first();
+                                        if( !$factura3 instanceof Factura3 ){
+                                            DB::rollback();
+                                            return response()->json(['success'=>false, 'errors'=>'No es posible recuperar el numero de la factura, por favor verifique ó consulte con el administrador.']);
+                                        }
+
+                                        $factura = Factura1::where( 'id', $factura3->factura3_factura1 )->where('factura1_tercero', $tercero->id)->first();
+                                        if( !$factura instanceof Factura1 ){
+                                            DB::rollback();
+                                            return response()->json(['success'=>false, 'errors'=>"La factura #$factura3->factura1_numero ingresada no corresponde al cliente, por favor verifique ó consulte con el administrador."]);   
+                                        }
+
+                                        $factura3->factura3_saldo = $factura3->factura3_saldo <= 0 ? $factura3->factura3_saldo + $item['factura3_valor'] : $factura3->factura3_saldo - $item['factura3_valor'];
+                                        $factura3->save();
+                                        $recibo2->recibo2_id_doc = $factura3->id;
                                     }
 
-                                    $factura = Factura1::where( 'id', $factura3->factura3_factura1 )->where('factura1_tercero', $tercero->id)->first();
-                                    if( !$factura instanceof Factura1 ){
-                                        DB::rollback();
-                                        return response()->json(['success'=>false, 'errors'=>"La factura #$factura3->factura1_numero ingresada no corresponde al cliente, por favor verifique ó consulte con el administrador."]);   
+                                    if(!empty($item['factura3_valor'])){
+                                        $recibo2->recibo2_valor = $item['factura3_valor'];
                                     }
+                                break;
 
-                                    $factura3->factura3_saldo = $factura3->factura3_saldo <= 0 ? $factura3->factura3_saldo + $item['factura3_valor'] : $factura3->factura3_saldo - $item['factura3_valor'];
-                                    $factura3->save();
-                                    $recibo2->recibo2_id_doc = $factura3->id;
-                                }
+                                case 'CHD':
+                                    $chdevuelto = ChDevuelto::find($item['recibo2_chdevuelto']);
+                                    if ( !$chdevuelto instanceof ChDevuelto ) {
+                                        DB::rollback();
+                                        return response()->json(['success'=>false, 'errors'=>"No es posible recuperar cheque devuelto, por favor verifique ó consulte con el administrador."]);   
+                                    }
+                                    $chdevuelto->chdevuelto_saldo = $chdevuelto->chdevuelto_saldo <= 0 ? $chdevuelto->chdevuelto_saldo + $item['recibo2_valor'] : $chdevuelto->chdevuelto_saldo - $item['recibo2_valor'];
+                                    $chdevuelto->save();
+                                    $recibo2->recibo2_id_doc = $chdevuelto->id;
+                                    $recibo2->recibo2_valor = $item['recibo2_valor'];
+                                break;
 
-                                if(!empty($item['factura3_valor'])){
-                                    $recibo2->recibo2_valor = $item['factura3_valor'];
-                                }
-                            break;
-
-                            case 'CHD':
-                                $chdevuelto = ChDevuelto::find($item['recibo2_chdevuelto']);
-                                if ( !$chdevuelto instanceof ChDevuelto ) {
-                                    DB::rollback();
-                                    return response()->json(['success'=>false, 'errors'=>"No es posible recuperar cheque devuelto, por favor verifique ó consulte con el administrador."]);   
-                                }
-                                $chdevuelto->chdevuelto_saldo = $chdevuelto->chdevuelto_saldo <= 0 ? $chdevuelto->chdevuelto_saldo + $item['recibo2_valor'] : $chdevuelto->chdevuelto_saldo - $item['recibo2_valor'];
-                                $chdevuelto->save();
-                                $recibo2->recibo2_id_doc = $chdevuelto->id;
-                                $recibo2->recibo2_valor = $item['recibo2_valor'];
-                            break;
-
-                            default:
-                                $recibo2->recibo2_valor = $item['recibo2_valor'];
-                            break;
+                                default:
+                                    $recibo2->recibo2_valor = $item['recibo2_valor'];
+                                break;
+                            }
+                        }else{
+                            $recibo2->recibo2_valor = $item['recibo2_valor'];
                         }
                         $recibo2->save();
                     }

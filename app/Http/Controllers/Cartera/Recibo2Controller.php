@@ -26,7 +26,7 @@ class Recibo2Controller extends Controller
                 $query = Recibo2::query();
                 $query->select('recibo2.*','conceptosrc_nombre','documentos_nombre','factura3_cuota','factura1_numero', 'recibo2_valor as factura3_valor');
                 $query->join('conceptosrc','recibo2_conceptosrc', '=', 'conceptosrc.id');
-                $query->join('documentos','recibo2_documentos_doc', '=', 'documentos.id');
+                $query->leftJoin('documentos','recibo2_documentos_doc', '=', 'documentos.id');
                 $query->leftJoin('factura3','recibo2_id_doc', '=', 'factura3.id');
                 $query->leftJoin('factura1','factura3_factura1', '=', 'factura1.id');
                 $query->where('recibo2_recibo1', $request->recibo2);
@@ -65,13 +65,15 @@ class Recibo2Controller extends Controller
                     if(!$conceptosrc instanceof Conceptosrc) {
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar concepto, verifique información ó por favor consulte al administrador.']);
                     }
+                    if ($conceptosrc->conceptosrc_documentos != null) {
 
-                    $documentos = Documentos::find($conceptosrc->conceptosrc_documentos);
-                    if(!$documentos instanceof Documentos) {
-                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar documento del concepto, verifique información ó por favor consulte al administrador.']);
+                        $documentos = Documentos::find($conceptosrc->conceptosrc_documentos);
+                        if(!$documentos instanceof Documentos) {
+                            return response()->json(['success' => false, 'errors' => 'No es posible recuperar documento del concepto, verifique información ó por favor consulte al administrador.']);
+                        }
+                        return response()->json(['success' => true, 'id' => uniqid(), 'conceptosrc_nombre' => $conceptosrc->conceptosrc_nombre, 'documentos_nombre' => $documentos->documentos_nombre ,'recibo2_documentos_doc' => $documentos->id]);
                     }
-
-                    return response()->json(['success' => true, 'id' => uniqid(), 'conceptosrc_nombre' => $conceptosrc->conceptosrc_nombre, 'documentos_nombre' => $documentos->documentos_nombre ,'recibo2_documentos_doc' => $documentos->id]);
+                    return response()->json(['success' => true, 'id' => uniqid(), 'conceptosrc_nombre' => $conceptosrc->conceptosrc_nombre, 'documentos_nombre' => '' ,'recibo2_documentos_doc' => '']);
                 }catch(\Exception $e){
                     Log::error($e->getMessage());
                     return response()->json(['success' => false, 'errors' => trans('app.exception')]);

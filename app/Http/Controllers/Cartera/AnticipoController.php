@@ -23,16 +23,30 @@ class AnticipoController extends Controller
     {
         if ($request->ajax()) {
             $query = Anticipo1::query();
-            $query->select('anticipo1.*', 'tercero_nit', 'tercero_razonsocial', 'tercero_nombre1', 'tercero_nombre2', 'tercero_apellido1', 'tercero_apellido2','sucursal.sucursal_nombre',DB::raw("(CASE WHEN tercero_persona = 'N'
-                    THEN CONCAT(tercero_nombre1,' ',tercero_nombre2,' ',tercero_apellido1,' ',tercero_apellido2,
-                            (CASE WHEN (tercero_razonsocial IS NOT NULL AND tercero_razonsocial != '') THEN CONCAT(' - ', tercero_razonsocial) ELSE '' END)
-                        )
-                    ELSE tercero_razonsocial END)
-                AS tercero_nombre")
-            );
-            $query->join('tercero','anticipo1_tercero', '=', 'tercero.id');
-            $query->join('sucursal','anticipo1_sucursal', '=', 'sucursal.id');
-            return Datatables::of($query)->make(true);
+
+            if ( $request->has('datatables') ) {
+                $query->select('anticipo1.*', 'tercero_nit', 'tercero_razonsocial', 'tercero_nombre1', 'tercero_nombre2', 'tercero_apellido1', 'tercero_apellido2','sucursal.sucursal_nombre',DB::raw("(CASE WHEN tercero_persona = 'N'
+                        THEN CONCAT(tercero_nombre1,' ',tercero_nombre2,' ',tercero_apellido1,' ',tercero_apellido2,
+                                (CASE WHEN (tercero_razonsocial IS NOT NULL AND tercero_razonsocial != '') THEN CONCAT(' - ', tercero_razonsocial) ELSE '' END)
+                            )
+                        ELSE tercero_razonsocial END)
+                    AS tercero_nombre")
+                );
+                $query->join('tercero','anticipo1_tercero', '=', 'tercero.id');
+                $query->join('sucursal','anticipo1_sucursal', '=', 'sucursal.id');
+                return Datatables::of($query)->make(true);
+            }
+            
+            if ( $request->has('tercero') ) {
+                $anticipo = [];
+                $query->select('anticipo1.*','cuentabanco_nombre');
+                $query->join('cuentabanco','anticipo1_cuentas', '=', 'cuentabanco.id');
+                $query->where('anticipo1_saldo', '<>', 0 );
+                $query->where('anticipo1_tercero', $request->tercero)->where('anticipo1_sucursal', $request->sucursal);
+
+                $anticipo = $query->get();
+                return response()->json($anticipo);
+            }
         }
         return view('cartera.anticipos.index');
     }
