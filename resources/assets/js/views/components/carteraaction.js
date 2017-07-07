@@ -18,11 +18,14 @@ app || (app = {});
             'submit #form-concepto-cartera-component': 'onStore',
             'ifClicked .change-check': 'changeCheck',
             'ifClicked .change-check-medio': 'changeCheckMedio',
+            'ifClicked .click-check-anti-koi': 'changeCheckAnti',
             'ifClicked .click-concepto-chd': 'changeCheckChd',
             'ifClicked .change-naturaleza': 'changeNaturaleza',
             'ifClicked .change-naturalezachd': 'changeNaturalezaChd',
+            'ifClicked .change-naturalezaanti': 'changeNaturalezaAnti',
             'change .change-pagar': 'changePagar',
             'change .change-pagar-chd': 'changePagarChd',
+            'change .change-pagar-anti': 'changePagarAnti',
         },
         parameters: {
             data: { },
@@ -87,7 +90,7 @@ app || (app = {});
                         _this.referenceChDevuelto(resp);
                     },
                     'modalAnticipos':function(){
-                        _this.$modal.find('.content-modal').empty().html( _this.templateAnticipo() );
+                        _this.$modal.find('.content-modal').empty().html( _this.templateAnticipo( _this.parameters.data ) );
                         _this.$modal.find('.modal-title').text('Anticipos tercero');
 
                         // Reference
@@ -211,6 +214,19 @@ app || (app = {});
               
             this.ready();
         },
+        // Event change check
+        changeCheckAnti: function(e){
+            var selected = this.$(e.currentTarget).prop('checked');
+            var id = this.$(e.currentTarget).attr('id');
+                id = id.split("_");
+            if( !selected ) {
+                var modelo = this.anticiposlist.agregar(id[1], this.parameters.data, 0, '');
+                this.$('#pagar_'+id[1]).val( modelo.valor );
+                this.collection.trigger('store', modelo );
+            }
+              
+            this.ready();
+        },
         // Event change click chd
         changeCheckChd: function(e){
             var selected = this.$(e.currentTarget).prop('checked');
@@ -287,6 +303,28 @@ app || (app = {});
                 this.collection.trigger('store', modelo );
             }
         },
+        // Event change naturaleza D->debito C->credito
+        changeNaturalezaAnti: function (e){
+            var selected = this.$(e.currentTarget).is(':checked');
+            var id = this.$(e.currentTarget).attr('id');
+            var naturaleza = '';
+            id = id.split("_");
+
+            if( !selected ){
+                if( id[0] == 'debito'){
+                    this.$('#credito_'+id[1]).iCheck('uncheck');
+                    naturaleza = 'D';
+                }else{
+                    this.$('#debito_'+id[1]).iCheck('uncheck');
+                    naturaleza = 'C';
+                }
+
+                var modelo = this.anticiposlist.agregar(id[1], this.parameters.data, 0,naturaleza);
+                this.$('#pagar_'+id[1]).val( modelo.valor );
+                this.$('#check_'+id[1]).iCheck('check');
+                this.collection.trigger('store', modelo );
+            }
+        },
 
         // Event change pagar
         changePagar: function(e){
@@ -308,6 +346,18 @@ app || (app = {});
 
             this.$('#check_'+id[1]).iCheck('check');
             var modelo = this.chDevueltoList.agregar(id[1], this.parameters.data, valor);
+            this.collection.trigger('store', modelo );
+
+            this.ready();
+        },
+        // Event changePagarChd
+        changePagarAnti: function(e){
+            var valor = this.$(e.currentTarget).inputmask('unmaskedvalue');
+            var id = this.$(e.currentTarget).attr('id');
+            id = id.split("_");
+
+            this.$('#check_'+id[1]).iCheck('check');
+            var modelo = this.anticiposlist.agregar(id[1], this.parameters.data, valor);
             this.collection.trigger('store', modelo );
 
             this.ready();

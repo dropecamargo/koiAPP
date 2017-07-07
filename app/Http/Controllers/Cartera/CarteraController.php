@@ -43,6 +43,7 @@ class CarteraController extends Controller
                 $anticipo->select( 'anticipo1.id as anticipo1_id',DB::raw('null'),'anticipo1_fecha','anticipo1_numero',DB::raw('1'),DB::raw('anticipo1_saldo * -1'), 'anticipo1_fecha','sa.sucursal_nombre','da.documentos_nombre',DB::raw("DATEDIFF(anticipo1_fecha, NOW() ) as days"));
                 $anticipo->join('documentos as da' , 'anticipo1_documentos', '=' , 'da.id');
                 $anticipo->join('sucursal as sa', 'anticipo1_sucursal', '=', 'sa.id');
+                $anticipo->where('anticipo1_saldo', '<>',  0);
                 $anticipo->where('anticipo1_tercero', $tercero->id);
 
                 // Cheques devueltos

@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\Models\Cartera\Ajustec1, App\Models\Cartera\Ajustec2, App\Models\Cartera\ConceptoAjustec, App\Models\Cartera\Factura3, App\Models\Cartera\ChDevuelto;
+use App\Models\Cartera\Ajustec1, App\Models\Cartera\Ajustec2, App\Models\Cartera\ConceptoAjustec, App\Models\Cartera\Factura3, App\Models\Cartera\ChDevuelto, App\Models\Cartera\Anticipo1;
 use App\Models\Base\Tercero, App\Models\Base\Sucursal, App\Models\Base\Documentos;
 use DB, Log, Cache, Datatables, Auth;
 
@@ -149,11 +149,23 @@ class Ajustec1Controller extends Controller
                                 $chdevuelto->save();
                                 $ajustec2->ajustec2_id_doc = $chdevuelto->id;
                                 $ajustec2->ajustec2_valor = $item['ajustec2_valor'];
-                                break;
+                            break;
+                            case 'ANTI':
+                                $tercero = Tercero::getTercero($item['ajustec2_tercero']);
+                                $anticipo = Anticipo1::find( $item['ajustec2_anticipo'] );
+                                if (!$anticipo instanceof Anticipo1) {
+                                    DB::rollback();
+                                    return response()->json(['success'=>false, 'errors'=>"No es posible recuperar anticipo, por favor verifique ó consulte con el administrador."]); 
+                                }
+                                $anticipo->anticipo1_saldo = $anticipo->anticipo1_saldo <= 0 ? $anticipo->anticipo1_saldo + $item['ajustec2_valor'] : $anticipo->anticipo1_saldo - $item['ajustec2_valor'];
+                                $anticipo->save();
+                                $ajustec2->ajustec2_id_doc = $anticipo->id;
+                                $ajustec2->ajustec2_valor = $item['ajustec2_valor'];
+                            break;    
                             default:
                                 $tercero = Tercero::where('tercero_nit',$item['ajustec2_tercero'])->first();
                                 $ajustec2->ajustec2_valor = $item['ajustec2_valor'];
-                                break;
+                            break;
                         }
                         // Recupero instancia de Tercero 
                         if(!$tercero instanceof Tercero){

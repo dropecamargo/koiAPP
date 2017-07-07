@@ -68,6 +68,9 @@ class Ajustec2Controller extends Controller
                         case 'CHD':
                             $tercero = Tercero::getTercero($request->ajustec2_tercero);
                             break;
+                        case 'ANTI':
+                            $tercero = Tercero::getTercero($request->ajustec2_tercero);
+                            break;
                         default:
                             $tercero = Tercero::where('tercero_nit', $request->ajustec2_tercero)->first();
                             break;

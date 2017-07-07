@@ -38,39 +38,40 @@
                     <div>{{ $ajustec->ajustec1_observaciones }}</div>
                 </div>
             </div>
-        </div>
 
-        <!-- table table-bordered table-striped --><br>
-        <div class="box-body table-responsive no-padding">
-            <table id="browse-detalle-ajustec-list" class="table table-hover table-bordered" cellspacing="0">
-                <thead>
-                    <tr>
-                        <td colspan="4"></td>
-                        <th colspan="2" class="text-center">Naturaleza</th>
-                    </tr>
-                    <tr>
-                        <th width="95px">Tercero</th>
-                        <th width="95px">Documento</th>
-                        <th width="95px">Numero</th>
-                        <th width="95px">Cuota</th>
-                        <th width="95px">Debito</th>
-                        <th width="95px">Credito</th>
-                    </tr>
-                </thead>
-                <tbody>
-                        {{-- Render content recibo2 --}}
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td colspan="3"></td>
-                        <th class="text-left">Total</th>
-                        <th class="text-right" id="total-debito">0</th>
-                        <th class="text-right" id="total-credito">0</th>
-                    </tr>
-                </tfoot>
-            </table>
+            <!-- table table-bordered table-striped -->
+            <div class="box box-solid">
+                <div class="box-body table-responsive no-padding">
+                    <table id="browse-detalle-ajustec-list" class="table table-hover table-bordered" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <td colspan="4"></td>
+                                <th colspan="2" class="text-center">Naturaleza</th>
+                            </tr>
+                            <tr>
+                                <th width="95px">Tercero</th>
+                                <th width="95px">Documento</th>
+                                <th width="95px">Numero</th>
+                                <th width="95px">Cuota</th>
+                                <th width="95px">Debito</th>
+                                <th width="95px">Credito</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                                {{-- Render content recibo2 --}}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="3"></td>
+                                <th class="text-left">Total</th>
+                                <th class="text-right" id="total-debito">0</th>
+                                <th class="text-right" id="total-credito">0</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
         </div>
-
         <div class="box-footer with-border">
             <div class="row">
                 <div class="col-md-2 col-md-offset-5 col-sm-6 col-xs-6 text-left">

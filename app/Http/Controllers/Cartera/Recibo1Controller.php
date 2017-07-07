@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\Models\Cartera\Recibo1, App\Models\Cartera\Recibo2, App\Models\Cartera\Recibo3, App\Models\Cartera\Factura3, App\Models\Cartera\Factura1,App\Models\Cartera\ChposFechado1,App\Models\Cartera\ChDevuelto;
+use App\Models\Cartera\Recibo1, App\Models\Cartera\Recibo2, App\Models\Cartera\Recibo3, App\Models\Cartera\Factura3, App\Models\Cartera\Factura1,App\Models\Cartera\ChposFechado1,App\Models\Cartera\ChDevuelto,App\Models\Cartera\Anticipo1;
 use App\Models\Cartera\Conceptosrc, App\Models\Cartera\CuentaBanco, App\Models\Cartera\MedioPago,App\Models\Cartera\Banco;
 use App\Models\Base\Documentos, App\Models\Base\Sucursal, App\Models\Base\Tercero;
 use DB, Log, Auth, Datatables;
@@ -149,7 +149,17 @@ class Recibo1Controller extends Controller
                                     $recibo2->recibo2_id_doc = $chdevuelto->id;
                                     $recibo2->recibo2_valor = $item['recibo2_valor'];
                                 break;
-
+                                case 'ANTI':
+                                    $anticipo = Anticipo1::find( $item['recibo2_anticipo'] );
+                                    if (!$anticipo instanceof Anticipo1) {
+                                        DB::rollback();
+                                        return response()->json(['success'=>false, 'errors'=>"No es posible recuperar anticipo, por favor verifique ó consulte con el administrador."]); 
+                                    }
+                                    $anticipo->anticipo1_saldo = $anticipo->anticipo1_saldo <= 0 ? $anticipo->anticipo1_saldo + $item['recibo2_valor'] : $anticipo->anticipo1_saldo - $item['recibo2_valor'];
+                                    $anticipo->save();
+                                    $recibo2->recibo2_id_doc = $anticipo->id;
+                                    $recibo2->recibo2_valor = $item['recibo2_valor'];
+                                break;
                                 default:
                                     $recibo2->recibo2_valor = $item['recibo2_valor'];
                                 break;

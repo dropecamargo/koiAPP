@@ -800,14 +800,32 @@
 			<div class="box-body table-responsive no-padding">
 				<table id="browse-anticipo-cartera-list" class="table table-hover table-bordered" cellspacing="0">
 					<thead>
-						<tr>
-							<th width="5%"></th>
-						  	<th>Cuenta banco</th>
-		                	<th>Número</th>
-		                	<th>Fecha</th>
-		                	<th>Saldo</th>
-		                	<th>A pagar</th>
-            			</tr>
+						<% if(call == 'ajustesc'){ %>
+                            <tr>
+                                <td colspan="4"></td>
+                                <th colspan="2" class="text-center">Naturaleza</th>
+                                <td colspan="2"></td>
+                            </tr>
+							<tr>
+								<th width="5%"></th>
+							  	<th>Cuenta banco</th>
+			                	<th>Número</th>
+			                	<th>Fecha</th>
+                                <th><small>D</small></th>
+                                <th><small>C</small></th>
+			                	<th>Saldo</th>
+			                	<th>A pagar</th>
+	            			</tr>
+						<% }else{ %>
+							<tr>
+								<th width="5%"></th>
+							  	<th>Cuenta banco</th>
+			                	<th>Número</th>
+			                	<th>Fecha</th>
+			                	<th>Saldo</th>
+			                	<th>A pagar</th>
+	            			</tr>
+						<% } %>
                     </thead>
                     <tbody>
                         {{-- Render content anticipo --}}

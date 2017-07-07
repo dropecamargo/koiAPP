@@ -242,6 +242,10 @@ class ConceptosrcController extends Controller
                     $action = 'modalChequesDevueltos';
                     $response->action = $action;  
                     $response->success = true;
+                }else if($documentos->documentos_codigo == 'ANTI'){
+                   $action = 'modalAnticipos';
+                    $response->action = $action;  
+                    $response->success = true;
                 }else{
                     $response->success = false;
                 }
