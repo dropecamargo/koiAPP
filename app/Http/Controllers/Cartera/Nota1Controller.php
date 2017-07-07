@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\Models\Cartera\Nota1, App\Models\Cartera\Nota2, App\Models\Cartera\ConceptoNota, App\Models\Cartera\Factura3;
+use App\Models\Cartera\Nota1, App\Models\Cartera\Nota2, App\Models\Cartera\ConceptoNota, App\Models\Cartera\Factura3, App\Models\Cartera\ChDevuelto;
 use App\Models\Base\Sucursal, App\Models\Base\Tercero, App\Models\Base\Documentos;
 use DB, Log, Auth, Datatables;
 
@@ -102,21 +102,46 @@ class Nota1Controller extends Controller
 
                     $nota2 = isset($data['nota2']) ? $data['nota2'] : null;
                     foreach ($nota2 as $item)
-                    {
-                        $factura3 = Factura3::where('id',$item['factura3_id'])->where('factura3_factura1', $item['nota2_factura1'])->first();
-                        if( !$factura3 instanceof Factura3 ){
+                    {   
+                        $documentos = Documentos::find($item['nota2_documentos_doc']);
+                        if(!$documentos instanceof Documentos) {
                             DB::rollback();
-                            return response()->json(['success'=>false, 'errors'=>'No es posible recuperar el numero de la factura, por favor verifique ó consulte con el administrador.']);
+                            return response()->json(['success' => false, 'errors' => 'No es posible recuperar documentos, por favor verifique la información ó por favor consulte al administrador.']);
                         }
-
-                        $factura3->factura3_saldo = $factura3->factura3_saldo <= 0 ? $factura3->factura3_saldo + $item['factura3_valor'] : $factura3->factura3_saldo - $item['factura3_valor'];
-                        $factura3->save();
-
+                        // Nota2
                         $nota2 = new Nota2;
                         $nota2->nota2_nota1 = $nota->id;
-                        $nota2->nota2_documentos_doc = $item['nota2_documentos_doc'];
-                        $nota2->nota2_id_doc = $factura3->id;
-                        $nota2->nota2_valor = $item['factura3_valor'];
+                        $nota2->nota2_documentos_doc = $documentos->id;
+
+                        switch ($documentos->documentos_codigo) {
+                            case 'FACT':
+                                $factura3 = Factura3::where('id',$item['factura3_id'])->where('factura3_factura1', $item['nota2_factura1'])->first();
+                                if( !$factura3 instanceof Factura3 ){
+                                    DB::rollback();
+                                    return response()->json(['success'=>false, 'errors'=>'No es posible recuperar el numero de la factura, por favor verifique ó consulte con el administrador.']);
+                                }
+                                $factura3->factura3_saldo = $factura3->factura3_saldo <= 0 ? $factura3->factura3_saldo + $item['factura3_valor'] : $factura3->factura3_saldo - $item['factura3_valor'];
+                                $factura3->save();
+
+                                $nota2->nota2_id_doc = $factura3->id;
+                                $nota2->nota2_valor = $item['factura3_valor'];
+                            break;
+                            case 'CHD':
+                                $chdevuelto = ChDevuelto::find($item['nota2_chdevuelto']);
+                                if ( !$chdevuelto instanceof ChDevuelto ) {
+                                    DB::rollback();
+                                    return response()->json(['success'=>false, 'errors'=>"No es posible recuperar cheque devuelto, por favor verifique ó consulte con el administrador."]);   
+                                }
+                                $chdevuelto->chdevuelto_saldo = $chdevuelto->chdevuelto_saldo <= 0 ? $chdevuelto->chdevuelto_saldo + $item['nota2_valor'] : $chdevuelto->chdevuelto_saldo - $item['nota2_valor'];
+                                $chdevuelto->save();
+                                $nota2->nota2_id_doc = $chdevuelto->id;
+                                $nota2->nota2_valor = $item['nota2_valor'];
+                            break;
+
+                            default:
+                                $nota2->nota2_valor = $item['nota2_valor'];
+                            break;
+                        }
                         $nota2->save();
                     }
 
@@ -127,6 +152,7 @@ class Nota1Controller extends Controller
                     // Commit Transaction
                     DB::commit();
                     return response()->json(['success' => true, 'id' => $nota->id]);
+                    // return response()->json(['success' => false, 'errors' => 'TODO OK']);
                 }catch(\Exception $e){
                     DB::rollback();
                     Log::error($e->getMessage());

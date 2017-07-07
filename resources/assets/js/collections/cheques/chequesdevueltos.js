@@ -46,6 +46,16 @@ app || (app = {});
                     'ajustec2_tercero': data.tercero,
                     'ajustec2_naturaleza': (naturaleza == 'D') ? 'D' : 'C',
                 };
+            }else if( data.call == 'nota' ){
+                modelo = {
+                    'nota2_valor': (valor == 0 ) ? model.get('chdevuelto_saldo') : valor,
+                    'valor': (valor == 0 ) ? model.get('chdevuelto_saldo') : valor,
+                    'nota2_conceptonota': data.nota1_conceptonota,
+                    'nota2_chdevuelto': model.get('id'),
+                    'nota2_documentos_doc': data.nota2_documentos_doc,
+                    'nota2_numero': model.get('chdevuelto_numero'),
+
+                };
             }
             return modelo;
         },

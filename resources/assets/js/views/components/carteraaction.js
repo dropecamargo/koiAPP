@@ -137,7 +137,6 @@ app || (app = {});
             this.$wraperForm = this.$modal.find('.content-modal');
             this.$wraperError = this.$('#error-concepto-factura');
             this.$wraperConcepto = this.$('#browse-concepto-factura-list');
-    
             this.detalleFacturaList.fetch({ reset: true, data: { tercero: atributes.data.tercero } });
 
             // Hide errors

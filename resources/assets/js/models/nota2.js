@@ -14,10 +14,14 @@ app || (app = {});
         },
         idAttribute: 'id',
         defaults: {
-        	'nota2_nota1': '',	
+            'factura1_numero': '',  
+            'factura3_cuota': '',  
+            'factura3_valor': '',  
+            'nota2_nota1': '',
         	'nota2_documentos_doc': '',	
         	'nota2_id_doc': '',
-        	'nota2_valor': ''
+        	'nota2_valor': '',
+            'nota2_numero':'',
         }
     });
 })(this, this.document);

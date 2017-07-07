@@ -46,6 +46,7 @@ class ChDevueltoController extends Controller
                 $query->join('chposfechado1', 'chdevuelto_chposfechado1', '=', 'chposfechado1.id');
                 $query->join('banco','chposfechado1_banco', '=', 'banco.id');
                 $query->where('chdevuelto_tercero',$request->tercero);
+                $query->where('chdevuelto_saldo', '<>', 0);
                 $chdevuelto = $query->get();
                 return response()->json($chdevuelto);
             }

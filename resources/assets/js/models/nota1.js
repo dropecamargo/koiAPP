@@ -14,7 +14,7 @@ app || (app = {});
         },
         idAttribute: 'id',
         defaults: {
-        	'nota1_sucursal': '',	
+            'nota1_sucursal': '',   
         	'nota1_numero': '',	
         	'nota1_tercero': '',	
             'nota1_fecha': moment().format('YYYY-MM-DD'),   

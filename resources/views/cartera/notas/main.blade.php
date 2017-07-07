@@ -57,21 +57,21 @@
                     </div>
                 </div>
                 <div class="row">
-                    <label for="nota1_observaciones" class="col-md-1 control-label">Observaciones</label>
-                    <div class="form-group col-md-8">
-                        <textarea id="nota1_observaciones" name="nota1_observaciones" class="form-control" rows="2" placeholder="Observaciones ..."><%- nota1_observaciones %></textarea>
-                    </div>
-                </div>
-                <div class="row">
                     <label for="nota1_conceptonota" class="col-md-1 control-label">Concepto</label>
                     <div class="form-group col-md-4 col-xs-10">
-                        <select name="nota1_conceptonota" id="nota1_conceptonota" class="form-control select2-default change-concepto" required disabled>
+                        <select name="nota1_conceptonota" id="nota1_conceptonota" class="form-control select2-default" required disabled>
                             @foreach( App\Models\Cartera\ConceptoNota::getConcepto() as $key => $value)
                                 <option value="{{ $key }}" <%- nota1_conceptonota == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
                             @endforeach
                         </select>
                     </div>
                 </div>  
+                <div class="row">
+                    <label for="nota1_observaciones" class="col-md-1 control-label">Observaciones</label>
+                    <div class="form-group col-md-8">
+                        <textarea id="nota1_observaciones" name="nota1_observaciones" class="form-control" rows="2" placeholder="Observaciones ..."><%- nota1_observaciones %></textarea>
+                    </div>
+                </div>
             </form>
         </div>
         
@@ -88,7 +88,17 @@
 
         <div class="box box-success" id="wrapper-detalle" hidden><br>
             <div class="box-body">
-                <!-- table table-bordered table-striped --><br>
+                <div class="row">
+                    <label for="nota2_documentos_doc" class="col-md-1 control-label">Documento</label>
+                    <div class="form-group col-md-3">
+                        <select name="nota2_documentos_doc" id="nota2_documentos_doc" class="form-control select2-default-clear change-concepto" required>
+                        @foreach( App\Models\Base\Documentos::getDocumentos() as $key => $value)
+                            <option  value="{{ $key }}">{{ $value }}</option>
+                        @endforeach
+                        </select>
+                    </div>
+                </div>
+                <!-- table table-bordered table-striped -->
                 <div class="box-body table-responsive no-padding">
                     <table id="browse-detalle-list" class="table table-hover table-bordered" cellspacing="0">
                         <thead>
@@ -128,8 +138,8 @@
             
         <td><%- conceptonota_nombre %></td>
         <td><%- documentos_nombre %></td>
-        <td><%- factura1_numero %></td>
+        <td><%- ( factura1_numero != "" ) ? factura1_numero : nota2_numero  %></td>
         <td><%- factura3_cuota %></td>
-        <td class="text-right"><%- window.Misc.currency( factura3_valor )  %></td>
+        <td class="text-right"><%- ( factura3_valor != "" ) ? window.Misc.currency( factura3_valor ) : window.Misc.currency( nota2_valor ) %></td>
     </script>
 @stop

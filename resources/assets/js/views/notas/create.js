@@ -94,10 +94,11 @@ app || (app = {});
             this.detalleNotaList.reset();
 
             var data = window.Misc.formToJson( e.target );
-                data.tercero = this.$(e.currentTarget).attr('data-tercero');
+                data.tercero = this.$('#nota1_conceptonota').attr('data-tercero');
+                data.nota1_conceptonota = this.$('#nota1_conceptonota').val();
                 data.call = 'nota';
 
-            if( !_.isUndefined(data.nota1_conceptonota) && !_.isNull(data.nota1_conceptonota) && data.nota1_conceptonota != ''){
+            if( !_.isUndefined(data.nota2_documentos_doc) && !_.isNull(data.nota2_documentos_doc) && data.nota2_documentos_doc != ''){
                 window.Misc.evaluateActionsCartera({
                     'data': data,
                     'wrap': this.$el,

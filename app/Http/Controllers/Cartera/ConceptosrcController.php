@@ -243,14 +243,21 @@ class ConceptosrcController extends Controller
             }
 
             if($request->call == 'nota'){
-                $conceptonota = ConceptoNota::getConceptoNota($request->nota1_conceptonota);
-                if (!$conceptonota instanceof ConceptoNota) {
-                    $response->errors = "No es posible recuperar concepto, verifique información ó por favor consulte al administrador.";
+                $documentos = Documentos::find($request->nota2_documentos_doc);
+                if (!$documentos instanceof Documentos) {
+                    $response->errors = "No es posible recuperar documento, verifique información ó por favor consulte al administrador.";
                 }
-
-                $action = 'modalCartera';
-                $response->action = $action;  
-                $response->success = true;
+                if ($documentos->documentos_codigo == 'FACT') {
+                    $action = 'modalCartera';
+                    $response->action = $action;  
+                    $response->success = true;
+                }else if( $documentos->documentos_codigo == 'CHD' ){
+                    $action = 'modalChequesDevueltos';
+                    $response->action = $action;  
+                    $response->success = true;
+                }else{
+                    $response->success = false;
+                }
             }
         }
         
