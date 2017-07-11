@@ -173,6 +173,10 @@ app || (app = {});
             'unidadesnegocio/create(/)': 'getUnidadNegocioCreate',
             'unidadesnegocio/:unidadnegocio/edit(/)': 'getUnidadNegocioEdit',
 
+            'servicios(/)': 'getServiciosMain',
+            'servicios/create(/)': 'getServiciosCreate',
+            'servicios/:servicios/edit(/)': 'getServiciosEdit',
+
             'ajustes(/)': 'getAjustesMain',
             'ajustes/create(/)': 'getAjustesCreate',
             'ajustes/:ajustes(/)': 'getAjusteShow',
@@ -286,6 +290,10 @@ app || (app = {});
 
             'gestionestecnico(/)': 'getGestionesTecnicoMain',
             'gestionestecnico/create(/)': 'getGestionTecnicoCreate',
+
+            'sitios(/)': 'getSitiosMain',
+            'sitios/create(/)': 'getSitiosCreate',
+            'sitios/:sitios/edit(/)': 'getSitiosEdit',
 
         },
 
@@ -1322,6 +1330,42 @@ app || (app = {});
 
             this.createUnidadNegocioView = new app.CreateUnidadNegocioView({ model: this.unidadNegocioModel });
             this.unidadNegocioModel.fetch();
+        },
+
+        // Servicios
+        getServiciosMain: function () {
+
+            if ( this.mainServiciosView instanceof Backbone.View ){
+                this.mainServiciosView.stopListening();
+                this.mainServiciosView.undelegateEvents();
+            }
+
+            this.mainServiciosView = new app.MainServiciosView( );
+        },
+
+        getServiciosCreate: function () {
+            this.servicioModel = new app.ServicioModel();
+
+            if ( this.createServicioView instanceof Backbone.View ){
+                this.createServicioView.stopListening();
+                this.createServicioView.undelegateEvents();
+            }
+
+            this.createServicioView = new app.CreateServicioView({ model: this.servicioModel });
+            this.createServicioView.render();
+        },
+
+        getServiciosEdit: function ( servicios ) {
+            this.servicioModel = new app.ServicioModel();
+            this.servicioModel.set({'id': servicios }, {'silent':true});
+
+            if ( this.createServicioView instanceof Backbone.View ){
+                this.createServicioView.stopListening();
+                this.createServicioView.undelegateEvents();
+            }
+
+            this.createServicioView = new app.CreateServicioView({ model: this.servicioModel });
+            this.servicioModel.fetch();
         },
 
         /**
@@ -2389,12 +2433,17 @@ app || (app = {});
             this.ordenModel = new app.OrdenModel();
             this.ordenModel.set({'id': orden}, {'silent':true});
 
+            if ( this.editOrdenView instanceof Backbone.View ){
+                this.editOrdenView.stopListening();
+                this.editOrdenView.undelegateEvents();
+            }
+
             if ( this.createOrdenView instanceof Backbone.View ){
                 this.createOrdenView.stopListening();
                 this.createOrdenView.undelegateEvents();
             }
 
-            this.createOrdenView = new app.CreateOrdenView({ model: this.ordenModel });
+            this.editOrdenView = new app.EditOrdenView({ model: this.ordenModel });
             this.ordenModel.fetch();
         },
 
@@ -2464,6 +2513,42 @@ app || (app = {});
             }
             this.createGestionTecnicoView = new app.CreateGestionTecnicoView({ model: this.gestionTecnicoModel });
             this.createGestionTecnicoView.render();
+        },
+
+        // Sitios
+        getSitiosMain: function () {
+
+            if ( this.mainSitiosView instanceof Backbone.View ){
+                this.mainSitiosView.stopListening();
+                this.mainSitiosView.undelegateEvents();
+            }
+
+            this.mainSitiosView = new app.MainSitiosView( );
+        },
+
+        getSitiosCreate: function () {
+            this.sitioModel = new app.SitioModel();
+
+            if ( this.createSitioView instanceof Backbone.View ){
+                this.createSitioView.stopListening();
+                this.createSitioView.undelegateEvents();
+            }
+
+            this.createSitioView = new app.CreateSitioView({ model: this.sitioModel });
+            this.createSitioView.render();
+        },
+
+        getSitiosEdit: function ( sitios ) {
+            this.sitioModel = new app.SitioModel();
+            this.sitioModel.set({'id': sitios}, {'silent':true});
+
+            if ( this.createSitioView instanceof Backbone.View ){
+                this.createSitioView.stopListening();
+                this.createSitioView.undelegateEvents();
+            }
+
+            this.createSitioView = new app.CreateSitioView({ model: this.sitioModel });
+            this.sitioModel.fetch();
         },
     }));
 })(jQuery, this, this.document);

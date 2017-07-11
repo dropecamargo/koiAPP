@@ -14,7 +14,7 @@ app || (app = {});
       	el: 'body',
 		events: {
             'change .change-sucursal-consecutive-koi-component': 'sucursalChange',
-			'change .change-puntoventa-consecutive-koi-component': 'puntoVentaChange'
+            'change .change-puntoventa-consecutive-koi-component': 'puntoVentaChange'
 		},
 
         /**
@@ -50,13 +50,13 @@ app || (app = {});
                     if(documents == 'ajuste') consecutive = resp.sucursal_ajus;
                     if(documents == 'traslados') consecutive = resp.sucursal_tras;
                     if(documents == 'pedidoc') consecutive = resp.sucursal_pedidoc;
-                    if(documents == 'recibos') consecutive = resp.sucursal_reci;
-                    if(documents == 'notas') consecutive = resp.sucursal_nota;
-                    if(documents == 'ajustec') consecutive = resp.sucursal_ajuc;
+                    if(documents == 'recibos') consecutive = resp.regional_reci;
+                    if(documents == 'notas') consecutive = resp.regional_nota;
+                    if(documents == 'ajustec') consecutive = resp.regional_ajuc;
                     if(documents == 'devolucion') consecutive = resp.sucursal_devo;
-                    if(documents == 'anticipo') consecutive = resp.sucursal_anti;
-                    if(documents == 'chequepos') consecutive = resp.sucursal_chp;
-                    if(documents == 'orden') consecutive = resp.sucursal_ord;
+                    if(documents == 'anticipo') consecutive = resp.regional_anti;
+                    if(documents == 'chequepos') consecutive = resp.regional_chp;
+                    if(documents == 'orden') consecutive = resp.regional_ord;
                     
                     // Set consecutive
                     _this.$consecutive.val( parseInt(consecutive) + 1);

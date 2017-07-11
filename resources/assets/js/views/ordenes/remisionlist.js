@@ -32,6 +32,7 @@ app || (app = {});
             // Events Listeners
             this.listenTo( this.collection, 'add', this.addOne );
             this.listenTo( this.collection, 'reset', this.addAll );
+            this.listenTo( this.collection, 'store', this.storeOne );
             this.listenTo( this.collection, 'request', this.loadSpinner);
             this.listenTo( this.collection, 'sync', this.responseServer);
 
@@ -61,6 +62,41 @@ app || (app = {});
         */
         addAll: function () {
             this.collection.forEach( this.addOne, this );
+        },
+
+        storeOne: function (data) {
+            var _this = this;
+
+            // Set Spinner
+            window.Misc.setSpinner( this.el );
+
+            // Add model in collection
+            var remRepuModel = new app.RemRepuModel();
+            remRepuModel.save(data, {
+                success : function(model, resp) {
+                    if(!_.isUndefined(resp.success)) {
+                        window.Misc.removeSpinner( _this.el );
+
+                        // response success or error
+                        var text = resp.success ? '' : resp.errors;
+                        if( _.isObject( resp.errors ) ) {
+                            text = window.Misc.parseErrors(resp.errors);
+                        }
+
+                        if( !resp.success ) {
+                            alertify.error(text);
+                            return;
+                        }
+
+                        // Add model in collection
+                        _this.collection.add(model);
+                    }
+                },
+                error : function(model, error) {
+                    window.Misc.removeSpinner( _this.el );
+                    alertify.error(error.statusText)
+                }
+            });
         },
 
         /**

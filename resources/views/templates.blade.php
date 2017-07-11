@@ -504,7 +504,7 @@
 
 		<div class="form-group col-md-4">
 			<label for="tcontacto_nombres" class="control-label">Email</label>
-			<input id="tcontacto_email" value="<%- tcontacto_email %>" placeholder="Email" class="form-control input-sm" name="tcontacto_email" type="email" maxlength="200">
+			<input id="tcontacto_email" value="<%- tcontacto_email %>" placeholder="Email" class="form-control input-sm" name="tcontacto_email" type="email" maxlength="200" required>
 		    <div class="help-block with-errors"></div>
 		</div>
     </div>
@@ -966,6 +966,21 @@
 		<div class="form-group col-md-2 col-xs-8 col-sm-3">
 			<br><label class="checkbox-inline" for="marca_activo">
 				<input type="checkbox" id="marca_activo" name="marca_activo" value="marca_activo" <%- parseInt(marca_activo) ? 'checked': ''%>> Activo
+			</label>
+		</div>
+    </div>
+</script>
+
+<script type="text/template" id="add-servicio-tpl">
+	<div class="row">
+		<div class="form-group col-sm-4">
+			<label for="servicio_nombre" class="control-label">Nombre</label>
+			<input type="text" id="servicio_nombre" name="servicio_nombre" value="<%- servicio_nombre %>" placeholder="Servicio" class="form-control input-sm input-toupper" maxlength="25" required>
+		</div>
+
+		<div class="form-group col-sm-2">
+			<br><label class="checkbox-inline" for="servicio_activo">
+				<input type="checkbox" id="servicio_activo" name="servicio_activo" value="servicio_activo" <%- servicio_activo ? 'checked': ''%>> Activo
 			</label>
 		</div>
     </div>
@@ -1505,6 +1520,22 @@
 		</div>
     </div>
 </script>
+
+<script type="text/template" id="add-sitio-tpl">
+	<div class="row">
+		<div class="form-group col-sm-4">
+			<label for="sitio_nombre" class="control-label">Nombre</label>
+			<input type="text" id="sitio_nombre" name="sitio_nombre" value="<%- sitio_nombre %>" placeholder="Sitio" class="form-control input-sm input-toupper" maxlength="25" required>
+		</div>
+
+		<div class="form-group col-sm-2">
+			<br><label class="checkbox-inline" for="sitio_activo">
+				<input type="checkbox" id="sitio_activo" name="sitio_activo" value="sitio_activo" <%- sitio_activo ? 'checked': ''%>> Activo
+			</label>
+		</div>
+    </div>
+</script>
+
 <script type="text/template" id="add-dano-tpl">
 	<div class="row">
 		<div class="form-group col-md-8">

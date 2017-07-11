@@ -37,6 +37,11 @@ app || (app = {});
             'orden_abierta': true,
             'orden_fecha_servicio':moment().format('YYYY-MM-DD'),
             'orden_hora_servicio':moment().format('HH:mm'),       
+            'orden_contacto': '',
+            'orden_sitio': '',
+            'tcontacto_nombre': '',
+            'tcontacto_telefono': '',
+            'tcontacto_email': '',
         }
     });
 

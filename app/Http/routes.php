@@ -161,6 +161,7 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::resource('tiposajuste', 'Inventario\TipoAjusteController', ['except' => ['destroy']]);
 	Route::resource('tipostraslados', 'Inventario\TipoTrasladoController', ['except' => ['destroy']]);
 	Route::resource('subcategorias', 'Inventario\SubCategoriaController', ['except' => ['destroy']]);
+	Route::resource('servicios', 'Inventario\ServicioController', ['except' => ['edit','destroy']]);
 	Route::resource('unidadesnegocio', 'Inventario\UnidadNegocioController', ['except' => ['destroy']]);
 
    	/*
@@ -255,4 +256,5 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::resource('prioridades', 'Tecnico\PrioridadController', ['except' => ['destroy']]);
 	Route::resource('conceptostecnico', 'Tecnico\ConceptoTecController', ['except' => ['destroy']]);
 	Route::resource('gestionestecnico', 'Tecnico\GestionTecnicoController', ['except' => ['destroy']]);
+	Route::resource('sitios', 'Tecnico\SitioController', ['except' => ['destroy']]);
 });

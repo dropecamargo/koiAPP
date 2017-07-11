@@ -25,6 +25,7 @@ app || (app = {});
             'visita_fh_finaliza': '',
             'visita_tiempo_transporte': '',
             'visita_viaticos': '',
+            'visita_observaciones': '',
             'tercero_nombre': ''
         }
     });

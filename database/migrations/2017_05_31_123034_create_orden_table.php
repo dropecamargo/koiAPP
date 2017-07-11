@@ -20,7 +20,9 @@ class CreateOrdenTable extends Migration
             $table->integer('orden_sucursal')->unsigned();
             $table->integer('orden_numero')->unsigned();
             $table->integer('orden_tercero')->unsigned();
-            $table->integer('orden_serie')->unsigned(); 
+            $table->integer('orden_serie')->unsigned()->nullable();
+            $table->integer('orden_contacto')->unsigned();
+            $table->integer('orden_sitio')->unsigned();
             $table->integer('orden_tipoorden')->unsigned();
             $table->integer('orden_solicitante')->unsigned();
             $table->integer('orden_tecnico')->unsigned();
@@ -43,6 +45,8 @@ class CreateOrdenTable extends Migration
             $table->foreign('orden_tercero')->references('id')->on('tercero')->onDelete('restrict');
             $table->foreign('orden_tecnico')->references('id')->on('tercero')->onDelete('restrict');
             $table->foreign('orden_dano')->references('id')->on('dano')->onDelete('restrict');
+            $table->foreign('orden_contacto')->references('id')->on('tcontacto')->onDelete('restrict');
+            $table->foreign('orden_sitio')->references('id')->on('sitio')->onDelete('restrict');
             $table->foreign('orden_prioridad')->references('id')->on('prioridad')->onDelete('restrict');
             $table->foreign('orden_usuario_elaboro')->references('id')->on('tercero')->onDelete('restrict');
             $table->foreign('orden_usuario_cerro')->references('id')->on('tercero')->onDelete('restrict');

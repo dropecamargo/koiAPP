@@ -58,7 +58,7 @@ class Solicitante extends BaseModel
         return Cache::rememberForever( self::$key_cache , function() {
             $query = Solicitante::query();
             $query->where('solicitante_activo', true);
-            $query->orderBy('id', 'asc');
+            $query->orderBy('solicitante_nombre', 'asc');
             $collection = $query->lists('solicitante_nombre', 'id');
 
             $collection->prepend('', '');

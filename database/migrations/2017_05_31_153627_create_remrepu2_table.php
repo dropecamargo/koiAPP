@@ -22,6 +22,7 @@ class CreateRemrepu2Table extends Migration
             $table->integer('remrepu2_facturado')->unsigned();
             $table->integer('remrepu2_no_facturado')->unsigned();
             $table->integer('remrepu2_devuelto')->unsigned();
+            $table->integer('remrepu2_usado')->unsigned();
             
             $table->foreign('remrepu2_producto')->references('id')->on('producto')->onDelete('restrict');
             $table->foreign('remrepu2_remrepu1')->references('id')->on('remrepu1')->onDelete('restrict');

@@ -7,9 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\Models\Tecnico\Orden;
-use App\Models\Inventario\Producto;
-use App\Models\Base\Tercero,App\Models\Base\Documentos,App\Models\Base\Sucursal;
+use App\Models\Base\Tercero, App\Models\Base\Documentos, App\Models\Base\Sucursal, App\Models\Base\Regional, App\Models\Base\Contacto, App\Models\Inventario\Producto, App\Models\Tecnico\Orden, App\Models\Tecnico\Sitio;
 
 use DB, Log, Datatables, Auth;
 
@@ -24,7 +22,7 @@ class OrdenController extends Controller
     {
         if($request->ajax()){
             $query = Orden::query();
-            $query->select('orden.*',
+            $query->select('orden.*', 'sucursal_nombre', DB::raw("SUBSTRING_INDEX(orden_fh_elaboro, ' ', 1) as orden_fecha_elaboro"), DB::raw("SUBSTRING_INDEX(orden_fh_elaboro, ' ', -1) as orden_hora_elaboro"), 
                 DB::raw("
                     CONCAT(
                         (CASE WHEN tercero_persona = 'N'
@@ -33,11 +31,11 @@ class OrdenController extends Controller
                             )
                             ELSE tercero_razonsocial
                         END)
-                    
                     ) AS tercero_nombre"
                 )
             );
             $query->join('tercero', 'orden_tercero', '=', 'tercero.id');
+            $query->join('sucursal', 'orden_sucursal', '=', 'sucursal.id');
 
            // Persistent data filter
             if($request->has('persistent') && $request->persistent) {
@@ -100,6 +98,8 @@ class OrdenController extends Controller
             if ($orden->isValid($data)) {
                 DB::beginTransaction();
                 try {
+                    $producto = null;
+
                     // Recupero instancia de Documento  
                     $documento = Documentos::where('documentos_codigo' , Orden::$default_document)->first();
                     if (!$documento instanceof Documentos) {
@@ -112,11 +112,11 @@ class OrdenController extends Controller
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar sucursal,por favor verifique la información ó por favor consulte al administrador.']);
                     }
-                    // Recupero instancia del producto
-                    $producto = Producto::where('producto_serie', $request->orden_serie)->first();
-                    if(!$producto instanceof Producto) {
+                    //  Recupero instancia de regional 
+                    $regional = Regional::find($sucursal->sucursal_regional);
+                    if (!$regional instanceof Regional) {
                         DB::rollback();
-                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar producto, por favor verifique la información o consulte al administrador.']);
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar regional,por favor verifique la información ó por favor consulte al administrador.']);
                     }
                     // Recupero instancia Tercero(Tecnico)
                     $tecnico = Tercero::where('tercero_nit', $request->orden_tecnico)->first();
@@ -130,29 +130,60 @@ class OrdenController extends Controller
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar datos del cliente, por favor verifique la información o consulte al administrador.']);
                     }
+                    // Recuperar contacto
+                    $contacto = Contacto::find($request->orden_contacto);
+                    if(!$contacto instanceof Contacto) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar contacto, por favor verifique la información o consulte al administrador.']);
+                    }
+                    // Recuperar sitio
+                    $sitio = Sitio::find($request->orden_sitio);
+                    if(!$sitio instanceof Sitio) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar sitio, por favor verifique la información o consulte al administrador.']);
+                    }
 
-                    // Consecutive sucursal_ord
-                    $consecutive = $sucursal->sucursal_ord + 1;
+                    // Recuperar si existe producto
+                    if( !empty($request->orden_serie) ){
+                        $producto = Producto::where('producto_serie', $request->orden_serie)->first();
+                        if(!$producto instanceof Producto) {
+                            DB::rollback();
+                            return response()->json(['success' => false, 'errors' => 'No es posible recuperar producto, por favor verifique la información o consulte al administrador.']);
+                        }
+
+                        $orden->orden_serie = $producto->id;
+                    }
+
+                    // Validar contacto a tercero
+                    if($contacto->tcontacto_tercero != $tercero->id){
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'El contacto no corresponde al cliente. por favor verifique la información o consulte al administrador.']);
+                    }
+                    
+                    // Consecutive regional_ord
+                    $consecutive = $regional->regional_ord + 1;
 
                     // Orden
                     $orden->fill($data);
                     $orden->orden_fh_servicio = "$request->orden_fecha_servicio $request->orden_hora_servicio";
                     $orden->orden_sucursal = $sucursal->id;
                     $orden->orden_numero = $consecutive;
-                    $orden->orden_serie = $producto->id;
                     $orden->orden_tercero = $tercero->id;
+                    $orden->orden_contacto = $contacto->id;
+                    $orden->orden_sitio = $sitio->id;
                     $orden->orden_tecnico = $tecnico->id;
                     $orden->orden_documentos = $documento->id;
                     $orden->orden_usuario_elaboro = Auth::user()->id;
                     $orden->orden_fh_elaboro = date('Y-m-d H:m:s');
                     $orden->save();
 
-                    // Update sucursal_ord
-                    $sucursal->sucursal_ord = $consecutive;
-                    $sucursal->save();
+                    // Update regional_ord
+                    $regional->regional_ord = $consecutive;
+                    $regional->save();
 
                     // Commit Transaction
                     DB::commit();
+                    
                     return response()->json(['success' => true, 'id' => $orden->id]);
                 }catch(\Exception $e){
                     DB::rollback();
@@ -177,6 +208,11 @@ class OrdenController extends Controller
         if($request->ajax()){
             return response()->json($orden);
         }
+
+        if( $orden->orden_abierta == true ) {
+            return redirect()->route('ordenes.edit', ['orden' => $orden]);
+        }
+
         return view('tecnico.orden.show',['orden' => $orden]);
     }
 
@@ -192,7 +228,12 @@ class OrdenController extends Controller
         if(!$orden instanceof Orden) {
             abort(404);
         }
-        return view('tecnico.orden.edit', ['orden' => $orden]);  
+
+        if( $orden->orden_abierta == false ) {
+            return redirect()->route('ordenes.show', ['orden' => $orden]);
+        }
+
+        return view('tecnico.orden.create', ['orden' => $orden]);  
     }
 
     /**
@@ -205,57 +246,24 @@ class OrdenController extends Controller
     public function update(Request $request, $id)
     {
         if( $request->ajax() ) {
-            $data = $request->all();
             $orden = Orden::findOrFail($id);
-            if( $orden->isValid($data) ) {
+            if( $orden instanceof Orden ) {
                 DB::beginTransaction();
                 try {
-                    $tercero = Tercero::where('tercero_nit', $request->orden_tercero)->first();
                     $producto = Producto::where('producto_serie', $request->orden_serie)->first();
-                    $tecnico = Tercero::where('tercero_nit', $request->orden_tecnico)->first();
-                   
                     if(!$producto instanceof Producto ) {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar producto, por favor verifique la información o consulte al administrador.']);
                     } 
 
-                    $tipo= Tipo::where('id', $producto->producto_tipo)->first();
-                    if(!$tipo instanceof Tipo ) {
-                        DB::rollback();
-                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar tipo, por favor verifique la información o consulte al administrador.']);
-                    }
-
-                    if(!in_array($tipo->tipo_codigo, ['EQ'])){
-                        DB::rollback();
-                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar tipo, por favor verifique la información o consulte al administrador.']);  
-                    }
-
-                    if(!$tecnico instanceof Tercero) {
-                        DB::rollback();
-                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar tecnico, por favor verifique la información o consulte al administrador.']);
-                    }
-
-                    if(!$tercero instanceof Tercero) {
-                        DB::rollback();
-                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar cliente, por favor verifique la información o consulte al administrador.']);
-                    }
-
-                    if($tercero->id != $producto->producto_tercero) {
-                        DB::rollback();
-                        return response()->json(['success' => false, 'errors' => 'El producto no corresponde al cliente, por favor verifique la información o consulte al administrador.']);
-                    }
-
                     // ordenes
+                    $orden->orden_serie = $producto->id;
                     $orden->orden_fh_servicio = "$request->orden_fecha_servicio $request->orden_hora_servicio";
-                    $orden->orden_placa = $producto->id;
-                    $orden->orden_tercero = $tercero->id;
-                    $orden->orden_tecnico = $tecnico->id;
-                    $orden->orden_usuario_elaboro = Auth::user()->id;
-                    $orden->orden_fecha_elaboro =  date('Y-m-d H:m:s');
                     $orden->save();
 
                     // Commit Transaction
-                    DB::commit();                    
+                    DB::commit();          
+                              
                     return response()->json(['success' => true, 'id' => $orden->id]);
                 }catch(\Exception $e){
                     DB::rollback();

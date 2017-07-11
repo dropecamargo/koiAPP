@@ -7,9 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\Models\Tecnico\RemRepu,App\Models\Tecnico\RemRepu2,App\Models\Tecnico\Orden;
-use App\Models\Inventario\Producto;
-use App\Models\Base\Sucursal,App\Models\Base\Documentos;
+use App\Models\Tecnico\RemRepu, App\Models\Tecnico\RemRepu2, App\Models\Tecnico\Orden, App\Models\Base\Tercero, App\Models\Inventario\Producto, App\Models\Base\Sucursal, App\Models\Base\Documentos;
 
 use Log, DB, Auth;
 
@@ -85,7 +83,6 @@ class RemRepuController extends Controller
                     $remrepu->remrepu1_fh_elaboro = date('Y-m-d H:m:s');
                     $remrepu->save();
 
-
                     foreach ($data['detalle'] as $value) {
 
                         // Recupero instancia de producto
@@ -109,12 +106,19 @@ class RemRepuController extends Controller
                         $remrepu2->save();  
                     }
 
+                    // Recuperar nombre tercero
+                    $tercero = Tercero::find(Auth::user()->id);
+                    if(!$tercero instanceof Tercero) {
+                        DB::rollback();
+                        return response()->json(['success'=> false, 'errors' => 'No es posible recuperar el tercero, por favor verificar información o consulte al administrador.']);
+                    }
+
                     // Update sucursal_remr 
                     $sucursal->sucursal_remr = $consecutive;
                     $sucursal->save();
 
                     DB::commit();
-                    return response()->json(['success' => true, 'id' => $remrepu->id]);
+                    return response()->json(['success' => true, 'id' => $remrepu->id, 'remrepu1_numero' => $remrepu->remrepu1_numero ,'tercero_nombre' => $tercero->getName(), 'remrepu1_fh_elaboro' => $remrepu->remrepu1_fh_elaboro]);
                 }catch(\Exception $e){
                     DB::rollback();
                     Log::error($e->getMessage());

@@ -492,40 +492,48 @@ class ModulosTableSeeder extends Seeder
             'nivel3' => 5
         ]);
         Modulo::create([
+            'name' => 'servicios',
+            'display_name' => 'Servicios',
+            'nivel1' => 5,
+            'nivel2' => 2,
+            'nivel3' => 6
+        ]);
+        Modulo::create([
             'name' => 'subcategorias',
             'display_name' => 'Subcategorias',
             'nivel1' => 5,
             'nivel2' => 2,
-            'nivel3' => 6
+            'nivel3' => 7
         ]);
         Modulo::create([
             'name' => 'tiposajuste',
             'display_name' => 'Tipo ajuste',
             'nivel1' => 5,
             'nivel2' => 2,
-            'nivel3' => 7
+            'nivel3' => 8
         ]);
         Modulo::create([
             'name' => 'tipostraslados',
             'display_name' => 'Tipo de traslado',
             'nivel1' => 5,
             'nivel2' => 2,
-            'nivel3' => 8
+            'nivel3' => 9
         ]);
         Modulo::create([
             'name' => 'unidades',
             'display_name' => 'Unidades',
             'nivel1' => 5,
             'nivel2' => 2,
-            'nivel3' => 9
+            'nivel3' => 10
         ]);
         Modulo::create([
             'name' => 'unidadesnegocio',
             'display_name' => 'Unidades de negocio',
             'nivel1' => 5,
             'nivel2' => 2,
-            'nivel3' => 10
+            'nivel3' => 11
         ]);
+
         // Tecnico
         Modulo::create([
             'display_name' => 'Modulos',
@@ -578,18 +586,25 @@ class ModulosTableSeeder extends Seeder
             'nivel3' => 3
         ]);
         Modulo::create([
+            'name' => 'sitios',
+            'display_name' => 'Sitios de atencion',
+            'nivel1' => 6,
+            'nivel2' => 2,
+            'nivel3' => 4
+        ]);
+        Modulo::create([
             'name' => 'solicitantes',
             'display_name' => 'Solicitantes',
             'nivel1' => 6,
             'nivel2' => 2,
-            'nivel3' => 4
+            'nivel3' => 5
         ]);
         Modulo::create([
             'name' => 'tiposorden',
             'display_name' => 'Tipo de Orden',
             'nivel1' => 6,
             'nivel2' => 2,
-            'nivel3' => 5
+            'nivel3' => 6
         ]);
     }
 }

@@ -13,15 +13,9 @@ app || (app = {});
 
         el: '#ordenes-create',
         template: _.template( ($('#add-orden-tpl').html() || '') ),
-        templateRemision: _.template( ($('#show-remision-tpl').html() || '') ),
         events: {
             'click .submit-orden': 'submitOrden',
             'submit #form-orden': 'onStore',
-            'click .submit-visitas': 'submitVisita',
-            'submit #form-visitas': 'onStoreVisita',
-            'click .click-add-remision': 'clickAddRemision',
-            'click .click-consult-remision': 'clickConsultRemision',
-            'click .click-cerrar-orden': 'clickCloseOrden',
         },
         parameters: {
         },
@@ -35,15 +29,8 @@ app || (app = {});
                 this.parameters = $.extend({}, this.parameters, opts.parameters);
 
             // Attributes
-            this.msgSuccess = 'Orden guardada con exito!';
-            this.$wraperForm = this.$('#render-form-orden');
+            // this.msgSuccess = 'Orden guardada con exito!';
 
-            //Model Exists
-            if( this.model.id != undefined ) {
-
-                this.visita = new app.VisitaCollection();
-                this.remision = new app.RemisionCollection();
-            }
             // Events
             this.listenTo( this.model, 'change', this.render );
             this.listenTo( this.model, 'sync', this.responseServer );
@@ -55,32 +42,18 @@ app || (app = {});
         */
         render: function() {
             var attributes = this.model.toJSON();
-            this.$wraperForm.html( this.template(attributes) );
-            this.$form = this.$('#form-orden');
-            this.$formvisitasp = this.$('#form-visitas');
+                attributes.edit = false;
+            this.$el.html( this.template(attributes) );
 
-            // Model exist
-            if( this.model.id != undefined ) {
-                // Reference views
-                this.referenceViews();
-            }
+            this.$form = this.$('#form-orden');
+
+            // Spinner
+            this.spinner = this.$('#spinner-main');
+
+            // this ready
             this.ready();
         },
-
-        referenceViews:function(){
-            this.visitasView = new app.VisitasView( {
-                collection: this.visita,
-                parameters: {
-                    call: 'create',
-                    edit: true,
-                    wrapper: this.$('#wrapper-visitas'),
-                    dataFilter: {
-                        'orden_id': this.model.get('id')
-                    }
-                }
-            });
-
-        },
+        
         /**
         *Event Click to Button from orden
         */
@@ -100,97 +73,6 @@ app || (app = {});
             }
         },  
 
-        submitVisita:function(e){
-            this.$formvisitasp.submit();
-        },
-
-        /**
-        * Event Create visita
-        */
-        onStoreVisita: function (e) {
-            if (!e.isDefaultPrevented()) {
-                e.preventDefault();
-
-                var data = window.Misc.formToJson( e.target );
-                this.visita.trigger( 'store', data );
-            }
-        },  
-        /*
-        * Event add remision
-        */
-        clickAddRemision:function(e){
-            // Weapper show remisones
-            this.$wrapperRemsion = $('#render-main-remisiones');
-            this.$wrapperRemsion.find('table').html('');
-            // Open TecnicoActionView
-            if ( this.tecnicoActionView instanceof Backbone.View ){
-                this.tecnicoActionView.stopListening();
-                this.tecnicoActionView.undelegateEvents();
-            }
-
-            this.tecnicoActionView = new app.TecnicoActionView({
-                model: this.model,
-                // collection: this.remrepu,
-                parameters:{
-                    action:'add'
-                }
-            });
-            this.tecnicoActionView.render();
-        },
-        /**
-        *
-        */
-        clickConsultRemision: function(e){
-            // Weapper show remisones
-            this.$wrapperRemsion = $('#render-main-remisiones');
-            this.$wrapperRemsion.html( this.templateRemision() );
-
-            this.remisionView = new app.RemisionView( {
-                collection: this.remision,
-                parameters: {
-                    dataFilter: {
-                        'orden_id': this.model.get('id')
-                    }
-                }
-            });
-        },
-        /**
-        *
-        */
-        clickCloseOrden: function(e){
-            e.preventDefault();
-            var _this = this;
-            // Cerrar orden
-            $.ajax({
-                url: window.Misc.urlFull( Route.route('ordenes.cerrar', { ordenes: _this.model.get('id') }) ),
-                type: 'GET',
-                beforeSend: function() {
-                    window.Misc.setSpinner( _this.el );
-                }
-            })
-            .done(function(resp) {
-                window.Misc.removeSpinner( _this.el );
-
-                if(!_.isUndefined(resp.success)) {
-                    // response success or error
-                    var text = resp.success ? '' : resp.errors;
-                    if( _.isObject( resp.errors ) ) {
-                        text = window.Misc.parseErrors(resp.errors);
-                    }
-
-                    if( !resp.success ) {
-                        alertify.error(text);
-                        return;
-                    }
-
-                    window.Misc.successRedirect( resp.msg, window.Misc.urlFull(Route.route('ordenes.show', { ordenes: _this.model.get('id') })) );
-                }
-            })
-            .fail(function(jqXHR, ajaxOptions, thrownError) {
-                window.Misc.removeSpinner( _this.el );
-                alertify.error(thrownError);
-            });
-        },
         /**
         * fires libraries js
         */
@@ -222,14 +104,14 @@ app || (app = {});
         * Load spinner on the request
         */
         loadSpinner: function (model, xhr, opts) {
-            window.Misc.setSpinner( this.el );
+            window.Misc.setSpinner( this.spinner );
         },
 
         /**
         * response of the server
         */
         responseServer: function ( model, resp, opts ) {
-            window.Misc.removeSpinner( this.el );
+            window.Misc.removeSpinner( this.spinner );
             if(!_.isUndefined(resp.success)) {
                 // response success or error
                 var text = resp.success ? '' : resp.errors;

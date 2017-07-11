@@ -58,7 +58,7 @@ class Prioridad extends BaseModel
         return Cache::rememberForever( self::$key_cache , function() {
             $query = Prioridad::query();
             $query->where('prioridad_activo', true);
-            $query->orderBy('id', 'asc');
+            $query->orderBy('prioridad_nombre', 'asc');
             $collection = $query->lists('prioridad_nombre', 'id');
 
             $collection->prepend('', '');

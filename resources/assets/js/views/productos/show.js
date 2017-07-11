@@ -28,8 +28,10 @@ app || (app = {});
         },
 
         getSeries: function(e){
-            e.preventDefault();
+            e.preventDefault(this.prodbodeList);
             // Model exist
+
+            console.log();
             if( this.prodbodeList.length == 0 ) {
                 // Reference views
                 this.referenceViews();

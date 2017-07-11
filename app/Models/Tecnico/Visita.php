@@ -28,7 +28,7 @@ class Visita extends Model
      *
      * @var array
      */
-    protected $fillable = ['visita_orden','visita_tecnico','visita_tiempo_transporte','visita_viaticos'];
+    protected $fillable = ['visita_orden','visita_tecnico','visita_tiempo_transporte','visita_viaticos','visita_observaciones'];
 
     public function isValid($data)
     {

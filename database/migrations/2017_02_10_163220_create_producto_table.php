@@ -22,6 +22,7 @@ class CreateProductoTable extends Migration
             $table->string('producto_ref_proveedor',20);
             $table->integer('producto_subcategoria')->unsigned();
             $table->integer('producto_categoria')->unsigned();
+            $table->integer('producto_servicio')->unsigned()->nullable();
             $table->integer('producto_linea')->unsigned();
             $table->integer('producto_unidadmedida')->unsigned()->nullable();
             $table->integer('producto_unidadnegocio')->unsigned()->nullable();
@@ -51,6 +52,7 @@ class CreateProductoTable extends Migration
             $table->foreign('producto_marca')->references('id')->on('marca')->onDelete('restrict');
             $table->foreign('producto_modelo')->references('id')->on('modelo')->onDelete('restrict');
             $table->foreign('producto_impuesto')->references('id')->on('impuesto')->onDelete('restrict');
+            $table->foreign('producto_servicio')->references('id')->on('servicio')->onDelete('restrict');
         });
     }
 

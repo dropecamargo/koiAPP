@@ -80,7 +80,7 @@ class Sucursal extends BaseModel
 
     public static function getSucursal($id){
         $query = Sucursal::query();
-        $query->select('sucursal.*','regional_nombre');
+        $query->select('sucursal.*','regional.*');
         $query->where('sucursal.id', $id);
         $query->join('regional','sucursal.sucursal_regional','=','regional.id');
         return $query->first();

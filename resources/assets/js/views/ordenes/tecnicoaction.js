@@ -34,32 +34,24 @@ app || (app = {});
             if( opts !== undefined && _.isObject(opts.parameters) )
                 this.parameters = $.extend({}, this.parameters, opts.parameters);
 
-            if (this.parameters.action == 'add') {
-                // Instancio modelo 
-                this.remrepuModel = new app.RemRepuModel();
-            }
             // Prepare collection
             this.remrepu = new app.RemRepuCollection();
 
             this.$modalCreate =  this.$('#modal-create-remision');
             this.$form =  this.$('#form-remrepu');
 
-            this.listenTo( this.remrepuModel, 'sync', this.responseServer );
+            this.listenTo( this.collection, 'sync', this.responseServer );
         },
 
         /*
         * Render View Element
         */
         render: function() {
-            if (this.parameters.action == 'add') {
-                this.$modalCreate.modal('show');
-                this.$modalCreate.find('.content-modal').empty().html( this.templateAdd() );
-            }else if(this.parameters.action == 'consult'){
-
-            }
+            this.$modalCreate.find('.content-modal').empty().html( this.templateAdd() );
 
             this.referenceView();
 		},
+
         /**
         * Collection remrepu View
         */
@@ -74,22 +66,26 @@ app || (app = {});
                 }
             });
         },
+
         /**
         * Sumbit form
         */
         submitForm: function(e){
             this.$form.submit();
         },
+
         /**
         * On store in collection
         */
         onStoreItem: function(e){
             if (!e.isDefaultPrevented()) {
                 e.preventDefault();
+
                 var data = window.Misc.formToJson( e.target );
                 this.remrepu.trigger( 'store', data );
             }
         },
+
         /**
         * Store Remision (RemRepu1)
         */
@@ -99,10 +95,11 @@ app || (app = {});
             // Prepare data
             var data = [];
                 data.detalle = this.remrepu.toJSON();
-                data.remrepu_orden = this.model.get('id'); 
-                console.log(this.remrepu);
-            this.remrepuModel.save( data, {patch: true, silent: true} );
+                data.remrepu_orden = this.model.get('id');
+
+            this.collection.trigger( 'store', data );
         },
+
     	/**
         * fires libraries js
         */
@@ -118,17 +115,20 @@ app || (app = {});
         /**
         * response of the server
         */
-        responseServer: function ( model, resp, opts ) { 
-            // response success or error
-            var text = resp.success ? '' : resp.errors;
-            if( _.isObject( resp.errors ) ) {
-                text = window.Misc.parseErrors(resp.errors);
-            }
-            if( !resp.success ) {
-                alertify.error(text);
-                return;
-            }
-            if (resp.success && this.parameters.action == 'add') {
+        responseServer: function ( model, resp, opts ) {
+            window.Misc.removeSpinner( this.el );
+
+            if(!_.isUndefined(resp.success)) {
+                // response success or error
+                var text = resp.success ? '' : resp.errors;
+                if( _.isObject( resp.errors ) ) {
+                    text = window.Misc.parseErrors(resp.errors);
+                }
+                if( !resp.success ) {
+                    alertify.error(text);
+                    return;
+                }
+
                 this.$modalCreate.modal('hide');
             }
         }

@@ -181,6 +181,34 @@ app || (app = {});
                         var template = _.template($('#add-folder-tpl').html());
                         _this.$modalComponent.find('.content-modal').html( template(_this.model.toJSON()) );
                     },
+                    'tipoorden' : function() {
+                        _this.$modalComponent.find('.inner-title-modal').html('Tipo de orden');
+
+                        _this.model = new app.TipoOrdenModel();
+                        var template = _.template($('#add-tipoorden-tpl').html());
+                        _this.$modalComponent.find('.content-modal').html( template(_this.model.toJSON()) );
+                    },
+                    'solicitante' : function() {
+                        _this.$modalComponent.find('.inner-title-modal').html('Solicitante');
+
+                        _this.model = new app.SolicitanteModel();
+                        var template = _.template($('#add-solicitante-tpl').html());
+                        _this.$modalComponent.find('.content-modal').html( template(_this.model.toJSON()) );
+                    },
+                    'prioridad' : function() {
+                        _this.$modalComponent.find('.inner-title-modal').html('Prioridad');
+
+                        _this.model = new app.PrioridadModel();
+                        var template = _.template($('#add-prioridad-tpl').html());
+                        _this.$modalComponent.find('.content-modal').html( template(_this.model.toJSON()) );
+                    },
+                    'sitio' : function() {
+                        _this.$modalComponent.find('.inner-title-modal').html('Sitio');
+
+                        _this.model = new app.SitioModel();
+                        var template = _.template($('#add-sitio-tpl').html());
+                        _this.$modalComponent.find('.content-modal').html( template(_this.model.toJSON()) );
+                    },
 	            };
 
             if (stuffToDo[this.resource]) {
@@ -289,36 +317,36 @@ app || (app = {});
                         }
                     },
                     'marca' : function() {
-                        _this.$resourceField.select2({ data: [{id: _this.model.get('id'), text: _this.model.get('marca_nombre')}] }).trigger('change');
+                        _this.$resourceField.append("<option value="+ _this.model.get('id') +">"+ _this.model.get('marca_nombre') +"</option>");
                         _this.$resourceField.val(_this.model.get('id')).trigger('change');
                     },
                     'tipo' : function() {
-                        _this.$resourceField.select2({ data: [{id: _this.model.get('id'), text: _this.model.get('tipo_nombre')}] }).trigger('change');
+                        _this.$resourceField.append("<option value="+ _this.model.get('id') +">"+ _this.model.get('tipo_nombre') +"</option>");
                         _this.$resourceField.val(_this.model.get('id')).trigger('change');
                     },
                     'linea' : function() {
-                        _this.$resourceField.select2({ data: [{id: _this.model.get('id'), text: _this.model.get('linea_nombre')}] }).trigger('change');
+                        _this.$resourceField.append("<option value="+ _this.model.get('id') +">"+ _this.model.get('linea_nombre') +"</option>");
                         _this.$resourceField.val(_this.model.get('id')).trigger('change');
                     },
 
                     'categoria' : function() {
-                        _this.$resourceField.select2({ data: [{id: _this.model.get('id'), text: _this.model.get('categoria_nombre')}] }).trigger('change');
+                        _this.$resourceField.append("<option value="+ _this.model.get('id') +">"+ _this.model.get('categoria_nombre') +"</option>");
                         _this.$resourceField.val(_this.model.get('id')).trigger('change');
                     },
                     'subcategoria' : function() {
-                        _this.$resourceField.select2({ data: [{id: _this.model.get('id'), text: _this.model.get('subcategoria_nombre')}] }).trigger('change');
+                        _this.$resourceField.append("<option value="+ _this.model.get('id') +">"+ _this.model.get('subcategoria_nombre') +"</option>");
                         _this.$resourceField.val(_this.model.get('id')).trigger('change');
                     },
                     'modelo' : function() {
-                        _this.$resourceField.select2({ data: [{id: _this.model.get('id'), text: _this.model.get('modelo_nombre')}] }).trigger('change');
+                        _this.$resourceField.append("<option value="+ _this.model.get('id') +">"+ _this.model.get('modelo_nombre') +"</option>");
                         _this.$resourceField.val(_this.model.get('id')).trigger('change');
                     },
                     'estado' : function() {
-                        _this.$resourceField.select2({ data: [{id: _this.model.get('id'), text: _this.model.get('estado_nombre')}] }).trigger('change');
+                        _this.$resourceField.append("<option value="+ _this.model.get('id') +">"+ _this.model.get('estado_nombre') +"</option>");
                         _this.$resourceField.val(_this.model.get('id')).trigger('change');
                     },
                     'dano' : function() {
-                       _this.$resourceField.select2({ data: [{id: _this.model.get('id'), text: _this.model.get('dano_nombre')}] }).trigger('change');
+                       _this.$resourceField.append("<option value="+ _this.model.get('id') +">"+ _this.model.get('dano_nombre') +"</option>");
                         _this.$resourceField.val(_this.model.get('id')).trigger('change');
                     },
                     'tercero' : function() {
@@ -328,27 +356,43 @@ app || (app = {});
                         _this.$resourceField.val(_this.model.get('sirvea_codigo')).trigger('change');
                     },
                     'centrocosto' : function() {
-                        _this.$resourceField.select2({ data: [{id: _this.model.get('id'), text: _this.model.get('centrocosto_nombre')}] }).trigger('change');
+                        _this.$resourceField.append("<option value="+ _this.model.get('id') +">"+ _this.model.get('centrocosto_nombre') +"</option>");
                         _this.$resourceField.val(_this.model.get('id')).trigger('change');
                     },
                     'grupo' : function() {
-                        _this.$resourceField.select2({ data: [{id: _this.model.get('id'), text: _this.model.get('grupo_nombre')}] }).trigger('change');
+                        _this.$resourceField.append("<option value="+ _this.model.get('id') +">"+ _this.model.get('grupo_nombre') +"</option>");
                         _this.$resourceField.val(_this.model.get('id')).trigger('change');
                     },
                     'subgrupo' : function() {
-                        _this.$resourceField.select2({ data: [{id: _this.model.get('id'), text: _this.model.get('subgrupo_nombre')}] }).trigger('change');
+                        _this.$resourceField.append("<option value="+ _this.model.get('id') +">"+ _this.model.get('subgrupo_nombre') +"</option>");
                         _this.$resourceField.val(_this.model.get('id')).trigger('change');
                     },
                     'unidadmedida' : function() {
-                        _this.$resourceField.select2({ data: [{id: _this.model.get('id'), text: _this.model.get('unidadmedida_nombre')}] }).trigger('change');
+                        _this.$resourceField.append("<option value="+ _this.model.get('id') +">"+ _this.model.get('unidadmedida_nombre') +"</option>");
                         _this.$resourceField.val(_this.model.get('id')).trigger('change');
                     },
                     'unidadnegocio' : function() {
-                        _this.$resourceField.select2({ data: [{id: _this.model.get('id'), text: _this.model.get('unidadnegocio_nombre')}] }).trigger('change');
+                        _this.$resourceField.append("<option value="+ _this.model.get('id') +">"+ _this.model.get('unidadnegocio_nombre') +"</option>");
                         _this.$resourceField.val(_this.model.get('id')).trigger('change');
                     },
                     'folder' : function() {
-                        _this.$resourceField.select2({ data: [{id: _this.model.get('id'), text: _this.model.get('folder_nombre')}] }).trigger('change');
+                        _this.$resourceField.append("<option value="+ _this.model.get('id') +">"+ _this.model.get('folder_nombre') +"</option>");
+                        _this.$resourceField.val(_this.model.get('id')).trigger('change');
+                    },
+                    'tipoorden' : function() {
+                        _this.$resourceField.append("<option value="+ _this.model.get('id') +">"+ _this.model.get('tipoorden_nombre') +"</option>");
+                        _this.$resourceField.val(_this.model.get('id')).trigger('change');
+                    },
+                    'solicitante' : function() {
+                        _this.$resourceField.append("<option value="+ _this.model.get('id') +">"+ _this.model.get('solicitante_nombre') +"</option>");
+                        _this.$resourceField.val(_this.model.get('id')).trigger('change');
+                    },
+                    'prioridad' : function() {
+                        _this.$resourceField.append("<option value="+ _this.model.get('id') +">"+ _this.model.get('prioridad_nombre') +"</option>");
+                        _this.$resourceField.val(_this.model.get('id')).trigger('change');
+                    },
+                    'sitio' : function() {
+                        _this.$resourceField.append("<option value="+ _this.model.get('id') +">"+ _this.model.get('sitio_nombre') +"</option>");
                         _this.$resourceField.val(_this.model.get('id')).trigger('change');
                     },
                 };

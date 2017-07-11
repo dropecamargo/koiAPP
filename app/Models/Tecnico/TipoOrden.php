@@ -58,7 +58,7 @@ class TipoOrden extends BaseModel
         return Cache::rememberForever( self::$key_cache , function() {
             $query = TipoOrden::query();
             $query->where('tipoorden_activo', true);
-            $query->orderBy('id', 'asc');
+            $query->orderBy('tipoorden_nombre', 'asc');
             $collection = $query->lists('tipoorden_nombre', 'id');
 
             $collection->prepend('', '');
