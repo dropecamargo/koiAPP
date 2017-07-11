@@ -8,7 +8,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Models\Cartera\ChposFechado1,App\Models\Cartera\ChposFechado2,App\Models\Cartera\Factura1,App\Models\Cartera\Factura3,App\Models\Cartera\Banco;
-use App\Models\Base\Tercero,App\Models\Base\Documentos,App\Models\Base\Sucursal;
+use App\Models\Base\Tercero,App\Models\Base\Documentos,App\Models\Base\Sucursal, App\Models\Base\Regional;
 
 use DB, Log, Datatables,Auth;
 
@@ -74,6 +74,12 @@ class ChposFechado1Controller extends Controller
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar sucursal, verifique información ó por favor consulte al administrador.']);
                     }
+                    // Recupero instancia de Regional  
+                    $regional = Regional::find($sucursal->sucursal_regional);
+                    if(!$regional instanceof Regional) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar regional, verifique información ó por favor consulte al administrador.']);
+                    }
                     // Recupero instancia de Tercero(cliente)  
                     $tercero = Tercero::where('tercero_nit', $request->chposfechado1_tercero)->first();
                     if(!$tercero instanceof Tercero) {
@@ -87,7 +93,7 @@ class ChposFechado1Controller extends Controller
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar banco, verifique información ó por favor consulte al administrador.']);
                     }
 
-                    $consecutive = $sucursal->sucursal_chp + 1;
+                    $consecutive = $regional->regional_chp + 1;
 
                     // chposfechado1
                     $cheque1->fill($data);
@@ -133,9 +139,9 @@ class ChposFechado1Controller extends Controller
                         }
                         $cheque2->save();
                     }
-                    // Update consecutive sucursal_chp in Sucursal
-                    $sucursal->sucursal_chp = $consecutive;
-                    $sucursal->save();
+                    // Update consecutive regional_chp in Regional
+                    $regional->regional_chp = $consecutive;
+                    $regional->save();
 
                     // Commit Transaction
                     DB::commit();

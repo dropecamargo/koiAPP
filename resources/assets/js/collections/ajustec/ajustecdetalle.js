@@ -24,9 +24,15 @@ app || (app = {});
 
         validar: function(data){
             var error = { success: false };
-
             var model = _.find(this.models, function(item){
-                return item.get('factura3_id') == data.factura3_id;
+                if (item.has('factura3_id') ) {
+                    return item.get('factura3_id') == data.factura3_id;
+
+                }else if ( item.has('anticipo_id') ){
+                    return item.get('anticipo_id') == data.anticipo_id;
+                }else if ( item.has('chdevuelto_id') ){
+                    return item.get('chdevuelto_id') == data.chdevuelto_id;
+                }
             });
 
             if(data.deleted){
@@ -38,7 +44,9 @@ app || (app = {});
 
             if(model instanceof Backbone.Model){
                 model.set('factura3_valor', data.factura3_valor);
+                model.set('ajustec2_valor', data.ajustec2_valor);
                 model.set('ajustec2_naturaleza', data.ajustec2_naturaleza);
+                model.set('valor', data.valor);
                 return error;
             }
 
@@ -50,7 +58,6 @@ app || (app = {});
             var debitos = _.filter(this.models, function(item){
                 return item.get('ajustec2_naturaleza') == 'D';
             });
-
             return _.reduce(debitos, function(sum, model) {
                 return sum + parseFloat( model.get('factura3_valor') ? model.get('factura3_valor') : model.get('ajustec2_valor'))
             }, 0);

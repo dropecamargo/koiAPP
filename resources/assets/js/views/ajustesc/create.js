@@ -73,8 +73,14 @@ app || (app = {});
         },
 
         changeDocumento: function (e){
+            // Preparo sucursal
+            var sucursal = this.$('#ajustec1_sucursal').val();
+            if (sucursal == '')
+                return alertify.error('Campo de sucursal se encuentra vacío por favor ingrese una sucursal');
+
             var data = window.Misc.formToJson( e.target );
                 data.tercero = this.$(e.currentTarget).attr('data-tercero');
+                data.sucursal = sucursal;
                 data.call = 'ajustesc';
 
             if( !_.isUndefined(data.ajustec2_documentos_doc) && !_.isNull(data.ajustec2_documentos_doc) && data.ajustec2_documentos_doc != ''){

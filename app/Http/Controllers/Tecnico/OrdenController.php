@@ -250,6 +250,11 @@ class OrdenController extends Controller
             if( $orden instanceof Orden ) {
                 DB::beginTransaction();
                 try {
+                    if(empty(trim($request->orden_serie)) || is_null(trim($request->orden_serie))){
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'El producto es obligatorio.']);
+                    }
+
                     $producto = Producto::where('producto_serie', $request->orden_serie)->first();
                     if(!$producto instanceof Producto ) {
                         DB::rollback();

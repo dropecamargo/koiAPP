@@ -26,11 +26,10 @@ app || (app = {});
             var model = _.find(this.models, function(item) {
                 return item.get('id') == id;
             });
-
             var object = {
                 'factura1_numero': model.get('factura1_numero'), 
                 'factura3_id': model.get('id'),
-                'factura3_valor': type == 'input' ? valor : model.get('factura3_saldo'),
+                'factura3_valor': !_.isUndefined(valor) ? valor : model.get('factura3_saldo'),
                 'factura3_cuota': model.get('factura3_cuota')
             }
             // Setter attributes to model
@@ -57,7 +56,7 @@ app || (app = {});
                 }); 
             }else if ( concepto.call == 'ajustesc'){
                 modelo = $.extend(object, {
-                    'ajustec2_valor': model.get('factura3_saldo'),
+                    'ajustec2_valor': !_.isUndefined(valor) ? valor : model.get('factura3_saldo'),
                     'ajustec2_documentos_doc': concepto.ajustec2_documentos_doc,
                     'ajustec2_factura1': model.get('factura3_factura1'),
                     'ajustec2_tercero': concepto.tercero,

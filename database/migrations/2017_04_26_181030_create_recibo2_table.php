@@ -26,7 +26,6 @@ class CreateRecibo2Table extends Migration
             $table->foreign('recibo2_recibo1')->references('id')->on('recibo1')->onDelete('restrict');
             $table->foreign('recibo2_conceptosrc')->references('id')->on('conceptosrc')->onDelete('restrict');
             $table->foreign('recibo2_documentos_doc')->references('id')->on('documentos')->onDelete('restrict');
-            $table->foreign('recibo2_id_doc')->references('id')->on('factura3')->onDelete('restrict');
         });
     }
 

@@ -7,8 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\Models\Cartera\Nota1, App\Models\Cartera\Nota2, App\Models\Cartera\ConceptoNota, App\Models\Cartera\Factura3, App\Models\Cartera\ChDevuelto;
-use App\Models\Base\Sucursal, App\Models\Base\Tercero, App\Models\Base\Documentos;
+use App\Models\Cartera\Nota1, App\Models\Cartera\Nota2, App\Models\Cartera\ConceptoNota, App\Models\Cartera\Factura3, App\Models\Cartera\ChDevuelto, App\Models\Cartera\Anticipo1;
+use App\Models\Base\Sucursal,App\Models\Base\Regional, App\Models\Base\Tercero, App\Models\Base\Documentos;
 use DB, Log, Auth, Datatables;
 
 class Nota1Controller extends Controller
@@ -66,6 +66,12 @@ class Nota1Controller extends Controller
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar sucursal, verifique información ó por favor consulte al administrador.']);
                     }
+                    // Recuperar Regional 
+                    $regional = Regional::find($sucursal->sucursal_regional);
+                    if(!$regional instanceof Regional) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar regional, verifique información ó por favor consulte al administrador.']);
+                    }
 
                     $tercero = Tercero::where('tercero_nit', $request->nota1_tercero)->first();
                     if(!$tercero instanceof Tercero) {
@@ -87,7 +93,7 @@ class Nota1Controller extends Controller
                     //
 
                     // Consecutive
-                    $consecutive = $sucursal->sucursal_nota + 1;
+                    $consecutive = $regional->regional_nota + 1;
 
                     // Nota
                     $nota->fill($data);
@@ -123,11 +129,11 @@ class Nota1Controller extends Controller
                                 $factura3->factura3_saldo = $factura3->factura3_saldo <= 0 ? $factura3->factura3_saldo + $item['factura3_valor'] : $factura3->factura3_saldo - $item['factura3_valor'];
                                 $factura3->save();
 
-                                $nota2->nota2_id_doc = $factura3->id;
+                                $nota2->nota2_id_doc = $factura3->factura3_factura1;
                                 $nota2->nota2_valor = $item['factura3_valor'];
                             break;
                             case 'CHD':
-                                $chdevuelto = ChDevuelto::find($item['nota2_chdevuelto']);
+                                $chdevuelto = ChDevuelto::find($item['chdevuelto_id']);
                                 if ( !$chdevuelto instanceof ChDevuelto ) {
                                     DB::rollback();
                                     return response()->json(['success'=>false, 'errors'=>"No es posible recuperar cheque devuelto, por favor verifique ó consulte con el administrador."]);   
@@ -138,6 +144,18 @@ class Nota1Controller extends Controller
                                 $nota2->nota2_valor = $item['nota2_valor'];
                             break;
 
+                            case 'ANTI':
+                                $anticipo = Anticipo1::find( $item['anticipo_id'] );
+                                if (!$anticipo instanceof Anticipo1) {
+                                    DB::rollback();
+                                    return response()->json(['success'=>false, 'errors'=>"No es posible recuperar anticipo, por favor verifique ó consulte con el administrador."]); 
+                                }
+                                $anticipo->anticipo1_saldo = $anticipo->anticipo1_saldo <= 0 ? $anticipo->anticipo1_saldo + $item['nota2_valor'] : $anticipo->anticipo1_saldo - $item['nota2_valor'];
+                                $anticipo->save();
+                                $nota2->nota2_id_doc = $anticipo->id;
+                                $nota2->nota2_valor = $item['nota2_valor'];
+                            break;
+
                             default:
                                 $nota2->nota2_valor = $item['nota2_valor'];
                             break;
@@ -145,9 +163,9 @@ class Nota1Controller extends Controller
                         $nota2->save();
                     }
 
-                    // Update consecutive sucursal_reci in Sucursal
-                    $sucursal->sucursal_nota = $consecutive;
-                    $sucursal->save();
+                    // Update consecutive sucursal_nota in Regional
+                    $regional->regional_nota = $consecutive;
+                    $regional->save();
 
                     // Commit Transaction
                     DB::commit();

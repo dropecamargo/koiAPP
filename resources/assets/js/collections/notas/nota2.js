@@ -25,9 +25,15 @@ app || (app = {});
 
         validar: function(data){
             var error = { success: false };
-
             var model = _.find(this.models, function(item){
-                return item.get('factura3_id') == data.factura3_id;
+                if (item.has('factura3_id') ) {
+                    return item.get('factura3_id') == data.factura3_id;
+
+                }else if ( item.has('anticipo_id') ){
+                    return item.get('anticipo_id') == data.anticipo_id;
+                }else if ( item.has('chdevuelto_id') ){
+                    return item.get('chdevuelto_id') == data.chdevuelto_id;
+                }
             });
 
             if(data.deleted){
@@ -36,9 +42,10 @@ app || (app = {});
                     this.remove(model);
                 }
             }
-
             if(model instanceof Backbone.Model){
                 model.set('factura3_valor', data.factura3_valor);
+                model.set('nota2_valor', data.nota2_valor);
+                model.set('valor', data.valor);
                 return error;
             }
 
@@ -48,7 +55,7 @@ app || (app = {});
 
         valor: function() {
             return this.reduce(function(sum, model) {
-                return sum + parseFloat(model.get('factura3_valor'))
+                return sum + parseFloat( model.get('factura3_valor') ? model.get('factura3_valor') : model.get('nota2_valor'))
             }, 0);
         },
 

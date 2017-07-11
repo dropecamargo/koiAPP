@@ -140,6 +140,6 @@
         <td><%- documentos_nombre %></td>
         <td><%- ( factura1_numero != "" ) ? factura1_numero : nota2_numero  %></td>
         <td><%- factura3_cuota %></td>
-        <td class="text-right"><%- ( factura3_valor != "" ) ? window.Misc.currency( factura3_valor ) : window.Misc.currency( nota2_valor ) %></td>
+        <td class="text-right"><%- !_.isUndefined(factura3_valor) && !_.isNull(factura3_valor) && factura3_valor != '' ? window.Misc.currency( factura3_valor ) : window.Misc.currency( nota2_valor ) %></td>
     </script>
 @stop

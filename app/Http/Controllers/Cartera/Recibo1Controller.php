@@ -7,9 +7,9 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\Models\Cartera\Recibo1, App\Models\Cartera\Recibo2, App\Models\Cartera\Recibo3, App\Models\Cartera\Factura3, App\Models\Cartera\Factura1,App\Models\Cartera\ChposFechado1,App\Models\Cartera\ChDevuelto;
+use App\Models\Cartera\Recibo1, App\Models\Cartera\Recibo2, App\Models\Cartera\Recibo3, App\Models\Cartera\Factura3, App\Models\Cartera\Factura1,App\Models\Cartera\ChposFechado1,App\Models\Cartera\ChDevuelto,App\Models\Cartera\Anticipo1;
 use App\Models\Cartera\Conceptosrc, App\Models\Cartera\CuentaBanco, App\Models\Cartera\MedioPago,App\Models\Cartera\Banco;
-use App\Models\Base\Documentos, App\Models\Base\Sucursal, App\Models\Base\Tercero;
+use App\Models\Base\Documentos, App\Models\Base\Sucursal,App\Models\Base\Regional, App\Models\Base\Tercero;
 use DB, Log, Auth, Datatables;
 
 class Recibo1Controller extends Controller
@@ -83,14 +83,20 @@ class Recibo1Controller extends Controller
                     if(!$sucursal instanceof Sucursal) {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar sucursal, verifique información ó por favor consulte al administrador.']);
+                    } 
+                    $regional = Regional::find($sucursal->sucursal_regional);
+                    if(!$regional instanceof Regional) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar regional, verifique información ó por favor consulte al administrador.']);
                     }                    
                     // Consecutive
-                    $consecutive = $sucursal->sucursal_reci + 1;
+                    $consecutive = $regional->regional_reci + 1;
 
                     // Recibo1
                     $recibo1->fill($data);
                     $recibo1->recibo1_tercero = $tercero->id;
                     $recibo1->recibo1_sucursal = $sucursal->id;
+                    $recibo1->recibo1_numero = $consecutive;
                     $recibo1->recibo1_documentos = $documento->id;
                     $recibo1->recibo1_cuentas = $cuentabanco->id;
                     $recibo1->recibo1_usuario_elaboro = Auth::user()->id;
@@ -130,7 +136,7 @@ class Recibo1Controller extends Controller
 
                                         $factura3->factura3_saldo = $factura3->factura3_saldo <= 0 ? $factura3->factura3_saldo + $item['factura3_valor'] : $factura3->factura3_saldo - $item['factura3_valor'];
                                         $factura3->save();
-                                        $recibo2->recibo2_id_doc = $factura3->id;
+                                        $recibo2->recibo2_id_doc = $factura3->factura3_factura1;
                                     }
 
                                     if(!empty($item['factura3_valor'])){
@@ -139,7 +145,7 @@ class Recibo1Controller extends Controller
                                 break;
 
                                 case 'CHD':
-                                    $chdevuelto = ChDevuelto::find($item['recibo2_chdevuelto']);
+                                    $chdevuelto = ChDevuelto::find($item['chdevuelto_id']);
                                     if ( !$chdevuelto instanceof ChDevuelto ) {
                                         DB::rollback();
                                         return response()->json(['success'=>false, 'errors'=>"No es posible recuperar cheque devuelto, por favor verifique ó consulte con el administrador."]);   
@@ -149,7 +155,17 @@ class Recibo1Controller extends Controller
                                     $recibo2->recibo2_id_doc = $chdevuelto->id;
                                     $recibo2->recibo2_valor = $item['recibo2_valor'];
                                 break;
-
+                                case 'ANTI':
+                                    $anticipo = Anticipo1::find( $item['anticipo_id'] );
+                                    if (!$anticipo instanceof Anticipo1) {
+                                        DB::rollback();
+                                        return response()->json(['success'=>false, 'errors'=>"No es posible recuperar anticipo, por favor verifique ó consulte con el administrador."]); 
+                                    }
+                                    $anticipo->anticipo1_saldo = $anticipo->anticipo1_saldo <= 0 ? $anticipo->anticipo1_saldo + $item['recibo2_valor'] : $anticipo->anticipo1_saldo - $item['recibo2_valor'];
+                                    $anticipo->save();
+                                    $recibo2->recibo2_id_doc = $anticipo->id;
+                                    $recibo2->recibo2_valor = $item['recibo2_valor'];
+                                break;
                                 default:
                                     $recibo2->recibo2_valor = $item['recibo2_valor'];
                                 break;
@@ -197,9 +213,9 @@ class Recibo1Controller extends Controller
                         $recibo3->save();
                     }
 
-                    // Update consecutive sucursal_reci in Sucursal
-                    $sucursal->sucursal_reci = $consecutive;
-                    $sucursal->save();
+                    // Update consecutive regional_reci in Regional
+                    $regional->regional_reci = $consecutive;
+                    $regional->save();
 
                     // Commit Transaction
                     DB::commit();

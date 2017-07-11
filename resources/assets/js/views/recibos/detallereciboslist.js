@@ -82,7 +82,7 @@ app || (app = {});
         storeOne: function ( data ) {    
             var _this = this;
 
-            if( !_.isUndefined(data.factura3_id) ){
+            if( !_.isUndefined(data.factura3_id) || !_.isUndefined(data.anticipo_id) || !_.isUndefined(data.chdevuelto_id) ){
                 var valid = this.collection.validar(data);
                 if(!valid.success){
                     this.totalize();

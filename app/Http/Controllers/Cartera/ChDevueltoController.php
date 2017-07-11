@@ -94,7 +94,13 @@ class ChDevueltoController extends Controller
                     $sucursal = Sucursal::find($cheque1->chposfechado1_sucursal);
                     if (!$sucursal instanceof Sucursal) {
                         DB::rollback();
-                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar sucuesal de cheque a devolver,por favor verifique la información ó por favor consulte al administrador.']);
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar sucursal de cheque a devolver,por favor verifique la información ó por favor consulte al administrador.']);
+                    }
+                    // Recupero regional de cheque a devolver
+                    $regional = Regional::find($sucursal->sucursal_regional);
+                    if (!$sucursal instanceof Regional) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar regional de cheque a devolver,por favor verifique la información ó por favor consulte al administrador.']);
                     }
                     // Causa de devolucion
                     $causal = Causal::find($request->chdevuelto_causal);
@@ -105,8 +111,8 @@ class ChDevueltoController extends Controller
                     // clear marcacion en factura3
                     $cheque1->clearKey();
 
-                    // Consecutive sucursal_chd
-                    $consecutive = $sucursal->sucursal_chd + 1;
+                    // Consecutive regional_chd
+                    $consecutive = $regional->regional_chd + 1;
 
                     $chdevuelto->chdevuelto_chposfechado1 = $cheque1->id;
                     $chdevuelto->chdevuelto_sucursal = $sucursal->id;
@@ -125,9 +131,9 @@ class ChDevueltoController extends Controller
                     $cheque1->chposfechado1_devuelto = true;
                     $cheque1->save();
 
-                    // Update consecutive sucursal_chd in Sucursal
-                    $sucursal->sucursal_chd = $consecutive;
-                    $sucursal->save();
+                    // Update consecutive regional_chd in Sucursal
+                    $regional->regional_chd = $consecutive;
+                    $regional->save();
 
                     // Commit Transaction
                     DB::commit();

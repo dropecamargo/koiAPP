@@ -526,14 +526,20 @@
                                 </div>
                                 <div class="tab-pane" id="tab_cierre">
                                     {{-- Conttent Cierre --}}
-                                    <div class="row">
-                                        <div class="col-md-12 col-sm-6 col-xs-12">
-                                            <div class="info-box">
-                                                <span class="info-box-icon bg-red"><i class="fa fa-hand-paper-o"></i></span>
-                                                <div class="info-box-content">
-                                                    <span class="info-box-text"><strong>¿Está seguro que desea cerrar la orden ?</strong></span><br>
-                                                    <div class="col-md-1 col-md-offset-1 col-sm-6 col-xs-6 click-cerrar-orden">
-                                                        <a href="#" class="btn btn-sm btn-default btn-block">SI</a>
+                                    <div class="box box-solid">
+                                        <div class="box-body">
+                                            <div class="row">
+                                                <div class="col-md-4 col-md-offset-4">
+                                                    <div class="info-box">
+                                                        <span class="info-box-icon bg-red"><i class="fa fa-hand-paper-o"></i></span>
+                                                        <div class="info-box-content">
+                                                            <span class="info-box-number"><h5><b>¿Está seguro que desea cerrar la orden?</b></h5></span>
+                                                            <span>
+                                                                <div class="col-sm-2 col-sm-offset-10 click-cerrar-orden">
+                                                                    <a href="#" class="btn btn-sm btn-default">SI</a>
+                                                                </div>
+                                                            </span>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>

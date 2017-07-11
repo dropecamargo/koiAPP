@@ -8,7 +8,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Models\Cartera\Anticipo1,App\Models\Cartera\Anticipo2,App\Models\Cartera\Anticipo3;
-use App\Models\Base\Tercero,App\Models\Base\Documentos,App\Models\Base\Sucursal;
+use App\Models\Base\Tercero,App\Models\Base\Documentos,App\Models\Base\Sucursal,App\Models\Base\Regional;
 use App\Models\Cartera\Conceptosrc, App\Models\Cartera\CuentaBanco, App\Models\Cartera\MedioPago;
 use DB, Log, Datatables,Auth;
 
@@ -110,7 +110,14 @@ class AnticipoController extends Controller
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar sucursal, verifique información ó por favor consulte al administrador.']);
                     }
-                    $consecutive = $sucursal->sucursal_anti + 1;
+                    // Recupero instancia regional
+                   $regional = Regional::find($sucursal->sucursal_regional);
+                    if(!$regional instanceof Regional) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar regional, verifique información ó por favor consulte al administrador.']);
+                    }
+                    // consecutive
+                    $consecutive = $regional->regional_anti + 1;
                     
                     $anticipo1->fill($data);
                     $anticipo1->anticipo1_sucursal = $sucursal->id;  
@@ -169,9 +176,9 @@ class AnticipoController extends Controller
                         $anticipo3->save();
                     }
 
-                    // Update consecutive sucursal_anti in Sucursal
-                    $sucursal->sucursal_anti = $consecutive;
-                    $sucursal->save();
+                    // Update consecutive regional_anti in Regional
+                    $regional->regional_anti = $consecutive;
+                    $regional->save();
 
                     // Commit Transaction
                     DB::commit();
