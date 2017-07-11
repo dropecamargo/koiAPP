@@ -139,7 +139,7 @@ class Recibo1Controller extends Controller
                                 break;
 
                                 case 'CHD':
-                                    $chdevuelto = ChDevuelto::find($item['recibo2_chdevuelto']);
+                                    $chdevuelto = ChDevuelto::find($item['chdevuelto_id']);
                                     if ( !$chdevuelto instanceof ChDevuelto ) {
                                         DB::rollback();
                                         return response()->json(['success'=>false, 'errors'=>"No es posible recuperar cheque devuelto, por favor verifique ó consulte con el administrador."]);   
@@ -150,7 +150,7 @@ class Recibo1Controller extends Controller
                                     $recibo2->recibo2_valor = $item['recibo2_valor'];
                                 break;
                                 case 'ANTI':
-                                    $anticipo = Anticipo1::find( $item['recibo2_anticipo'] );
+                                    $anticipo = Anticipo1::find( $item['anticipo_id'] );
                                     if (!$anticipo instanceof Anticipo1) {
                                         DB::rollback();
                                         return response()->json(['success'=>false, 'errors'=>"No es posible recuperar anticipo, por favor verifique ó consulte con el administrador."]); 

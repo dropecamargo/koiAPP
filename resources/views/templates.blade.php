@@ -1330,7 +1330,7 @@
     <td><%- chdevuelto_fecha %></td>
     <% if( call == 'ajustesc' ) { %> 
     	<td><input type="checkbox" id="debito_<%- id %>" name="debito_<%- id %>" class="change-naturalezachd"></td>
-    	<td><input type="checkbox" id="credito_<%- id %>" name="credito_<%- id %>" class="change-naturalezachd" checked></td>
+    	<td><input type="checkbox" id="credito_<%- id %>" name="credito_<%- id %>" class="change-naturalezachd"></td>
     <% } %>
     <td><%- window.Misc.currency( chdevuelto_saldo ) %></td>
     <td><input type="text" id="pagar_<%- id %>" name="pagar_<%- id %>" class="form-control input-sm change-pagar-chd" data-currency-negative></td>
@@ -1345,7 +1345,7 @@
     <td><%- anticipo1_fecha %></td>
     <% if( call == 'ajustesc' ) { %> 
     	<td><input type="checkbox" id="debito_<%- id %>" name="debito_<%- id %>" class="change-naturalezaanti"></td>
-    	<td><input type="checkbox" id="credito_<%- id %>" name="credito_<%- id %>" class="change-naturalezaanti" checked></td>
+    	<td><input type="checkbox" id="credito_<%- id %>" name="credito_<%- id %>" class="change-naturalezaanti"></td>
     <% } %>
     <td><%- window.Misc.currency( anticipo1_saldo ) %></td>
     <td><input type="text" id="pagar_<%- id %>" name="pagar_<%- id %>" class="form-control input-sm change-pagar-anti" data-currency-negative></td>
@@ -1535,14 +1535,23 @@
     </div>
 </script>
 <script type="text/template" id="add-tercero-cartera-tpl">
-	<td><%- documentos_nombre %></td>
+	<td>
+		<% if(documentos_codigo == 'FACT'){ %>
+			<a href="<%- window.Misc.urlFull( Route.route('facturas.show', {facturas: factura3_id} ))%>" title="Ver documento" target="_blank"><%- documentos_nombre %></a> 
+		<% }else if(documentos_codigo == 'CHD') {%>
+			<a href="<%- window.Misc.urlFull( Route.route('chequesdevueltos.show', {chequesdevueltos: factura3_id} ))%>" title="Ver documento" target="_blank"><%- documentos_nombre %></a> 
+		<% }else if(documentos_codigo == 'ANTI'){ %>
+			<a href="<%- window.Misc.urlFull( Route.route('anticipos.show', {anticipos: factura3_id} ))%>" title="Ver documento" target="_blank"><%- documentos_nombre %></a> 
+		<% } %>
+	</td>
 	<td><%- factura1_numero %> </td>
     <td><%- sucursal_nombre %></td>
     <td><%- factura3_cuota %></td>
     <td><%- moment(factura1_fh_elaboro).format('YYYY-MM-DD') %></td>
 	<td><%- factura3_vencimiento %></td>
 	<td><%- days %></td>
-    <td class="text-right"><%- window.Misc.currency(factura3_saldo) %></td>
+    <td><%- window.Misc.currency(factura3_valor) %></td>
+    <td><%- window.Misc.currency(factura3_saldo) %></td>
     <td>
     	<% if(factura3_chposfechado1 != null){ %>
     		<a href=" <%- window.Misc.urlFull( Route.route('cheques.show', {cheques: factura3_chposfechado1} ))%>" target="_blank" class="btn-default btn-xs" >CHP</a>
@@ -1553,7 +1562,8 @@
     <tr>
         <td colspan="6"></td>
         <th>Total</th>
-        <th class="text-right total">0</th>
+        <th id="valor">0</th>
+        <th id="total">0</th>
         <th></th>
     </tr>
     <tr>
@@ -1561,62 +1571,62 @@
         <th>Tipo</th>
         <th class="text-center">N</th>
         <th class="text-right">Valor T.</th>
-        <th colspan="3"></th>
+        <th colspan="4"></th>
     </tr>
     <tr class="bg-table">
         <td colspan="3"></td>
         <td>Por vencer</td>
         <td class="text-center" id="porvencer">0</td>
         <td class="text-right" id="porvencer_saldo">0</td>
-        <td colspan="3"></td>
+        <td colspan="4"></td>
     </tr>
     <tr class="bg-menor30">
         <td colspan="3"></td>
         <td>Menor a 30</td>
         <td class="text-center" id="menor30">0</td>
         <td class="text-right" id="menor30_saldo">0</td>
-        <td colspan="3"></td>
+        <td colspan="4"></td>
     </tr>
     <tr class="bg-menor60">
         <td colspan="3"></td>
         <td>De 31 a 60</td>
         <td class="text-center" id="menor60">0</td>
         <td class="text-right" id="menor60_saldo">0</td>
-        <td colspan="3"></td>
+        <td colspan="4"></td>
     </tr>
     <tr class="bg-menor90">
         <td colspan="3"></td>
         <td>De 61 a 90</td>
         <td class="text-center" id="menor90">0</td>
         <td class="text-right" id="menor90_saldo">0</td>
-        <td colspan="3"></td>
+        <td colspan="4"></td>
     </tr>
     <tr class="bg-menor180">
         <td colspan="3"></td>
         <td>De 91 a 180</td>
         <td class="text-center" id="menor180">0</td>
         <td class="text-right" id="menor180_saldo">0</td>
-        <td colspan="3"></td>
+        <td colspan="4"></td>
     </tr>
     <tr class="bg-menor360">
         <td colspan="3"></td>
         <td>De 181 a 360</td>
         <td class="text-center" id="menor360">0</td>
         <td class="text-right" id="menor360_saldo">0</td>
-        <td colspan="3"></td>
+        <td colspan="4"></td>
     </tr>
     <tr class="bg-mayor360">
         <td colspan="3"></td>
         <td>Mayor a 360</td>
         <td class="text-center" id="mayor360">0</td>
         <td class="text-right" id="mayor360_saldo">0</td>
-        <td colspan="3"></td>
+        <td colspan="4"></td>
     </tr>
     <tr>
         <td colspan="3"></td>
         <th>Total</th>
         <th class="text-center" id="total_count">0</th>
         <th class="text-right total">0</th>
-        <td colspan="3"></td>
+        <td colspan="4"></td>
     </tr>
 </script>

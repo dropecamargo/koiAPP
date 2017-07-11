@@ -164,7 +164,7 @@
 	            <div class="tab-pane active" id="tab_cartera">
 					<div class="box-body">
 						<div class="box-body table-responsive">
-							<table id="browse-factura3-list" class="table table-bordered" cellspacing="0" width="100%">
+							<table id="browse-factura3-list" class="table table-bordered table-condensed" cellspacing="0" width="100%">
 					            <thead>
 						            <tr>
 		                                <th>Documento</th>
@@ -174,6 +174,7 @@
 		                                <th>Fecha</th>
 		                                <th>Vencimiento</th>
 		                                <th>N. Dias</th>
+		                                <th>Valor</th>
 		                                <th>Saldo</th>
 		                                <th></th>
 		                            </tr>

@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\Models\Cartera\Nota1, App\Models\Cartera\Nota2, App\Models\Cartera\ConceptoNota, App\Models\Cartera\Factura3, App\Models\Cartera\ChDevuelto;
+use App\Models\Cartera\Nota1, App\Models\Cartera\Nota2, App\Models\Cartera\ConceptoNota, App\Models\Cartera\Factura3, App\Models\Cartera\ChDevuelto, App\Models\Cartera\Anticipo1;
 use App\Models\Base\Sucursal, App\Models\Base\Tercero, App\Models\Base\Documentos;
 use DB, Log, Auth, Datatables;
 
@@ -127,7 +127,7 @@ class Nota1Controller extends Controller
                                 $nota2->nota2_valor = $item['factura3_valor'];
                             break;
                             case 'CHD':
-                                $chdevuelto = ChDevuelto::find($item['nota2_chdevuelto']);
+                                $chdevuelto = ChDevuelto::find($item['chdevuelto_id']);
                                 if ( !$chdevuelto instanceof ChDevuelto ) {
                                     DB::rollback();
                                     return response()->json(['success'=>false, 'errors'=>"No es posible recuperar cheque devuelto, por favor verifique ó consulte con el administrador."]);   
@@ -135,6 +135,18 @@ class Nota1Controller extends Controller
                                 $chdevuelto->chdevuelto_saldo = $chdevuelto->chdevuelto_saldo <= 0 ? $chdevuelto->chdevuelto_saldo + $item['nota2_valor'] : $chdevuelto->chdevuelto_saldo - $item['nota2_valor'];
                                 $chdevuelto->save();
                                 $nota2->nota2_id_doc = $chdevuelto->id;
+                                $nota2->nota2_valor = $item['nota2_valor'];
+                            break;
+
+                            case 'ANTI':
+                                $anticipo = Anticipo1::find( $item['anticipo_id'] );
+                                if (!$anticipo instanceof Anticipo1) {
+                                    DB::rollback();
+                                    return response()->json(['success'=>false, 'errors'=>"No es posible recuperar anticipo, por favor verifique ó consulte con el administrador."]); 
+                                }
+                                $anticipo->anticipo1_saldo = $anticipo->anticipo1_saldo <= 0 ? $anticipo->anticipo1_saldo + $item['nota2_valor'] : $anticipo->anticipo1_saldo - $item['nota2_valor'];
+                                $anticipo->save();
+                                $nota2->nota2_id_doc = $anticipo->id;
                                 $nota2->nota2_valor = $item['nota2_valor'];
                             break;
 

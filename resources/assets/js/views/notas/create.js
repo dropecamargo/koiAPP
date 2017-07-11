@@ -90,14 +90,16 @@ app || (app = {});
         },
 
         changeConcepto: function(e){
-            this.$el.find('tbody').html('');
-            this.detalleNotaList.reset();
+            // Preparo sucursal
+            var sucursal = this.$('#nota1_sucursal').val();
+            if (sucursal == '')
+                return alertify.error('Campo de sucursal se encuentra vacío por favor ingrese una sucursal');
 
             var data = window.Misc.formToJson( e.target );
                 data.tercero = this.$('#nota1_conceptonota').attr('data-tercero');
                 data.nota1_conceptonota = this.$('#nota1_conceptonota').val();
+                data.sucursal = sucursal;
                 data.call = 'nota';
-
             if( !_.isUndefined(data.nota2_documentos_doc) && !_.isNull(data.nota2_documentos_doc) && data.nota2_documentos_doc != ''){
                 window.Misc.evaluateActionsCartera({
                     'data': data,

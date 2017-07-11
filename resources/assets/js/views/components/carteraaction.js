@@ -131,6 +131,8 @@ app || (app = {});
                 // Hide modal && reset select
                 if(this.parameters.data.call == 'recibo'){
                     this.$concepto.val('').trigger('change');
+                }else if(this.parameters.data.call == 'ajustesc'){
+                    this.$('#ajustec2_documentos_doc').val('').change();
                 }
                 this.$modal.modal('hide');                
             }
@@ -171,7 +173,6 @@ app || (app = {});
         referenceAnticipo: function(attributes){
             this.$wraperAnticipo = this.$('#browse-anticipo-cartera-list');
             this.$wraperError = this.$('#error-concepto-cartera');
-            
             this.anticiposlist.fetch({ reset: true, data: { tercero: attributes.data.tercero, sucursal:attributes.data.sucursal } });
 
             // Hide errors
@@ -203,7 +204,7 @@ app || (app = {});
             var id = this.$(e.currentTarget).attr('id');
                 id = id.split("_");
             if( !selected ) {
-                var modelo = this.detalleFacturaList.agregar(id[1], this.parameters.data, 'check');
+                var modelo = this.detalleFacturaList.agregar(id[1], this.parameters.data, undefined);
                 this.$('#pagar_'+id[1]).val( modelo.factura3_valor );
                 this.collection.trigger('store', modelo );
             }else{
@@ -220,9 +221,13 @@ app || (app = {});
             var id = this.$(e.currentTarget).attr('id');
                 id = id.split("_");
             if( !selected ) {
-                var modelo = this.anticiposlist.agregar(id[1], this.parameters.data, 0, '');
+                var modelo = this.anticiposlist.agregar(id[1], this.parameters.data, undefined, '');
                 this.$('#pagar_'+id[1]).val( modelo.valor );
                 this.collection.trigger('store', modelo );
+            }else{
+                var modelo = this.anticiposlist.eliminar(id[1], this.parameters.data);
+                this.collection.trigger('store', modelo );
+                this.$('#pagar_'+id[1]).val('');
             }
               
             this.ready();
@@ -233,9 +238,13 @@ app || (app = {});
             var id = this.$(e.currentTarget).attr('id');
                 id = id.split("_");
             if( !selected ) {
-                var modelo = this.chDevueltoList.agregar( id[1], this.parameters.data, 0, '' );
+                var modelo = this.chDevueltoList.agregar( id[1], this.parameters.data, undefined, '' );
                 this.$('#pagar_'+id[1]).val( modelo.valor );
                 this.collection.trigger('store', modelo );
+            }else{
+                var modelo = this.chDevueltoList.eliminar(id[1], this.parameters.data);
+                this.collection.trigger('store', modelo );
+                this.$('#pagar_'+id[1]).val('');
             }
               
             this.ready();
@@ -268,17 +277,11 @@ app || (app = {});
                     this.$('#debito_'+id[1]).iCheck('uncheck');
                     naturaleza = 'C';
                 }
-
-                var modelo = this.detalleFacturaList.agregar(id[1], this.parameters.data, naturaleza);
+                var valor = this.$('#pagar_'+id[1]).inputmask('unmaskedvalue');
+                var modelo = this.detalleFacturaList.agregar(id[1], this.parameters.data, naturaleza, valor);
                 this.$('#pagar_'+id[1]).val( modelo.factura3_valor );
                 this.$('#check_'+id[1]).iCheck('check');
                 this.collection.trigger('store', modelo );
-            }else{
-                var modelo = this.detalleFacturaList.eliminar(id[1], this.parameters.data);
-                this.collection.trigger('store', modelo );
-                this.$('#check_'+id[1]).iCheck('uncheck');
-                this.$('#pagar_'+id[1]).val('');
-                return;
             }
         },
         // Event change naturaleza D->debito C->credito
@@ -297,7 +300,8 @@ app || (app = {});
                     naturaleza = 'C';
                 }
 
-                var modelo = this.chDevueltoList.agregar(id[1], this.parameters.data, 0,naturaleza);
+                var valor = this.$('#pagar_'+id[1]).inputmask('unmaskedvalue');
+                var modelo = this.chDevueltoList.agregar(id[1], this.parameters.data, valor,naturaleza);
                 this.$('#pagar_'+id[1]).val( modelo.valor );
                 this.$('#check_'+id[1]).iCheck('check');
                 this.collection.trigger('store', modelo );
@@ -318,8 +322,8 @@ app || (app = {});
                     this.$('#debito_'+id[1]).iCheck('uncheck');
                     naturaleza = 'C';
                 }
-
-                var modelo = this.anticiposlist.agregar(id[1], this.parameters.data, 0,naturaleza);
+                var valor = this.$('#pagar_'+id[1]).inputmask('unmaskedvalue');
+                var modelo = this.anticiposlist.agregar(id[1], this.parameters.data, valor, naturaleza);
                 this.$('#pagar_'+id[1]).val( modelo.valor );
                 this.$('#check_'+id[1]).iCheck('check');
                 this.collection.trigger('store', modelo );
@@ -332,8 +336,12 @@ app || (app = {});
             var id = this.$(e.currentTarget).attr('id');
             id = id.split("_");
 
+            this.$debito = this.$('#debito_'+id[1]).is(':checked');
+            var naturaleza = this.$debito ? 'D' : 'C';
+                naturaleza == 'C' ? this.$('#credito_'+id[1]).iCheck('check') : '';
+
             this.$('#check_'+id[1]).iCheck('check');
-            var modelo = this.detalleFacturaList.agregar(id[1], this.parameters.data, 'input', valor);
+            var modelo = this.detalleFacturaList.agregar(id[1], this.parameters.data, naturaleza, valor);
             this.collection.trigger('store', modelo );
 
             this.ready();
@@ -344,8 +352,12 @@ app || (app = {});
             var id = this.$(e.currentTarget).attr('id');
             id = id.split("_");
 
+            this.$debito = this.$('#debito_'+id[1]).is(':checked');
+            var naturaleza = this.$debito ? 'D' : 'C';
+                naturaleza == 'C' ? this.$('#credito_'+id[1]).iCheck('check') : '';
+            
+            var modelo = this.chDevueltoList.agregar(id[1], this.parameters.data, valor, naturaleza);
             this.$('#check_'+id[1]).iCheck('check');
-            var modelo = this.chDevueltoList.agregar(id[1], this.parameters.data, valor);
             this.collection.trigger('store', modelo );
 
             this.ready();
@@ -356,8 +368,12 @@ app || (app = {});
             var id = this.$(e.currentTarget).attr('id');
             id = id.split("_");
 
+            this.$debito = this.$('#debito_'+id[1]).is(':checked');
+            var naturaleza = this.$debito ? 'D' : 'C';
+                naturaleza == 'C' ? this.$('#credito_'+id[1]).iCheck('check') : '';
+
             this.$('#check_'+id[1]).iCheck('check');
-            var modelo = this.anticiposlist.agregar(id[1], this.parameters.data, valor);
+            var modelo = this.anticiposlist.agregar(id[1], this.parameters.data, valor, naturaleza);
             this.collection.trigger('store', modelo );
 
             this.ready();
@@ -449,7 +465,28 @@ app || (app = {});
         * Render all view tast of the collection
         */
         addAllChd:function(){
-            this.chDevueltoList.forEach( this.addOneChd, this );
+            var _this = this;
+            if( this.chDevueltoList.length > 0){
+                this.chDevueltoList.forEach(function(model) {
+                    _this.addOneChd(model);
+
+                    var modelo = _.find(_this.collection.models, function(item){
+                        return item.get('chdevuelto_id') == model.get('id');
+                    });
+                    
+                    if (modelo instanceof Backbone.Model ){
+                        if( _this.parameters.data.call == 'ajustesc'){
+                            if( modelo.get('ajustec2_naturaleza') == 'D' ){
+                                _this.$('#debito_'+model.get('id')).iCheck('check');
+                            }else if( modelo.get('ajustec2_naturaleza') == 'C' ){
+                                _this.$('#credito_'+model.get('id')).iCheck('check');
+                            }
+                        }   
+                        _this.$("#check_"+model.get('id')).iCheck('check');
+                        _this.$("#pagar_"+model.get('id')).val( modelo.get('valor'));
+                    }
+                });
+            }
         },
         /**
         * Render view task by model
@@ -470,7 +507,32 @@ app || (app = {});
         * Render all view tast of the collection
         */
         addAllAnticipo:function(){
-            this.anticiposlist.forEach( this.addOneAnticipo, this );
+            var _this = this;
+
+            if( this.anticiposlist.length > 0){
+                this.anticiposlist.forEach(function(model) {
+                    _this.addOneAnticipo(model);
+
+                    var modelo = _.find(_this.collection.models, function(item){
+                        return item.get('anticipo_id') == model.get('id');
+                    });
+                    
+                    if (modelo instanceof Backbone.Model ){
+                        if( _this.parameters.data.call == 'ajustesc'){
+                            if( modelo.get('ajustec2_naturaleza') == 'D' ){
+                                _this.$('#debito_'+model.get('id')).iCheck('check');
+                            }else if( modelo.get('ajustec2_naturaleza') == 'C' ){
+                                _this.$('#credito_'+model.get('id')).iCheck('check');
+                            }
+                        }   
+                        _this.$("#check_"+model.get('id')).iCheck('check');
+                        _this.$("#pagar_"+model.get('id')).val( modelo.get('valor') );
+                    }
+                });
+            }
+            // else{
+            //     _this.addOneAnticipo( anticpo = new app.AnticipoModel );
+            // }
         },
     });
 })(jQuery, this, this.document);

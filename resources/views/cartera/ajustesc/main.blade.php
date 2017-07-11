@@ -222,7 +222,7 @@
 
     <script type="text/template" id="add-item-ajustec-tpl">
         <% if( factura3_factura1 == '' ) { %>
-        <th colspan="9" class="text-center">NO EXISTEN FACTURAS DE ESTE CLIENTE</th>
+            <th colspan="9" class="text-center">NO EXISTEN FACTURAS DE ESTE CLIENTE</th>
         <% }else{ %>
             <td><input type="checkbox" id="check_<%- id %>" name="check_<%- id %>" class="change-check"></td>
             <td><%- moment(factura1_fh_elaboro).format('YYYY-MM-DD') %></td>
@@ -231,7 +231,7 @@
             <td><%- factura3_cuota %></td>
             <td><%- window.Misc.currency(factura3_saldo) %></td>
             <td><input type="checkbox" id="debito_<%- id %>" name="debito_<%- id %>" class="change-naturaleza"></td>
-            <td><input type="checkbox" id="credito_<%- id %>" name="credito_<%- id %>" class="change-naturaleza" checked></td>
+            <td><input type="checkbox" id="credito_<%- id %>" name="credito_<%- id %>" class="change-naturaleza"></td>
             <td><input type="text" id="pagar_<%- id %>" name="pagar_<%- id %>" class="form-control input-sm change-pagar" data-currency-negative></td>
         <% } %>
     </script>

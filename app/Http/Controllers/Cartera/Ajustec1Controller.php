@@ -135,7 +135,7 @@ class Ajustec1Controller extends Controller
                                 break;
                             case 'CHD':
                                 $tercero = Tercero::getTercero($item['ajustec2_tercero']);
-                                $chdevuelto = ChDevuelto::find($item['ajustec2_chdevuelto']);
+                                $chdevuelto = ChDevuelto::find($item['chdevuelto_id']);
                                 if ( !$chdevuelto instanceof ChDevuelto ) {
                                     DB::rollback();
                                     return response()->json(['success'=>false, 'errors'=>"No es posible recuperar cheque devuelto, por favor verifique ó consulte con el administrador."]);   
@@ -152,7 +152,7 @@ class Ajustec1Controller extends Controller
                             break;
                             case 'ANTI':
                                 $tercero = Tercero::getTercero($item['ajustec2_tercero']);
-                                $anticipo = Anticipo1::find( $item['ajustec2_anticipo'] );
+                                $anticipo = Anticipo1::find( $item['anticipo_id'] );
                                 if (!$anticipo instanceof Anticipo1) {
                                     DB::rollback();
                                     return response()->json(['success'=>false, 'errors'=>"No es posible recuperar anticipo, por favor verifique ó consulte con el administrador."]); 

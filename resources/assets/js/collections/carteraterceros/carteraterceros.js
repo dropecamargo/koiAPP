@@ -21,12 +21,16 @@ app || (app = {});
         initialize : function(){
         },
 
-        valor: function() {
+        saldo: function() {
             return this.reduce(function(sum, model) {
                 return sum + parseFloat(model.get('factura3_saldo'))
             }, 0);
         },
-
+        valor: function(){
+            return this.reduce(function(sum, model) {
+                return sum + parseFloat(model.get('factura3_valor'))
+            }, 0);
+        },
         calculate: function(modelos){
             var saldo = _.reduce(modelos, function(sum, model) {
                 return sum + parseFloat(model.get('factura3_saldo'))
@@ -94,6 +98,7 @@ app || (app = {});
         },
 
         totalize: function() {
+            var saldo = this.saldo();
             var valor = this.valor();
             var porvencer = this.matchPorvencer();
             var mayor360 = this.matchMayor360();
@@ -104,7 +109,7 @@ app || (app = {});
             var menor30 = this.matchMenor30();
             var tcount = porvencer.count + menor30.count + menor60.count + menor90.count + menor180.count +menor360.count + mayor360.count;
 
-            return { 'valor': valor, 'porvencer': porvencer, 'mayor360': mayor360, 'menor360': menor360, 'menor180': menor180, 'menor90': menor90, 'menor60': menor60, 'menor30': menor30, 'tcount': tcount}
+            return { 'valor':valor,'saldo': saldo, 'porvencer': porvencer, 'mayor360': mayor360, 'menor360': menor360, 'menor180': menor180, 'menor90': menor90, 'menor60': menor60, 'menor30': menor30, 'tcount': tcount}
         },
    });
 })(this, this.document);

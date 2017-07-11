@@ -73,7 +73,8 @@ app || (app = {});
             this.$el.find('tfoot').html( this.template() );
 
             // References
-            this.$valor = this.$('.total');
+            this.$saldo = this.$('#total');
+            this.$valor = this.$('#valor');
             this.$totalCount = this.$('#total_count');
 
             // Info adicional
@@ -100,8 +101,8 @@ app || (app = {});
         */
         totalize: function () {
             var data = this.collection.totalize();
-
-            if(this.$valor.length) {
+            if(this.$saldo.length > 0 && this.$valor.length > 0 ) {
+                this.$saldo.html( window.Misc.currency(data.saldo) );
                 this.$valor.html( window.Misc.currency(data.valor) );
             }
 
