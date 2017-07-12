@@ -8,7 +8,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Models\Cartera\Ajustec1, App\Models\Cartera\Ajustec2, App\Models\Cartera\ConceptoAjustec, App\Models\Cartera\Factura3, App\Models\Cartera\ChDevuelto, App\Models\Cartera\Anticipo1;
-use App\Models\Base\Tercero, App\Models\Base\Sucursal, App\Models\Base\Documentos;
+use App\Models\Base\Tercero, App\Models\Base\Sucursal, App\Models\Base\Regional, App\Models\Base\Documentos;
 use DB, Log, Cache, Datatables, Auth;
 
 class Ajustec1Controller extends Controller
