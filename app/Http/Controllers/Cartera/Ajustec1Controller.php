@@ -77,6 +77,11 @@ class Ajustec1Controller extends Controller
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar sucursal, verifique información ó por favor consulte al administrador.']);
                     }
+                    $regional = Regional::find($sucursal->sucursal_regional);
+                    if(!$regional instanceof Regional) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar sucursal, verifique información ó por favor consulte al administrador.']);
+                    }
 
                     $conceptoajustec = ConceptoAjustec::find($request->ajustec1_conceptoajustec);
                     if(!$conceptoajustec instanceof ConceptoAjustec) {
@@ -85,11 +90,12 @@ class Ajustec1Controller extends Controller
                     }
 
                     // Consecutive
-                    $consecutive = $sucursal->sucursal_ajuc + 1;
+                    $consecutive = $regional->regional_ajuc + 1;
 
                     // ajustec
                     $ajustec->fill($data);
                     $ajustec->ajustec1_sucursal = $sucursal->id;
+                    $ajustec->ajustec1_numero = $consecutive;
                     $ajustec->ajustec1_tercero = $tercero->id;
                     $ajustec->ajustec1_documentos = $documento->id;
                     $ajustec->ajustec1_conceptoajustec = $conceptoajustec->id;
@@ -176,9 +182,9 @@ class Ajustec1Controller extends Controller
                         $ajustec2->save();
                     }
 
-                    // Update consecutive sucursal_reci in Sucursal
-                    $sucursal->sucursal_ajuc = $consecutive;
-                    $sucursal->save();
+                    // Update consecutive regional_ajuc in Sucursal
+                    $regional->regional_ajuc = $consecutive;
+                    $regional->save();
 
                     // Commit Transaction
                     DB::commit();
