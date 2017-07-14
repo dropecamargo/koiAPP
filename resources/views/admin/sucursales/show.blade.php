@@ -2,7 +2,7 @@
 
 @section('breadcrumb')
     <li><a href="{{ route('sucursales.index')}}">Sucursales</a></li>
-    <li class="active">{{ $sucursal->id }}</li>
+    <li class="active">{{ $sucursal->id_sucursal  }}</li>
 @stop
 
 @section('module')
@@ -36,7 +36,7 @@
                     <a href=" {{ route('sucursales.index') }}" class="btn btn-default btn-sm btn-block">{{ trans('app.comeback') }}</a>
                 </div>
                 <div class="col-md-2 col-sm-6 col-xs-6 text-right">
-                    <a href=" {{ route('sucursales.edit', ['sucursales' => $sucursal->id])}}" class="btn btn-primary btn-sm btn-block"> {{trans('app.edit')}}</a>
+                    <a href=" {{ route('sucursales.edit', ['sucursales' => $sucursal->id_sucursal ])}}" class="btn btn-primary btn-sm btn-block"> {{trans('app.edit')}}</a>
                 </div>
             </div>
         </div>

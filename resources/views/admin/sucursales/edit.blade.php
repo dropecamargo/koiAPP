@@ -2,7 +2,7 @@
 
 @section('breadcrumb')
 	<li><a href="{{ route('sucursales.index') }}">Sucursales</a></li>
-	<li><a href="{{ route('sucursales.show', ['sucursales' => $sucursal->id]) }}">{{ $sucursal->id }}</a></li>
+	<li><a href="{{ route('sucursales.show', ['sucursales' => $sucursal->id_sucursal]) }}">{{ $sucursal->id_sucursal }}</a></li>
 	<li class="active">Editar</li>
 @stop
 
@@ -16,7 +16,7 @@
 	        <div class="box-footer with-border">
 	        	<div class="row">
 					<div class="col-md-2 col-md-offset-4 col-sm-6 col-xs-6 text-left">
-						<a href="{{ route('sucursales.show', ['sucursales' => $sucursal->id]) }}" class="btn btn-default btn-sm btn-block">{{ trans('app.cancel') }}</a>
+						<a href="{{ route('sucursales.show', ['sucursales' => $sucursal->id_sucursal]) }}" class="btn btn-default btn-sm btn-block">{{ trans('app.cancel') }}</a>
 					</div>
 					<div class="col-md-2 col-sm-6 col-xs-6 text-right">
 						<button type="submit" class="btn btn-primary btn-sm btn-block">{{ trans('app.save') }}</button>

@@ -57,7 +57,6 @@ app || (app = {});
                     if(documents == 'anticipo') consecutive = resp.regional_anti;
                     if(documents == 'chequepos') consecutive = resp.regional_chp;
                     if(documents == 'orden') consecutive = resp.regional_ord;
-                    
                     // Set consecutive
                     _this.$consecutive.val( parseInt(consecutive) + 1);
                 })
