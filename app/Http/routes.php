@@ -50,6 +50,8 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::resource('municipios', 'Admin\MunicipioController', ['only' => ['index']]);
 	Route::resource('paises', 'Admin\PaisController', ['only' => ['index']]);
 	Route::resource('sucursales', 'Admin\SucursalController', ['except' => ['destroy']]);
+	Route::resource('ubicaciones', 'Admin\UbicacionController', ['except' => ['destroy']]);
+
 	Route::resource('regionales', 'Admin\RegionalController', ['except' => ['destroy']]);
 	Route::resource('puntosventa', 'Admin\PuntoVentaController', ['except' => ['destroy']]);
 	Route::resource('documento', 'Admin\DocumentosController', ['except' => ['destroy']]);

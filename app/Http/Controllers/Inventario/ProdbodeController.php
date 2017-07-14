@@ -22,17 +22,17 @@ class ProdbodeController extends Controller
             $producto = Producto::find($request->producto_id);
             if(!$producto instanceof Producto){
                 return response()->json(['success' => false, 'errors' => 'No es posible recuperar producto, por favor verifique la información ó consulte al administrador.']);
-            }
+            }   
 
             $query = Prodbode::query();
+            $query->select('producto_serie','producto_nombre', 'sucursal_nombre','producto.id');
             $query->join('producto', 'prodbode.prodbode_serie', '=', 'producto.id');
             $query->join('sucursal', 'prodbode.prodbode_sucursal', '=', 'sucursal.id');
-            if ($request->has('sucursal')) {
-                $query->where('prodbode_sucursal', $request->sucursal)->where('prodbode_cantidad' ,'>', 0);
-            }
             $query->where('producto_referencia', $producto->producto_serie);
-            $query->select('producto_serie','producto_nombre', 'sucursal_nombre','producto.id');
-            return response()->json(['success' => true, 'series' => $query->get()]);
+            $query->whereRaw('prodbode_cantidad > 0');
+            
+            $prodbode = $query->get();
+            return response()->json(['success' => true, 'series' => $prodbode]);
         }
     }
 

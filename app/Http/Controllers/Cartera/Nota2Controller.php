@@ -28,8 +28,8 @@ class Nota2Controller extends Controller
                 $query->join('nota1','nota2_nota1', '=', 'nota1.id');
                 $query->join('conceptonota','nota1_conceptonota', '=', 'conceptonota.id');
                 $query->join('documentos','nota2_documentos_doc', '=', 'documentos.id');
-                $query->join('factura3','nota2_id_doc', '=', 'factura3.id');
-                $query->join('factura1','factura3_factura1', '=', 'factura1.id');
+                $query->leftJoin('factura3','nota2_id_doc', '=', 'factura3.id');
+                $query->leftJoin('factura1','factura3_factura1', '=', 'factura1.id');
                 $query->where('nota2_nota1', $request->nota2);
                 $nota2 = $query->get();
             }

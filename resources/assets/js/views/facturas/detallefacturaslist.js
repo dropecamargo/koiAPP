@@ -150,7 +150,6 @@ app || (app = {});
         */
         removeOne: function (e) {
             e.preventDefault();
-            console.log(e); 
             var resource = $(e.currentTarget).attr("data-resource");
                 model = this.collection.get(resource);
 

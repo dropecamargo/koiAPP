@@ -50,7 +50,7 @@
         <div class="row">
             <div class="form-group col-md-4">
                 <label for="sucursal_regional" class="control-label">Regional</label>
-                <select name="sucursal_regional" id="sucursal_regional" class="form-control select2-default change-actividad-koi-component" required >
+                <select name="sucursal_regional" id="sucursal_regional" class="form-control select2-default-clear" required >
                     @foreach( App\Models\Base\Regional::getRegionales() as $key => $value)
                         <option value="{{ $key }}" <%- sucursal_regional == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
                     @endforeach

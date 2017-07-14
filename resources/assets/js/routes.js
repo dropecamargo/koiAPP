@@ -39,6 +39,11 @@ app || (app = {});
             'sucursales/create(/)': 'getSucursalesCreate',
             'sucursales/:sucursal/edit(/)': 'getSucursalesEdit',
 
+            //Ubicaciones
+            'ubicaciones(/)': 'getUbicacionesMain',
+            'ubicaciones/create(/)': 'getUbicacionCreate',
+            'ubicaciones/:ubicacion/edit(/)': 'getUbicacionEdit',
+
             //Regionales
             'regionales(/)': 'getRegionalesMain',
             'regionales/create(/)': 'getRegionalesCreate',
@@ -509,9 +514,39 @@ app || (app = {});
 
             this.createSucursalView = new app.CreateSucursalView({ model: this.sucursalModel });
             this.sucursalModel.fetch();
-            console.log(this.sucursalModel);
+        },
+        // Ubicaciones
+        getUbicacionesMain: function () {
+
+            if ( this.mainUbicacionesView instanceof Backbone.View ){
+                this.mainUbicacionesView.stopListening();
+                this.mainUbicacionesView.undelegateEvents();
+            }
+            this.mainUbicacionesView = new app.MainUbicacionesView( );
         },
 
+        getUbicacionCreate: function () {
+            this.ubicacionModel = new app.UbicacionModel();
+
+            if ( this.createUbicacionView instanceof Backbone.View ){
+                this.createUbicacionView.stopListening();
+                this.createUbicacionView.undelegateEvents();
+            }
+            this.createUbicacionView = new app.CreateUbicacionView({ model: this.ubicacionModel });
+            this.createUbicacionView.render();
+        },
+
+        getUbicacionEdit: function (ubicacion) {
+            this.ubicacionModel = new app.UbicacionModel();
+            this.ubicacionModel.set({'id': ubicacion}, {silent: true});
+
+            if ( this.createUbicacionView instanceof Backbone.View ){
+                this.createUbicacionView.stopListening();
+                this.createUbicacionView.undelegateEvents();
+            }
+            this.createUbicacionView = new app.CreateUbicacionView({ model: this.ubicacionModel });
+            this.ubicacionModel.fetch();
+        },
         //Regionales
         getRegionalesMain:function(){
             if ( this.mainRegionalesView instanceof Backbone.View ){
@@ -545,7 +580,6 @@ app || (app = {});
 
             this.createRegionalView = new app.CreateRegionalView({ model: this.regionalModel });
             this.regionalModel.fetch();
-            console.log(this.regionalModel);
         },
 
         // Vistas de Departamentos

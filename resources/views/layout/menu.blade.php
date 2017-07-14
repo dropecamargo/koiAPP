@@ -5,7 +5,7 @@
     </li>
 
     {{-- Administracion --}}
-    <li class="treeview {{ in_array(Request::segment(1), ['puntosventa','empresa', 'terceros', 'actividades', 'tiposactividad', 'documento', 'municipios', 'departamentos', 'sucursales','regionales', 'modulos', 'permisos', 'roles','paises']) ? 'active' : '' }}">
+    <li class="treeview {{ in_array(Request::segment(1), ['puntosventa','empresa', 'terceros', 'actividades', 'tiposactividad', 'documento', 'municipios', 'departamentos', 'sucursales','ubicaciones','regionales', 'modulos', 'permisos', 'roles','paises']) ? 'active' : '' }}">
         <a href="{{ route('dashboard') }}">
             <i class="fa fa-cog"></i> <span>Administración</span><i class="fa fa-angle-left pull-right"></i>
         </a>
@@ -30,7 +30,7 @@
             </li>
 
             {{-- Referencias administracion --}}
-            <li class="{{ in_array(Request::segment(1), ['puntosventa', 'modulos', 'permisos','actividades', 'municipios', 'documento', 'tiposactividad', 'departamentos', 'sucursales','regionales','paises']) ? 'active' : '' }}">
+            <li class="{{ in_array(Request::segment(1), ['puntosventa', 'modulos', 'permisos','actividades', 'municipios', 'documento', 'tiposactividad', 'departamentos', 'sucursales','ubicaciones','regionales','paises']) ? 'active' : '' }}">
                 <a href="#">
                     <i class="fa fa-circle-o"></i> Referencias <i class="fa fa-angle-left pull-right"></i>
                 </a>
@@ -68,7 +68,9 @@
                     <li class="{{ Request::segment(1) == 'tiposactividad' ? 'active' : '' }}">
                         <a href="{{ route('tiposactividad.index') }}"><i class="fa fa-circle-o"></i> Tipo actividad</a>
                     </li>
-                    
+                    <li class="{{ Request::segment(1) == 'ubicaciones' ? 'active' : '' }}">
+                        <a href="{{ route('ubicaciones.index') }}"><i class="fa fa-circle-o"></i> Ubicaciones</a>
+                    </li>
                 </ul>
             </li> 
         </ul>
@@ -278,6 +280,17 @@
                     <li class="{{ Request::segment(1) == 'traslados' ? 'active' : '' }}">
                         <a href="{{ route('traslados.index') }}"><i class="fa fa-arrows"></i> Traslados</a>
                     </li> 
+                </ul>
+            </li>
+            {{--Reportes inventario--}}
+            <li class="">
+                <a href="#">
+                    <i class="fa fa-bar-chart-o"></i> Reportes<i class= "fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="treeview-menu">
+                    <li class="">
+                        <a href="#"><i class="fa fa-circle-o"></i> Reporte1</a>
+                    </li>
                 </ul>
             </li>
 

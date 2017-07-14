@@ -17,7 +17,6 @@ app || (app = {});
         * Constructor Method
         */
         initialize : function() {
- 			//console.log('initialize UserLoginView');
             //Init Attributes 
             this.$loginForm = $('#form-login-account');
             this.$loginForm.validator();

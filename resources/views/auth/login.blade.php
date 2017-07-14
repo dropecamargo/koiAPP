@@ -45,7 +45,7 @@
 
 				{!! Form::open(['route' => 'login', 'id' => 'form-login-account', 'data-toggle' => 'validator']) !!}
 					<div class="form-group has-feedback">
-						<input type="text" name="username" class="form-control" placeholder="Usuario" value="{{ old('username') }}" pattern="^[_A-z0-9]{1,}$" maxlength="15"required>
+						<input type="text" name="username" class="form-control" placeholder="Usuario" value="{{ old('username') }}" pattern="^[_A-z0-9]{1,}$" maxlength="15" required>
 						<span class="glyphicon glyphicon-user form-control-feedback"></span>
 					</div>
 					<div class="form-group has-feedback">
