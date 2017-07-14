@@ -7,10 +7,10 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\Models\Base\Sucursal;
-use DB, Log, Datatables, Cache;
+use App\Models\Base\Ubicacion, App\Models\Base\Sucursal;
+use Datatables,Cache,Log,DB;
 
-class SucursalController extends Controller
+class UbicacionController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,11 +20,10 @@ class SucursalController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $query = Sucursal::query();
-            $query->select('sucursal.id as id', 'sucursal_nombre' , 'sucursal_direccion');
+            $query = Ubicacion::query();
             return Datatables::of($query)->make(true);
         }
-        return view('admin.sucursales.index');
+        return view('admin.ubicaciones.index');
     }
 
     /**
@@ -34,7 +33,7 @@ class SucursalController extends Controller
      */
     public function create()
     {
-        return view('admin.sucursales.create');
+        return view('admin.ubicaciones.create');
     }
 
     /**
@@ -47,28 +46,36 @@ class SucursalController extends Controller
     {
         if ($request->ajax()) {
             $data = $request->all();
-            $sucursal = new Sucursal;
-            if ($sucursal->isValid($data)) {
+            $ubicacion = new Ubicacion;
+            if ($ubicacion->isValid($data)) {
                 DB::beginTransaction();
                 try {
-                    // sucursal
-                    $sucursal->fill($data);
-                    $sucursal->fillBoolean($data);
-                    $sucursal->save();
+                    // Recupero instancia de sucursal
+                    $sucursal = Sucursal::find($request->ubicacion_sucursal);
+                    if (!$sucursal instanceof Sucursal) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar sucursal, por favor verifique la información o consulte al administrador.']);
+                    }
+                    // Ubicacion
+                    $ubicacion->fill($data);
+                    $ubicacion->fillBoolean($data);
+                    $ubicacion->ubicacion_sucursal = $sucursal->id;
+                    $ubicacion->save();
 
                     // Commit Transaction
                     DB::commit();
-                    // Forget cache
-                    Cache::forget( Sucursal::$key_cache );
 
-                    return response()->json(['success' => true, 'id' => $sucursal->id]);
+                    // Forget cache
+                    Cache::forget( Ubicacion::$key_cache );
+
+                    return response()->json(['success' => true, 'id' => $ubicacion->id]);
                 }catch(\Exception $e){
                     DB::rollback();
                     Log::error($e->getMessage());
                     return response()->json(['success' => false, 'errors' => trans('app.exception')]);
                 }
             }
-            return response()->json(['success' => false, 'errors' => $sucursal->errors]);
+            return response()->json(['success' => false, 'errors' => $ubicacion->errors]);
         }
         abort(403);
     }
@@ -81,11 +88,11 @@ class SucursalController extends Controller
      */
     public function show(Request $request, $id)
     {
-        $sucursal = Sucursal::getSucursal($id);
+        $ubicacion = Ubicacion::findOrFail($id);
         if ($request->ajax()) {
-            return response()->json($sucursal);
+            return response()->json($ubicacion);
         }
-        return view('admin.sucursales.show', ['sucursal' => $sucursal]);
+        return view('admin.ubicaciones.show', ['ubicacion' => $ubicacion]);
     }
 
     /**
@@ -96,8 +103,8 @@ class SucursalController extends Controller
      */
     public function edit($id)
     {
-        $sucursal = Sucursal::findOrFail($id);
-        return view('admin.sucursales.edit', ['sucursal' => $sucursal]);
+        $ubicacion = Ubicacion::findOrFail($id);
+        return view('admin.ubicaciones.edit', ['ubicacion' => $ubicacion]);
     }
 
     /**
@@ -112,29 +119,36 @@ class SucursalController extends Controller
         if ($request->ajax()) {
             $data = $request->all();
 
-            $sucursal = Sucursal::findOrFail($id);
-            if ($sucursal->isValid($data)) {
+            $ubicacion = Ubicacion::findOrFail($id);
+            if ($ubicacion->isValid($data)) {
                 DB::beginTransaction();
                 try {
-                    // sucursal
-                    $sucursal->fill($data);
-                    $sucursal->fillBoolean($data);
-                    $sucursal->save();
+                    // Recupero instancia de sucursal
+                    $sucursal = Sucursal::find($request->ubicacion_sucursal);
+                    if (!$sucursal instanceof Sucursal) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar sucursal, por favor verifique la información o consulte al administrador.']);
+                    }
+                    // Ubicacion
+                    $ubicacion->fill($data);
+                    $ubicacion->fillBoolean($data);
+                    $ubicacion->ubicacion_sucursal = $sucursal->id;
+                    $ubicacion->save();
 
                     // Commit Transaction
                     DB::commit();
-                    
-                    // Forget cache
-                    Cache::forget( Sucursal::$key_cache );
 
-                    return response()->json(['success' => true, 'id' => $sucursal->id]);
+                    // Forget cache
+                    Cache::forget( Ubicacion::$key_cache );
+
+                    return response()->json(['success' => true, 'id' => $ubicacion->id]);
                 }catch(\Exception $e){
                     DB::rollback();
                     Log::error($e->getMessage());
                     return response()->json(['success' => false, 'errors' => trans('app.exception')]);
                 }
             }
-            return response()->json(['success' => false, 'errors' => $sucursal->errors]);
+            return response()->json(['success' => false, 'errors' => $ubicacion->errors]);
         }
         abort(403);
     }

@@ -60,7 +60,6 @@ app || (app = {});
         */
         showInfo: function () {
             var attributes = this.model.toJSON();
-            console.log(attributes);
 
             // Render info
             this.$modalInfo.find('.content-modal').empty().html( this.templateInfo( attributes ) );

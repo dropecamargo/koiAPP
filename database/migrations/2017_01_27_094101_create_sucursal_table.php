@@ -12,15 +12,17 @@ class CreateSucursalTable extends Migration
      */
     public function up()
     {
-        Schema::create('sucursal', function (Blueprint $table) {
+        Schema::create('sucursal', function(Blueprint $table) {
             $table->engine = 'InnoDB';
 
             $table->increments('id');
             $table->integer('sucursal_regional')->unsigned();
+            $table->integer('sucursal_defecto')->unsigned()->nullable();
             $table->string('sucursal_nombre', 200);
             $table->string('sucursal_direccion', 200);
             $table->string('sucursal_direccion_nomenclatura', 200);
             $table->string('sucursal_telefono', 15);
+            $table->boolean('sucursal_ubicaciones')->default(0);
             $table->boolean('sucursal_activo')->default(0);
             $table->integer('sucursal_pedn')->unsigned();
             $table->integer('sucursal_entr')->unsigned();

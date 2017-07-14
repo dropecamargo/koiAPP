@@ -119,14 +119,29 @@ class Producto extends BaseModel
     {
         if($this->producto_maneja_serie){
             $query = Prodbode::query();
+            $query->select('sucursal_nombre', DB::raw('count(sucursal_nombre) as prodbode_cantidad'), 'prodbode_reservado');
             $query->join('producto', 'prodbode.prodbode_serie', '=', 'producto.id');
             $query->join('sucursal', 'prodbode.prodbode_sucursal', '=', 'sucursal.id');
-            $query->where('producto_referencia', $this->producto_serie);
-            $query->select('sucursal_nombre', DB::raw('count(sucursal_nombre) as prodbode_cantidad'), 'prodbode_reservado');
-            $query->groupBy('sucursal_nombre');
-            return $query->get();
-        }
 
-        return $this->hasMany('App\Models\Inventario\Prodbode', 'prodbode_serie', 'id')->join('sucursal','prodbode.prodbode_sucursal','=','sucursal.id')->select('prodbode.*','sucursal_nombre');
+            if ($this->producto_serie == $this->producto_referencia) {
+                $query->where('producto_referencia', $this->producto_serie);
+            }else{
+                $query->where('producto_referencia', $this->producto_referencia);
+                $query->where('prodbode_serie', $this->id);
+            }
+            $query->whereRaw('prodbode_cantidad > 0');
+            $query->groupBy('sucursal_nombre');
+        }else if($this->producto_metrado){
+            $query = $this->hasMany('App\Models\Inventario\Rollo', 'rollo_serie', 'id')
+                        ->select('rollo.*',DB::raw('COUNT(rollo.id) AS rollo_rollos'),'sucursal_nombre')
+                        ->join('sucursal','rollo.rollo_sucursal','=','sucursal.id')
+                        ->whereRaw('rollo_saldo > 0')
+                        ->groupBy('rollo_sucursal','rollo_saldo');
+        }else{
+            $query = $this->hasMany('App\Models\Inventario\Prodbode', 'prodbode_serie', 'id')
+                        ->select('prodbode.*','sucursal_nombre')
+                        ->join('sucursal','prodbode.prodbode_sucursal','=','sucursal.id');
+        }
+        return $query->get();
     }
 }

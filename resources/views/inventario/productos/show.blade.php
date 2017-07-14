@@ -2,7 +2,7 @@
 
 @section('breadcrumb')
     <li><a href="{{ route('productos.index')}}">Productos</a></li>
-    <li class="active">{{ $producto->producto_codigo }}</li>
+    <li class="active">{{ $producto->id }}</li>
 @stop
 
 @section('module')
@@ -76,14 +76,14 @@
                                     <h3 class="box-title">Disponibilidad</h3>
                                 </div>
                                 <div class="box-body no-padding">
-                                    <table id="prodbode-search-table" class="table table-striped">
+                                    <table id="prodbode-search-table" class="table table-striped table-condensed">
                                         <tbody>
-                                            @if( !$producto->producto_maneja_serie)
+                                            @if( !$producto->producto_maneja_serie && !$producto->producto_metrado)
                                                 <tr>
-                                                    <th>Sucursal</th>
-                                                    <th>U. Disponible</th>
-                                                    <th>U. Reservadas</th>
-                                                    <th>Ubicacion</th>
+                                                    <th width="60%">Sucursal</th>
+                                                    <th width="5%">U. Disponible</th>
+                                                    <th width="5%">U. Reservadas</th>
+                                                    <th width="30%">Ubicacion</th>
                                                 </tr>
 
                                                 @if( count($prodbode) == 0 )
@@ -97,16 +97,16 @@
                                                         <td>{{ $item->sucursal_nombre }}</td>
                                                         <td>{{ $item->prodbode_cantidad }}</td>
                                                         <td>{{ $item->prodbode_reservado }}</td>
-                                                        <th><a class="btn add-ubicacion" data-id="{{ $item->id }}" data-sucursal="{{ $item->sucursal_nombre }}" data-serie="{{ $producto->producto_serie }}" data-nombre="{{ $producto->producto_nombre }}">Agregar</a></th>
+                                                        <th><a class="#">Agregar</a></th>
                                                     </tr>
                                                 @endforeach
                                             @endif
 
                                             @if( $producto->producto_maneja_serie)
                                                 <tr>
-                                                    <th>Sucursal</th>
-                                                    <th>U. Disponible</th>
-                                                    <th>U. Reservadas</th>
+                                                    <th width="50%">Sucursal</th>
+                                                    <th width="25%">U. Disponible</th>
+                                                    <th width="25%">U. Reservadas</th>
                                                 </tr>
                                                 
                                                 @if( count($prodbode) == 0 )
@@ -125,6 +125,27 @@
                                                 <tr>
                                                     <th colspan="4" class="text-center"><a class="btn get-series" id="{{ $producto->id }}">Ver series</a></th>
                                                 </tr>
+                                            @endif
+                                            @if ($producto->producto_metrado)
+                                                <tr>
+                                                    <th width="60%">Sucursal</th>
+                                                    <th width="20%">Rollo</th>
+                                                    <th width="20%">Metros (mts)</th>
+                                                </tr>
+
+                                                @if( count($prodbode) == 0 )
+                                                    <tr>
+                                                        <th colspan="3" class="text-center">NO EXISTEN UNIDADES EN INVENTARIO</th>
+                                                    </tr>
+                                                @endif
+
+                                                @foreach( $prodbode as $item)
+                                                    <tr>
+                                                        <td>{{ $item->sucursal_nombre }}</td>
+                                                        <td>{{ $item->rollo_rollos }}</td>
+                                                        <td>{{ $item->rollo_saldo }}</td>
+                                                    </tr>
+                                                @endforeach
                                             @endif
                                         </tbody>
                                     </table>
@@ -182,7 +203,7 @@
                                 <label class="control-label">Peso</label>
                             </div>
                             <div class="col-md-7">
-                                {{ $producto->producto_peso}} 
+                                {{ $producto->producto_peso}} kg
                             </div>
                         </div>
                         <div class="form-group col-md-12">
@@ -190,7 +211,7 @@
                                 <label class="control-label">Largo</label>
                             </div>
                             <div class="col-md-7">
-                                {{ $producto->producto_largo}} 
+                                {{ $producto->producto_largo}} cm
                             </div>
                         </div>
                         <div class="form-group col-md-12">
@@ -198,7 +219,7 @@
                                 <label class="control-label">Ancho</label>
                             </div>
                             <div class="col-md-7">
-                                {{ $producto->producto_ancho}} 
+                                {{ $producto->producto_ancho}} cm
                             </div>
                         </div>
                         <div class="form-group col-md-12">
@@ -206,7 +227,7 @@
                                 <label class="control-label">Alto</label>
                             </div>
                             <div class="col-md-7">
-                                {{ $producto->producto_alto}} 
+                                {{ $producto->producto_alto}} cm
                             </div>
                         </div>
                         <div class="form-group col-md-12">

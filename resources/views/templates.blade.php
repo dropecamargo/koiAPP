@@ -1114,7 +1114,6 @@
 </script>
 
 <script type="text/template" id="chooses-itemsrollos-tpl">
-    <td class="text-left"><%- id %></td>
     <td class="text-left"><%- rollo_lote %></td>
     <td class="text-left"><%- rollo_fecha %></td>
     <td class="text-left"><%- rollo_metros %></td>

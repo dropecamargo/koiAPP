@@ -126,20 +126,20 @@
         </div>
         <div class="row">
             <div class="form-group col-md-2">
-                <label for="producto_peso" class="control-label">Peso</label>
-                <input type="number" id="producto_peso" name="producto_peso" value="<%-producto_peso %>" placeholder="Peso" class="form-control input-sm input-toupper" min="1" required>
+                <label for="producto_peso" class="control-label">Peso (kg)</label><br>
+                <input type="text" id="producto_peso" name="producto_peso" value="<%-producto_peso %>" placeholder="Peso" class="form-control input-sm spinner-percentage" min="1" required>
             </div>
             <div class="form-group col-md-2">
-                <label for="producto_largo" class="control-label">Largo</label>
-                <input type="number" id="producto_largo" name="producto_largo" value="<%- producto_largo %>" placeholder="Largo" class="form-control input-sm input-toupper" min="1" required>
+                <label for="producto_largo" class="control-label">Largo (cm)</label><br>
+                <input type="text" id="producto_largo" name="producto_largo" value="<%- producto_largo %>" placeholder="Largo" class="form-control input-sm spinner-percentage" min="1" required>
             </div>
             <div class="form-group col-md-2">
-                <label for="producto_alto" class="control-label">Alto</label>
-                <input type="number" id="producto_alto" name="producto_alto" value="<%- producto_alto %>" placeholder="Alto" class="form-control input-sm input-toupper" min="1" required>
+                <label for="producto_alto" class="control-label">Alto (cm)</label><br>
+                <input type="text" id="producto_alto" name="producto_alto" value="<%- producto_alto %>" placeholder="Alto" class="form-control input-sm spinner-percentage" min="1" required>
             </div>
             <div class="form-group col-md-2">
-                <label for="producto_ancho" class="control-label">Ancho</label>
-                <input type="number" id="producto_ancho" name="producto_ancho" value="<%- producto_ancho %>" placeholder="Ancho" class="form-control input-sm input-toupper" min="1" required>
+                <label for="producto_ancho" class="control-label">Ancho (cm)</label><br>
+                <input type="text" id="producto_ancho" name="producto_ancho" value="<%- producto_ancho %>" placeholder="Ancho" class="form-control input-sm spinner-percentage" min="1" required>
             </div>
         </div>
         <div class="row">

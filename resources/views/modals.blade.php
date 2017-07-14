@@ -532,7 +532,6 @@
 			<div class="box-body table-responsive no-padding">
 				<table id="browse-chooseitemtollo-list" class="table table-hover table-bordered" cellspacing="0">
 		            <tr>
-		                <th>Item</th>
 		                <th>Lote</th>
 		                <th>Fecha De Ingreso</th>
 		                <th>Metros (m)</th>
@@ -541,7 +540,7 @@
 		            </tr>
 		            <tfoot>
 		            	<tr>
-		            		<th colspan ="4"></th>
+		            		<th colspan ="3"></th>
 		            		<th class="text-right">Total(m): </th>
 		            		<th id="metro_residuo" class="text-right"> <label class="label bg-green"> <%- data.ajuste2_cantidad_salida %></label></th>
 		            	</tr>

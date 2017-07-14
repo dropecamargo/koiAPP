@@ -26,7 +26,6 @@ class CreateAjustec2Table extends Migration
             $table->foreign('ajustec2_ajustec1')->references('id')->on('ajustec1')->onDelete('restrict');
             $table->foreign('ajustec2_tercero')->references('id')->on('tercero')->onDelete('restrict');
             $table->foreign('ajustec2_documentos_doc')->references('id')->on('documentos')->onDelete('restrict');
-            $table->foreign('ajustec2_id_doc')->references('id')->on('factura3')->onDelete('restrict');
         });
     }
 

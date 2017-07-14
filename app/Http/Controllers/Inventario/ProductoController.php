@@ -127,10 +127,11 @@ class ProductoController extends Controller
     {
         $producto = Producto::getProduct($id);
         if($producto instanceof Producto){
-            if ($request->ajax()) {
+            if ( $request->ajax() ) {
                 return response()->json($producto);
             }
-            return view('inventario.productos.show', ['producto' => $producto, 'prodbode' => $producto->producto_maneja_serie ? $producto->prodbode() : $producto->prodbode]);
+            $prodbode  = $producto->prodbode();
+            return view('inventario.productos.show', ['producto' => $producto, 'prodbode' => $prodbode]);
         }
         abort(404);
     }
