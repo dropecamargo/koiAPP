@@ -17,9 +17,18 @@ app || (app = {});
         events: {
         	'click .submit-orden': 'submitOrden',
             'submit #form-orden': 'onStore',
+            
         	'click .submit-visitas': 'submitVisita',
             'submit #form-visitas': 'onStoreVisita',
-            'click .click-add-remision': 'clickAddRemision',
+
+            'click .click-add-remision': 'submitRemision',
+            'submit #form-remision': 'clickAddRemision',
+
+            'click .submit-legalizacion': 'submitLegalizacion',
+            'submit #form-legalizacion': 'clickAddlegalizacion',
+
+            'change .sum-cantidad': 'changeCantidad',
+
             'click .click-cerrar-orden': 'clickCloseOrden',
         },
 
@@ -27,16 +36,17 @@ app || (app = {});
         * Constructor Method
         */
         initialize : function() {
-
         	//Model Exists
             this.visita = new app.VisitaCollection();
             this.remision = new app.RemisionCollection();
-
+            this.remrepu = new app.RemRepuCollection();
 
             // Initialize
             this.listenTo( this.model, 'change', this.render );
             this.listenTo( this.model, 'sync', this.responseServer );
             this.listenTo( this.model, 'request', this.loadSpinner );
+
+            this.cantidad = {};
         },
 
         /*
@@ -45,18 +55,23 @@ app || (app = {});
         render: function() {
             var attributes = this.model.toJSON();
             	attributes.edit = true;
+
             this.$el.html( this.template(attributes) );
 
             this.$form = this.$('#form-orden');
             this.$modalCreate =  $('#modal-create-remision');
 
             this.$formvisitasp = this.$('#form-visitas');
+            this.$formremision = this.$('#form-remision');
+            this.$formlegalizacion = this.$('#form-legalizacion');
 
             // Spinner
             this.spinner = this.$('#spinner-main');
+            this.$uploaderFile = this.$('#fine-uploader-s3');
 
-            // Reference views
+            // Reference views and uploadPictures
             this.referenceViews();
+            this.uploadPictures();
 
             // to fire plugins
             this.ready();
@@ -86,7 +101,6 @@ app || (app = {});
             this.visitasView = new app.VisitasView( {
                 collection: this.visita,
                 parameters: {
-                    call: 'create',
                     edit: true,
                     wrapper: this.$('#wrapper-visitas'),
                     dataFilter: {
@@ -98,8 +112,19 @@ app || (app = {});
             this.remisionView = new app.RemisionView( {
                 collection: this.remision,
                 parameters: {
-                    call: 'create',
                     wrapper: this.$('#wrapper-remision'),
+                    dataFilter: {
+                        'orden_id': this.model.get('id')
+                    }
+                }
+            });
+
+            this.remrepuView = new app.RemRepuView( {
+                collection: this.remrepu,
+                el: $('#browse-legalizacion-list'),
+                parameters: {
+                    call: 'index',
+                    wrapper: this.$('#wrapper-legalizacion'),
                     dataFilter: {
                         'orden_id': this.model.get('id')
                     }
@@ -107,6 +132,9 @@ app || (app = {});
             });
         },
 
+        /*
+        * Event Click to Button from visita
+        */
         submitVisita:function(e){
             this.$formvisitasp.submit();
         },
@@ -121,26 +149,127 @@ app || (app = {});
                 var data = window.Misc.formToJson( e.target );
                 this.visita.trigger( 'store', data );
             }
-        }, 
+        },
+
+        /*
+        * Event Click to Button from remision
+        */
+        submitRemision:function(e){
+            this.$formremision.submit();
+        },
 
         /*
         * Event add remision
         */
         clickAddRemision:function(e){
-            this.$modalCreate.modal('show');
+            if (!e.isDefaultPrevented()) {
+                e.preventDefault();
 
-            // Open TecnicoActionView
-            if ( this.tecnicoActionView instanceof Backbone.View ){
-                this.tecnicoActionView.stopListening();
-                this.tecnicoActionView.undelegateEvents();
+                // Data sucursal y tecnico
+                var data = window.Misc.formToJson( e.target );
+                    data.orden_id = this.model.get('id');
+                
+                this.$modalCreate.modal('show');
+
+                // Open TecnicoActionView
+                if ( this.tecnicoActionView instanceof Backbone.View ){
+                    this.tecnicoActionView.stopListening();
+                    this.tecnicoActionView.undelegateEvents();
+                }
+
+                this.tecnicoActionView = new app.TecnicoActionView({
+                    model: this.model,
+                    collection: this.remision,
+                    parameters: {
+                        data: data,
+                        remrepu2: this.remrepu,
+                    }
+                });
+
+                this.tecnicoActionView.render();
             }
+        },
 
-            this.tecnicoActionView = new app.TecnicoActionView({
-                model: this.model,
-                collection: this.remision,
+        /*
+        * Event Click to Button from legalizacion
+        */
+        submitLegalizacion:function(e){
+            this.$formlegalizacion.submit();
+        },
+
+        /**
+        * UploadPictures
+        */
+        uploadPictures: function(e) {
+            this.$uploaderFile.fineUploaderS3({
+                debug: false,
+                template: 'qq-template-s3',
+                request: {
+                    // endpoint: "https://upload.fineuploader.com",
+                    // accessKey: "AKIAJB6BSMFWTAXC5M2Q"
+                },
+                // signature: {
+                //     endpoint: "https://s3-demo.fineuploader.com/s3demo-thumbnails-cors.php"
+                // },
+                // uploadSuccess: {
+                //     endpoint: "https://s3-demo.fineuploader.com/s3demo-thumbnails-cors.php?success",
+                //     params: {
+                //         isBrowserPreviewCapable: qq.supportedFeatures.imagePreviews
+                //     }
+                // },
+                // iframeSupport: {
+                //     localBlankPagePath: "/server/success.html"
+                // },
+                // cors: {
+                //     expected: true
+                // },
+                // chunking: {
+                //     enabled: true
+                // },
+                // resume: {
+                //     enabled: true
+                // },
+                // deleteFile: {
+                //     enabled: true,
+                //     method: "POST",
+                //     endpoint: "https://s3-demo.fineuploader.com/s3demo-thumbnails-cors.php"
+                // },
+                messages: {
+                    typeError: '{file} extensión no valida. Extensiones validas: {extensions}.'
+                },
+                validation: {
+                    itemLimit: 5,
+                    sizeLimit: 15000000,
+                    allowedExtensions: ['jpeg', 'jpg', 'png'],
+                },
+                // thumbnails: {
+                //     placeholders: {
+                //         notAvailablePath: "/signsupply/public/not_available-generic.png",
+                //         waitingPath: "/signsupply/public/waiting-generic.png"
+                //     }
+                // },
+                // callbacks: {
+                //     onComplete: function(id, name, response) {
+
+                //         if (response.success) {
+                //             window.Misc.urlFull( Route.route('ordenes.edit', { ordenes: id}) );
+                //         }
+                //     }
+                // }
             });
+        },
 
-            this.tecnicoActionView.render();
+        /*
+        * Event add remision
+        */
+        clickAddlegalizacion: function(e){
+            if (!e.isDefaultPrevented()) {
+                e.preventDefault();
+
+                // prepare global data
+                var data = window.Misc.formToJson( e.target );
+                this.remrepu.trigger( 'store' , data );
+            }
         },
 
         /**
@@ -206,6 +335,9 @@ app || (app = {});
 
             if( typeof window.initComponent.initTimePicker == 'function' )
                 window.initComponent.initTimePicker();
+
+            if( typeof window.initComponent.initFineUploader == 'function' )
+                window.initComponent.initFineUploader();
         },
 
         /**

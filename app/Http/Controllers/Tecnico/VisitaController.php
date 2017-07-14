@@ -108,7 +108,7 @@ class VisitaController extends Controller
 
                     // Commit Transaction
                     DB::commit();
-                    return response()->json(['success' => true, 'id' => $visita->id, 'visita_fh_llegada' => $visita->visita_fh_llegada, 'visita_fh_inicio' => $visita->visita_fh_inicio, 'tercero_nombre' => $tercero->getName(), 'visita_numero'=> $visita->visita_numero]);
+                    return response()->json(['success' => true, 'id' => $visita->id, 'visita_fh_llegada' => $visita->visita_fh_llegada, 'visita_fh_inicio' => $visita->visita_fh_inicio, 'tercero_nombre' => $tercero->getName(), 'visita_numero'=> $visita->visita_numero, 'visita_fh_finaliza' => $visita->visita_fh_finaliza]);
                 }catch(\Exception $e){
                     DB::rollback();
                     Log::error($e->getMessage());
@@ -169,6 +169,7 @@ class VisitaController extends Controller
                 if(!$visita instanceof Visita){
                     return response()->json(['success' => false, 'errors' => 'No es posible recuperar visita, por favor verifique la información o consulte al administrador.']);
                 }
+                
                 // Eliminar item visita
                 $visita->delete();
 

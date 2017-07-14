@@ -7,9 +7,9 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\Models\Base\Tercero, App\Models\Base\Documentos, App\Models\Base\Sucursal, App\Models\Base\Regional, App\Models\Base\Contacto, App\Models\Inventario\Producto, App\Models\Tecnico\Orden, App\Models\Tecnico\Sitio;
+use App\Models\Base\Tercero, App\Models\Base\Documentos, App\Models\Base\Sucursal, App\Models\Base\Regional, App\Models\Base\Contacto, App\Models\Inventario\Producto, App\Models\Tecnico\Orden, App\Models\Tecnico\Sitio, App\Models\Tecnico\Visita;
 
-use DB, Log, Datatables, Auth;
+use DB, Log, Datatables, Auth, Mail;
 
 class OrdenController extends Controller
 {
@@ -293,6 +293,33 @@ class OrdenController extends Controller
     }
 
     /**
+     * Send mail the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function mail(Request $request, $id)
+    {
+        if( $request->ajax() ){
+            // Recuperar orden
+            $orden = Orden::getOrden($id);
+
+            // Recuperar contacto
+            $contacto = Contacto::find($orden->orden_contacto);
+
+            $ord = ['orden' => $orden, 'contacto' => $contacto];
+
+            Mail::send('emails.orders.info', $ord, function($msj) use ($contacto){
+                $msj->subject('Informacion de la orden');
+                $msj->to($contacto->tcontacto_email);
+            });
+
+            return response()->json(['success' => true, 'message' => 'Se envio con exito el correo.']);
+        }
+        abort(404);
+    }
+
+    /**
      * Cerrar the specified resource.
      *
      * @param  int  $id
@@ -304,6 +331,13 @@ class OrdenController extends Controller
             $orden = Orden::findOrFail($id);
             DB::beginTransaction();
             try {
+                // Validar vistia minima
+                $visita = Visita::where('visita_orden', $orden->id)->get();
+                if(count($visita) == 0){
+                    DB::rollback();
+                    return response()->json(['success' => false, 'errors' => 'No cumple los requisitos para cerrar la orden.']);
+                }
+
                 // Orden
                 $orden->orden_abierta = false;
                 $orden->orden_usuario_cerro = Auth::user()->id;

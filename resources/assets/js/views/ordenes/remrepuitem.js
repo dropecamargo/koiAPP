@@ -12,12 +12,11 @@ app || (app = {});
     app.RemRepuItemView = Backbone.View.extend({
 
         tagName: 'tr',
-        template: _.template( ($('#remrepu-item-list-tpl').html() || '') ),
-        events: {
-        },
+        template: null,
         parameters: {
             wrapper: null,
             edit: false,
+            call: null,
             dataFilter: {}
         },
 
@@ -25,15 +24,15 @@ app || (app = {});
         * Constructor Method
         */
         initialize: function(opts){
-
             //Init Attributes
             if( opts !== undefined && _.isObject(opts.parameters) )
                 this.parameters = $.extend({},this.parameters, opts.parameters);
 
-            //Init Attributes
-            this.$modalInfo = $('#modal-visita-show-info-component');
-
-            this.parameters.wrapper
+            if( this.parameters.call == 'index'){
+                this.template = _.template( ($('#legalizacion-item-list-tpl').html() || '') );
+            }else{
+                this.template = _.template( ($('#remrepu-item-list-tpl').html() || '') );
+            }
 
             // Events Listener
             this.listenTo( this.model, 'change', this.render );
@@ -44,7 +43,7 @@ app || (app = {});
         */
         render: function(){
             var attributes = this.model.toJSON();
-            attributes.edit = this.parameters.edit;
+                attributes.edit = this.parameters.edit;
             this.$el.html( this.template(attributes) );
             return this;
         },

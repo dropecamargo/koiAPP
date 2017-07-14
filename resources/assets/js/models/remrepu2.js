@@ -17,7 +17,9 @@ app || (app = {});
         defaults: {
             'remrepu2_cantidad': '',
  			'remrepu2_nombre': '',
- 			'remrepu2_serie': ''
+ 			'remrepu2_serie': '',
+ 			'remrepu1_numero': '',
+ 			'sucursal_nombre': '',
         }
     });
 

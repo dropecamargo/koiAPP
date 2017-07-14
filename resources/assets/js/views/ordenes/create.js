@@ -28,9 +28,6 @@ app || (app = {});
             if( opts !== undefined && _.isObject(opts.parameters) )
                 this.parameters = $.extend({}, this.parameters, opts.parameters);
 
-            // Attributes
-            // this.msgSuccess = 'Orden guardada con exito!';
-
             // Events
             this.listenTo( this.model, 'change', this.render );
             this.listenTo( this.model, 'sync', this.responseServer );
@@ -107,6 +104,51 @@ app || (app = {});
             window.Misc.setSpinner( this.spinner );
         },
 
+        sendMail: function(){
+            var _this = this;
+
+            var sendMail = new window.app.ConfirmWindow({
+                parameters: {
+                    dataFilter: { tcontacto_email: _this.model.get('tcontacto_email') },
+                    template: _.template( ($('#orden-sendmail-confirm-tpl').html() || '') ),
+                    titleConfirm: 'Correo',
+                    onConfirm: function () {
+                        // Sendmail
+                        $.ajax({
+                            url: window.Misc.urlFull( Route.route('ordenes.mail', { ordenes : _this.model.get('id') }) ),
+                            type: 'GET',
+                            beforeSend: function() {
+                                window.Misc.setSpinner( _this.spinner );
+                            }
+                        })
+                        .done(function(resp) {
+                            window.Misc.removeSpinner( _this.spinner );
+
+                            if(!_.isUndefined(resp.success)) {
+                                // response success or error
+                                var text = resp.success ? '' : resp.errors;
+                                if( _.isObject( resp.errors ) ) {
+                                    text = window.Misc.parseErrors(resp.errors);
+                                }
+
+                                if( !resp.success ) {
+                                    alertify.error(text);
+                                    return;
+                                }
+
+                                alertify.success(resp.message);
+                            }
+                        })
+                        .fail(function(jqXHR, ajaxOptions, thrownError) {
+                            window.Misc.removeSpinner( _this.spinner );
+                            alertify.error(thrownError);
+                        });
+                    }
+                }
+            });
+            sendMail.render();
+        },
+
         /**
         * response of the server
         */
@@ -124,8 +166,6 @@ app || (app = {});
                     return;
                 }
 
-                alertify.success(this.msgSuccess);
-
                 // CreateOrdenView undelegateEvents
                 if ( this.createOrdenView instanceof Backbone.View ){
                     this.createOrdenView.stopListening();
@@ -134,6 +174,9 @@ app || (app = {});
 
                 // Redirect to edit orden
                 Backbone.history.navigate(Route.route('ordenes.edit', { ordenes: resp.id}), { trigger:true });
+
+                // Sendmail
+                this.sendMail();
             }
         }
     });

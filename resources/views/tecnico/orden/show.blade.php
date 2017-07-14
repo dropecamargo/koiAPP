@@ -160,8 +160,8 @@
                                                 <thead>
                                                     <tr>
                                                         <th width="10%">Número</th>
-                                                        <th width="50%">Elaboro</th>
-                                                        <th width="20%">Fecha</th>
+                                                        <th width="50%">Tecnico</th>
+                                                        <th width="20%">Sucursal</th>
                                                         <th width="5%">Info</th>
                                                     </tr>
                                                 </thead>

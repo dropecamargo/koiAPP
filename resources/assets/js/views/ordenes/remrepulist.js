@@ -11,13 +11,14 @@ app || (app = {});
 
     app.RemRepuView = Backbone.View.extend({
 
-        el: '#browse-orden-remrepu-list',
+        el: null,
         events: {
-               'click .item-remrepu-remove': 'removeOne'
+           'click .item-remrepu-remove': 'removeOne'
         },
         parameters: {
-            wrapper:false,
-            edit:false,
+            wrapper: false,
+            edit: false,
+            call: null,
             dataFilter: {}
         },
 
@@ -29,12 +30,22 @@ app || (app = {});
             if( opts !== undefined && _.isObject(opts.parameters) )
                 this.parameters = $.extend({},this.parameters, opts.parameters);
 
+            //Init Attributes
+            this.confCollection = { reset: true, data: {} };
+
             // Events Listeners
             this.listenTo( this.collection, 'add', this.addOne );
             this.listenTo( this.collection, 'reset', this.addAll );
             this.listenTo( this.collection, 'store', this.storeOne );
             this.listenTo( this.collection, 'request', this.loadSpinner);
             this.listenTo( this.collection, 'sync', this.responseServer);
+
+            this.el = this.parameters.el;
+
+            if( !_.isUndefined(this.parameters.dataFilter) && !_.isNull(this.parameters.dataFilter) ){
+                this.confCollection.data = this.parameters.dataFilter;
+                this.collection.fetch( this.confCollection );
+            }
         },
 
         /*
@@ -51,9 +62,11 @@ app || (app = {});
             var view = new app.RemRepuItemView({
                 model: remRepu2Model,
                 parameters: {
-                    edit: this.parameters.edit
+                    edit: this.parameters.edit,
+                    call: this.parameters.call
                 }
             });
+
             remRepu2Model.view = view;
             this.$el.prepend( view.render().el );
         },
@@ -62,17 +75,23 @@ app || (app = {});
         * Render all view Marketplace of the collection
         */
         addAll: function () {
+            this.$el.find('tbody').html('');
             this.collection.forEach( this.addOne, this );
         },
 
         storeOne: function (data) {
             var _this = this;
 
+            // var legalizacion = this.collection.storeLegalizacion( data, this.parameters.wrapper );
+            // if(!legalizacion.success){
+            //     return;
+            // }
+
             // Set Spinner
             window.Misc.setSpinner( this.parameters.wrapper );
 
             // Prepare data
-            data.remrepu_orden = this.parameters.dataFilter.orden_id;
+            data.orden_id = this.parameters.dataFilter.orden_id;
 
             // Add model in collection
             var remRepu2Model = new app.RemRepu2Model();
@@ -130,6 +149,20 @@ app || (app = {});
         */
         responseServer: function ( target, resp, opts ) {
             window.Misc.removeSpinner( this.parameters.wrapper );
+            
+            if(!_.isUndefined(resp.success)) {
+                // response success or error
+                var text = resp.success ? '' : resp.errors;
+                if( _.isObject( resp.errors ) ) {
+                    text = window.Misc.parseErrors(resp.errors);
+                }
+                if( !resp.success ) {
+                    alertify.error(text);
+                    return;
+                }
+
+                window.Misc.clearForm( $('#form-remrepu') );
+            }
         }
    });
 

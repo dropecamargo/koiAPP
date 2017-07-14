@@ -48,6 +48,7 @@ app || (app = {});
         */
         render: function() {
             this.$modalCreate.find('.content-modal').empty().html( this.templateAdd() );
+            this.el = this.$('#browse-legalizacions-list');
 
             this.referenceView();
 		},
@@ -58,10 +59,12 @@ app || (app = {});
         referenceView: function(){
             this.remRepuView = new app.RemRepuView( {
                 collection: this.remrepu,
+                el: this.el,
                 parameters: {
                     edit: true,
+                    call: 'store',
                     dataFilter: {
-                        'orden_id': this.model.get('id'),
+                        'remrepu2_remrepu1': 'remrepu2_remrepu1',
                     }
                 }
             });
@@ -96,6 +99,8 @@ app || (app = {});
             var data = [];
                 data.detalle = this.remrepu.toJSON();
                 data.remrepu_orden = this.model.get('id');
+                data.tecnico = this.parameters.data.remrempu1_tecnico;
+                data.sucursal = this.parameters.data.remrempu1_sucursal;
 
             this.collection.trigger( 'store', data );
         },
@@ -129,6 +134,7 @@ app || (app = {});
                     return;
                 }
 
+                this.parameters.remrepu2.fetch({ data: {orden_id: this.parameters.data.orden_id}, reset: true });
                 this.$modalCreate.modal('hide');
             }
         }

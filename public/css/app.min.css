@@ -182,4 +182,9 @@ label {
   text-decoration: none;
   color: black; }
 
+#fine-uploader-s3 .preview-link {
+  display: block;
+  height: 100%;
+  width: 100%; }
+
 /*# sourceMappingURL=app.min.css.map */

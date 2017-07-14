@@ -281,7 +281,7 @@ var app = app || {};
                 showInputs: false,
                 showMeridian: false
             });
-        }
+        },
     };
 
     //Init App Components

@@ -11,7 +11,6 @@ app || (app = {});
 
     app.VisitasItemView = Backbone.View.extend({
 
-        
         tagName: 'tr',
         template: _.template( ($('#visita-item-list-tpl').html() || '') ),
         templateInfo: _.template( ($('#show-info-visita-tpl').html() || '') ),

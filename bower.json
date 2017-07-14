@@ -16,6 +16,7 @@
     "jquery-ui": "~1.11.4",
     "jquery.inputmask": "~3.3.1",
     "underscore": "~1.8.3",
-    "js-shortid": "^0.1.1"
+    "js-shortid": "^0.1.1",
+    "fine-uploader": "^5.13.0"
   }
 }

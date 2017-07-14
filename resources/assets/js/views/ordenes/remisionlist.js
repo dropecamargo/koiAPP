@@ -17,6 +17,7 @@ app || (app = {});
         },
         parameters: {
             wrapper:false,
+            call: null,
             edit:false,
             dataFilter: {}
         },
@@ -52,9 +53,13 @@ app || (app = {});
         addOne: function (remRepuModel) {
             var view = new app.RemisionItemView({
                 model: remRepuModel,
+                parameters: {
+                    call: this.parameters.call,
+                }
             });
             remRepuModel.view = view;
             this.$el.prepend( view.render().el );
+            
         },
 
         /**
@@ -126,6 +131,20 @@ app || (app = {});
         */
         responseServer: function ( target, resp, opts ) {
             window.Misc.removeSpinner( this.parameters.wrapper );
+
+            if(!_.isUndefined(resp.success)) {
+                // response success or error
+                var text = resp.success ? '' : resp.errors;
+                if( _.isObject( resp.errors ) ) {
+                    text = window.Misc.parseErrors(resp.errors);
+                }
+                if( !resp.success ) {
+                    alertify.error(text);
+                    return;
+                }
+
+                window.Misc.clearForm( $('#form-remision') );
+            }
         }
    });
 

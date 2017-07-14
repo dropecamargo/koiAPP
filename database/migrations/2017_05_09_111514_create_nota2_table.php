@@ -23,7 +23,6 @@ class CreateNota2Table extends Migration
 
             $table->foreign('nota2_nota1')->references('id')->on('nota1')->onDelete('restrict');
             $table->foreign('nota2_documentos_doc')->references('id')->on('documentos')->onDelete('restrict');
-            $table->foreign('nota2_id_doc')->references('id')->on('factura3')->onDelete('restrict');
         });
     }
 

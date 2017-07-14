@@ -22,9 +22,11 @@ class RemRepuController extends Controller
     {
         if ($request->ajax()) {          
             $query = RemRepu::query();
-            $query->select('remrepu1.*',DB::raw("CONCAT((CASE WHEN tercero_persona = 'N' THEN CONCAT(tercero_nombre1,' ',tercero_nombre2,' ',tercero_apellido1,' ',tercero_apellido2,(CASE WHEN (tercero_razonsocial IS NOT NULL AND tercero_razonsocial != '') THEN CONCAT(' - ', tercero_razonsocial) ELSE '' END)) ELSE tercero_razonsocial END)) AS tercero_nombre"));
-            $query->join('tercero', 'remrepu1_usuario_elaboro', '=', 'tercero.id');
+            $query->select('remrepu1.*', 'sucursal_nombre',DB::raw("CONCAT((CASE WHEN tercero_persona = 'N' THEN CONCAT(tercero_nombre1,' ',tercero_nombre2,' ',tercero_apellido1,' ',tercero_apellido2,(CASE WHEN (tercero_razonsocial IS NOT NULL AND tercero_razonsocial != '') THEN CONCAT(' - ', tercero_razonsocial) ELSE '' END)) ELSE tercero_razonsocial END)) AS tecnico_nombre"));
+            $query->join('tercero', 'remrepu1_tecnico', '=', 'tercero.id');
+            $query->join('sucursal', 'remrepu1_sucursal', '=', 'sucursal.id');
             $query->where('remrepu1_orden',$request->orden_id);
+            $query->orderBy('sucursal_nombre', 'desc');
             return response()->json($query->get());
         }
     }
@@ -66,17 +68,25 @@ class RemRepuController extends Controller
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar orden, por favor verifique la información o consulte al administrador.']);
                     }
                     // Recupero instancia de sucursal 
-                    $sucursal  = Sucursal::find($orden->orden_sucursal);
+                    $sucursal  = Sucursal::find($request->sucursal);
                     if (!$sucursal instanceof Sucursal) {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar sucursal, por favor verifique la información o consulte al administrador.']);
                     }
+                    // Recupero tecnico 
+                    $tecnico  = Tercero::find($request->tecnico);
+                    if (!$tecnico instanceof Tercero) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar tecnico, por favor verifique la información o consulte al administrador.']);
+                    }
+
                     // Consecutive sucursal_remr
                     $consecutive = $sucursal->sucursal_remr + 1;
 
                     // RemRepu
                     $remrepu->remrepu1_orden = $orden->id;
                     $remrepu->remrepu1_sucursal = $sucursal->id;
+                    $remrepu->remrepu1_tecnico = $tecnico->id;
                     $remrepu->remrepu1_numero = $consecutive;
                     $remrepu->remrepu1_documentos = $documentos->id;
                     $remrepu->remrepu1_usuario_elaboro = Auth::user()->id;
@@ -106,19 +116,12 @@ class RemRepuController extends Controller
                         $remrepu2->save();  
                     }
 
-                    // Recuperar nombre tercero
-                    $tercero = Tercero::find(Auth::user()->id);
-                    if(!$tercero instanceof Tercero) {
-                        DB::rollback();
-                        return response()->json(['success'=> false, 'errors' => 'No es posible recuperar el tercero, por favor verificar información o consulte al administrador.']);
-                    }
-
                     // Update sucursal_remr 
                     $sucursal->sucursal_remr = $consecutive;
                     $sucursal->save();
 
                     DB::commit();
-                    return response()->json(['success' => true, 'id' => $remrepu->id, 'remrepu1_numero' => $remrepu->remrepu1_numero ,'tercero_nombre' => $tercero->getName(), 'remrepu1_fh_elaboro' => $remrepu->remrepu1_fh_elaboro]);
+                    return response()->json(['success' => true, 'id' => $remrepu->id, 'remrepu1_numero' => $remrepu->remrepu1_numero ,'tecnico_nombre' => $tecnico->getName(), 'sucursal_nombre' => $sucursal->sucursal_nombre]);
                 }catch(\Exception $e){
                     DB::rollback();
                     Log::error($e->getMessage());

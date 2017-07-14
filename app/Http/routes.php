@@ -243,9 +243,10 @@ Route::group(['middleware' => 'auth'], function(){
 		Route::resource('visitas','Tecnico\VisitaController',['only'=>['index', 'store', 'destroy']]);
 		Route::resource('remrepuestos','Tecnico\RemRepuController',['only'=>['index', 'store']]);
 		Route::get('cerrar/{ordenes}', ['as' => 'ordenes.cerrar', 'uses' => 'Tecnico\OrdenController@cerrar']);
+		Route::get('mail/{ordenes}', ['as' => 'ordenes.mail', 'uses' => 'Tecnico\OrdenController@mail']);
 		
 		Route::group(['prefix' => 'detalle'],function(){
-			Route::resource('remrepuestos','Tecnico\RemRepuDetalleController',['only'=>['index', 'store']]);
+			Route::resource('remrepuestos','Tecnico\RemRepuDetalleController',['only'=>['index', 'store', 'update']]);
 		});
 	});
 	
