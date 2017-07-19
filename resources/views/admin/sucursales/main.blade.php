@@ -41,11 +41,7 @@
                     </span>
                 </div>
             </div>
-            <div class="form-group col-md-2">
-                <br><label class="checkbox-inline" for="sucursal_activo">
-                    <input type="checkbox" id="sucursal_activo" name="sucursal_activo" value="sucursal_activo" <%- parseInt(sucursal_activo) ? 'checked': ''%>> Activo
-                </label>
-            </div>
+
         </div>
         <div class="row">
             <div class="form-group col-md-4">
@@ -56,6 +52,32 @@
                     @endforeach
                 </select>
             </div>
+            <div class="form-group col-md-2"><br>
+                <label class="checkbox-inline" for="sucursal_activo">
+                    <input type="checkbox" id="sucursal_activo" name="sucursal_activo" value="sucursal_activo" <%- parseInt(sucursal_activo) ? 'checked': ''%>> Activo
+                </label>
+            </div>
         </div>
+        <div class="row">
+            <% if( typeof(id) !== 'undefined' && !_.isUndefined(id) && !_.isNull(id) && id != '') { %>
+                <div class="form-group col-md-4">
+                    <label for="sucursal_defecto" class="control-label">Ubicación por defecto</label>
+                    <select name="sucursal_defecto" id="sucursal_defecto" class="form-control select2-default-clear"> </select>
+                </div>
+                <div class="form-group col-md-1" ><br>
+                    <button type="button" class="btn btn-default btn-flat btn-sm btn-add-resource-koi-component" data-resource="ubicacion" data-field="sucursal_defecto" data-parameter = "false" data-sucursal = "<%- id %>"> <i class="fa fa-plus"></i></button>
+                </div>
+                <div class="form-group col-md-2"><br>
+                    <label class="checkbox-inline" for="sucursal_ubicaciones">
+                        <input type="checkbox" id="sucursal_ubicaciones" name="sucursal_ubicaciones" class="changed-location" value="sucursal_ubicaciones" <%- parseInt(sucursal_ubicaciones) ? 'checked': ''%>>  ¿ Maneja ubicación ?
+                    </label>
+                </div>
+            <% }else{ %> 
+            <div class=" form-group col-md-4">
+                <label for="sucursal_defecto" class="control-label">Ubicación por defecto</label>
+                <input type="text" name="sucursal_defecto" id="sucursal_defecto" class="form-control input-sm input-toupper" placeholder="Ubicación por defecto">
+            </div>
+            <% } %>
+        </div> 
     </script>
 @stop

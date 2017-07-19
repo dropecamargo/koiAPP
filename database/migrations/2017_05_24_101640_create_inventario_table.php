@@ -18,6 +18,7 @@ class CreateInventarioTable extends Migration
             $table->increments('id');
             $table->integer('inventario_serie')->unsigned();
             $table->integer('inventario_sucursal')->unsigned();
+            $table->integer('inventario_ubicacion')->unsigned()->nullable();
             $table->integer('inventario_documentos')->unsigned();
             $table->integer('inventario_id_documento')->unsigned();
             $table->integer('inventario_entrada')->unsigned();
@@ -35,7 +36,7 @@ class CreateInventarioTable extends Migration
             $table->foreign('inventario_serie')->references('id')->on('producto')->onDelete('restrict');
             $table->foreign('inventario_sucursal')->references('id')->on('sucursal')->onDelete('restrict');
             $table->foreign('inventario_documentos')->references('id')->on('documentos')->onDelete('restrict');
-
+            $table->foreign('inventario_ubicacion')->references('id')->on('ubicacion')->onDelete('restrict');
         });
     }
 

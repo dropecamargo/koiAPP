@@ -18,7 +18,8 @@ app || (app = {});
         defaults: {
             'ubicacion_nombre': '',
             'ubicacion_activo': 1,
-        	'ubicacion_sucursal': ''
+            'ubicacion_sucursal': '',
+        	'ubicacion_select': '',
         }
     });
 

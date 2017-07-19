@@ -209,6 +209,17 @@ app || (app = {});
                         var template = _.template($('#add-sitio-tpl').html());
                         _this.$modalComponent.find('.content-modal').html( template(_this.model.toJSON()) );
                     },
+                    'ubicacion' : function() {
+                        _this.$modalComponent.find('.inner-title-modal').html('Ubicación');
+
+                        _this.sucursal = $(e.currentTarget).attr("data-sucursal");
+                        _this.parameter = $(e.currentTarget).attr("data-parameter");
+                        _this.model = new app.UbicacionModel();
+                        _this.model.set('ubicacion_select', _this.parameter);
+                        _this.model.set('ubicacion_sucursal', _this.sucursal);
+                        var template = _.template($('#add-ubicacion-tpl').html());
+                        _this.$modalComponent.find('.content-modal').html( template(_this.model.toJSON() ) );
+                    },
 	            };
 
             if (stuffToDo[this.resource]) {
@@ -393,6 +404,11 @@ app || (app = {});
                     },
                     'sitio' : function() {
                         _this.$resourceField.append("<option value="+ _this.model.get('id') +">"+ _this.model.get('sitio_nombre') +"</option>");
+                        _this.$resourceField.val(_this.model.get('id')).trigger('change');
+
+                    },
+                    'ubicacion' : function() {
+                        _this.$resourceField.append("<option value="+ _this.model.get('id') +">"+ _this.model.get('ubicacion_nombre') +"</option>");
                         _this.$resourceField.val(_this.model.get('id')).trigger('change');
                     },
                 };

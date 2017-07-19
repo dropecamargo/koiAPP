@@ -29,7 +29,6 @@ class MunicipioController extends Controller
                 return Datatables::of($query)->make(true);
             }
 
-            $data = [];
             $query->select('municipio.id as id', DB::raw("CONCAT(municipio_nombre, ' - ', departamento_nombre) as text"));
             if($request->has('id')){
                 $query->where('municipio.id', $request->id);
@@ -49,8 +48,6 @@ class MunicipioController extends Controller
             $query->orderby('departamento_nombre','asc');
             $query->orderby('municipio_nombre','asc');
             return response()->json($query->get());
-
-            return $data;
         }
         return view('admin.municipios.index');
     }

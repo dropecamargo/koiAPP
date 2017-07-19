@@ -23,7 +23,6 @@ class CreateTraslado2Table extends Migration
 
             $table->foreign('traslado2_traslado1')->references('id')->on('traslado1')->onDelete('restrict');
             $table->foreign('traslado2_producto')->references('id')->on('producto')->onDelete('restrict');
-
         });
     }
 

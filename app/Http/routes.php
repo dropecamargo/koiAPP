@@ -150,6 +150,10 @@ Route::group(['middleware' => 'auth'], function(){
 	{
 		Route::resource('detalle', 'Inventario\DetalleTrasladoController');
 	});
+	Route::group(['prefix' => 'trasladosubicaciones'], function()
+	{
+		Route::resource('detalle', 'Inventario\DetalleTrasladoUbicacionController');
+	});
 	Route::resource('modelos','Inventario\ModeloController', ['except' => ['destroy']]);
 	Route::resource('marcas', 'Inventario\MarcaController', ['except' => ['destroy']]);
 	Route::resource('categorias', 'Inventario\CategoriaController', ['except' => ['destroy']]);
@@ -160,6 +164,7 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::resource('unidades', 'Inventario\UnidadesMedidaController', ['except' => ['destroy']]);
 	Route::resource('ajustes', 'Inventario\AjusteController', ['except' => ['edit','destroy']]);
 	Route::resource('traslados', 'Inventario\TrasladoController', ['except' => ['edit','destroy']]);
+	Route::resource('trasladosubicaciones', 'Inventario\TrasladoUbicacionController', ['except' => ['edit','destroy']]);
 	Route::resource('tiposajuste', 'Inventario\TipoAjusteController', ['except' => ['destroy']]);
 	Route::resource('tipostraslados', 'Inventario\TipoTrasladoController', ['except' => ['destroy']]);
 	Route::resource('subcategorias', 'Inventario\SubCategoriaController', ['except' => ['destroy']]);

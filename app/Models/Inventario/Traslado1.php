@@ -28,10 +28,8 @@ class Traslado1 extends Model
 	*
 	* @var static string
 	*/
-
 	public static $default_document = 'TRAS';
 
-	
 	public function isValid($data){
 		$rules = [
 		    'traslado1_fecha' => 'required|date',

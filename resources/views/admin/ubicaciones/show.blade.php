@@ -13,13 +13,16 @@
                     <label class="control-label">Nombre</label>
                     <div>{{ $ubicacion->ubicacion_nombre }}</div>
                 </div> 
+                <div class="form-group col-md-4">
+                    <label class="control-label">Sucursal</label>
+                    <div>{{ $ubicacion->sucursal_nombre }}</div>
+                </div> 
+                <div class="form-group col-md-4">
+                    <label class="" for="ubicacion_activo">
+                    <input type="checkbox" id="ubicacion_activo" name="ubicacion_activo" value="ubicacion_activo" disabled {{ $ubicacion->ubicacion_activo ? 'checked': '' }}> Activo
+                    </label> 
+                </div>
             </div>    
-        
-            <div class="form-group col-md-4">
-                <label class="" for="ubicacion_activo">
-                <input type="checkbox" id="ubicacion_activo" name="ubicacion_activo" value="ubicacion_activo" disabled {{ $ubicacion->ubicacion_activo ? 'checked': '' }}> Activo
-                </label> 
-            </div>
         </div>
     
         <div class="box-footer with-border">

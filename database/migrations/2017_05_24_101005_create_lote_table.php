@@ -18,6 +18,7 @@ class CreateLoteTable extends Migration
             $table->increments('id');
             $table->integer('lote_serie')->unsigned();
             $table->integer('lote_sucursal')->unsigned();
+            $table->integer('lote_ubicacion')->unsigned()->nullable();
             $table->string('lote_numero',50);
             $table->date('lote_fecha');
             $table->date('lote_vencimiento')->nullable();
@@ -26,6 +27,7 @@ class CreateLoteTable extends Migration
 
             $table->foreign('lote_serie')->references('id')->on('producto')->onDelete('restrict');
             $table->foreign('lote_sucursal')->references('id')->on('sucursal')->onDelete('restrict');
+            $table->foreign('lote_ubicacion')->references('id')->on('ubicacion')->onDelete('restrict');
         });
     }
 

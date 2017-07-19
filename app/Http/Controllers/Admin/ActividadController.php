@@ -27,7 +27,6 @@ class ActividadController extends Controller
                 return Datatables::of($query)->make(true);
             }
 
-            $data = [];
             $query->select('actividad.id', DB::raw("UPPER(CONCAT(actividad_codigo, ' - ', actividad_nombre)) as text"));
             $query->orderby('actividad_codigo', 'asc');
             
@@ -45,11 +44,9 @@ class ActividadController extends Controller
             if(empty($request->q) && empty($request->id)) {
                 $query->take(50);
             }
-
+            
             $query->orderby('actividad_nombre','asc');
             return response()->json($query->get());
-
-            return $data;
         }
         return view('admin.actividades.index');
     }

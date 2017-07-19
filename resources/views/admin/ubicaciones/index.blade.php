@@ -13,6 +13,7 @@
                         <tr>
                             <th>ID</th>
                             <th>Nombre</th>
+                            <th>Sucursal</th>
                             <th>Activo</th>
                         </tr>
                     </thead>

@@ -64,8 +64,9 @@ class Regional extends BaseModel
         return Cache::rememberForever( self::$key_cache , function() {
             $query = Regional::query();
             $query->orderby('regional_nombre', 'asc');
-            return $query->lists('regional_nombre', 'id');
-
+            $collection = $query->lists('regional_nombre', 'id'); 
+            $collection->prepend('', '');
+            return $collection;
         });
     }
 }
