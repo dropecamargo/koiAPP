@@ -27,7 +27,12 @@ app || (app = {});
 				processing: true,
                 serverSide: true,
             	language: window.Misc.dataTableES(),
-                ajax: window.Misc.urlFull( Route.route('sucursales.index') ),
+                ajax: {
+                    url: window.Misc.urlFull( Route.route('sucursales.index') ),
+                    data: function( data ) {
+                        data.datatables = true;
+                    }
+                },
                 columns: [
                     { data: 'sucursal_nombre', name: 'sucursal_nombre' },
                     { data: 'sucursal_direccion', name: 'sucursal_direccion' }

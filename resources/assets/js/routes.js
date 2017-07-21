@@ -190,6 +190,10 @@ app || (app = {});
             'traslados/create(/)': 'getTrasladosCreate',
             'traslados/:traslado(/)': 'getTrasladosShow',
 
+            'trasladosubicaciones(/)': 'getTrasladosUbicacionesMain',
+            'trasladosubicaciones/create(/)': 'getTrasladoUbicacionCreate',
+            'trasladosubicaciones/:traslado(/)': 'getTrasladoUbicacionShow',
+
             /*
             |-----------------------
             | Cartera
@@ -1610,6 +1614,48 @@ app || (app = {});
             }
 
             this.showTrasladoView = new app.ShowTrasladoView({ model: this.trasladoModel });
+        }, 
+        /**
+        * show view main traslados ubicaciones
+        */
+        getTrasladosUbicacionesMain: function () {
+
+            if ( this.mainTrasladosUbicacionesView instanceof Backbone.View ){
+                this.mainTrasladosUbicacionesView.stopListening();
+                this.mainTrasladosUbicacionesView.undelegateEvents();
+            }
+
+            this.mainTrasladosUbicacionesView = new app.MainTrasladosUbicacionesView( );
+        },
+
+        /**
+        * show view create traslado ubicacion
+        */
+        getTrasladoUbicacionCreate: function () {
+            this.trasladoUbicacionModel = new app.TrasladoUbicacionModel();
+
+            if ( this.createTrasladoUbicacionView instanceof Backbone.View ){
+                this.createTrasladoUbicacionView.stopListening();
+                this.createTrasladoUbicacionView.undelegateEvents();
+            }
+
+            this.createTrasladoUbicacionView = new app.CreateTrasladoUbicacionView({ model: this.trasladoUbicacionModel });
+            this.createTrasladoUbicacionView.render();
+        },
+
+        /**
+        * show view show traslado ubicacion
+        */
+        getTrasladoUbicacionShow: function (trasladoUbicacion) {
+            this.trasladoUbicacionModel = new app.TrasladoUbicacionModel();
+            this.trasladoUbicacionModel.set({'id': trasladoUbicacion}, {'silent':true});
+
+            if ( this.showTrasladoUbicacionView instanceof Backbone.View ){
+                this.showTrasladoUbicacionView.stopListening();
+                this.showTrasladoUbicacionView.undelegateEvents();
+            }
+
+            this.showTrasladoUbicacionView = new app.ShowTrasladoUbicacionView({ model: this.trasladoUbicacionModel });
         },        
 
         /**

@@ -256,14 +256,14 @@
     </li>
 
     {{-- Inventario --}}
-    <li class="treeview {{ in_array(Request::segment(1), ['unidades', 'productos','lineas','marcas','modelos','categorias','impuestos','pedidos','ajustes','tiposajuste','subcategorias','servicios','unidadesnegocio','traslados', 'tipostraslados']) ? 'active' : '' }}">
+    <li class="treeview {{ in_array(Request::segment(1), ['unidades', 'productos','lineas','marcas','modelos','categorias','impuestos','pedidos','ajustes','tiposajuste','subcategorias','servicios','unidadesnegocio','traslados','trasladosubicaciones','tipostraslados']) ? 'active' : '' }}">
         <a href="#">
             <i class="fa fa-list"></i> <span>Inventario</span><i class="fa fa-angle-left pull-right"></i>
         </a>
 
         <ul class="treeview-menu">
             {{-- Modulos inventario --}}
-            <li class="{{ in_array(Request::segment(1), ['productos','pedidos','ajustes','traslados']) ? 'active' : '' }}">
+            <li class="{{ in_array(Request::segment(1), ['productos','pedidos','ajustes','traslados','trasladosubicaciones']) ? 'active' : '' }}">
                 <a href="#">
                     <i class="fa fa-wpforms"></i> Módulos <i class="fa fa-angle-left pull-right"></i>
                 </a>
@@ -279,6 +279,9 @@
                     </li>
                     <li class="{{ Request::segment(1) == 'traslados' ? 'active' : '' }}">
                         <a href="{{ route('traslados.index') }}"><i class="fa fa-arrows"></i> Traslados</a>
+                    </li> 
+                    <li class="{{ Request::segment(1) == 'trasladosubicaciones' ? 'active' : '' }}">
+                        <a href="{{ route('trasladosubicaciones.index') }}"><i class="fa fa-compass "></i> Traslados ubicaciones</a>
                     </li> 
                 </ul>
             </li>

@@ -112,8 +112,8 @@ class AjusteController extends Controller
                                 $ajusteDetalle->save();
 
                                 // Prodbode
-                                $result = Prodbode::actualizar($producto, $sucursal->id, 'E', $ajusteDetalle->ajuste2_cantidad_entrada);
-                                if($result != 'OK') {
+                                $result = Prodbode::actualizar($producto, $sucursal->id, 'E', $ajusteDetalle->ajuste2_cantidad_entrada, $sucursal->sucursal_defecto);
+                                if(!$result instanceof Prodbode) {
                                     DB::rollback();
                                     return response()->json(['success' => false, 'errors'=> $result]);
                                 }

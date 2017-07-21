@@ -44,19 +44,22 @@ app || (app = {});
                 })
                 .done(function(resp) {
                     window.Misc.removeSpinner( _this.$wrapperContent );
+                    
                     // Eval consecutive
                     var consecutive = 0;
                     if(documents == 'pedido') consecutive = resp.sucursal_pedn;
                     if(documents == 'ajuste') consecutive = resp.sucursal_ajus;
                     if(documents == 'traslados') consecutive = resp.sucursal_tras;
                     if(documents == 'pedidoc') consecutive = resp.sucursal_pedidoc;
+                    if(documents == 'devolucion') consecutive = resp.sucursal_devo;
+                    if(documents == 'trasladosubicaciones') consecutive = resp.sucursal_trau;
                     if(documents == 'recibos') consecutive = resp.regional_reci;
                     if(documents == 'notas') consecutive = resp.regional_nota;
                     if(documents == 'ajustec') consecutive = resp.regional_ajuc;
-                    if(documents == 'devolucion') consecutive = resp.sucursal_devo;
                     if(documents == 'anticipo') consecutive = resp.regional_anti;
                     if(documents == 'chequepos') consecutive = resp.regional_chp;
                     if(documents == 'orden') consecutive = resp.regional_ord;
+
                     // Set consecutive
                     _this.$consecutive.val( parseInt(consecutive) + 1);
                 })

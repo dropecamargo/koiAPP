@@ -17,15 +17,16 @@ class CreateProdbodeTable extends Migration
             $table->increments('id');
             $table->integer('prodbode_serie')->unsigned();
             $table->integer('prodbode_sucursal')->unsigned();
-            $table->integer('prodbode_cantidad')->default(0)->unsigned();
-            $table->double('prodbode_metros')->default(0);
+            $table->integer('prodbode_cantidad')->unsigned();
+            $table->integer('prodbode_ubicacion')->unsigned()->nullable();
             $table->integer('prodbode_reservado')->unsigned();
-            $table->text('prodbode_ubicacion1');
             $table->integer('prodbode_maximo')->unsigned();
-            $table->integer('producto_minimo')->unsigned();
+            $table->integer('prodbode_minimo')->unsigned();
+            $table->double('prodbode_metros')->default(0);
 
             $table->foreign('prodbode_serie')->references('id')->on('producto')->onDelete('restrict');
             $table->foreign('prodbode_sucursal')->references('id')->on('sucursal')->onDelete('restrict');
+            $table->foreign('prodbode_ubicacion')->references('id')->on('ubicacion')->onDelete('restrict');
         });
     }
 

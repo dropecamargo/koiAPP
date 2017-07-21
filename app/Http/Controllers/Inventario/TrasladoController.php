@@ -239,6 +239,7 @@ class TrasladoController extends Controller
                     return response()->json(['success' => false, 'errors' => trans('app.exception')]);
                 }
             }
+            return response()->json(['success' => false, 'errors' => $traslado->errors]);
         }
     }
 

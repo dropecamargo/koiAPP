@@ -55,6 +55,34 @@ class Ubicacion extends BaseModel
     }
 
     public static function getUbicacion($id){
+        $ubicacion = Ubicacion::query();
+        $ubicacion->select('ubicacion.*','sucursal_nombre');
+        $ubicacion->join('sucursal','ubicacion_sucursal','=','sucursal.id');
+        $ubicacion->where('ubicacion.id', $id);
+        return $ubicacion->first();
+    }
 
+    // Creando modelo desde sucursal
+    public function createModel(Sucursal $sucursal, $nombre){
+        $this->ubicacion_sucursal = $sucursal->id;
+        $this->ubicacion_activo = true;
+        $this->ubicacion_nombre = $nombre;
+        $this->save();
+    }
+
+    public static function getUbicaciones()
+    {   
+        if (Cache::has( self::$key_cache )) {
+            return Cache::get( self::$key_cache );
+        }
+
+        return Cache::rememberForever( self::$key_cache , function() {
+            $query = Ubicacion::query();
+            $query->orderby('ubicacion_nombre', 'asc');
+            $query->where('ubicacion_activo', true);
+            $collection = $query->lists('ubicacion_nombre', 'id'); 
+            $collection->prepend('', '');
+            return $collection;
+        });
     }
 }

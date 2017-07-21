@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\Models\Base\Sucursal;
+use App\Models\Base\Sucursal,App\Models\Base\Ubicacion,App\Models\Base\Regional;
 use DB, Log, Datatables, Cache;
 
 class SucursalController extends Controller
@@ -51,13 +51,24 @@ class SucursalController extends Controller
             if ($sucursal->isValid($data)) {
                 DB::beginTransaction();
                 try {
-                    // sucursal
+                    // Sucursal
                     $sucursal->fill($data);
                     $sucursal->fillBoolean($data);
                     $sucursal->save();
 
+                    // Create Ubicacion
+                    if ($request->has('sucursal_defecto')) {
+                        $ubicacion = new Ubicacion;
+                        $ubicacion->createModel($sucursal, $request->sucursal_defecto);
+
+                        $sucursal->sucursal_defecto = $ubicacion->id;
+                        $sucursal->sucursal_ubicaciones = true;
+                        $sucursal->save();
+                    }
+
                     // Commit Transaction
                     DB::commit();
+
                     // Forget cache
                     Cache::forget( Sucursal::$key_cache );
 
@@ -116,11 +127,20 @@ class SucursalController extends Controller
             if ($sucursal->isValid($data)) {
                 DB::beginTransaction();
                 try {
-                    // sucursal
+                    // Sucursal
                     $sucursal->fill($data);
                     $sucursal->fillBoolean($data);
-                    $sucursal->save();
 
+                    if ( $request->has('sucursal_defecto') ) {
+                        $ubicacion = Ubicacion::find($request->sucursal_defecto);
+                        if (!$ubicacion instanceof Ubicacion) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar ubicacion,por favor verifique la información ó por favor consulte al administrador.']);
+                        }
+                        $sucursal->sucursal_defecto = $ubicacion->id;
+                        $sucursal->sucursal_ubicaciones = true;
+                    }
+                    $sucursal->save();
                     // Commit Transaction
                     DB::commit();
                     

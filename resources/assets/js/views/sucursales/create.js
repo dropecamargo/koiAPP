@@ -14,7 +14,8 @@ app || (app = {});
         el: '#sucursales-create',
         template: _.template( ($('#add-sucursal-tpl').html() || '') ),
         events: {
-            'submit #form-sucursales': 'onStore'
+            'submit #form-sucursales': 'onStore',
+            'ifChanged .changed-location': 'checkLocation',
         },
         parameters: {
         },
@@ -36,19 +37,6 @@ app || (app = {});
             this.listenTo( this.model, 'request', this.loadSpinner );
         },
 
-        /**
-        * Event Create Folder
-        */
-        onStore: function (e) {
-
-            if (!e.isDefaultPrevented()) {
-
-                e.preventDefault();
-                var data = window.Misc.formToJson( e.target );
-                this.model.save( data, {patch: true, silent: true} );
-            }
-        },
-
         /*
         * Render View Element
         */
@@ -57,9 +45,69 @@ app || (app = {});
             var attributes = this.model.toJSON();
             this.$wraperForm.html( this.template(attributes) );
 
+            // References fields
+            this.$sucursalDefecto = this.$("#sucursal_defecto");
+            this.$locationCheck = this.$("#sucursal_ubicaciones");
+
+            if(this.model.id != undefined){
+                this.loadDataSelect();
+            }
+
             this.ready();
         },
 
+        /**
+        * Event Create Folder
+        */
+        onStore: function (e) {
+
+            if (!e.isDefaultPrevented()) {
+                e.preventDefault();
+                var data = window.Misc.formToJson( e.target );
+                this.model.save( data, {patch: true, silent: true} );
+            }
+        },
+        /**
+        * Change check edit 
+        */
+        checkLocation: function(e){
+            var selected = $(e.target).is(':checked');
+            if( selected ) {
+                this.$sucursalDefecto.prop('required',true);
+            }else{
+                this.$sucursalDefecto.prop('required',false);
+                this.$sucursalDefecto.val('').trigger('change');
+            }
+        },
+        /**
+        * Loader data of select locations 
+        */
+        loadDataSelect: function(){
+            var _this = this;
+            var idSucursal = this.model.get('id');
+            if( typeof(idSucursal) !== 'undefined' && !_.isUndefined(idSucursal) && !_.isNull(idSucursal) && idSucursal != '' ){
+                $.ajax({
+                    url: window.Misc.urlFull( Route.route('ubicaciones.index', {sucursal: idSucursal}) ),
+                    type: 'GET',
+                    beforeSend: function() {
+                        window.Misc.setSpinner( _this.el );
+                    }
+                })
+                .done(function(resp) {
+                    window.Misc.removeSpinner( _this.el );
+                    _this.$sucursalDefecto.empty().val(0);
+                    _this.$sucursalDefecto.append("<option value=></option>");
+                    (resp.length > 0) ? _this.$locationCheck.iCheck('check',true) : '' ;
+
+                    _.each(resp, function(item){
+                        _this.$sucursalDefecto.append("<option value="+item.id+">"+item.ubicacion_nombre+"</option>");
+                        if (_this.model.get('sucursal_defecto') == item.id) {
+                            _this.$sucursalDefecto.val(item.id).change();
+                        }
+                    });
+                });
+            }   
+        },
         /**
         * fires libraries js
         */

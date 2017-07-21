@@ -37,7 +37,7 @@ class Sucursal extends BaseModel
      *
      * @var array
      */
-    protected $boolean = ['sucursal_activo'];
+    protected $boolean = ['sucursal_activo','sucursal_ubicaciones'];
 
 
     public function isValid($data)
@@ -80,9 +80,10 @@ class Sucursal extends BaseModel
 
     public static function getSucursal($id){
         $query = Sucursal::query();
-        $query->select('sucursal.*','sucursal.id as id_sucursal','regional.*');
-        $query->where('sucursal.id', $id);
+        $query->select('sucursal.*','regional.*','ubicacion_nombre','sucursal.id as id');
         $query->join('regional','sucursal_regional','=','regional.id');
+        $query->leftJoin('ubicacion','sucursal_defecto','=','ubicacion.id');
+        $query->where('sucursal.id', $id);
         return $query->first();
     }
 }

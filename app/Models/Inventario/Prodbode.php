@@ -23,7 +23,7 @@ class Prodbode extends Model
 	    $query->where('prodbode_sucursal', $sucursal);
 	    return $query->first();
     }
-    public  static function actualizar(Producto $producto, $sucursal, $tipo, $cantidad)
+    public  static function actualizar(Producto $producto, $sucursal, $tipo, $cantidad, $ubicacion = null)
  	{
         // Validar sucursal
         $sucursal = Sucursal::find($sucursal);
@@ -35,9 +35,9 @@ class Prodbode extends Model
         if(!is_numeric($cantidad) || $cantidad <= 0){
             return "No es posible recuperar unidades prodbode, por favor verifique la información o consulte al administrador.";
         }
-
         // Recuperar prodbode
-    	$prodbode = Prodbode::where('prodbode_serie', $producto->id)->where('prodbode_sucursal', $sucursal->id)->first();
+    	$prodbode = Prodbode::where('prodbode_serie', $producto->id)->where('prodbode_sucursal', $sucursal->id)->$query->where('prodbode_ubicacion',$ubicacion)->first();
+
 		if(!$prodbode instanceof Prodbode){
         	$prodbode = new Prodbode;
 	        $prodbode->prodbode_serie = $producto->id;
@@ -70,6 +70,6 @@ class Prodbode extends Model
         }
 		$prodbode->save();
 
-        return 'OK';
+        return $prodbode;
     }
 }

@@ -27,10 +27,16 @@ app || (app = {});
                 processing: true,
                 serverSide: true,
                 language: window.Misc.dataTableES(),
-                ajax: window.Misc.urlFull( Route.route('ubicaciones.index') ),
+                ajax: {
+                    url: window.Misc.urlFull( Route.route('ubicaciones.index') ),
+                    data: function( data ) {
+                        data.datatables = true;
+                    }
+                },
                 columns: [
                     { data: 'id', name: 'id' },
                     { data: 'ubicacion_nombre', name: 'ubicacion_nombre' },
+                    { data: 'sucursal_nombre', name: 'sucursal_nombre'},
                     { data: 'ubicacion_activo', name: 'ubicacion_activo'}
                 ],
                 buttons: [
@@ -45,13 +51,14 @@ app || (app = {});
                 columnDefs: [
                     {
                         targets: 0,
+                        searchable:false,
                         width: '10%',
                         render: function ( data, type, full, row ) {
                             return '<a href="'+ window.Misc.urlFull( Route.route('ubicaciones.show', {ubicaciones: full.id }) )  +'">' + data + '</a>';
                         }
                     },
                     {
-                        targets: 2,
+                        targets: 3,
                         width: '10%',
                         render: function ( data, type, full, row ) {
                             return parseInt(data) ? 'Si' : 'No';

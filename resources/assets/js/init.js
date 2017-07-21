@@ -72,35 +72,36 @@ var app = app || {};
         */
         initSelect2: function () {
             var _this = this,
-                config = {
-                  '.select2-default' : { language: 'es', placeholder: 'Seleccione', allowClear: false },
-                  '.select2-default-clear'  : { language: 'es', placeholder: 'Seleccione', allowClear: true },
-                  '.choice-select-autocomplete': {
-                    language: "es",
-                    placeholder:'Seleccione una opción',
-                    ajax: {
-                        delay: 250,
-                        data: function (params) {
-                            return {
-                                q: params.term,
-                                page: params.page
-                            };
-                        },
-                        processResults: function (data, params) {
-                            params.page = params.page || 1;
-                            return {
-                                results: data,
-                                pagination: {
-                                    more: (params.page * 30) < data.total_count
-                                }
-                            };
-                        },
-                        escapeMarkup: function (markup) { return markup; },
-                        cache: true,
-                        minimumInputLength: 1
-                    }
-                  }
-                };
+            config = {
+              '.select2-default' : { language: 'es', placeholder: 'Seleccione', allowClear: false },
+              '.select2-default-clear'  : { language: 'es', placeholder: 'Seleccione', allowClear: true },
+              '.choice-select-autocomplete': {
+                language: "es",
+                placeholder:'Seleccione una opción',
+                ajax: {
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            q: params.term,
+                            page: params.page
+                        };
+                    },
+                    processResults: function (data, params) 
+                    {
+                        params.page = params.page || 1;
+                        return {
+                            results: data,
+                            pagination: {
+                                more: (params.page * 30) < data.total_count
+                            }
+                        };
+                    },
+                    escapeMarkup: function (markup) { return markup; },
+                    cache: true,
+                    minimumInputLength: 1
+                }
+              }
+            };
 
             // Instance selects to choice plugin
             for (var selector in config){

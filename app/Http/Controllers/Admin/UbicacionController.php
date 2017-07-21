@@ -20,8 +20,22 @@ class UbicacionController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
+            
             $query = Ubicacion::query();
-            return Datatables::of($query)->make(true);
+
+            if ($request->has('datatables')) {
+                $query->select('ubicacion.*', 'sucursal_nombre');
+                $query->join('sucursal', 'ubicacion_sucursal', '=', 'sucursal.id');
+                return Datatables::of($query)->make(true);
+            }
+
+            if($request->has('sucursal')){
+                $query->select('ubicacion.id as id','ubicacion_nombre');
+                $query->where('ubicacion_sucursal', $request->sucursal);
+                $query->orderby('ubicacion_nombre','asc');
+                return response()->json($query->get());
+            }
+
         }
         return view('admin.ubicaciones.index');
     }
@@ -88,7 +102,7 @@ class UbicacionController extends Controller
      */
     public function show(Request $request, $id)
     {
-        $ubicacion = Ubicacion::findOrFail($id);
+        $ubicacion = Ubicacion::getUbicacion($id);
         if ($request->ajax()) {
             return response()->json($ubicacion);
         }

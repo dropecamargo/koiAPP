@@ -21,7 +21,8 @@ app || (app = {});
             'sucursal_direccion_nomenclatura': '',
             'sucursal_regional': '',
             'sucursal_telefono': '',
-        	'sucursal_activo': 1
+            'sucursal_activo': 1 ,
+        	'sucursal_ubicaciones': 0,
         }
     });
 
