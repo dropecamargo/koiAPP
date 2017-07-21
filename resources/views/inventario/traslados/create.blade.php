@@ -7,7 +7,7 @@
 
 @section('module')
 	<div class="box box-success" id="traslados-create">
-			<div id="render-form-traslado">
+		<div class="box-body" id="render-form-traslado">
 			{{-- Render form traslado --}}
 		</div>
 	</div>

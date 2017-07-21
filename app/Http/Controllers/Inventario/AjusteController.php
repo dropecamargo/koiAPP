@@ -148,13 +148,13 @@ class AjusteController extends Controller
                                     $ajusteDetalle->ajuste2_producto = $serie->id;
                                     $ajusteDetalle->save();
 
-                                    $lote = Lote::actualizar($serie, $sucursal->id, $request->ajuste1_lote, 'E', 1, $ajuste->ajuste1_fecha, null);
+                                    $lote = Lote::actualizar($serie, $sucursal->id, $request->ajuste1_lote, 'E', 1, $sucursal->sucursal_defecto, $ajuste->ajuste1_fecha, null);
                                     if (!$lote instanceof Lote) {
                                         DB::rollback();
                                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar lote, por favor verifique la información ó por favor consulte al administrador']);
                                     }
                                     // Inventario
-                                    $inventario = Inventario::movimiento($serie, $sucursal->id, 'AJUS', $ajuste->id, 1, 0, 0, 0, $costo, $costo,$lote->id);
+                                    $inventario = Inventario::movimiento($serie, $sucursal->id, $sucursal->sucursal_defecto,'AJUS', $ajuste->id, 1, 0, 0, 0, $costo, $costo,$lote->id);
                                     if (!$inventario instanceof Inventario) {
                                         DB::rollback();
                                         return response()->json(['success' => false,'errors '=> $inventario]);
@@ -166,13 +166,13 @@ class AjusteController extends Controller
                                 foreach ($items as $value) {
                                     for ($i=0; $i < $value['rollo_cantidad']; $i++) {   
                                         // Individualiza en rollo
-                                        $rollo = Rollo::actualizar($producto, $sucursal->id, 'E', $value['rollo_lote'], $ajuste->ajuste1_fecha, $value['rollo_metros']);
+                                        $rollo = Rollo::actualizar($producto, $sucursal->id, 'E', $value['rollo_lote'], $ajuste->ajuste1_fecha, $value['rollo_metros'], $sucursal->sucursal_defecto);
                                         if (!$rollo instanceof Rollo) {
                                             DB::rollback();
                                             return response()->json(['success' => false, 'errors' => $rollo]);
                                         }
                                         // Inventario
-                                        $inventario = Inventario::movimiento($producto, $sucursal->id, 'AJUS', $ajuste->id, 0, 0, $value['rollo_metros'], 0, $ajusteDetalle->ajuste2_costo, $costopromedio,0,$rollo->id);
+                                        $inventario = Inventario::movimiento($producto, $sucursal->id, $sucursal->sucursal_defecto,'AJUS', $ajuste->id, 0, 0, $value['rollo_metros'], 0, $ajusteDetalle->ajuste2_costo, $costopromedio,0,$rollo->id);
                                         if (!$inventario instanceof Inventario) {
                                             DB::rollback();
                                             return response()->json(['success' => false,'errors '=> $inventario]);
@@ -183,13 +183,13 @@ class AjusteController extends Controller
                                 $items = isset($item['items']) ? $item['items'] : null;
                                 foreach ($items as $value) {
                                     // Individualiza en lote
-                                    $lote = Lote::actualizar($producto, $sucursal->id, $value['lote_numero'], 'E', $value['lote_cantidad'], $ajuste->ajuste1_fecha, $value['lote_fecha']);
+                                    $lote = Lote::actualizar($producto, $sucursal->id, $value['lote_numero'], 'E', $value['lote_cantidad'], $sucursal->sucursal_defecto ,$ajuste->ajuste1_fecha, $value['lote_fecha']);
                                     if (!$lote instanceof Lote) {
                                         DB::rollback();
                                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar lote, por favor verifique la información ó por favor consulte al administrador']);
                                     }
                                     // Inventario
-                                    $inventario = Inventario::movimiento($producto, $sucursal->id, 'AJUS', $ajuste->id, $value['lote_cantidad'], 0, 0, 0, $ajusteDetalle->ajuste2_costo, $costopromedio,$lote->id);
+                                    $inventario = Inventario::movimiento($producto, $sucursal->id, $sucursal->sucursal_defecto,'AJUS', $ajuste->id, $value['lote_cantidad'], 0, 0, 0, $ajusteDetalle->ajuste2_costo, $costopromedio,$lote->id);
                                     if (!$inventario instanceof Inventario) {
                                         DB::rollback();
                                         return response()->json(['success' => false,'errors '=> $inventario]);
@@ -197,13 +197,13 @@ class AjusteController extends Controller
                                 }
                             }else{
                                 // Individualiza en lote
-                                $lote = Lote::actualizar($producto, $sucursal->id, $request->ajuste1_lote, 'E', $ajusteDetalle->ajuste2_cantidad_entrada, $ajuste->ajuste1_fecha);
+                                $lote = Lote::actualizar($producto, $sucursal->id, $request->ajuste1_lote, 'E', $ajusteDetalle->ajuste2_cantidad_entrada, $sucursal->sucursal_defecto, $ajuste->ajuste1_fecha);
                                 if (!$lote instanceof Lote) {
                                     DB::rollback();
                                     return response()->json(['success' => false, 'errors' => 'No es posible recuperar lote, por favor verifique la información ó por favor consulte al administrador']);
                                 }
                                 // Inventario
-                                $inventario = Inventario::movimiento($producto, $sucursal->id, 'AJUS', $ajuste->id, $ajusteDetalle->ajuste2_cantidad_entrada, 0, 0, 0, $ajusteDetalle->ajuste2_costo, $costopromedio,$lote->id);
+                                $inventario = Inventario::movimiento($producto, $sucursal->id, $sucursal->sucursal_defecto,'AJUS', $ajuste->id, $ajusteDetalle->ajuste2_cantidad_entrada, 0, 0, 0, $ajusteDetalle->ajuste2_costo, $costopromedio,$lote->id);
                                 if (!$inventario instanceof Inventario) {
                                     DB::rollback();
                                     return response()->json(['success' => false,'errors '=> $inventario]);
@@ -223,16 +223,16 @@ class AjusteController extends Controller
                                 $ajusteDetalle->save();
 
                                 // Prodbode
-                                $result = Prodbode::actualizar($producto, $sucursal->id, 'S', $ajusteDetalle->ajuste2_cantidad_salida);
-                                if($result != 'OK') {
+                                $result = Prodbode::actualizar($producto, $sucursal->id, 'S', $ajusteDetalle->ajuste2_cantidad_salida, $sucursal->sucursal_defecto);
+                                if(!$result instanceof Prodbode) {
                                     DB::rollback();
                                     return response()->json(['success' => false, 'errors'=> $result]);
                                 }
                             }
                             if ($producto->producto_maneja_serie == true) {
                                 // Prodbode
-                                $result = Prodbode::actualizar($producto, $sucursal->id, 'S', 1);
-                                if($result != 'OK') {
+                                $result = Prodbode::actualizar($producto, $sucursal->id, 'S', 1, $sucursal->sucursal_defecto);
+                                if(!$result instanceof Prodbode) {
                                     DB::rollback();
                                     return response()->json(['success' => false, 'errors'=> $result]);
                                 }
@@ -245,13 +245,13 @@ class AjusteController extends Controller
                                 $ajusteDetalle->ajuste2_cantidad_salida = 1;
                                 $ajusteDetalle->ajuste2_producto = $producto->id;
                                 $ajusteDetalle->save();
-                                $lote = Lote::actualizar($producto, $sucursal->id, "", 'S', 1, $ajuste->ajuste1_fecha, null);
+                                $lote = Lote::actualizar($producto, $sucursal->id, "", 'S', 1, $sucursal->sucursal_defecto, $ajuste->ajuste1_fecha, null);
                                 if (!$lote instanceof Lote) {
                                     DB::rollback();
                                     return response()->json(['success' => false, 'errors' => 'No es posible recuperar lote, por favor verifique la información ó por favor consulte al administrador']);
                                 }
                                 // Inventario
-                                $inventario = Inventario::movimiento($producto, $sucursal->id, 'AJUS', $ajuste->id, 0, 1, 0, 0,$ajusteDetalle->ajuste2_costo, $ajusteDetalle->ajuste2_costo,$lote->id);
+                                $inventario = Inventario::movimiento($producto, $sucursal->id, $sucursal->sucursal_defecto, 'AJUS', $ajuste->id, 0, 1, 0, 0,$ajusteDetalle->ajuste2_costo, $ajusteDetalle->ajuste2_costo,$lote->id);
                                 if (!$inventario instanceof Inventario) {
                                     DB::rollback();
                                     return response()->json(['success' => false,'errors '=> $inventario]);
@@ -264,13 +264,13 @@ class AjusteController extends Controller
                                         
                                          list($text, $rollo) = explode("_", $key);
                                         // Individualiza en rollo --- $rollo hace las veces de lote 
-                                        $rollo = Rollo::actualizar($producto, $sucursal->id, 'S', $rollo, $ajuste->ajuste1_fecha, $valueItem);
+                                        $rollo = Rollo::actualizar($producto, $sucursal->id, 'S', $rollo, $ajuste->ajuste1_fecha, $valueItem, $sucursal->sucursal_defecto);
                                         if (!$rollo instanceof Rollo) {
                                             DB::rollback();
                                             return response()->json(['success' => false, 'errors' => $rollo]);
                                         }
                                         // Inventario
-                                        $inventario = Inventario::movimiento($producto, $sucursal->id, 'AJUS', $ajuste->id, 0, 0, 0, $valueItem, $ajusteDetalle->ajuste2_costo, $ajusteDetalle->ajuste2_costo,0,$rollo->id);
+                                        $inventario = Inventario::movimiento($producto, $sucursal->id, $sucursal->sucursal_defecto,'AJUS', $ajuste->id, 0, 0, 0, $valueItem, $ajusteDetalle->ajuste2_costo, $ajusteDetalle->ajuste2_costo,0,$rollo->id);
                                         if (!$inventario instanceof Inventario) {
                                             DB::rollback();
                                             return response()->json(['success' => false,'errors '=> $inventario]);
@@ -286,13 +286,13 @@ class AjusteController extends Controller
 
                                     if ($value > 0) {
                                         // Individualiza en lote
-                                        $lote = Lote::actualizar($producto, $sucursal->id, $lote, 'S', $value);
+                                        $lote = Lote::actualizar($producto, $sucursal->id, $lote, 'S', $value, $sucursal->sucursal_defecto);
                                         if (!$lote instanceof Lote) {
                                             DB::rollback();
                                             return response()->json(['success' => false, 'errors' => $lote]);
                                         }
                                         // Inventario
-                                        $inventario = Inventario::movimiento($producto, $sucursal->id, 'AJUS', $ajuste->id, 0, $value, 0, 0, $ajusteDetalle->ajuste2_costo, $ajusteDetalle->ajuste2_costo,$lote->id);
+                                        $inventario = Inventario::movimiento($producto, $sucursal->id, $sucursal->sucursal_defecto,'AJUS', $ajuste->id, 0, $value, 0, 0, $ajusteDetalle->ajuste2_costo, $ajusteDetalle->ajuste2_costo,$lote->id);
                                         if (!$inventario instanceof Inventario) {
                                             DB::rollback();
                                             return response()->json(['success' => false,'errors '=> $inventario]);

@@ -29,10 +29,11 @@ class LoteController extends Controller
             }
             $lotes = [];
             if($request->has('producto') && $request->has('sucursal')) {
-                $query = Lote::query();
+                $query = Lote::select('lote.*', 'ubicacion_nombre');
                 $query->where('lote_serie', $producto->id);
                 $query->where('lote_sucursal', $sucursal->id);
                 $query->whereRaw('lote_saldo > 0');
+                $query->leftJoin('ubicacion', 'lote_ubicacion', '=', 'ubicacion.id');
                 $query->orderby('lote_fecha', 'asc');
                 $lotes = $query->get();
             }

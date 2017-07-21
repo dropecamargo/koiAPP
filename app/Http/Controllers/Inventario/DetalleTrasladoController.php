@@ -6,9 +6,12 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use Log, DB;
+
 use App\Models\Base\Sucursal;
 use App\Models\Inventario\Producto, App\Models\Inventario\Traslado2;
+
+use Log, DB;
+
 class DetalleTrasladoController extends Controller
 {
     /**
@@ -89,7 +92,7 @@ class DetalleTrasladoController extends Controller
                         foreach ($items as $key => $item) {
                             $cantidadItems += $item;
                         }
-                        if ($cantidadItems > $request->traslado2_cantidad || $cantidadItems < $request->ajuste2_cantidad_salida || $cantidadItems == 0  ) {
+                        if ($cantidadItems > $request->traslado2_cantidad || $cantidadItems < $request->traslado2_cantidad || $cantidadItems == 0  ) {
                             return response()->json(['success' => false,'errors' => "Cantidad de items de  {$request->producto_nombre} no coincide con el valor de SALIDA, por favor verifique información."]);
                         }
                     }

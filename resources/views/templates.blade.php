@@ -1066,6 +1066,7 @@
 
 <script type="text/template" id="exit-lotes-tpl">
     <td class="text-left"><%- lote_numero %></td>
+    <td class="text-left"><%- ubicacion_nombre %></td>
     <td class="text-left"><%- lote_fecha %></td>
     <% if(lote_vencimiento != null) { %>
     	<td class="text-left"><%- lote_vencimiento %></td>
@@ -1115,6 +1116,7 @@
 
 <script type="text/template" id="chooses-itemsrollos-tpl">
     <td class="text-left"><%- rollo_lote %></td>
+    <td class="text-left"><%- ubicacion_nombre %></td>
     <td class="text-left"><%- rollo_fecha %></td>
     <td class="text-left"><%- rollo_metros %></td>
     <td class="text-left"><%- rollo_saldo %></td>

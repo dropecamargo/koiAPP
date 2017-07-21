@@ -3,7 +3,7 @@
 namespace App\Models\Inventario;
 
 use Illuminate\Database\Eloquent\Model;
-use Validator,DB;
+use Validator;
 
 class Traslado2 extends Model
 {

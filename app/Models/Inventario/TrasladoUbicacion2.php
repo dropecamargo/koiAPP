@@ -4,6 +4,8 @@ namespace App\Models\Inventario;
 
 use Illuminate\Database\Eloquent\Model;
 
+use Validator;
+
 class TrasladoUbicacion2 extends Model
 {
 	/**

@@ -53,10 +53,11 @@ class TrasladoUbicacion1 extends Model
 	}
 
 	public static function getTrasladoUbicacion($id){
-        $query = Traslado1::query();
-        $query->select('trasladou1.*', 'o.sucursal_nombre as origen', 'd.sucursal_nombre as destino', 'u.username as username_elaboro');
-        $query->join('sucursal as o', 'trasladou1_origen', '=', 'o.id');
-        $query->join('sucursal as d', 'trasladou1_destino', '=', 'd.id');
+        $query = TrasladoUbicacion1::query();
+        $query->select('trasladou1.*', 'o.ubicacion_nombre as origen', 'd.ubicacion_nombre as destino', 's.sucursal_nombre','u.username as username_elaboro');
+        $query->join('sucursal as s', 'trasladou1_sucursal', '=', 's.id');
+        $query->join('ubicacion as o', 'trasladou1_origen', '=', 'o.id');
+        $query->join('ubicacion as d', 'trasladou1_destino', '=', 'd.id');
         $query->join('tercero as u', 'trasladou1_usuario_elaboro', '=', 'u.id');
         $query->where('trasladou1.id', $id);
         return $query->first();

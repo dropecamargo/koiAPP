@@ -135,7 +135,7 @@ app || (app = {});
             }
         },
         /**
-        *
+        * Load data selesct's locations
         */
         changedSucursalUbicacion: function(e){
             e.preventDefault();
@@ -206,7 +206,7 @@ app || (app = {});
                     alertify.error(text);
                     return;
                 }
-                window.Misc.redirect( window.Misc.urlFull( Route.route('traslados.show', { traslados: resp.id})) );
+                window.Misc.redirect( window.Misc.urlFull( Route.route('trasladosubicaciones.show', { trasladosubicaciones: resp.id})) );
             }
         }
     });

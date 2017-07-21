@@ -16,7 +16,7 @@ class Rollo extends Model
 
     public $timestamps = false;
 
- 	public  static function actualizar(Producto $producto, $sucursal, $tipo, $lote, $fecha, $cantidad)
+ 	public  static function actualizar(Producto $producto, $sucursal, $tipo, $lote, $fecha, $cantidad, $ubicacion)
  	{
         // Validar sucursal
         $sucursal = Sucursal::find($sucursal);
@@ -35,6 +35,7 @@ class Rollo extends Model
                 $rollo->rollo_serie = $producto->id;
                 $rollo->rollo_sucursal = $sucursal->id;
                 $rollo->rollo_lote = $lote;
+                $rollo->rollo_ubicacion = $ubicacion;
                 $rollo->rollo_metros = ($rollo->rollo_metros + $cantidad);
                 $rollo->rollo_saldo = ($rollo->rollo_saldo + $rollo->rollo_metros);
                 $rollo->rollo_fecha = $fecha;
@@ -46,7 +47,10 @@ class Rollo extends Model
                 }
                 // Validar disponibles
                 if($cantidad > $rollo->rollo_saldo){
-                    return "No existen suficientes unidades para salida producto {$producto->producto_nombre}, disponibles {$rollo->rollo_metros}, salida $cantidad, por favor verifique la información o consulte al administrador.";
+                    // $rollo2 = Rollo::where('rollo.id', '<>', $rollo->id)->where('rollo_serie', $producto->id)->where('rollo_sucursal', $sucursal->id)->where('rollo_ubicacion', $ubicacion)->first();
+                    // if (!$rollo2 instanceof Rollo) {
+                    // }
+                        return "No existen suficientes unidades para salida producto {$producto->producto_nombre}, disponibles {$rollo->rollo_metros}, salida $cantidad, por favor verifique la información o consulte al administrador.";
                 }
                 $rollo->rollo_saldo = ($rollo->rollo_saldo - $cantidad);
             break;
