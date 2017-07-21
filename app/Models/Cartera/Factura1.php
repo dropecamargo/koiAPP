@@ -66,12 +66,19 @@ class Factura1 extends BaseModel
 		return false;
 	}
 	public static function getFactura($id)
-	{
+	{	
 		$query = Factura1::query();
-		$query->select('factura1.*','sucursal_nombre','puntoventa.*','tercero_nit',DB::raw("CONCAT(tercero_nombre1, ' ', tercero_nombre2, ' ', tercero_apellido1, ' ', tercero_apellido2) as tercero_nombre"));
+		$query->select('factura1.*','sucursal_nombre','puntoventa_numero','puntoventa_nombre','puntoventa_prefijo','tercero_direccion','tercero_fax', 'tercero_municipio' , DB::raw("CONCAT(municipio_nombre, ' - ', departamento_nombre) as municipio_nombre"), 'tercero_telefono1','tercero_telefono2','tercero_nit', DB::raw("(CASE WHEN tercero_persona = 'N'
+                    THEN CONCAT(tercero_nombre1,' ',tercero_nombre2,' ',tercero_apellido1,' ',tercero_apellido2,
+                            (CASE WHEN (tercero_razonsocial IS NOT NULL AND tercero_razonsocial != '') THEN CONCAT(' - ', tercero_razonsocial) ELSE '' END)
+                        )
+                    ELSE tercero_razonsocial END)
+                AS tercero_nombre"));
 		$query->join('sucursal','factura1.factura1_sucursal','=', 'sucursal.id');
 		$query->join('tercero','factura1.factura1_tercero','=', 'tercero.id');
 		$query->join('puntoventa','factura1.factura1_puntoventa','=', 'puntoventa.id');
+		$query->leftJoin('municipio','tercero_municipio','=', 'municipio.id');
+        $query->leftJoin('departamento', 'municipio.departamento_codigo', '=', 'departamento.departamento_codigo');
 		$query->where('factura1.id',$id);
 		return $query->first();
 	}

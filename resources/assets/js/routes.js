@@ -300,6 +300,7 @@ app || (app = {});
             'sitios/create(/)': 'getSitiosCreate',
             'sitios/:sitios/edit(/)': 'getSitiosEdit',
 
+            'soportetecnico(/)': 'getSoporteTecnicoMain',
         },
 
         /**
@@ -2583,6 +2584,15 @@ app || (app = {});
 
             this.createSitioView = new app.CreateSitioView({ model: this.sitioModel });
             this.sitioModel.fetch();
+        },
+
+        getSoporteTecnicoMain: function () {
+            if ( this.mainSoporteTecnicoView instanceof Backbone.View ){
+                this.mainSoporteTecnicoView.stopListening();
+                this.mainSoporteTecnicoView.undelegateEvents();
+            }
+
+            this.mainSoporteTecnicoView = new app.MainSoporteTecnicoView( );
         },
     }));
 })(jQuery, this, this.document);

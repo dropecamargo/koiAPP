@@ -53,6 +53,11 @@ class TerceroController extends Controller
                         $query->where('tercero_vendedor', true);
                     }
 
+                    if($request->has('tecnico')) {
+                        $query->where('tercero_activo', true);
+                        $query->where('tercero_tecnico', true);
+                    }
+
                     // Nombre
                     if($request->has('tercero_nombre')) {
                         $query->where(function ($query) use($request) {

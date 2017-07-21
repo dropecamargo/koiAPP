@@ -3,7 +3,7 @@
 @section('module')
 	<div id="ordenes-create"></div>
 
-	<section class="content" id="orden-content-section">
+	<section id="orden-content-section">
 	    <!-- Modal info remision -->
 	    <div class="modal fade" id="modal-create-remision" data-backdrop="static" data-keyboard="false" aria-hidden="true">
 	        <div class="modal-dialog modal-lg" role="document">

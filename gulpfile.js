@@ -27,13 +27,14 @@ elixir(function(mix) {
 		paths.adminlte + 'plugins/select2/select2.min.css',
 		paths.adminlte + 'plugins/datepicker/datepicker3.css',
         paths.adminlte + 'plugins/timepicker/bootstrap-timepicker.min.css',
-		paths.adminlte + 'dist/css/AdminLTE.min.css',
-		paths.libs + 'font-awesome/css/font-awesome.min.css',
+        paths.adminlte + 'dist/css/AdminLTE.min.css',
+        paths.libs + 'font-awesome/css/font-awesome.min.css',
+        paths.libs + 'fullcalendar/dist/fullcalendar.min.css',
         paths.libs + 'datatables.net-bs/css/dataTables.bootstrap.css',
         paths.libs + 'fine-uploader/dist/fine-uploader.min.css',
-		paths.libs + 'fine-uploader/dist/fine-uploader-gallery.css',
-		paths.libs + 'datatables.net-buttons-bs/css/buttons.bootstrap.min.css',
-	], 'public/css/vendor.min.css');
+        paths.libs + 'fine-uploader/dist/fine-uploader-gallery.css',
+        paths.libs + 'datatables.net-buttons-bs/css/buttons.bootstrap.min.css',
+    ], 'public/css/vendor.min.css');
 });
 
 elixir(function(mix) {
@@ -42,7 +43,7 @@ elixir(function(mix) {
 
 elixir(function(mix) {
     mix.scripts([
-    	paths.adminlte + 'plugins/jQuery/jquery-2.2.3.min.js',
+        paths.adminlte + 'plugins/jQuery/jquery-2.2.3.min.js',
         paths.libs + 'jquery-ui/ui/core.js',
         paths.libs + 'jquery-ui/ui/widget.js',
         paths.libs + 'jquery-ui/ui/spinner.js',
@@ -56,7 +57,7 @@ elixir(function(mix) {
         paths.adminlte + 'plugins/datepicker/bootstrap-datepicker.js',
         paths.adminlte + 'plugins/datepicker/locales/bootstrap-datepicker.es.js',
         paths.adminlte + 'plugins/timepicker/bootstrap-timepicker.min.js',
-        paths.libs + 'fine-uploader/dist/s3.jquery.fine-uploader.min.js',
+        paths.libs + 'fine-uploader/dist/jquery.fine-uploader.min.js',
         paths.libs + 'bootstrap-validator/dist/validator.min.js',
         paths.libs + 'datatables.net/js/jquery.dataTables.min.js',
         paths.libs + 'datatables.net-bs/js/dataTables.bootstrap.min.js',
@@ -70,6 +71,8 @@ elixir(function(mix) {
         paths.libs + 'moment/moment.js',
         paths.libs + 'moment/locale/es.js',
         paths.libs + 'alertify.js/dist/js/alertify.js',
+        paths.libs + 'fullcalendar/dist/fullcalendar.min.js',
+        paths.libs + 'fullcalendar/dist/locale/es.js',
    	], 'public/js/vendor.min.js')
     .scripts([
         'models/*.js',
@@ -86,7 +89,6 @@ elixir(function(mix) {
     mix.copy(paths.adminlte + 'bootstrap/fonts/', 'public/fonts');
     mix.copy(paths.adminlte + 'plugins/iCheck/minimal/green**.png', 'public/css');
     mix.copy(paths.libs + 'fine-uploader/dist/**.gif', 'public/css');
-    mix.copy(paths.libs + 'fine-uploader/dist/placeholders/**.png', 'public/css');
     mix.copy(paths.libs + 'font-awesome/fonts/', 'public/fonts');
     mix.copy(paths.libs + 'jquery-ui/themes/base/images/', 'public/css/images/');
 });

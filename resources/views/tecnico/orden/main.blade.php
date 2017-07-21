@@ -213,7 +213,7 @@
                                                                         <i class="fa fa-user"></i>
                                                                     </button>
                                                                 </span>
-                                                                <input id="orden_tecnico" placeholder="Tecnico" class="form-control tercero-koi-component" name="orden_tecnico" type="text" maxlength="15" data-type="tecnico" data-name="orden_tecnico_nombre" value="<%- tecnico_nit %>" required>
+                                                                <input id="orden_tecnico" placeholder="Tecnico" class="form-control tercero-koi-component" name="orden_tecnico" type="text" maxlength="15" data-type="tecnico" data-tecnico="true" data-name="orden_tecnico_nombre" value="<%- tecnico_nit %>" required>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-8 col-xs-12">
@@ -535,43 +535,47 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="tab-pane" id="tab_legalizacion">
+                                        {{-- Content Legalizaciones --}}
+                                        <div class="box box-solid" id="wrapper-legalizacion">
+                                            <div class="box-body">
+                                                <form method="POST" accept-charset="UTF-8" id="form-legalizacion" data-toggle="validator">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="box-body table-responsive no-padding">
+                                                                <table id="browse-legalizacion-list" class="table table-hover table-bordered" cellspacing="0">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th width="10%">Sucursal</th>
+                                                                            <th width="5%"># R.</th>
+                                                                            <th width="40%">Producto</th>
+                                                                            <th width="5%">Cantidad</th>
+                                                                            <th width="10%">Facturado</th>
+                                                                            <th width="10%">No Facturado</th>
+                                                                            <th width="10%">Devuelto</th>
+                                                                            <th width="10%">Usado</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="box-footer">
+                                                        <div class="col-md-offset-5 col-sm-2">
+                                                            <button type="button" class="btn btn-primary btn-sm btn-block submit-legalizacion">{{ trans('app.add') }}</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
 
-<div class="tab-pane" id="tab_legalizacion">
-    {{-- Content Legalizaciones --}}
-    <div class="box box-solid" id="wrapper-legalizacion">
-        <div class="box-body">
-            <form method="POST" accept-charset="UTF-8" id="form-legalizacion" data-toggle="validator">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="box-body table-responsive no-padding">
-                            <table id="browse-legalizacion-list" class="table table-hover table-bordered" cellspacing="0">
-                                <thead>
-                                    <tr>
-                                        <th width="5%"># R.</th>
-                                        <th width="10%">Sucursal</th>
-                                        <th width="40%">Producto</th>
-                                        <th width="5%">Cantidad</th>
-                                        <th width="10%">Facturado</th>
-                                        <th width="10%">No Facturado</th>
-                                        <th width="10%">Devuelto</th>
-                                        <th width="10%">Usado</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<div class="tab-pane" id="tab_imagenes">
-   {{-- Content Images --}}
-    <div id="fine-uploader-s3"></div>
-</div>
+                                    <div class="tab-pane" id="tab_imagenes">
+                                       {{-- Content Images --}}
+                                        <div id="fine-uploader"></div>
+                                    </div>
                                     <div class="tab-pane" id="tab_cierre">
                                         {{-- Conttent Cierre --}}
                                         <div class="box box-solid">
@@ -694,8 +698,8 @@
     </script>
 
     <script type="text/template" id="legalizacion-item-list-tpl">    
-        <td><%- remrepu1_numero %></td>
         <td><%- sucursal_nombre %></td>
+        <td><%- remrepu1_numero %></td>
         <td><%- remrepu2_nombre %></td>
         <td><%- remrepu2_cantidad %></td>
         <td class="form-group">
@@ -776,13 +780,76 @@
         </div>
     </div>
 
+    <!-- Modal info remision -->
+    <div class="modal fade" id="modal-create-remision" data-backdrop="static" data-keyboard="false" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header small-box {{ config('koi.template.bg') }}">
+                    <button type="button" class="close icon-close-koi" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4><strong>Tecnico - Nueva remisión</strong></h4>
+                </div>
+                {!! Form::open(['id' => 'form-remrepu', 'data-toggle' => 'validator']) !!}
+                    <div class="modal-body" id="modal-remision-wrapper-show-info">
+                        <div class="content-modal">
+                        </div>
+                    </div>
+                {!! Form::close() !!}
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary btn-sm click-store-remsion">Continuar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/template" id="add-remision-tpl">
+        <div class="row">
+            <div class="form-group col-md-3">
+                <label for="remrepu2_serie" class="control-label">Producto</label>
+                <div class="input-group input-group-sm">
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default btn-flat btn-koi-search-producto-component" data-field="remrepu2_serie">
+                            <i class="fa fa-barcode"></i>
+                        </button>
+                    </span>
+                    <input id="remrepu2_serie" placeholder="Referencia" class="form-control producto-koi-component" name="remrepu2_serie" type="text" maxlength="15" data-wrapper="producto_create" data-name="remrepu2_nombre" required>
+                </div>
+            </div>
+            <div class="col-md-6 col-xs-10"><br>
+                <input id="remrepu2_nombre" name="remrepu2_nombre" placeholder="Nombre producto" class="form-control input-sm" type="text" readonly required>
+            </div>
+            <div class="form-group col-md-2">
+                <label for="remrepu2_cantidad" class="control-label">Cantidad</label>
+                <input type="number" name="remrepu2_cantidad" id="remrepu2_cantidad" min="1" class="form-control input-sm">
+            </div>
+            <div class="form-group col-md-1"><br>
+                <button type="button" class="btn btn-success btn-sm btn-block click-add-item">
+                    <i class="fa fa-plus"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- table table-bordered table-striped -->
+        <div class="table-responsive no-padding">
+            <table id="browse-legalizacions-list" class="table table-hover table-bordered" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th width="5%"></th>
+                        <th width="10%">Referencia</th>
+                        <th width="40%">Nombre</th>
+                        <th width="10%">Cantidad</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{-- Render content remrepu --}}
+                </tbody>
+            </table>
+        </div>
+    </script>
+
     <script type="text/template" id="orden-sendmail-confirm-tpl">
         <p>¿Desea enviar un correo con la información a <b><%- tcontacto_email %></b>?</p>
     </script>
-
-    <!-- <div class="box-footer">
-        <div class="col-md-offset-5 col-sm-2">
-            <button type="button" class="btn btn-primary btn-sm btn-block submit-legalizacion">{{ trans('app.add') }}</button>
-        </div>
-    </div> -->
 @stop

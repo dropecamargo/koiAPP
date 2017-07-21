@@ -204,6 +204,7 @@ Route::group(['middleware' => 'auth'], function(){
 		Route::resource('detalle', 'Cartera\Factura2Controller');
 		Route::get('search', ['as' => 'facturas.search', 'uses' => 'Cartera\Factura1Controller@search']);
 		Route::get('anular/{facturas}', ['as' => 'facturas.anular', 'uses' => 'Cartera\Factura1Controller@anular']);
+		Route::get('exportar/{facturas}', ['as' => 'facturas.exportar', 'uses' => 'Cartera\Factura1Controller@exportar']);
 	});
 	Route::group(['prefix' => 'devoluciones'], function()
 	{
@@ -244,11 +245,13 @@ Route::group(['middleware' => 'auth'], function(){
 	{
 		Route::resource('visitas','Tecnico\VisitaController',['only'=>['index', 'store', 'destroy']]);
 		Route::resource('remrepuestos','Tecnico\RemRepuController',['only'=>['index', 'store']]);
+		Route::resource('imagenes','Tecnico\OrdenImagenController',['only'=>['index', 'store', 'destroy']]);
 		Route::get('cerrar/{ordenes}', ['as' => 'ordenes.cerrar', 'uses' => 'Tecnico\OrdenController@cerrar']);
 		Route::get('mail/{ordenes}', ['as' => 'ordenes.mail', 'uses' => 'Tecnico\OrdenController@mail']);
 		
 		Route::group(['prefix' => 'detalle'],function(){
 			Route::resource('remrepuestos','Tecnico\RemRepuDetalleController',['only'=>['index', 'store', 'update']]);
+			Route::post('legalizacion', ['as' => 'ordenes.detalle.remrepuestos.legalizacion', 'uses' => 'Tecnico\RemRepuDetalleController@legalizacion']);
 		});
 	});
 	
@@ -259,5 +262,6 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::resource('prioridades', 'Tecnico\PrioridadController', ['except' => ['destroy']]);
 	Route::resource('conceptostecnico', 'Tecnico\ConceptoTecController', ['except' => ['destroy']]);
 	Route::resource('gestionestecnico', 'Tecnico\GestionTecnicoController', ['except' => ['destroy']]);
+	Route::resource('soportetecnico', 'Tecnico\SoporteTecnicoController', ['except' => ['destroy']]);
 	Route::resource('sitios', 'Tecnico\SitioController', ['except' => ['destroy']]);
 });

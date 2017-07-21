@@ -36,6 +36,8 @@ app || (app = {});
         * Constructor Method
         */
         initialize : function() {
+            _.bindAll(this, 'onCompleteLoadFile', 'onSessionRequestComplete');
+
         	//Model Exists
             this.visita = new app.VisitaCollection();
             this.remision = new app.RemisionCollection();
@@ -67,7 +69,7 @@ app || (app = {});
 
             // Spinner
             this.spinner = this.$('#spinner-main');
-            this.$uploaderFile = this.$('#fine-uploader-s3');
+            this.$uploaderFile = this.$('#fine-uploader');
 
             // Reference views and uploadPictures
             this.referenceViews();
@@ -201,62 +203,74 @@ app || (app = {});
         * UploadPictures
         */
         uploadPictures: function(e) {
-            this.$uploaderFile.fineUploaderS3({
+            var _this = this;
+
+            this.$uploaderFile.fineUploader({
                 debug: false,
-                template: 'qq-template-s3',
-                request: {
-                    // endpoint: "https://upload.fineuploader.com",
-                    // accessKey: "AKIAJB6BSMFWTAXC5M2Q"
+                template: 'qq-template',
+                session: {
+                    endpoint: window.Misc.urlFull( Route.route('ordenes.imagenes.index') ),
+                    params: {
+                        'orden_id': _this.model.get('id')
+                    },
+                    refreshOnRequest: false
                 },
-                // signature: {
-                //     endpoint: "https://s3-demo.fineuploader.com/s3demo-thumbnails-cors.php"
-                // },
-                // uploadSuccess: {
-                //     endpoint: "https://s3-demo.fineuploader.com/s3demo-thumbnails-cors.php?success",
-                //     params: {
-                //         isBrowserPreviewCapable: qq.supportedFeatures.imagePreviews
-                //     }
-                // },
-                // iframeSupport: {
-                //     localBlankPagePath: "/server/success.html"
-                // },
-                // cors: {
-                //     expected: true
-                // },
-                // chunking: {
-                //     enabled: true
-                // },
-                // resume: {
-                //     enabled: true
-                // },
-                // deleteFile: {
-                //     enabled: true,
-                //     method: "POST",
-                //     endpoint: "https://s3-demo.fineuploader.com/s3demo-thumbnails-cors.php"
-                // },
-                messages: {
-                    typeError: '{file} extensión no valida. Extensiones validas: {extensions}.'
+                request: {
+                    inputName: 'file',
+                    endpoint: window.Misc.urlFull( Route.route('ordenes.imagenes.index') ),
+                    params: {
+                        '_token': $('meta[name="csrf-token"]').attr('content'),
+                        'orden_id': _this.model.get('id')
+                    }
+                },
+                deleteFile: {
+                    enabled: true,
+                    forceConfirm: true,
+                    confirmMessage: '¿Esta seguro de que desea eliminar este archivo de forma permanente? {filename}',
+                    endpoint: window.Misc.urlFull( Route.route('ordenes.imagenes.index') ),
+                    params: {
+                        '_token': $('meta[name="csrf-token"]').attr('content'),
+                        'orden_id': _this.model.get('id')
+                    }
                 },
                 validation: {
                     itemLimit: 5,
-                    sizeLimit: 15000000,
-                    allowedExtensions: ['jpeg', 'jpg', 'png'],
+                    sizeLimit: ( 4 * 1024 ) * 1024, // 4mb,
+                    allowedExtensions: ['jpeg', 'jpg', 'png']
                 },
-                // thumbnails: {
-                //     placeholders: {
-                //         notAvailablePath: "/signsupply/public/not_available-generic.png",
-                //         waitingPath: "/signsupply/public/waiting-generic.png"
-                //     }
-                // },
-                // callbacks: {
-                //     onComplete: function(id, name, response) {
-
-                //         if (response.success) {
-                //             window.Misc.urlFull( Route.route('ordenes.edit', { ordenes: id}) );
-                //         }
-                //     }
-                // }
+                messages: {
+                    typeError: '{file} extensión no valida. Extensiones validas: {extensions}.',
+                    sizeError: '{file} es demasiado grande, el tamaño máximo del archivo es {sizeLimit}.'
+                },
+                callbacks: {
+                    onComplete: _this.onCompleteLoadFile,
+                    onSessionRequestComplete: _this.onSessionRequestComplete
+                }
             });
+        },
+
+        /**
+        * complete upload of file
+        * @param Number id
+        * @param Strinf name
+        * @param Object resp
+        */
+        onCompleteLoadFile: function (id, name, resp) {
+
+            var $itemFile = this.$uploaderFile.fineUploader('getItemByFileId', id);
+            this.$uploaderFile.fineUploader('setUuid', id, resp.id);
+            this.$uploaderFile.fineUploader('setName', id, resp.name);
+                
+            var previewLink = this.$uploaderFile.fineUploader('getItemByFileId', id).find('.preview-link');
+            previewLink.attr("href", resp.url);
+        },
+
+        onSessionRequestComplete: function (id, name, resp){
+            
+            _.each( id, function ( value, key){
+                var previewLink = this.$uploaderFile.fineUploader('getItemByFileId', key).find('.preview-link');
+                previewLink.attr("href", value.thumbnailUrl);
+            }, this);
         },
 
         /*
@@ -266,9 +280,40 @@ app || (app = {});
             if (!e.isDefaultPrevented()) {
                 e.preventDefault();
 
-                // prepare global data
-                var data = window.Misc.formToJson( e.target );
-                this.remrepu.trigger( 'store' , data );
+                var _this = this;
+                    data = window.Misc.formToJson( e.target );
+                    data.orden_id = this.model.get('id');
+
+                // legalizacion
+                $.ajax({
+                    url: window.Misc.urlFull( Route.route( 'ordenes.detalle.remrepuestos.legalizacion' ) ),
+                    data: data,
+                    type: 'POST',
+                    beforeSend: function() {
+                        window.Misc.setSpinner( _this.spinner );
+                    }
+                })
+                .done(function(resp) {
+                    window.Misc.removeSpinner( _this.spinner );
+                    if(!_.isUndefined(resp.success)) {
+                        // response success or error
+                        var text = resp.success ? '' : resp.errors;
+                        if( _.isObject( resp.errors ) ) {
+                            text = window.Misc.parseErrors(resp.errors);
+                        }
+
+                        if( !resp.success ) {
+                            alertify.error(text);
+                            return;
+                        }
+
+                        alertify.success('Se guardo con exito la legalización.');
+                    }
+                })
+                .fail(function(jqXHR, ajaxOptions, thrownError) {
+                    window.Misc.removeSpinner( _this.spinner );
+                    alertify.error(thrownError);
+                });
             }
         },
 
