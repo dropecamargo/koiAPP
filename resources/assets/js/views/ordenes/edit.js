@@ -206,14 +206,14 @@ app || (app = {});
             var _this = this;
 
             this.$uploaderFile.fineUploader({
-                debug: false,
+                debug: 0,
                 template: 'qq-template',
                 session: {
                     endpoint: window.Misc.urlFull( Route.route('ordenes.imagenes.index') ),
                     params: {
                         'orden_id': _this.model.get('id')
                     },
-                    refreshOnRequest: false
+                    refreshOnRequest: 0
                 },
                 request: {
                     inputName: 'file',
@@ -224,8 +224,8 @@ app || (app = {});
                     }
                 },
                 deleteFile: {
-                    enabled: true,
-                    forceConfirm: true,
+                    enabled: 1,
+                    forceConfirm: 1,
                     confirmMessage: '¿Esta seguro de que desea eliminar este archivo de forma permanente? {filename}',
                     endpoint: window.Misc.urlFull( Route.route('ordenes.imagenes.index') ),
                     params: {
