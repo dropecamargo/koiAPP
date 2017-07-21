@@ -48,10 +48,11 @@ class Factura2 extends BaseModel
 	public static function getFactura2($id)
 	{
 		$query = Factura2::query();
-		$query->select('factura2.*','producto_serie','producto_nombre')->where('factura2_factura1',$id);
+		$query->select('factura2.*','producto_serie','producto_nombre');
         $query->join('producto', 'factura2_producto', '=' ,'producto.id');
         $query->orderBy('factura2.id', 'asc');
-		return  $query->get();
+		$query->where('factura2_factura1', $id);
+		return $query->get();
 	}
 
 	public static function modelCreate($data){

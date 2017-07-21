@@ -52,6 +52,7 @@ app || (app = {});
             this.$changeIf = this.$inputContent.attr("data-change");
             this.$inputCliente = this.$inputContent.attr("data-cliente");
             this.$inputVendedor = this.$inputContent.attr("data-vendedor");
+            this.$inputTecnico = this.$inputContent.attr("data-tecnico");
 
             this.$concepto = this.$("#"+this.$inputContent.attr("data-concepto"));
             this.$wrap = this.$("#"+this.$inputContent.attr("data-wrap"));
@@ -74,6 +75,7 @@ app || (app = {});
                         data.tercero_nombre = _this.$searchName.val();
                         data.cliente = _this.$inputCliente;
                         data.vendedor = _this.$inputVendedor;
+                        data.tecnico = _this.$inputTecnico;
                     }
                 },
 

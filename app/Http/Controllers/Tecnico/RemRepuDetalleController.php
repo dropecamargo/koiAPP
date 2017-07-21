@@ -7,9 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\Models\Tecnico\RemRepu2,App\Models\Tecnico\RemRepu;
-use App\Models\Inventario\Producto;
-
+use App\Models\Tecnico\RemRepu2, App\Models\Tecnico\RemRepu, App\Models\Inventario\Producto, App\Models\Tecnico\Orden;
 Use Log, DB;
 
 class RemRepuDetalleController extends Controller
@@ -166,5 +164,68 @@ class RemRepuDetalleController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * update legalizacion.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function legalizacion(Request $request)
+    {
+        if($request->ajax()){
+            $data = $request->all();
+                
+            // Recuperar orden
+            $orden = Orden::find($request->orden_id);
+            if(!$orden instanceof Orden){
+                abort(404);
+            }
+            
+            DB::beginTransaction();
+            try {
+                // Recuperar remrepu
+                $remrepu = Remrepu::where('remrepu1_orden', $orden->id)
+                            ->select('remrepu1.*', 'sucursal_nombre')
+                            ->join('sucursal', 'remrepu1_sucursal', '=', 'sucursal.id')
+                            ->get();
+
+                foreach ($remrepu as $father) {
+                    $childs = RemRepu2::where('remrepu2_remrepu1', $father->id)->get();
+                    foreach ($childs as $item) {
+                        if($request->has("facturado_$item->id") && $request->has("nofacturado_$item->id") && $request->has("devuelto_$item->id") && $request->has("usado_$item->id") ){
+                            if( $request->get("facturado_$item->id") < 0 || $request->get("nofacturado_$item->id") < 0 || $request->get("devuelto_$item->id") < 0 || $request->get("usado_$item->id") < 0){
+                                DB::rollback();
+                                return response()->json(['success' => false, 'errors' => "Ningun campo puede ser negativo."]);
+                            }
+
+                            $ingreso = $request->get("facturado_$item->id") + $request->get("nofacturado_$item->id") + $request->get("devuelto_$item->id") + $request->get("usado_$item->id");
+
+                            if( $ingreso > $item->remrepu2_cantidad){
+                                DB::rollback();
+                                return response()->json(['success' => false, 'errors' => "Los datos ingresados en Sucursal {$father->sucursal_nombre} - Remision No. {$father->remrepu1_numero} supera la cantidad disponible, ingresado {$ingreso} disponible {$item->remrepu2_cantidad}"]);
+                            }
+
+                            if($item instanceof RemRepu2){
+                                $item->remrepu2_facturado = $request->get("facturado_$item->id");
+                                $item->remrepu2_no_facturado = $request->get("nofacturado_$item->id");
+                                $item->remrepu2_devuelto = $request->get("devuelto_$item->id");
+                                $item->remrepu2_usado = $request->get("usado_$item->id");
+                                $item->save();
+                            }
+                        }
+                    }
+                }
+                // Commit transaction
+                DB::commit();
+
+                return response()->json(['success' => true, 'id' => $item->id ]);
+            }catch(\Exception $e){
+                DB::rollback();
+                Log::error($e->getMessage());
+                return response()->json(['success' => false, 'errors' => trans('app.exception')]);
+            }
+        }
+        abort(404);
     }
 }

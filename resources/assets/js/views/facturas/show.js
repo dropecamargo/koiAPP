@@ -119,6 +119,10 @@ app || (app = {});
         * Redirect export pdf
         */
         exportFactura:function(e){
+            e.preventDefault();
+
+            // Redirect to pdf
+            window.open( window.Misc.urlFull( Route.route('facturas.exportar', { facturas: this.model.get('id') })) );
         }
     });
 

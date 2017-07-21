@@ -17,7 +17,6 @@ class CreateVisitaiTable extends Migration
             $table->increments('id');
 
             $table->integer('visitai_orden')->unsigned();
-            $table->integer('visitai_item')->unsigned();
             $table->string('visitai_archivo',100);
             $table->integer('visitai_usuario_elaboro')->unsigned();
             $table->dateTime('visitai_fh_elaboro');

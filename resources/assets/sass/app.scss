@@ -249,8 +249,12 @@ label {
 	color:black;
 }
 
-#fine-uploader-s3 .preview-link {
+#fine-uploader .preview-link {
     display: block;
     height: 100%;
     width: 100%;
+}
+
+#fine-uploader .qq-upload-button {
+    width: 150px;
 }

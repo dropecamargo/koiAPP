@@ -24,8 +24,15 @@ return [
     'comeback' => 'Regresar',
     'cancel' => 'Cancelar',
     'add' => 'Agregar',
+    'find' => 'Buscar',
     'continue' => 'Continuar',
 
     'pdf' => 'Generar PDF',
     'xls' => 'Generar XLS',
+
+    'files' => [
+        'upload' => 'Seleccionar archivo',
+        'drop' => 'Suelta los archivos aquí',
+        'retry' => 'Volver a intentar'
+    ] 
 ];

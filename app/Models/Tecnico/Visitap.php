@@ -23,8 +23,6 @@ class Visitap extends Model
      */
     protected $fillable = ['visitap_orden','visitap_cantidad'];
 
-
-
     public function isValid($data)
     {
         $rules = [

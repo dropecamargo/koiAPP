@@ -416,4 +416,21 @@ class Tercero extends BaseModel implements AuthenticatableContract,
 
         return false;
     }
+
+    public static function getTechnical( $id )
+    {
+        $query = Tercero::query();
+        $query->select('id',
+            DB::raw("(CASE WHEN tercero_persona = 'N'
+                THEN CONCAT(tercero_nombre1,' ',tercero_nombre2,' ',tercero_apellido1,' ',tercero_apellido2,
+                        (CASE WHEN (tercero_razonsocial IS NOT NULL AND tercero_razonsocial != '') THEN CONCAT(' - ', tercero_razonsocial) ELSE '' END)
+                    )
+                ELSE tercero_razonsocial END)
+            AS tercero_nombre")
+        );
+        $query->where('tercero_activo', true);
+        $query->where('tercero_tecnico', true);
+        $query->where('tercero.id', $id);
+        return $query->first();
+    }
 }

@@ -7,11 +7,9 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\Models\Cartera\Factura1, App\Models\Cartera\Factura2, App\Models\Cartera\Factura3;
-use App\Models\Comercial\Pedidoc1,App\Models\Comercial\Pedidoc2;
-use App\Models\Inventario\Producto,App\Models\Inventario\SubCategoria,App\Models\Inventario\Lote,App\Models\Inventario\Prodbode,App\Models\Inventario\Inventario,App\Models\Inventario\Rollo;
-use App\Models\Base\Tercero,App\Models\Base\PuntoVenta,App\Models\Base\Documentos,App\Models\Base\Sucursal, App\Models\Base\Contacto; 
-use DB, Log, Datatables,Auth;
+use App\Models\Cartera\Factura1, App\Models\Cartera\Factura2, App\Models\Cartera\Factura3, App\Models\Comercial\Pedidoc1, App\Models\Comercial\Pedidoc2, App\Models\Inventario\Producto, App\Models\Inventario\SubCategoria, App\Models\Inventario\Lote, App\Models\Inventario\Prodbode, App\Models\Inventario\Inventario, App\Models\Inventario\Rollo, App\Models\Base\Tercero, App\Models\Base\PuntoVenta, App\Models\Base\Documentos, App\Models\Base\Sucursal, App\Models\Base\Contacto;
+
+use App, View, Auth, DB, Log, Datatables;
 
 class Factura1Controller extends Controller
 {
@@ -369,5 +367,27 @@ class Factura1Controller extends Controller
             }
         }
         abort(403);
+    }
+
+    /**
+     * Export pdf the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function exportar($id)
+    {
+        $factura = Factura1::getFactura($id);
+        if(!$factura instanceof Factura1){
+            abort(404);
+        }
+
+        $detalle = Factura2::getFactura2($factura->id);
+        $title = sprintf('Factura %s', $factura->factura1_numero);
+
+        // Export pdf
+        $pdf = App::make('dompdf.wrapper');
+        $pdf->loadHTML(View::make('cartera.facturas.exportar.export',  compact('factura', 'detalle', 'title'))->render());
+        return $pdf->stream(sprintf('%s_%s_%s_%s.pdf', 'factura', $factura->id, date('Y_m_d'), date('H_m_s')));
     }
 }
