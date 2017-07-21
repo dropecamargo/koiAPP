@@ -12,8 +12,10 @@ app || (app = {});
     app.MainSoporteTecnicoView = Backbone.View.extend({
 
         el: '#soportetecnico-main',
+        templateEvent: _.template( ($('#add-info-event-tpl').html() || '') ),
         events: {
             'click .btn-search': 'changeTechnical',
+            'click .btn-clear': 'clearFilters',
         },
 
         /**
@@ -26,6 +28,7 @@ app || (app = {});
 
             // Reference to fields
             this.spinnerCalendar = this.$('#spinner-calendar');
+            this.$modalEvent = $('#modal-event-component');
             this.$calendar = this.$('#calendar');
             
             this.calendar();
@@ -40,6 +43,7 @@ app || (app = {});
         },
 
         calendar: function (){
+        	var _this = this;
         	this.$calendar.fullCalendar({
         		header: {
 				    left: 'prev,next',
@@ -47,10 +51,15 @@ app || (app = {});
 				    right: 'month,agendaWeek,agendaDay'
         		},
     			eventClick: function(calEvent, jsEvent, view) {
-
-    				console.log(calEvent, jsEvent, view);
+    				_this.openmodalEvent(calEvent, jsEvent, view);
 			    }
         	});
+        },
+
+        openmodalEvent: function (calEvent, jsEvent, view) {
+        	this.$modalEvent.find('.content-modal').html( this.templateEvent( calEvent ) );
+            this.$modalEvent.find('.modal-title').text( calEvent.title.trim() );
+        	this.$modalEvent.modal('show');
         },
 
         /**
@@ -102,6 +111,11 @@ app || (app = {});
 			}
         },
 
+        clearFilters: function(e){
+            e.preventDefault();
+
+            window.Misc.clearForm( $('#form-koi-search-tercero-component') );
+        },
     });
 
 })(jQuery, this, this.document);

@@ -24,11 +24,11 @@
 	                                    <i class="fa fa-user"></i>
 	                                </button>
 	                            </span>
-	                            <input id="search_tercero" placeholder="Tercero" class="form-control tercero-koi-component input-sm" name="search_tercero" type="text" maxlength="15" data-name="search_tercero_nombre" value="{{ session('search_tercero') }}" required>
+	                            <input id="search_tercero" placeholder="Tercero" class="form-control tercero-koi-component input-sm" name="search_tercero" type="text" maxlength="15" data-name="search_tercero_nombre" required>
 	                        </div>
 	                    </div>
 	                    <div class="col-md-4">
-	                        <input id="search_tercero_nombre" name="search_tercero_nombre" placeholder="Tercero beneficiario" class="form-control input-sm" type="text" maxlength="15" readonly value="{{ session('search_tercero_nombre') }}" required>
+	                        <input id="search_tercero_nombre" name="search_tercero_nombre" placeholder="Tercero beneficiario" class="form-control input-sm" type="text" maxlength="15" readonly required>
 	                    </div>
 
 	               		<label for="search_technical" class="col-md-1 control-label">Tecnico</label>
@@ -41,7 +41,10 @@
 	                    </div>
 	                </div><br>
 	                <div class="row">
-	                	<div class="col-md-2 col-xs-4 col-md-offset-5">
+	                	<div class="col-md-offset-4 col-sm-2 col-xs-4">
+                            <button type="button" class="btn btn-default btn-block btn-sm btn-clear">Limpiar</button>
+                        </div>
+	                	<div class="col-md-2 col-xs-4">
                             <button type="button" class="btn btn-primary btn-block btn-sm btn-search">Buscar</button>
                         </div>
 	                </div>
@@ -61,4 +64,51 @@
 		   	</div>
         </div>
     </section>
+
+    <!-- Modal add tcontacto -->
+	<div class="modal fade" id="modal-event-component" data-backdrop="static" data-keyboard="false" aria-hidden="true">
+		<div class="modal-dialog modal-md" role="document">
+			<div class="modal-content">
+				<div class="modal-header small-box {{ config('koi.template.bg') }}">
+					<button type="button" class="close icon-close-koi" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="inner-title-modal modal-title"></h4>
+				</div>
+				{!! Form::open(['id' => 'form-event-component', 'data-toggle' => 'validator']) !!}
+					<div class="modal-body">
+						<div class="content-modal"></div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancelar</button>
+					</div>
+				{!! Form::close() !!}
+			</div>
+		</div>
+	</div>
+
+	<script type="text/template" id="add-info-event-tpl">
+		<div class="row">
+			<div class="col-md-6">
+				<label class="control-label">F.Servicio</label>
+				<div><%- fecha_servicio %></div>
+	        </div>
+	        <div class="col-md-6">
+				<label class="control-label">H.Servicio</label>
+				<div><%- hora_servicio %></div>
+	        </div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<label class="control-label">Tercero</label>
+				<div><%- tercero_nombre %></div>
+	        </div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<label class="control-label">Tecnico</label>
+				<div><%- tecnico_nombre %></div>
+	        </div>
+		</div>
+	</script>
 @stop
