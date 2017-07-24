@@ -261,7 +261,6 @@ class AjusteController extends Controller
                                 $items = isset($item['items']) ? $item['items'] : null;
                                 foreach ($items as $key => $valueItem) {
                                     if ($valueItem > 0) {
-                                        
                                          list($text, $rollo) = explode("_", $key);
                                         // Individualiza en rollo --- $rollo hace las veces de lote 
                                         $rollo = Rollo::actualizar($producto, $sucursal->id, 'S', $rollo, $ajuste->ajuste1_fecha, $valueItem, $sucursal->sucursal_defecto);
@@ -277,9 +276,7 @@ class AjusteController extends Controller
                                         }
                                     }
                                 }
-
                             }else{
-                                
                                 $items = isset($item['items']) ? $item['items'] : null;
                                 foreach ($items as $key => $value) {
                                     list($text, $lote) = explode("_", $key);

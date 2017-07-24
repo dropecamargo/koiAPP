@@ -118,7 +118,6 @@ class TrasladoController extends Controller
                             DB::rollback();
                             return response()->json(['success' => false, 'errors'=> $result]);
                         }
-
                         $result = Prodbode::actualizar($producto, $destino->id, 'E', $detalleTraslado->traslado2_cantidad ,$destino->sucursal_defecto);
                         if(!$result instanceof Prodbode) {
                             DB::rollback();
