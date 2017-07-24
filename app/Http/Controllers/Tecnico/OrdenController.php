@@ -22,7 +22,7 @@ class OrdenController extends Controller
     {
         if($request->ajax()){
             $query = Orden::query();
-            $query->select('orden.*', 'sucursal_nombre', DB::raw("SUBSTRING_INDEX(orden_fh_elaboro, ' ', 1) as orden_fecha_elaboro"), DB::raw("SUBSTRING_INDEX(orden_fh_elaboro, ' ', -1) as orden_hora_elaboro"), 
+            $query->select('orden.*', 'sucursal_nombre', DB::raw("SUBSTRING_INDEX(orden_fh_servicio, ' ', 1) as orden_fecha_servicio"), DB::raw("SUBSTRING_INDEX(orden_fh_servicio, ' ', -1) as orden_hora_servicio"), 
                 DB::raw("
                     CONCAT(
                         (CASE WHEN tercero_persona = 'N'

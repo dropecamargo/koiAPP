@@ -47,8 +47,6 @@ app || (app = {});
             this.listenTo( this.model, 'change', this.render );
             this.listenTo( this.model, 'sync', this.responseServer );
             this.listenTo( this.model, 'request', this.loadSpinner );
-
-            this.cantidad = {};
         },
 
         /*
@@ -206,14 +204,14 @@ app || (app = {});
             var _this = this;
 
             this.$uploaderFile.fineUploader({
-                debug: 0,
+                debug: false,
                 template: 'qq-template',
                 session: {
                     endpoint: window.Misc.urlFull( Route.route('ordenes.imagenes.index') ),
                     params: {
                         'orden_id': _this.model.get('id')
                     },
-                    refreshOnRequest: 0
+                    refreshOnRequest: false
                 },
                 request: {
                     inputName: 'file',
@@ -224,8 +222,8 @@ app || (app = {});
                     }
                 },
                 deleteFile: {
-                    enabled: 1,
-                    forceConfirm: 1,
+                    enabled: true,
+                    forceConfirm: true,
                     confirmMessage: '¿Esta seguro de que desea eliminar este archivo de forma permanente? {filename}',
                     endpoint: window.Misc.urlFull( Route.route('ordenes.imagenes.index') ),
                     params: {

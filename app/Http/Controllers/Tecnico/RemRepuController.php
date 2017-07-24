@@ -89,6 +89,7 @@ class RemRepuController extends Controller
                     $remrepu->remrepu1_tecnico = $tecnico->id;
                     $remrepu->remrepu1_numero = $consecutive;
                     $remrepu->remrepu1_documentos = $documentos->id;
+                    $remrepu->remrepu1_tipo = 'R';
                     $remrepu->remrepu1_usuario_elaboro = Auth::user()->id;
                     $remrepu->remrepu1_fh_elaboro = date('Y-m-d H:m:s');
                     $remrepu->save();
@@ -108,6 +109,7 @@ class RemRepuController extends Controller
                             DB::rollback();
                             return response()->json(['success'=> false, 'errors' => "Producto {$producto->producto_nombre} - {$producto->producto_serie} se encuentra repetido, por favor verificar información o consulte al administrador."]);
                         }
+                        
                         // Remrepu2
                         $remrepu2 = new RemRepu2;
                         $remrepu2->fill($value);

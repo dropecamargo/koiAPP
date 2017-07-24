@@ -49,8 +49,8 @@ app || (app = {});
                 columns: [
                     { data: 'id', name: 'id' },
                     { data: 'sucursal_nombre', name: 'sucursal_nombre' },
-                    { data: 'orden_fecha_elaboro', name: 'orden_fecha_elaboro' },
-                    { data: 'orden_hora_elaboro', name: 'orden_hora_elaboro' },
+                    { data: 'orden_fecha_servicio', name: 'orden_fecha_servicio' },
+                    { data: 'orden_hora_servicio', name: 'orden_hora_servicio' },
                     { data: 'tercero_nombre', name: 'tercero_nombre' },
 
 
