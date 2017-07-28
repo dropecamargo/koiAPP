@@ -248,7 +248,7 @@ class ProductoController extends Controller
                     $response->success = true;
                 }  
             }else{
-                $productoBode = Prodbode::where('prodbode_serie', $producto->id)->where('prodbode_sucursal' ,$request->sucursal)->first();
+                $productoBode = Prodbode::where('prodbode_serie', $producto->id)->where('prodbode_sucursal' ,$request->sucursal)->where('prodbode_cantidad','>', 0)->orWhere('prodbode_metros','>', 0)->first();
                 if ($productoBode instanceof Prodbode) {
                     if($productoBode->prodbode_cantidad > 0){
                         if ($producto->producto_maneja_serie == true) {

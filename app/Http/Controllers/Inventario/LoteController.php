@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Inventario\Lote, App\Models\Inventario\Producto;
-use App\Models\Base\Sucursal;
+use App\Models\Base\Sucursal, App\Models\Base\Ubicacion;
 
 class LoteController extends Controller
 {
@@ -35,8 +35,16 @@ class LoteController extends Controller
                 $query->whereRaw('lote_saldo > 0');
                 $query->leftJoin('ubicacion', 'lote_ubicacion', '=', 'ubicacion.id');
                 $query->orderby('lote_fecha', 'asc');
-                $lotes = $query->get();
             }
+            // Use in traslados de ubicación
+            if ($request->has('ubicacion')) {
+                $ubicacion = Ubicacion::find($request->ubicacion);
+                if (!$producto instanceof Producto) {
+                    return response()->json( 'No es posible recuperar UBICACIÓN de ORIGEN,verifique información ó por favor consulte al administrador.');
+                }
+                $query->where('lote_ubicacion', $ubicacion->id);
+            }
+            $lotes = $query->get();
             return response()->json($lotes);
         }
         abort(404);

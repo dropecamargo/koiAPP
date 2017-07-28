@@ -178,7 +178,12 @@ app || (app = {});
             this.$wraperErrorIn = this.$('#error-inventario');
             
             this.$wraperSeries = this.$('#browse-series-lotes-list');
-            this.LotesProducto.fetch({ reset: true, data: { producto: atributes.data.producto_serie, sucursal: atributes.data.sucursal } });
+            if (atributes.data.ubicacion) {
+                // Use in traslados de ubicación
+                this.LotesProducto.fetch({ reset: true, data: { producto: atributes.data.producto_serie, sucursal: atributes.data.sucursal,ubicacion: atributes.data.origen } });
+            }else{
+                this.LotesProducto.fetch({ reset: true, data: { producto: atributes.data.producto_serie, sucursal: atributes.data.sucursal,ubicacion: atributes.data.ubicacion } });
+            }
 
             // Hide errors
             this.$wraperErrorIn.hide().empty();

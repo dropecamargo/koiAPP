@@ -107,7 +107,6 @@ app || (app = {});
                 var data = $.extend({}, window.Misc.formToJson( e.target ) );
                     data.sucursal = this.$('#pedidoc1_sucursal').val();
                 this.detallePedidoc.trigger( 'store', data);
-                window.Misc.clearForm(this.$formDetalle);
             }
         },
         /**

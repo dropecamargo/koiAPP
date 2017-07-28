@@ -35,23 +35,32 @@ class Prodbode extends Model
         if(!is_numeric($cantidad) || $cantidad <= 0){
             return "No es posible recuperar unidades prodbode, por favor verifique la información o consulte al administrador.";
         }
-        // Recuperar prodbode
-    	$prodbode = Prodbode::where('prodbode_serie', $producto->id)->where('prodbode_sucursal', $sucursal->id)->where('prodbode_ubicacion',$ubicacion)->first();
-
-        if(!$prodbode instanceof Prodbode){
-            $prodbode = new Prodbode;
-            $prodbode->prodbode_serie = $producto->id;
-            $prodbode->prodbode_sucursal = $sucursal->id;
-            $prodbode->prodbode_ubicacion = $ubicacion;
-        }
         switch ($tipo) {
             case 'E':
+                // Recuperar prodbode
+                $prodbode = Prodbode::where('prodbode_serie', $producto->id)->where('prodbode_sucursal', $sucursal->id)->where('prodbode_ubicacion',$ubicacion)->first();
+
+                if(!$prodbode instanceof Prodbode){
+                    $prodbode = new Prodbode;
+                    $prodbode->prodbode_serie = $producto->id;
+                    $prodbode->prodbode_sucursal = $sucursal->id;
+                    $prodbode->prodbode_ubicacion = $ubicacion;
+                }
                 if ($producto->producto_metrado == true) {
                     $prodbode->prodbode_metros = ($prodbode->prodbode_metros + $cantidad);
                 }
                 $prodbode->prodbode_cantidad = ($prodbode->prodbode_cantidad + $cantidad);
             break;
             case 'S':
+
+                if ($producto->producto_maneja_serie != true) {
+                    // Recuperar prodbode
+                    $query = Prodbode::where('prodbode_serie', $producto->id)->where('prodbode_sucursal', $sucursal->id)->where('prodbode_ubicacion', $ubicacion);
+                }else{
+                    // Recuperar prodbode
+                    $query = Prodbode::where('prodbode_serie', $producto->id )->where('prodbode_sucursal', $sucursal->id);
+                }
+                $prodbode = $query->first();
                 // Validar disponibles
                 if ($producto->producto_metrado == true) {
                     if ($cantidad > $prodbode->prodbode_metros) {

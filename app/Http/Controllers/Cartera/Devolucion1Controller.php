@@ -123,8 +123,8 @@ class Devolucion1Controller extends Controller
                             }
                             if ($producto->producto_maneja_serie == true) {
                                 // Prodbode
-                                $result = Prodbode::actualizar($producto, $sucursal->id, 'E', 1);
-                                if($result != 'OK') {
+                                $result = Prodbode::actualizar($producto, $sucursal->id, 'E', 1, $sucursal->sucursal_defecto);
+                                if(!$result instanceof Prodbode) {
                                     DB::rollback();
                                     return response()->json(['success' => false, 'errors'=> $result]);
                                 }
@@ -135,17 +135,17 @@ class Devolucion1Controller extends Controller
                                     return response()->json(['success' => false, 'errors' => 'No es posible recuperar lote, por favor verifique la información ó por favor consulte al administrador']);
                                 }
                                 $lote->lote_saldo = 1;
-
+                                $lote->save();
                                 // Inventario
-                                $inventario = Inventario::movimiento($producto, $sucursal->id, 'DEVO', $devolucion1->id, 1, 0, 0, 0, $value->factura2_costo, $value->factura2_costo, $lote->id);
+                                $inventario = Inventario::movimiento($producto, $sucursal->id, $sucursal->sucursal_defecto,'DEVO', $devolucion1->id, 1, 0, 0, 0, $value->factura2_costo, $value->factura2_costo, $lote->id);
                                 if (!$inventario instanceof Inventario) {
                                     DB::rollback();
                                     return response()->json(['success' => false,'errors '=> $inventario]);
                                 }
                             }else if ($producto->producto_metrado == true){
                                 // Prodbode metros
-                                $result = Prodbode::actualizar($producto, $sucursal->id, 'E', $request->$cantidad);
-                                if($result != 'OK') {
+                                $result = Prodbode::actualizar($producto, $sucursal->id, 'E', $request->$cantidad, $sucursal->sucursal_defecto);
+                                if(!$result instanceof Prodbode) {
                                     DB::rollback();
                                     return response()->json(['success' => false, 'errors'=> $result]);
                                 }
@@ -155,17 +155,19 @@ class Devolucion1Controller extends Controller
                                     DB::rollback();
                                   return response()->json(['success' => false, 'errors' => 'No es posible recuperar rollo, por favor verifique la información ó por favor consulte al administrador']);
                                 }
-                                $rollo->rollo_saldo = ($rollo->rollo_saldo + $request->$cantidad);  
+                                $rollo->rollo_saldo = ($rollo->rollo_saldo + $request->$cantidad); 
+                                $rollo->save();
+
                                 // Inventario
-                                $inventario = Inventario::movimiento($producto, $sucursal->id, 'DEVO', $devolucion1->id, 0, 0, $request->$cantidad, 0, $value->factura2_costo, $value->factura2_costo, $rollo->id);
+                                $inventario = Inventario::movimiento($producto, $sucursal->id,$sucursal->sucursal_defecto, 'DEVO', $devolucion1->id, 0, 0, $request->$cantidad, 0, $value->factura2_costo, $value->factura2_costo, $rollo->id);
                                 if (!$inventario instanceof Inventario) {
                                     DB::rollback();
                                     return response()->json(['success' => false,'errors '=> $inventario]);
                                 }
                             }else{
                                 // Prodbode
-                                $result = Prodbode::actualizar($producto, $sucursal->id, 'E', $request->$cantidad);
-                                if($result != 'OK') {
+                                $result = Prodbode::actualizar($producto, $sucursal->id, 'E', $request->$cantidad, $sucursal->sucursal_defecto);
+                                if(!$result instanceof Prodbode) {
                                     DB::rollback();
                                     return response()->json(['success' => false, 'errors'=> $result]);
                                 }
@@ -175,10 +177,10 @@ class Devolucion1Controller extends Controller
                                     DB::rollback();
                                     return response()->json(['success' => false, 'errors' => 'No es posible recuperar lote, por favor verifique la información ó por favor consulte al administrador']);
                                 }
-                                $lote->lote_saldo = $request->$cantidad;
-
+                                $lote->lote_saldo = $lote->lote_saldo + $request->$cantidad;
+                                $lote->save();
                                 // Inventario
-                                $inventario = Inventario::movimiento($producto, $sucursal->id, 'DEVO', $devolucion1->id, $request->$cantidad, 0, 0, 0, $value->factura2_costo, $value->factura2_costo, $lote->id);
+                                $inventario = Inventario::movimiento($producto, $sucursal->id, $sucursal->sucursal_defecto,'DEVO', $devolucion1->id, $request->$cantidad, 0, 0, 0, $value->factura2_costo, $value->factura2_costo, $lote->id);
                                 if (!$inventario instanceof Inventario) {
                                     DB::rollback();
                                     return response()->json(['success' => false,'errors'=> $inventario]);
@@ -195,8 +197,11 @@ class Devolucion1Controller extends Controller
                     // Update consecutive sucursal_devo in Sucursal
                     $sucursal->sucursal_devo = $consecutive;
                     $sucursal->save();
+
+                    // DB::rollback();
                     DB::commit();
                     return response()->json(['success' => true, 'id' => $devolucion1->id ]);
+                    // return response()->json(['success' => false, 'errors' => "TODO OK" ]);
                 } catch (\Exception $e) {
                     DB::rollback();
                     Log::error($e->getMessage());

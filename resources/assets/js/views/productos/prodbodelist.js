@@ -11,7 +11,7 @@ app || (app = {});
 
     app.ProdbodeListView = Backbone.View.extend({
 
-        el: '#render-series',
+        el: '#browse-prodbode-table',
         events: {
         },
         parameters: {

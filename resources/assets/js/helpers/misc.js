@@ -107,7 +107,7 @@
 
                 // Inputmask data-currency
                 if ( field_type.attr('data-currency') == '' || field_type.attr('data-currency-negative') == ''|| field_type.attr('data-currency-price') == ''){
-                    field_type.val('');
+                    field_type.val(0);
                 }
 
                 // Checkbox && radiobutton

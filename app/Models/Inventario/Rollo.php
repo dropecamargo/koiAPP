@@ -47,7 +47,7 @@ class Rollo extends Model
                 }
                 // Validar disponibles
                 if($cantidad > $rollo->rollo_saldo){
-                    $rollo2 = Rollo::where('rollo.id', '<>', $rollo->id)->where('rollo_saldo','>', 0)->where('rollo_serie', $producto->id)->where('rollo_sucursal', $sucursal->id)->where('rollo_ubicacion', $ubicacion)->get();
+                    $rollo2 = Rollo::where('rollo.id', '<>', $rollo->id)->where('rollo_saldo','>', 0)->where('rollo_serie', $producto->id)->where('rollo_sucursal', $sucursal->id)->where('rollo_ubicacion', $rollo->rollo_ubicacion)->get();
 
                     if ( empty($rollo2) ) {
                         return "No existen suficientes unidades para salida producto {$producto->producto_nombre}, disponibles {$rollo->rollo_metros}, salida $cantidad, por favor verifique la información o consulte al administrador.";

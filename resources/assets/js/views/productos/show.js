@@ -11,32 +11,38 @@ app || (app = {});
 
     app.ShowProductoView = Backbone.View.extend({
 
-        el: '#content-show',
-        template: _.template( ($('#add-ubicacion-tpl').html() || '') ),
+        el: '#producto-show',
         events: {
-            'click .get-series': 'getSeries',
-            'click .add-ubicacion': 'addUbicacion',
-            'submit #form-ubicacion-component': 'updateComponent'
+            'click .get-info-availability': 'getInfoAvailability'
         },
 
         /**
         * Constructor Method
         */
         initialize: function() {
+           
+           this.$('#browse-prodbode-table').hide();
+            // Collection the prodbode
             this.prodbodeList = new app.ProdbodeList();
         },
-
-        getSeries: function(e){
+        
+        /**
+        * Event show series products father's
+        */
+        getInfoAvailability: function(e){
             e.preventDefault();
+            
             // Model exist
             if( this.prodbodeList.length == 0 ) {
+               
+               this.$('#browse-prodbode-table').show();
                 // Reference views
                 this.referenceViews();
             }
         },
 
         /**
-        * reference to views
+        * Reference to views
         */
         referenceViews: function () {
             // Detalle asignaciones list

@@ -24,15 +24,37 @@ class ProdbodeController extends Controller
                 return response()->json(['success' => false, 'errors' => 'No es posible recuperar producto, por favor verifique la información ó consulte al administrador.']);
             }   
 
-            $query = Prodbode::query();
-            $query->select('producto_serie','producto_nombre', 'sucursal_nombre','producto.id');
-            $query->join('producto', 'prodbode.prodbode_serie', '=', 'producto.id');
-            $query->join('sucursal', 'prodbode.prodbode_sucursal', '=', 'sucursal.id');
-            $query->where('producto_referencia', $producto->producto_serie);
-            $query->whereRaw('prodbode_cantidad > 0');
+            if ($producto->producto_vence) {
+                $query = $producto->hasMany('App\Models\Inventario\Lote', 'lote_serie', 'id')
+                    ->select('lote.*','sucursal_nombre', DB::raw('SUM(lote_saldo) AS lote_saldo'),'producto_vence','ubicacion_nombre')
+                    ->join('producto','lote_serie','=','producto.id')
+                    ->join('sucursal','lote_sucursal','=','sucursal.id')
+                    ->leftJoin('ubicacion','lote_ubicacion','=','ubicacion.id')
+                    ->whereRaw('lote_saldo > 0')
+                    ->groupBy('lote_sucursal','lote_ubicacion')
+                    ->orderBy('lote_vencimiento','asc');
+            }else if($producto->producto_metrado){
+                $query = $producto->hasMany('App\Models\Inventario\Rollo', 'rollo_serie', 'id')
+                    ->select('rollo.*',DB::raw('COUNT(rollo.id) AS rollo_rollos'),'sucursal_nombre', 'ubicacion_nombre', 'producto_metrado')
+                    ->join('producto','rollo_serie','=','producto.id')
+                    ->join('sucursal','rollo_sucursal','=','sucursal.id')
+                    ->leftJoin('ubicacion','rollo_ubicacion','=','ubicacion.id')
+                    ->whereRaw('rollo_saldo > 0')
+                    ->groupBy('rollo_sucursal','rollo_saldo');
+            }else{
+                $query = Prodbode::query();
+                $query->select('producto_serie','producto_nombre','producto_maneja_serie', 'producto_metrado','producto_vence','prodbode_cantidad','sucursal_nombre', 'prodbode.id', 'ubicacion_nombre');
+                $query->join('producto', 'prodbode_serie', '=', 'producto.id');
+                $query->join('sucursal', 'prodbode_sucursal', '=', 'sucursal.id');
+                $query->leftJoin('ubicacion', 'prodbode_ubicacion', '=', 'ubicacion.id');
+                $query->where('producto_referencia', $producto->producto_serie);
+                $query->whereRaw('prodbode_cantidad > 0');
+                
+            }
             
+            $query->orderBy('sucursal_nombre', 'asc');
             $prodbode = $query->get();
-            return response()->json(['success' => true, 'series' => $prodbode]);
+            return response()->json($prodbode);
         }
     }
 
