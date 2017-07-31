@@ -28,8 +28,12 @@ app || (app = {});
                 serverSide: true,
             	language: window.Misc.dataTableES(),
                 ajax: window.Misc.urlFull( Route.route('trasladosubicaciones.index') ),
-                // columns: [
-                // ],
+                columns: [
+                    {data: 'trasladou1_numero' , name: 'trasladou1_numero' },
+                    {data: 'ubicacion_origen' , name: 'ubicacion_origen' },
+                    {data: 'ubicacion_destino' , name: 'ubicacion_destino' },
+                    {data: 'trasladou1_fecha' , name: 'trasladou1_fecha' },
+                ],
 				buttons: [
 					{
 						text: '<i class="fa fa-user-plus"></i> Nuevo traslado de ubicación',
@@ -44,7 +48,7 @@ app || (app = {});
                         targets: 0,
                         width: '10%',
                         render: function ( data, type, full, row ) {
-                            return '<a href="'+ window.Misc.urlFull( Route.route('trasladosubicaciones.show', {traslados: full.id }) )  +'">' + data + '</a>';
+                            return '<a href="'+ window.Misc.urlFull( Route.route('trasladosubicaciones.show', {trasladosubicaciones: full.id }) )  +'">' + data + '</a>';
                         }
                     }
                 ]

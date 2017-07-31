@@ -2,7 +2,7 @@
 
 @section('breadcrumb')
     <li><a href="{{ route('trasladosubicaciones.index')}}">Traslados de ubicación</a></li>
-    <li class="active">{{ $traslado->traslado1_numero }}</li>
+    <li class="active">{{ $trasladou->trasladou1_numero }}</li>
 @stop
 
 @section('module')
@@ -11,29 +11,33 @@
             <div class="row">
                 <div class="form-group col-md-3">
                     <label class="control-label">Sucursal</label>
-                    <div>{{ $traslado->origen }}</div>
+                    <div>{{ $trasladou->sucursal_nombre }}</div>
                 </div>
                 <div class="form-group col-md-3">
                     <label class="control-label">Número</label>
-                    <div>{{ $traslado->traslado1_numero }}</div>
+                    <div>{{ $trasladou->trasladou1_numero }}</div>
                 </div>
             </div>
 
             <div class="row">
                 <div class="form-group col-md-3">
-                    <label class="control-label">Destino</label>
-                    <div>{{ $traslado->destino }}</div>
+                    <label class="control-label">Ubicación origen</label>
+                    <div>{{ $trasladou->origen }}</div>
+                </div>
+                <div class="form-group col-md-3">
+                    <label class="control-label">Ubicación destino</label>
+                    <div>{{ $trasladou->destino }}</div>
                 </div>
                 <div class="form-group col-md-3">
                     <label class="control-label">Fecha</label>
-                    <div>{{ $traslado->traslado1_fecha }}</div>
+                    <div>{{ $trasladou->trasladou1_fecha }}</div>
                 </div>
             </div>
 
             <div class="row">
                 <div class="form-group col-md-8">
                     <label class="control-label">Detalle</label>
-                    <div>{{ $traslado->traslado1_observaciones }}</div>
+                    <div>{{ $trasladou->trasladou1_observaciones }}</div>
                 </div>
             </div>
 
@@ -41,18 +45,18 @@
                 <div class="form-group col-md-3">
                     <label class="control-label">Usuario elaboro</label>
                     <div>
-                        <a href="{{ route('terceros.show', ['terceros' =>  $traslado->traslado1_usuario_elaboro ]) }}" title="Ver tercero">
-                            {{ $traslado->username_elaboro }}</a>
+                        <a href="{{ route('terceros.show', ['terceros' =>  $trasladou->trasladou1_usuario_elaboro ]) }}" title="Ver tercero">
+                            {{ $trasladou->username_elaboro }}</a>
                     </div>
                 </div>
                 <div class="form-group col-md-3">
                     <label class="control-label">Fecha elaboro</label>
-                    <div>{{ $traslado->traslado1_fh_elaboro }}</div>
+                    <div>{{ $trasladou->trasladou1_fh_elaboro }}</div>
                 </div>
             </div>
 
             <div class="box-body box box-success table-responsive">
-                <table id="browse-detalle-traslado-list" class="table table-hover table-bordered" cellspacing="0" width="100%">
+                <table id="browse-detalle-trasladou-list" class="table table-hover table-bordered" cellspacing="0" width="100%">
                     <tr>
                         <th>Serie</th>
                         <th>Producto</th>

@@ -53,7 +53,7 @@ app || (app = {});
             this.$inputCliente = this.$inputContent.attr("data-cliente");
             this.$inputVendedor = this.$inputContent.attr("data-vendedor");
             this.$inputTecnico = this.$inputContent.attr("data-tecnico");
-
+            
             this.$concepto = this.$("#"+this.$inputContent.attr("data-concepto"));
             this.$wrap = this.$("#"+this.$inputContent.attr("data-wrap"));
 
@@ -126,7 +126,7 @@ app || (app = {});
             if(this.$btnContact.length > 0) {
                 this.$btnContact.attr('data-tercero', data.id);
             }
-            
+
             if(this.$concepto.length > 0 && this.$wrap.length > 0 || this.$concepto.length > 0) {
                 this.$wrap.removeAttr('hidden');
                 this.$concepto.attr('data-tercero', data.id);

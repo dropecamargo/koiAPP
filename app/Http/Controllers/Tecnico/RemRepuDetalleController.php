@@ -12,33 +12,33 @@ Use Log, DB;
 
 class RemRepuDetalleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index(Request $request)
-    {
-        if ($request->ajax()) {
-            $remrepu2 = RemRepu2::query();
-            $remrepu2->select('remrepu2.*', 'producto_nombre AS remrepu2_nombre', 'producto_serie AS remrepu2_serie', 'remrepu1_numero', 'sucursal_nombre');
-            $remrepu2->join('producto', 'remrepu2_producto','=','producto.id');
-            $remrepu2->join('remrepu1', 'remrepu2_remrepu1','=','remrepu1.id');
-            $remrepu2->join('sucursal', 'remrepu1_sucursal','=','sucursal.id');
+/**
+ * Display a listing of the resource.
+ *
+ * @return \Illuminate\Http\Response
+ */
+public function index(Request $request)
+{
+    if ($request->ajax()) {
+        $remrepu2 = RemRepu2::query();
+        $remrepu2->select('remrepu2.*', 'producto_nombre AS remrepu2_nombre', 'producto_serie AS remrepu2_serie', 'remrepu1_numero', 'sucursal_nombre', 'remrepu1_tipo');
+        $remrepu2->join('producto', 'remrepu2_producto','=','producto.id');
+        $remrepu2->join('remrepu1', 'remrepu2_remrepu1','=','remrepu1.id');
+        $remrepu2->join('sucursal', 'remrepu1_sucursal','=','sucursal.id');
 
-            if ($request->has('remrepu2_remrepu1')) {
-                $remrepu2->where('remrepu2_remrepu1', $request->remrepu2_remrepu1);
-                return $remrepu2->get();
-            }
-            if ($request->has('orden_id')) {
-                $remrepu2->whereIn('remrepu2_remrepu1', DB::table('remrepu1')->select('remrepu1.id')->where('remrepu1_orden', $request->orden_id) );
-                $remrepu2->where('remrepu1_tipo', 'R');
-                $remrepu2->orderBy('sucursal_nombre', 'desc');
-                return $remrepu2->get();
-            }
+        if ($request->has('remrepu2_remrepu1')) {
+            $remrepu2->where('remrepu2_remrepu1', $request->remrepu2_remrepu1);
+            return $remrepu2->get();
         }
-        abort(403);
+        if ($request->has('orden_id')) {
+            $remrepu2->whereIn('remrepu2_remrepu1', DB::table('remrepu1')->select('remrepu1.id')->where('remrepu1_orden', $request->orden_id) );
+            $remrepu2->where('remrepu1_tipo', 'R');
+            $remrepu2->orderBy('sucursal_nombre', 'desc');
+            return $remrepu2->get();
+        }
     }
+    abort(403);
+}
 
     /**
      * Show the form for creating a new resource.
@@ -144,75 +144,67 @@ class RemRepuDetalleController extends Controller
 
 // Recuperar remrepu
 $remrepu = Remrepu::where('remrepu1_orden', $orden->id)->select('remrepu1.*', 'sucursal_nombre')->where('remrepu1_tipo', 'R')->join('sucursal', 'remrepu1_sucursal', '=', 'sucursal.id')->get();
+    
+if( count($remrepu) <= 0){
+    DB::rollback();
+    return response()->json(['success' => false, 'errors' => 'No existe ningun producto para realizar una legalización.']);
+}
 
 foreach ($remrepu as $father) {
 
-$childs = RemRepu2::where('remrepu2_remrepu1', $father->id)->get();
-foreach ($childs as $child) {
+    $childs = RemRepu2::where('remrepu2_remrepu1', $father->id)->get();
 
-if($request->has("facturado_$child->id") && $request->has("nofacturado_$child->id") && $request->has("devuelto_$child->id") && $request->has("usado_$child->id") ){
+    foreach ($childs as $child) {
 
-if( $request->get("facturado_$child->id") < 0 || $request->get("nofacturado_$child->id") < 0 || $request->get("devuelto_$child->id") < 0 || $request->get("usado_$child->id") < 0){
-    DB::rollback();
-    return response()->json(['success' => false, 'errors' => "Ningun campo puede ser negativo."]);
-}
+        if($request->has("facturado_$child->id") && $request->has("nofacturado_$child->id") && $request->has("devuelto_$child->id") && $request->has("usado_$child->id") ){
+            $facturado = $request->get("facturado_$child->id");
+            $nofacturado = $request->get("nofacturado_$child->id");
+            $devuelto = $request->get("devuelto_$child->id");
+            $usado = $request->get("usado_$child->id");
 
-if( $request->get("facturado_$child->id") != $child->remrepu2_facturado || 
-    $request->get("nofacturado_$child->id") != $child->remrepu2_no_facturado || 
-    $request->get("devuelto_$child->id") != $child->remrepu2_devuelto || 
-    $request->get("usado_$child->id") != $child->remrepu2_usado ) {
+            if( $facturado < 0 || $nofacturado < 0 || $devuelto < 0 || $usado < 0){
+                DB::rollback();
+                return response()->json(['success' => false, 'errors' => "Ningun campo puede ser negativo."]);
+            }
 
-    // Suma de cada child, no puede superar la cantidad disponible
-    $ingreso = $request->get("facturado_$child->id") + $request->get("nofacturado_$child->id") + $request->get("devuelto_$child->id") + $request->get("usado_$child->id");
-    if( $ingreso > $child->remrepu2_cantidad){
-        DB::rollback();
-        return response()->json(['success' => false, 'errors' => "Los datos ingresados en Sucursal {$father->sucursal_nombre} - Remision No. {$father->remrepu1_numero} supera la cantidad disponible, ingresado {$ingreso} disponible {$child->remrepu2_cantidad}"]);
-    }
+            if( $facturado > 0 || $nofacturado > 0 || $devuelto > 0 || $usado > 0 ) {
 
-    // Update prodbode when devueto
-    if( $request->get("devuelto_$child->id") != $child->remrepu2_devuelto ) {
-        $result = $child->updateProdbode();
-        if($result != 'OK'){
-            DB::rollback();
-            return response()->json(['success' => false, 'errors' => $result]);
+                // la suma de cada hijo, no puede superar la cantidad disponible
+                $ingreso = $facturado + $nofacturado + $devuelto + $usado;
+
+                if( $ingreso > $child->remrepu2_saldo){
+                    DB::rollback();
+                    return response()->json(['success' => false, 'errors' => "Los datos ingresados en Sucursal {$father->sucursal_nombre} - Remision No. {$father->remrepu1_numero} supera la cantidad disponible, ingresado {$ingreso} disponible {$child->remrepu2_saldo}"]);
+                }
+
+                // Update childs
+                if($child instanceof RemRepu2){
+                    $child->remrepu2_saldo -= $ingreso;
+                    $child->remrepu2_facturado += $facturado;
+                    $child->remrepu2_no_facturado += $nofacturado;
+                    $child->remrepu2_devuelto += $devuelto;
+                    $child->remrepu2_usado += $usado;
+                    $child->save();
+
+                    // Duplicate remrepu1 
+                    $result = RemRepu2::createRemisionL($child, $facturado, $nofacturado, $devuelto, $usado);
+                    if($result != 'OK'){
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $result]);
+                    }
+                }
+            }
         }
     }
-
-
-
-}            
-
-
-            // if( $child->remrepu2_devuelto != $request->get("devuelto_$child->id") ){
-            //     dd($child->remrepu2_devuelto, $request->get("devuelto_$child->id"));
-            // } 
-
-
-            // if($child instanceof RemRepu2){
-            //     $child->remrepu2_facturado = $request->get("facturado_$child->id");
-            //     $child->remrepu2_no_facturado = $request->get("nofacturado_$child->id");
-            //     $child->remrepu2_devuelto = $request->get("devuelto_$child->id");
-            //     $child->remrepu2_usado = $request->get("usado_$child->id");
-            //     $child->save();
-            // }
-        }
-    }
-
-    // // Duplicate remrepu1 && remrepu2, change( tipo=>L )
-    // $result = $father->readyDuplicate();
-    // if($result != 'OK'){
-    //     DB::rollback();
-    //     return response()->json(['success' => false, 'errors' => $result]);
-    // }
 }
 
                 DB::rollback();
-                return response()->json(['success' => false, 'errors' => '!OK Bitchesss']);
+                return response()->json(['success' => false, 'errors' => '!OK Bitchesss' ]);
 
                 // Commit transaction
                 // DB::commit();
 
-                return response()->json(['success' => true, 'id' => $item->id ]);
+                // return response()->json(['success' => true, 'id' => $orden->id ]);
             }catch(\Exception $e){
                 DB::rollback();
                 Log::error($e->getMessage());

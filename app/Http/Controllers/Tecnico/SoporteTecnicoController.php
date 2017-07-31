@@ -22,7 +22,7 @@ class SoporteTecnicoController extends Controller
         if($request->ajax()){
 
             $query = Orden::query();
-            $query->select(DB::raw("CONCAT('Orden #', orden.id) as title"), DB::raw("SUBSTRING_INDEX(orden_fh_servicio, ' ', 1) as start"), DB::raw("SUBSTRING_INDEX(orden_fh_servicio, ' ', -1) as hora_servicio"), DB::raw("SUBSTRING_INDEX(orden_fh_servicio, ' ', 1) as fecha_servicio"), DB::raw("(CASE WHEN t.tercero_persona = 'N'
+            $query->select(DB::raw("CONCAT('Orden #', orden.id) as title"), 'orden_fh_servicio as start' , DB::raw("SUBSTRING_INDEX(orden_fh_servicio, ' ', -1) as hora_servicio"), DB::raw("SUBSTRING_INDEX(orden_fh_servicio, ' ', 1) as fecha_servicio"), DB::raw("(CASE WHEN t.tercero_persona = 'N'
                     THEN CONCAT(t.tercero_nombre1,' ',t.tercero_nombre2,' ',t.tercero_apellido1,' ',t.tercero_apellido2,
                             (CASE WHEN (t.tercero_razonsocial IS NOT NULL AND t.tercero_razonsocial != '') THEN CONCAT(' - ', t.tercero_razonsocial) ELSE '' END)
                         )

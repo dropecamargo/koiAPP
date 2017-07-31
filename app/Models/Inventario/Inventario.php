@@ -17,7 +17,7 @@ class Inventario extends Model
 
     public $timestamps = false;
 
-    public static function movimiento(Producto $producto, $sucursal, $documento, $documentoNumero, $uentrada = 0, $usalida = 0, $emetros = 0, $smetros = 0, $costo = 0, $costopromedio = 0,$lote = 0, $rollo = 0){
+    public static function movimiento(Producto $producto, $sucursal, $ubicacion,$documento, $documentoNumero, $uentrada = 0, $usalida = 0, $emetros = 0, $smetros = 0, $costo = 0, $costopromedio = 0,$lote = 0, $rollo = 0){
     	 // Validar producto
         $sucursal = Sucursal::find($sucursal);
         if(!$sucursal instanceof Sucursal) {
@@ -30,6 +30,7 @@ class Inventario extends Model
         $inventario = new Inventario;
         $inventario->inventario_serie	 = $producto->id;
         $inventario->inventario_sucursal = $sucursal->id;
+        $inventario->inventario_ubicacion = $ubicacion;
         $inventario->inventario_documentos = $documento->id;
         $inventario->inventario_id_documento = $documentoNumero;
 		$inventario->inventario_metros_entrada = $emetros;
@@ -63,8 +64,8 @@ class Inventario extends Model
         $serie->save();
 
         // ProdBode
-        $result = Prodbode::actualizar($serie, $sucursal->id, 'E', 1);
-        if($result != 'OK') {
+        $result = Prodbode::actualizar($serie, $sucursal->id, 'E', 1, $sucursal->sucursal_defecto);
+        if(!$result instanceof Prodbode) {
             return $result;
         }
 

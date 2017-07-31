@@ -7,14 +7,11 @@
 //Global App Backbone
 app || (app = {});
 
-(function ($, window, document, undefined) {
+(function ($, window, document, undefined){
 
     app.RemisionView = Backbone.View.extend({
 
         el: '#browse-orden-remision-list',
-        events: {
-               // 'click .item-remrepu-remove': 'removeOne'
-        },
         parameters: {
             wrapper:false,
             call: null,
@@ -40,32 +37,27 @@ app || (app = {});
             this.collection.fetch({ data: {orden_id: this.parameters.dataFilter.orden_id}, reset: true });
         },
 
-        /*
-        * Render View Element
-        */
-        render: function() {
-        },
-
         /**
         * Render view contact by model
         * @param Object contactModel Model instance
         */
-        addOne: function (remRepuModel) {
+        addOne: function ( remRepuModel ) {
             var view = new app.RemisionItemView({
                 model: remRepuModel,
                 parameters: {
                     call: this.parameters.call,
                 }
             });
+            
             remRepuModel.view = view;
             this.$el.prepend( view.render().el );
-            
         },
 
         /**
         * Render all view Marketplace of the collection
         */
         addAll: function () {
+            this.$el.find('tbody').html('');
             this.collection.forEach( this.addOne, this );
         },
 
@@ -145,7 +137,6 @@ app || (app = {});
 
                 window.Misc.clearForm( $('#form-remision') );
             }
-        }
+        },
    });
-
 })(jQuery, this, this.document);

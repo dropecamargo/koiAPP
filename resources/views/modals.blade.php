@@ -38,7 +38,7 @@
 </div>
 <!-- Modal inventario -->
 <div class="modal fade" id="modal-inventario-component" data-backdrop="static" data-keyboard="false" aria-hidden="true">
-	<div class="modal-dialog modal-lg" role="document">
+	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header small-box {{ config('koi.template.bg') }}">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -481,6 +481,7 @@
 			<div class="box-body table-responsive no-padding">
 				<table id="browse-series-lotes-list" class="table table-hover table-bordered" cellspacing="0">
 				  	<th>Lote</th>
+				  	<th>Ubicación</th>
                 	<th>Fecha</th>
                 	<th>Cantidad</th>
                 	<th>Saldo</th>
@@ -533,6 +534,7 @@
 				<table id="browse-chooseitemtollo-list" class="table table-hover table-bordered" cellspacing="0">
 		            <tr>
 		                <th>Lote</th>
+		                <th>Ubicación</th>
 		                <th>Fecha De Ingreso</th>
 		                <th>Metros (m)</th>
 		                <th>Saldo (m)</th>
@@ -540,7 +542,7 @@
 		            </tr>
 		            <tfoot>
 		            	<tr>
-		            		<th colspan ="3"></th>
+		            		<th colspan ="4"></th>
 		            		<th class="text-right">Total(m): </th>
 		            		<th id="metro_residuo" class="text-right"> <label class="label bg-green"> <%- data.ajuste2_cantidad_salida %></label></th>
 		            	</tr>
@@ -590,16 +592,17 @@
 				<table id="browse-chooseproduct-vence-list" class="table table-hover table-bordered" cellspacing="0">
 		            <tr>
 		                <th width="20%">Lote</th>
-		                <th width="20%">F.Ingreso</th>
-		                <th width="20%">F. Vencimiento</th>
+		                <th width="20%">Ubicación</th>
+		                <th>F.Ingreso</th>
+		                <th>F. Vencimiento</th>
 		                <th width="10%">Cant</th>
 		                <th width="10%">Saldo</th>
-		                <th width="20%"></th>
+		                <th width="10%"></th>
 		            </tr>
 		            <tfoot>
 		            	<tr>
-		            		<th colspan="5" class="text-right">Total: </th>
-		            		<th id="metro_residuo" class="text-center">0</th>
+		            		<th colspan="6" class="text-right">Total: </th>
+		            		<th id="" class="text-center">0</th>
 		            	</tr>
 	            	</tfoot>
 			    </table>

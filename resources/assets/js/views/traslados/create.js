@@ -52,6 +52,8 @@ app || (app = {});
 
             // Reference views
             this.referenceViews();
+
+            this.ready();
         },
 
         /**

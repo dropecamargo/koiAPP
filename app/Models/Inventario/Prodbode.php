@@ -23,7 +23,7 @@ class Prodbode extends Model
 	    $query->where('prodbode_sucursal', $sucursal);
 	    return $query->first();
     }
-    public  static function actualizar(Producto $producto, $sucursal, $tipo, $cantidad, $ubicacion = null)
+    public  static function actualizar(Producto $producto, $sucursal, $tipo, $cantidad, $ubicacion)
  	{
         // Validar sucursal
         $sucursal = Sucursal::find($sucursal);
@@ -36,24 +36,25 @@ class Prodbode extends Model
             return "No es posible recuperar unidades prodbode, por favor verifique la información o consulte al administrador.";
         }
         // Recuperar prodbode
-    	$prodbode = Prodbode::where('prodbode_serie', $producto->id)->where('prodbode_sucursal', $sucursal->id)->$query->where('prodbode_ubicacion',$ubicacion)->first();
+    	$prodbode = Prodbode::where('prodbode_serie', $producto->id)->where('prodbode_sucursal', $sucursal->id)->where('prodbode_ubicacion',$ubicacion)->first();
 
-		if(!$prodbode instanceof Prodbode){
-        	$prodbode = new Prodbode;
-	        $prodbode->prodbode_serie = $producto->id;
-	        $prodbode->prodbode_sucursal = $sucursal->id;
-    	}
+        if(!$prodbode instanceof Prodbode){
+            $prodbode = new Prodbode;
+            $prodbode->prodbode_serie = $producto->id;
+            $prodbode->prodbode_sucursal = $sucursal->id;
+            $prodbode->prodbode_ubicacion = $ubicacion;
+        }
         switch ($tipo) {
             case 'E':
-            	if ($producto->producto_metrado == true) {
-                	$prodbode->prodbode_metros = ($prodbode->prodbode_metros + $cantidad);
-            	}
+                if ($producto->producto_metrado == true) {
+                    $prodbode->prodbode_metros = ($prodbode->prodbode_metros + $cantidad);
+                }
                 $prodbode->prodbode_cantidad = ($prodbode->prodbode_cantidad + $cantidad);
             break;
             case 'S':
                 // Validar disponibles
-	            if ($producto->producto_metrado == true) {
-	            	if ($cantidad > $prodbode->prodbode_metros) {
+                if ($producto->producto_metrado == true) {
+                    if ($cantidad > $prodbode->prodbode_metros) {
                     	return "No existen suficientes unidades para salida producto {$producto->producto_nombre}, disponibles {$prodbode->prodbode_metros}, salida $cantidad, por favor verifique la información o consulte al administrador.";
 	            	}
                 	$prodbode->prodbode_metros = ($prodbode->prodbode_metros - $cantidad);

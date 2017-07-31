@@ -48,6 +48,7 @@ app || (app = {});
 			this.$inputCosto = this.$("#"+this.$inputContent.attr("data-costo"));
 			this.$inputPrecio1 = this.$("#"+this.$inputContent.attr("data-price"));			
 			this.$inputSucursal = this.$("#"+this.$inputContent.attr("data-office"));
+			this.$legalizacion = this.$("#"+this.$inputContent.attr("data-legalizacion"));
 
 			// Filters
 			this.$equalsRef = this.$inputContent.attr("data-ref");
@@ -139,10 +140,12 @@ app || (app = {});
 			this.$wraperConten = this.$("#"+$(e.currentTarget).attr("data-wrapper"));
 			this.$inputPrecio1 = this.$("#"+this.$inputContent.attr("data-price"));			
         	this.equalsRef = this.$inputContent.attr("data-ref");
+
 			if(this.equalsRef == "true" && this.$('#ajuste1_sucursal').val() == '' ){
 				alertify.error('Por favor ingrese sucursal antes agregar producto.');
                 return;
 			}
+			
 			var producto = this.$inputContent.val();
 
             // Before eval clear data

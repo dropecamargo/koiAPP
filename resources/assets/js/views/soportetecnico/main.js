@@ -31,7 +31,7 @@ app || (app = {});
             this.$modalEvent = $('#modal-event-component');
             this.$calendar = this.$('#calendar');
             
-            this.calendar();
+            this.referenceCalendar();
         },
 
         /**
@@ -42,24 +42,63 @@ app || (app = {});
                 window.initComponent.initSelect2();
         },
 
-        calendar: function (){
-        	var _this = this;
-        	this.$calendar.fullCalendar({
-        		header: {
-				    left: 'prev,next',
-				    center: 'title',
-				    right: 'month,agendaWeek,agendaDay'
-        		},
-    			eventClick: function(calEvent, jsEvent, view) {
-    				_this.openmodalEvent(calEvent, jsEvent, view);
-			    }
-        	});
+        referenceCalendar: function (){
+            var _this = this;
+
+            $.ajax({
+                type: 'GET',
+                url: window.Misc.urlFull( Route.route('soportetecnico.index') ),
+                beforeSend: function() {
+                    window.Misc.setSpinner( _this.spinnerCalendar );
+                }
+            })
+            .done(function(resp) {
+                window.Misc.removeSpinner( _this.spinnerCalendar );
+
+                if(!_.isUndefined(resp.success)) {
+                    // response success or error
+                    var text = resp.success ? '' : resp.errors;
+                    if( _.isObject( resp.errors ) ) {
+                        text = window.Misc.parseErrors(resp.errors);
+                    }
+                    if( !resp.success ) {
+                        alertify.error(text);
+                        return;
+                    }
+
+                    // Render calendar
+                    _this.calendar();
+
+                    // Remove event && addEvenet && renderEvent lib -> fullcalendar.io
+                    _this.$calendar.fullCalendar('removeEvents');
+                    _this.$calendar.fullCalendar('addEventSource', resp.ordenes);       
+                    _this.$calendar.fullCalendar('rerenderEvents');
+                }   
+            })
+            .fail(function(jqXHR, ajaxOptions, thrownError) {
+                window.Misc.removeSpinner( _this.spinnerCalendar );
+                alertify.error(thrownError);
+            });
         },
 
-        openmodalEvent: function (calEvent, jsEvent, view) {
-        	this.$modalEvent.find('.content-modal').html( this.templateEvent( calEvent ) );
-            this.$modalEvent.find('.modal-title').text( calEvent.title.trim() );
-        	this.$modalEvent.modal('show');
+        /**
+        * Instanceof Calendar 
+        */
+        calendar: function(){
+            var _this = this;
+
+            this.$calendar.fullCalendar({
+                header: {
+                    left: 'prev,next',
+                    center: 'title',
+                    right: 'month,agendaWeek,agendaDay'
+                },
+                eventClick: function(calEvent, jsEvent, view) {
+                    _this.$modalEvent.find('.content-modal').html( _this.templateEvent( calEvent ) );
+                    _this.$modalEvent.find('.modal-title').text( calEvent.title.trim() );
+                    _this.$modalEvent.modal('show');
+                }
+            });
         },
 
         /**
@@ -68,52 +107,53 @@ app || (app = {});
         changeTechnical: function (e) {
             e.preventDefault();
 
-	    	var _this = this,
-	    		technical = this.$('#search_technical').val(),
-	    		tercero = this.$('#search_tercero').val();
+            var _this = this,
+                technical = this.$('#search_technical').val(),
+                tercero = this.$('#search_tercero').val();
 
-			if( typeof(technical) !== 'undefined' && !_.isUndefined(technical) && !_.isNull(technical) && technical != '' || typeof(tercero) !== 'undefined' && !_.isUndefined(tercero) && !_.isNull(tercero) && tercero != '' ){
-			    $.ajax({
-			        type: 'GET',
-			        url: window.Misc.urlFull( Route.route('soportetecnico.index') ),
-			        data: { 
-			            search_technical: technical,
-			            search_tercero: tercero,
-			        },
-			        beforeSend: function() {
-			            window.Misc.setSpinner( _this.spinnerCalendar );
-			        }
-			    })
-			    .done(function(resp) {
-			        window.Misc.removeSpinner( _this.spinnerCalendar );
+            if( typeof(technical) !== 'undefined' && !_.isUndefined(technical) && !_.isNull(technical) && technical != '' || typeof(tercero) !== 'undefined' && !_.isUndefined(tercero) && !_.isNull(tercero) && tercero != '' ){
+                $.ajax({
+                    type: 'GET',
+                    url: window.Misc.urlFull( Route.route('soportetecnico.index') ),
+                    data: { 
+                        search_technical: technical,
+                        search_tercero: tercero,
+                    },
+                    beforeSend: function() {
+                        window.Misc.setSpinner( _this.spinnerCalendar );
+                    }
+                })
+                .done(function(resp) {
+                    window.Misc.removeSpinner( _this.spinnerCalendar );
 
-			        if(!_.isUndefined(resp.success)) {
-			            // response success or error
-			            var text = resp.success ? '' : resp.errors;
-			            if( _.isObject( resp.errors ) ) {
-			                text = window.Misc.parseErrors(resp.errors);
-			            }
-			            if( !resp.success ) {
-			                alertify.error(text);
-			                return;
-			            }
+                    if(!_.isUndefined(resp.success)) {
+                        // response success or error
+                        var text = resp.success ? '' : resp.errors;
+                        if( _.isObject( resp.errors ) ) {
+                            text = window.Misc.parseErrors(resp.errors);
+                        }
+                        if( !resp.success ) {
+                            alertify.error(text);
+                            return;
+                        }
 
-			            // Remove event && addEvenet && renderEvent lib -> fullcalendar.io
-			        	_this.$calendar.fullCalendar('removeEvents');
-			            _this.$calendar.fullCalendar('addEventSource', resp.ordenes);         
-			            _this.$calendar.fullCalendar('rerenderEvents');
-			        }	
-			    })
-			    .fail(function(jqXHR, ajaxOptions, thrownError) {
-			        window.Misc.removeSpinner( _this.spinnerCalendar );
-			        alertify.error(thrownError);
-			    });
-			}
+                        // Remove event && addEvenet && renderEvent lib -> fullcalendar.io
+                        _this.$calendar.fullCalendar('removeEvents');
+                        _this.$calendar.fullCalendar('addEventSource', resp.ordenes);       
+                        _this.$calendar.fullCalendar('rerenderEvents');
+                    }   
+                })
+                .fail(function(jqXHR, ajaxOptions, thrownError) {
+                    window.Misc.removeSpinner( _this.spinnerCalendar );
+                    alertify.error(thrownError);
+                });
+            }
         },
 
         clearFilters: function(e){
             e.preventDefault();
 
+            this.referenceCalendar();
             window.Misc.clearForm( $('#form-koi-search-tercero-component') );
         },
     });

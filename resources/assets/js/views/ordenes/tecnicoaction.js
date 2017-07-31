@@ -12,10 +12,7 @@ app || (app = {});
     app.TecnicoActionView = Backbone.View.extend({
 
         el: '#orden-content-section',
-
-        // Add remision
-        templateAdd: _.template(($('#add-remision-tpl').html() || '')),
-
+        templateRemision: _.template(($('#add-remision-tpl').html() || '')),
         events: {
             'click .click-store-remsion': 'onStoreRemision',
             'click .click-add-item': 'submitForm',
@@ -47,7 +44,7 @@ app || (app = {});
         * Render View Element
         */
         render: function() {
-            this.$modalCreate.find('.content-modal').empty().html( this.templateAdd() );
+            this.$modalCreate.find('.content-modal').empty().html( this.templateRemision() );
             this.el = this.$('#browse-legalizacions-list');
 
             this.referenceView();

@@ -1,5 +1,5 @@
 /**
-* Class ShowTrasladoView
+* Class ShowTrasladoUbicacionView
 * @author KOI || @dropecamargo
 * @link http://koi-ti.com
 */
@@ -9,9 +9,9 @@ app || (app = {});
 
 (function ($, window, document, undefined) {
 
-    app.ShowTrasladoView = Backbone.View.extend({
+    app.ShowTrasladoUbicacionView = Backbone.View.extend({
 
-        el: '#traslados-show',
+        el: '#trasladosubicaciones-show',
 
         /**
         * Constructor Method
@@ -20,7 +20,7 @@ app || (app = {});
             // Model exist
             if( this.model.id != undefined ) {
 
-            	this.trasladoProductosList = new app.TrasladoProductosList();
+                this.trasladoUbicacionesList = new app.TrasladoUbicacionesList();
 
                 // Reference views
                 this.referenceViews();
@@ -28,12 +28,12 @@ app || (app = {});
         },
 
         /**
-        * reference to views
+        * Reference to views
         */
         referenceViews: function () {
     		// Detalle traslado list
-            this.productosListView = new app.TrasladoProductosListView({
-                collection: this.trasladoProductosList,
+            this.productosListView = new app.TrasladoUbicacionesListView({
+                collection: this.trasladoUbicacionesList,
                 parameters: {
                     wrapper: this.el,
                     edit: false,

@@ -11,7 +11,7 @@ class Lote extends Model
     */
     protected $table = 'lote';
     public $timestamps = false;
-    public static function actualizar(Producto $producto, $sucursal, $loteNumero, $tipo, $cantidad, $fecha = null, $fechaVencimiento = null)
+    public static function actualizar(Producto $producto, $sucursal, $loteNumero, $tipo, $cantidad, $ubicacion ,$fecha = null, $fechaVencimiento = null)
     {
         // Validar sucursal
         $sucursal = Sucursal::find($sucursal);
@@ -24,11 +24,12 @@ class Lote extends Model
         }
         switch ($tipo) {
             case 'E':
-                $lote = Lote::where('lote_serie', $producto->id)->where('lote_sucursal', $sucursal->id)->where('lote_vencimiento', $fechaVencimiento)->first();
+                $lote = Lote::where('lote_serie', $producto->id)->where('lote_sucursal', $sucursal->id)->where('lote_vencimiento', $fechaVencimiento)->where('lote_ubicacion', $ubicacion)->first();
                 if (!$lote instanceof Lote) {
                     $lote = new Lote;
                     $lote->lote_serie = $producto->id;
                     $lote->lote_sucursal = $sucursal->id;
+                    $lote->lote_ubicacion = $ubicacion;
                     $lote->lote_numero = $loteNumero;
                     $lote->lote_fecha = $fecha;
                     $lote->lote_vencimiento = $fechaVencimiento;

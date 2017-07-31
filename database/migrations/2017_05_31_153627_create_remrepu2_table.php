@@ -19,6 +19,7 @@ class CreateRemrepu2Table extends Migration
             $table->integer('remrepu2_producto')->unsigned();
             $table->integer('remrepu2_remrepu1')->unsigned();
             $table->integer('remrepu2_cantidad')->unsigned();
+            $table->integer('remrepu2_saldo')->unsigned();
             $table->integer('remrepu2_facturado')->unsigned();
             $table->integer('remrepu2_no_facturado')->unsigned();
             $table->integer('remrepu2_devuelto')->unsigned();

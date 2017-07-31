@@ -113,14 +113,13 @@ class TrasladoController extends Controller
                         $detalleTraslado->save();
 
                         // Detalle traslado Prodbode origen y destino
-                        $result = Prodbode::actualizar($producto, $origen->id, 'S', $detalleTraslado->traslado2_cantidad);
-                        if($result != 'OK') {
+                        $result = Prodbode::actualizar($producto, $origen->id, 'S', $detalleTraslado->traslado2_cantidad, $origen->sucursal_defecto);
+                        if(!$result instanceof Prodbode) {
                             DB::rollback();
                             return response()->json(['success' => false, 'errors'=> $result]);
                         }
-
-                        $result = Prodbode::actualizar($producto, $destino->id, 'E', $detalleTraslado->traslado2_cantidad);
-                        if($result != 'OK') {
+                        $result = Prodbode::actualizar($producto, $destino->id, 'E', $detalleTraslado->traslado2_cantidad ,$destino->sucursal_defecto);
+                        if(!$result instanceof Prodbode) {
                             DB::rollback();
                             return response()->json(['success' => false, 'errors'=> $result]);
                         }
@@ -128,13 +127,13 @@ class TrasladoController extends Controller
                         //Maneja Serie
                         if ($producto->producto_maneja_serie == true) {
 
-                            $lote = Lote::actualizar($producto, $origen->id, '', 'S', 1, $traslado->traslado1_fecha, null);
+                            $lote = Lote::actualizar($producto, $origen->id, '', 'S', 1, $origen->sucursal_defecto ,$traslado->traslado1_fecha, null);
                             if (!$lote instanceof Lote) {
                                 DB::rollback();
                                 return response()->json(['success' => false, 'errors' => $lote]);
                             }
                             // Inventario
-                            $inventario = Inventario::movimiento($producto, $origen->id, 'TRAS', $traslado->id, 0, 1, 0, 0,$detalleTraslado->traslado2_costo, $detalleTraslado->traslado2_costo,$lote->id);
+                            $inventario = Inventario::movimiento($producto, $origen->id, $origen->sucursal_defecto,'TRAS', $traslado->id, 0, 1, 0, 0,$detalleTraslado->traslado2_costo, $detalleTraslado->traslado2_costo,$lote->id);
                             if (!$inventario instanceof Inventario) {
                                 DB::rollback();
                                 return response()->json(['success' => false,'errors '=> $inventario]);
@@ -142,13 +141,13 @@ class TrasladoController extends Controller
                             /**
                             *Entrada Inventario a sucursal destino
                             */
-                            $lote = Lote::actualizar($producto, $destino->id, '', 'E', 1, $traslado->traslado1_fecha, null);
+                            $lote = Lote::actualizar($producto, $destino->id, '', 'E', 1, $destino->sucursal_defecto, $traslado->traslado1_fecha, null);
                             if (!$lote instanceof Lote) {
                                 DB::rollback();
                                 return response()->json(['success' => false, 'errors' => 'No es posible recuperar lote, por favor verifique la información ó por favor consulte al administrador']);
                             }
                             // Inventario
-                            $inventario = Inventario::movimiento($producto, $destino->id, 'TRAS', $traslado->id, 1, 0, 0, 0,$detalleTraslado->traslado2_costo, $detalleTraslado->traslado2_costo, $lote->id);
+                            $inventario = Inventario::movimiento($producto, $destino->id, $destino->sucursal_defecto,'TRAS', $traslado->id, 1, 0, 0, 0,$detalleTraslado->traslado2_costo, $detalleTraslado->traslado2_costo, $lote->id);
                             if (!$inventario instanceof Inventario) {
                                 DB::rollback();
                                 return response()->json(['success' => false,'errors '=> $inventario]);
@@ -161,13 +160,13 @@ class TrasladoController extends Controller
                                     
                                      list($text, $rollo) = explode("_", $key);
                                     // Individualiza en rollo --- $rollo hace las veces de lote 
-                                    $rollo = Rollo::actualizar($producto, $origen->id, 'S', $rollo, $traslado->traslado1_fecha, $valueItem);
+                                    $rollo = Rollo::actualizar($producto, $origen->id, 'S', $rollo, $traslado->traslado1_fecha, $valueItem, $origen->sucursal_defecto);
                                     if (!$rollo instanceof Rollo) {
                                         DB::rollback();
                                         return response()->json(['success' => false, 'errors' => $rollo]);
                                     }
                                     // Inventario
-                                    $inventario = Inventario::movimiento($producto, $origen->id, 'TRAS', $traslado->id, 0, 0, 0, $valueItem, $detalleTraslado->traslado2_costo, $detalleTraslado->traslado2_costo,0,$rollo->id);
+                                    $inventario = Inventario::movimiento($producto, $origen->id, $origen->sucursal_defecto, 'TRAS', $traslado->id, 0, 0, 0, $valueItem, $detalleTraslado->traslado2_costo, $detalleTraslado->traslado2_costo,0,$rollo->id);
                                     if (!$inventario instanceof Inventario) {
                                         DB::rollback();
                                         return response()->json(['success' => false,'errors '=> $inventario]);
@@ -175,13 +174,13 @@ class TrasladoController extends Controller
                                     /**
                                     * Entrada de rollo sucursal destino
                                     */
-                                    $rollo = Rollo::actualizar($producto, $destino->id, 'E', $rollo->rollo_lote, $traslado->traslado1_fecha, $valueItem);
+                                    $rollo = Rollo::actualizar($producto, $destino->id, 'E', $rollo->rollo_lote, $traslado->traslado1_fecha, $valueItem, $destino->sucursal_defecto);
                                     if (!$rollo instanceof Rollo) {
                                         DB::rollback();
                                         return response()->json(['success' => false, 'errors' => $rollo]);
                                     }
                                     // Inventario
-                                    $inventario = Inventario::movimiento($producto, $destino->id, 'TRAS', $traslado->id, 0, 0, $valueItem, 0, $detalleTraslado->traslado2_costo, $detalleTraslado->traslado2_costo,0,$rollo->id);
+                                    $inventario = Inventario::movimiento($producto, $destino->id, $destino->sucursal_defecto,'TRAS', $traslado->id, 0, 0, $valueItem, 0, $detalleTraslado->traslado2_costo, $detalleTraslado->traslado2_costo,0,$rollo->id);
                                     if (!$inventario instanceof Inventario) {
                                         DB::rollback();
                                         return response()->json(['success' => false,'errors '=> $inventario]);
@@ -195,13 +194,13 @@ class TrasladoController extends Controller
 
                                 if ($value > 0) {
                                     // Individualiza en lote
-                                    $lote = Lote::actualizar($producto, $origen->id, $lote, 'S', $value);
+                                    $lote = Lote::actualizar($producto, $origen->id, $lote, 'S', $value, $origen->sucursal_defecto);
                                     if (!$lote instanceof Lote) {
                                         DB::rollback();
                                         return response()->json(['success' => false, 'errors' => $lote]);
                                     }
                                     // Inventario
-                                    $inventario = Inventario::movimiento($producto, $origen->id, 'TRAS', $traslado->id, 0, $value, 0, 0, $detalleTraslado->traslado2_costo, $detalleTraslado->traslado2_costo,$lote->id);
+                                    $inventario = Inventario::movimiento($producto, $origen->id, $origen->sucursal_defecto,'TRAS', $traslado->id, 0, $value, 0, 0, $detalleTraslado->traslado2_costo, $detalleTraslado->traslado2_costo,$lote->id);
                                     if (!$inventario instanceof Inventario) {
                                         DB::rollback();
                                         return response()->json(['success' => false,'errors '=> $inventario]);
@@ -211,13 +210,13 @@ class TrasladoController extends Controller
                                     *Entrada sucursal destino
                                     */
 
-                                    $lote = Lote::actualizar($producto, $destino->id, $lote->lote_numero, 'E', $value, $traslado->traslado1_fecha, $lote->lote_vencimiento);
+                                    $lote = Lote::actualizar($producto, $destino->id, $lote->lote_numero, 'E', $value, $destino->sucursal_defecto, $traslado->traslado1_fecha, $lote->lote_vencimiento);
                                     if (!$lote instanceof Lote) {
                                         DB::rollback();
                                         return response()->json(['success' => false, 'errors' => $lote]);
                                     }
                                     // Inventario
-                                    $inventario = Inventario::movimiento($producto, $destino->id, 'TRAS', $traslado->id, $value, 0, 0, 0, $detalleTraslado->traslado2_costo, $detalleTraslado->traslado2_costo,$lote->id);
+                                    $inventario = Inventario::movimiento($producto, $destino->id, $destino->sucursal_defecto,'TRAS', $traslado->id, $value, 0, 0, 0, $detalleTraslado->traslado2_costo, $detalleTraslado->traslado2_costo,$lote->id);
                                     if (!$inventario instanceof Inventario) {
                                         DB::rollback();
                                         return response()->json(['success' => false,'errors '=> $inventario]);
