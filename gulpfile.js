@@ -57,7 +57,6 @@ elixir(function(mix) {
         paths.adminlte + 'plugins/datepicker/bootstrap-datepicker.js',
         paths.adminlte + 'plugins/datepicker/locales/bootstrap-datepicker.es.js',
         paths.adminlte + 'plugins/timepicker/bootstrap-timepicker.min.js',
-        paths.libs + 'fine-uploader/dist/jquery.fine-uploader.min.js',
         paths.libs + 'bootstrap-validator/dist/validator.min.js',
         paths.libs + 'datatables.net/js/jquery.dataTables.min.js',
         paths.libs + 'datatables.net-bs/js/dataTables.bootstrap.min.js',
@@ -73,6 +72,7 @@ elixir(function(mix) {
         paths.libs + 'alertify.js/dist/js/alertify.js',
         paths.libs + 'fullcalendar/dist/fullcalendar.min.js',
         paths.libs + 'fullcalendar/dist/locale/es.js',
+        paths.libs + 'fine-uploader/dist/jquery.fine-uploader.js',
    	], 'public/js/vendor.min.js')
     .scripts([
         'models/*.js',
