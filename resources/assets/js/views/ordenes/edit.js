@@ -209,7 +209,7 @@ app || (app = {});
                     params: {
                         'orden_id': _this.model.get('id')
                     },
-                    refreshOnRequest: false
+                    refreshOnRequest: false,
                 },
                 request: {
                     inputName: 'file',
@@ -241,7 +241,7 @@ app || (app = {});
                 callbacks: {
                     onComplete: _this.onCompleteLoadFile,
                     onSessionRequestComplete: _this.onSessionRequestComplete
-                }
+                },
             });
         },
 
@@ -261,9 +261,9 @@ app || (app = {});
             previewLink.attr("href", resp.url);
         },
 
-        onSessionRequestComplete: function (id, name, resp){
+        onSessionRequestComplete: function (id, name, resp) {
             
-            _.each( id, function ( value, key ){
+            _.each( id, function ( value, key){
                 var previewLink = this.$uploaderFile.fineUploader('getItemByFileId', key).find('.preview-link');
                 previewLink.attr("href", value.thumbnailUrl);
             }, this);
@@ -378,9 +378,6 @@ app || (app = {});
 
             if( typeof window.initComponent.initTimePicker == 'function' )
                 window.initComponent.initTimePicker();
-
-            if( typeof window.initComponent.initFineUploader == 'function' )
-                window.initComponent.initFineUploader();
         },
 
         /**
