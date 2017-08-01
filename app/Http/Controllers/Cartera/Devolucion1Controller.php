@@ -149,14 +149,18 @@ class Devolucion1Controller extends Controller
                                     DB::rollback();
                                     return response()->json(['success' => false, 'errors'=> $result]);
                                 }
-                                // Rollo
+                                // Recupero rollo de table inventario
                                 $rollo = Rollo::find($inventario->inventario_rollo);
                                 if (!$rollo instanceof Rollo) {
                                     DB::rollback();
                                   return response()->json(['success' => false, 'errors' => 'No es posible recuperar rollo, por favor verifique la información ó por favor consulte al administrador']);
                                 }
-                                $rollo->rollo_saldo = ($rollo->rollo_saldo + $request->$cantidad); 
-                                $rollo->save();
+                                // Rollo
+                                $rollo = Rollo::actualizar($producto, $sucursal->id, 'E', $rollo->rollo_lote, $devolucion1->devolucion1_fh_elaboro, $request->$cantidad, $sucursal->sucursal_defecto);
+                                if (!$rollo instanceof Rollo) {
+                                    DB::rollback();
+                                    return response()->json(['success' => false, 'errors' => $rollo]);
+                                }
 
                                 // Inventario
                                 $inventario = Inventario::movimiento($producto, $sucursal->id,$sucursal->sucursal_defecto, 'DEVO', $devolucion1->id, 0, 0, $request->$cantidad, 0, $value->factura2_costo, $value->factura2_costo, $rollo->id);

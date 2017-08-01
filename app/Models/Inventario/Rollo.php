@@ -16,7 +16,7 @@ class Rollo extends Model
 
     public $timestamps = false;
 
- 	public  static function actualizar(Producto $producto, $sucursal, $tipo, $lote, $fecha, $cantidad, $ubicacion)
+ 	public  static function actualizar(Producto $producto, $sucursal, $tipo, $lote, $fecha, $cantidad, $ubicacion, $cantRollo = 0)
  	{
         // Validar sucursal
         $sucursal = Sucursal::find($sucursal);
@@ -31,14 +31,28 @@ class Rollo extends Model
 
         switch ($tipo) {
             case 'E':
-            	$rollo = new Rollo;
-                $rollo->rollo_serie = $producto->id;
-                $rollo->rollo_sucursal = $sucursal->id;
-                $rollo->rollo_lote = $lote;
-                $rollo->rollo_ubicacion = $ubicacion;
-                $rollo->rollo_metros = ($rollo->rollo_metros + $cantidad);
-                $rollo->rollo_saldo = ($rollo->rollo_saldo + $rollo->rollo_metros);
-                $rollo->rollo_fecha = $fecha;
+                while ($cantidad > 0) {
+                    $rollo = new Rollo;
+                    $rollo->rollo_serie = $producto->id;
+                    $rollo->rollo_sucursal = $sucursal->id;
+                    $rollo->rollo_lote = $lote;
+                    $rollo->rollo_ubicacion = $ubicacion;
+                    $rollo->rollo_fecha = $fecha;
+
+                    if ($cantRollo == 0) {
+                        $rollo->rollo_metros = $cantidad;
+                        $rollo->rollo_saldo = $rollo->rollo_metros;
+                    }else if($cantRollo > 0 && $cantidad <= $cantRollo){
+                        $rollo->rollo_metros = $cantRollo;
+                        $rollo->rollo_saldo = $cantidad;
+                    }else{
+                        $rollo->rollo_metros = $cantRollo;
+                        $rollo->rollo_saldo = $cantidad;
+                    }
+                    $cantidad = $cantidad - $rollo->rollo_saldo;
+
+                    $rollo->save();
+                }
             break;
             case 'S':
                 $rollo = Rollo::find($lote);
@@ -71,6 +85,7 @@ class Rollo extends Model
                     }
                 }else{
                     $rollo->rollo_saldo = ($rollo->rollo_saldo - $cantidad);
+                    $rollo->save();
                 }
             break;
 
@@ -78,8 +93,6 @@ class Rollo extends Model
                 return "No es posible recuperar tipo movimiento rollo, por favor verifique la información o consulte al administrador.";
             break;
         }
-		$rollo->save();
-
         return $rollo;
     }
 }

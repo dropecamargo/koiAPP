@@ -70,7 +70,6 @@ app || (app = {});
                 stuffToDo = {
                     'modalSerie': function() {
                         if (resp.tipo == 'E') {
-                            _this.$modalIn.find('.modal-dialog').addClass('modal-md');
                             _this.$modalIn.find('.content-modal').empty().html(_this.templateAddSeries( ));
                             _this.$modalIn.find('.modal-title').text('Inventario, Entradas De Productos ');
 
@@ -84,12 +83,10 @@ app || (app = {});
                     },
                     'ProductoMetrado': function(){
                         if (resp.tipo  == 'E') {
-                            _this.$modalIn.find('.modal-dialog').addClass('modal-lg');
                             _this.$modalIn.find('.content-modal').empty().html(_this.templateAddItemRollo(resp) );
                             _this.$modalIn.find('.modal-title').text('Inventario - Entradas de productos metrados'); 
                             _this.referenceMetrado(resp);
                         }else{
-                            _this.$modalIn.find('.modal-dialog').addClass('modal-xlg');
                             _this.$modalIn.find('.content-modal').empty().html(_this.templateChooseItemsRollo(resp) );
                             _this.$modalIn.find('.modal-title').text('Inventario - Salidas de productos metrados');
                             _this.referenceMetrado(resp);
@@ -97,13 +94,11 @@ app || (app = {});
                     },
                     'ProductoVence': function(){
                         if (resp.tipo  == 'E') {
-                            _this.$modalIn.find('.modal-dialog').addClass('modal-md');
                             _this.$modalIn.find('.content-modal').empty().html(_this.templateAddItemsProductVence(resp) );
                             _this.$modalIn.find('.modal-title').text('Inventario - Entradas de productos con fecha de vencimiento '); 
                             _this.referenceVencimiento(resp);
                         }
                         else{
-                            _this.$modalIn.find('.modal-dialog').addClass('modal-xlg');
                             _this.$modalIn.find('.content-modal').empty().html(_this.templateChooseItemsProductVence(resp) );
                             _this.$modalIn.find('.modal-title').text('Inventario - Salida de productos con fecha de vencimiento');
                             _this.referenceVencimiento(resp);

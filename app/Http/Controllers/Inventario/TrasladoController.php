@@ -158,7 +158,8 @@ class TrasladoController extends Controller
                             foreach ($items as $key => $valueItem) {
                                 if ($valueItem > 0) {
                                     
-                                     list($text, $rollo) = explode("_", $key);
+                                    list($text, $rollo) = explode("_", $key);
+
                                     // Individualiza en rollo --- $rollo hace las veces de lote 
                                     $rollo = Rollo::actualizar($producto, $origen->id, 'S', $rollo, $traslado->traslado1_fecha, $valueItem, "");
                                     if (!$rollo instanceof Rollo) {
@@ -174,10 +175,10 @@ class TrasladoController extends Controller
                                     /**
                                     * Entrada de rollo sucursal destino
                                     */
-                                    $rollo = Rollo::actualizar($producto, $destino->id, 'E', $rollo->rollo_lote, $traslado->traslado1_fecha, $valueItem, $destino->sucursal_defecto);
-                                    if (!$rollo instanceof Rollo) {
+                                    $rolloDestino = Rollo::actualizar($producto, $destino->id, 'E', $rollo->rollo_lote, $traslado->traslado1_fecha, $valueItem, $destino->sucursal_defecto, $rollo->rollo_metros);
+                                    if (!$rolloDestino instanceof Rollo) {
                                         DB::rollback();
-                                        return response()->json(['success' => false, 'errors' => $rollo]);
+                                        return response()->json(['success' => false, 'errors' => $rolloDestino]);
                                     }
                                     // Inventario
                                     $inventario = Inventario::movimiento($producto, $destino->id, $destino->sucursal_defecto,'TRAS', $traslado->id, 0, 0, $valueItem, 0, $detalleTraslado->traslado2_costo, $detalleTraslado->traslado2_costo,0,$rollo->id);

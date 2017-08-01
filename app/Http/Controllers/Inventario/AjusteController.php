@@ -325,7 +325,7 @@ class AjusteController extends Controller
 
                     // Commit Transaction
                     DB::commit();
-                    return response()->json(['success' => true, 'id' => $ajuste->id ]);
+                    return response()->json(['success' => true, 'id' => $ajuste->id]);
                 }catch (\Exception $e) {
                     DB::rollback();
                     Log::error($e->getMessage());
@@ -401,9 +401,7 @@ class AjusteController extends Controller
         if(!$ajuste instanceof Ajuste1) {
             abort(404);
         }
-
-        $detalle = [];
-        // $detalle = Factura2::getFactura2($factura->id);
+        $detalle = Ajuste2::getAjuste2($ajuste->id);
         $title = sprintf('Ajuste %s', $ajuste->ajuste1_numero);
 
         // // Export pdf

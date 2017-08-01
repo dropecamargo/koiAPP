@@ -182,10 +182,10 @@ class TrasladoUbicacionController extends Controller
                                     /**
                                     * Entrada de rollo ubicacion destino
                                     */
-                                    $rollo = Rollo::actualizar($producto, $sucursal->id, 'E', $rollo->rollo_lote, $trasladou->trasladou1_fecha, $valueItem, $destino->id);
-                                    if (!$rollo instanceof Rollo) {
+                                    $rolloDestino = Rollo::actualizar($producto, $sucursal->id, 'E', $rollo->rollo_lote, $trasladou->trasladou1_fecha, $valueItem, $destino->id, $rollo->rollo_metros);
+                                    if (!$rolloDestino instanceof Rollo) {
                                         DB::rollback();
-                                        return response()->json(['success' => false, 'errors' => $rollo]);
+                                        return response()->json(['success' => false, 'errors' => $rolloDestino]);
                                     }
                                     // Inventario
                                     $inventario = Inventario::movimiento($producto, $sucursal->id, $destino->id,'TRAU', $trasladou->id, 0, 0, $valueItem, 0, $producto->producto_costo, $producto->producto_costo,0,$rollo->id);
