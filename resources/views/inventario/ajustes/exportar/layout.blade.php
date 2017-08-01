@@ -6,7 +6,7 @@
 		@if($type == 'pdf')
 			<style type="text/css">
 				body {
-					font-size: 5;
+					font-size: 11;
 					font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
 					font-weight: normal;
 				    margin: 0px 0px 0px 25px:
