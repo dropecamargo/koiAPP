@@ -401,9 +401,7 @@ class AjusteController extends Controller
         if(!$ajuste instanceof Ajuste1) {
             abort(404);
         }
-
-        $detalle = [];
-        // $detalle = Factura2::getFactura2($factura->id);
+        $detalle = Ajuste2::getAjuste2($ajuste->id);
         $title = sprintf('Ajuste %s', $ajuste->ajuste1_numero);
 
         // // Export pdf
