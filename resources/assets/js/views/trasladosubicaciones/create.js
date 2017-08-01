@@ -103,6 +103,7 @@ app || (app = {});
                 e.preventDefault();
                 var data = window.Misc.formToJson( e.target );
                     data.tipo = 'S';
+                    data.ubicacion = true;
                     data.sucursal = this.$('#trasladou1_sucursal').val();
                     data.destino = this.$('#trasladou1_destino').val();
                     data.origen = this.$('#trasladou1_origen').val();

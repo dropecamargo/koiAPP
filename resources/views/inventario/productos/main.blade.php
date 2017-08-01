@@ -13,30 +13,8 @@
         </ol>
     </section>
 
-    <section class="content" id="content-show">
+    <section class="content">
         @yield ('module')
-        
-        <div class="modal fade" id="modal-ubicacion-component" data-backdrop="static" data-keyboard="false" aria-hidden="true">
-            <div class="modal-dialog modal-md" role="document">
-                <div class="modal-content">
-                    <div class="modal-header small-box {{ config('koi.template.bg') }}">
-                        <button type="button" class="close icon-close-koi" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                        <h4><strong>Ubicacion producto</strong></h4>
-                    </div>
-                    {!! Form::open(['id' => 'form-ubicacion-component', 'data-toggle' => 'validator']) !!}
-                        <div class="modal-body">
-                            <div class="content-modal"></div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancelar</button>
-                            <button type="submit" class="btn btn-primary btn-sm">Continuar</button>
-                        </div>
-                    {!! Form::close() !!}
-                </div>
-            </div>
-        </div>
     </section>
 
     <script type="text/template" id="add-producto-tpl">
@@ -219,62 +197,24 @@
     </script>
 
     <script type="text/template" id="add-seriesprodbode-tpl">
-        <table id="prodbod-search-table" class="table table-striped">
-            <tbody>
-                <tr>
-                    <th>Serie</th>
-                    <th colspan="2">Nombre</th>
-                    <th>Sucursal</th>
-                </tr>
-
-                <% if( series == '') { %>
-                    <tr>
-                        <th colspan="4" class="text-center">NO EXISTEN SERIES ASOCIADAS</th>
-                    </tr>
-                <% } %>
-
-                <% _.each(series, function(serie) { %>
-                    <tr>
-                        <td><%- serie.producto_serie %></td>
-                        <td colspan="2"><%- serie.producto_nombre %></td>
-                        <td><%- serie.sucursal_nombre %></td>
-                    </tr>
-                <% }); %>
-            </tbody>
-    </script>
-
-    <script type="text/template" id="add-ubicacion-tpl">
-        <div class="row">
-            <div class="col-md-3">
-                <label for="prodbode_serie" class="control-label">Serie</label>
-            </div>
-            <div class="col-md-7">
-                <%- serie %>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-3">
-                <label for="modal-nombre" class="control-label">Nombre</label>
-            </div>
-            <div class="col-md-7">
-                <%- nombre %>
-            </div>
-        </div>
-        <div class="row">
-            <div class="form-group col-md-3">
-                <label for="prodbode_sucursal" class="control-label">Sucursal</label>
-            </div>
-            <div class="col-md-7">
-                <%- sucursal %>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-3">
-                <label for="prodbode_ubicacion1" class="control-label">Ubicacion</label>
-            </div>
-            <div class="form-group col-md-7">
-                <input type="text" id="prodbode_ubicacion1" data-id="<%- id %>" name="prodbode_ubicacion1" class="form-control input-sm" required>
-            </div>
-        </div>
+        <% if (producto_maneja_serie == 1){ %> 
+            <td><%- sucursal_nombre %></td>
+            <td><%- producto_serie %></td>
+            <td><%- producto_nombre %></td>
+            <td><%- ubicacion_nombre %></td>
+        <% }else if(producto_vence == 1){ %> 
+            <td><%- sucursal_nombre %></td>
+            <td><%- ubicacion_nombre %></td>
+            <td><%- lote_saldo %></td>
+            <td><%- lote_vencimiento %></td>
+        <% }else if(producto_metrado == 1){ %> 
+            <td><%- sucursal_nombre %></td>
+            <td><%- rollo_rollos %> X <%- rollo_saldo %> (Mts)</td>
+            <td><%- ubicacion_nombre %></td>
+        <% }else{ %> 
+            <td><%- sucursal_nombre %></td>
+            <td><%- ubicacion_nombre %></td>
+            <td><%- prodbode_cantidad %></td>
+        <% } %>
     </script>
 @stop

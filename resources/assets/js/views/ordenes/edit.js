@@ -166,7 +166,7 @@ app || (app = {});
                 // Data sucursal y tecnico
                 var data = window.Misc.formToJson( e.target );
                     data.orden_id = this.model.get('id');
-                
+
                 this.$modalCreate.modal('show');
 
                 // Open TecnicoActionView
@@ -304,6 +304,7 @@ app || (app = {});
                         }
 
                         _this.remrepu.fetch({ data: {orden_id: _this.model.get('id')}, reset: true });
+                        _this.remision.fetch({ data: {orden_id: _this.model.get('id')}, reset: true });
                         alertify.success( 'Se guardo con exito la legalización.' );
                     }
                 })
@@ -315,7 +316,7 @@ app || (app = {});
         },
 
         /**
-        *
+        *  Close orden
         */
         clickCloseOrden: function(e){
             e.preventDefault();

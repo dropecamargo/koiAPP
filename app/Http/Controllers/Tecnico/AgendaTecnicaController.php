@@ -10,7 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Tecnico\Orden, App\Models\Base\Tercero;
 use DB, Log;
 
-class SoporteTecnicoController extends Controller
+class AgendaTecnicaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -69,7 +69,7 @@ class SoporteTecnicoController extends Controller
             $object->success = true;
             return response()->json($object);
         }
-        return view('tecnico.soportetecnico.main');
+        return view('tecnico.agendatecnica.main');
     }
 
     /**

@@ -11,7 +11,7 @@ class Lote extends Model
     */
     protected $table = 'lote';
     public $timestamps = false;
-    public static function actualizar(Producto $producto, $sucursal, $loteNumero, $tipo, $cantidad, $ubicacion ,$fecha = null, $fechaVencimiento = null)
+    public static function actualizar(Producto $producto, $sucursal, $loteNumero, $tipo, $cantidad, $ubicacion, $fecha = null, $fechaVencimiento = null)
     {
         // Validar sucursal
         $sucursal = Sucursal::find($sucursal);
@@ -33,20 +33,18 @@ class Lote extends Model
                     $lote->lote_numero = $loteNumero;
                     $lote->lote_fecha = $fecha;
                     $lote->lote_vencimiento = $fechaVencimiento;
-                    $lote->lote_cantidad = ($lote->lote_cantidad + $cantidad);
-                    $lote->lote_saldo = ($lote->lote_cantidad + $lote->lote_saldo);
-                }else{
-                    $lote->lote_cantidad = ($lote->lote_cantidad + $cantidad);
-                    $lote->lote_saldo = ($cantidad + $lote->lote_saldo);
                 }
+                $lote->lote_cantidad = ($lote->lote_cantidad + $cantidad);
+                $lote->lote_saldo = ($lote->lote_saldo + $cantidad);
             break;
             case 'S':
             
                 if ($producto->producto_maneja_serie == true) {
-                    $lote = Lote::where('lote_serie',$producto->id)->where('lote_sucursal', $sucursal->id)->first();
+                    $lote = Lote::where('lote_serie',$producto->id)->where('lote_sucursal', $sucursal->id)->where('lote_saldo', 1)->first();
                 }else{
                     $lote = Lote::find($loteNumero);
                 }
+                
                 if(!$lote instanceof Lote){
                     return "No es posible recuperar lote del producto $producto->producto_nombre en la sucursal $sucursal->sucursal_nombre";
                 }

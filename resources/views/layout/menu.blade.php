@@ -341,13 +341,13 @@
         </ul>
     </li>
     {{-- Tecnico --}}
-    <li class="treeview {{ in_array(Request::segment(1), ['contratos','ordenes','tiposorden','solicitantes', 'sitios', 'danos','prioridades','conceptostecnico','gestionestecnico', 'soportetecnico']) ? 'active' : '' }}">
+    <li class="treeview {{ in_array(Request::segment(1), ['contratos','ordenes','tiposorden','solicitantes', 'sitios', 'danos','prioridades','conceptostecnico','gestionestecnico', 'agendatecnica']) ? 'active' : '' }}">
         <a href="#">
             <i class="fa fa-cogs"></i> <span>Tecnico</span><i class="fa fa-angle-left pull-right"></i>
         </a>
         <ul class="treeview-menu">
             {{-- Modulos Tecnico --}}
-            <li class="{{ in_array(Request::segment(1), ['ordenes','gestionestecnico', 'soportetecnico']) ? 'active' : '' }}">
+            <li class="{{ in_array(Request::segment(1), ['ordenes','gestionestecnico', 'agendatecnica']) ? 'active' : '' }}">
                 <a href="#">
                     <i class="fa fa-wpforms"></i> Modulos <i class="fa fa-angle-left pull-right"></i>
                 </a>
@@ -358,8 +358,8 @@
                     <li class="{{ Request::segment(1) == 'ordenes' ? 'active' : '' }}">
                         <a href="{{ route('ordenes.index') }}"><i class="fa fa-building-o"></i> Ordenes</a>
                     </li>
-                    <li class="{{ Request::segment(1) == 'soportetecnico' ? 'active' : '' }}">
-                        <a href="{{ route('soportetecnico.index') }}"><i class="fa fa-address-book"></i> Soporte tecnico</a>
+                    <li class="{{ Request::segment(1) == 'agendatecnica' ? 'active' : '' }}">
+                        <a href="{{ route('agendatecnica.index') }}"><i class="fa fa-calendar"></i> Agenda tecnica</a>
                     </li>
                 </ul>
             </li>

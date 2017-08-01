@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\Models\Tecnico\RemRepu, App\Models\Tecnico\RemRepu2, App\Models\Tecnico\Orden, App\Models\Base\Tercero, App\Models\Inventario\Producto, App\Models\Base\Sucursal, App\Models\Base\Documentos;
+use App\Models\Tecnico\RemRepu, App\Models\Tecnico\RemRepu2, App\Models\Tecnico\Orden, App\Models\Base\Tercero, App\Models\Inventario\Producto, App\Models\Base\Sucursal, App\Models\Base\Documentos, App\Models\Inventario\Prodbode;
 
 use Log, DB, Auth;
 
@@ -96,15 +96,28 @@ class RemRepuController extends Controller
 
                     foreach ($data['detalle'] as $value) {
 
+                        // Recuperar Sucursal 
+                        $sucursal = Sucursal::find($data['sucursal']);
+                        if(!$sucursal instanceof Sucursal){
+                            return response()->json(['success' => false, 'errors' => 'No es posible recuperar la sucursal, por favor verifique la información o consulte al administrador.']);
+                        }
+
                         // Recupero instancia de producto
                         $producto = Producto::where('producto_serie', $value['remrepu2_serie'])->first();
                         if(!$producto instanceof Producto) {
                             DB::rollback();
                             return response()->json(['success' => false, 'errors' => 'No es posible recuperar producto, por favor verifique la información o consulte al administrador.']);
                         }
+
+                        // Validar sucursal prodbode
+                        $validSucu = Prodbode::where('prodbode_sucursal', $sucursal->id)->where('prodbode_serie', $producto->id)->first();
+                        if ($validSucu == null) {
+                            DB::rollback();
+                            return response()->json(['success'=> false, 'errors' => "El producto {$producto->producto_nombre} - {$producto->producto_serie} no corresponde a esa sucursal, por favor verificar información o consulte al administrador."]);
+                        }
+
                         // Valido producto unico en la remision
                         $existente = DB::table('remrepu2')->where('remrepu2_producto', $producto->id)->where('remrepu2_remrepu1', $remrepu->id)->first();
-
                         if ($existente != null) {
                             DB::rollback();
                             return response()->json(['success'=> false, 'errors' => "Producto {$producto->producto_nombre} - {$producto->producto_serie} se encuentra repetido, por favor verificar información o consulte al administrador."]);

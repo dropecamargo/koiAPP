@@ -1,5 +1,5 @@
 /**
-* Class MainSoporteTecnicoView  of Backbone Router
+* Class MainAgendaTecnicaView  of Backbone Router
 * @author KOI || @dropecamargo
 * @link http://koi-ti.com
 */
@@ -9,7 +9,7 @@ app || (app = {});
 
 (function ($, window, document, undefined) {
 
-    app.MainSoporteTecnicoView = Backbone.View.extend({
+    app.MainAgendaTecnicaView = Backbone.View.extend({
 
         el: '#soportetecnico-main',
         templateEvent: _.template( ($('#add-info-event-tpl').html() || '') ),
@@ -47,7 +47,7 @@ app || (app = {});
 
             $.ajax({
                 type: 'GET',
-                url: window.Misc.urlFull( Route.route('soportetecnico.index') ),
+                url: window.Misc.urlFull( Route.route('agendatecnica.index') ),
                 beforeSend: function() {
                     window.Misc.setSpinner( _this.spinnerCalendar );
                 }
@@ -114,7 +114,7 @@ app || (app = {});
             if( typeof(technical) !== 'undefined' && !_.isUndefined(technical) && !_.isNull(technical) && technical != '' || typeof(tercero) !== 'undefined' && !_.isUndefined(tercero) && !_.isNull(tercero) && tercero != '' ){
                 $.ajax({
                     type: 'GET',
-                    url: window.Misc.urlFull( Route.route('soportetecnico.index') ),
+                    url: window.Misc.urlFull( Route.route('agendatecnica.index') ),
                     data: { 
                         search_technical: technical,
                         search_tercero: tercero,

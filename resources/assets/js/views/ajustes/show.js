@@ -12,14 +12,15 @@ app || (app = {});
     app.ShowAjusteView = Backbone.View.extend({
 
         el: '#ajuste-show',
-        
+        events:{
+            // 'click .export-ajuste': 'exportAjuste',
+            'click .export-ajuste': 'exportAjuste'
+        },
+
         /**
         * Constructor Method
         */
         initialize : function() {
-
-            // Attributes
-            this.$wraperForm = this.$('#render-ajuste-show');
 
             // Model exist
             if( this.model.id != undefined ) {
@@ -47,6 +48,15 @@ app || (app = {});
             });
         },
 
+        /*
+        * Redirect export pdf
+        */
+        exportAjuste:function(e){
+            e.preventDefault(); 
+
+            // Redirect to pdf
+            window.open( window.Misc.urlFull( Route.route('ajustes.exportar', { ajustes: this.model.get('id') })) );
+        },
         /**
         * fires libraries js
         */

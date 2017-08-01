@@ -44,7 +44,8 @@ app || (app = {});
         * Render View Element
         */
         render: function() {
-            this.$modalCreate.find('.content-modal').empty().html( this.templateRemision() );
+            var data = {sucursal: this.parameters.data.remrempu1_sucursal}
+            this.$modalCreate.find('.content-modal').empty().html( this.templateRemision( data ) );
             this.el = this.$('#browse-legalizacions-list');
 
             this.referenceView();
@@ -82,6 +83,7 @@ app || (app = {});
                 e.preventDefault();
 
                 var data = window.Misc.formToJson( e.target );
+                    data.sucursal = this.$('#remrepu2_serie').attr('data-sucursal');
                 this.remrepu.trigger( 'store', data );
             }
         },

@@ -562,6 +562,13 @@ class ModulosTableSeeder extends Seeder
             'nivel2' => 1,
             'nivel3' => 2
         ]);
+        Modulo::create([
+            'name' => 'agendatecnica',
+            'display_name' => 'Agenda tecnica',
+            'nivel1' => 6,
+            'nivel2' => 1,
+            'nivel3' => 3
+        ]);
 
         //Referencias
         Modulo::create([

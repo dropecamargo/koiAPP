@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\Models\Base\Tercero, App\Models\Base\Documentos, App\Models\Base\Sucursal, App\Models\Base\Regional, App\Models\Base\Contacto, App\Models\Inventario\Producto, App\Models\Tecnico\Orden, App\Models\Tecnico\Sitio, App\Models\Tecnico\Visita;
+use App\Models\Base\Tercero, App\Models\Base\Documentos, App\Models\Base\Sucursal, App\Models\Base\Regional, App\Models\Base\Contacto, App\Models\Inventario\Producto, App\Models\Tecnico\Orden, App\Models\Tecnico\Sitio, App\Models\Tecnico\Visita, App\Models\Tecnico\RemRepu, App\Models\Tecnico\RemRepu2;
 
 use DB, Log, Datatables, Auth, Mail;
 
@@ -329,13 +329,31 @@ class OrdenController extends Controller
     {
         if ($request->ajax()) {
             $orden = Orden::findOrFail($id);
+            if(!$orden instanceof Orden){
+                abort(404);
+            }
+
             DB::beginTransaction();
             try {
+                // Validar remrepu
+                $remrepu = RemRepu::where('remrepu1_orden', $orden->id)->where('remrepu1_tipo', 'R')->get();
+                if( count($remrepu) <= 0){
+                    DB::rollback();
+                    return response()->json(['success' => false, 'errors' => 'No existen legalizaciones, por favor verifique la información para poder cerrar la orden.']);
+                }
+                foreach ($remrepu as $father) {
+                    $remrepu2 = RemRepu2::where('remrepu2_remrepu1', $father->id)->first();
+                    if($remrepu2->remrepu2_saldo != 0){
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'La legalizacion no esta completa, por favor verifique la información para poder cerrar la orden.']);
+                    }
+                }
+
                 // Validar vistia minima
                 $visita = Visita::where('visita_orden', $orden->id)->get();
                 if(count($visita) == 0){
                     DB::rollback();
-                    return response()->json(['success' => false, 'errors' => 'No cumple los requisitos para cerrar la orden.']);
+                    return response()->json(['success' => false, 'errors' => 'Necesita ingresar una visita, por favor verifique la información para poder cerrar la orden.']);
                 }
 
                 // Orden
@@ -343,7 +361,7 @@ class OrdenController extends Controller
                 $orden->orden_usuario_cerro = Auth::user()->id;
                 $orden->orden_fh_cerro = date('Y-m-d H:m:s');
                 $orden->save();
-
+                
                 // Commit Transaction
                 DB::commit();
                 return response()->json(['success' => true, 'msg' => 'Orden cerrada con exito.']);

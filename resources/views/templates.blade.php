@@ -1071,7 +1071,6 @@
     <% if(lote_vencimiento != null) { %>
     	<td class="text-left"><%- lote_vencimiento %></td>
     <% } %> 
-    <td class="text-left"><%- lote_cantidad %></td>
     <td class="text-left"><%- lote_saldo %></td>
     <td>
     	<div class="form-group">
@@ -1115,11 +1114,11 @@
 </script>
 
 <script type="text/template" id="chooses-itemsrollos-tpl">
-    <td class="text-left"><%- rollo_lote %></td>
+    <!-- <td class="text-left"><%- rollo_lote %></td> -->
     <td class="text-left"><%- ubicacion_nombre %></td>
     <td class="text-left"><%- rollo_fecha %></td>
-    <td class="text-left"><%- rollo_metros %></td>
-    <td class="text-left"><%- rollo_saldo %></td>
+    <td class="text-left"><%- rollo_rollos %> X <%- rollo_metros %> (Mts)</td>
+    <td class="text-left"><%- rollo_saldo %> (Mts)</td>
     <td>
     	<div class="form-group">
 			<input id="item_<%- id %>" name="item_<%- id %>" class="form-control input-sm cantidad-salidau-koi-inventario" type="number" value="0" min="0" max="<%- rollo_saldo %>" step="0.1">

@@ -162,19 +162,16 @@
                         <div class="box-body">
                             <div class="row">
                                 <div class="box box-solid">
-                                    <div class="col-md-offset-1 col-md-10">
-                                        <div class="box-body table-responsive no-padding">
-
-                                            <table id="browse-orden-remision-list" class="table table-hover table-bordered" cellspacing="0">
-                                                <thead>
-                                                    <tr>
-                                                        <th width="10%">Número</th>
-                                                        <th width="50%">Tecnico</th>
-                                                        <th width="20%">Sucursal</th>
-                                                        <th width="5%">Info</th>
-                                                    </tr>
-                                                </thead>
-                                            </table>
+                                    <div class="row">
+                                        <div class="col-md-offset-1 col-md-10">
+                                            <div class="box box-solid">
+                                                <div class="box-header with-border">
+                                                    <h3 class="box-title">Informacion Adicional</h3>
+                                                </div>
+                                                <div class="box-body">
+                                                    <div class="box-group" id="browse-orden-remision-list"></div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

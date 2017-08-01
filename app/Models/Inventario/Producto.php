@@ -119,7 +119,7 @@ class Producto extends BaseModel
     {
         if($this->producto_maneja_serie){
             $query = Prodbode::query();
-            $query->select('sucursal_nombre', DB::raw('count(sucursal_nombre) as prodbode_cantidad'), 'prodbode_reservado');
+            $query->select('sucursal_nombre', DB::raw('COUNT(sucursal_nombre) as prodbode_cantidad'), 'prodbode_reservado');
             $query->join('producto', 'prodbode.prodbode_serie', '=', 'producto.id');
             $query->join('sucursal', 'prodbode.prodbode_sucursal', '=', 'sucursal.id');
 
@@ -130,18 +130,18 @@ class Producto extends BaseModel
                 $query->where('prodbode_serie', $this->id);
             }
             $query->whereRaw('prodbode_cantidad > 0');
-            $query->groupBy('sucursal_nombre');
         }else if($this->producto_metrado){
-            $query = $this->hasMany('App\Models\Inventario\Rollo', 'rollo_serie', 'id')
-                        ->select('rollo.*',DB::raw('COUNT(rollo.id) AS rollo_rollos'),'sucursal_nombre')
-                        ->join('sucursal','rollo.rollo_sucursal','=','sucursal.id')
-                        ->whereRaw('rollo_saldo > 0')
-                        ->groupBy('rollo_sucursal','rollo_saldo');
+            $query = $this->hasMany('App\Models\Inventario\Prodbode', 'prodbode_serie', 'id')
+                    ->select('prodbode.*','sucursal_nombre', DB::raw('SUM(prodbode_metros) AS prodbode_metros'), 'prodbode_reservado')
+                    ->join('sucursal','prodbode.prodbode_sucursal','=','sucursal.id')
+                    ->where('prodbode_metros', '>', 0);
         }else{
             $query = $this->hasMany('App\Models\Inventario\Prodbode', 'prodbode_serie', 'id')
-                        ->select('prodbode.*','sucursal_nombre')
-                        ->join('sucursal','prodbode.prodbode_sucursal','=','sucursal.id');
+                    ->select('prodbode.*','sucursal_nombre', DB::raw('SUM(prodbode_cantidad) AS prodbode_cantidad'),'prodbode_reservado')
+                    ->join('sucursal','prodbode.prodbode_sucursal','=','sucursal.id')
+                    ->where('prodbode_cantidad', '>', 0);
         }
+        $query->groupBy('sucursal_nombre');
         return $query->get();
     }
 }

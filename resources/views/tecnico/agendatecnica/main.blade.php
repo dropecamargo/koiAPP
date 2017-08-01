@@ -1,13 +1,15 @@
 @extends('layout.layout')
-@section('title') Soporte tecnico @stop
+
+@section('title') Agenda tecnica @stop
+
 @section('content')
    	<section class="content-header">
         <h1>
-            Soporte tecnico <small>Administración de soporte tecnico</small>
+            Agenda tecnica <small>Administración de agenda tecnica</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> {{ trans('app.home') }}</a></li>
-          	<li>Soporte tecnico</li>
+          	<li>Agenda tecnica</li>
         </ol>
     </section>
 

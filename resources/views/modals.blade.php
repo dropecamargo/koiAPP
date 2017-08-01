@@ -480,12 +480,11 @@
 			<!-- table table-bordered table-striped -->
 			<div class="box-body table-responsive no-padding">
 				<table id="browse-series-lotes-list" class="table table-hover table-bordered" cellspacing="0">
-				  	<th>Lote</th>
-				  	<th>Ubicación</th>
-                	<th>Fecha</th>
-                	<th>Cantidad</th>
-                	<th>Saldo</th>
-                	<th class="text-center"> <label id="cantidad-salidau" class="label bg-green"><%- data.ajuste2_cantidad_salida %></label></th>
+				  	<th width="30%">Lote</th>
+				  	<th width="30%">Ubicación</th>
+                	<th width="15%">Fecha</th>
+                	<th width="10%">Saldo</th>
+                	<th width="15%" class="text-center"> <label id="cantidad-salidau" class="label bg-green"><%- data.ajuste2_cantidad_salida %></label></th>
 			    </table>
 			</div>
 		</div>
@@ -533,17 +532,17 @@
 			<div class="box-body table-responsive no-padding">
 				<table id="browse-chooseitemtollo-list" class="table table-hover table-bordered" cellspacing="0">
 		            <tr>
-		                <th>Lote</th>
+		                <!-- <th>Lote</th> -->
 		                <th>Ubicación</th>
 		                <th>Fecha De Ingreso</th>
-		                <th>Metros (m)</th>
-		                <th>Saldo (m)</th>
+		                <th>Rollos</th>
+		                <th>Metros</th>
 		                <th></th>
 		            </tr>
 		            <tfoot>
 		            	<tr>
-		            		<th colspan ="4"></th>
-		            		<th class="text-right">Total(m): </th>
+		            		<th colspan ="3"></th>
+		            		<th class="text-right">Total(Mts): </th>
 		            		<th id="metro_residuo" class="text-right"> <label class="label bg-green"> <%- data.ajuste2_cantidad_salida %></label></th>
 		            	</tr>
 	            	</tfoot>
@@ -593,15 +592,14 @@
 		            <tr>
 		                <th width="20%">Lote</th>
 		                <th width="20%">Ubicación</th>
-		                <th>F.Ingreso</th>
-		                <th>F. Vencimiento</th>
-		                <th width="10%">Cant</th>
+		                <th>Ingreso</th>
+		                <th>Vencimiento</th>
 		                <th width="10%">Saldo</th>
-		                <th width="10%"></th>
+		                <th width="20%"></th>
 		            </tr>
 		            <tfoot>
 		            	<tr>
-		            		<th colspan="6" class="text-right">Total: </th>
+		            		<th colspan="5	" class="text-right">Total: </th>
 		            		<th id="" class="text-center">0</th>
 		            	</tr>
 	            	</tfoot>

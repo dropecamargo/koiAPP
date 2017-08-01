@@ -10,8 +10,9 @@ app || (app = {});
 (function ($, window, document, undefined) {
 
     app.ProdbodeItemView = Backbone.View.extend({
-        template: _.template( ($('#add-seriesprodbode-tpl').html() || '') ),
 
+        tagName: 'tr',
+        template: _.template( ($('#add-seriesprodbode-tpl').html() || '') ),
         /**
         * Constructor Method
         */

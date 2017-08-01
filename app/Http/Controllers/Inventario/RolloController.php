@@ -30,10 +30,10 @@ class RolloController extends Controller
             }
             $rollos = [];
             if($request->has('producto') && $request->has('sucursal')) {
-                $query = Rollo::select('rollo.*', DB::raw('SUM(rollo_saldo) AS rollo_saldo') , DB::raw('SUM(rollo_metros) AS rollo_metros'), 'ubicacion_nombre');
+                $query = Rollo::select('rollo.*', DB::raw('SUM(rollo_saldo) AS rollo_saldo') , DB::raw('COUNT(rollo.id) AS rollo_rollos'), 'ubicacion_nombre');
                 $query->leftJoin('ubicacion', 'rollo_ubicacion', '=', 'ubicacion.id');
-                $query->where('rollo_serie', $producto->id);
-                $query->where('rollo_sucursal', $sucursal->id);
+                $query->where( 'rollo_serie', $producto->id );
+                $query->where( 'rollo_sucursal', $sucursal->id );
                 $query->whereRaw('rollo_saldo > 0');
                 $query->orderby('rollo_fecha', 'asc');
                 $query->groupBy('rollo_saldo','rollo_ubicacion');

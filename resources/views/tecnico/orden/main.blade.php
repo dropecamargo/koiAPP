@@ -191,7 +191,7 @@
                                                                     <i class="fa fa-barcode"></i>
                                                                 </button>
                                                             </span>
-                                                            <input id="orden_serie" placeholder="Serie" class="form-control producto-koi-component" name="orden_serie" type="text" maxlength="15" data-wrapper="producto_create" data-tercero="true" data-name="orden_nombre_producto" value="<%- producto_serie %>">
+                                                            <input id="orden_serie" placeholder="Serie" class="form-control producto-koi-component" name="orden_serie" type="text" maxlength="15" data-wrapper="producto_create" data-tercero="true" data-orden="true" data-name="orden_nombre_producto" value="<%- producto_serie %>">
                                                         </div>
                                                     </div>
                                                     <div class="<%- edit ? 'col-md-5' : 'col-md-8' %> col-xs-12">

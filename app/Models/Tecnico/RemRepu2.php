@@ -74,7 +74,7 @@ class RemRepu2 extends Model
         $remrepu2->save();
 
 
-        if ($devuelto == 1) {
+        if ( $devuelto > 0 ) {
             // Recuperar sucursal => destino
             $destino = Sucursal::where('sucursal_nombre', '091 PROVISIONAL')->first();
             if(!$destino instanceof Sucursal) {
@@ -90,41 +90,51 @@ class RemRepu2 extends Model
             // Validar Documento
             $documento = Documentos::where('documentos_codigo', RemRepu::$default_document)->first();
             if(!$documento instanceof Documentos) {
-                return 'No es posible recuperar documentos,por favor verifique la información ó por favor consulte al administrador.';
+                return 'No es posible recuperar documentos, por favor verifique la información ó por favor consulte al administrador.';
             }
+
             // Detalle traslado Prodbode origen y destino
-            $prodbodeOrigen = Prodbode::actualizar($producto, $origen->id, 'S', 1, "");
+            $prodbodeOrigen = Prodbode::actualizar($producto, $origen->id, 'S', $devuelto, null);
             if(!$prodbodeOrigen instanceof Prodbode) {
                 return $prodbodeOrigen;
             }
 
-            $prodbodeDestino = Prodbode::actualizar($producto, $destino->id, 'E', $remrepu2->remrepu2_devuelto, $destino->sucursal_defecto);
+            $prodbodeDestino = Prodbode::actualizar($producto, $destino->id, 'E', $devuelto, $destino->sucursal_defecto);
             if(!$prodbodeDestino instanceof Prodbode) {
                 return $prodbodeDestino;
             }
 
-            if ($producto->producto_maneja_serie == true) {
+            $lote = Lote::where('lote_serie', $producto->id)->where('lote_sucursal', $origen->id)->first();
+            if(!$lote instanceof Lote){
+                return 'No es posible recuperar el lote, por favor verifique la información ó por favor consulte al administrador.';
+            }
 
-                $lote = Lote::actualizar($producto, $origen->id, '', 'S', 1, "" ,date('Y-m-d'), null);
-                if (!$lote instanceof Lote) {
-                    return $lote;
-                }
-                // Inventario
-                $inventario = Inventario::movimiento($producto, $origen->id, $lote->lote_ubicacion,'REMR', $item->id, 0, 1, 0, 0,0, 0,$lote->id);
-                if (!$inventario instanceof Inventario) {
-                    return $inventario;
-                }
-                /**
-                *Entrada Inventario a sucursal destino
-                */
-                $lote = Lote::actualizar($producto, $destino->id, '', 'E', 1, $destino->sucursal_defecto, date('Y-m-d'), null);
-                if (!$lote instanceof Lote) {
-                    return 'No es posible recuperar lote, por favor verifique la información ó por favor consulte al administrador';
-                }
-                // Inventario
-                $inventario = Inventario::movimiento($producto, $destino->id, $destino->sucursal_defecto,'REMR', $item->id, 1, 0, 0, 0,0, 0, $lote->id);
-                if (!$inventario instanceof Inventario) {
-                    return $inventario;
+            if ( $producto->producto_maneja_serie == false && $producto->producto_vence == false && $producto->producto_metrado == false && $producto->producto_unidad == true ) {
+                if ($devuelto > 0) {
+                    // Individualiza en lote
+                    $result = Lote::actualizar($producto, $origen->id, $lote->id, 'S', $devuelto, null, null, null);
+                    if (!$result instanceof Lote) {
+                        return $result;
+                    }
+
+                    // Inventario
+                    $inventario = Inventario::movimiento($producto, $origen->id, $lote->lote_ubicacion, 'REMR', 0, 0, $devuelto, 0, 0, 0, 0, $lote->id, 0);
+                    if (!$inventario instanceof Inventario) {
+                        return $inventario;
+                    }
+
+                    /**
+                    * Entrada sucursal destino
+                    */
+                    $result = Lote::actualizar($producto, $destino->id, $lote->lote_numero, 'E', $devuelto, $destino->sucursal_defecto, date('Y-m-d'), $lote->lote_vencimiento);
+                    if (!$result instanceof Lote) {
+                        return $result;
+                    }
+                    // Inventario
+                    $inventario = Inventario::movimiento($producto, $destino->id, $destino->sucursal_defecto, 'REMR', 0, $devuelto, 0, 0, 0, 0, 0, $lote->id, 0);
+                    if (!$inventario instanceof Inventario) {
+                        return $inventario;
+                    }
                 }
             }
         }

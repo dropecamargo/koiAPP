@@ -48,7 +48,9 @@ app || (app = {});
 			this.$inputCosto = this.$("#"+this.$inputContent.attr("data-costo"));
 			this.$inputPrecio1 = this.$("#"+this.$inputContent.attr("data-price"));			
 			this.$inputSucursal = this.$("#"+this.$inputContent.attr("data-office"));
-			this.$legalizacion = this.$("#"+this.$inputContent.attr("data-legalizacion"));
+			this.$remision = this.$inputContent.attr("data-remision");
+			this.$orden = this.$inputContent.attr("data-orden");
+			this.$sucursal = this.$inputContent.attr("data-sucursal");
 
 			// Filters
 			this.$equalsRef = this.$inputContent.attr("data-ref");
@@ -66,10 +68,13 @@ app || (app = {});
                     url: window.Misc.urlFull( Route.route('productos.index') ),
                     data: function( data ) {
                         data.producto_serie = _this.$searchSerie.val();
-                        data.producto_nombre = _this.$searchNombre.val();                     
-                        data.producto_referencia = _this.$searchReferencia.val();                                            
-                        data.equalsRef = _this.$equalsRef;                                            
-                        data.officeSucursal = _this.$inputSucursal.val();                                            
+                        data.producto_nombre = _this.$searchNombre.val();
+                        data.producto_referencia = _this.$searchReferencia.val();
+                        data.equalsRef = _this.$equalsRef;
+                        data.remision = _this.$remision;
+                        data.orden = _this.$orden;
+                        data.sucursal = _this.$sucursal;
+                        data.officeSucursal = _this.$inputSucursal.val();
                     }
                 },
                 columns: [

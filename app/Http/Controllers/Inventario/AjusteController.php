@@ -11,7 +11,7 @@ use App\Models\Inventario\Ajuste1,App\Models\Inventario\TipoAjuste,App\Models\In
 
 use App\Models\Base\Documentos, App\Models\Base\Sucursal;
 
-use DB,Log,Datatables,Auth;
+use DB, Log, Datatables, Auth, App, View;
 
 class AjusteController extends Controller
 {
@@ -27,7 +27,30 @@ class AjusteController extends Controller
             $query->select('ajuste1.*', 'sucursal_nombre', 'tipoajuste_nombre');
             $query->join('tipoajuste', 'ajuste1.ajuste1_tipoajuste','=','tipoajuste.id');
             $query->join('sucursal', 'ajuste1.ajuste1_sucursal','=','sucursal.id');
-            return Datatables::of($query)->make(true);
+
+            // Persistent data filter
+            if($request->has('persistent') && $request->persistent) {
+                session(['searchajuste_ajuste_tipo' => $request->has('tipo') ? $request->tipo : '']);
+                session(['searchajuste_ajuste_sucursal' => $request->has('sucursal') ? $request->sucursal : '']);
+                session(['searchajuste_ajuste_fecha' => $request->has('fecha') ? $request->fecha : '']);
+            }
+
+            return Datatables::of($query)
+                ->filter(function($query) use($request) {
+
+                    // // Sucursal
+                    if ($request->has('sucursal')) {
+                        $query->where('ajuste1_sucursal', $request->sucursal);
+                    }
+                    // // Tipo de ajuste
+                    if ($request->has('tipo')) {
+                        $query->where('ajuste1_tipoajuste', $request->tipo);    
+                    }
+                    // Fecha
+                    if ($request->has('fecha')) {
+                        $query->where('ajuste1_fecha', $request->fecha);    
+                    }
+                })->make(true);
         }
 
         return view('inventario.ajustes.index');
@@ -211,47 +234,30 @@ class AjusteController extends Controller
                             }
                         }else if($tipoAjuste->tipoajuste_tipo == 'S'){
 
-                            if ($producto->producto_maneja_serie != true) {
+                            //Detalle ajuste
+                            $ajusteDetalle = new Ajuste2;
+                            $ajusteDetalle->fill($item);
+                            $ajusteDetalle->ajuste2_costo = $producto->producto_costo;
+                            $ajusteDetalle->ajuste2_costo_promedio = $producto->producto_costo;
+                            $ajusteDetalle->ajuste2_ajuste1 = $ajuste->id;
+                            $ajusteDetalle->ajuste2_producto = $producto->id;
+                            $ajusteDetalle->save();
 
-                                //Detalle ajuste
-                                $ajusteDetalle = new Ajuste2;
-                                $ajusteDetalle->fill($item);
-                                $ajusteDetalle->ajuste2_costo = $producto->producto_costo;
-                                $ajusteDetalle->ajuste2_costo_promedio = $producto->producto_costo;
-                                $ajusteDetalle->ajuste2_ajuste1 = $ajuste->id;
-                                $ajusteDetalle->ajuste2_producto = $producto->id;
-                                $ajusteDetalle->save();
-
-                                // Prodbode
-                                $result = Prodbode::actualizar($producto, $sucursal->id, 'S', $ajusteDetalle->ajuste2_cantidad_salida, $sucursal->sucursal_defecto);
-                                if(!$result instanceof Prodbode) {
-                                    DB::rollback();
-                                    return response()->json(['success' => false, 'errors'=> $result]);
-                                }
-                            }
                             if ($producto->producto_maneja_serie == true) {
-                                // Prodbode
-                                $result = Prodbode::actualizar($producto, $sucursal->id, 'S', 1, $sucursal->sucursal_defecto);
-                                if(!$result instanceof Prodbode) {
-                                    DB::rollback();
-                                    return response()->json(['success' => false, 'errors'=> $result]);
-                                }
-                                // Detalle ajuste
-                                $ajusteDetalle = new Ajuste2;
-                                $ajusteDetalle->fill($item);
-                                $ajusteDetalle->ajuste2_costo = $producto->producto_costo;
-                                $ajusteDetalle->ajuste2_costo_promedio = $producto->producto_costo;
-                                $ajusteDetalle->ajuste2_ajuste1 = $ajuste->id;
-                                $ajusteDetalle->ajuste2_cantidad_salida = 1;
-                                $ajusteDetalle->ajuste2_producto = $producto->id;
-                                $ajusteDetalle->save();
-                                $lote = Lote::actualizar($producto, $sucursal->id, "", 'S', 1, $sucursal->sucursal_defecto, $ajuste->ajuste1_fecha, null);
+
+                                $lote = Lote::actualizar($producto, $sucursal->id, "", 'S', 1, "", $ajuste->ajuste1_fecha, null);
                                 if (!$lote instanceof Lote) {
                                     DB::rollback();
                                     return response()->json(['success' => false, 'errors' => 'No es posible recuperar lote, por favor verifique la información ó por favor consulte al administrador']);
                                 }
+                                // Prodbode
+                                $result = Prodbode::actualizar($producto, $sucursal->id, 'S', 1, $lote->lote_ubicacion);
+                                if(!$result instanceof Prodbode) {
+                                    DB::rollback();
+                                    return response()->json(['success' => false, 'errors'=> $result]);
+                                }
                                 // Inventario
-                                $inventario = Inventario::movimiento($producto, $sucursal->id, $sucursal->sucursal_defecto, 'AJUS', $ajuste->id, 0, 1, 0, 0,$ajusteDetalle->ajuste2_costo, $ajusteDetalle->ajuste2_costo,$lote->id);
+                                $inventario = Inventario::movimiento($producto, $sucursal->id, $result->prodbode_ubicacion, 'AJUS', $ajuste->id, 0, 1, 0, 0,$ajusteDetalle->ajuste2_costo, $ajusteDetalle->ajuste2_costo,$lote->id);
                                 if (!$inventario instanceof Inventario) {
                                     DB::rollback();
                                     return response()->json(['success' => false,'errors '=> $inventario]);
@@ -263,13 +269,20 @@ class AjusteController extends Controller
                                     if ($valueItem > 0) {
                                          list($text, $rollo) = explode("_", $key);
                                         // Individualiza en rollo --- $rollo hace las veces de lote 
-                                        $rollo = Rollo::actualizar($producto, $sucursal->id, 'S', $rollo, $ajuste->ajuste1_fecha, $valueItem, $sucursal->sucursal_defecto);
+                                        $rollo = Rollo::actualizar($producto, $sucursal->id, 'S', $rollo, $ajuste->ajuste1_fecha, $valueItem,"");
                                         if (!$rollo instanceof Rollo) {
                                             DB::rollback();
                                             return response()->json(['success' => false, 'errors' => $rollo]);
                                         }
+
+                                        // Prodbode
+                                        $result = Prodbode::actualizar($producto, $sucursal->id, 'S', $valueItem, $rollo->rollo_ubicacion);
+                                        if(!$result instanceof Prodbode) {
+                                            DB::rollback();
+                                            return response()->json(['success' => false, 'errors'=> $result]);
+                                        }
                                         // Inventario
-                                        $inventario = Inventario::movimiento($producto, $sucursal->id, $sucursal->sucursal_defecto,'AJUS', $ajuste->id, 0, 0, 0, $valueItem, $ajusteDetalle->ajuste2_costo, $ajusteDetalle->ajuste2_costo,0,$rollo->id);
+                                        $inventario = Inventario::movimiento($producto, $sucursal->id, $result->prodbode_ubicacion,'AJUS', $ajuste->id, 0, 0, 0, $valueItem, $ajusteDetalle->ajuste2_costo, $ajusteDetalle->ajuste2_costo,0,$rollo->id);
                                         if (!$inventario instanceof Inventario) {
                                             DB::rollback();
                                             return response()->json(['success' => false,'errors '=> $inventario]);
@@ -288,8 +301,14 @@ class AjusteController extends Controller
                                             DB::rollback();
                                             return response()->json(['success' => false, 'errors' => $lote]);
                                         }
+                                        // Prodbode
+                                        $result = Prodbode::actualizar($producto, $sucursal->id, 'S', $value, $lote->lote_ubicacion);
+                                        if(!$result instanceof Prodbode) {
+                                            DB::rollback();
+                                            return response()->json(['success' => false, 'errors'=> $result]);
+                                        }
                                         // Inventario
-                                        $inventario = Inventario::movimiento($producto, $sucursal->id, $sucursal->sucursal_defecto,'AJUS', $ajuste->id, 0, $value, 0, 0, $ajusteDetalle->ajuste2_costo, $ajusteDetalle->ajuste2_costo,$lote->id);
+                                        $inventario = Inventario::movimiento($producto, $sucursal->id, $result->prodbode_ubicacion,'AJUS', $ajuste->id, 0, $value, 0, 0, $ajusteDetalle->ajuste2_costo, $ajusteDetalle->ajuste2_costo,$lote->id);
                                         if (!$inventario instanceof Inventario) {
                                             DB::rollback();
                                             return response()->json(['success' => false,'errors '=> $inventario]);
@@ -368,6 +387,29 @@ class AjusteController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * Export pdf the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function exportar($id)
+    {
+        $ajuste = Ajuste1::getAjuste($id);
+        if(!$ajuste instanceof Ajuste1) {
+            abort(404);
+        }
+
+        $detalle = [];
+        // $detalle = Factura2::getFactura2($factura->id);
+        $title = sprintf('Ajuste %s', $ajuste->ajuste1_numero);
+
+        // // Export pdf
+        $pdf = App::make('dompdf.wrapper');
+        $pdf->loadHTML(View::make('inventario.ajustes.exportar.export',  compact('ajuste', 'detalle', 'title'))->render());
+        return $pdf->stream(sprintf('%s_%s_%s_%s.pdf', 'ajuste', $ajuste->id, date('Y_m_d'), date('H_m_s')));
     }
 
 }

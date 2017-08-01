@@ -304,7 +304,7 @@ app || (app = {});
             'sitios/create(/)': 'getSitiosCreate',
             'sitios/:sitios/edit(/)': 'getSitiosEdit',
 
-            'soportetecnico(/)': 'getSoporteTecnicoMain',
+            'agendatecnica(/)': 'getAgendaTecnicaMain',
         },
 
         /**
@@ -2632,13 +2632,13 @@ app || (app = {});
             this.sitioModel.fetch();
         },
 
-        getSoporteTecnicoMain: function () {
-            if ( this.mainSoporteTecnicoView instanceof Backbone.View ){
-                this.mainSoporteTecnicoView.stopListening();
-                this.mainSoporteTecnicoView.undelegateEvents();
+        getAgendaTecnicaMain: function () {
+            if ( this.mainAgendaTecnicaView instanceof Backbone.View ){
+                this.mainAgendaTecnicaView.stopListening();
+                this.mainAgendaTecnicaView.undelegateEvents();
             }
 
-            this.mainSoporteTecnicoView = new app.MainSoporteTecnicoView( );
+            this.mainAgendaTecnicaView = new app.MainAgendaTecnicaView( );
         },
     }));
 })(jQuery, this, this.document);

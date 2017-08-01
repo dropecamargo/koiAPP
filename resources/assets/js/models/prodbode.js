@@ -19,15 +19,10 @@ app || (app = {});
             'prodbode_serie': '',
             'prodbode_sucursal': '',
             'prodbode_cantidad': '',
-            'prodbode_cantidadA': '',
-            'prodbode_cantidadB': '',
-            'prodbode_cantidadC': '',
             'prodbode_reservado': '',
-            'prodbode_ubicacion1': '',
-            'prodbode_ubicacion2': '',
-            'prodbode_ubicacion3': '',
             'prodbode_maximo': '',
-            'prodbode_minimo': ''
+            'prodbode_minimo': '',
+            'prodbode_metros': '',
         }
     });
 })(this, this.document);

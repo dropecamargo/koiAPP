@@ -145,6 +145,7 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::group(['prefix' => 'ajustes'], function()
 	{
 		Route::resource('detalle', 'Inventario\DetalleAjusteController');
+		Route::get('exportar/{ajustes}', ['as' => 'ajustes.exportar', 'uses' => 'Inventario\AjusteController@exportar']);
 	});
 	Route::group(['prefix' => 'traslados'], function()
 	{
@@ -267,6 +268,6 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::resource('prioridades', 'Tecnico\PrioridadController', ['except' => ['destroy']]);
 	Route::resource('conceptostecnico', 'Tecnico\ConceptoTecController', ['except' => ['destroy']]);
 	Route::resource('gestionestecnico', 'Tecnico\GestionTecnicoController', ['except' => ['destroy']]);
-	Route::resource('soportetecnico', 'Tecnico\SoporteTecnicoController', ['except' => ['destroy']]);
+	Route::resource('agendatecnica', 'Tecnico\AgendaTecnicaController', ['except' => ['destroy']]);
 	Route::resource('sitios', 'Tecnico\SitioController', ['except' => ['destroy']]);
 });

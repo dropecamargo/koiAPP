@@ -20,7 +20,12 @@ app || (app = {});
         * Constructor Method
         */
         initialize : function(){
-        }
+        },
+
+        comparator: function( model ){
+            return model.get('remrepu1_numero');
+        },
+
    });
 })(this, this.document);
 

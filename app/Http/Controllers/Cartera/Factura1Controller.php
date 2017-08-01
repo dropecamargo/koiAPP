@@ -143,46 +143,32 @@ class Factura1Controller extends Controller
                             DB::rollback();
                             return response()->json(['success'=>false , 'errors'=> 'No es posible recuperar subcategoria, por favor verifique información o consulte al administrador']);
                         }
-                        if ($producto->producto_maneja_serie != true) {
 
-                            //Detalle factura
-                            $factura2 = new Factura2;
-                            $factura2->fill($item);
-                            $factura2->factura2_factura1 = $factura1->id;
-                            $factura2->factura2_producto = $producto->id;
-                            $factura2->factura2_subcategoria = $subcategoria->id;
-                            $factura2->factura2_margen = $subcategoria->subcategoria_margen_nivel1;
-                            $factura2->save();
-                            // Prodbode
-                            $result = Prodbode::actualizar($producto, $sucursal->id, 'S', $factura2->factura2_cantidad);
-                            if($result != 'OK') {
-                                DB::rollback();
-                                return response()->json(['success' => false, 'errors'=> $result]);
-                            }
-                        }
+                        //Detalle factura
+                        $factura2 = new Factura2;
+                        $factura2->fill($item);
+                        $factura2->factura2_factura1 = $factura1->id;
+                        $factura2->factura2_producto = $producto->id;
+                        $factura2->factura2_subcategoria = $subcategoria->id;
+                        $factura2->factura2_margen = $subcategoria->subcategoria_margen_nivel1;
+                        $factura2->save();
+
                         if ($producto->producto_maneja_serie == true) {
 
                             // Prodbode
-                            $result = Prodbode::actualizar($producto, $sucursal->id, 'S', 1);
-                            if($result != 'OK') {
+                            $result = Prodbode::actualizar($producto, $sucursal->id, 'S', 1, $sucursal->sucursal_defecto);
+                            if(!$result instanceof Prodbode) {
                                 DB::rollback();
                                 return response()->json(['success' => false, 'errors'=> $result]);
                             }
-                            // Detalle factura
-                            $factura2 = new Factura2;
-                            $factura2->fill($item);
-                            $factura2->factura2_factura1 = $factura1->id;
-                            $factura2->factura2_producto = $producto->id;
-                            $factura2->factura2_subcategoria = $subcategoria->id;
-                            $factura2->factura2_margen = $subcategoria->subcategoria_margen_nivel1;
-                            $factura2->save();
-                            $lote = Lote::actualizar($producto, $sucursal->id, "", 'S', 1, $factura1->factura1_fecha, null);
+                            // Lote
+                            $lote = Lote::actualizar($producto, $sucursal->id, "", 'S', 1, $result->prodbode_ubicacion, $factura1->factura1_fecha, null);
                             if (!$lote instanceof Lote) {
                                 DB::rollback();
                                 return response()->json(['success' => false, 'errors' => 'No es posible recuperar lote, por favor verifique la información ó por favor consulte al administrador']);
                             }
                             // Inventario
-                            $inventario = Inventario::movimiento($producto, $sucursal->id, 'FACT', $factura1->id, 0, 1, 0, 0,$factura2->factura2_costo, $factura2->factura2_costo,$lote->id);
+                            $inventario = Inventario::movimiento($producto, $sucursal->id, $lote->lote_ubicacion,'FACT', $factura1->id, 0, 1, 0, 0,$factura2->factura2_costo, $factura2->factura2_costo,$lote->id);
                             if (!$inventario instanceof Inventario) {
                                 DB::rollback();
                                 return response()->json(['success' => false,'errors '=> $inventario]);
@@ -195,13 +181,19 @@ class Factura1Controller extends Controller
                                     
                                      list($text, $rollo) = explode("_", $key);
                                     // Individualiza en rollo --- $rollo hace las veces de lote 
-                                    $rollo = Rollo::actualizar($producto, $sucursal->id, 'S', $rollo, $factura1->factura1_fecha, $valueItem);
+                                    $rollo = Rollo::actualizar($producto, $sucursal->id, 'S', $rollo, $factura1->factura1_fecha, $valueItem, $sucursal->sucursal_defecto);
                                     if (!$rollo instanceof Rollo) {
                                         DB::rollback();
                                         return response()->json(['success' => false, 'errors' => $rollo]);
                                     }
+                                    // Prodbode
+                                    $result = Prodbode::actualizar($producto, $sucursal->id, 'S', $valueItem, $rollo->rollo_ubicacion);
+                                        if(!$result instanceof Prodbode) {
+                                        DB::rollback();
+                                        return response()->json(['success' => false, 'errors'=> $result]);
+                                    }
                                     // Inventario
-                                    $inventario = Inventario::movimiento($producto, $sucursal->id, 'FACT', $factura1->id, 0, 0, 0, $valueItem, $factura2->factura2_costo, $factura2->factura2_costo,0,$rollo->id);
+                                    $inventario = Inventario::movimiento($producto, $sucursal->id, $result->prodbode_ubicacion,'FACT', $factura1->id, 0, 0, 0, $valueItem, $factura2->factura2_costo, $factura2->factura2_costo,0,$rollo->id);
                                     if (!$inventario instanceof Inventario) {
                                         DB::rollback();
                                         return response()->json(['success' => false,'errors '=> $inventario]);
@@ -215,13 +207,19 @@ class Factura1Controller extends Controller
 
                                 if ($value > 0) {
                                     // Individualiza en lote
-                                    $lote = Lote::actualizar($producto, $sucursal->id, $lote, 'S', $value);
+                                    $lote = Lote::actualizar($producto, $sucursal->id, $lote, 'S', $value, $sucursal->sucursal_defecto);
                                     if (!$lote instanceof Lote) {
                                         DB::rollback();
                                         return response()->json(['success' => false, 'errors' => $lote]);
                                     }
+                                    // Prodbode
+                                    $result = Prodbode::actualizar($producto, $sucursal->id, 'S', $value, $lote->lote_ubicacion);
+                                    if(!$result instanceof Prodbode) {
+                                        DB::rollback();
+                                        return response()->json(['success' => false, 'errors'=> $result]);
+                                    }
                                     // Inventario
-                                    $inventario = Inventario::movimiento($producto, $sucursal->id, 'FACT', $factura1->id, 0, $value, 0, 0, $factura2->factura2_costo, $factura2->factura2_costo,$lote->id);
+                                    $inventario = Inventario::movimiento($producto, $sucursal->id, $result->prodbode_ubicacion,'FACT', $factura1->id, 0, $value, 0, 0, $factura2->factura2_costo, $factura2->factura2_costo,$lote->id);
                                     if (!$inventario instanceof Inventario) {
                                         DB::rollback();
                                         return response()->json(['success' => false,'errors '=> $inventario]);

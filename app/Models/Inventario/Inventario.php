@@ -17,7 +17,7 @@ class Inventario extends Model
 
     public $timestamps = false;
 
-    public static function movimiento(Producto $producto, $sucursal, $ubicacion,$documento, $documentoNumero, $uentrada = 0, $usalida = 0, $emetros = 0, $smetros = 0, $costo = 0, $costopromedio = 0,$lote = 0, $rollo = 0){
+    public static function movimiento(Producto $producto, $sucursal, $ubicacion, $documento, $documentoNumero, $uentrada = 0, $usalida = 0, $emetros = 0, $smetros = 0, $costo = 0, $costopromedio = 0,$lote = 0, $rollo = 0){
     	 // Validar producto
         $sucursal = Sucursal::find($sucursal);
         if(!$sucursal instanceof Sucursal) {
