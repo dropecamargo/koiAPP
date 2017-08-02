@@ -11,7 +11,7 @@ class Lote extends Model
     */
     protected $table = 'lote';
     public $timestamps = false;
-    public static function actualizar(Producto $producto, $sucursal, $loteNumero, $tipo, $cantidad, $ubicacion ,$fecha = null, $fechaVencimiento = null)
+    public static function actualizar(Producto $producto, $sucursal, $loteNumero, $tipo, $cantidad, $ubicacion, $fecha = null, $fechaVencimiento = null)
     {
         // Validar sucursal
         $sucursal = Sucursal::find($sucursal);

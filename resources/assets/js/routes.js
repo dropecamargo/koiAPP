@@ -304,7 +304,16 @@ app || (app = {});
             'sitios/create(/)': 'getSitiosCreate',
             'sitios/:sitios/edit(/)': 'getSitiosEdit',
 
-            'soportetecnico(/)': 'getSoporteTecnicoMain',
+            'agendatecnica(/)': 'getAgendaTecnicaMain',
+            
+            /*
+            |----------------------
+            | Tesoreria
+            |----------------------
+            */
+            'retefuentes(/)': 'getReteFuentesMain',
+            'retefuentes/create(/)': 'getReteFuenteCreate',
+            'retefuentes/:retefuentes/edit(/)': 'getReteFuenteEdit',
         },
 
         /**
@@ -2632,13 +2641,48 @@ app || (app = {});
             this.sitioModel.fetch();
         },
 
-        getSoporteTecnicoMain: function () {
-            if ( this.mainSoporteTecnicoView instanceof Backbone.View ){
-                this.mainSoporteTecnicoView.stopListening();
-                this.mainSoporteTecnicoView.undelegateEvents();
+        getAgendaTecnicaMain: function () {
+            if ( this.mainAgendaTecnicaView instanceof Backbone.View ){
+                this.mainAgendaTecnicaView.stopListening();
+                this.mainAgendaTecnicaView.undelegateEvents();
             }
 
-            this.mainSoporteTecnicoView = new app.MainSoporteTecnicoView( );
+            this.mainAgendaTecnicaView = new app.MainAgendaTecnicaView( );
         },
+
+        getReteFuentesMain: function () {
+
+            if ( this.mainRetefuentesView instanceof Backbone.View ){
+                this.mainRetefuentesView.stopListening();
+                this.mainRetefuentesView.undelegateEvents();
+            }
+
+            this.mainRetefuentesView = new app.MainReteFuenteView( );
+        },
+
+        getReteFuenteCreate: function () {
+            this.reteFuenteModel = new app.ReteFuenteModel();
+
+            if ( this.createReteFuenteView instanceof Backbone.View ){
+                this.createReteFuenteView.stopListening();
+                this.createReteFuenteView.undelegateEvents();
+            }
+
+            this.createReteFuenteView = new app.CreateReteFuenteView({ model: this.reteFuenteModel });
+            this.createReteFuenteView.render();
+        },
+
+        // getConceptoTecEdit: function (conceptotecnico) {
+        //     this.reteFuenteModel = new app.ConceptoTecModel();
+        //     this.reteFuenteModel.set({'id': conceptotecnico}, {'silent':true});
+
+        //     if ( this.createReteFuenteView instanceof Backbone.View ){
+        //         this.createReteFuenteView.stopListening();
+        //         this.createReteFuenteView.undelegateEvents();
+        //     }
+
+        //     this.createReteFuenteView = new app.CreateReteFuenteView({ model: this.reteFuenteModel });
+        //     this.reteFuenteModel.fetch();
+        // },
     }));
 })(jQuery, this, this.document);

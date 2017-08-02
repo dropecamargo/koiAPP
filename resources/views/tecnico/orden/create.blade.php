@@ -38,7 +38,7 @@
 		                        <i class="fa fa-barcode"></i>
 		                    </button>
 		                </span>
-		                <input id="remrepu2_serie" placeholder="Referencia" class="form-control producto-koi-component" name="remrepu2_serie" type="text" maxlength="15" data-wrapper="producto_create" data-name="remrepu2_nombre" required>
+		                <input id="remrepu2_serie" placeholder="Referencia" class="form-control producto-koi-component" name="remrepu2_serie" type="text" data-sucursal="<%- sucursal %>" maxlength="15" data-remision="true" data-wrapper="producto_create" data-name="remrepu2_nombre" required>
 		            </div>
 		        </div>
 		        <div class="col-md-6 col-xs-10"><br>

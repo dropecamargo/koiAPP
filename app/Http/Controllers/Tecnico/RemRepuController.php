@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\Models\Tecnico\RemRepu, App\Models\Tecnico\RemRepu2, App\Models\Tecnico\Orden, App\Models\Base\Tercero, App\Models\Inventario\Producto, App\Models\Base\Sucursal, App\Models\Base\Documentos;
+use App\Models\Tecnico\RemRepu, App\Models\Tecnico\RemRepu2, App\Models\Tecnico\Orden, App\Models\Base\Tercero, App\Models\Inventario\Producto, App\Models\Base\Sucursal, App\Models\Base\Documentos, App\Models\Inventario\Prodbode;
 
 use Log, DB, Auth;
 
@@ -89,11 +89,18 @@ class RemRepuController extends Controller
                     $remrepu->remrepu1_tecnico = $tecnico->id;
                     $remrepu->remrepu1_numero = $consecutive;
                     $remrepu->remrepu1_documentos = $documentos->id;
+                    $remrepu->remrepu1_tipo = 'R';
                     $remrepu->remrepu1_usuario_elaboro = Auth::user()->id;
                     $remrepu->remrepu1_fh_elaboro = date('Y-m-d H:m:s');
                     $remrepu->save();
 
                     foreach ($data['detalle'] as $value) {
+
+                        // Recuperar Sucursal 
+                        $sucursal = Sucursal::find($data['sucursal']);
+                        if(!$sucursal instanceof Sucursal){
+                            return response()->json(['success' => false, 'errors' => 'No es posible recuperar la sucursal, por favor verifique la información o consulte al administrador.']);
+                        }
 
                         // Recupero instancia de producto
                         $producto = Producto::where('producto_serie', $value['remrepu2_serie'])->first();
@@ -101,19 +108,28 @@ class RemRepuController extends Controller
                             DB::rollback();
                             return response()->json(['success' => false, 'errors' => 'No es posible recuperar producto, por favor verifique la información o consulte al administrador.']);
                         }
+
+                        // Validar sucursal prodbode
+                        $validSucu = Prodbode::where('prodbode_sucursal', $sucursal->id)->where('prodbode_serie', $producto->id)->first();
+                        if ($validSucu == null) {
+                            DB::rollback();
+                            return response()->json(['success'=> false, 'errors' => "El producto {$producto->producto_nombre} - {$producto->producto_serie} no corresponde a esa sucursal, por favor verificar información o consulte al administrador."]);
+                        }
+
                         // Valido producto unico en la remision
                         $existente = DB::table('remrepu2')->where('remrepu2_producto', $producto->id)->where('remrepu2_remrepu1', $remrepu->id)->first();
-
                         if ($existente != null) {
                             DB::rollback();
                             return response()->json(['success'=> false, 'errors' => "Producto {$producto->producto_nombre} - {$producto->producto_serie} se encuentra repetido, por favor verificar información o consulte al administrador."]);
                         }
+                        
                         // Remrepu2
                         $remrepu2 = new RemRepu2;
                         $remrepu2->fill($value);
                         $remrepu2->remrepu2_remrepu1 = $remrepu->id;  
+                        $remrepu2->remrepu2_saldo = $value['remrepu2_cantidad'];  
                         $remrepu2->remrepu2_producto = $producto->id;
-                        $remrepu2->save();  
+                        $remrepu2->save();
                     }
 
                     // Update sucursal_remr 
@@ -121,7 +137,7 @@ class RemRepuController extends Controller
                     $sucursal->save();
 
                     DB::commit();
-                    return response()->json(['success' => true, 'id' => $remrepu->id, 'remrepu1_numero' => $remrepu->remrepu1_numero ,'tecnico_nombre' => $tecnico->getName(), 'sucursal_nombre' => $sucursal->sucursal_nombre]);
+                    return response()->json(['success' => true, 'id' => $remrepu->id, 'remrepu1_numero' => $remrepu->remrepu1_numero ,'tecnico_nombre' => $tecnico->getName(), 'sucursal_nombre' => $sucursal->sucursal_nombre, 'remrepu1_tipo' => $remrepu->remrepu1_tipo]);
                 }catch(\Exception $e){
                     DB::rollback();
                     Log::error($e->getMessage());

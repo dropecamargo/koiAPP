@@ -3,8 +3,8 @@
 namespace App\Models\Inventario;
 
 use Illuminate\Database\Eloquent\Model;
-use Validator,Cache;
 use App\Models\BaseModel;
+use Validator,Cache;
 
 class Impuesto extends BaseModel
 {

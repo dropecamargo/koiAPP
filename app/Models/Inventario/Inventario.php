@@ -17,9 +17,13 @@ class Inventario extends Model
 
     public $timestamps = false;
 
+<<<<<<< HEAD
     public static function movimiento(Producto $producto, $sucursal, $ubicacion, $documento, $documentoNumero, $uentrada = 0, $usalida = 0, Array $emetros = [],Array $smetros = [], $costo = 0, $costopromedio = 0, $lote = 0, Array $rollo ){
 
         // dd($producto, $sucursal, $ubicacion, $documento, $documentoNumero, $uentrada , $usalida , $emetros , $smetros, $costo, $costopromedio, $lote ,$rollo);
+=======
+    public static function movimiento(Producto $producto, $sucursal, $ubicacion, $documento, $documentoNumero, $uentrada = 0, $usalida = 0, $emetros = 0, $smetros = 0, $costo = 0, $costopromedio = 0,$lote = 0, $rollo = 0){
+>>>>>>> 7d8aa92c6d55d3b9c1f972c71c6f398611ec0f75
     	 // Validar producto
         $sucursal = Sucursal::find($sucursal);
         if(!$sucursal instanceof Sucursal) {

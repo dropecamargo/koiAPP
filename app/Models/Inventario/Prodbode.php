@@ -62,17 +62,20 @@ class Prodbode extends Model
                 }
                 $prodbode = $query->first();
 
+<<<<<<< HEAD
                 // Validar prodbode 
                 if (!$prodbode instanceof Prodbode) {
                     return "NO es posible recuperar producto de la bodega $sucursal->sucursal_nombre, por favor verifique la información o consulte al administrador.";
                 }
+=======
+>>>>>>> 7d8aa92c6d55d3b9c1f972c71c6f398611ec0f75
                 // Validar disponibles
                 if ($producto->producto_metrado == true) {
                     if ($cantidad > $prodbode->prodbode_metros) {
-                    	return "No existen suficientes unidades para salida producto {$producto->producto_nombre}, disponibles {$prodbode->prodbode_metros}, salida $cantidad, por favor verifique la información o consulte al administrador.";
-	            	}
-                	$prodbode->prodbode_metros = ($prodbode->prodbode_metros - $cantidad);
-	            }
+                        return "No existen suficientes unidades para salida producto {$producto->producto_nombre}, disponibles {$prodbode->prodbode_metros}, salida $cantidad, por favor verifique la información o consulte al administrador.";
+                    }
+                    $prodbode->prodbode_metros = ($prodbode->prodbode_metros - $cantidad);
+                }
                 if($cantidad > $prodbode->prodbode_cantidad){
                     return "No existen suficientes unidades para salida producto {$producto->producto_nombre}, disponibles {$prodbode->prodbode_cantidad}, salida $cantidad, por favor verifique la información o consulte al administrador.";
                 }

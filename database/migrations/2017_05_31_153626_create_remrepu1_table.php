@@ -22,6 +22,7 @@ class CreateRemrepu1Table extends Migration
             $table->integer('remrepu1_numero')->unsigned();
             $table->integer('remrepu1_documentos')->unsigned();
             $table->integer('remrepu1_usuario_elaboro')->unsigned();
+            $table->string('remrepu1_tipo', 1);
             $table->dateTime('remrepu1_fh_elaboro');
 
             $table->foreign('remrepu1_documentos')->references('id')->on('documentos')->onDelete('restrict');

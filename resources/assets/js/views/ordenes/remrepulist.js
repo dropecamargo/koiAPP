@@ -51,14 +51,14 @@ app || (app = {});
         /*
         * Render View Element
         */
-        render: function() {
+        render: function(){
         },
 
         /**
         * Render view contact by model
         * @param Object contactModel Model instance
         */
-        addOne: function (remRepu2Model) {
+        addOne: function( remRepu2Model ) {
             var view = new app.RemRepuItemView({
                 model: remRepu2Model,
                 parameters: {
@@ -74,18 +74,13 @@ app || (app = {});
         /**
         * Render all view Marketplace of the collection
         */
-        addAll: function () {
+        addAll: function(){
             this.$el.find('tbody').html('');
             this.collection.forEach( this.addOne, this );
         },
 
-        storeOne: function (data) {
+        storeOne: function( data ){
             var _this = this;
-
-            // var legalizacion = this.collection.storeLegalizacion( data, this.parameters.wrapper );
-            // if(!legalizacion.success){
-            //     return;
-            // }
 
             // Set Spinner
             window.Misc.setSpinner( this.parameters.wrapper );
@@ -125,7 +120,7 @@ app || (app = {});
         /**
         * Event remove item
         */
-        removeOne: function (e) {
+        removeOne: function(e){
             e.preventDefault();
 
             var resource = $(e.currentTarget).attr("data-resource");
@@ -140,14 +135,14 @@ app || (app = {});
         /**
         * Load spinner on the request
         */
-        loadSpinner: function ( target, xhr, opts ) {
+        loadSpinner: function( target, xhr, opts ){
             window.Misc.setSpinner( this.parameters.wrapper );
         },
 
         /**
         * response of the server
         */
-        responseServer: function ( target, resp, opts ) {
+        responseServer: function( target, resp, opts ){
             window.Misc.removeSpinner( this.parameters.wrapper );
             
             if(!_.isUndefined(resp.success)) {

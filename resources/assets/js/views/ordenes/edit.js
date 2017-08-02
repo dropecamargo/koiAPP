@@ -27,8 +27,6 @@ app || (app = {});
             'click .submit-legalizacion': 'submitLegalizacion',
             'submit #form-legalizacion': 'clickAddlegalizacion',
 
-            'change .sum-cantidad': 'changeCantidad',
-
             'click .click-cerrar-orden': 'clickCloseOrden',
         },
 
@@ -47,8 +45,6 @@ app || (app = {});
             this.listenTo( this.model, 'change', this.render );
             this.listenTo( this.model, 'sync', this.responseServer );
             this.listenTo( this.model, 'request', this.loadSpinner );
-
-            this.cantidad = {};
         },
 
         /*
@@ -111,22 +107,22 @@ app || (app = {});
                 }
             });
 
-            this.remisionView = new app.RemisionView( {
-                collection: this.remision,
-                parameters: {
-                    wrapper: this.$('#wrapper-remision'),
-                    dataFilter: {
-                        'orden_id': this.model.get('id')
-                    }
-                }
-            });
-
             this.remrepuView = new app.RemRepuView( {
                 collection: this.remrepu,
                 el: $('#browse-legalizacion-list'),
                 parameters: {
                     call: 'index',
                     wrapper: this.$('#wrapper-legalizacion'),
+                    dataFilter: {
+                        'orden_id': this.model.get('id')
+                    }
+                }
+            });
+
+            this.remisionView = new app.RemisionView( {
+                collection: this.remision,
+                parameters: {
+                    wrapper: this.$('#wrapper-remision'),
                     dataFilter: {
                         'orden_id': this.model.get('id')
                     }
@@ -170,7 +166,7 @@ app || (app = {});
                 // Data sucursal y tecnico
                 var data = window.Misc.formToJson( e.target );
                     data.orden_id = this.model.get('id');
-                
+
                 this.$modalCreate.modal('show');
 
                 // Open TecnicoActionView
@@ -206,14 +202,14 @@ app || (app = {});
             var _this = this;
 
             this.$uploaderFile.fineUploader({
-                debug: 0,
+                debug: false,
                 template: 'qq-template',
                 session: {
                     endpoint: window.Misc.urlFull( Route.route('ordenes.imagenes.index') ),
                     params: {
                         'orden_id': _this.model.get('id')
                     },
-                    refreshOnRequest: 0
+                    refreshOnRequest: false,
                 },
                 request: {
                     inputName: 'file',
@@ -224,8 +220,8 @@ app || (app = {});
                     }
                 },
                 deleteFile: {
-                    enabled: 1,
-                    forceConfirm: 1,
+                    enabled: true,
+                    forceConfirm: true,
                     confirmMessage: '¿Esta seguro de que desea eliminar este archivo de forma permanente? {filename}',
                     endpoint: window.Misc.urlFull( Route.route('ordenes.imagenes.index') ),
                     params: {
@@ -245,7 +241,7 @@ app || (app = {});
                 callbacks: {
                     onComplete: _this.onCompleteLoadFile,
                     onSessionRequestComplete: _this.onSessionRequestComplete
-                }
+                },
             });
         },
 
@@ -257,7 +253,7 @@ app || (app = {});
         */
         onCompleteLoadFile: function (id, name, resp) {
 
-            var $itemFile = this.$uploaderFile.fineUploader('getItemByFileId', id);
+            var itemFile = this.$uploaderFile.fineUploader('getItemByFileId', id);
             this.$uploaderFile.fineUploader('setUuid', id, resp.id);
             this.$uploaderFile.fineUploader('setName', id, resp.name);
                 
@@ -265,7 +261,7 @@ app || (app = {});
             previewLink.attr("href", resp.url);
         },
 
-        onSessionRequestComplete: function (id, name, resp){
+        onSessionRequestComplete: function (id, name, resp) {
             
             _.each( id, function ( value, key){
                 var previewLink = this.$uploaderFile.fineUploader('getItemByFileId', key).find('.preview-link');
@@ -274,7 +270,7 @@ app || (app = {});
         },
 
         /*
-        * Event add remision
+        * Event add legalizacion
         */
         clickAddlegalizacion: function(e){
             if (!e.isDefaultPrevented()) {
@@ -307,7 +303,9 @@ app || (app = {});
                             return;
                         }
 
-                        alertify.success('Se guardo con exito la legalización.');
+                        _this.remrepu.fetch({ data: {orden_id: _this.model.get('id')}, reset: true });
+                        _this.remision.fetch({ data: {orden_id: _this.model.get('id')}, reset: true });
+                        alertify.success( 'Se guardo con exito la legalización.' );
                     }
                 })
                 .fail(function(jqXHR, ajaxOptions, thrownError) {
@@ -318,7 +316,7 @@ app || (app = {});
         },
 
         /**
-        *
+        *  Close orden
         */
         clickCloseOrden: function(e){
             e.preventDefault();
@@ -380,9 +378,6 @@ app || (app = {});
 
             if( typeof window.initComponent.initTimePicker == 'function' )
                 window.initComponent.initTimePicker();
-
-            if( typeof window.initComponent.initFineUploader == 'function' )
-                window.initComponent.initFineUploader();
         },
 
         /**

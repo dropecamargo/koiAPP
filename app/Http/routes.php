@@ -269,6 +269,14 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::resource('prioridades', 'Tecnico\PrioridadController', ['except' => ['destroy']]);
 	Route::resource('conceptostecnico', 'Tecnico\ConceptoTecController', ['except' => ['destroy']]);
 	Route::resource('gestionestecnico', 'Tecnico\GestionTecnicoController', ['except' => ['destroy']]);
-	Route::resource('soportetecnico', 'Tecnico\SoporteTecnicoController', ['except' => ['destroy']]);
+	Route::resource('agendatecnica', 'Tecnico\AgendaTecnicaController', ['except' => ['destroy']]);
 	Route::resource('sitios', 'Tecnico\SitioController', ['except' => ['destroy']]);
+
+	/*
+	|-------------------------
+	| Tesoreria Routes
+	|-------------------------
+	*/
+	Route::resource('retefuentes', 'Tesoreria\ReteFuenteController', ['except' => ['destroy']]);
+
 });

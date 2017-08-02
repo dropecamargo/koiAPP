@@ -6,9 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use DB, Log, Datatables, Cache;
-
 use App\Models\Inventario\Impuesto;
+use DB, Log, Datatables, Cache;
 
 class ImpuestoController extends Controller
 {

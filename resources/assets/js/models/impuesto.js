@@ -1,5 +1,5 @@
 /**
-* Class MarcaModel extend of Backbone Model
+* Class ImpuestoModel extend of Backbone Model
 * @author KOI || @dropecamargo
 * @link http://koi-ti.com
 */

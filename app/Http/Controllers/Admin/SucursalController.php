@@ -108,6 +108,11 @@ class SucursalController extends Controller
     public function edit($id)
     {
         $sucursal = Sucursal::findOrFail($id);
+
+        if( $sucursal->sucursal_nombre == '090 GARANTIAS' || $sucursal->sucursal_nombre == '091 PROVISIONAL') {
+            return redirect()->route('sucursales.show', ['sucursal' => $sucursal]);
+        }
+
         return view('admin.sucursales.edit', ['sucursal' => $sucursal]);
     }
 

@@ -341,13 +341,13 @@
         </ul>
     </li>
     {{-- Tecnico --}}
-    <li class="treeview {{ in_array(Request::segment(1), ['contratos','ordenes','tiposorden','solicitantes', 'sitios', 'danos','prioridades','conceptostecnico','gestionestecnico', 'soportetecnico']) ? 'active' : '' }}">
+    <li class="treeview {{ in_array(Request::segment(1), ['ordenes','tiposorden','solicitantes', 'sitios', 'danos','prioridades','conceptostecnico','gestionestecnico', 'agendatecnica']) ? 'active' : '' }}">
         <a href="#">
             <i class="fa fa-cogs"></i> <span>Tecnico</span><i class="fa fa-angle-left pull-right"></i>
         </a>
         <ul class="treeview-menu">
             {{-- Modulos Tecnico --}}
-            <li class="{{ in_array(Request::segment(1), ['ordenes','gestionestecnico', 'soportetecnico']) ? 'active' : '' }}">
+            <li class="{{ in_array(Request::segment(1), ['ordenes','gestionestecnico', 'agendatecnica']) ? 'active' : '' }}">
                 <a href="#">
                     <i class="fa fa-wpforms"></i> Modulos <i class="fa fa-angle-left pull-right"></i>
                 </a>
@@ -358,8 +358,8 @@
                     <li class="{{ Request::segment(1) == 'ordenes' ? 'active' : '' }}">
                         <a href="{{ route('ordenes.index') }}"><i class="fa fa-building-o"></i> Ordenes</a>
                     </li>
-                    <li class="{{ Request::segment(1) == 'soportetecnico' ? 'active' : '' }}">
-                        <a href="{{ route('soportetecnico.index') }}"><i class="fa fa-address-book"></i> Soporte tecnico</a>
+                    <li class="{{ Request::segment(1) == 'agendatecnica' ? 'active' : '' }}">
+                        <a href="{{ route('agendatecnica.index') }}"><i class="fa fa-calendar"></i> Agenda tecnica</a>
                     </li>
                 </ul>
             </li>
@@ -387,6 +387,37 @@
                     </li>
                     <li class="{{ Request::segment(1) == 'tiposorden' ? 'active' : '' }}">
                         <a href="{{ route('tiposorden.index') }}"><i class="fa fa-circle-o"></i> Tipo de Orden</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+    {{-- Tesoreria --}}
+    <li class="treeview {{ in_array(Request::segment(1), ['retefuentes']) ? 'active' : '' }}">
+        <a href="#">
+            <i class="fa fa-balance-scale"></i><span> Tesorería</span><i class="fa fa-angle-left pull-right"></i>  
+        </a>
+        <ul class="treeview-menu">
+            {{-- Modulos Tesoreria --}}
+            <li class="{{ in_array(Request::segment(1), ['']) ? 'active' : '' }}">
+                <a href="#">
+                    <i class="fa fa-wpforms"></i> Modulos <i class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="treeview-menu">
+                {{-- <li class="{{ Request::segment(1) == 'facturasp' ? 'active' : '' }}">
+                        <a href="{{ route('facturasp.index') }}"><i class="fa fa-volume-control-phone"></i> Facturas Proveedor</a>
+                    </li> --}}
+                </ul>
+            </li>
+      
+            {{-- Referencias Tesoreria --}}
+            <li class="{{ in_array(Request::segment(1), ['retefuentes']) ? 'active' : '' }}">
+                <a href="#">
+                    <i class="fa fa-circle-o"></i> Referencias <i class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="treeview-menu">
+                    <li class="{{ Request::segment(1) == 'retefuentes' ? 'active' : '' }}">
+                        <a href="{{ route('retefuentes.index') }}"><i class="fa fa-circle-o"></i> Retefuente</a>
                     </li>
                 </ul>
             </li>

@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\Models\Tecnico\RemRepu2, App\Models\Tecnico\RemRepu, App\Models\Inventario\Producto, App\Models\Tecnico\Orden;
+use App\Models\Tecnico\RemRepu2, App\Models\Tecnico\RemRepu, App\Models\Inventario\Producto, App\Models\Tecnico\Orden, App\Models\Base\Sucursal;
 Use Log, DB;
 
 class RemRepuDetalleController extends Controller
@@ -21,7 +21,7 @@ class RemRepuDetalleController extends Controller
     {
         if ($request->ajax()) {
             $remrepu2 = RemRepu2::query();
-            $remrepu2->select('remrepu2.*', 'producto_nombre AS remrepu2_nombre', 'producto_serie AS remrepu2_serie', 'remrepu1_numero', 'sucursal_nombre');
+            $remrepu2->select('remrepu2.*', 'producto_nombre AS remrepu2_nombre', 'producto_serie AS remrepu2_serie', 'remrepu1_numero', 'sucursal_nombre', 'remrepu1_tipo');
             $remrepu2->join('producto', 'remrepu2_producto','=','producto.id');
             $remrepu2->join('remrepu1', 'remrepu2_remrepu1','=','remrepu1.id');
             $remrepu2->join('sucursal', 'remrepu1_sucursal','=','sucursal.id');
@@ -32,6 +32,7 @@ class RemRepuDetalleController extends Controller
             }
             if ($request->has('orden_id')) {
                 $remrepu2->whereIn('remrepu2_remrepu1', DB::table('remrepu1')->select('remrepu1.id')->where('remrepu1_orden', $request->orden_id) );
+                $remrepu2->where('remrepu1_tipo', 'R');
                 $remrepu2->orderBy('sucursal_nombre', 'desc');
                 return $remrepu2->get();
             }
@@ -66,7 +67,7 @@ class RemRepuDetalleController extends Controller
                     $producto = Producto::where('producto_serie', $request->remrepu2_serie)->first();
                     if(!$producto instanceof Producto) {
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar producto, por favor verifique la información o consulte al administrador.']);
-                    }   
+                    }
                     return response()->json(['success' => true, 'id' => uniqid() ]);
                 }catch(\Exception $e){
                     Log::error($e->getMessage());
@@ -108,51 +109,7 @@ class RemRepuDetalleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if ($request->ajax()) {
-            $data = $request->all();
-
-            $remrepu2 = RemRepu2::findOrFail($request->id);
-            if ($remrepu2 instanceof RemRepu2 ) {
-                DB::beginTransaction();
-                try {
-                    $facturado = 0;
-
-                    // Validar facturado
-                    if( $request->has("facturado_{$remrepu2->id}") ){
-                        $facturado = $request->get("facturado_{$remrepu2->id}");
-                    }
-
-                    // Validar facturado
-                    if( $request->has("facturado_{$remrepu2->id}") ){
-                        $facturado = $request->get("facturado_{$remrepu2->id}");
-                    }
-
-                    // Validar facturado
-                    if( $request->has("facturado_{$remrepu2->id}") ){
-                        $facturado = $request->get("facturado_{$remrepu2->id}");
-                    }
-
-                    // Validar facturado
-                    if( $request->has("facturado_{$remrepu2->id}") ){
-                        $facturado = $request->get("facturado_{$remrepu2->id}");
-                    }
-
-                    // $producto = Producto::where('producto_serie', $request->remrepu2_serie)->first();
-                    // if(!$producto instanceof Producto) {
-                    //     DB::rollback();
-                    //     return response()->json(['success' => false, 'errors' => 'No es posible recuperar producto, por favor verifique la información o consulte al administrador.']);
-                    // }   
-                    return response()->json(['success' => true, 'id' => $remrepu2->id ]);
-                }catch(\Exception $e){
-                    DB::rollback();
-                    Log::error($e->getMessage());
-                    return response()->json(['success' => false, 'errors' => trans('app.exception')]);
-                }
-            }
-            return response()->json(['success' => false, 'errors' => $remrepu2->errors]);
-        }
-
-        abort(403);
+        //
     }
 
     /**
@@ -185,41 +142,65 @@ class RemRepuDetalleController extends Controller
             DB::beginTransaction();
             try {
                 // Recuperar remrepu
-                $remrepu = Remrepu::where('remrepu1_orden', $orden->id)
-                            ->select('remrepu1.*', 'sucursal_nombre')
-                            ->join('sucursal', 'remrepu1_sucursal', '=', 'sucursal.id')
-                            ->get();
+                $remrepu = Remrepu::where('remrepu1_orden', $orden->id)->select('remrepu1.*', 'sucursal_nombre')->where('remrepu1_tipo', 'R')->join('sucursal', 'remrepu1_sucursal', '=', 'sucursal.id')->get();
+                    
+                if( count($remrepu) <= 0){
+                    DB::rollback();
+                    return response()->json(['success' => false, 'errors' => 'No existe ningun producto para realizar una legalización.']);
+                }
 
                 foreach ($remrepu as $father) {
+
                     $childs = RemRepu2::where('remrepu2_remrepu1', $father->id)->get();
-                    foreach ($childs as $item) {
-                        if($request->has("facturado_$item->id") && $request->has("nofacturado_$item->id") && $request->has("devuelto_$item->id") && $request->has("usado_$item->id") ){
-                            if( $request->get("facturado_$item->id") < 0 || $request->get("nofacturado_$item->id") < 0 || $request->get("devuelto_$item->id") < 0 || $request->get("usado_$item->id") < 0){
+
+                    foreach ($childs as $child) {
+
+                        if($request->has("facturado_$child->id") && $request->has("nofacturado_$child->id") && $request->has("devuelto_$child->id") && $request->has("usado_$child->id") ){
+                            $facturado = $request->get("facturado_$child->id");
+                            $nofacturado = $request->get("nofacturado_$child->id");
+                            $devuelto = $request->get("devuelto_$child->id");
+                            $usado = $request->get("usado_$child->id");
+
+                            if( $facturado < 0 || $nofacturado < 0 || $devuelto < 0 || $usado < 0){
                                 DB::rollback();
                                 return response()->json(['success' => false, 'errors' => "Ningun campo puede ser negativo."]);
                             }
 
-                            $ingreso = $request->get("facturado_$item->id") + $request->get("nofacturado_$item->id") + $request->get("devuelto_$item->id") + $request->get("usado_$item->id");
+                            if( $facturado > 0 || $nofacturado > 0 || $devuelto > 0 || $usado > 0 ) {
 
-                            if( $ingreso > $item->remrepu2_cantidad){
-                                DB::rollback();
-                                return response()->json(['success' => false, 'errors' => "Los datos ingresados en Sucursal {$father->sucursal_nombre} - Remision No. {$father->remrepu1_numero} supera la cantidad disponible, ingresado {$ingreso} disponible {$item->remrepu2_cantidad}"]);
-                            }
+                                // la suma de cada hijo, no puede superar la cantidad disponible
+                                $ingreso = $facturado + $nofacturado + $devuelto + $usado;
 
-                            if($item instanceof RemRepu2){
-                                $item->remrepu2_facturado = $request->get("facturado_$item->id");
-                                $item->remrepu2_no_facturado = $request->get("nofacturado_$item->id");
-                                $item->remrepu2_devuelto = $request->get("devuelto_$item->id");
-                                $item->remrepu2_usado = $request->get("usado_$item->id");
-                                $item->save();
+                                if( $ingreso > $child->remrepu2_saldo){
+                                    DB::rollback();
+                                    return response()->json(['success' => false, 'errors' => "Los datos ingresados en Sucursal {$father->sucursal_nombre} - Remision No. {$father->remrepu1_numero} supera la cantidad disponible, ingresado {$ingreso} disponible {$child->remrepu2_saldo}"]);
+                                }
+
+                                // Update childs
+                                if($child instanceof RemRepu2){
+                                    $child->remrepu2_saldo -= $ingreso;
+                                    $child->remrepu2_facturado += $facturado;
+                                    $child->remrepu2_no_facturado += $nofacturado;
+                                    $child->remrepu2_devuelto += $devuelto;
+                                    $child->remrepu2_usado += $usado;
+                                    $child->save();
+
+                                    // Duplicate remrepu1 
+                                    $result = RemRepu2::createRemisionL($child, $facturado, $nofacturado, $devuelto, $usado);
+                                    if($result != 'OK'){
+                                        DB::rollback();
+                                        return response()->json(['success' => false, 'errors' => $result]);
+                                    }
+                                }
                             }
                         }
                     }
                 }
+
                 // Commit transaction
                 DB::commit();
 
-                return response()->json(['success' => true, 'id' => $item->id ]);
+                return response()->json(['success' => true, 'id' => $orden->id ]);
             }catch(\Exception $e){
                 DB::rollback();
                 Log::error($e->getMessage());

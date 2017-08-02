@@ -54,9 +54,10 @@ app || (app = {});
         onSessionRequestComplete: function (id, name, resp){
             this.$uploaderFile.find('.qq-upload-button').remove();
             this.$uploaderFile.find('.qq-upload-drop-area').remove();
-            _.each( id, function (item, i){
-                var previewLink = this.$uploaderFile.fineUploader('getItemByFileId', i).find('.preview-link');
-                previewLink.attr("href", item.thumbnailUrl);
+
+            _.each( id, function(value, key){
+                var previewLink = this.$uploaderFile.fineUploader('getItemByFileId', key).find('.preview-link');
+                previewLink.attr("href", value.thumbnailUrl);
             }, this);
         },
 

@@ -5,6 +5,7 @@ namespace App\Models\Tecnico;
 use Illuminate\Database\Eloquent\Model;
 
 use Validator;
+use App\Models\Tecnico\RemRepu2;
 
 class RemRepu extends Model
 {
@@ -26,8 +27,7 @@ class RemRepu extends Model
 
     public function isValid($data)
     {
-        $rules = [
-        ];
+        $rules = [];
 
         $validator = Validator::make($data, $rules);
         if ($validator->passes()) {

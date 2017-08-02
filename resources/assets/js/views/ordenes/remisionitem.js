@@ -8,14 +8,13 @@
 app || (app = {});
 
 (function ($, window, document, undefined) {
-
     app.RemisionItemView = Backbone.View.extend({
 
-        tagName: 'tr',
+        tagName: 'div',
+        className: 'panel box box-solid',
         template: _.template( ($('#remision-item-list-tpl').html() || '') ),
-        templateInfo: _.template( ($('#remision-show-detail-tpl').html() || '') ),
         events: {
-            'click .item-remsion-show-info': 'showDetailRemision'
+            'click .render-detalle': 'renderDetailRemision'
         },
         parameters: {
             wrapper: null,
@@ -32,8 +31,8 @@ app || (app = {});
                 this.parameters = $.extend({},this.parameters, opts.parameters);
 
             //Init Attributes
-            this.$modalInfo = $('#modal-remision-show-info-component');
             this.remrepu = new app.RemRepuCollection();
+            this.listenTo( this.remrepu, 'reset', this.addAllDetalleRemision );
         },
 
         /*
@@ -46,29 +45,38 @@ app || (app = {});
             return this;
         },
 
-        showDetailRemision: function(e){
-            var attributes = this.model.toJSON();
-            // Render info
-            this.$modalInfo.find('.content-modal').empty().html( this.templateInfo( attributes ) );
-            this.el = this.$modalInfo.find('#browse-legalizacion-list');
-
-            // Open modal
-            this.$modalInfo.modal('show');
-
-            this.referenceViews();
+        renderDetailRemision: function (e){
+            if (!e.isDefaultPrevented()) {
+                e.preventDefault();
+                
+                var aria =  this.$(e.currentTarget).attr('aria-expanded');                   
+                if ( aria == 'false' ){
+                    this.$wraper = this.$el.find('#browse-detalle-remision-list');
+                    this.remrepu.fetch({ data: {remrepu2_remrepu1: this.model.get('id')}, reset: true });
+                }
+            }
         },
 
-        referenceViews: function(){
-            this.remrepuView = new app.RemRepuView( {
-                collection: this.remrepu,
-                el: this.el,
+        /**
+        * Render view task by model
+        * @param Object remRepu2Model Model instance
+        */
+        addOneDetail: function ( remRepu2Model ) {
+            var view = new app.RemRepuItemView({
+                model: remRepu2Model,
                 parameters: {
                     call: 'show',
-                    dataFilter: {
-                        remrepu2_remrepu1: this.model.get('id')
-                    }
                 }
             });
+            this.$wraper.append( view.render().el );
+        },
+
+        /**
+        * Render all view tast of the collection
+        */
+        addAllDetalleRemision: function(){
+            this.$wraper.find('tbody').html('');
+            this.remrepu.forEach( this.addOneDetail, this );
         },
     });
 

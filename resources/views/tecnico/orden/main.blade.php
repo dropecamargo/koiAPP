@@ -191,7 +191,7 @@
                                                                     <i class="fa fa-barcode"></i>
                                                                 </button>
                                                             </span>
-                                                            <input id="orden_serie" placeholder="Serie" class="form-control producto-koi-component" name="orden_serie" type="text" maxlength="15" data-wrapper="producto_create" data-tercero="true" data-name="orden_nombre_producto" value="<%- producto_serie %>">
+                                                            <input id="orden_serie" placeholder="Serie" class="form-control producto-koi-component" name="orden_serie" type="text" maxlength="15" data-wrapper="producto_create" data-tercero="true" data-orden="true" data-name="orden_nombre_producto" value="<%- producto_serie %>">
                                                         </div>
                                                     </div>
                                                     <div class="<%- edit ? 'col-md-5' : 'col-md-8' %> col-xs-12">
@@ -516,19 +516,13 @@
 
                                                 <div class="row">
                                                     <div class="col-md-offset-1 col-md-10">
-                                                        <div class="box-body table-responsive no-padding">
-                                                            <table id="browse-orden-remision-list" class="table table-hover table-bordered" cellspacing="0">
-                                                                <thead>
-                                                                    <tr>
-                                                                        <th width="10%">Número</th>
-                                                                        <th width="50%">Tecnico</th>
-                                                                        <th width="20%">Sucursal</th>
-                                                                        <th width="5%">Info</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                </tbody>
-                                                            </table>
+                                                        <div class="box box-solid">
+                                                            <div class="box-header with-border">
+                                                                <h3 class="box-title">Informacion Adicional</h3>
+                                                            </div>
+                                                            <div class="box-body">
+                                                                <div class="box-group" id="browse-orden-remision-list"></div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -548,8 +542,9 @@
                                                                         <tr>
                                                                             <th width="10%">Sucursal</th>
                                                                             <th width="5%"># R.</th>
-                                                                            <th width="40%">Producto</th>
-                                                                            <th width="5%">Cantidad</th>
+                                                                            <th width="5%">Serie</th>
+                                                                            <th width="35%">Producto</th>
+                                                                            <th width="5%">Saldo</th>
                                                                             <th width="10%">Facturado</th>
                                                                             <th width="10%">No Facturado</th>
                                                                             <th width="10%">Devuelto</th>
@@ -571,7 +566,6 @@
                                             </div>
                                         </div>
                                     </div>
-
                                     <div class="tab-pane" id="tab_imagenes">
                                        {{-- Content Images --}}
                                         <div id="fine-uploader"></div>
@@ -607,7 +601,7 @@
         </section>
     </script>
 
-    <script type="text/template" id="visita-item-list-tpl">       
+    <script type="text/template" id="visita-item-list-tpl">
         <% if(edit && last) { %>
             <td id="td_<%- id %>" class="text-center">
                 <a class="btn btn-default btn-xs item-visita-remove" data-resource="<%- id %>">
@@ -629,20 +623,6 @@
                 <span><i class="fa fa-info-circle "></i></span>
             </a>
         </td>
-    </script>
-
-    <script type="text/template" id="remrepu-item-list-tpl">       
-        <% if(edit) { %>
-            <td class="text-center">
-                <a class="btn btn-default btn-xs item-remrepu-remove" data-resource="<%- id %>">
-                    <span><i class="fa fa-times"></i></span>
-                </a>
-            </td>
-        <% } %>
-
-        <td><%- remrepu2_serie %> </td>
-        <td><%- remrepu2_nombre %></td>
-        <td><%- remrepu2_cantidad %></td>
     </script>
 
     <script type="text/template" id="show-info-visita-tpl">
@@ -685,58 +665,101 @@
         </div>
     </script>
 
+    <!-- Templates de remision y legalizacion-->
     <script type="text/template" id="remision-item-list-tpl">
-        <td><%- remrepu1_numero %></td>
-        <td><%- tecnico_nombre %></td>
-        <td><%- sucursal_nombre %></td>
-            
-        <td class="text-center">
-            <a class="btn btn-default btn-xs item-remsion-show-info" data-resource="<%- id %>">
-                <span><i class="fa fa-info-circle "></i></span>
-            </a>
-        </td>
+        <div class="box-header with-border">
+            <h4 class="box-title">
+                <a data-toggle="collapse" data-parent="#browse-orden-remision-list" href="#collapse_<%- id %>" class="collapsed render-detalle" aria-expanded="false">
+                No. <%- remrepu1_tipo == 'R' ? 'Remision' : 'Legalización' %> <%- remrepu1_numero %> Sucursal <%- sucursal_nombre %>
+                </a>
+            </h4>
+        </div>
+        <div id="collapse_<%- id %>" class="panel-collapse collapse" aria-expanded="false">
+            <div class="box-body">
+                <div class="row">
+                    <label class="col-sm-2 control-label">No. Remision</label>
+                    <div class="col-sm-10"><%- remrepu1_numero %></div>
+                </div>
+
+                <div class="row">
+                    <label class="col-sm-2 control-label">Tecnico</label>
+                    <div  class="col-sm-10"><%- tecnico_nombre %></div>
+                </div>
+
+                <div class="row">
+                    <label class="col-sm-2 control-label">Sucursal</label>
+                    <div  class="col-sm-10"><%- sucursal_nombre %></div>
+                </div>
+
+                <div class="row">
+                    <div class="box box-solid">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Detalle</h3>
+                        </div>
+                        <div class="box-body table-responsive no-padding col-md-offset-1 col-md-10">
+                            <table id="browse-detalle-remision-list" class="table" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th width="20%">Código</th>
+                                        <th width="40%">Nombre</th>
+                                        <% if( remrepu1_tipo == 'R' ) { %>
+                                            <th width="10%">Cantidad</th>
+                                        <% }else{ %>
+                                            <th width="10%">Facturado</th>
+                                            <th width="10%">No facturado</th>
+                                            <th width="10%">Devuelto</th>
+                                            <th width="10%">Usado</th>
+                                        <% } %>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </script>
 
-    <script type="text/template" id="legalizacion-item-list-tpl">    
-        <td><%- sucursal_nombre %></td>
-        <td><%- remrepu1_numero %></td>
+    <script type="text/template" id="remrepu-item-list-tpl">
+        <% if(edit) { %>
+            <td class="text-center">
+                <a class="btn btn-default btn-xs item-remrepu-remove" data-resource="<%- id %>">
+                    <span><i class="fa fa-times"></i></span>
+                </a>
+            </td>
+        <% } %>
+        <td><%- remrepu2_serie %> </td>
         <td><%- remrepu2_nombre %></td>
         <td><%- remrepu2_cantidad %></td>
-        <td class="form-group">
-            <input id="facturado_<%- id %>" name="facturado_<%- id %>" class="form-control input-sm sum-cantidad" type="number" min="0" max="<%- remrepu2_cantidad %>" value="<%- remrepu2_facturado %>" step="1" data-id="<%- id %>">
-        </td>
-        <td class="form-group">
-            <input id="nofacturado_<%- id %>" name="nofacturado_<%- id %>" class="form-control input-sm sum-cantidad" type="number" min="0" max="<%- remrepu2_cantidad %>" value="<%- remrepu2_no_facturado %>" step="1" data-id="<%- id %>">
-        </td>
-        <td class="form-group">
-            <input id="devuelto_<%- id %>" name="devuelto_<%- id %>" class="form-control input-sm sum-cantidad" type="number" min="0" max="<%- remrepu2_cantidad %>" value="<%- remrepu2_devuelto %>" step="1" data-id="<%- id %>">
-        </td>
-        <td class="form-group">
-            <input id="usado_<%- id %>" name="usado_<%- id %>" class="form-control input-sm sum-cantidad" type="number" min="0" max="<%- remrepu2_cantidad %>" value="<%- remrepu2_usado %>" step="1" data-id="<%- id %>">
-        </td>
     </script>
 
-    <script type="text/template" id="remision-show-detail-tpl">
-        <div class="row">
-            <div class="form-group col-md-3">
-                <label class="control-label">N° Remisión</label>
-                <div><%- remrepu1_numero %></div>
-            </div>
-        </div>
-        <div class="box box-solid">
-            <h5><b>Repuestos</b></h5>
-            <div class="box-body table-responsive no-padding">
-                <table id="browse-legalizacion-list" class="table table-hover table-bordered" cellspacing="0">
-                    <thead>
-                        <tr>
-                            <th width="10%">Código</th>
-                            <th width="80%">Nombre</th>
-                            <th width="10%">Cantidad</th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
-        </div>
+    <script type="text/template" id="remrepu-show-list-tpl">
+        <td><%- remrepu2_serie %> </td>
+        <td><%- remrepu2_nombre %></td>
+        <td><%- remrepu2_facturado %></td>
+        <td><%- remrepu2_no_facturado %></td>
+        <td><%- remrepu2_devuelto %></td>
+        <td><%- remrepu2_usado %></td>
+    </script>
+
+    <script type="text/template" id="legalizacion-item-list-tpl">
+        <td><%- sucursal_nombre %></td>
+        <td><%- remrepu1_numero %></td>
+        <td><%- remrepu2_serie %></td>
+        <td><%- remrepu2_nombre %></td>
+        <td class="text-center"><%- remrepu2_saldo %></td>
+        <td class="form-group">
+            <input id="facturado_<%- id %>" name="facturado_<%- id %>" class="form-control input-sm sum-cantidad" type="number" min="0" max="<%- remrepu2_saldo %>" value="0" step="1" data-id="<%- id %>">
+        </td>
+        <td class="form-group">
+            <input id="nofacturado_<%- id %>" name="nofacturado_<%- id %>" class="form-control input-sm sum-cantidad" type="number" min="0" max="<%- remrepu2_saldo %>" value="0" step="1" data-id="<%- id %>">
+        </td>
+        <td class="form-group">
+            <input id="devuelto_<%- id %>" name="devuelto_<%- id %>" class="form-control input-sm sum-cantidad" type="number" min="0" max="<%- remrepu2_saldo %>" value="0" step="1" data-id="<%- id %>">
+        </td>
+        <td class="form-group">
+            <input id="usado_<%- id %>" name="usado_<%- id %>" class="form-control input-sm sum-cantidad" type="number" min="0" max="<%- remrepu2_saldo %>" value="0" step="1" data-id="<%- id %>">
+        </td>
     </script>
 
     <!-- Modal info visita-->
@@ -759,96 +782,7 @@
             </div>
         </div>
     </div>
-
-    <!-- Modal info remision -->
-    <div class="modal fade" id="modal-remision-show-info-component" data-backdrop="static" data-keyboard="false" aria-hidden="true">
-        <div class="modal-dialog modal-md" role="document">
-            <div class="modal-content">
-                <div class="modal-header small-box {{ config('koi.template.bg') }}">
-                    <button type="button" class="close icon-close-koi" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <h4><strong>Detalle remisión</strong></h4>
-                </div>
-                <div class="modal-body" id="modal-remision-wrapper-show-info">
-                    <div class="content-modal"></div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cerrar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal info remision -->
-    <div class="modal fade" id="modal-create-remision" data-backdrop="static" data-keyboard="false" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header small-box {{ config('koi.template.bg') }}">
-                    <button type="button" class="close icon-close-koi" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <h4><strong>Tecnico - Nueva remisión</strong></h4>
-                </div>
-                {!! Form::open(['id' => 'form-remrepu', 'data-toggle' => 'validator']) !!}
-                    <div class="modal-body" id="modal-remision-wrapper-show-info">
-                        <div class="content-modal">
-                        </div>
-                    </div>
-                {!! Form::close() !!}
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary btn-sm click-store-remsion">Continuar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script type="text/template" id="add-remision-tpl">
-        <div class="row">
-            <div class="form-group col-md-3">
-                <label for="remrepu2_serie" class="control-label">Producto</label>
-                <div class="input-group input-group-sm">
-                    <span class="input-group-btn">
-                        <button type="button" class="btn btn-default btn-flat btn-koi-search-producto-component" data-field="remrepu2_serie">
-                            <i class="fa fa-barcode"></i>
-                        </button>
-                    </span>
-                    <input id="remrepu2_serie" placeholder="Referencia" class="form-control producto-koi-component" name="remrepu2_serie" type="text" maxlength="15" data-wrapper="producto_create" data-name="remrepu2_nombre" required>
-                </div>
-            </div>
-            <div class="col-md-6 col-xs-10"><br>
-                <input id="remrepu2_nombre" name="remrepu2_nombre" placeholder="Nombre producto" class="form-control input-sm" type="text" readonly required>
-            </div>
-            <div class="form-group col-md-2">
-                <label for="remrepu2_cantidad" class="control-label">Cantidad</label>
-                <input type="number" name="remrepu2_cantidad" id="remrepu2_cantidad" min="1" class="form-control input-sm">
-            </div>
-            <div class="form-group col-md-1"><br>
-                <button type="button" class="btn btn-success btn-sm btn-block click-add-item">
-                    <i class="fa fa-plus"></i>
-                </button>
-            </div>
-        </div>
-        
-        <!-- table table-bordered table-striped -->
-        <div class="table-responsive no-padding">
-            <table id="browse-legalizacions-list" class="table table-hover table-bordered" cellspacing="0">
-                <thead>
-                    <tr>
-                        <th width="5%"></th>
-                        <th width="10%">Referencia</th>
-                        <th width="40%">Nombre</th>
-                        <th width="10%">Cantidad</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {{-- Render content remrepu --}}
-                </tbody>
-            </table>
-        </div>
-    </script>
-
+    
     <script type="text/template" id="orden-sendmail-confirm-tpl">
         <p>¿Desea enviar un correo con la información a <b><%- tcontacto_email %></b>?</p>
     </script>

@@ -60,6 +60,28 @@ class ProductoController extends Controller
                             $query->groupBy('prodbode_serie');
                         }
                     }
+
+                    // Orden only serie filter
+                    if ($request->has('orden')) {
+                        if($request->orden == "true"){
+                            $query->where('producto_maneja_serie', true);
+                            $query->where('producto_unidad', true);
+                        }
+                    }
+
+                    // remision and sucursal filter
+                    if ($request->has('remision') && $request->has('sucursal')) {
+                        if( $request->remision == "true" && !empty($request->sucursal)) {
+                            $query->select('producto.id as id','impuesto.impuesto_porcentaje','producto_maneja_serie','producto_serie', 'producto_nombre','producto_referencia','producto_costo','producto_precio1','prodbode.prodbode_cantidad','prodbode_serie', 'prodbode_sucursal');
+                            $query->join('prodbode', 'producto.id','=','prodbode.prodbode_serie');
+                            $sucursal = Sucursal::find($request->sucursal);
+                            ($sucursal instanceof Sucursal) ? $query->where('prodbode_sucursal', $sucursal->id) : '' ;
+                            $query->where('producto_maneja_serie', false);
+                            $query->where('producto_metrado', false);
+                            $query->where('producto_vence', false);
+                            $query->where('producto_unidad', true);
+                        }
+}
                 })
                 ->make(true);
         }
