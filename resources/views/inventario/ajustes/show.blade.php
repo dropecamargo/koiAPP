@@ -27,7 +27,7 @@
                     <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Opciones <span class="caret"></span></button>
                         <ul class="dropdown-menu">
                             <li role="presentation">
-                                <a role="menuitem" tabindex="-1" href="#" class="">
+                                <a role="menuitem" tabindex="-1" href="#" class="export-alistar">
                                     <i class="fa fa-file-pdf-o"></i>Alistamiento
                                 </a>
                                 <a role="menuitem" tabindex="-1" href="#" class="export-ajuste">

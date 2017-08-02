@@ -137,8 +137,8 @@ class Devolucion1Controller extends Controller
                                 $lote->lote_saldo = 1;
                                 $lote->save();
                                 // Inventario
-                                $inventario = Inventario::movimiento($producto, $sucursal->id, $sucursal->sucursal_defecto,'DEVO', $devolucion1->id, 1, 0, 0, 0, $value->factura2_costo, $value->factura2_costo, $lote->id);
-                                if (!$inventario instanceof Inventario) {
+                                $inventario = Inventario::movimiento($producto, $sucursal->id, $sucursal->sucursal_defecto,'DEVO', $devolucion1->id, 1, 0, [], [], $value->factura2_costo, $value->factura2_costo, $lote->id,[]);
+                                if ($inventario != 'OK') {
                                     DB::rollback();
                                     return response()->json(['success' => false,'errors '=> $inventario]);
                                 }
@@ -157,14 +157,13 @@ class Devolucion1Controller extends Controller
                                 }
                                 // Rollo
                                 $rollo = Rollo::actualizar($producto, $sucursal->id, 'E', $rollo->rollo_lote, $devolucion1->devolucion1_fh_elaboro, $request->$cantidad, $sucursal->sucursal_defecto);
-                                if (!$rollo instanceof Rollo) {
+                                if (!$rollo->success) {
                                     DB::rollback();
-                                    return response()->json(['success' => false, 'errors' => $rollo]);
+                                    return response()->json(['success' => false, 'errors' => $rollo->error]);
                                 }
-
                                 // Inventario
-                                $inventario = Inventario::movimiento($producto, $sucursal->id,$sucursal->sucursal_defecto, 'DEVO', $devolucion1->id, 0, 0, $request->$cantidad, 0, $value->factura2_costo, $value->factura2_costo, $rollo->id);
-                                if (!$inventario instanceof Inventario) {
+                                $inventario = Inventario::movimiento($producto, $sucursal->id, $sucursal->sucursal_defecto,'DEVO', $factura1->id, 0, 0,$rollo->cantidad, [],$value->factura2_costo, $value->factura2_costo,0,$rollo->rollos);
+                                if ($inventario != 'OK') {
                                     DB::rollback();
                                     return response()->json(['success' => false,'errors '=> $inventario]);
                                 }
@@ -184,8 +183,8 @@ class Devolucion1Controller extends Controller
                                 $lote->lote_saldo = $lote->lote_saldo + $request->$cantidad;
                                 $lote->save();
                                 // Inventario
-                                $inventario = Inventario::movimiento($producto, $sucursal->id, $sucursal->sucursal_defecto,'DEVO', $devolucion1->id, $request->$cantidad, 0, 0, 0, $value->factura2_costo, $value->factura2_costo, $lote->id);
-                                if (!$inventario instanceof Inventario) {
+                                $inventario = Inventario::movimiento($producto, $sucursal->id, $sucursal->sucursal_defecto,'DEVO', $devolucion1->id, $request->$cantidad, 0, [], [], $value->factura2_costo, $value->factura2_costo, $lote->id,[]);
+                                if ($inventario != 'OK') {
                                     DB::rollback();
                                     return response()->json(['success' => false,'errors'=> $inventario]);
                                 }
@@ -202,10 +201,8 @@ class Devolucion1Controller extends Controller
                     $sucursal->sucursal_devo = $consecutive;
                     $sucursal->save();
 
-                    // DB::rollback();
                     DB::commit();
                     return response()->json(['success' => true, 'id' => $devolucion1->id ]);
-                    // return response()->json(['success' => false, 'errors' => "TODO OK" ]);
                 } catch (\Exception $e) {
                     DB::rollback();
                     Log::error($e->getMessage());

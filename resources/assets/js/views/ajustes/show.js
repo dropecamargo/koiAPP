@@ -13,7 +13,7 @@ app || (app = {});
 
         el: '#ajuste-show',
         events:{
-            // 'click .export-ajuste': 'exportAjuste',
+            'click .export-alistar': 'exportAlistar',
             'click .export-ajuste': 'exportAjuste'
         },
 
@@ -56,6 +56,15 @@ app || (app = {});
 
             // Redirect to pdf
             window.open( window.Misc.urlFull( Route.route('ajustes.exportar', { ajustes: this.model.get('id') })) );
+        },
+        /*
+        * Redirect export pdf
+        */
+        exportAlistar:function(e){
+            e.preventDefault(); 
+
+            // Redirect to pdf
+            window.open( window.Misc.urlFull( Route.route('ajustes.alistar', { ajustes: this.model.get('id') })) );
         },
         /**
         * fires libraries js

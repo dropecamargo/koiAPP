@@ -61,6 +61,11 @@ class Prodbode extends Model
                     $query = Prodbode::where('prodbode_serie', $producto->id )->where('prodbode_sucursal', $sucursal->id);
                 }
                 $prodbode = $query->first();
+
+                // Validar prodbode 
+                if (!$prodbode instanceof Prodbode) {
+                    return "NO es posible recuperar producto de la bodega $sucursal->sucursal_nombre, por favor verifique la información o consulte al administrador.";
+                }
                 // Validar disponibles
                 if ($producto->producto_metrado == true) {
                     if ($cantidad > $prodbode->prodbode_metros) {

@@ -55,10 +55,11 @@ class Ajuste1 extends Model
 	public static function getAjuste($id)
 	{
 		$query = Ajuste1::query();
-		$query->select('ajuste1.*','tipoajuste_nombre','sucursal_nombre','tercero_nit',DB::raw("CONCAT(tercero_nombre1, ' ', tercero_nombre2, ' ', tercero_apellido1, ' ', tercero_apellido2) as tercero_nombre"));
-		$query->join('tipoajuste','ajuste1.ajuste1_tipoajuste','=','tipoajuste.id');
-		$query->join('sucursal','ajuste1.ajuste1_sucursal','=', 'sucursal.id');
-		$query->join('tercero','ajuste1.ajuste1_usuario_elaboro','=', 'tercero.id');
+		$query->select('ajuste1.*','tipoajuste_nombre','sucursal_nombre','tercero_nit',DB::raw("CONCAT(tercero_nombre1, ' ', tercero_nombre2, ' ', tercero_apellido1, ' ', tercero_apellido2) as tercero_nombre"), 'documentos_nombre');
+		$query->join('tipoajuste','ajuste1_tipoajuste','=','tipoajuste.id');
+		$query->join('sucursal','ajuste1_sucursal','=', 'sucursal.id');
+		$query->join('documentos','ajuste1_documentos','=', 'documentos.id');
+		$query->join('tercero','ajuste1_usuario_elaboro','=', 'tercero.id');
 		$query->where('ajuste1.id',$id);
 		return $query->first();
 	}	

@@ -146,6 +146,7 @@ Route::group(['middleware' => 'auth'], function(){
 	{
 		Route::resource('detalle', 'Inventario\DetalleAjusteController');
 		Route::get('exportar/{ajustes}', ['as' => 'ajustes.exportar', 'uses' => 'Inventario\AjusteController@exportar']);
+		Route::get('alistar/{ajustes}', ['as' => 'ajustes.alistar', 'uses' => 'Inventario\AjusteController@alistar']);
 	});
 	Route::group(['prefix' => 'traslados'], function()
 	{
