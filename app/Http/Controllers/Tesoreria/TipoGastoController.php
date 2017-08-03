@@ -6,11 +6,11 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\Tesoreria\ReteFuente;
+use App\Models\Tesoreria\TipoGasto;
 use App\Models\Contabilidad\PlanCuenta;
 use DB, Log, Datatables, Cache;
 
-class ReteFuenteController extends Controller
+class TipoGastoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,10 +20,10 @@ class ReteFuenteController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $query = ReteFuente::query();
+            $query = TipoGasto::query();
             return Datatables::of($query)->make(true);
         }
-        return view('tesoreria.retefuente.index');
+        return view('tesoreria.tipogasto.index');
     }
 
     /**
@@ -33,7 +33,7 @@ class ReteFuenteController extends Controller
      */
     public function create()
     {
-        return view('tesoreria.retefuente.create');
+        return view('tesoreria.tipogasto.create');
     }
 
     /**
@@ -46,35 +46,33 @@ class ReteFuenteController extends Controller
     {
         if ($request->ajax()) {
             $data = $request->all();
-            $retefuente = new ReteFuente;
-            if ($retefuente->isValid($data)) {
+            $tipogasto = new TipoGasto;
+            if ($tipogasto->isValid($data)) {
                 DB::beginTransaction();
                 try {
-                    // ReteFuente
-                    $retefuente->fill($data);
-                    $retefuente->fillBoolean($data);
+                    // TipoGasto
+                    $tipogasto->fill($data);
+                    $tipogasto->fillBoolean($data);
                     
-                    $plancuenta = PlanCuenta::where('plancuentas_cuenta',$request->retefuente_plancuentas)->first();
+                    $plancuenta = PlanCuenta::where('plancuentas_cuenta',$request->tipogasto_plancuentas)->first();
                     if (!$plancuenta instanceof PlanCuenta) {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar plan de cuentas, por favor verifique información o consulte con el administrador']);
                     }
-                    $retefuente->retefuente_plancuentas = $plancuenta->id;
-                    $retefuente->save();
+                    $tipogasto->tipogasto_plancuentas = $plancuenta->id;
+                    $tipogasto->save();
 
                     // Commit Transaction
                     DB::commit();
                     
                     // Forget cache
-                    Cache::forget( ReteFuente::$key_cache ); 
-                    return response()->json(['success' => true, 'id' =>$retefuente->id]);                     
+                    Cache::forget( TipoGasto::$key_cache ); 
+                    return response()->json(['success' => true, 'id' =>$tipogasto->id]); 
                 } catch (\Exception $e) {
-                    DB::rollback();
-                    Log::error($e->getMessage());
-                    return response()->json(['success' => false, 'errors' => trans('app.exception')]);
+                    
                 }
             }
-            return response()->json(['success' => false, 'errors' => $retefuente->errors]);
+            return response()->json(['success' => false, 'errors' => $tipogasto->errors]);
         }
         abort(403);
     }
@@ -87,11 +85,11 @@ class ReteFuenteController extends Controller
      */
     public function show(Request $request, $id)
     {
-        $retefuente = ReteFuente::getRetencionFuente($id);
+        $tipogasto = TipoGasto::getTipoGasto($id);
         if ($request->ajax()) {
-            return response()->json($retefuente);
+            return response()->json($tipogasto);
         }
-        return view('tesoreria.retefuente.show', ['retefuente' => $retefuente]);
+        return view('tesoreria.tipogasto.show', ['tipogasto' => $tipogasto]);
     }
 
     /**
@@ -102,8 +100,8 @@ class ReteFuenteController extends Controller
      */
     public function edit($id)
     {
-        $retefuente = ReteFuente::findOrFail($id);
-        return view('tesoreria.retefuente.edit', ['retefuente' => $retefuente]);
+        $tipogasto = TipoGasto::findOrFail($id);
+        return view('tesoreria.tipogasto.edit', ['tipogasto' => $tipogasto]);
     }
 
     /**
@@ -117,35 +115,33 @@ class ReteFuenteController extends Controller
     {
         if ($request->ajax()) {
             $data = $request->all();
-            $retefuente = ReteFuente::findOrFail($id);
-            if ($retefuente->isValid($data)) {
+            $tipogasto = TipoGasto::findOrFail($id);
+            if ($tipogasto->isValid($data)) {
                 DB::beginTransaction();
                 try {
-                    // ReteFuente
-                    $retefuente->fill($data);
-                    $retefuente->fillBoolean($data);
+                    // TipoGasto
+                    $tipogasto->fill($data);
+                    $tipogasto->fillBoolean($data);
                     
-                    $plancuenta = PlanCuenta::where('plancuentas_cuenta',$request->retefuente_plancuentas)->first();
+                    $plancuenta = PlanCuenta::where('plancuentas_cuenta',$request->tipogasto_plancuentas)->first();
                     if (!$plancuenta instanceof PlanCuenta) {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar plan de cuentas, por favor verifique información o consulte con el administrador']);
                     }
-                    $retefuente->retefuente_plancuentas = $plancuenta->id;
-                    $retefuente->save();
+                    $tipogasto->tipogasto_plancuentas = $plancuenta->id;
+                    $tipogasto->save();
 
                     // Commit Transaction
                     DB::commit();
                     
                     // Forget cache
-                    Cache::forget( ReteFuente::$key_cache ); 
-                    return response()->json(['success' => true, 'id' =>$retefuente->id]);                     
+                    Cache::forget( TipoGasto::$key_cache ); 
+                    return response()->json(['success' => true, 'id' =>$tipogasto->id]); 
                 } catch (\Exception $e) {
-                    DB::rollback();
-                    Log::error($e->getMessage());
-                    return response()->json(['success' => false, 'errors' => trans('app.exception')]);
+                    
                 }
             }
-            return response()->json(['success' => false, 'errors' => $retefuente->errors]);
+            return response()->json(['success' => false, 'errors' => $tipogasto->errors]);
         }
         abort(403);
     }

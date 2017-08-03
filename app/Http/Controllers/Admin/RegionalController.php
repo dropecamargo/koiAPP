@@ -61,7 +61,6 @@ class RegionalController extends Controller
                     DB::commit();
                     // Forget cache
                     Cache::forget( Regional::$key_cache );
-
                     return response()->json(['success' => true, 'id' =>$regional->id]);
                 }catch(\Exception $e){
                     DB::rollback();

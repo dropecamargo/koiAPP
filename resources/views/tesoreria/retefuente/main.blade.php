@@ -33,7 +33,7 @@
                             <i class="fa fa-tasks"></i>
                         </button>
                     </span>
-                    <input id="retefuente_plancuentas" placeholder="Cuenta" class="form-control plancuenta-koi-component" name="retefuente_plancuentas" type="text" maxlength="15" data-wrapper="asientos-create" data-name="retefuente_cuenta_nombre" value="<%- plancuentas_cuenta %>">
+                    <input id="retefuente_plancuentas" placeholder="Cuenta" class="form-control plancuenta-koi-component" name="retefuente_plancuentas" type="text" maxlength="15" data-name="retefuente_cuenta_nombre" value="<%- plancuentas_cuenta %>">
                 </div>
             </div>
             <div class="col-sm-6 col-md-4"><br>

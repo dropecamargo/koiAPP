@@ -35,5 +35,21 @@
                 </label>
             </div>
         </div>
+        <div class="row">
+            <div class="form-group col-sm-6 col-md-2">
+                <label for="impuesto_plancuentas" class="control-label text-right">Cuenta</label>
+                <div class="input-group input-group-sm">
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default btn-flat btn-koi-search-plancuenta-component" data-field="impuesto_plancuentas">
+                            <i class="fa fa-tasks"></i>
+                        </button>
+                    </span>
+                    <input id="impuesto_plancuentas" placeholder="Cuenta" class="form-control plancuenta-koi-component" name="impuesto_plancuentas" type="text" maxlength="15" data-name="impuesto_cuenta_nombre" value="<%- plancuentas_cuenta %>">
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-4"><br>
+                <input id="impuesto_cuenta_nombre" name="impuesto_cuenta_nombre" placeholder="Nombre cuenta" class="form-control input-sm" type="text" value="<%- plancuentas_nombre %>" maxlength="15" disabled>
+            </div>
+        </div>
     </script>
 @stop

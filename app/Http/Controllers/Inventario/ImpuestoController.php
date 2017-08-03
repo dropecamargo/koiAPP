@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Inventario\Impuesto;
+use App\Models\Contabilidad\PlanCuenta;
 use DB, Log, Datatables, Cache;
 
 class ImpuestoController extends Controller
@@ -53,8 +54,16 @@ class ImpuestoController extends Controller
                     // Impuestos
                     $impuesto->fill($data);
                     $impuesto->fillBoolean($data);
-                    $impuesto->save();
 
+                    if ($request->has('impuesto_plancuentas')) {
+                        $plancuenta = PlanCuenta::where('plancuentas_cuenta',$request->impuesto_plancuentas)->first();
+                        if (!$plancuenta instanceof PlanCuenta) {
+                            DB::rollback();
+                            return response()->json(['success' => false, 'errors' => 'No es posible recuperar plan de cuenta por favor verifique información o consulte con el administrador']);
+                        }
+                        $impuesto->impuesto_plancuentas = $plancuenta->id;
+                    }
+                    $impuesto->save();
                     // Commit Transaction
                     DB::commit();
                     //Forget cache
@@ -81,7 +90,7 @@ class ImpuestoController extends Controller
      */
     public function show(Request $request, $id)
     {
-        $impuesto = Impuesto::findOrFail($id);
+        $impuesto = Impuesto::getImpuesto($id);
         if ($request->ajax()) {
             return response()->json($impuesto);
         }
@@ -115,10 +124,20 @@ class ImpuestoController extends Controller
             if ($impuesto->isValid($data)) {
                 DB::beginTransaction();
                 try {
-                    // marca
+                    // Impuestos
                     $impuesto->fill($data);
                     $impuesto->fillBoolean($data);
+
+                    if ($request->has('impuesto_plancuentas')) {
+                        $plancuenta = PlanCuenta::where('plancuentas_cuenta',$request->impuesto_plancuentas)->first();
+                        if (!$plancuenta instanceof PlanCuenta) {
+                            DB::rollback();
+                            return response()->json(['success' => false, 'errors' => 'No es posible recuperar plan de cuenta por favor verifique información o consulte con el administrador']);
+                        }
+                        $impuesto->impuesto_plancuentas = $plancuenta->id;
+                    }
                     $impuesto->save();
+                    
                     // Commit Transaction
                     DB::commit();
                     

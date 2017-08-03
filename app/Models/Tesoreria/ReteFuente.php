@@ -65,4 +65,11 @@ class ReteFuente extends BaseModel
            
         });
     }
+    public static function getRetencionFuente($id){
+        $retefuente = ReteFuente::query();
+        $retefuente->select('retefuente.*', 'plancuentas_cuenta','plancuentas_nombre');
+        $retefuente->join('plancuentas', 'retefuente_plancuentas','=','plancuentas.id');
+        $retefuente->where('retefuente.id', $id);
+        return $retefuente->first();
+    }
 }

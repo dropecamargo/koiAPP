@@ -1,5 +1,5 @@
 /**
-* Class ImpuestoModel extend of Backbone Model
+* Class TipoGastoModel extend of Backbone Model
 * @author KOI || @dropecamargo
 * @link http://koi-ti.com
 */
@@ -9,16 +9,15 @@ app || (app = {});
 
 (function (window, document, undefined) {
 
-    app.ImpuestoModel = Backbone.Model.extend({
+    app.TipoGastoModel = Backbone.Model.extend({
 
         urlRoot: function () {
-            return window.Misc.urlFull( Route.route('impuestos.index') );
+            return window.Misc.urlFull( Route.route('tipogastos.index') );
         },
         idAttribute: 'id',
         defaults: {
-            'impuesto_nombre': '',
-            'impuesto_porcentaje': '',
-            'impuesto_activo': 1,
+            'tipogasto_nombre': '',
+            'tipogasto_activo': 1,
             'plancuentas_cuenta': '',
             'plancuentas_nombre': ''
         }

@@ -15,10 +15,21 @@
                 </div>
             </div>
             <div class="row">
-                <div class="form-group col-md-8">
+                <div class="form-group col-md-5">
                     <label class="control-label">Nombre</label>
                     <div>{{ $impuesto->impuesto_nombre }}</div>
                 </div>
+                <div class="form-group col-md-3">
+                    <label class="control-label">Plan cuenta</label>
+                    <div>{{ $impuesto->plancuentas_cuenta}} - {{ $impuesto->plancuentas_nombre }}</div>
+                </div>
+                <div class="form-group col-md-1">
+                    <label class="control-label">Porcentaje %</label>
+                    <div>{{ $impuesto->impuesto_porcentaje }}</div>
+                </div>
+            </div>
+            <div class="row">
+
                 <div class="form-group col-md-2 col-xs-8 col-sm-3">
                     <label class="checkbox-inline" for="impuestos_activo">
                         <input type="checkbox" id="impuestos_activo" name="impuestos_activo" value="impuestos_activo" disabled {{ $impuesto->impuesto_activo ? 'checked': '' }}> Activo

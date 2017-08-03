@@ -311,9 +311,20 @@ app || (app = {});
             | Tesoreria
             |----------------------
             */
+            // Retefuente
             'retefuentes(/)': 'getReteFuentesMain',
             'retefuentes/create(/)': 'getReteFuenteCreate',
             'retefuentes/:retefuentes/edit(/)': 'getReteFuenteEdit',
+
+            // Tipo Proveedor
+            'tipoproveedores(/)': 'getTipoProveedoresMain',
+            'tipoproveedores/create(/)': 'getTipoProveedorCreate',
+            'tipoproveedores/:tipoproveedores/edit(/)': 'getTipoProveedorEdit',
+
+            // Tipo Gasto
+            'tipogastos(/)': 'getTipoGastosMain',
+            'tipogastos/create(/)': 'getTipoGastoCreate',
+            'tipogastos/:tipogastos/edit(/)': 'getTipoGastoEdit',
         },
 
         /**
@@ -2672,17 +2683,85 @@ app || (app = {});
             this.createReteFuenteView.render();
         },
 
-        // getConceptoTecEdit: function (conceptotecnico) {
-        //     this.reteFuenteModel = new app.ConceptoTecModel();
-        //     this.reteFuenteModel.set({'id': conceptotecnico}, {'silent':true});
+        getReteFuenteEdit: function (retefuentes) {
+            this.reteFuenteModel = new app.ReteFuenteModel();
+            this.reteFuenteModel.set({'id': retefuentes}, {'silent':true});
 
-        //     if ( this.createReteFuenteView instanceof Backbone.View ){
-        //         this.createReteFuenteView.stopListening();
-        //         this.createReteFuenteView.undelegateEvents();
-        //     }
+            if ( this.createReteFuenteView instanceof Backbone.View ){
+                this.createReteFuenteView.stopListening();
+                this.createReteFuenteView.undelegateEvents();
+            }
 
-        //     this.createReteFuenteView = new app.CreateReteFuenteView({ model: this.reteFuenteModel });
-        //     this.reteFuenteModel.fetch();
-        // },
+            this.createReteFuenteView = new app.CreateReteFuenteView({ model: this.reteFuenteModel });
+            this.reteFuenteModel.fetch();
+        },
+        getTipoProveedoresMain: function () {
+
+            if ( this.mainTipoProveedoresView instanceof Backbone.View ){
+                this.mainTipoProveedoresView.stopListening();
+                this.mainTipoProveedoresView.undelegateEvents();
+            }
+
+            this.mainTipoProveedoresView = new app.MainTipoProveedorView( );
+        },
+
+        getTipoProveedorCreate: function () {
+            this.tipoProveedorModel = new app.TipoProveedorModel();
+
+            if ( this.createTipoProveedorView instanceof Backbone.View ){
+                this.createTipoProveedorView.stopListening();
+                this.createTipoProveedorView.undelegateEvents();
+            }
+
+            this.createTipoProveedorView = new app.CreateTipoProveedorView({ model: this.tipoProveedorModel });
+            this.createTipoProveedorView.render();
+        },
+
+        getTipoProveedorEdit: function (tipoproveedores) {
+            this.tipoProveedorModel = new app.TipoProveedorModel();
+            this.tipoProveedorModel.set({'id': tipoproveedores}, {'silent':true});
+
+            if ( this.createTipoProveedorView instanceof Backbone.View ){
+                this.createTipoProveedorView.stopListening();
+                this.createTipoProveedorView.undelegateEvents();
+            }
+
+            this.createTipoProveedorView = new app.CreateTipoProveedorView({ model: this.tipoProveedorModel });
+            this.tipoProveedorModel.fetch();
+        },
+        getTipoGastosMain: function () {
+
+            if ( this.mainTipoGastosView instanceof Backbone.View ){
+                this.mainTipoGastosView.stopListening();
+                this.mainTipoGastosView.undelegateEvents();
+            }
+
+            this.mainTipoGastosView = new app.MainTipoGastoView( );
+        },
+
+        getTipoGastoCreate: function () {
+            this.tipoGastoModel = new app.TipoGastoModel();
+
+            if ( this.createTipoGastoView instanceof Backbone.View ){
+                this.createTipoGastoView.stopListening();
+                this.createTipoGastoView.undelegateEvents();
+            }
+
+            this.createTipoGastoView = new app.CreateTipoGastoView({ model: this.tipoGastoModel });
+            this.createTipoGastoView.render();
+        },
+
+        getTipoGastoEdit: function (tipogasto) {
+            this.tipoGastoModel = new app.TipoGastoModel();
+            this.tipoGastoModel.set({'id': tipogasto}, {'silent':true});
+
+            if ( this.createTipoGastoView instanceof Backbone.View ){
+                this.createTipoGastoView.stopListening();
+                this.createTipoGastoView.undelegateEvents();
+            }
+
+            this.createTipoGastoView = new app.CreateTipoGastoView({ model: this.tipoGastoModel });
+            this.tipoGastoModel.fetch();
+        },
     }));
 })(jQuery, this, this.document);
