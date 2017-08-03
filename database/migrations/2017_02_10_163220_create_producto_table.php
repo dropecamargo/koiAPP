@@ -43,6 +43,9 @@ class CreateProductoTable extends Migration
             $table->double('producto_precio2')->default(0);
             $table->double('producto_precio3')->default(0);
             $table->integer('producto_impuesto')->unsigned();
+            $table->integer('producto_tercero')->unsigned();
+            $table->integer('producto_contacto')->unsigned();
+            $table->date('producto_vencimiento');
 
             $table->foreign('producto_unidadnegocio')->references('id')->on('unidadnegocio')->onDelete('restrict');
             $table->foreign('producto_unidadmedida')->references('id')->on('unidadmedida')->onDelete('restrict');
@@ -53,6 +56,8 @@ class CreateProductoTable extends Migration
             $table->foreign('producto_modelo')->references('id')->on('modelo')->onDelete('restrict');
             $table->foreign('producto_impuesto')->references('id')->on('impuesto')->onDelete('restrict');
             $table->foreign('producto_servicio')->references('id')->on('servicio')->onDelete('restrict');
+            $table->foreign('producto_tercero')->references('id')->on('tercero')->onDelete('restrict');
+            $table->foreign('producto_contacto')->references('id')->on('tcontacto')->onDelete('restrict');
         });
     }
 

@@ -54,7 +54,7 @@
                                     <div class="col-md-6">
                                         {{ number_format($producto->producto_precio2, 2, '.', ',') }}
                                     </div>
-                                </div> 
+                                </div>
                                 <div class="form-group col-md-12">
                                     <div class="col-md-4">
                                         <label class="control-label">Precio Crédito:</label>
@@ -83,7 +83,7 @@
                                                 <th>Disponible</th>
                                                 <th>Reservadas</th>
                                             </tr>
-                                            
+
                                             @if( count($prodbode) == 0 )
                                                 <tr>
                                                     <th colspan="3" class="text-center">NO EXISTEN UNIDADES EN INVENTARIO</th>
@@ -162,7 +162,7 @@
                                                     <th colspan="3" class="text-center">NO EXISTEN UNIDADES EN INVENTARIO</th>
                                                 </tr>
                                             @endif
-                                            
+
                                             @foreach( $prodbode as $item)
                                                 <tr>
                                                     <td>{{ $item->sucursal_nombre }}</td>
@@ -199,7 +199,7 @@
                                                     <th colspan="3" class="text-center">NO EXISTEN UNIDADES EN INVENTARIO</th>
                                                 </tr>
                                             @endif
-                                            
+
                                             @foreach( $prodbode as $item)
                                                 <tr>
                                                     <td>{{ $item->sucursal_nombre }}</td>
@@ -261,7 +261,7 @@
                                 <label class="control-label">Marca</label>
                             </div>
                             <div class="col-md-7">
-                                {{ $producto->marca_nombre}} 
+                                {{ $producto->marca_nombre}}
                             </div>
                         </div>
                         <div class="form-group col-md-12">
@@ -418,6 +418,55 @@
                         </div>
                     </div>
                 </div>
+                @if( $producto->producto_maneja_serie && $producto->producto_serie != $producto->producto_referencia )
+                  <div class="box box-solid collapsed-box">
+                      <div class="box-header">
+                          <h1 class="box-title">Informacion de la maquina</h1>
+                          <div class="box-tools pull-right">
+                              <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
+                          </div>
+                      </div>
+                      <div class="box-body">
+                        <div class="row">
+                          <div class="col-md-4">
+                              <label class="control-label">Tercero</label>
+                          </div>
+                          <div class="col-md-7">
+                              {{ $producto->tercero_nit }} - {{ $producto->tercero_nombre }}
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-4">
+                              <label class="control-label">Contacto</label>
+                          </div>
+                          <div class="col-md-7">
+                              {{ $producto->tcontacto_nombre }}
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-4">
+                              <label class="control-label">Servicio</label>
+                          </div>
+                          <div class="col-md-7">
+                              {{ $producto->servicio_nombre }}
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-4">
+                              <label class="control-label">Vencimiento</label>
+                          </div>
+                          <div class="col-md-7">
+                              {{ $producto->producto_vencimiento }}
+                          </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 col-md-offset-4">
+                                <a class="btn btn-block edit-info-machine">Editar inf. maquina</a>
+                            </div>
+                        </div>
+                      </div>
+                  </div>
+                @endif
             </div>
         </div>
 
@@ -432,4 +481,84 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal generic producto -->
+    <div class="modal fade" id="modal-producto-generic" data-backdrop="static" data-keyboard="false" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header small-box {{ config('koi.template.bg') }}">
+                    <button type="button" class="close icon-close-koi" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4><strong>Producto - Editar máquina</strong></h4>
+                </div>
+                {!! Form::open(['id' => 'form-generic-producto', 'data-toggle' => 'validator']) !!}
+                <div class="modal-body">
+                    <div class="content-modal">
+                    </div>
+                </div>
+                {!! Form::close() !!}
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary btn-sm submit-generic">Continuar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section id="producto-content-section">
+        <script type="text/template" id="edit-machine-tpl">
+            <div class="row">
+                <label for="producto_tercero" class="col-md-1 control-label">Cliente</label>
+                <div class="form-group col-md-3">
+                    <div class="input-group input-group-sm">
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default btn-flat btn-koi-search-tercero-component-table" data-field="producto_tercero">
+                                <i class="fa fa-user"></i>
+                            </button>
+                        </span>
+                        <input id="producto_tercero" placeholder="Cliente" class="form-control tercero-koi-component" name="producto_tercero" type="text" data-contacto="btn-add-contact" maxlength="15"  data-name="tercero_nombre" data-activo="true" value="<%- tercero_nit %>" required>
+                    </div>
+                </div>
+                <div class="col-md-8 col-xs-12">
+                    <input id="tercero_nombre" name="tercero_nombre" placeholder="Nombre cliente" class="form-control input-sm" type="text" maxlength="15" value="<%- tercero_nombre %>" readonly required>
+                </div>
+            </div>
+            <div class="row">
+                <label for="producto_contacto" class="col-sm-1 control-label">Contacto</label>
+                <div class="form-group col-md-3 col-sm-2 col-xs-10">
+                    <div class="input-group input-group-sm">
+                        <span class="input-group-btn">
+                            <button id="btn-add-contact" type="button" class="btn btn-default btn-flat btn-koi-search-contacto-component-table" data-field="producto_contacto" data-name="tcontacto_nombre" data-phone="tcontacto_telefono">
+                                <i class="fa fa-address-book"></i>
+                            </button>
+                        </span>
+                        <input id="tcontacto_nombre" placeholder="Contacto" data-tercero="<%- tercero_id %>" class="form-control" name="tcontacto_nombre" value="<%- tcontacto_nombre %>" type="text" readonly required>
+                    </div>
+                </div>
+                <div class="form-group col-sm-6">
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-phone"></i>
+                        </div>
+                        <input id="tcontacto_telefono" class="form-control input-sm" placeholder="Telefono" name="tcontacto_telefono" value="<%- tcontacto_telefono %>" type="text" data-inputmask="'mask': '(999) 999-99-99'" data-mask readonly required>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <label for="producto_servicio" class="col-md-1 control-label">Servicio</label>
+                <div class="form-group col-sm-4">
+                    <select name="producto_servicio" id="producto_servicio" class="form-control select2-default">
+                        @foreach( App\Models\Inventario\Servicio::getServicios() as $key => $value)
+                            <option  value="{{ $key }}" <%- producto_servicio == '{{ $key }}' ? 'selected': ''%>>{{ $value }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <label for="producto_vencimiento" class="col-md-2 control-label">F. Vencimiento</label>
+                <div class="form-group col-md-3">
+                    <input type="text" id="producto_vencimiento" name="producto_vencimiento" class="form-control input-sm datepicker" value="<%- producto_vencimiento %>" required>
+                </div>
+            </div>
+        </script>
+    </section>
 @stop

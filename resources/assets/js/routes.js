@@ -233,7 +233,7 @@ app || (app = {});
             'notas(/)': 'getNotasMain',
             'notas/create(/)': 'getNotasCreate',
             'notas/:notas(/)': 'getNotasShow',
-            
+
             'facturas(/)': 'getFacturasMain',
             'facturas/create(/)': 'getFacturaCreate',
             'facturas/:facturas(/)': 'getFacturaShow',
@@ -253,7 +253,7 @@ app || (app = {});
             'devoluciones(/)': 'getDevolucionesMain',
             'devoluciones/create(/)': 'getDevolucionesCreate',
             'devoluciones/:devoluciones(/)': 'getDevolucionesShow',
-    
+
             'anticipos(/)': 'getAnticiposMain',
             'anticipos/create(/)': 'getAnticipoCreate',
             'anticipos/:anticipos(/)': 'getAnticiposShow',
@@ -305,7 +305,7 @@ app || (app = {});
             'sitios/:sitios/edit(/)': 'getSitiosEdit',
 
             'agendatecnica(/)': 'getAgendaTecnicaMain',
-            
+
             /*
             |----------------------
             | Tesoreria
@@ -1470,6 +1470,7 @@ app || (app = {});
             }
 
             this.showProductoView = new app.ShowProductoView({ model: this.productoModel });
+            this.productoModel.fetch();
         },
 
         /**
@@ -1623,7 +1624,7 @@ app || (app = {});
             }
 
             this.showTrasladoView = new app.ShowTrasladoView({ model: this.trasladoModel });
-        }, 
+        },
         /**
         * show view main traslados ubicaciones
         */
@@ -1665,7 +1666,7 @@ app || (app = {});
             }
 
             this.showTrasladoUbicacionView = new app.ShowTrasladoUbicacionView({ model: this.trasladoUbicacionModel });
-        },        
+        },
 
         /**
         * show view main Autorizaciones Cartera
@@ -2223,7 +2224,7 @@ app || (app = {});
                 this.createDevolucionView.stopListening();
                 this.createDevolucionView.undelegateEvents();
             }
-            
+
             this.createDevolucionView = new app.CreateDevolucionView({ model: this.devolucionModel });
             this.createDevolucionView.render();
         },
@@ -2231,7 +2232,7 @@ app || (app = {});
         getDevolucionesShow:function(devoluciones){
             this.devolucionModel = new app.DevolucionModel();
             this.devolucionModel.set({'id': devoluciones}, {'silent':true});
-            
+
             if ( this.showDevolucionView instanceof Backbone.View ){
                 this.showDevolucionView.stopListening();
                 this.showDevolucionView.undelegateEvents();
@@ -2266,7 +2267,7 @@ app || (app = {});
                 this.showAnticipoView.stopListening();
                 this.showAnticipoView.undelegateEvents();
             }
-            
+
             this.showAnticipoView = new app.ShowAnticiposView({ model: this.anticipoModel });
         },
 
@@ -2300,7 +2301,7 @@ app || (app = {});
                 this.showChequeView.stopListening();
                 this.showChequeView.undelegateEvents();
             }
-            
+
             this.showChequeView = new app.ShowChequeView({ model: this.chequeModel });
         },
         // Cheques Devueltos
@@ -2330,7 +2331,7 @@ app || (app = {});
             this.createGestionCobroView = new app.CreateGestionCobroView({ model: this.gestionCobroModel });
             this.createGestionCobroView.render();
         },
-        
+
         /*---------------------
         | Tecnicos
         /*--------------------*/

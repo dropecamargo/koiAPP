@@ -63,7 +63,13 @@ class Producto extends BaseModel
     public static function getProduct($id)
     {
         $query = Producto::query();
-        $query->select('producto.*', 'unidadmedida_sigla', 'unidadmedida_nombre','categoria_nombre','unidadnegocio_nombre','subcategoria_nombre','linea_nombre','modelo_nombre','marca_nombre','impuesto_nombre','impuesto_porcentaje');
+        $query->select('producto.*', 'unidadmedida_sigla', 'unidadmedida_nombre','categoria_nombre','unidadnegocio_nombre','subcategoria_nombre','linea_nombre','modelo_nombre','marca_nombre','impuesto_nombre','impuesto_porcentaje', 'tercero_nit',
+                DB::raw("(CASE WHEN tercero_persona = 'N'
+                    THEN CONCAT(tercero_nombre1,' ',tercero_nombre2,' ',tercero_apellido1,' ',tercero_apellido2,
+                            (CASE WHEN (tercero_razonsocial IS NOT NULL AND tercero_razonsocial != '') THEN CONCAT(' - ', tercero_razonsocial) ELSE '' END)
+                        )
+                    ELSE tercero_razonsocial END)
+                AS tercero_nombre"), DB::raw("CONCAT(tcontacto_nombres,' ',tcontacto_apellidos) AS tcontacto_nombre"), 'tcontacto_telefono','servicio_nombre');
         $query->join('unidadmedida','producto.producto_unidadmedida','=','unidadmedida.id');
         $query->join('unidadnegocio','producto.producto_unidadnegocio','=','unidadnegocio.id');
         $query->join('categoria','producto.producto_categoria','=','categoria.id');
@@ -71,6 +77,9 @@ class Producto extends BaseModel
         $query->join('linea','producto.producto_linea','=','linea.id');
         $query->join('marca','producto.producto_marca','=','marca.id');
         $query->join('modelo','producto.producto_modelo','=','modelo.id');
+        $query->leftJoin('tercero','producto.producto_tercero','=','tercero.id');
+        $query->leftJoin('tcontacto','producto.producto_contacto','=','tcontacto.id');
+        $query->leftJoin('servicio','producto.producto_servicio','=','servicio.id');
         $query->join('impuesto','producto.producto_impuesto','=','impuesto.id');
         $query->where('producto.id', $id);
         return $query->first();
