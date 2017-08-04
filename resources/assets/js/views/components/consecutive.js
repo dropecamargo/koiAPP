@@ -14,6 +14,7 @@ app || (app = {});
       	el: 'body',
 		events: {
             'change .change-sucursal-consecutive-koi-component': 'sucursalChange',
+            'change .change-regional-consecutive-koi-component': 'regionalChange',
             'change .change-puntoventa-consecutive-koi-component': 'puntoVentaChange'
 		},
 
@@ -100,7 +101,42 @@ app || (app = {});
                     alertify.error(thrownError);
                 });
             }
+        },
+        regionalChange: function (e){
+            var _this = this;
+                documents = $(e.currentTarget).attr("data-document");
+                regional = $(e.currentTarget).val();
+
+            // Reference to fields
+            this.$consecutive = $("#"+$(e.currentTarget).attr("data-field"));
+            this.$wrapperContent = $("#"+$(e.currentTarget).attr("data-wrapper"));
+
+            if (regional != '') {
+
+                $.ajax({
+                    url: window.Misc.urlFull(Route.route('regionales.show', {regionales: regional})),
+                    type: 'GET',
+                    beforeSend: function() {
+                        window.Misc.setSpinner( _this.$wrapperContent );
+                    }
+                })
+                .done(function(resp) {
+                    window.Misc.removeSpinner( _this.$wrapperContent );
+                    // Eval consecutive
+                    var consecutive = 0;
+
+                    if(documents == 'facturap') consecutive = resp.regional_fpro;
+
+                    // Set consecutive
+                    _this.$consecutive.val( parseInt(consecutive) + 1);
+                })
+                .fail(function(jqXHR, ajaxOptions, thrownError) {
+                    window.Misc.removeSpinner( _this.$wrapperContent );
+                    alertify.error(thrownError);
+                });
+            }
         }
+
     });
 
 

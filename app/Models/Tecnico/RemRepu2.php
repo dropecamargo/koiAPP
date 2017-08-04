@@ -18,7 +18,7 @@ class RemRepu2 extends Model
 
     public $timestamps = false;
 
-    
+
      /**
      * The attributes that are mass assignable.
      *
@@ -46,8 +46,8 @@ class RemRepu2 extends Model
         if(!$father instanceof Remrepu){
             return "No es posible recuperar remision, por favor verifique la informacion o consulte al administrador.";
         }
-        
-        // Recupero instancia de sucursal 
+
+        // Recupero instancia de sucursal
         $origen  = Sucursal::find($father->remrepu1_sucursal);
         if (!$origen instanceof Sucursal) {
             return 'No es posible recuperar la sucursal de origen, por favor verifique la información ó consulte al administrador.';
@@ -80,8 +80,8 @@ class RemRepu2 extends Model
             if(!$destino instanceof Sucursal) {
                 return 'No es posible recuperar la sucursal de destino, por favor verifique la información ó consulte al administrador.';
             }
-            
-            // Recuperar instancia de producto 
+
+            // Recuperar instancia de producto
             $producto = Producto::find($remrepu2->remrepu2_producto);
             if(!$producto instanceof Producto) {
                 return 'No es posible recuperar el producto, por favor verifique la información ó consulte al administrador.';
@@ -92,9 +92,14 @@ class RemRepu2 extends Model
             if(!$documento instanceof Documentos) {
                 return 'No es posible recuperar documentos, por favor verifique la información ó por favor consulte al administrador.';
             }
+            //Recuperar lote & ubicacion
+            $lote = Lote::where('lote_serie', $producto->id)->where('lote_sucursal', $origen->id)->where('lote_saldo', '>' , '0')->first();
+            if(!$lote instanceof Lote){
+                return 'No es posible recuperar el lote, por favor verifique la información ó por favor consulte al administrador.';
+            }
 
             // Detalle traslado Prodbode origen y destino
-            $prodbodeOrigen = Prodbode::actualizar($producto, $origen->id, 'S', $devuelto, null);
+            $prodbodeOrigen = Prodbode::actualizar($producto, $origen->id, 'S', $devuelto, $lote->lote_ubicacion);
             if(!$prodbodeOrigen instanceof Prodbode) {
                 return $prodbodeOrigen;
             }
@@ -104,10 +109,6 @@ class RemRepu2 extends Model
                 return $prodbodeDestino;
             }
 
-            $lote = Lote::where('lote_serie', $producto->id)->where('lote_sucursal', $origen->id)->first();
-            if(!$lote instanceof Lote){
-                return 'No es posible recuperar el lote, por favor verifique la información ó por favor consulte al administrador.';
-            }
 
             if ( $producto->producto_maneja_serie == false && $producto->producto_vence == false && $producto->producto_metrado == false && $producto->producto_unidad == true ) {
                 if ($devuelto > 0) {
@@ -118,8 +119,8 @@ class RemRepu2 extends Model
                     }
 
                     // Inventario
-                    $inventario = Inventario::movimiento($producto, $origen->id, $lote->lote_ubicacion, 'REMR', 0, 0, $devuelto, 0, 0, 0, 0, $lote->id, 0);
-                    if (!$inventario instanceof Inventario) {
+                    $inventario = Inventario::movimiento($producto, $origen->id, $lote->lote_ubicacion, 'REMR', $item->id, 0, $devuelto, [], [], 0, 0,$lote->id, []);
+                    if ($inventario != 'OK') {
                         return $inventario;
                     }
 
@@ -131,18 +132,18 @@ class RemRepu2 extends Model
                         return $result;
                     }
                     // Inventario
-                    $inventario = Inventario::movimiento($producto, $destino->id, $destino->sucursal_defecto, 'REMR', 0, $devuelto, 0, 0, 0, 0, 0, $lote->id, 0);
-                    if (!$inventario instanceof Inventario) {
+                    $inventario = Inventario::movimiento($producto, $destino->id, $destino->sucursal_defecto, 'REMR', $item->id, $devuelto, 0, [], [], 0, 0, $lote->id, []);
+                    if ($inventario != 'OK') {
                         return $inventario;
                     }
                 }
             }
         }
 
-        // Update sucursal_remr 
+        // Update sucursal_remr
         $origen->sucursal_remr = $consecutive;
         $origen->save();
-        
+
         return 'OK';
     }
 }

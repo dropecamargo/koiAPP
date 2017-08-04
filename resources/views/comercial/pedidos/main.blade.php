@@ -30,7 +30,7 @@
                         </select>
                     </div>
                     <label for="pedidoc1_numero" class="col-sm-1 col-md-1 control-label">Número</label>
-                    <div class="form-group col-sm-1 col-md-1">     
+                    <div class="form-group col-sm-1 col-md-1">
                         <input id="pedidoc1_numero" name="pedidoc1_numero" class="form-control input-sm" type="number" min="1" value="<%- pedidoc1_numero %>" required readonly>
                     </div>
                     <label for="pedidoc1_fecha" class="col-sm-1 col-md-1 control-label">Fecha</label>
@@ -52,7 +52,7 @@
                     </div>
                     <div class="col-sm-4 col-xs-12">
                         <input id="pedidoc1_terecero_nombre" name="pedidoc1_terecero_nombre" placeholder="Nombre cliente" class="form-control input-sm" type="text" maxlength="15" value="<%- tercero_nombre %>" readonly required>
-                    </div>  
+                    </div>
                     <div class="col-sm-4 col-xs-12">
                         <input id="tercero_direccion" name="tercero_direccion" placeholder="Dirección cliente" class="form-control input-sm" type="text" readonly required>
                     </div>
@@ -69,7 +69,7 @@
                             <input id="pedidoc1_contacto" name="pedidoc1_contacto" type="hidden" value="<%- pedidoc1_contacto %>">
                             <input id="tcontacto_nombre" placeholder="Contacto" class="form-control" name="tcontacto_nombre" type="text" value="<%- contacto_nombre %>" readonly required>
                         </div>
-                    </div>  
+                    </div>
                     <label for="tcontacto_direccion" class="col-sm-2 control-label"> Dirección de despacho</label>
                     <div class="col-sm-4 col-xs-12">
                         <input id="tcontacto_direccion" name="tcontacto_direccion" placeholder="Direccion contacto" class="form-control input-sm" type="text" readonly required>
@@ -83,14 +83,14 @@
                                 <option value="{{ $key }}" <%- pedidoc1_formapago == '{{ $key }}' ? 'selected': ''%>>{{ $value }}</option>
                             @endforeach
                         </select>
-                    </div>                                           
+                    </div>
                     <label for="pedidoc1_plazo" class="col-sm-1 col-md-1 control-label">Plazo</label>
-                    <div class="form-group col-sm-1 col-md-1">     
+                    <div class="form-group col-sm-1 col-md-1">
                         <input id="pedidoc1_plazo" name="pedidoc1_plazo" class="form-control input-sm" type="number" min="0"  required>
                     </div>
 
                     <label for="pedidoc1_cuotas" class="col-sm-1 col-md-1 control-label">Cuotas</label>
-                    <div class="form-group col-sm-1 col-md-1">     
+                    <div class="form-group col-sm-1 col-md-1">
                         <input id="pedidoc1_cuotas   " name="pedidoc1_cuotas" class="form-control input-sm" type="number" min="0" required>
                     </div>
 
@@ -173,7 +173,7 @@
                                     <i class="fa fa-barcode"></i>
                                 </button>
                             </span>
-                            <input id="producto_serie" placeholder="Serie" class="form-control producto-koi-component" name="producto_serie" type="text" maxlength="15" data-wrapper="pedidosc-create" data-name="producto_nombre" data-ref="false" data-price="pedidoc2_costo" data-office = "pedidoc1_sucursal"; required> 
+                            <input id="producto_serie" placeholder="Serie" class="form-control producto-koi-component" name="producto_serie" type="text" maxlength="15" data-wrapper="pedidosc-create" data-name="producto_nombre" data-ref="false" data-price="pedidoc2_costo" data-office = "pedidoc1_sucursal"; required>
                         </div>
                     </div>
                     <div class="form-group col-sm-4">
@@ -207,8 +207,8 @@
                         <label class="radio-inline without-padding">
                             <input type="radio" id="desc_value" class="desc" name="radio_naturaleza_descuento"> <b>Valor</b>
                         </label>
-                    </div> 
-                        
+                    </div>
+
                     <div class="form-group col-xs-8 col-md-2 col-sm-2">
                         <input type="text" id="pedidoc2_precio_venta" name="pedidoc2_precio_venta" value="0" class="form-control input-sm desc-finally" data-currency-price required>
                     </div>
@@ -216,7 +216,7 @@
                         <label class="radio-inline without-padding">
                             <input type="radio" id="desc_finally" class="desc" name="radio_naturaleza_descuento"> <b>Final</b>
                         </label>
-                    </div> 
+                    </div>
                     <label class="col-xs-12 col-md-1 col-sm-1 control-label">Iva</label>
                     <div class="form-group col-md-1 col-sm-1">
                         <input type="text" class="input-sm form-control spinner-percentage" min="0" id="pedidoc2_iva_porcentaje" name="pedidoc2_iva_porcentaje" required>
@@ -239,7 +239,7 @@
                 </a>
             </td>
         <% } %>
-            
+
         <td><%- producto_serie %></td>
         <td><%- producto_nombre %></td>
         <td><%- pedidoc2_cantidad %></td>

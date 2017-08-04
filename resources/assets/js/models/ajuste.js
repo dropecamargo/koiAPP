@@ -16,9 +16,9 @@ app || (app = {});
         },
         idAttribute: 'id',
         defaults: {
-            'ajuste1_fecha': moment().format('YYYY-MM-DD'),   
-        	'ajuste1_numero': '',	
-        	'ajuste1_documentos': '',	
+            'ajuste1_fecha': moment().format('YYYY-MM-DD'),
+            'ajuste1_numero': '',
+      	    'ajuste1_documentos': '',
             'ajuste1_sucursal': '',
             'ajuste1_tipoajuste': '',
             'ajuste1_observaciones': '',

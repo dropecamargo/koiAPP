@@ -37,7 +37,7 @@ class ProductoController extends Controller
                     // Serie
                     if($request->has('producto_serie')) {
                         $query->whereRaw("producto_serie LIKE '%{$request->producto_serie}%'");
-                    } 
+                    }
                     //Referencia
                     if($request->has('producto_referencia')) {
                         $query->whereRaw("producto_serie LIKE '%{$request->producto_referencia}%'");
@@ -123,7 +123,7 @@ class ProductoController extends Controller
                     $producto->fill($data);
                     $producto->producto_impuesto = $impuesto->id;
                     $producto->fillBoolean($data);
-                    $producto->save();  
+                    $producto->save();
 
                     // Commit Transaction
                     DB::commit();
@@ -186,7 +186,7 @@ class ProductoController extends Controller
             if ($producto->isValid($data)) {
                 if($producto->producto_serie != $producto->producto_referencia ) {
                     return response()->json(['success' => false, 'errors' => 'No es posible editar una serie, por favor verifique información o consulte con el administrador.']);
-                }   
+                }
                 DB::beginTransaction();
                 try {
                     // Producto
@@ -224,7 +224,7 @@ class ProductoController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function evaluate(Request $request)
-    {       
+    {
         $tipoMovimiento = '';
         // Prepare response
         $response = new \stdClass();
@@ -233,9 +233,9 @@ class ProductoController extends Controller
         $response->success = false;
         if ($request->has('tipoajuste')) {
             $tipoajuste = TipoAjuste::find($request->tipoajuste);
-            if (!$tipoajuste instanceof TipoAjuste) {            
+            if (!$tipoajuste instanceof TipoAjuste) {
                 $response->errors = "No es posible recuperar TIPO AJUSTE,verifique información ó por favor consulte al administrador.";
-            }  
+            }
             $tipoMovimiento = $tipoajuste->tipoajuste_tipo;
         }else{
             $tipoMovimiento = $request->tipo;
@@ -250,25 +250,25 @@ class ProductoController extends Controller
             if($tipoMovimiento == 'E'){
                 if ($producto->producto_maneja_serie == true) {
                     $action = 'modalSerie';
-                    $response->action = $action;   
+                    $response->action = $action;
                     $response->tipo = $tipoMovimiento;
                     $response->success = true;
                 }elseif($producto->producto_metrado == true){
                     $action = 'ProductoMetrado';
-                    $response->action = $action;   
+                    $response->action = $action;
                     $response->tipo = $tipoMovimiento;
                     $response->success = true;
                 }elseif($producto->producto_vence == true){
                     $action = 'ProductoVence';
-                    $response->action = $action;   
+                    $response->action = $action;
                     $response->tipo = $tipoMovimiento;
                     $response->success = true;
                 }else{
                     $action = 'NoSerieNoMetros';
-                    $response->action = $action;   
+                    $response->action = $action;
                     $response->tipo = $tipoMovimiento;
                     $response->success = true;
-                }  
+                }
             }else{
                 $productoBode = Prodbode::where('prodbode_serie', $producto->id)->where('prodbode_sucursal' ,$request->sucursal)->where('prodbode_cantidad','>', 0)->orWhere('prodbode_metros','>', 0)->first();
                 if ($productoBode instanceof Prodbode) {
@@ -276,34 +276,34 @@ class ProductoController extends Controller
                         if ($producto->producto_maneja_serie == true) {
                             //Salidas Series
                             $action = 'modalSerie';
-                            $response->action = $action;   
+                            $response->action = $action;
                             $response->tipo = $tipoMovimiento;
                             $response->success = true;
                         }elseif($producto->producto_metrado == true){
                             $action = 'ProductoMetrado';
-                            $response->action = $action;   
+                            $response->action = $action;
                             $response->tipo = $tipoMovimiento;
                             $response->success = true;
                         }elseif($producto->producto_vence == true){
                             $action = 'ProductoVence';
-                            $response->action = $action;   
+                            $response->action = $action;
                             $response->tipo = $tipoMovimiento;
                             $response->success = true;
                         }else{
                             $action = 'NoSerieNoMetros';
-                            $response->action = $action;   
+                            $response->action = $action;
                             $response->tipo = $tipoMovimiento;
                             $response->success = true;
-                        }   
+                        }
                     }else{
                         $response->errors = "No hay unidades en BODEGA de esta SUCURSAL,verifique información ó por favor consulte al administrador.";
                         $response->success = false;
-                    }            
+                    }
                 }else{
                     $response->errors = "No es posible recuperar PRODUCTO en PRODBODE,verifique información ó por favor consulte al administrador.";
                     $response->success = false;
                 }
-            }  
+            }
         }else{
             $response->errors = "No es posible realizar movimientos para productos que no manejan unidades";
             $response->success = false;
@@ -323,7 +323,7 @@ class ProductoController extends Controller
         $response->success = false;
         $response->asiento2_valor = $request->asiento2_valor;
 
-       
+
         $response->errors = 'No es posible definir acción a validar, por favor verifique la información del asiento o consulte al administrador.';
         return response()->json($response);
     }

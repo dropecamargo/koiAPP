@@ -61,6 +61,7 @@ app || (app = {});
             this.$divDetalle.empty().html( this.templateDetailt( ) );
             
             this.$formDetalle = this.$('#form-detalle-pedidoc');
+            
             //Reference views
             this.referenceViews();
         },

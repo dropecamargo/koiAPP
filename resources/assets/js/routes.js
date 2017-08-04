@@ -233,7 +233,7 @@ app || (app = {});
             'notas(/)': 'getNotasMain',
             'notas/create(/)': 'getNotasCreate',
             'notas/:notas(/)': 'getNotasShow',
-            
+
             'facturas(/)': 'getFacturasMain',
             'facturas/create(/)': 'getFacturaCreate',
             'facturas/:facturas(/)': 'getFacturaShow',
@@ -253,7 +253,7 @@ app || (app = {});
             'devoluciones(/)': 'getDevolucionesMain',
             'devoluciones/create(/)': 'getDevolucionesCreate',
             'devoluciones/:devoluciones(/)': 'getDevolucionesShow',
-    
+
             'anticipos(/)': 'getAnticiposMain',
             'anticipos/create(/)': 'getAnticipoCreate',
             'anticipos/:anticipos(/)': 'getAnticiposShow',
@@ -305,12 +305,18 @@ app || (app = {});
             'sitios/:sitios/edit(/)': 'getSitiosEdit',
 
             'agendatecnica(/)': 'getAgendaTecnicaMain',
-            
+
             /*
             |----------------------
             | Tesoreria
             |----------------------
             */
+            // Facturap
+            'facturasp(/)': 'getFacturaspMain',
+            'facturasp/create(/)': 'getFacturapCreate',
+            'facturasp/:facturasp(/)': 'getFacturapShow',
+            'facturasp/:facturasp/edit(/)': 'getFacturapEdit',
+
             // Retefuente
             'retefuentes(/)': 'getReteFuentesMain',
             'retefuentes/create(/)': 'getReteFuenteCreate',
@@ -1481,6 +1487,7 @@ app || (app = {});
             }
 
             this.showProductoView = new app.ShowProductoView({ model: this.productoModel });
+            this.productoModel.fetch();
         },
 
         /**
@@ -1634,7 +1641,7 @@ app || (app = {});
             }
 
             this.showTrasladoView = new app.ShowTrasladoView({ model: this.trasladoModel });
-        }, 
+        },
         /**
         * show view main traslados ubicaciones
         */
@@ -1676,7 +1683,7 @@ app || (app = {});
             }
 
             this.showTrasladoUbicacionView = new app.ShowTrasladoUbicacionView({ model: this.trasladoUbicacionModel });
-        },        
+        },
 
         /**
         * show view main Autorizaciones Cartera
@@ -2234,7 +2241,7 @@ app || (app = {});
                 this.createDevolucionView.stopListening();
                 this.createDevolucionView.undelegateEvents();
             }
-            
+
             this.createDevolucionView = new app.CreateDevolucionView({ model: this.devolucionModel });
             this.createDevolucionView.render();
         },
@@ -2242,7 +2249,7 @@ app || (app = {});
         getDevolucionesShow:function(devoluciones){
             this.devolucionModel = new app.DevolucionModel();
             this.devolucionModel.set({'id': devoluciones}, {'silent':true});
-            
+
             if ( this.showDevolucionView instanceof Backbone.View ){
                 this.showDevolucionView.stopListening();
                 this.showDevolucionView.undelegateEvents();
@@ -2277,7 +2284,7 @@ app || (app = {});
                 this.showAnticipoView.stopListening();
                 this.showAnticipoView.undelegateEvents();
             }
-            
+
             this.showAnticipoView = new app.ShowAnticiposView({ model: this.anticipoModel });
         },
 
@@ -2311,7 +2318,7 @@ app || (app = {});
                 this.showChequeView.stopListening();
                 this.showChequeView.undelegateEvents();
             }
-            
+
             this.showChequeView = new app.ShowChequeView({ model: this.chequeModel });
         },
         // Cheques Devueltos
@@ -2341,7 +2348,7 @@ app || (app = {});
             this.createGestionCobroView = new app.CreateGestionCobroView({ model: this.gestionCobroModel });
             this.createGestionCobroView.render();
         },
-        
+
         /*---------------------
         | Tecnicos
         /*--------------------*/
@@ -2490,16 +2497,6 @@ app || (app = {});
             this.prioridadModel.fetch();
         },
 
-        //Contratos
-        getContratosMain: function(){
-            if ( this.mainContratoView instanceof Backbone.View ){
-                this.mainContratoView.stopListening();
-                this.mainContratoView.undelegateEvents();
-            }
-            this.mainContratoView = new app.MainContratosView( );
-
-        },
-
         /**
         * show view main ordenes
         */
@@ -2528,6 +2525,20 @@ app || (app = {});
         },
 
         /**
+        * show view show tercero
+        */
+        getOrdenesShow: function (orden) {
+            this.ordenModel = new app.OrdenModel();
+            this.ordenModel.set({'id': orden}, {silent: true});
+
+            if ( this.showOrdenView instanceof Backbone.View ){
+                this.showOrdenView.stopListening();
+                this.showOrdenView.undelegateEvents();
+            }
+
+            this.showOrdenView = new app.ShowOrdenView({ model: this.ordenModel });
+        },
+        /**
         * show view edit ordenes
         */
         getOrdenesEdit: function (orden) {
@@ -2548,20 +2559,7 @@ app || (app = {});
             this.ordenModel.fetch();
         },
 
-        /**
-        * show view show tercero
-        */
-        getOrdenesShow: function (orden) {
-            this.ordenModel = new app.OrdenModel();
-            this.ordenModel.set({'id': orden}, {silent: true});
-
-            if ( this.showOrdenView instanceof Backbone.View ){
-                this.showOrdenView.stopListening();
-                this.showOrdenView.undelegateEvents();
-            }
-
-            this.showOrdenView = new app.ShowOrdenView({ model: this.ordenModel });
-        },
+        // Concepto Tecnico
         getConceptosTecMain: function () {
 
             if ( this.mainConceptoTecView instanceof Backbone.View ){
@@ -2597,6 +2595,7 @@ app || (app = {});
             this.conceptoTecModel.fetch();
         },
 
+        // GEstion Tecnico
         getGestionesTecnicoMain: function(){
 
             if (this.mainGestionesTecnicoView instanceof Backbone.View) {
@@ -2651,7 +2650,7 @@ app || (app = {});
             this.createSitioView = new app.CreateSitioView({ model: this.sitioModel });
             this.sitioModel.fetch();
         },
-
+        // Angeda Tecnica
         getAgendaTecnicaMain: function () {
             if ( this.mainAgendaTecnicaView instanceof Backbone.View ){
                 this.mainAgendaTecnicaView.stopListening();
@@ -2661,6 +2660,58 @@ app || (app = {});
             this.mainAgendaTecnicaView = new app.MainAgendaTecnicaView( );
         },
 
+        // Facturap
+        getFacturaspMain: function () {
+
+            if ( this.mainFacturaspView instanceof Backbone.View ){
+                this.mainFacturaspView.stopListening();
+                this.mainFacturaspView.undelegateEvents();
+            }
+
+            this.mainFacturaspView = new app.MainFacturaspView( );
+        },
+        getFacturapCreate:function () {
+            this.facturapModel = new app.FacturapModel();
+
+            if ( this.createFacturapView instanceof Backbone.View ){
+                this.createFacturapView.stopListening();
+                this.createFacturapView.undelegateEvents();
+            }
+
+            this.createFacturapView = new app.CreateFacturapView({ model: this.facturapModel });
+            this.createFacturapView.render();
+        },
+
+        // getFacturapShow: function (facturap) {
+        //     this.facturapModel = new app.facturapModel();
+        //     this.facturapModel.set({'id': facturap}, {silent: true});
+
+        //     if ( this.showFacturapView instanceof Backbone.View ){
+        //         this.showFacturapView.stopListening();
+        //         this.showFacturapView.undelegateEvents();
+        //     }
+
+        //     this.showFacturapView = new app.ShowFacturapView({ model: this.facturapModel });
+        // },
+
+        getFacturapEdit: function (facturap) {
+            this.facturapModel = new app.FacturapModel();
+            this.facturapModel.set({'id': facturap}, {'silent':true});
+
+            if ( this.editFacturapView instanceof Backbone.View ){
+                this.editFacturapView.stopListening();
+                this.editFacturapView.undelegateEvents();
+            }
+
+            if ( this.createFacturapView instanceof Backbone.View ){
+                this.createFacturapView.stopListening();
+                this.createFacturapView.undelegateEvents();
+            }
+
+            this.editFacturapView = new app.EditFacturapView({ model: this.facturapModel });
+            this.facturapModel.fetch();
+        },
+        // Retefuente
         getReteFuentesMain: function () {
 
             if ( this.mainRetefuentesView instanceof Backbone.View ){
@@ -2695,6 +2746,7 @@ app || (app = {});
             this.createReteFuenteView = new app.CreateReteFuenteView({ model: this.reteFuenteModel });
             this.reteFuenteModel.fetch();
         },
+        // Tipo Proveedor
         getTipoProveedoresMain: function () {
 
             if ( this.mainTipoProveedoresView instanceof Backbone.View ){
@@ -2729,6 +2781,7 @@ app || (app = {});
             this.createTipoProveedorView = new app.CreateTipoProveedorView({ model: this.tipoProveedorModel });
             this.tipoProveedorModel.fetch();
         },
+        // Tipo gastos
         getTipoGastosMain: function () {
 
             if ( this.mainTipoGastosView instanceof Backbone.View ){

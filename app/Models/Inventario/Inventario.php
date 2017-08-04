@@ -17,13 +17,8 @@ class Inventario extends Model
 
     public $timestamps = false;
 
-<<<<<<< HEAD
     public static function movimiento(Producto $producto, $sucursal, $ubicacion, $documento, $documentoNumero, $uentrada = 0, $usalida = 0, Array $emetros = [],Array $smetros = [], $costo = 0, $costopromedio = 0, $lote = 0, Array $rollo ){
 
-        // dd($producto, $sucursal, $ubicacion, $documento, $documentoNumero, $uentrada , $usalida , $emetros , $smetros, $costo, $costopromedio, $lote ,$rollo);
-=======
-    public static function movimiento(Producto $producto, $sucursal, $ubicacion, $documento, $documentoNumero, $uentrada = 0, $usalida = 0, $emetros = 0, $smetros = 0, $costo = 0, $costopromedio = 0,$lote = 0, $rollo = 0){
->>>>>>> 7d8aa92c6d55d3b9c1f972c71c6f398611ec0f75
     	 // Validar producto
         $sucursal = Sucursal::find($sucursal);
         if(!$sucursal instanceof Sucursal) {
@@ -45,7 +40,7 @@ class Inventario extends Model
                 $inventario->inventario_metros_entrada = (!empty($emetros) ? $emetros[$key] : 0);
                 $inventario->inventario_metros_salida = (!empty($smetros) ? $smetros[$key] : 0);
                 $inventario->inventario_entrada = $uentrada;
-                $inventario->inventario_salida = $usalida;  
+                $inventario->inventario_salida = $usalida;
                 $inventario->inventario_costo = $costo;
                 $inventario->inventario_rollo = $value;
                 $inventario->inventario_lote = $lote;
@@ -62,7 +57,7 @@ class Inventario extends Model
             $inventario->inventario_documentos = $documento->id;
             $inventario->inventario_id_documento = $documentoNumero;
             $inventario->inventario_entrada = $uentrada;
-            $inventario->inventario_salida = $usalida;  
+            $inventario->inventario_salida = $usalida;
             $inventario->inventario_costo = $costo;
             $inventario->inventario_lote = $lote;
             $inventario->inventario_costo_promedio = $costopromedio;
@@ -104,9 +99,9 @@ class Inventario extends Model
         $inventario->where('inventario_documentos', $documento);
         $inventario->where('inventario_id_documento', $id);
         $inventario->join('producto', 'inventario_serie', '=' ,'producto.id');
-        $inventario->join('ubicacion', 'inventario_ubicacion', '=' ,'ubicacion.id');
+        $inventario->Leftjoin('ubicacion', 'inventario_ubicacion', '=' ,'ubicacion.id');
         $inventario->join('tercero','inventario_usuario_elaboro','=', 'tercero.id');
-        $inventario->orderBy('id', 'asc');  
+        $inventario->orderBy('id', 'asc');
 
         return $inventario->get();
     }

@@ -62,7 +62,7 @@ class Prodbode extends Model
                 }
                 $prodbode = $query->first();
 
-                // Validar prodbode 
+                // Validar prodbode
                 if (!$prodbode instanceof Prodbode) {
                     return "NO es posible recuperar producto de la bodega $sucursal->sucursal_nombre, por favor verifique la información o consulte al administrador.";
                 }
