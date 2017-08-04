@@ -1,7 +1,7 @@
 @extends('inventario.productos.main')
 
 @section('breadcrumb')
-	<li><a href="{{ route('productos.index') }}">Productos</a></li>
+	<li><a href="{{ route('productos.index') }}">Producto</a></li>
 	<li><a href="{{ route('productos.show', ['productos' => $producto->id]) }}">{{ $producto->producto_codigo }}</a></li>
 	<li class="active">Editar</li>
 @stop
@@ -12,7 +12,7 @@
 			<div class="box-body" id="render-form-producto">
 				{{-- Render form producto --}}
 			</div>
-			
+
 	        <div class="box-footer with-border">
 	        	<div class="row">
 					<div class="col-md-2 col-md-offset-4 col-sm-6 col-xs-6 text-left">

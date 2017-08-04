@@ -1,7 +1,7 @@
 @extends('inventario.unidades.main')
 
 @section('breadcrumb')
-    <li><a href="{{ route('unidades.index')}}">Unidades</a></li>
+    <li><a href="{{ route('unidades.index')}}">Unidad de medida</a></li>
 	<li class="active">Nueva</li>
 @stop
 

@@ -1,7 +1,7 @@
 @extends('cartera.notas.main')
 
 @section('breadcrumb')
-    <li><a href="{{ route('notas.index')}}">Notas</a></li>
+    <li><a href="{{ route('notas.index')}}">Nota</a></li>
 	<li class="active">Nuevo</li>
 @stop
 

@@ -1,7 +1,7 @@
 @extends('inventario.unidades.main')
 
 @section('breadcrumb')
-	<li><a href="{{ route('unidades.index') }}">Unidades</a></li>
+	<li><a href="{{ route('unidades.index') }}">Unidad de medida</a></li>
 	<li><a href="{{ route('unidades.show', ['unidades' => $unidad->id]) }}">{{ $unidad->unidadmedida_sigla }}</a></li>
 	<li class="active">Editar</li>
 @stop
@@ -12,7 +12,7 @@
 			<div class="box-body" id="render-form-unidad">
 				{{-- Render form unidad --}}
 			</div>
-			
+
 	        <div class="box-footer with-border">
 	        	<div class="row">
 					<div class="col-md-2 col-md-offset-4 col-sm-6 col-xs-6 text-left">

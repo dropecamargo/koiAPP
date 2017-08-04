@@ -30,7 +30,7 @@ app || (app = {});
             this.spinnerCalendar = this.$('#spinner-calendar');
             this.$modalEvent = $('#modal-event-component');
             this.$calendar = this.$('#calendar');
-            
+
             this.referenceCalendar();
         },
 
@@ -71,9 +71,9 @@ app || (app = {});
 
                     // Remove event && addEvenet && renderEvent lib -> fullcalendar.io
                     _this.$calendar.fullCalendar('removeEvents');
-                    _this.$calendar.fullCalendar('addEventSource', resp.ordenes);       
+                    _this.$calendar.fullCalendar('addEventSource', resp.ordenes);
                     _this.$calendar.fullCalendar('rerenderEvents');
-                }   
+                }
             })
             .fail(function(jqXHR, ajaxOptions, thrownError) {
                 window.Misc.removeSpinner( _this.spinnerCalendar );
@@ -82,7 +82,7 @@ app || (app = {});
         },
 
         /**
-        * Instanceof Calendar 
+        * Instanceof Calendar
         */
         calendar: function(){
             var _this = this;
@@ -92,6 +92,17 @@ app || (app = {});
                     left: 'prev,next',
                     center: 'title',
                     right: 'month,agendaWeek,agendaDay'
+                },
+                eventAfterRender: function(event, element, view) {
+                    if( parseInt(event.orden_abierta) ){
+                        element.addClass('fc-draggable');
+                        element.css('background-color', '#00A65A');
+                        element.css('border-color', '#00A65A');
+                    }else{
+                        element.addClass('fc-draggable');
+                        element.css('background-color', '#F56954');
+                        element.css('border-color', '#F56954');
+                    }
                 },
                 eventClick: function(calEvent, jsEvent, view) {
                     _this.$modalEvent.find('.content-modal').html( _this.templateEvent( calEvent ) );
@@ -115,7 +126,7 @@ app || (app = {});
                 $.ajax({
                     type: 'GET',
                     url: window.Misc.urlFull( Route.route('agendatecnica.index') ),
-                    data: { 
+                    data: {
                         search_technical: technical,
                         search_tercero: tercero,
                     },
@@ -139,9 +150,9 @@ app || (app = {});
 
                         // Remove event && addEvenet && renderEvent lib -> fullcalendar.io
                         _this.$calendar.fullCalendar('removeEvents');
-                        _this.$calendar.fullCalendar('addEventSource', resp.ordenes);       
+                        _this.$calendar.fullCalendar('addEventSource', resp.ordenes);
                         _this.$calendar.fullCalendar('rerenderEvents');
-                    }   
+                    }
                 })
                 .fail(function(jqXHR, ajaxOptions, thrownError) {
                     window.Misc.removeSpinner( _this.spinnerCalendar );

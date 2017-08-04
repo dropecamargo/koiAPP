@@ -5,7 +5,7 @@
 @section('content')
     <section class="content-header">
         <h1>
-            Concepto tecnico <small>Administración de concepto tecnico</small>
+            Concepto técnico <small>Administración de concepto técnico</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> {{trans('app.home')}}</a></li>

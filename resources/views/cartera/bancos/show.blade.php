@@ -1,19 +1,13 @@
 @extends('cartera.bancos.main')
 
 @section('breadcrumb')
-    <li><a href="{{ route('bancos.index')}}">Bancos</a></li>
+    <li><a href="{{ route('bancos.index')}}">Banco</a></li>
     <li class="active">{{ $banco->id }}</li>
 @stop
 
 @section('module')
     <div class="box box-success">
         <div class="box-body">
-            <div class="row">
-                <div class="form-group col-md-2">
-                    <label class="control-label">Código</label>
-                    <div>{{ $banco->id }}</div>
-                </div>
-            </div>
             <div class="row">
                 <div class="form-group col-md-4">
                     <label class="control-label">Nombre</label>

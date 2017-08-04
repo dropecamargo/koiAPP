@@ -1,7 +1,7 @@
 @extends('inventario.unidadesnegocio.main')
 
 @section('breadcrumb')
-    <li><a href="{{ route('unidadesnegocio.index')}}">Unidades Negocio</a></li>
+    <li><a href="{{ route('unidadesnegocio.index')}}">Unidad de negocio</a></li>
 	<li class="active">Nueva</li>
 @stop
 

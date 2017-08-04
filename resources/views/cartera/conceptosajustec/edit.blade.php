@@ -1,7 +1,7 @@
 @extends('cartera.conceptosajustec.main')
 
 @section('breadcrumb')
-    <li><a href="{{ route('conceptosajustec.index')}}">Editar</a></li>
+    <li><a href="{{ route('conceptosajustec.index')}}">Concepto ajuste de cartera</a></li>
     <li><a href="{{ route('conceptosajustec.show', ['conceptoajustec' => $conceptoajustec->id]) }}">{{ $conceptoajustec->id }}</a></li>
 	<li class="active">Editar</li>
 @stop

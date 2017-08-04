@@ -40,7 +40,11 @@ app || (app = {});
             'producto_maneja_serie': 0,
             'producto_metrado': 0,
             'producto_unidadnegocio':'',
-            'producto_subcategoria':'', 
+            'producto_subcategoria':'',
+            'producto_contacto':'',
+            'producto_tercero':'',
+            'producto_servicio':'',
+            'producto_vencimiento': moment().format('YYYY-MM-DD'),
             'producto_unidad': 1
         }
     });

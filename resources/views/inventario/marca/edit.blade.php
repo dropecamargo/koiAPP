@@ -1,7 +1,7 @@
 @extends('inventario.marca.main')
 
 @section('breadcrumb')
-    <li><a href="{{ route('marcas.index')}}">Editar</a></li>
+    <li><a href="{{ route('marcas.index')}}">Marca</a></li>
     <li><a href="{{ route('marcas.show', ['marca' => $marca->id]) }}">{{ $marca->id }}</a></li>
 	<li class="active">Editar</li>
 @stop

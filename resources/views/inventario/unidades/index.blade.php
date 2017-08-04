@@ -1,7 +1,7 @@
 @extends('inventario.unidades.main')
 
 @section('breadcrumb')
-    <li class="active">Unidades</li>
+    <li class="active">Unidades de medida</li>
 @stop
 
 @section('module')

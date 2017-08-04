@@ -1,7 +1,7 @@
 @extends('inventario.lineas.main')
 
 @section('breadcrumb')
-    <li><a href="{{ route('lineas.index')}}">Lineas</a></li>
+    <li><a href="{{ route('lineas.index')}}">Línea</a></li>
 	<li class="active">Nuevo</li>
 @stop
 
@@ -11,7 +11,7 @@
 			<div class="box-body" id="render-form-linea">
 				{{-- Render form linea --}}
 			</div>
-			
+
 	        <div class="box-footer with-border">
 	        	<div class="row">
 					<div class="col-md-2 col-md-offset-4 col-sm-6 col-xs-6 text-left">

@@ -1,7 +1,7 @@
 @extends('cartera.mediopagos.main')
 
 @section('breadcrumb')
-    <li><a href="{{ route('mediopagos.index')}}">Editar</a></li>
+    <li><a href="{{ route('mediopagos.index')}}">Medio de pago</a></li>
     <li><a href="{{ route('mediopagos.show', ['mediopago' => $mediopago->id]) }}">{{ $mediopago->id }}</a></li>
 	<li class="active">Editar</li>
 @stop

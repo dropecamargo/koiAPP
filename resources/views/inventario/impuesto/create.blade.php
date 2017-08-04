@@ -1,7 +1,7 @@
 @extends('inventario.impuesto.main')
 
 @section('breadcrumb')
-    <li><a href="{{ route('impuestos.index')}}">Impuestos</a></li>
+    <li><a href="{{ route('impuestos.index')}}">Impuesto</a></li>
 	<li class="active">Nuevo</li>
 @stop
 

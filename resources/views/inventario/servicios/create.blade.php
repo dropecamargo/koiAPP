@@ -1,7 +1,7 @@
 @extends('inventario.servicios.main')
 
 @section('breadcrumb')
-    <li><a href="{{ route('servicios.index')}}">Servicios</a></li>
+    <li><a href="{{ route('servicios.index')}}">Servicio</a></li>
 	<li class="active">Nuevo</li>
 @stop
 

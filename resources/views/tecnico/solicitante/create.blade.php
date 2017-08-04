@@ -1,7 +1,7 @@
 @extends('tecnico.solicitante.main')
 
 @section('breadcrumb')
-    <li><a href="{{ route('solicitantes.index')}}">Solicitantes</a></li>
+    <li><a href="{{ route('solicitantes.index')}}">Solicitante</a></li>
 	<li class="active">Nuevo</li>
 @stop
 

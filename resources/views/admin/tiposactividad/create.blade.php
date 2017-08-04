@@ -1,7 +1,7 @@
 @extends('admin.tiposactividad.main')
 
 @section('breadcrumb')
-    <li><a href="{{ route('tiposactividad.index')}}">Tipos de actividad</a></li>
+    <li><a href="{{ route('tiposactividad.index')}}">Tipo de actividad</a></li>
 	<li class="active">Nueva</li>
 @stop
 
@@ -11,7 +11,7 @@
 			<div class="box-body" id="render-form-tipoactividad">
 				{{-- Render form tipoactividad --}}
 			</div>
-			
+
 	        <div class="box-footer with-border">
 	        	<div class="row">
 					<div class="col-md-2 col-md-offset-4 col-sm-6 col-xs-6 text-left">

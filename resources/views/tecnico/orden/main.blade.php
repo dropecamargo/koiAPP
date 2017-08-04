@@ -12,7 +12,7 @@
             </h1>
             <ol class="breadcrumb">
                 <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> {{ trans('app.home') }}</a></li>
-                    <li><a href="{{ route('ordenes.index') }}">Ordenes</a></li>
+                    <li><a href="{{ route('ordenes.index') }}">Orden</a></li>
                 <% if( !_.isUndefined(edit) && !_.isNull(edit) && edit) { %>
                     <li><a href="<%- window.Misc.urlFull( Route.route('ordenes.show', { ordenes: id}) ) %>"><%- id %></a></li>
                     <li class="active">Editar</li>
@@ -54,13 +54,13 @@
                                                             </select>
                                                         </div>
                                                         <label for="orden_numero" class="col-sm-1 col-md-1 control-label">Número</label>
-                                                        <div class="form-group col-sm-1 col-md-1">     
+                                                        <div class="form-group col-sm-1 col-md-1">
                                                             <input id="orden_numero" name="orden_numero" class="form-control input-sm" type="number" min="1" value="<%- orden_numero %>" required readonly>
                                                         </div>
                                                         <label for="orden_fecha_servicio" class="col-md-1 control-label">F. Servicio</label>
                                                         <div class="form-group col-md-2">
                                                             <input type="text" id="orden_fecha_servicio" name="orden_fecha_servicio" class="form-control input-sm datepicker" value="<%- orden_fecha_servicio %>" required>
-                                                        </div> 
+                                                        </div>
                                                         <label for="orden_hora_servicio" class="col-md-1 control-label">H. Servicio</label>
                                                         <div class="form-group col-md-2">
                                                             <div class="bootstrap-timepicker">
@@ -84,7 +84,7 @@
                                                         <div class="form-group col-sm-2">
                                                             <label for="orden_fecha_servicio" class="control-label">F. Servicio</label>
                                                             <input type="text" id="orden_fecha_servicio" name="orden_fecha_servicio" class="form-control input-sm datepicker" value="<%- orden_fecha_servicio %>" required>
-                                                        </div> 
+                                                        </div>
                                                         <div class="form-group col-md-2">
                                                             <label for="orden_hora_servicio" class="control-label">H. Servicio</label>
                                                             <div class="bootstrap-timepicker">
@@ -248,7 +248,7 @@
                                                                 <i class="fa fa-plus"></i>
                                                             </button>
                                                         </div>
-                                                    </div>   
+                                                    </div>
                                                     <div class="row">
                                                         <label for="orden_dano" class="col-md-1 col-xs-12 control-label">Daño</label>
                                                         <div class="form-group col-md-3 col-xs-11">
@@ -362,7 +362,7 @@
                                                     <div class="col-md-2 col-sm-6 col-xs-6">
                                                         <button type="button" class="btn btn-primary btn-sm btn-block submit-orden">{{ trans('app.save') }}</button>
                                                     </div>
-                                                </div> 
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -394,7 +394,7 @@
                                                         <label for="visita_fecha_llegada" class="col-md-1 control-label">F. visita</label>
                                                         <div class="form-group col-md-2">
                                                             <input type="text" id="visita_fecha_llegada" name="visita_fecha_llegada" class="form-control input-sm datepicker" placeholder="yyyy/mm/dd" required>
-                                                        </div> 
+                                                        </div>
                                                         <label for="visita_hora_llegada" class="col-md-1 control-label">H. visita</label>
                                                         <div class="col-md-2">
                                                             <div class="bootstrap-timepicker">
@@ -427,7 +427,7 @@
                                                         <label for="visita_fecha_fin" class="col-md-1 control-label">F. finalización</label>
                                                         <div class="form-group col-md-2">
                                                             <input type="text" id="visita_fecha_fin" name="visita_fecha_fin" class="form-control input-sm datepicker" placeholder="yyyy/mm/dd" required>
-                                                        </div> 
+                                                        </div>
                                                         <label for="visita_hora_fin" class="col-md-1 control-label">H. finalización</label>
                                                         <div class="col-md-2">
                                                             <div class="bootstrap-timepicker">
@@ -440,7 +440,7 @@
                                                             </div>
                                                         </div>
                                                         <label  for="visita_tiempo_transporte" class="col-md-1 control-label">T. Transporte</label>
-                                                        <div class="form-group col-md-2">                                                
+                                                        <div class="form-group col-md-2">
                                                             <input type="number" min="0" class="form-control input-sm" id="visita_tiempo_transporte" name="visita_tiempo_transporte" value="" required="">
                                                         </div>
                                                         <label for="visita_viaticos" class="col-md-1 control-label">Viaticos</label>
@@ -468,10 +468,10 @@
                                                                 <tr>
                                                                     <th width="5%"></th>
                                                                     <th width="10%">N. Visita</th>
-                                                                    <th width="25%">F. Llegada</th>                                                    
-                                                                    <th width="25%">F. Inicio</th>                                                    
-                                                                    <th width="30%">N. Tecnico</th>                                                    
-                                                                    <th width="5%">Info</th>                                                    
+                                                                    <th width="25%">F. Llegada</th>
+                                                                    <th width="25%">F. Inicio</th>
+                                                                    <th width="30%">N. Tecnico</th>
+                                                                    <th width="5%">Info</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
@@ -608,16 +608,16 @@
                     <span><i class="fa fa-times"></i></span>
                 </a>
             </td>
-        <% }else if(edit){ %> 
+        <% }else if(edit){ %>
             <td id="td_<%- id %>" class="text-center"></td>
         <% } %>
 
-        
+
         <td><%- visita_numero %></td>
         <td><%- visita_fh_llegada %></td>
         <td><%- visita_fh_inicio %></td>
         <td><%- tercero_nombre %></td>
-        
+
         <td class="text-center">
             <a class="btn btn-default btn-xs item-visita-show-info" data-resource="<%- id %>">
                 <span><i class="fa fa-info-circle "></i></span>
@@ -635,7 +635,7 @@
             <div class="form-group col-md-6">
                 <label class="control-label">Fecha y hora salida</label>
                 <div><%- visita_fh_finaliza %></div>
-            </div>      
+            </div>
         </div>
 
         <div class="row">
@@ -647,21 +647,21 @@
             <div class="form-group col-md-6">
                 <label class="control-label">Viaticos</label>
                 <div><%- window.Misc.currency( visita_viaticos ) %></div>
-            </div> 
+            </div>
         </div>
 
         <div class="row">
             <div class="form-group col-md-12">
                 <label class="control-label">Tecnico</label>
                 <div><%- tercero_nombre %></div>
-            </div> 
+            </div>
         </div>
 
         <div class="row">
             <div class="form-group col-md-12">
                 <label class="control-label">Observaciones</label>
                 <div><%- visita_observaciones %></div>
-            </div> 
+            </div>
         </div>
     </script>
 
@@ -782,7 +782,7 @@
             </div>
         </div>
     </div>
-    
+
     <script type="text/template" id="orden-sendmail-confirm-tpl">
         <p>¿Desea enviar un correo con la información a <b><%- tcontacto_email %></b>?</p>
     </script>

@@ -1,7 +1,7 @@
 @extends('cartera.bancos.main')
 
 @section('breadcrumb')
-    <li><a href="{{ route('bancos.index')}}">Bancos</a></li>
+    <li><a href="{{ route('bancos.index')}}">Banco</a></li>
 	<li class="active">Nuevo</li>
 @stop
 

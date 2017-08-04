@@ -1,7 +1,7 @@
 @extends('inventario.marca.main')
 
 @section('breadcrumb')
-    <li><a href="{{ route('marcas.index')}}">Marcas</a></li>
+    <li><a href="{{ route('marcas.index')}}">Marca</a></li>
 	<li class="active">Nuevo</li>
 @stop
 

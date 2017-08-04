@@ -1,7 +1,7 @@
 @extends('inventario.tipostraslados.main')
 
-@section('breadcrumb')	
-	<li><a href="{{route('tipostraslados.index')}}">Tipo De Traslado</a></li>
+@section('breadcrumb')
+	<li><a href="{{route('tipostraslados.index')}}">Tipo de traslado</a></li>
 	<li><a href="{{ route('tipostraslados.show', ['tipotraslado' => $tipotraslado]) }}">{{ $tipotraslado->id }}</a></li>
 	<li class="active">Editar</li>
 @stop

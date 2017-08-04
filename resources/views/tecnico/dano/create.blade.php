@@ -1,7 +1,7 @@
 @extends('tecnico.dano.main')
 
 @section('breadcrumb')
-    <li><a href="{{ route('danos.index')}}">Daños</a></li>
+    <li><a href="{{ route('danos.index')}}">Daño</a></li>
 	<li class="active">Nuevo</li>
 @stop
 

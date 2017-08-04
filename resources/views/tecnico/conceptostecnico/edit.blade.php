@@ -1,7 +1,7 @@
 @extends('tecnico.conceptostecnico.main')
 
 @section('breadcrumb')
-    <li><a href="{{ route('conceptostecnico.index')}}">Editar</a></li>
+    <li><a href="{{ route('conceptostecnico.index')}}">Concepto técnico</a></li>
     <li><a href="{{ route('conceptostecnico.show', ['conceptotecnico' => $conceptotecnico->id]) }}">{{ $conceptotecnico->id }}</a></li>
 	<li class="active">Editar</li>
 @stop

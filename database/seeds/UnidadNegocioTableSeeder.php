@@ -13,7 +13,7 @@ class UnidadNegocioTableSeeder extends Seeder
     public function run()
     {
         UnidadNegocio::create([
-        	'unidadnegocio_nombre' => 'UNIDADNEGOCIO1',
+        	'unidadnegocio_nombre' => 'U. UNIDADNEGOCIO',
         	'unidadnegocio_activo' => true
     	]);
 

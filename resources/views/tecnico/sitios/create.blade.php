@@ -1,7 +1,7 @@
 @extends('tecnico.sitios.main')
 
 @section('breadcrumb')
-    <li><a href="{{ route('sitios.index')}}">Sitios</a></li>
+    <li><a href="{{ route('sitios.index')}}">Sitio de atención</a></li>
 	<li class="active">Nuevo</li>
 @stop
 

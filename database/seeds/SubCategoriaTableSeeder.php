@@ -13,10 +13,10 @@ class SubCategoriaTableSeeder extends Seeder
     public function run()
     {
         SubCategoria::create([
-            'subcategoria_nombre' => 'SUBCATEGORIA1',
-            'subcategoria_margen_nivel1' => '12884',
-            'subcategoria_margen_nivel2' => '5884',
-        	'subcategoria_margen_nivel3' => '1484',
+            'subcategoria_nombre' => 'S. SUBCATEGORIA',
+            'subcategoria_margen_nivel1' => '10',
+            'subcategoria_margen_nivel2' => '20',
+        	'subcategoria_margen_nivel3' => '30',
         	'subcategoria_activo' => true
     	]);
     }

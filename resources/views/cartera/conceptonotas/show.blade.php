@@ -9,10 +9,6 @@
     <div class="box box-success">
         <div class="box-body">
             <div class="row">
-                <div class="form-group col-md-2">
-                    <label class="control-label">Código</label>
-                    <div>{{ $conceptonota->id }}</div>
-                </div>
                 <div class="form-group col-md-4">
                     <label class="control-label">Nombre</label>
                     <div>{{ $conceptonota->conceptonota_nombre }}</div>
@@ -22,7 +18,7 @@
                 <div class="form-group col-md-4">
                     <label class="control-label">Plan de cuenta</label>
                     <div>{{ $conceptonota->plancuentas_cuenta }} - {{ $conceptonota->plancuentas_nombre }}</div>
-                </div> 
+                </div>
                 <div class="form-group col-md-2 col-xs-8 col-sm-3"><br>
                     <label class="checkbox-inline" for="conceptonota_activo">
                         <input type="checkbox" id="conceptonota_activo" name="conceptonota_activo" value="conceptonota_activo" disabled {{ $conceptonota->conceptonota_activo ? 'checked': '' }}> Activo

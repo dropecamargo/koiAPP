@@ -9,17 +9,11 @@
     <div class="box box-success">
         <div class="box-body">
             <div class="row">
-                <div class="form-group col-md-2">
-                    <label class="control-label">Código</label>
-                    <div>{{ $tipoorden->id }}</div>
-                </div>
-            </div>
-            <div class="row">
                 <div class="form-group col-md-8">
                     <label class="control-label">Nombre</label>
                     <div>{{ $tipoorden->tipoorden_nombre }}</div>
                 </div>
-                <div class="form-group col-md-2 col-xs-8 col-sm-3">
+                <div class="form-group col-md-2 col-xs-8 col-sm-3"><br>
                     <label class="checkbox-inline" for="tipoorden_activo">
                         <input type="checkbox" id="tipoorden_activo" name="tipoorden_activo" value="tipoorden_activo" disabled {{ $tipoorden->tipoorden_activo ? 'checked': '' }}> Activo
                     </label>

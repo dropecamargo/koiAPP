@@ -1,7 +1,7 @@
 @extends('tecnico.tipoorden.main')
 
 @section('breadcrumb')
-    <li><a href="{{ route('tiposorden.index')}}">Editar</a></li>
+    <li><a href="{{ route('tiposorden.index')}}">Tipo de orden</a></li>
     <li><a href="{{ route('tiposorden.show', ['tipoorden' => $tipoorden->id]) }}">{{ $tipoorden->id }}</a></li>
 	<li class="active">Editar</li>
 @stop

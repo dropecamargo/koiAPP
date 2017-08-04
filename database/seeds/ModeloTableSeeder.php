@@ -13,7 +13,7 @@ class ModeloTableSeeder extends Seeder
     public function run()
     {
         Modelo::create([
-        	'modelo_nombre' => 'MODELO1',
+        	'modelo_nombre' => 'M. MODELO',
         	'modelo_activo' => true
         	]);
 

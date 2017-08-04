@@ -1,19 +1,13 @@
 @extends('cartera.mediopagos.main')
 
 @section('breadcrumb')
-    <li><a href="{{ route('mediopagos.index')}}">mediopagos</a></li>
+    <li><a href="{{ route('mediopagos.index')}}">Medio de pago</a></li>
     <li class="active">{{ $mediopago->id }}</li>
 @stop
 
 @section('module')
     <div class="box box-success">
         <div class="box-body">
-            <div class="row">
-                <div class="form-group col-md-2">
-                    <label class="control-label">Código</label>
-                    <div>{{ $mediopago->id }}</div>
-                </div>
-            </div>
             <div class="row">
                 <div class="form-group col-md-3">
                     <label class="control-label">Nombre</label>

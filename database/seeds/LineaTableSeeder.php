@@ -13,7 +13,7 @@ class LineaTableSeeder extends Seeder
     public function run()
     {
        	Linea::create([
-    		'linea_nombre' => 'LINEA1',
+    		'linea_nombre' => 'L. LINEA',
         	'linea_activo' => true
     	]);
     }

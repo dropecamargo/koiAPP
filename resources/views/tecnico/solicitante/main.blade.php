@@ -1,6 +1,6 @@
 @extends('layout.layout')
 
-@section('title') Solicitante @stop
+@section('title') Solicitantes @stop
 
 @section('content')
     <section class="content-header">

@@ -32,7 +32,7 @@ class AgendaTecnicaController extends Controller
                             (CASE WHEN (tc.tercero_razonsocial IS NOT NULL AND tc.tercero_razonsocial != '') THEN CONCAT(' - ', tc.tercero_razonsocial) ELSE '' END)
                         )
                     ELSE tc.tercero_razonsocial END)
-                AS tecnico_nombre")
+                AS tecnico_nombre"), 'orden_abierta'
             );
             $query->leftJoin('tercero as tc', 'orden_tecnico', '=', 'tc.id');
             $query->leftJoin('tercero as t', 'orden_tercero', '=', 't.id');
@@ -61,7 +61,7 @@ class AgendaTecnicaController extends Controller
 
             // Crear objeto
             $object = new \stdClass();
-            $object->ordenes = []; 
+            $object->ordenes = [];
             foreach ($ordenes as $orden) {
                 $object->ordenes[] = $orden;
             }

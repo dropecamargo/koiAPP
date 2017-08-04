@@ -1,7 +1,7 @@
 @extends('inventario.traslados.main')
 
 @section('breadcrumb')
-    <li><a href="{{ route('traslados.index')}}">Traslados</a></li>
+    <li><a href="{{ route('traslados.index')}}">Traslado</a></li>
     <li class="active">{{ $traslado->traslado1_numero }}</li>
 @stop
 

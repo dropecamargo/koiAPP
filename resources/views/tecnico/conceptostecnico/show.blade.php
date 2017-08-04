@@ -1,19 +1,13 @@
 @extends('tecnico.conceptostecnico.main')
 
 @section('breadcrumb')
-    <li><a href="{{ route('conceptostecnico.index')}}">Concepto tecnico</a></li>
+    <li><a href="{{ route('conceptostecnico.index')}}">Concepto técnico</a></li>
     <li class="active">{{ $conceptotecnico->id }}</li>
 @stop
 
 @section('module')
     <div class="box box-success">
         <div class="box-body">
-            <div class="row">
-                <div class="form-group col-md-2">
-                    <label class="control-label">Código</label>
-                    <div>{{ $conceptotecnico->id }}</div>
-                </div>
-            </div>
             <div class="row">
                 <div class="form-group col-md-4">
                     <label class="control-label">Nombre</label>

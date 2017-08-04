@@ -30,8 +30,8 @@ class DatabaseSeeder extends Seeder
         $this->call(SubCategoriaTableSeeder::class);
         $this->call(ImpuestoTableSeeder::class);
         $this->call(UnidadMedidaTableSeeder::class);
-        $this->call(ProductoTableSeeder::class);
         $this->call(RolTableSeeder::class);
+        $this->call(ServicioTableSeeder::class);
         $this->call(UsuarioRolTableSeeder::class);
 
         Model::reguard();

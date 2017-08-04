@@ -131,6 +131,8 @@ Route::group(['middleware' => 'auth'], function(){
 		Route::resource('lotes', 'Inventario\LoteController', ['only' => ['index']]);
 		Route::post('evaluate',['as' =>'productos.evaluate','uses'=>'Inventario\ProductoController@evaluate'] );
 		Route::post('validate',['as' =>'productos.validate','uses'=>'Inventario\ProductoController@validation'] );
+		Route::put('machine',['as' =>'productos.machine','uses'=>'Inventario\ProductoController@machine'] );
+		Route::post('storeserie',['as' =>'productos.storeserie','uses'=>'Inventario\ProductoController@storeserie'] );
 		Route::resource('prodbode', 'Inventario\ProdbodeController', ['only' => ['index', 'update']]);
 	});
 
@@ -184,7 +186,7 @@ Route::group(['middleware' => 'auth'], function(){
 		Route::resource('factura', 'Cartera\Factura3Controller');
 		Route::resource('mediopago', 'Cartera\Recibo3Controller');
 	});
-	
+
 	Route::group(['prefix' => 'anticipos'], function()
 	{
 		Route::resource('mediopago', 'Cartera\Anticipo2Controller');
@@ -255,13 +257,13 @@ Route::group(['middleware' => 'auth'], function(){
 		Route::resource('imagenes','Tecnico\OrdenImagenController',['only'=>['index', 'store', 'destroy']]);
 		Route::get('cerrar/{ordenes}', ['as' => 'ordenes.cerrar', 'uses' => 'Tecnico\OrdenController@cerrar']);
 		Route::get('mail/{ordenes}', ['as' => 'ordenes.mail', 'uses' => 'Tecnico\OrdenController@mail']);
-		
+
 		Route::group(['prefix' => 'detalle'],function(){
 			Route::resource('remrepuestos','Tecnico\RemRepuDetalleController',['only'=>['index', 'store', 'update']]);
 			Route::post('legalizacion', ['as' => 'ordenes.detalle.remrepuestos.legalizacion', 'uses' => 'Tecnico\RemRepuDetalleController@legalizacion']);
 		});
 	});
-	
+
 	Route::resource('ordenes', 'Tecnico\OrdenController', ['except' => ['destroy']]);
 	Route::resource('danos', 'Tecnico\DanoController', ['except' => ['destroy']]);
 	Route::resource('tiposorden', 'Tecnico\TipoOrdenController', ['except' => ['destroy']]);

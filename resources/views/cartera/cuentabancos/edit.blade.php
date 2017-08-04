@@ -1,7 +1,7 @@
 @extends('cartera.cuentabancos.main')
 
 @section('breadcrumb')
-    <li><a href="{{ route('cuentabancos.index')}}">Editar</a></li>
+    <li><a href="{{ route('cuentabancos.index')}}">Cuenta de banco</a></li>
     <li><a href="{{ route('cuentabancos.show', ['cuentabanco' => $cuentabanco->id]) }}">{{ $cuentabanco->id }}</a></li>
 	<li class="active">Editar</li>
 @stop

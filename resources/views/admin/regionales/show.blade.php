@@ -1,7 +1,7 @@
 @extends('admin.regionales.main')
 
 @section('breadcrumb')
-    <li><a href="{{ route('regionales.index')}}">Regionales</a></li>
+    <li><a href="{{ route('regionales.index')}}">Regional</a></li>
     <li class="active">{{ $regional->id }}</li>
 @stop
 
@@ -9,17 +9,11 @@
     <div class="box box-success">
         <div class="box-body">
             <div class="row">
-                <div class="form-group col-md-2">
-                    <label class="control-label">Id</label>
-                    <div>{{ $regional->id }}</div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-md-8">
+                <div class="form-group col-md-6">
                     <label class="control-label">Nombre</label>
                     <div>{{ $regional->regional_nombre }}</div>
                 </div>
-                <div class="form-group col-md-2 col-xs-8 col-sm-3">
+                <div class="form-group col-md-2 col-xs-8 col-sm-3"><br>
                     <label class="checkbox-inline" for="regional_activo">
                         <input type="checkbox" id="regional_activo" name="regional_activo" value="regional_activo" disabled {{ $regional->regional_activo ? 'checked': '' }}> Activo
                     </label>

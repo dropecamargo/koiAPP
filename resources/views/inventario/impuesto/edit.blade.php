@@ -1,7 +1,7 @@
 @extends('inventario.impuesto.main')
 
 @section('breadcrumb')
-    <li><a href="{{ route('impuestos.index')}}">Editar</a></li>
+    <li><a href="{{ route('impuestos.index')}}">Impuesto</a></li>
     <li><a href="{{ route('impuestos.show', ['impuesto' => $impuesto->id]) }}">{{ $impuesto->id }}</a></li>
 	<li class="active">Editar</li>
 @stop
