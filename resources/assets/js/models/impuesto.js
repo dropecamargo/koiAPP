@@ -18,7 +18,9 @@ app || (app = {});
         defaults: {
             'impuesto_nombre': '',
             'impuesto_porcentaje': '',
-            'impuesto_activo': 1
+            'impuesto_activo': 1,
+            'plancuentas_cuenta': '',
+            'plancuentas_nombre': ''
         }
     });
 

@@ -99,7 +99,7 @@ class Inventario extends Model
         $inventario->where('inventario_documentos', $documento);
         $inventario->where('inventario_id_documento', $id);
         $inventario->join('producto', 'inventario_serie', '=' ,'producto.id');
-        $inventario->join('ubicacion', 'inventario_ubicacion', '=' ,'ubicacion.id');
+        $inventario->Leftjoin('ubicacion', 'inventario_ubicacion', '=' ,'ubicacion.id');
         $inventario->join('tercero','inventario_usuario_elaboro','=', 'tercero.id');
         $inventario->orderBy('id', 'asc');
 

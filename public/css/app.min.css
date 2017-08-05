@@ -83,6 +83,9 @@ label {
 .input-sm {
   padding: 5px 8px; }
 
+.input-group .form-control {
+  position: static; }
+
 .datepicker {
   z-index: 1151 !important; }
 
@@ -144,12 +147,6 @@ label {
 
 .modal-title {
   font-weight: bold; }
-
-.add-ubicacion {
-  padding: 1px 1px 1px 1px; }
-  .add-ubicacion .btn {
-    padding: 2px;
-    font-size: 12px; }
 
 .bg-table {
   font-weight: bold; }

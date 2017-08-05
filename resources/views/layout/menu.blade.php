@@ -393,31 +393,37 @@
         </ul>
     </li>
     {{-- Tesoreria --}}
-    <li class="treeview {{ in_array(Request::segment(1), ['retefuentes']) ? 'active' : '' }}">
+    <li class="treeview {{ in_array(Request::segment(1), ['facturasp','retefuentes','tipoproveedores', 'tipogastos']) ? 'active' : '' }}">
         <a href="#">
             <i class="fa fa-balance-scale"></i><span> Tesorería</span><i class="fa fa-angle-left pull-right"></i>  
         </a>
         <ul class="treeview-menu">
             {{-- Modulos Tesoreria --}}
-            <li class="{{ in_array(Request::segment(1), ['']) ? 'active' : '' }}">
+            <li class="{{ in_array(Request::segment(1), ['facturasp']) ? 'active' : '' }}">
                 <a href="#">
                     <i class="fa fa-wpforms"></i> Modulos <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
-                {{-- <li class="{{ Request::segment(1) == 'facturasp' ? 'active' : '' }}">
-                        <a href="{{ route('facturasp.index') }}"><i class="fa fa-volume-control-phone"></i> Facturas Proveedor</a>
-                    </li> --}}
+                    <li class="{{ Request::segment(1) == 'facturasp' ? 'active' : '' }}">
+                        <a href="{{ route('facturasp.index') }}"><i class="fa fa-pencil-square-o"></i> Facturas Proveedor</a>
+                    </li> 
                 </ul>
             </li>
       
             {{-- Referencias Tesoreria --}}
-            <li class="{{ in_array(Request::segment(1), ['retefuentes']) ? 'active' : '' }}">
+            <li class="{{ in_array(Request::segment(1), ['retefuentes', 'tipoproveedores', 'tipogastos']) ? 'active' : '' }}">
                 <a href="#">
                     <i class="fa fa-circle-o"></i> Referencias <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
                     <li class="{{ Request::segment(1) == 'retefuentes' ? 'active' : '' }}">
                         <a href="{{ route('retefuentes.index') }}"><i class="fa fa-circle-o"></i> Retefuente</a>
+                    </li>
+                    <li class="{{ Request::segment(1) == 'tipogastos' ? 'active' : '' }}">
+                        <a href="{{ route('tipogastos.index') }}"><i class="fa fa-circle-o"></i> Tipo gasto</a>
+                    </li>
+                    <li class="{{ Request::segment(1) == 'tipoproveedores' ? 'active' : '' }}">
+                        <a href="{{ route('tipoproveedores.index') }}"><i class="fa fa-circle-o"></i> Tipo proveedor</a>
                     </li>
                 </ul>
             </li>

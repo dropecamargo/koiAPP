@@ -9,9 +9,19 @@
     <div class="box box-success">
         <div class="box-body">
             <div class="row">
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-4">
                     <label class="control-label">Nombre</label>
                     <div>{{ $impuesto->impuesto_nombre }}</div>
+                </div>
+                <div class="form-group col-md-5">
+                    <label class="control-label">Plan cuenta</label>
+                    <div>{{ $impuesto->plancuentas_cuenta}} - {{ $impuesto->plancuentas_nombre }}</div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-4">
+                    <label class="control-label">Porcentaje %</label>
+                    <div>{{ $impuesto->impuesto_porcentaje }}</div>
                 </div>
                 <div class="form-group col-md-2 col-xs-8 col-sm-3"><br>
                     <label class="checkbox-inline" for="impuestos_activo">

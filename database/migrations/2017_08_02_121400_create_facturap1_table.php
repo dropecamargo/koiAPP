@@ -31,7 +31,7 @@ class CreateFacturap1Table extends Migration
             $table->double('facturap1_descuento');
             $table->double('facturap1_base');
             $table->double('facturap1_impuestos');
-            $table->double('facturap1_reteniones');
+            $table->double('facturap1_retenciones');
             $table->double('facturap1_apagar');
             $table->text('facturap1_observaciones');
 

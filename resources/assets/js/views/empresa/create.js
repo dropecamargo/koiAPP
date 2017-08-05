@@ -74,6 +74,9 @@ app || (app = {});
 
        		if( typeof window.initComponent.initICheck == 'function' )
                 window.initComponent.initICheck();
+
+            if( typeof window.initComponent.initDatePicker == 'function' )
+                window.initComponent.initDatePicker();
         },
 
         nitChanged: function(e) {

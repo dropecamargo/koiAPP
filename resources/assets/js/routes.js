@@ -311,9 +311,26 @@ app || (app = {});
             | Tesoreria
             |----------------------
             */
+            // Facturap
+            'facturasp(/)': 'getFacturaspMain',
+            'facturasp/create(/)': 'getFacturapCreate',
+            'facturasp/:facturasp(/)': 'getFacturapShow',
+            'facturasp/:facturasp/edit(/)': 'getFacturapEdit',
+
+            // Retefuente
             'retefuentes(/)': 'getReteFuentesMain',
             'retefuentes/create(/)': 'getReteFuenteCreate',
             'retefuentes/:retefuentes/edit(/)': 'getReteFuenteEdit',
+
+            // Tipo Proveedor
+            'tipoproveedores(/)': 'getTipoProveedoresMain',
+            'tipoproveedores/create(/)': 'getTipoProveedorCreate',
+            'tipoproveedores/:tipoproveedores/edit(/)': 'getTipoProveedorEdit',
+
+            // Tipo Gasto
+            'tipogastos(/)': 'getTipoGastosMain',
+            'tipogastos/create(/)': 'getTipoGastoCreate',
+            'tipogastos/:tipogastos/edit(/)': 'getTipoGastoEdit',
         },
 
         /**
@@ -1782,12 +1799,17 @@ app || (app = {});
             this.rolModel = new app.RolModel();
             this.rolModel.set({'id': rol}, {silent: true});
 
+            if ( this.editRolView instanceof Backbone.View ){
+                this.editRolView.stopListening();
+                this.editRolView.undelegateEvents();
+            }
+
             if ( this.createRolView instanceof Backbone.View ){
                 this.createRolView.stopListening();
                 this.createRolView.undelegateEvents();
             }
 
-            this.createRolView = new app.CreateRolView({ model: this.rolModel });
+            this.editRolView = new app.EditRolView({ model: this.rolModel });
             this.rolModel.fetch();
         },
 
@@ -2480,16 +2502,6 @@ app || (app = {});
             this.prioridadModel.fetch();
         },
 
-        //Contratos
-        getContratosMain: function(){
-            if ( this.mainContratoView instanceof Backbone.View ){
-                this.mainContratoView.stopListening();
-                this.mainContratoView.undelegateEvents();
-            }
-            this.mainContratoView = new app.MainContratosView( );
-
-        },
-
         /**
         * show view main ordenes
         */
@@ -2518,6 +2530,20 @@ app || (app = {});
         },
 
         /**
+        * show view show tercero
+        */
+        getOrdenesShow: function (orden) {
+            this.ordenModel = new app.OrdenModel();
+            this.ordenModel.set({'id': orden}, {silent: true});
+
+            if ( this.showOrdenView instanceof Backbone.View ){
+                this.showOrdenView.stopListening();
+                this.showOrdenView.undelegateEvents();
+            }
+
+            this.showOrdenView = new app.ShowOrdenView({ model: this.ordenModel });
+        },
+        /**
         * show view edit ordenes
         */
         getOrdenesEdit: function (orden) {
@@ -2538,20 +2564,7 @@ app || (app = {});
             this.ordenModel.fetch();
         },
 
-        /**
-        * show view show tercero
-        */
-        getOrdenesShow: function (orden) {
-            this.ordenModel = new app.OrdenModel();
-            this.ordenModel.set({'id': orden}, {silent: true});
-
-            if ( this.showOrdenView instanceof Backbone.View ){
-                this.showOrdenView.stopListening();
-                this.showOrdenView.undelegateEvents();
-            }
-
-            this.showOrdenView = new app.ShowOrdenView({ model: this.ordenModel });
-        },
+        // Concepto Tecnico
         getConceptosTecMain: function () {
 
             if ( this.mainConceptoTecView instanceof Backbone.View ){
@@ -2587,6 +2600,7 @@ app || (app = {});
             this.conceptoTecModel.fetch();
         },
 
+        // GEstion Tecnico
         getGestionesTecnicoMain: function(){
 
             if (this.mainGestionesTecnicoView instanceof Backbone.View) {
@@ -2641,7 +2655,7 @@ app || (app = {});
             this.createSitioView = new app.CreateSitioView({ model: this.sitioModel });
             this.sitioModel.fetch();
         },
-
+        // Angeda Tecnica
         getAgendaTecnicaMain: function () {
             if ( this.mainAgendaTecnicaView instanceof Backbone.View ){
                 this.mainAgendaTecnicaView.stopListening();
@@ -2651,6 +2665,58 @@ app || (app = {});
             this.mainAgendaTecnicaView = new app.MainAgendaTecnicaView( );
         },
 
+        // Facturap
+        getFacturaspMain: function () {
+
+            if ( this.mainFacturaspView instanceof Backbone.View ){
+                this.mainFacturaspView.stopListening();
+                this.mainFacturaspView.undelegateEvents();
+            }
+
+            this.mainFacturaspView = new app.MainFacturaspView( );
+        },
+        getFacturapCreate:function () {
+            this.facturapModel = new app.FacturapModel();
+
+            if ( this.createFacturapView instanceof Backbone.View ){
+                this.createFacturapView.stopListening();
+                this.createFacturapView.undelegateEvents();
+            }
+
+            this.createFacturapView = new app.CreateFacturapView({ model: this.facturapModel });
+            this.createFacturapView.render();
+        },
+
+        // getFacturapShow: function (facturap) {
+        //     this.facturapModel = new app.facturapModel();
+        //     this.facturapModel.set({'id': facturap}, {silent: true});
+
+        //     if ( this.showFacturapView instanceof Backbone.View ){
+        //         this.showFacturapView.stopListening();
+        //         this.showFacturapView.undelegateEvents();
+        //     }
+
+        //     this.showFacturapView = new app.ShowFacturapView({ model: this.facturapModel });
+        // },
+
+        getFacturapEdit: function (facturap) {
+            this.facturapModel = new app.FacturapModel();
+            this.facturapModel.set({'id': facturap}, {'silent':true});
+
+            if ( this.editFacturapView instanceof Backbone.View ){
+                this.editFacturapView.stopListening();
+                this.editFacturapView.undelegateEvents();
+            }
+
+            if ( this.createFacturapView instanceof Backbone.View ){
+                this.createFacturapView.stopListening();
+                this.createFacturapView.undelegateEvents();
+            }
+
+            this.editFacturapView = new app.EditFacturapView({ model: this.facturapModel });
+            this.facturapModel.fetch();
+        },
+        // Retefuente
         getReteFuentesMain: function () {
 
             if ( this.mainRetefuentesView instanceof Backbone.View ){
@@ -2673,17 +2739,87 @@ app || (app = {});
             this.createReteFuenteView.render();
         },
 
-        // getConceptoTecEdit: function (conceptotecnico) {
-        //     this.reteFuenteModel = new app.ConceptoTecModel();
-        //     this.reteFuenteModel.set({'id': conceptotecnico}, {'silent':true});
+        getReteFuenteEdit: function (retefuentes) {
+            this.reteFuenteModel = new app.ReteFuenteModel();
+            this.reteFuenteModel.set({'id': retefuentes}, {'silent':true});
 
-        //     if ( this.createReteFuenteView instanceof Backbone.View ){
-        //         this.createReteFuenteView.stopListening();
-        //         this.createReteFuenteView.undelegateEvents();
-        //     }
+            if ( this.createReteFuenteView instanceof Backbone.View ){
+                this.createReteFuenteView.stopListening();
+                this.createReteFuenteView.undelegateEvents();
+            }
 
-        //     this.createReteFuenteView = new app.CreateReteFuenteView({ model: this.reteFuenteModel });
-        //     this.reteFuenteModel.fetch();
-        // },
+            this.createReteFuenteView = new app.CreateReteFuenteView({ model: this.reteFuenteModel });
+            this.reteFuenteModel.fetch();
+        },
+        // Tipo Proveedor
+        getTipoProveedoresMain: function () {
+
+            if ( this.mainTipoProveedoresView instanceof Backbone.View ){
+                this.mainTipoProveedoresView.stopListening();
+                this.mainTipoProveedoresView.undelegateEvents();
+            }
+
+            this.mainTipoProveedoresView = new app.MainTipoProveedorView( );
+        },
+
+        getTipoProveedorCreate: function () {
+            this.tipoProveedorModel = new app.TipoProveedorModel();
+
+            if ( this.createTipoProveedorView instanceof Backbone.View ){
+                this.createTipoProveedorView.stopListening();
+                this.createTipoProveedorView.undelegateEvents();
+            }
+
+            this.createTipoProveedorView = new app.CreateTipoProveedorView({ model: this.tipoProveedorModel });
+            this.createTipoProveedorView.render();
+        },
+
+        getTipoProveedorEdit: function (tipoproveedores) {
+            this.tipoProveedorModel = new app.TipoProveedorModel();
+            this.tipoProveedorModel.set({'id': tipoproveedores}, {'silent':true});
+
+            if ( this.createTipoProveedorView instanceof Backbone.View ){
+                this.createTipoProveedorView.stopListening();
+                this.createTipoProveedorView.undelegateEvents();
+            }
+
+            this.createTipoProveedorView = new app.CreateTipoProveedorView({ model: this.tipoProveedorModel });
+            this.tipoProveedorModel.fetch();
+        },
+        // Tipo gastos
+        getTipoGastosMain: function () {
+
+            if ( this.mainTipoGastosView instanceof Backbone.View ){
+                this.mainTipoGastosView.stopListening();
+                this.mainTipoGastosView.undelegateEvents();
+            }
+
+            this.mainTipoGastosView = new app.MainTipoGastoView( );
+        },
+
+        getTipoGastoCreate: function () {
+            this.tipoGastoModel = new app.TipoGastoModel();
+
+            if ( this.createTipoGastoView instanceof Backbone.View ){
+                this.createTipoGastoView.stopListening();
+                this.createTipoGastoView.undelegateEvents();
+            }
+
+            this.createTipoGastoView = new app.CreateTipoGastoView({ model: this.tipoGastoModel });
+            this.createTipoGastoView.render();
+        },
+
+        getTipoGastoEdit: function (tipogasto) {
+            this.tipoGastoModel = new app.TipoGastoModel();
+            this.tipoGastoModel.set({'id': tipogasto}, {'silent':true});
+
+            if ( this.createTipoGastoView instanceof Backbone.View ){
+                this.createTipoGastoView.stopListening();
+                this.createTipoGastoView.undelegateEvents();
+            }
+
+            this.createTipoGastoView = new app.CreateTipoGastoView({ model: this.tipoGastoModel });
+            this.tipoGastoModel.fetch();
+        },
     }));
 })(jQuery, this, this.document);
