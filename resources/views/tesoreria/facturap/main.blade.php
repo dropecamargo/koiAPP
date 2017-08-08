@@ -247,6 +247,6 @@
         <% } %>
         <td><%- (impuesto_nombre != null ) ? impuesto_nombre : retefuente_nombre %></td>
         <td><%- facturap2_porcentaje %></td>
-        <td><%- facturap2_base %></td>
+        <td><%- window.Misc.currency (facturap2_base) %></td>
     </script>
 @stop

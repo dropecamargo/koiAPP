@@ -94,6 +94,20 @@
                             </div>                    
                         </div> 
                         <div class="row">
+                            <label for="facturap1_impuestos" class="control-label col-md-1">Impuestos</label>
+                            <div class="form-group col-md-3">
+                                {{ number_format($facturap1->facturap1_impuestos) }}
+                            </div>
+                            <label for="facturap1_retenciones" class="control-label col-md-1">Retenciones</label>
+                            <div class="form-group col-md-2">
+                                {{ number_format( $facturap1->facturap1_retenciones ) }}
+                            </div>                    
+                            <label for="facturap1_apagar" class="control-label col-md-1">A pagar</label>
+                            <div class="form-group col-md-2">
+                                {{ number_format( $facturap1->facturap1_apagar ) }}
+                            </div>
+                        </div>
+                        <div class="row">
                             <label for="facturap1_observaciones" class="col-md-1 control-label">Observaciones</label>
                             <div class="form-group col-md-10">
                                 {{$facturap1->facturap1_observaciones }}

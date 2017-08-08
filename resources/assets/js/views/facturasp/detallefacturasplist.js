@@ -33,7 +33,6 @@ app || (app = {});
             this.confCollection = { reset: true, data: {} };
 
             // References th totalize
-
             // Events Listeners
             this.listenTo( this.collection, 'add', this.addOne );
             this.listenTo( this.collection, 'reset', this.addAll );

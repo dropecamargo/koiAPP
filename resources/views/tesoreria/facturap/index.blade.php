@@ -31,9 +31,9 @@
                                 <input id="searchfacturap_tercero_nombre" name="searchfacturap_tercero_nombre" placeholder="Tercero beneficiario" class="form-control input-sm" type="text" maxlength="15" readonly value="{{ session('searchfacturap_tercero_nombre') }}">
                             </div>
 
-                            <label for="searchfacturap_referencia" class="col-sm-1 control-label">Referencia</label>
+                            <label for="searchfacturap_factura" class="col-sm-1 control-label">Factura</label>
                             <div class="col-sm-2">
-                                <input id="searchfacturap_referencia" placeholder="Referencia" class="form-control input-sm" name="searchfacturap_referencia" type="text" maxlength="15" value="{{ session('searchfacturap_referencia') }}">
+                                <input id="searchfacturap_factura" placeholder="Nombre factura" class="form-control input-sm" name="searchfacturap_factura" type="text" maxlength="15" value="{{ session('searchfacturap_factura') }}">
                             </div>
 
                             <label for="searchfacturap_fecha" class="col-sm-1 control-label">Fecha</label>
