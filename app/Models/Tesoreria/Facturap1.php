@@ -49,6 +49,7 @@ class Facturap1 extends Model
 
         $validator = Validator::make($data, $rules);
         if ($validator->passes()) {
+            // Validar Carrito
             return true;
         }
         $this->errors = $validator->errors();

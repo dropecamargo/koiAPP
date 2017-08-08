@@ -14,7 +14,7 @@
     </section>
 
     <section class="content">
-        <div class="box box-solid" id="">
+        <div class="box box-solid" id="facturap-show">
             <div class="nav-tabs-custom tab-success tab-whithout-box-shadow">
                 <ul class="nav nav-tabs">
                     <li class="active"><a href="#tab_facturap" data-toggle="tab">Factura</a></li>
@@ -132,11 +132,8 @@
                 </div>
                 <div class="box-footer">
                     <div class="row">
-                        <div class="col-md-2 col-md-offset-4 col-md-6 col-xs-6">
+                        <div class="col-md-2 col-md-offset-5 col-md-6 col-xs-6">
                             <a href="{{ route('facturasp.index') }}" class="btn btn-default btn-sm btn-block">{{ trans('app.comeback') }}</a>
-                        </div>
-                        <div class="col-md-2 col-sm-6 col-xs-6 text-right">
-                            <a href="{{ route('facturasp.edit', ['facturasp' => $facturap1->id]) }}" class="btn btn-primary btn-sm btn-block"> {{trans('app.edit')}}</a>
                         </div>
                     </div>
                 </div>  

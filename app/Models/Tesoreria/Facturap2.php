@@ -52,4 +52,9 @@ class Facturap2 extends Model
         $facturap2->where('facturap2_facturap1', $id);
         return $facturap2->get();
     }
+
+    public function calculateBase (Facturap1 $facturap1 , $porcentaje) {
+        $porcentage = ( $porcentaje / 100 ); 
+        return $facturap1->facturap1_base * $porcentage;
+    }
 }
