@@ -95,10 +95,10 @@ app || (app = {});
         * Store facturap2
         */
         onStoreFacturap2:function(e){
-                console.log(e);
             if (!e.isDefaultPrevented()) {
                 e.preventDefault();
-                var data = $.extend({}, window.Misc.formToJson( e.target ) );
+                var data = window.Misc.formToJson( e.target ) ;
+                    data.facturap1 = this.model.get('id');
                 this.detalleFacturap2.trigger( 'store', data);
             }
         },
@@ -108,25 +108,27 @@ app || (app = {});
         onChangeImpuesto: function (e) {
             e.preventDefault();
             var _this = this;
-            // Impuesto
-            $.ajax({
-                url: window.Misc.urlFull( Route.route( 'impuestos.show',{impuestos: _this.$(e.target).val()} ) ),
-                type: 'GET',
-                beforeSend: function() {
-                    window.Misc.setSpinner( _this.spinner );
-                }
-            })
-            .done(function(resp) {
-                window.Misc.removeSpinner( _this.spinner );
-                // Eval porcentage
-                var porcentage = resp.impuesto_porcentaje;
-                _this.$('#facturap2_impuesto_porcentaje').val(porcentage);
-                _this.$('#facturap2_base_impuesto').val((porcentage/100)  * _this.model.get('facturap1_base'));
-            })
-            .fail(function(jqXHR, ajaxOptions, thrownError) {
-                window.Misc.removeSpinner( _this.spinner );
-                alertify.error(thrownError);
-            })
+            if (_this.$(e.target).val() != '') {
+                // Impuesto
+                $.ajax({
+                    url: window.Misc.urlFull( Route.route( 'impuestos.show',{impuestos: _this.$(e.target).val()} ) ),
+                    type: 'GET',
+                    beforeSend: function() {
+                        window.Misc.setSpinner( _this.spinner );
+                    }
+                })
+                .done(function(resp) {
+                    window.Misc.removeSpinner( _this.spinner );
+                    // Eval porcentage
+                    var porcentage = resp.impuesto_porcentaje;
+                    _this.$('#facturap2_impuesto_porcentaje').val(porcentage);
+                    _this.$('#facturap2_base_impuesto').val((porcentage/100)  * _this.model.get('facturap1_base'));
+                })
+                .fail(function(jqXHR, ajaxOptions, thrownError) {
+                    window.Misc.removeSpinner( _this.spinner );
+                    alertify.error(thrownError);
+                });
+            }
         },
         /**
         *  Change for get porcentage y set valor with retefuente
@@ -134,25 +136,28 @@ app || (app = {});
         onChangeRetefuente: function (e) {
             e.preventDefault();
             var _this = this;
-            // Impuesto
-            $.ajax({
-                url: window.Misc.urlFull( Route.route( 'retefuentes.show',{retefuentes: _this.$(e.target).val()} ) ),
-                type: 'GET',
-                beforeSend: function() {
-                    window.Misc.setSpinner( _this.spinner );
-                }
-            })
-            .done(function(resp) {
-                window.Misc.removeSpinner( _this.spinner );
-                // Eval porcentage
-                var porcentage = (_this.model.get(tercero_nombre) == 'J' ) ? resp.retefuente_tarifa_juridico : resp.retefuente_tarifa_natural;
-                _this.$('#facturap2_retefuente_porcentaje').val(porcentage);
-                _this.$('#facturap2_base_retefuente').val((porcentage/100) * _this.model.get('facturap1_base'));
-            })
-            .fail(function(jqXHR, ajaxOptions, thrownError) {
-                window.Misc.removeSpinner( _this.spinner );
-                alertify.error(thrownError);
-            })
+
+            if (_this.$(e.target).val() != '') {
+                // Retefuente
+                $.ajax({
+                    url: window.Misc.urlFull( Route.route( 'retefuentes.show',{retefuentes: _this.$(e.target).val()} ) ),
+                    type: 'GET',
+                    beforeSend: function() {
+                        window.Misc.setSpinner( _this.spinner );
+                    }
+                })
+                .done(function(resp) {
+                    window.Misc.removeSpinner( _this.spinner );
+                    // Eval porcentage
+                    var porcentage = (_this.model.get('tercero_persona') == 'J' ) ? resp.retefuente_tarifa_juridico : resp.retefuente_tarifa_natural;
+                    _this.$('#facturap2_retefuente_porcentaje').val(porcentage);
+                    _this.$('#facturap2_base_retefuente').val((porcentage/100) * _this.model.get('facturap1_base'));
+                })
+                .fail(function(jqXHR, ajaxOptions, thrownError) {
+                    window.Misc.removeSpinner( _this.spinner );
+                    alertify.error(thrownError);
+                });
+            }
         },
         /**
         * fires libraries js

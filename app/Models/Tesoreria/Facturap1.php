@@ -29,7 +29,7 @@ class Facturap1 extends Model
 	*
 	* @var array
 	*/
-    protected $fillable = ['facturap1_fecha','facturap1_vencimiento','facturap1_factura','facturap1_primerpago','facturap1_subtotal','facturap1_descuento','facturap1_impuestos', 'facturap1_retenciones','facturap1_apagar','facturap1_cuotas'];
+    protected $fillable = ['facturap1_fecha','facturap1_vencimiento','facturap1_factura','facturap1_primerpago','facturap1_subtotal','facturap1_descuento','facturap1_impuestos', 'facturap1_retenciones','facturap1_apagar','facturap1_cuotas', 'facturap1_observaciones'];
 
 
     public function isValid($data)

@@ -1,7 +1,7 @@
 @extends('cartera.devoluciones.main')
 
 @section('breadcrumb')
-	<li><a href="{{ route('devoluciones.index') }}">Devoluciones</a></li>
+	<li><a href="{{ route('devoluciones.index') }}">Devolución</a></li>
 	<li class="active">Nuevo</li>
 @stop
 

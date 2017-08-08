@@ -15,7 +15,7 @@
 				</div>
 				<div class="form-group col-md-4">
 					<label class="control-label">Concepto tecnico</label>
-					<div>{{ $gestiontecnico->conceptocom_nombre }}</div>
+					<div>{{ $gestiontecnico->conceptotec_nombre }}</div>
 				</div>
 				<div class="form-group col-md-4">
 					<label class="control-label">Tecnico</label>

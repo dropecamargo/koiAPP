@@ -1,7 +1,7 @@
 @extends('inventario.productos.main')
 
 @section('breadcrumb')
-    <li><a href="{{ route('productos.index')}}">Productos</a></li>
+    <li><a href="{{ route('productos.index')}}">Producto</a></li>
     <li class="active">{{ $producto->id }}</li>
 @stop
 @section('module')
@@ -98,8 +98,13 @@
                                                 </tr>
                                             @endforeach
                                             <tr>
-                                                <th colspan="4" class="text-center"><a class="btn get-info-availability">Ver series</a></th>
+                                                <th colspan="3" class="text-center"><a class="btn get-info-availability">Ver series</a></th>
                                             </tr>
+                                            @if( $producto->producto_maneja_serie && $producto->producto_referencia == $producto->producto_serie)
+                                                <tr>
+                                                    <th colspan="3" class="text-center"><a class="btn add-series">Agregar serie</a></th>
+                                                </tr>
+                                            @endif
                                              <table id="browse-prodbode-table" class="table table-striped table-condensed" cellspacing="0">
                                                 <thead>
                                                     <tr>
@@ -461,7 +466,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-4 col-md-offset-4">
-                                <a class="btn btn-block edit-info-machine">Editar inf. maquina</a>
+                                <a class="btn btn-block edit-info-machine">Editar informacion</a>
                             </div>
                         </div>
                       </div>
@@ -482,31 +487,31 @@
         </div>
     </div>
 
-    <!-- Modal generic producto -->
-    <div class="modal fade" id="modal-producto-generic" data-backdrop="static" data-keyboard="false" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header small-box {{ config('koi.template.bg') }}">
-                    <button type="button" class="close icon-close-koi" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <h4><strong>Producto - Editar máquina</strong></h4>
-                </div>
-                {!! Form::open(['id' => 'form-generic-producto', 'data-toggle' => 'validator']) !!}
-                <div class="modal-body">
-                    <div class="content-modal">
+    <section id="producto-content-section">
+        <!-- Modal generic producto -->
+        <div class="modal fade" id="modal-producto-generic" data-backdrop="static" data-keyboard="false" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header small-box {{ config('koi.template.bg') }}">
+                        <button type="button" class="close icon-close-koi" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="inner-title-modal modal-title"></h4>
                     </div>
-                </div>
-                {!! Form::close() !!}
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary btn-sm submit-generic">Continuar</button>
+                    {!! Form::open(['id' => 'form-generic-producto', 'data-toggle' => 'validator']) !!}
+                    <div class="modal-body">
+                        <div class="content-modal">
+                        </div>
+                    </div>
+                    {!! Form::close() !!}
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary btn-sm submit-generic">Continuar</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <section id="producto-content-section">
         <script type="text/template" id="edit-machine-tpl">
             <div class="row">
                 <label for="producto_tercero" class="col-md-1 control-label">Cliente</label>
@@ -533,7 +538,8 @@
                                 <i class="fa fa-address-book"></i>
                             </button>
                         </span>
-                        <input id="tcontacto_nombre" placeholder="Contacto" data-tercero="<%- tercero_id %>" class="form-control" name="tcontacto_nombre" value="<%- tcontacto_nombre %>" type="text" readonly required>
+                        <input id="producto_contacto" name="producto_contacto" type="hidden" value="<%- producto_contacto %>">
+                        <input id="tcontacto_nombre" placeholder="Contacto"  class="form-control" name="tcontacto_nombre" value="<%- tcontacto_nombre %>" type="text" readonly required>
                     </div>
                 </div>
                 <div class="form-group col-sm-6">
@@ -556,7 +562,32 @@
                 </div>
                 <label for="producto_vencimiento" class="col-md-2 control-label">F. Vencimiento</label>
                 <div class="form-group col-md-3">
+                    <div class="input-group input-group-sm">
+                    <div class="input-group-addon">
+                        <i class="fa fa-calendar"></i>
+                    </div>
                     <input type="text" id="producto_vencimiento" name="producto_vencimiento" class="form-control input-sm datepicker" value="<%- producto_vencimiento %>" required>
+                </div>
+            </div>
+        </script>
+
+        <script type="text/template" id="add-series-producto-tpl">
+            <div class="row">
+                <label for="producto_nombre" class="col-md-1 control-label">Nombre</label>
+                <div class="form-group col-md-8">
+                    <input type="text" id="producto_nombre" name="producto_nombre" placeholder="Nombre" value="<%- producto_nombre %>" class="form-control input-sm input-toupper" maxlength="20" readonly required>
+                </div>
+            </div>
+            <div class="row">
+                <label for="producto_referencia" class="col-md-1 control-label">Referencia</label>
+                <div class="form-group col-md-6">
+                    <input type="text" id="producto_referencia" name="producto_referencia" placeholder="Referencia" value="<%- producto_referencia %>" class="form-control input-sm input-toupper" maxlength="20" readonly required>
+                </div>
+            </div>
+            <div class="row">
+                <label for="producto_serie" class="col-md-1 control-label">Serie</label>
+                <div class="form-group col-md-6">
+                    <input type="text" id="producto_serie" name="producto_serie" placeholder="Serie" class="form-control input-sm input-toupper" maxlength="20" required>
                 </div>
             </div>
         </script>

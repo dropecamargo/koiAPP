@@ -1,7 +1,7 @@
 @extends('tecnico.conceptostecnico.main')
 
 @section('breadcrumb')
-    <li class="active">Concepto tecnico</li>
+    <li class="active">Concepto técnico</li>
 @stop
 
 @section('module')

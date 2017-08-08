@@ -1,7 +1,7 @@
 @extends('cartera.facturas.main')
 
 @section('breadcrumb')
-    <li><a href="{{ route('facturas.index')}}">Facturas</a></li>
+    <li><a href="{{ route('facturas.index')}}">Factura</a></li>
     <li class="active">{{ $factura->id }}</li>
 @stop
 
@@ -38,14 +38,14 @@
                                         </a>
                                     </li>
                                 </ul>
-                            </div>           
+                            </div>
                         </div>
                     @else
                         <label class=" label label-default col-md-1  col-md-offset-2">ESTADO: ANULADA</label>
                         <div class="form-group col-md-1">
                             <button type="button" class="btn btn-block btn-danger btn-sm export-factura">
                                 <i class="fa fa-file-pdf-o"></i>
-                            </button>    
+                            </button>
                         </div>
                     @endif
                 </div>
@@ -90,7 +90,7 @@
                     <div class="form-group col-md-2">
                         <label class="control-label">Fecha Primer Pago</label>
                         <div>{{$factura->factura1_primerpago}}</div>
-                    </div>   
+                    </div>
                 </div>
             	<div class="row">
             		<div class="form-group col-md-12">
@@ -154,8 +154,8 @@
                 </div>
             </div>
         </div>
-    </div>   
+    </div>
     <script type="text/template" id="factura-close-confirm-tpl">
         <p>¿Está seguro que desea cerrar la factura de venta número <b> <%- id %> </b>?</p>
-    </script>     
+    </script>
 @stop

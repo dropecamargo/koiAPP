@@ -42,6 +42,11 @@ class ModulosTableSeeder extends Seeder
         	'display_name' => 'Tecnico',
         	'nivel1' => 6
     	]);
+        Modulo::create([
+        	'name' => 'tesoreria',
+        	'display_name' => 'Tesorería',
+        	'nivel1' => 7
+    	]);
 
     	// Administracion
     	Modulo::create([
@@ -155,6 +160,13 @@ class ModulosTableSeeder extends Seeder
             'nivel1' => 1,
             'nivel2' => 2,
             'nivel3' => 11
+        ]);
+        Modulo::create([
+            'name' => 'ubicaciones',
+            'display_name' => 'Ubicaciones',
+            'nivel1' => 1,
+            'nivel2' => 2,
+            'nivel3' => 12
         ]);
 
         // Cartera
@@ -331,7 +343,7 @@ class ModulosTableSeeder extends Seeder
             'nivel1' => 3,
             'nivel2' => 1,
             'nivel3' => 3
-        ]);        
+        ]);
         // Referencias
         Modulo::create([
             'name' => 'conceptoscomercial',
@@ -549,22 +561,22 @@ class ModulosTableSeeder extends Seeder
 
         //Modulos
         Modulo::create([
-            'name' => 'gestionestecnico',
-            'display_name' => 'Gestión tecnico',
+            'name' => 'agendatecnica',
+            'display_name' => 'Agenda tecnica',
             'nivel1' => 6,
             'nivel2' => 1,
             'nivel3' => 1
         ]);
         Modulo::create([
-            'name' => 'ordenes',
-            'display_name' => 'Ordenes',
+            'name' => 'gestionestecnico',
+            'display_name' => 'Gestión tecnico',
             'nivel1' => 6,
             'nivel2' => 1,
             'nivel3' => 2
         ]);
         Modulo::create([
-            'name' => 'agendatecnica',
-            'display_name' => 'Agenda tecnica',
+            'name' => 'ordenes',
+            'display_name' => 'Ordenes',
             'nivel1' => 6,
             'nivel2' => 1,
             'nivel3' => 3
@@ -613,5 +625,48 @@ class ModulosTableSeeder extends Seeder
             'nivel2' => 2,
             'nivel3' => 6
         ]);
+
+        // Tesorería
+        Modulo::create([
+            'display_name' => 'Modulos',
+            'nivel1' => 7,
+            'nivel2' => 1
+        ]);
+        Modulo::create([
+            'display_name' => 'Referencias',
+            'nivel1' => 7,
+            'nivel2' => 2
+        ]);
+        //Modulos
+        Modulo::create([
+            'name' => 'facturasp',
+            'display_name' => 'Facturas proveedor',
+            'nivel1' => 7,
+            'nivel2' => 1,
+            'nivel3' => 1
+        ]);
+        //Referencias
+        Modulo::create([
+            'name' => 'retefuentes',
+            'display_name' => 'Retención de fuente',
+            'nivel1' => 7,
+            'nivel2' => 2,
+            'nivel3' => 1
+        ]);
+        Modulo::create([
+            'name' => 'tipogastos',
+            'display_name' => 'Tipo de gasto',
+            'nivel1' => 7,
+            'nivel2' => 2,
+            'nivel3' => 2
+        ]);
+        Modulo::create([
+            'name' => 'tipoproveedores',
+            'display_name' => 'Tipo de proveedor',
+            'nivel1' => 7,
+            'nivel2' => 2,
+            'nivel3' => 3
+        ]);
+
     }
 }

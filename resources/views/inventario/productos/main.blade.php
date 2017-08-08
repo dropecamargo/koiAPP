@@ -27,7 +27,6 @@
                 <label for="producto_ref_proveedor" class="control-label">Referencia Proveedor</label>
                 <input type="text" id="producto_ref_proveedor" name="producto_ref_proveedor" value="<%- producto_ref_proveedor %>" placeholder="Referencia Proveedor " class="form-control input-sm input-toupper" maxlength="20" required>
             </div>
-
         </div>
         <div class="row">
             <div class="form-group col-md-8">
@@ -60,7 +59,7 @@
                 <br>
                 <button type="button" class="btn btn-default btn-flat btn-sm btn-add-resource-koi-component" data-resource="linea" data-field="producto_linea" > <i class="fa fa-plus"></i></button>
             </div>
-        </div>    
+        </div>
         <div class="row">
             <div class="form-group col-md-2 col-xs-10">
                 <label for="producto_categoria" class="control-label">Categoría</label>
@@ -86,8 +85,8 @@
                 <br>
                 <button type="button" class="btn btn-default btn-flat btn-sm btn-add-resource-koi-component" data-resource="subcategoria" data-field="producto_subcategoria" > <i class="fa fa-plus"></i></button>
             </div>
-           
-        
+
+
             <div class="form-group col-md-2 col-xs-10">
                 <label for="producto_unidadmedida" class="control-label">Unidad de medida</label>
                 <select name="producto_unidadmedida" id="producto_unidadmedida" class="form-control select2-default-clear" required>
@@ -121,7 +120,7 @@
             </div>
         </div>
         <div class="row">
-            
+
             <div class="form-group col-md-2 col-xs-6">
                 <label for="producto_maneja_serie" class="control-label">¿Maneja serie?</label>
                 <div><input type="checkbox" id="producto_maneja_serie" name="producto_maneja_serie" value="producto_maneja_serie" <%- parseInt(producto_maneja_serie) ? 'checked': ''%>></div>
@@ -161,7 +160,7 @@
                         <option value="{{ $key }}" <%- producto_modelo == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
                     @endforeach
                 </select>
-            </div>  
+            </div>
             <div class="form-group col-md-1">
                 <br>
                 <button type="button" class="btn btn-default btn-flat btn-sm btn-add-resource-koi-component" data-resource="modelo" data-field="producto_modelo" > <i class="fa fa-plus"></i></button>
@@ -169,7 +168,7 @@
             <div class="form-group col-md-2">
                 <label for="producto_barras" class="control-label">Código De Barras</label>
                 <input type="text" id="producto_barras" name="producto_barras" value="<%- producto_barras %>" placeholder="Código De Barras" class="form-control input-sm input-toupper" maxlength="100" required>
-            </div>    
+            </div>
         </div>
 
         <div class="row">
@@ -197,21 +196,21 @@
     </script>
 
     <script type="text/template" id="add-seriesprodbode-tpl">
-        <% if (producto_maneja_serie == 1){ %> 
+        <% if (producto_maneja_serie == 1){ %>
             <td><%- sucursal_nombre %></td>
             <td><%- producto_serie %></td>
             <td><%- producto_nombre %></td>
             <td><%- ubicacion_nombre %></td>
-        <% }else if(producto_vence == 1){ %> 
+        <% }else if(producto_vence == 1){ %>
             <td><%- sucursal_nombre %></td>
             <td><%- ubicacion_nombre %></td>
             <td><%- lote_saldo %></td>
             <td><%- lote_vencimiento %></td>
-        <% }else if(producto_metrado == 1){ %> 
+        <% }else if(producto_metrado == 1){ %>
             <td><%- sucursal_nombre %></td>
             <td><%- rollo_rollos %> X <%- rollo_saldo %> (Mts)</td>
             <td><%- ubicacion_nombre %></td>
-        <% }else{ %> 
+        <% }else{ %>
             <td><%- sucursal_nombre %></td>
             <td><%- ubicacion_nombre %></td>
             <td><%- prodbode_cantidad %></td>

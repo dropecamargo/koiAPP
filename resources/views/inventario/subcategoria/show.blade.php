@@ -1,7 +1,7 @@
 @extends('inventario.subcategoria.main')
 
 @section('breadcrumb')
-    <li><a href="{{ route('subcategorias.index')}}">SubCategorias</a></li>
+    <li><a href="{{ route('subcategorias.index')}}">Subcategoría</a></li>
     <li class="active">{{ $subcategoria->id }}</li>
 @stop
 
@@ -9,17 +9,12 @@
     <div class="box box-success">
         <div class="box-body">
             <div class="row">
-                <div class="form-group col-md-3">
-                    <label class="control-label">Código</label>
-                    <div>{{ $subcategoria->id }}</div>
-                </div>
-
-                <div class="form-group col-md-4">
+                <div class="form-group col-md-6">
                     <label class="control-label">Nombre</label>
                     <div>{{ $subcategoria->subcategoria_nombre }}</div>
                 </div>
             </div>
-            
+
             <div class="row">
                 <div class="form-group col-md-3">
                     <label class="control-label">Nivel 1</label>

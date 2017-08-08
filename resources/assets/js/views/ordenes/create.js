@@ -23,13 +23,9 @@ app || (app = {});
         /**
         * Constructor Method
         */
-        initialize : function(opts) {
-            // Initialize
-            if( opts !== undefined && _.isObject(opts.parameters) )
-                this.parameters = $.extend({}, this.parameters, opts.parameters);
-
+        initialize : function() {
+            
             // Events
-            this.listenTo( this.model, 'change', this.render );
             this.listenTo( this.model, 'sync', this.responseServer );
             this.listenTo( this.model, 'request', this.loadSpinner );
         },
@@ -50,7 +46,7 @@ app || (app = {});
             // this ready
             this.ready();
         },
-        
+
         /**
         *Event Click to Button from orden
         */
@@ -68,7 +64,7 @@ app || (app = {});
                 var data = window.Misc.formToJson( e.target );
                 this.model.save( data, {patch: true, silent: true} );
             }
-        },  
+        },
 
         /**
         * fires libraries js
@@ -86,10 +82,10 @@ app || (app = {});
 
             if( typeof window.initComponent.initValidator == 'function' )
                 window.initComponent.initValidator();
-            
+
             if( typeof window.initComponent.initDatePicker == 'function' )
                 window.initComponent.initDatePicker();
-            
+
             if( typeof window.initComponent.initTimePicker == 'function' )
                 window.initComponent.initTimePicker();
 

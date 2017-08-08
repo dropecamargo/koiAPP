@@ -44,11 +44,11 @@ class AjusteController extends Controller
                     }
                     // // Tipo de ajuste
                     if ($request->has('tipo')) {
-                        $query->where('ajuste1_tipoajuste', $request->tipo);    
+                        $query->where('ajuste1_tipoajuste', $request->tipo);
                     }
                     // Fecha
                     if ($request->has('fecha')) {
-                        $query->where('ajuste1_fecha', $request->fecha);    
+                        $query->where('ajuste1_fecha', $request->fecha);
                     }
                 })->make(true);
         }
@@ -96,11 +96,11 @@ class AjusteController extends Controller
                     if (!$tipoAjuste instanceof TipoAjuste) {
                         DB::rollback();
                         return response()->json(['success' => false,'errors'=>'No es posible recuperar el tipo ajuste,por favor verifique la información ó por favor consulte al administrador']);
-                    }   
+                    }
 
                     // Consecutive
                     $consecutive = $sucursal->sucursal_ajus+ 1;
-                    
+
                     // Ajuste 1
                     $ajuste->fill($data);
                     $ajuste->ajuste1_documentos = $documento->id;
@@ -108,7 +108,7 @@ class AjusteController extends Controller
                     $ajuste->ajuste1_numero = $consecutive;
                     $ajuste->ajuste1_tipoajuste = $tipoAjuste->id;
                     $ajuste->ajuste1_usuario_elaboro = Auth::user()->id;
-                    $ajuste->ajuste1_fh_elaboro = date('Y-m-d H:m:s'); 
+                    $ajuste->ajuste1_fh_elaboro = date('Y-m-d H:m:s');
                     $ajuste->save();
 
                     // Detalle ajuste
@@ -143,11 +143,11 @@ class AjusteController extends Controller
                             }
                             // Producto maneja serie
                             if ($producto->producto_maneja_serie == true) {
-                                
+
                                 // Costo
                                 $costo = $item['ajuste2_costo'];
 
-                                for ($i=1; $i <= $item['ajuste2_cantidad_entrada']; $i++) { 
+                                for ($i=1; $i <= $item['ajuste2_cantidad_entrada']; $i++) {
 
                                     //Movimiento entrada maneja serie
                                     $movimiento = Inventario::entradaManejaSerie($producto, $sucursal, $item["producto_serie_$i"], $costo);
@@ -159,7 +159,7 @@ class AjusteController extends Controller
                                     $serie = Producto::where('producto_serie', $item["producto_serie_$i"])->first();
                                     if(!$serie instanceof Producto) {
                                         DB::rollback();
-                                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar serie, por favor verifique la información ó por favor consulte al administrador']);    
+                                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar serie, por favor verifique la información ó por favor consulte al administrador']);
                                     }
 
                                     // Detalle ajuste
@@ -187,7 +187,7 @@ class AjusteController extends Controller
                             }else if ($producto->producto_metrado == true) {
                                 $items = isset($item['items']) ? $item['items'] : null;
                                 foreach ($items as $value) {
-                                    for ($i=0; $i < $value['rollo_cantidad']; $i++) {   
+                                    for ($i=0; $i < $value['rollo_cantidad']; $i++) {
                                         // Individualiza en rollo
                                         $rollo = Rollo::actualizar($producto, $sucursal->id, 'E', $value['rollo_lote'], $ajuste->ajuste1_fecha, $value['rollo_metros'], $sucursal->sucursal_defecto);
                                         if (!$rollo->success) {
@@ -268,7 +268,7 @@ class AjusteController extends Controller
                                 foreach ($items as $key => $valueItem) {
                                     if ($valueItem > 0) {
                                         list($text, $rollo) = explode("_", $key);
-                                        // Individualiza en rollo --- $rollo hace las veces de lote 
+                                        // Individualiza en rollo --- $rollo hace las veces de lote
                                         $rollo = Rollo::actualizar($producto, $sucursal->id, 'S', $rollo, $ajuste->ajuste1_fecha, $valueItem,"");
                                         if (!$rollo->success) {
                                             DB::rollback();
@@ -308,7 +308,7 @@ class AjusteController extends Controller
                                             return response()->json(['success' => false, 'errors'=> $result]);
                                         }
                                         // Inventario
-                                        $inventario = Inventario::movimiento($producto, $sucursal->id, $result->prodbode_ubicacion,'AJUS', $ajuste->id, 0, $value, [], [], $ajusteDetalle->ajuste2_costo, $ajusteDetalle->ajuste2_costo,$lote->id);
+                                        $inventario = Inventario::movimiento($producto, $sucursal->id, $result->prodbode_ubicacion,'AJUS', $ajuste->id, 0, $value, [], [], $ajusteDetalle->ajuste2_costo, $ajusteDetalle->ajuste2_costo,$lote->id,[]);
                                         if ($inventario != 'OK') {
                                             DB::rollback();
                                             return response()->json(['success' => false,'errors '=> $inventario]);

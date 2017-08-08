@@ -1,7 +1,7 @@
 @extends('tecnico.prioridad.main')
 
 @section('breadcrumb')
-    <li><a href="{{ route('prioridades.index')}}">Prioridades</a></li>
+    <li><a href="{{ route('prioridades.index')}}">Prioridad</a></li>
     <li class="active">{{ $prioridad->id }}</li>
 @stop
 
@@ -9,17 +9,11 @@
     <div class="box box-success">
         <div class="box-body">
             <div class="row">
-                <div class="form-group col-md-2">
-                    <label class="control-label">Código</label>
-                    <div>{{ $prioridad->id }}</div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-md-8">
+                <div class="form-group col-md-6">
                     <label class="control-label">Nombre</label>
                     <div>{{ $prioridad->prioridad_nombre }}</div>
                 </div>
-                <div class="form-group col-md-2 col-xs-8 col-sm-3">
+                <div class="form-group col-md-2 col-xs-8 col-sm-3"><br>
                     <label class="checkbox-inline" for="prioridad_activo">
                         <input type="checkbox" id="prioridad_activo" name="prioridad_activo" value="prioridad_activo" disabled {{ $prioridad->prioridad_activo ? 'checked': '' }}> Activo
                     </label>

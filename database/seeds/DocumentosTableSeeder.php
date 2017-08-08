@@ -60,5 +60,25 @@ class DocumentosTableSeeder extends Seeder
             'documentos_codigo' => 'ANTI',
             'documentos_nombre' => 'ANTICIPOS'
         ]);
+        Documentos::create([
+            'documentos_codigo' => 'ORD',
+            'documentos_nombre' => 'ORDEN'
+        ]);
+        Documentos::create([
+            'documentos_codigo' => 'CHD',
+            'documentos_nombre' => 'CHEQUES DEVUELTOS'
+        ]);
+        Documentos::create([
+            'documentos_codigo' => 'CHP',
+            'documentos_nombre' => 'CHEQUES'
+        ]);
+        Documentos::create([
+            'documentos_codigo' => 'REMR',
+            'documentos_nombre' => 'REMISION'
+        ]);
+        Documentos::create([
+            'documentos_codigo' => 'TRAU',
+            'documentos_nombre' => 'TRASLADOS UNIDADES'
+        ]);
     }
 }

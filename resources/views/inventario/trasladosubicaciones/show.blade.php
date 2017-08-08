@@ -1,7 +1,7 @@
 @extends('inventario.trasladosubicaciones.main')
 
 @section('breadcrumb')
-    <li><a href="{{ route('trasladosubicaciones.index')}}">Traslados de ubicación</a></li>
+    <li><a href="{{ route('trasladosubicaciones.index')}}">Traslado de ubicación</a></li>
     <li class="active">{{ $trasladou->trasladou1_numero }}</li>
 @stop
 

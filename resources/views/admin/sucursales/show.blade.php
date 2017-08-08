@@ -1,7 +1,7 @@
 @extends('admin.sucursales.main')
 
 @section('breadcrumb')
-    <li><a href="{{ route('sucursales.index')}}">Sucursales</a></li>
+    <li><a href="{{ route('sucursales.index')}}">Sucursal</a></li>
     <li class="active">{{ $sucursal->id  }}</li>
 @stop
 
@@ -12,7 +12,7 @@
                 <div class="form-group col-md-4">
                     <label class="control-label">Nombre</label>
                     <div>{{ $sucursal->sucursal_nombre }}</div>
-                </div> 
+                </div>
                 <div class="form-group col-md-5">
                     <label class="control-label">Direccion</label> <small> {{ $sucursal->sucursal_direccion_nomenclatura }}</small>
                     <div>{{ $sucursal->sucursal_direccion }}</div>
@@ -30,12 +30,12 @@
                 <div class="form-group col-md-4"><br>
                     <label class="" for="sucursal_activo">
                     <input type="checkbox" id="sucursal_activo" name="sucursal_activo" value="sucursal_activo" disabled {{ $sucursal->sucursal_activo ? 'checked': '' }}> Activo
-                    </label> 
+                    </label>
                 </div>
-            </div>  
-        
+            </div>
+
         </div>
-    
+
         <div class="box-footer with-border">
             <div class="row">
                 @if( $sucursal->sucursal_nombre != '090 GARANTIAS' && $sucursal->sucursal_nombre != '091 PROVISIONAL')

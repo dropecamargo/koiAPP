@@ -1,7 +1,7 @@
 @extends('inventario.modelo.main')
 
 @section('breadcrumb')
-	<li><a href="{{ route('modelos.index') }}">Modelos</a></li>
+	<li><a href="{{ route('modelos.index') }}">Modelo</a></li>
 	<li class="active">Nuevo</li>
 @stop
 

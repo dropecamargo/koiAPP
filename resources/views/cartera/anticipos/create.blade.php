@@ -1,7 +1,7 @@
 @extends('cartera.anticipos.main')
 
 @section('breadcrumb')
-	<li><a href="{{ route('anticipos.index') }}">Anticipos</a></li>
+	<li><a href="{{ route('anticipos.index') }}">Anticipo</a></li>
 	<li class="active">Nuevo</li>
 @stop
 

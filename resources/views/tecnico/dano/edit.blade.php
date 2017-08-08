@@ -1,7 +1,7 @@
 @extends('tecnico.dano.main')
 
 @section('breadcrumb')
-    <li><a href="{{ route('danos.index')}}">Editar</a></li>
+    <li><a href="{{ route('danos.index')}}">Daño</a></li>
     <li><a href="{{ route('danos.show', ['dano' => $dano->id]) }}">{{ $dano->id }}</a></li>
 	<li class="active">Editar</li>
 @stop
@@ -10,7 +10,7 @@
 	<div class="box box-success" id="dano-create">
 		{!! Form::open(['id' => 'form-dano', 'data-toggle' => 'validator']) !!}
 			<div class="box-body" id="render-form-dano">
-				{{-- Render form dano --}}	
+				{{-- Render form dano --}}
 			</div>
 
 			<div class="box-footer ">

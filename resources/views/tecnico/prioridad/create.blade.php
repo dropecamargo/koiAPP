@@ -1,7 +1,7 @@
 @extends('tecnico.prioridad.main')
 
 @section('breadcrumb')
-    <li><a href="{{ route('prioridades.index')}}">Prioridades</a></li>
+    <li><a href="{{ route('prioridades.index')}}">Prioridad</a></li>
 	<li class="active">Nuevo</li>
 @stop
 

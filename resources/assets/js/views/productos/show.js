@@ -14,7 +14,8 @@ app || (app = {});
         el: '#producto-show',
         events: {
             'click .get-info-availability': 'getInfoAvailability',
-            'click .edit-info-machine': 'editInfoMachine'
+            'click .edit-info-machine': 'editInfoMachine',
+            'click .add-series': 'addSerie'
         },
 
         /**
@@ -45,7 +46,7 @@ app || (app = {});
         },
 
         /**
-        * Event show series products father's
+        * Event edit machines
         */
         editInfoMachine: function(e){
             if (!e.isDefaultPrevented()) {
@@ -60,6 +61,7 @@ app || (app = {});
                     tcontacto_nombre: this.model.get('tcontacto_nombre'),
                     tcontacto_telefono: this.model.get('tcontacto_telefono'),
                     producto_servicio: this.model.get('producto_servicio'),
+                    producto_contacto: this.model.get('producto_contacto'),
                     producto_vencimiento: this.model.get('producto_vencimiento')
                 }
 
@@ -73,6 +75,40 @@ app || (app = {});
                     model: this.model,
                     parameters: {
                         data: data,
+                        call: 'M'
+                    }
+                });
+
+                this.productoActionView.render();
+            }
+        },
+
+        /**
+        * Event add series products father's
+        */
+        addSerie: function(e){
+            if (!e.isDefaultPrevented()) {
+                e.preventDefault();
+
+                // Show modal
+                this.$modalGeneric.modal('show');
+
+                var data = {
+                    producto_nombre: this.model.get('producto_nombre'),
+                    producto_referencia: this.model.get('producto_referencia')
+                }
+
+                // Open TecnicoActionView
+                if ( this.productoActionView instanceof Backbone.View ){
+                    this.productoActionView.stopListening();
+                    this.productoActionView.undelegateEvents();
+                }
+
+                this.productoActionView = new app.ProductoActionView({
+                    model: this.model,
+                    parameters: {
+                        data: data,
+                        call: 'S'
                     }
                 });
 

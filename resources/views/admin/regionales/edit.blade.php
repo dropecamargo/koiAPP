@@ -1,7 +1,7 @@
 @extends('admin.regionales.main')
 
 @section('breadcrumb')
-    <li><a href="{{ route('regionales.index')}}">Editar</a></li>
+    <li><a href="{{ route('regionales.index')}}">Regional</a></li>
     <li><a href="{{ route('regionales.show', ['regional' => $regional->id]) }}">{{ $regional->id }}</a></li>
 	<li class="active">Editar</li>
 @stop

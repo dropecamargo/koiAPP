@@ -43,9 +43,9 @@ class CreateProductoTable extends Migration
             $table->double('producto_precio2')->default(0);
             $table->double('producto_precio3')->default(0);
             $table->integer('producto_impuesto')->unsigned();
-            $table->integer('producto_tercero')->unsigned();
-            $table->integer('producto_contacto')->unsigned();
-            $table->date('producto_vencimiento');
+            $table->integer('producto_tercero')->unsigned()->nullable();
+            $table->integer('producto_contacto')->unsigned()->nullable();
+            $table->date('producto_vencimiento')->nullable();
 
             $table->foreign('producto_unidadnegocio')->references('id')->on('unidadnegocio')->onDelete('restrict');
             $table->foreign('producto_unidadmedida')->references('id')->on('unidadmedida')->onDelete('restrict');

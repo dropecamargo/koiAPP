@@ -13,7 +13,7 @@ class MarcaTableSeeder extends Seeder
     public function run()
     {
         Marca::create([
-        	'marca_nombre' => 'MARCA1',
+        	'marca_nombre' => 'M. MARCA',
         	'marca_activo' => true
     	]);
     }

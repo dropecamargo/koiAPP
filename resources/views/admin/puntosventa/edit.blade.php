@@ -1,7 +1,7 @@
 @extends('admin.puntosventa.main')
 
 @section('breadcrumb')
-    <li><a href="{{ route('puntosventa.index')}}">Puntos de venta</a></li>
+    <li><a href="{{ route('puntosventa.index')}}">Punto de venta</a></li>
 	<li><a href="{{ route('puntosventa.show', ['puntosventa' => $puntoventa->id]) }}">{{ $puntoventa->id }}</a></li>
 	<li class="active">Editar</li>
 @stop
@@ -12,7 +12,7 @@
 			<div class="box-body" id="render-form-puntosventa">
 				{{-- Render form puntosventa --}}
 			</div>
-			
+
 	        <div class="box-footer with-border">
 	        	<div class="row">
 					<div class="col-md-2 col-md-offset-4 col-sm-6 col-xs-6 text-left">

@@ -1,7 +1,7 @@
 @extends('inventario.subcategoria.main')
 
 @section('breadcrumb')
-    <li><a href="{{ route('subcategorias.index')}}">SubCategorias</a></li>
+    <li><a href="{{ route('subcategorias.index')}}">Subcategoría</a></li>
 	<li class="active">Nueva</li>
 @stop
 

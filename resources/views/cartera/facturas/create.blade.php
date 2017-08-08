@@ -1,7 +1,7 @@
 @extends('cartera.facturas.main')
 
 @section('breadcrumb')
-	<li><a href="{{ route('facturas.index') }}">Facturas</a></li>
+	<li><a href="{{ route('facturas.index') }}">Factura</a></li>
 	<li class="active">Nuevo</li>
 @stop
 

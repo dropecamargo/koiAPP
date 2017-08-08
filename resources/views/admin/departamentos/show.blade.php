@@ -11,7 +11,7 @@
             <div class="row">
                 <div class="col-md-2 col-sm-12 col-xs-12 text-left">
                     <a href=" {{ route('departamentos.index') }}" class="btn btn-default btn-sm btn-block">{{ trans('app.comeback') }}</a>
-                </div>    
+                </div>
             </div>
         </div>
         <div class="box-body">

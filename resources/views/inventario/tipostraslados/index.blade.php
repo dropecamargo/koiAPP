@@ -1,7 +1,7 @@
 @extends('inventario.tipostraslados.main')
 
 @section('breadcrumb')
-    <li class="active">Tipos Traslados</li>
+    <li class="active">Tipos de traslados</li>
 @stop
 
 @section('module')

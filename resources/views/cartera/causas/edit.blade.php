@@ -1,7 +1,7 @@
 @extends('cartera.causas.main')
 
 @section('breadcrumb')
-    <li><a href="{{ route('causas.index')}}">Editar</a></li>
+    <li><a href="{{ route('causas.index')}}">Causa</a></li>
     <li><a href="{{ route('causas.show', ['causal' => $causal->id]) }}">{{ $causal->id }}</a></li>
 	<li class="active">Editar</li>
 @stop

@@ -55,7 +55,21 @@
         </div>
 
         <div class="row">
-		   	<div class="col-md-8 col-md-offset-2">
+            <div class="col-md-4">
+                <div class="box box-solid">
+                    <div class="box-header with-border">
+                        <h4 class="box-title">Ordenes</h4>
+                    </div>
+                    <div class="box-body">
+                        <div id="external-events">
+                            <div class="external-event bg-green ui-draggable ui-draggable-handle">Abierta</div>
+                            <div class="external-event bg-red ui-draggable ui-draggable-handle">Cerrada</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+		   	<div class="col-md-8">
 		        <div class="box box-solid" id="spinner-calendar">
 		        	<div class="box-body">
 		                <div id="calendar">

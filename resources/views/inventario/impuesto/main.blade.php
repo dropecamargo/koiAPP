@@ -23,13 +23,11 @@
                 <label for="impuesto_nombre" class="control-label">Nombre</label>
                 <input type="text" id="impuesto_nombre" name="impuesto_nombre" value="<%- impuesto_nombre %>" placeholder="Impuesto" class="form-control input-sm input-toupper" maxlength="25" required>
             </div>
-            <br>
             <div class="form-group col-md-2">
                 <label for="impuesto_porcentaje" class="control-label">Porcentaje %</label>
                 <input type="text" id="impuesto_porcentaje" name="impuesto_porcentaje" value="<%- impuesto_porcentaje %>" class="form-control input-sm spinner-percentage" min="0" required>
             </div>
-
-            <div class="form-group col-md-2 col-xs-8 col-sm-3">
+            <div class="form-group col-md-2 col-xs-8 col-sm-3"><br>  
                 <label class="checkbox-inline" for="impuesto_activo">
                     <input type="checkbox" id="impuesto_activo" name="impuesto_activo" value="impuesto_activo" <%- impuesto_activo ? 'checked': ''%>> Activo
                 </label>

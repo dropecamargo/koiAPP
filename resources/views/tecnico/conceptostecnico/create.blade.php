@@ -1,7 +1,7 @@
 @extends('tecnico.conceptostecnico.main')
 
 @section('breadcrumb')
-    <li><a href="{{ route('conceptostecnico.index')}}">Concepto tecnico</a></li>
+    <li><a href="{{ route('conceptostecnico.index')}}">Concepto técnico</a></li>
 	<li class="active">Nuevo</li>
 @stop
 

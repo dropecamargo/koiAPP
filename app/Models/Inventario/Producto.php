@@ -38,7 +38,7 @@ class Producto extends BaseModel
      *
      * @var array
      */
-    // protected $nullable = [];
+    protected $nullable = ['producto_servicio', 'producto_tercero', 'producto_contacto', 'producto_vencimiento'];
 
     public function isValid($data)
     {

@@ -1,7 +1,7 @@
 @extends('tecnico.sitios.main')
 
 @section('breadcrumb')
-    <li class="active">Sitios</li>
+    <li class="active">Sitios de atención</li>
 @stop
 
 @section('module')

@@ -1,7 +1,7 @@
 @extends('cartera.anticipos.main')
 
 @section('breadcrumb')
-    <li><a href="{{ route('anticipos.index')}}">Anticipos</a></li>
+    <li><a href="{{ route('anticipos.index')}}">Anticipo</a></li>
     <li class="active">{{ $anticipo1->id }}</li>
 @stop
 
@@ -32,7 +32,7 @@
         		<div class="form-group col-md-3">
         			<label class="control-label">Cuenta Banco</label>
         			<div>{{ $anticipo1->cuentabanco_nombre }}</div>
-        		</div>        			
+        		</div>
         		<div class="form-group col-md-2">
         			<label class="control-label">Valor</label>
         			<div>$ {{number_format($anticipo1->anticipo1_valor )}}</div>
@@ -65,7 +65,7 @@
                                 <th>Fecha</th>
                                 <th>Valor</th>
                             </tr>
-                        </thead>   
+                        </thead>
                         <tbody>
                             {{-- Render content anticipo2 --}}
                         </tbody>
@@ -89,7 +89,7 @@
 	                            <th>Naturaleza</th>
 	                            <th>Valor</th>
 	                        </tr>
-	                    </thead>   
+	                    </thead>
 	                    <tbody>
 	                        {{-- Render content anticipo3 --}}
 	                    </tbody>

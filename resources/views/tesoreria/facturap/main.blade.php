@@ -26,25 +26,25 @@
             <div id="spinner-main" class="box box-solid">
                 <div class="nav-tabs-custom tab-success tab-whithout-box-shadow">
                     <ul class="nav nav-tabs">
-                        <li class="active"><a href="#tab-facturap" data-toggle="tab">Factura</a></li>
+                        <li class="active"><a href="#tab_facturap" data-toggle="tab">Factura</a></li>
                         <% if( typeof(edit) !== 'undefined' && !_.isUndefined(edit) && !_.isNull(edit) && edit) { %>
-                            <li><a href="#tab-impuesto" data-toggle="tab">Impuesto/Retención</a></li>
-                            <li><a href="#tab-contabilidad" data-toggle="tab">Contabilidad</a></li>
-                            <li><a href="#tab-af" data-toggle="tab">Activos/Efectivos</a></li>
+                            <li><a href="#tab_impuesto" data-toggle="tab">Impuesto/Retención</a></li>
+                            <li><a href="#tab_contabilidad" data-toggle="tab">Contabilidad</a></li>
+                            <li><a href="#tab_af" data-toggle="tab">Activos/Efectivos</a></li>
                         <% }%>
                     </ul>
                     <div class="tab-content">
                         <!-- Tab factura proveedor -->
-                        <div id="tab-facturap" class="tab-pane active">
+                        <div id="tab_facturap" class="tab-pane active">
                             <div class="box-body">
-                                <% if (_.isUndefined(edit) && _.isNull(edit) && edit ){ %> 
+                                <% if (!_.isUndefined(edit) && !_.isNull(edit) && !edit ){ %> 
                                     <form method="POST" accept-charset="UTF-8" id="form-facturap" data-toggle="validator">
                                         <div class="row">
                                             <label for = "facturap1_regional" class="control-label col-md-1">Regional</label>
                                             <div class="form-group col-md-3">
                                                 <select name="facturap1_regional" id="facturap1_regional" class="form-control select2-default-clear change-regional-consecutive-koi-component" data-field="facturap1_numero" data-document ="facturap" data-wrapper="spinner-main">
                                                 @foreach( App\Models\Base\Regional::getRegionales() as $key => $value)
-                                                    <option  value="{{ $key }}" <%- facturap1_regional == '{{ $key }}' ? 'selected': ''%>>{{ $value }}</option>
+                                                    <option  value="{{ $key }}">{{ $value }}</option>
                                                 @endforeach
                                                 </select>
                                             </div>
@@ -110,7 +110,7 @@
                                             <div class="form-group col-md-3">
                                                 <select id="facturap1_tipoproveedor" name="facturap1_tipoproveedor" class="form-control select2-default-clear">
                                                     @foreach( App\Models\Tesoreria\TipoProveedor::getTiposProveedores() as $key => $value)
-                                                        <option  value="{{ $key }}" <%- facturap1_tipoproveedor == '{{ $key }}' ? 'selected': ''%>>{{ $value }}</option>
+                                                        <option  value="{{ $key }}">{{ $value }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -118,7 +118,7 @@
                                             <div class="form-group col-md-3">
                                                 <select id="facturap1_tipogasto" name="facturap1_tipogasto" class="form-control select2-default-clear">
                                                     @foreach( App\Models\Tesoreria\TipoGasto::getTiposGastos() as $key => $value)
-                                                        <option  value="{{ $key }}" <%- facturap1_tipogasto == '{{ $key }}' ? 'selected': ''%>>{{ $value }}</option>
+                                                        <option  value="{{ $key }}">{{ $value }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -145,101 +145,83 @@
                                         </div>
                                     </form>
                                 <% }else{ %> 
-                                        <div class="row">
-                                            <label for = "facturap1_regional" class="control-label col-md-1">Regional</label>
-                                            <div class="form-group col-md-3">
-                                                <%- regional_nombre %>
-                                            </div>
-                                            <label for="facturap1_numero" class="col-md-1 control-label">Número</label>
-                                            <div class="form-group col-md-1">     
-                                                <%- facturap1_numero %>
-                                            </div>
+                                    <div class="row">
+                                        <label for = "facturap1_regional" class="control-label col-md-1">Regional</label>
+                                        <div class="form-group col-md-3">
+                                            <%- regional_nombre %>
                                         </div>
-                                        <div class="row">
-                                            <label for="facturap1_tercero" class="col-md-1 control-label">Cliente</label>
-                                            <div class="form-group col-md-3">
-                                                <%- tercero_nombre %>
-                                            </div>
-                                            <label for="facturap1_tercero" class="col-md-1 control-label">Persona</label>
-                                            <div class="form-group col-md-2">
-                                                <%- (tercero_persona == 'N') ? 'NATURAL' : 'JURIDICA' %>
-                                            </div>
+                                        <label for="facturap1_numero" class="col-md-1 control-label">Número</label>
+                                        <div class="form-group col-md-1">     
+                                            <%- facturap1_numero %>
                                         </div>
-                                        <div class="row">
-                                            <label for="facturap1_factura" class="control-label col-md-1">Factura</label>
-                                            <div class="form-group col-md-3">
-                                                <%- facturap1_factura %>
-                                            </div>
+                                    </div>
+                                    <div class="row">
+                                        <label for="facturap1_tercero" class="col-md-1 control-label">Cliente</label>
+                                        <div class="form-group col-md-3">
+                                            <%- tercero_nombre %>
                                         </div>
-                                        <div class="row">
-                                            <label for="facturap1_fecha" class="col-md-1 control-label">Fecha</label>
-                                            <div class="form-group col-md-3">
-                                                <%- facturap1_fecha %>
-                                            </div>
+                                        <label for="facturap1_tercero" class="col-md-1 control-label">Persona</label>
+                                        <div class="form-group col-md-2">
+                                            <%- (tercero_persona == 'N') ? 'NATURAL' : 'JURIDICA' %>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <label for="facturap1_factura" class="control-label col-md-1">Factura</label>
+                                        <div class="form-group col-md-3">
+                                            <%- facturap1_factura %>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <label for="facturap1_fecha" class="col-md-1 control-label">Fecha</label>
+                                        <div class="form-group col-md-3">
+                                            <%- facturap1_fecha %>
+                                        </div>
 
-                                            <label for="facturap1_vencimiento" class="control-label col-md-1">Vencimiento</label>
-                                            <div class="form-group col-md-2">
-                                                <%- facturap1_vencimiento %>
-                                            </div>
-                                            <label for="facturap1_primerpago" class="control-label col-md-1">Primer pago</label>
-                                            <div class="form-group col-md-2">
-                                                <%- facturap1_primerpago %>
-                                            </div>
+                                        <label for="facturap1_vencimiento" class="control-label col-md-1">Vencimiento</label>
+                                        <div class="form-group col-md-2">
+                                            <%- facturap1_vencimiento %>
                                         </div>
-                                        <div class="row">
-                                            <label for="facturap1_tipoproveedor" class="control-label col-md-1">Tipo proveedor</label>
-                                            <div class="form-group col-md-3">
-                                                <%- tipoproveedor_nombre %>
-                                            </div>
-                                            <label for="facturap1_tipogasto" class="control-label col-md-1">Tipo gasto</label>
-                                            <div class="form-group col-md-2">
-                                                <%- tipogasto_nombre %>
-                                            </div>
+                                        <label for="facturap1_primerpago" class="control-label col-md-1">Primer pago</label>
+                                        <div class="form-group col-md-2">
+                                            <%- facturap1_primerpago %>
                                         </div>
-                                        <div class="row">
-                                            <label for="facturap1_cuotas" class="control-label col-md-1">Cuota</label>
-                                            <div class="form-group col-md-3">
-                                                <%- facturap1_cuotas %>
-                                            </div>
-                                            <label for="facturap1_subtotal" class="control-label col-md-1">Subtotal</label>
-                                            <div class="form-group col-md-2">
-                                                <%- window.Misc.currency( facturap1_subtotal ) %>
-                                            </div>                    
-                                            <label for="facturap1_descuento" class="control-label col-md-1">Descuento</label>
-                                            <div class="form-group col-md-2">
-                                                <%- window.Misc.currency( facturap1_descuento ) %>
-                                            </div>                    
-                                        </div> 
-                                        <div class="row">
-                                            <label for="facturap1_observaciones" class="col-md-1 control-label">Observaciones</label>
-                                            <div class="form-group col-md-10">
-                                                <%- facturap1_observaciones %>
-                                            </div>
+                                    </div>
+                                    <div class="row">
+                                        <label for="facturap1_tipoproveedor" class="control-label col-md-1">Tipo proveedor</label>
+                                        <div class="form-group col-md-3">
+                                            <%- tipoproveedor_nombre %>
                                         </div>
+                                        <label for="facturap1_tipogasto" class="control-label col-md-1">Tipo gasto</label>
+                                        <div class="form-group col-md-2">
+                                            <%- tipogasto_nombre %>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <label for="facturap1_cuotas" class="control-label col-md-1">Cuota</label>
+                                        <div class="form-group col-md-3">
+                                            <%- facturap1_cuotas %>
+                                        </div>
+                                        <label for="facturap1_subtotal" class="control-label col-md-1">Subtotal</label>
+                                        <div class="form-group col-md-2">
+                                            <%- window.Misc.currency( facturap1_subtotal ) %>
+                                        </div>                    
+                                        <label for="facturap1_descuento" class="control-label col-md-1">Descuento</label>
+                                        <div class="form-group col-md-2">
+                                            <%- window.Misc.currency( facturap1_descuento ) %>
+                                        </div>                    
+                                    </div> 
+                                    <div class="row">
+                                        <label for="facturap1_observaciones" class="col-md-1 control-label">Observaciones</label>
+                                        <div class="form-group col-md-10">
+                                            <%- facturap1_observaciones %>
+                                        </div>
+                                    </div>
                                 <% }%>
-
-                            </div>
-                            <div class="box-footer">
-                            
-                                <div class="row">
-                                    <% if (_.isUndefined(edit) && _.isNull(edit) && edit ){ %> 
-                                        <div class="col-md-2 col-md-offset-4 col-md-6 col-xs-6 text-left">
-                                            <a href="{{ route('facturasp.index') }}" class="btn btn-default btn-sm btn-block">{{ trans('app.cancel') }}</a>
-                                        </div>
-                                        <div class="col-md-2  col-md-5 col-xs-6 text-right">
-                                            <button type="button" class="btn btn-primary btn-sm btn-block submit-facturap">{{ trans('app.save') }}</button>
-                                        </div>
-                                    <% }else{%> 
-                                        <div class="col-md-2 col-md-offset-5 col-md-6 col-xs-6">
-                                            <a href="{{ route('facturasp.index') }}" class="btn btn-default btn-sm btn-block">{{ trans('app.comeback') }}</a>
-                                        </div>
-                                    <% } %>
-                                </div>
                             </div>
                         </div>
                         <% if( typeof(id) !== 'undefined' && !_.isUndefined(id) && !_.isNull(id) && id != '') { %>
                             <!-- Tab impuesto -->
-                            <div id="tab-impuesto" class="tab-pane">
+                            <div id="tab_impuesto" class="tab-pane">
                                 <div class="box box-solid">
                                     <div class="box-body">
                                         <form method="POST" accept-charset="UTF-8" id="form-facturap2-impuesto" data-toggle="validator">
@@ -310,23 +292,45 @@
                                 </div>
                             </div>
                             <!-- Tab contabilidad -->
-                            <div id="tab-contabilidad" class="tab-pane">
+                            <div id="tab_contabilidad" class="tab-pane">
                                 Contabilidad
                             </div>
                             <!-- Tab activos & efectivos -->
-                            <div id="tab-af"  class="tab-pane">
-                                Actiovs y efectivos
+                            <div id="tab_af"  class="tab-pane">
+                                Activos y efectivos
                             </div>
                         <% } %>
+                        <div class="box-footer">
+                            <div class="row">
+                                <% if (!_.isUndefined(edit) && !_.isNull(edit) && !edit ){ %> 
+                                    <div class="col-md-2 col-md-offset-4 col-md-6 col-xs-6 text-left">
+                                        <a href="{{ route('facturasp.index') }}" class="btn btn-default btn-sm btn-block">{{ trans('app.cancel') }}</a>
+                                    </div>
+                                    <div class="col-md-2  col-md-5 col-xs-6 text-right">
+                                        <button type="button" class="btn btn-primary btn-sm btn-block submit-facturap">{{ trans('app.save') }}</button>
+                                    </div>
+                                <% }else{%> 
+                                    <div class="col-md-2 col-md-offset-5 col-md-6 col-xs-6">
+                                        <a href="{{ route('facturasp.index') }}" class="btn btn-default btn-sm btn-block">{{ trans('app.comeback') }}</a>
+                                    </div>
+                                <% } %>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
     </script>
     <script type="text/template" id="add-factura2-item-tpl">
-        <td>1</td>
-        <td>1</td>
-        <td>1</td>
-        <td>1</td>
+        <%if(edit){ %>
+            <td class="text-center">
+                <a class="btn btn-default btn-xs item-detallefacturap2-remove" data-resource = "<%- id %>">
+                    <span><i class="fa fa-times"></i></span>
+                </a>
+            </td>
+        <% } %>
+        <td><%- (facturap2_impuesto != null ) ? impuesto_nombre : retefuente_nombre %></td>
+        <td><%- facturap2_porcentaje %></td>
+        <td><%- facturap2_base %></td>
     </script>
 @stop

@@ -1,7 +1,7 @@
 @extends('tecnico.sitios.main')
 
 @section('breadcrumb')
-    <li><a href="{{ route('sitios.index')}}">Editar</a></li>
+    <li><a href="{{ route('sitios.index')}}">Sitio de atención</a></li>
     <li><a href="{{ route('sitios.show', ['sitio' => $sitio->id]) }}">{{ $sitio->id }}</a></li>
 	<li class="active">Editar</li>
 @stop
@@ -10,7 +10,7 @@
 	<div class="box box-success" id="sitio-create">
 		{!! Form::open(['id' => 'form-sitio', 'data-toggle' => 'validator']) !!}
 			<div class="box-body" id="render-form-sitio">
-				{{-- Render form sitio --}}	
+				{{-- Render form sitio --}}
 			</div>
 
 			<div class="box-footer ">

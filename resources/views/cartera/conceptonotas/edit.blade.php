@@ -1,7 +1,7 @@
 @extends('cartera.conceptonotas.main')
 
 @section('breadcrumb')
-    <li><a href="{{ route('conceptonotas.index')}}">Editar</a></li>
+    <li><a href="{{ route('conceptonotas.index')}}">Concepto de nota</a></li>
     <li><a href="{{ route('conceptonotas.show', ['conceptonota' => $conceptonota->id]) }}">{{ $conceptonota->id }}</a></li>
 	<li class="active">Editar</li>
 @stop

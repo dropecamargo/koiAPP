@@ -5,7 +5,7 @@
 @section('content')
     <section class="content-header">
         <h1>
-            Categorias <small>Administración de categorias</small>
+            Categorías <small>Administración de Categorías</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> {{trans('app.home')}}</a></li>

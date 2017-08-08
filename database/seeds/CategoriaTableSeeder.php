@@ -13,7 +13,7 @@ class CategoriaTableSeeder extends Seeder
     public function run()
     {
         Categoria::create([
-        	'categoria_nombre' => 'CATEGORIA',
+        	'categoria_nombre' => 'C. CATEGORIA',
         	'categoria_activo' => true
     	]);
     }

@@ -95,6 +95,8 @@ app || (app = {});
                             alertify.error(text);
                             return;
                         }
+                         // Add model in collection
+                        _this.collection.add(model);
                     }
                 },
                 error : function(model, error) {

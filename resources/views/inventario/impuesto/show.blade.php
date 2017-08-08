@@ -1,7 +1,7 @@
 @extends('inventario.impuesto.main')
 
 @section('breadcrumb')
-    <li><a href="{{ route('impuestos.index')}}">Impuestos</a></li>
+    <li><a href="{{ route('impuestos.index')}}">Impuesto</a></li>
     <li class="active">{{ $impuesto->id }}</li>
 @stop
 
@@ -9,28 +9,21 @@
     <div class="box box-success">
         <div class="box-body">
             <div class="row">
-                <div class="form-group col-md-2">
-                    <label class="control-label">Código</label>
-                    <div>{{ $impuesto->id }}</div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-md-5">
+                <div class="form-group col-md-4">
                     <label class="control-label">Nombre</label>
                     <div>{{ $impuesto->impuesto_nombre }}</div>
                 </div>
-                <div class="form-group col-md-3">
+                <div class="form-group col-md-5">
                     <label class="control-label">Plan cuenta</label>
                     <div>{{ $impuesto->plancuentas_cuenta}} - {{ $impuesto->plancuentas_nombre }}</div>
                 </div>
-                <div class="form-group col-md-1">
+            </div>
+            <div class="row">
+                <div class="form-group col-md-4">
                     <label class="control-label">Porcentaje %</label>
                     <div>{{ $impuesto->impuesto_porcentaje }}</div>
                 </div>
-            </div>
-            <div class="row">
-
-                <div class="form-group col-md-2 col-xs-8 col-sm-3">
+                <div class="form-group col-md-2 col-xs-8 col-sm-3"><br>
                     <label class="checkbox-inline" for="impuestos_activo">
                         <input type="checkbox" id="impuestos_activo" name="impuestos_activo" value="impuestos_activo" disabled {{ $impuesto->impuesto_activo ? 'checked': '' }}> Activo
                     </label>

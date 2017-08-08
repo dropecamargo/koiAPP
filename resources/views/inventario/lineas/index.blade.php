@@ -1,7 +1,7 @@
 @extends('inventario.lineas.main')
 
 @section('breadcrumb')
-    <li class="active">Lineas</li>
+    <li class="active">Líneas</li>
 @stop
 
 @section('module')

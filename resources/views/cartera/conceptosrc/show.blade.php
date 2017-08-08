@@ -1,19 +1,13 @@
 @extends('cartera.conceptosrc.main')
 
 @section('breadcrumb')
-    <li><a href="{{ route('conceptosrc.index')}}">Conceptos recibo de caja</a></li>
+    <li><a href="{{ route('conceptosrc.index')}}">Concepto recibo de caja</a></li>
     <li class="active">{{ $conceptosrc->id }}</li>
 @stop
 
 @section('module')
     <div class="box box-success">
         <div class="box-body">
-            <div class="row">
-                <div class="form-group col-md-2">
-                    <label class="control-label">Código</label>
-                    <div>{{ $conceptosrc->id }}</div>
-                </div>
-            </div>
             <div class="row">
                 <div class="form-group col-md-4">
                     <label class="control-label">Nombre</label>
