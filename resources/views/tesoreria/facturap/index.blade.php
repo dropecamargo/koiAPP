@@ -69,7 +69,7 @@
                             <tr>
                                 <th >Código</th>
                                 <th >Cliente</th>
-                                <th >Sucursal</th>
+                                <th >Regional</th>
                                 <th >Factura</th>
                                 <th >Fecha</th>
                             </tr>

@@ -21,6 +21,20 @@ class Facturap1Controller extends Controller
     {
         if ($request->ajax()) {
             $query = Facturap1::query();
+            $query->select('facturap1.*', 'regional_nombre',
+                DB::raw("
+                    CONCAT(
+                        (CASE WHEN tercero_persona = 'N'
+                            THEN CONCAT(tercero_nombre1,' ',tercero_nombre2,' ',tercero_apellido1,' ',tercero_apellido2,
+                                (CASE WHEN (tercero_razonsocial IS NOT NULL AND tercero_razonsocial != '') THEN CONCAT(' - ', tercero_razonsocial) ELSE '' END)
+                            )
+                            ELSE tercero_razonsocial
+                        END)
+                    ) AS tercero_nombre"
+                ));
+            $query->join('tercero', 'facturap1_tercero', '=', 'tercero.id');
+            $query->join('regional', 'facturap1_regional', '=', 'regional.id');
+
             return Datatables::of($query)->make(true);
         }
         return view('tesoreria.facturap.index');
