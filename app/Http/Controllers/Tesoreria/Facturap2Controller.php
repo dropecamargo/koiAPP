@@ -46,6 +46,8 @@ class Facturap2Controller extends Controller
             $facturapDetalle = new Facturap2;
             $data = $request->all();
             if ($facturapDetalle->isvalid($data)) {
+
+                
                 dd($request->all());
             }
             return response()->json(['success' => false, 'errors' => $facturapDetalle->errors]);
