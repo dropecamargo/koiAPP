@@ -31,6 +31,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ImpuestoTableSeeder::class);
         $this->call(UnidadMedidaTableSeeder::class);
         $this->call(RolTableSeeder::class);
+        $this->call(TipoNotificacionTableSeeder::class);
         $this->call(ServicioTableSeeder::class);
         $this->call(UsuarioRolTableSeeder::class);
 

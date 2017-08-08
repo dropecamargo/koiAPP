@@ -105,11 +105,21 @@
 
 	<script type="text/template" id="add-info-event-tpl">
 		<div class="row">
-			<div class="col-md-6">
+            <div class="col-md-4">
+				<label class="control-label">Estado</label>
+                <div>
+                    <% if( parseInt(orden_abierta) ){ %>
+                        <span class="label label-success">ABIERTA</span>
+                    <% }else{ %>
+                        <span class="label label-danger">CERRADA</span>
+                    <% } %>
+                </div>
+	        </div>
+			<div class="col-md-4">
 				<label class="control-label">F.Servicio</label>
 				<div><%- fecha_servicio %></div>
 	        </div>
-	        <div class="col-md-6">
+	        <div class="col-md-4">
 				<label class="control-label">H.Servicio</label>
 				<div><%- hora_servicio %></div>
 	        </div>

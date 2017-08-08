@@ -72,7 +72,7 @@
                         <a href="{{ route('ubicaciones.index') }}"><i class="fa fa-circle-o"></i> Ubicaciones</a>
                     </li>
                 </ul>
-            </li> 
+            </li>
         </ul>
     </li>
 
@@ -270,7 +270,7 @@
                 <ul class="treeview-menu">
                     <li class="{{ Request::segment(1) == 'ajustes' ? 'active' : '' }}">
                         <a href="{{ route('ajustes.index') }}"><i class="fa fa-cog"></i> Ajustes</a>
-                    </li> 
+                    </li>
                     <li class="{{ Request::segment(1) == 'productos' ? 'active' : '' }}">
                         <a href="{{ route('productos.index') }}"><i class="fa fa-barcode"></i> Productos</a>
                     </li>
@@ -279,10 +279,10 @@
                     </li>
                     <li class="{{ Request::segment(1) == 'traslados' ? 'active' : '' }}">
                         <a href="{{ route('traslados.index') }}"><i class="fa fa-arrows"></i> Traslados</a>
-                    </li> 
+                    </li>
                     <li class="{{ Request::segment(1) == 'trasladosubicaciones' ? 'active' : '' }}">
                         <a href="{{ route('trasladosubicaciones.index') }}"><i class="fa fa-compass "></i> Traslados ubicaciones</a>
-                    </li> 
+                    </li>
                 </ul>
             </li>
             {{--Reportes inventario--}}
@@ -351,19 +351,19 @@
                 <a href="#">
                     <i class="fa fa-wpforms"></i> Modulos <i class="fa fa-angle-left pull-right"></i>
                 </a>
-                    <ul class="treeview-menu">
+                <ul class="treeview-menu">
+                    <li class="{{ Request::segment(1) == 'agendatecnica' ? 'active' : '' }}">
+                        <a href="{{ route('agendatecnica.index') }}"><i class="fa fa-calendar"></i> Agenda tecnica</a>
+                    </li>
                     <li class="{{ Request::segment(1) == 'gestionestecnico' ? 'active' : '' }}">
                         <a href="{{ route('gestionestecnico.index') }}"><i class="fa fa-volume-control-phone"></i> Gestión tecnico</a>
                     </li>
                     <li class="{{ Request::segment(1) == 'ordenes' ? 'active' : '' }}">
                         <a href="{{ route('ordenes.index') }}"><i class="fa fa-building-o"></i> Ordenes</a>
                     </li>
-                    <li class="{{ Request::segment(1) == 'agendatecnica' ? 'active' : '' }}">
-                        <a href="{{ route('agendatecnica.index') }}"><i class="fa fa-calendar"></i> Agenda tecnica</a>
-                    </li>
                 </ul>
             </li>
-      
+
             {{-- Referencias Tecnico --}}
             <li class="{{ in_array(Request::segment(1), ['tiposorden','solicitantes','danos','prioridades','conceptostecnico', 'sitios']) ? 'active' : '' }}">
                 <a href="#">
@@ -395,7 +395,7 @@
     {{-- Tesoreria --}}
     <li class="treeview {{ in_array(Request::segment(1), ['facturasp','retefuentes','tipoproveedores', 'tipogastos']) ? 'active' : '' }}">
         <a href="#">
-            <i class="fa fa-balance-scale"></i><span> Tesorería</span><i class="fa fa-angle-left pull-right"></i>  
+            <i class="fa fa-balance-scale"></i><span> Tesorería</span><i class="fa fa-angle-left pull-right"></i>
         </a>
         <ul class="treeview-menu">
             {{-- Modulos Tesoreria --}}
@@ -406,10 +406,10 @@
                 <ul class="treeview-menu">
                     <li class="{{ Request::segment(1) == 'facturasp' ? 'active' : '' }}">
                         <a href="{{ route('facturasp.index') }}"><i class="fa fa-pencil-square-o"></i> Facturas Proveedor</a>
-                    </li> 
+                    </li>
                 </ul>
             </li>
-      
+
             {{-- Referencias Tesoreria --}}
             <li class="{{ in_array(Request::segment(1), ['retefuentes', 'tipoproveedores', 'tipogastos']) ? 'active' : '' }}">
                 <a href="#">

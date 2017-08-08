@@ -382,7 +382,7 @@ class ProductoController extends Controller
             // Recuperar servicio por defecto -> cliente
             $servicio = Servicio::where('servicio_nombre' ,'CLIENTE')->first();
             if( !$servicio instanceof Servicio ){
-                return response()->json(['success' => false, 'errors' => 'No es posible recuperar el servicio, por favor verifique información o consulte con el administrador.']);
+                return response()->json(['success' => false, 'errors' => 'El servicio CLIENTE no existe, por favor verifique información o consulte con el administrador.']);
             }
 
             DB::beginTransaction();

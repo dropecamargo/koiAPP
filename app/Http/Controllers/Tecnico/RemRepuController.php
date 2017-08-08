@@ -20,7 +20,7 @@ class RemRepuController extends Controller
      */
     public function index(Request $request)
     {
-        if ($request->ajax()) {          
+        if ($request->ajax()) {
             $query = RemRepu::query();
             $query->select('remrepu1.*', 'sucursal_nombre',DB::raw("CONCAT((CASE WHEN tercero_persona = 'N' THEN CONCAT(tercero_nombre1,' ',tercero_nombre2,' ',tercero_apellido1,' ',tercero_apellido2,(CASE WHEN (tercero_razonsocial IS NOT NULL AND tercero_razonsocial != '') THEN CONCAT(' - ', tercero_razonsocial) ELSE '' END)) ELSE tercero_razonsocial END)) AS tecnico_nombre"));
             $query->join('tercero', 'remrepu1_tecnico', '=', 'tercero.id');
@@ -67,13 +67,13 @@ class RemRepuController extends Controller
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar orden, por favor verifique la información o consulte al administrador.']);
                     }
-                    // Recupero instancia de sucursal 
+                    // Recupero instancia de sucursal
                     $sucursal  = Sucursal::find($request->sucursal);
                     if (!$sucursal instanceof Sucursal) {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar sucursal, por favor verifique la información o consulte al administrador.']);
                     }
-                    // Recupero tecnico 
+                    // Recupero tecnico
                     $tecnico  = Tercero::find($request->tecnico);
                     if (!$tecnico instanceof Tercero) {
                         DB::rollback();
@@ -96,7 +96,7 @@ class RemRepuController extends Controller
 
                     foreach ($data['detalle'] as $value) {
 
-                        // Recuperar Sucursal 
+                        // Recuperar Sucursal
                         $sucursal = Sucursal::find($data['sucursal']);
                         if(!$sucursal instanceof Sucursal){
                             return response()->json(['success' => false, 'errors' => 'No es posible recuperar la sucursal, por favor verifique la información o consulte al administrador.']);
@@ -122,17 +122,24 @@ class RemRepuController extends Controller
                             DB::rollback();
                             return response()->json(['success'=> false, 'errors' => "Producto {$producto->producto_nombre} - {$producto->producto_serie} se encuentra repetido, por favor verificar información o consulte al administrador."]);
                         }
-                        
+
                         // Remrepu2
                         $remrepu2 = new RemRepu2;
                         $remrepu2->fill($value);
-                        $remrepu2->remrepu2_remrepu1 = $remrepu->id;  
-                        $remrepu2->remrepu2_saldo = $value['remrepu2_cantidad'];  
+                        $remrepu2->remrepu2_remrepu1 = $remrepu->id;
+                        $remrepu2->remrepu2_saldo = $value['remrepu2_cantidad'];
                         $remrepu2->remrepu2_producto = $producto->id;
                         $remrepu2->save();
+
+                        // Traslado sucursalOriginal a provisinal
+                        $result = RemRepu2::trasladoRemRepu($remrepu, $remrepu2, $value['remrepu2_cantidad']);
+                        if($result != 'OK'){
+                            DB::rollback();
+                            return response()->json(['success' => false, 'errors' => $result]);
+                        }
                     }
 
-                    // Update sucursal_remr 
+                    // Update sucursal_remr
                     $sucursal->sucursal_remr = $consecutive;
                     $sucursal->save();
 

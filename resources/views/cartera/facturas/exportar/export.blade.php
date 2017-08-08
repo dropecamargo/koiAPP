@@ -35,19 +35,19 @@
 				<th width="20%" class="left">{{ $factura->tercero_telefono2 }}</th>
 			@elseif ( !empty($factura->tercero_celular) )
 				<th width="20%" class="left">{{ $factura->tercero_celular }}</th>
-			@else 
+			@else
 				<th width="20%" class="left"></th>
 			@endif
 
 
 			<th width="10%"></th>
-			<th width="20%" class="left">{{ $factura->tercero_fax }}</th>				
+			<th width="20%" class="left">{{ $factura->tercero_fax }}</th>
 
 			<th width="10%"></th>
-			<th width="20%" class="left">{{ $factura->tercero_nit }}</th>	
+			<th width="20%" class="left">{{ $factura->tercero_nit }}</th>
 
 			<th width="10%"></th>
-			<th width="20%" class="right">xxxxx</th>			
+			<th width="20%" class="right">xxxxx</th>
 		</tr>
 	</table>
 
