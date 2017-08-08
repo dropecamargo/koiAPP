@@ -49,8 +49,8 @@ app || (app = {});
                 },
                 columns: [ 
                     { data: 'id', name: 'id'},
-                    { data: 'facturap1_tercero', name: 'facturap1_tercero' },
-                    { data: 'facturap1_regional', name: 'facturap1_regional' },
+                    { data: 'tercero_nombre', name: 'tercero_nombre' },
+                    { data: 'regional_nombre', name: 'regional_nombre' },
                     { data: 'facturap1_factura', name: 'facturap1_factura' },
                     { data: 'facturap1_fecha', name: 'facturap1_fecha' },
                 ],

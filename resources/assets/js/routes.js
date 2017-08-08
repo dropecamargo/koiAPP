@@ -315,7 +315,6 @@ app || (app = {});
             'facturasp(/)': 'getFacturaspMain',
             'facturasp/create(/)': 'getFacturapCreate',
             'facturasp/:facturasp(/)': 'getFacturapShow',
-            'facturasp/:facturasp/edit(/)': 'getFacturapEdit',
 
             // Retefuente
             'retefuentes(/)': 'getReteFuentesMain',
@@ -2687,35 +2686,18 @@ app || (app = {});
             this.createFacturapView.render();
         },
 
-        // getFacturapShow: function (facturap) {
-        //     this.facturapModel = new app.facturapModel();
-        //     this.facturapModel.set({'id': facturap}, {silent: true});
-
-        //     if ( this.showFacturapView instanceof Backbone.View ){
-        //         this.showFacturapView.stopListening();
-        //         this.showFacturapView.undelegateEvents();
-        //     }
-
-        //     this.showFacturapView = new app.ShowFacturapView({ model: this.facturapModel });
-        // },
-
-        getFacturapEdit: function (facturap) {
+        getFacturapShow: function (facturap) {
             this.facturapModel = new app.FacturapModel();
-            this.facturapModel.set({'id': facturap}, {'silent':true});
+            this.facturapModel.set({'id': facturap}, {silent: true});
 
-            if ( this.editFacturapView instanceof Backbone.View ){
-                this.editFacturapView.stopListening();
-                this.editFacturapView.undelegateEvents();
+            if ( this.showFacturapView instanceof Backbone.View ){
+                this.showFacturapView.stopListening();
+                this.showFacturapView.undelegateEvents();
             }
 
-            if ( this.createFacturapView instanceof Backbone.View ){
-                this.createFacturapView.stopListening();
-                this.createFacturapView.undelegateEvents();
-            }
-
-            this.editFacturapView = new app.EditFacturapView({ model: this.facturapModel });
-            this.facturapModel.fetch();
+            this.showFacturapView = new app.ShowFacturapView({ model: this.facturapModel });
         },
+
         // Retefuente
         getReteFuentesMain: function () {
 

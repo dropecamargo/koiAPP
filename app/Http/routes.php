@@ -283,7 +283,7 @@ Route::group(['middleware' => 'auth'], function(){
 	{
 		Route::resource('detalle','Tesoreria\Facturap2Controller',['only'=>['index', 'store', 'destroy']]);
 	});
-	Route::resource('facturasp', 'Tesoreria\Facturap1Controller', ['except' => ['destroy','update']]);
+	Route::resource('facturasp', 'Tesoreria\Facturap1Controller', ['except' => ['destroy','update','edit']]);
 	Route::resource('retefuentes', 'Tesoreria\ReteFuenteController', ['except' => ['destroy']]);
 	Route::resource('tipogastos', 'Tesoreria\TipoGastoController', ['except' => ['destroy']]);
 	Route::resource('tipoproveedores', 'Tesoreria\TipoProveedorController', ['except' => ['destroy']]);

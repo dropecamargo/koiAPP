@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\Tesoreria\Facturap1,App\Models\Tesoreria\TipoProveedor,App\Models\Tesoreria\TipoGasto;
+use App\Models\Tesoreria\Facturap1,App\Models\Tesoreria\TipoProveedor,App\Models\Tesoreria\TipoGasto,App\Models\Tesoreria\Facturap2, App\Models\Tesoreria\ReteFuente;
+use App\Models\Inventario\Impuesto;
 use App\Models\Base\Tercero,App\Models\Base\Documentos,App\Models\Base\Regional;
 use DB, Log, Datatables, Cache;
 
@@ -21,6 +22,20 @@ class Facturap1Controller extends Controller
     {
         if ($request->ajax()) {
             $query = Facturap1::query();
+            $query->select('facturap1.*', 'regional_nombre',
+                DB::raw("
+                    CONCAT(
+                        (CASE WHEN tercero_persona = 'N'
+                            THEN CONCAT(tercero_nombre1,' ',tercero_nombre2,' ',tercero_apellido1,' ',tercero_apellido2,
+                                (CASE WHEN (tercero_razonsocial IS NOT NULL AND tercero_razonsocial != '') THEN CONCAT(' - ', tercero_razonsocial) ELSE '' END)
+                            )
+                            ELSE tercero_razonsocial
+                        END)
+                    ) AS tercero_nombre"
+                ));
+            $query->join('tercero', 'facturap1_tercero', '=', 'tercero.id');
+            $query->join('regional', 'facturap1_regional', '=', 'regional.id');
+
             return Datatables::of($query)->make(true);
         }
         return view('tesoreria.facturap.index');
@@ -55,6 +70,12 @@ class Facturap1Controller extends Controller
                     if (!$tercero instanceof Tercero) {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar cliente, por favor verifique la información o consulte al administrador']);
+                    }
+                    // 
+                    $nameFactura = Facturap1::where('facturap1_tercero', $tercero->id)->where('facturap1_factura', $request->facturap1_factura)->first();
+                    if ($nameFactura instanceof Facturap1) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => "El proveedor ". $tercero->getName() ." ya tiene una factura registrada con el nombre de $request->facturap1_factura, por favor verifique la información o consulte al administrador"]);
                     }
                     // Recupero regional
                     $regional = Regional::find($request->facturap1_regional);
@@ -94,15 +115,51 @@ class Facturap1Controller extends Controller
 
                     $facturap1->save();
 
+                    // Facturap2
+                    $facturap2 = isset($data['facturap2']) ? $data['facturap2'] : null;
+                    foreach ($facturap2 as $item) {
+                        $facturapDetalle = new Facturap2;
+                        if (!empty($item['facturap2_impuesto'])) {
+                            $impuesto = Impuesto::find($item['facturap2_impuesto']);
+                            if (!$impuesto instanceof Impuesto) {
+                                DB::rollback();
+                                return response()->json(['success' => false, 'errors' => 'No es posible recuperar impuesto, por favor verifique la información o consulte al administrador']);
+                            }
+                            $facturapDetalle->facturap2_base = $facturapDetalle->calculateBase($facturap1, $impuesto->impuesto_porcentaje);
+                            $facturapDetalle->facturap2_impuesto = $impuesto->id;
+                            $facturapDetalle->facturap2_porcentaje = $impuesto->impuesto_porcentaje;
+                        }
+                        if (!empty($item['facturap2_retefuente']) ) {
+                            // Recupero tercero para saber tipo de persona
+                            $tercero = Tercero::find($facturap1->facturap1_tercero);
+                            if (!$tercero instanceof Tercero) {
+                                DB::rollback();
+                                return response()->json(['success' => false, 'errors' => 'No es posible recuperar tercero, por favor verifique la información o consulte al administrador']);
+
+                            }
+                            $retefuente = ReteFuente::find($item['facturap2_retefuente']);
+                            if (!$retefuente instanceof ReteFuente) {
+                                DB::rollback();
+                                return response()->json(['success' => false, 'errors' => 'No es posible recuperar retefuente, por favor verifique la información o consulte al administrador']);
+                            }
+                            $porcentage = ($tercero->tercero_persona == 'N') ? $retefuente->retefuente_tarifa_natural : $retefuente->retefuente_tarifa_juridico;
+                            $facturapDetalle->facturap2_base = $facturapDetalle->calculateBase($facturap1, $porcentage);
+                            $facturapDetalle->facturap2_retefuente = $retefuente->id;
+                            $facturapDetalle->facturap2_porcentaje = $porcentage;
+                        }
+                        $facturapDetalle->facturap2_facturap1 = $facturap1->id;
+                        $facturapDetalle->save();
+                    }
+
                     // Update consecutive regional_fpro
                     $regional->regional_fpro = $consecutive;
                     $regional->save();
 
                     // Commit
-                    DB::commit();
-                    return response()->json(['success' => true, 'id' => $facturap1->id ]);
-                    // DB::rollback();
-                    // return response()->json(['success' => false, 'errors' => 'TODO OK' ]);
+                    // DB::commit();
+                    // return response()->json(['success' => true, 'id' => $facturap1->id ]);
+                    DB::rollback();
+                    return response()->json(['success' => false, 'errors' => 'TODO OK' ]);
                 } catch (\Exception $e) {
                     DB::rollback();
                     Log::error($e->getMessage());
@@ -137,8 +194,7 @@ class Facturap1Controller extends Controller
      */
     public function edit($id)
     {
-        $facturap1 = Facturap1::findOrFail($id);
-        return view('tesoreria.facturap.create', ['facturap1' => $facturap1]);
+        // 
     }
 
     /**

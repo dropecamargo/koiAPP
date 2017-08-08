@@ -12,35 +12,29 @@ class Facturap2 extends Model
 	*
 	* @var string
 	*/
-    protected $table = 'facturap1';
+    protected $table = 'facturap2';
 
     public $timestamps = false;
-
-    /**
-    * The default facturap if documentos.
-    *
-    * @var static string
-    */
-
-    public static $default_document = 'FPRO';
 
 	/**
 	* The attributes that are mass assignable.
 	*
 	* @var array
 	*/
-    protected $fillable = ['facturap2_base'];
+    protected $fillable = [];
 
 
     public function isValid($data)
     {
         $rules = [
-        	'facturap2_base' => 'required|numeric|min:0'
+            'facturap2_base_impuesto' => 'numeric',
+        	'facturap2_base_retefuente' => 'numeric'
         ];
 
         $validator = Validator::make($data, $rules);
         if ($validator->passes()) {
-        	if ($data['facturap2_base'] <= 0 ) {
+            $base = isset($data['facturap2_base_impuesto']) ? $data['facturap2_base_impuesto'] : $data['facturap2_base_retefuente'];
+        	if ($base <= 0 ) {
         		$this->errors = 'Valor debe ser mayor a 0';
                 return false;
         	}
@@ -51,5 +45,16 @@ class Facturap2 extends Model
     }
 
     public static function getFacturap2 ($id) {
+        $facturap2 = Facturap2::query();
+        $facturap2->select('facturap2.*', 'impuesto_nombre', 'retefuente_nombre');
+        $facturap2->leftJoin('impuesto','facturap2_impuesto', '=', 'impuesto.id');
+        $facturap2->leftJoin('retefuente', 'facturap2_retefuente', '=', 'retefuente.id');
+        $facturap2->where('facturap2_facturap1', $id);
+        return $facturap2->get();
+    }
+
+    public function calculateBase (Facturap1 $facturap1 , $porcentaje) {
+        $porcentage = ( $porcentaje / 100 ); 
+        return $facturap1->facturap1_base * $porcentage;
     }
 }
