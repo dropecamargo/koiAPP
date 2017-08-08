@@ -126,7 +126,7 @@ class RemRepu2 extends Model
                     /**
                     * Entrada sucursal destino
                     */
-                    $result = Lote::actualizar($producto, $provisional->id, $lote->lote_numero, 'E', $devuelto, $origen->sucursal_defecto, date('Y-m-d'), $lote->lote_vencimiento);
+                    $result = Lote::actualizar($producto, $origen->id, $lote->lote_numero, 'E', $devuelto, $origen->sucursal_defecto, date('Y-m-d'), $lote->lote_vencimiento);
                     if (!$result instanceof Lote) {
                         return $result;
                     }

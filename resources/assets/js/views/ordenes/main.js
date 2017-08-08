@@ -46,6 +46,9 @@ app || (app = {});
                         data.orden_abierta = _this.$searchordenEstado.val();
                     }
                 },
+                order: [
+                	[ 0, 'desc' ],
+                ],
                 columns: [
                     { data: 'id', name: 'id' },
                     { data: 'sucursal_nombre', name: 'sucursal_nombre' },
@@ -61,7 +64,7 @@ app || (app = {});
                         width: '10%',
                         searchable: false,
                         render: function ( data, type, full, row ) {
-                            
+
                             return '<a href="'+ window.Misc.urlFull( Route.route('ordenes.show', {ordenes: full.id }) )  +'">' + data + '</a>';
                         }
                     },
