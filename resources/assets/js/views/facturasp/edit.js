@@ -95,10 +95,10 @@ app || (app = {});
         * Store facturap2
         */
         onStoreFacturap2:function(e){
-                console.log(e);
             if (!e.isDefaultPrevented()) {
                 e.preventDefault();
-                var data = $.extend({}, window.Misc.formToJson( e.target ) );
+                var data = window.Misc.formToJson( e.target ) ;
+                    data.facturap1 = this.model.get('id');
                 this.detalleFacturap2.trigger( 'store', data);
             }
         },
@@ -145,7 +145,7 @@ app || (app = {});
             .done(function(resp) {
                 window.Misc.removeSpinner( _this.spinner );
                 // Eval porcentage
-                var porcentage = (_this.model.get(tercero_nombre) == 'J' ) ? resp.retefuente_tarifa_juridico : resp.retefuente_tarifa_natural;
+                var porcentage = (_this.model.get('tercero_persona') == 'J' ) ? resp.retefuente_tarifa_juridico : resp.retefuente_tarifa_natural;
                 _this.$('#facturap2_retefuente_porcentaje').val(porcentage);
                 _this.$('#facturap2_base_retefuente').val((porcentage/100) * _this.model.get('facturap1_base'));
             })
