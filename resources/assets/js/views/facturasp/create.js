@@ -19,6 +19,7 @@ app || (app = {});
 
             'submit #form-facturap2-impuesto': 'onStoreFacturap2',
             'submit #form-facturap2-retefuente': 'onStoreFacturap2',
+            'submit #form-activo-fijo': 'onStoreActivoFijo',
 
             'change #facturap1_factura': 'onChangeRepeatFactura',
             'change #facturap2_impuesto': 'onChangeImpuesto',
@@ -33,6 +34,7 @@ app || (app = {});
         initialize : function() {
             // Reference collection
             this.detalleFacturap2 = new app.DetalleFacturasp2Collection();
+            this.activoFijoList = new app.ActivoFijoList();
            
             // Events
             this.listenTo( this.model, 'change', this.render );
@@ -75,6 +77,17 @@ app || (app = {});
                     }
                }
             });
+            this.activoFijoListView = new app.ActivosFijosListView( {
+                collection: this.activoFijoList,
+                parameters: {
+                    wrapper: this.el,
+                    edit: true,
+                    form: this.$('#form-activo-fijo'),
+                    dataFilter: {
+                        'id': this.model.get('id')
+                    }
+               }
+            });
         },
         /**
         * Event submit facturap1
@@ -91,6 +104,7 @@ app || (app = {});
                 e.preventDefault();
                 var data = window.Misc.formToJson( e.target );
                     data.facturap2 = this.detalleFacturap2.toJSON();
+                    data.activosfijos = this.activoFijoList.toJSON();
 
                 this.model.save( data, {patch: true, silent: true} );
             }   
@@ -104,6 +118,16 @@ app || (app = {});
                 var data = window.Misc.formToJson( e.target ) ;
                     data.facturap1 = window.Misc.formToJson( this.$form ); 
                 this.detalleFacturap2.trigger( 'store', data);
+            }
+        },
+        /**
+        * Store activo fijo
+        */
+        onStoreActivoFijo:function(e){
+            if (!e.isDefaultPrevented()) {
+                e.preventDefault();
+                var data = window.Misc.formToJson( e.target ) ;
+                this.activoFijoList.trigger( 'store', data);
             }
         },
 

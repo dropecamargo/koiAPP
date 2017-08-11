@@ -20,7 +20,7 @@
                     <li class="active"><a href="#tab_facturap" data-toggle="tab">Factura</a></li>
                     <li><a href="#tab_impuesto" data-toggle="tab">Impuesto/Retención</a></li>
                     <li><a href="#tab_contabilidad" data-toggle="tab">Contabilidad</a></li>
-                    <li><a href="#tab_af" data-toggle="tab">Activos/Efectivos</a></li>
+                    <li><a href="#tab_af" data-toggle="tab">Activos fijos</a></li>
                 </ul>
             </div>
 
@@ -142,7 +142,26 @@
                 </div>
                 <!-- Tab activos & efectivos -->
                 <div id="tab_af"  class="tab-pane">
-                    Activos y efectivos
+                    <div class="box box-solid">
+                        <div class="box-body">
+                             <div class="table-responsive no-padding">
+                                <table id="browse-activo-fijo-list" class="table table-hover table-bordered table-condensed" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th width="15%">Placa</th>
+                                            <th width="15%">Serie</th>
+                                            <th width="40%">Responsable</th>
+                                            <th width="20%">Tipo</th>
+                                            <th width="10%">Costo</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {{-- Render content activo fijo --}}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="box-footer">
                     <div class="row">

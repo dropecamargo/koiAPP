@@ -72,7 +72,7 @@
                         <a href="{{ route('ubicaciones.index') }}"><i class="fa fa-circle-o"></i> Ubicaciones</a>
                     </li>
                 </ul>
-            </li> 
+            </li>
         </ul>
     </li>
 
@@ -197,18 +197,21 @@
     </li>
 
     {{-- Contabilidad --}}
-    <li class="treeview {{ in_array(Request::segment(1), ['asientos', 'folders','documentos','plancuentas','centroscosto','rplancuentas','rmayorbalance']) ? 'active' : '' }}">
+    <li class="treeview {{ in_array(Request::segment(1), ['asientos','activosfijos','folders','documentos','plancuentas', 'tipoactivos','centroscosto','rplancuentas','rmayorbalance']) ? 'active' : '' }}">
         <a href="#">
             <i class="fa fa-book"></i> <span>Contabilidad</span><i class="fa fa-angle-left pull-right"></i>
         </a>
 
         <ul class="treeview-menu">
             {{-- Modulos contabilidad --}}
-            <li class="{{ in_array(Request::segment(1), ['asientos']) ? 'active' : '' }}">
+            <li class="{{ in_array(Request::segment(1), ['asientos','activosfijos']) ? 'active' : '' }}">
                 <a href="#">
                     <i class="fa fa-wpforms"></i> Módulos <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
+                    <li class="{{ Request::segment(1) == 'activosfijos' ? 'active' : '' }}">
+                        <a href="{{ route('activosfijos.index') }}"><i class="fa fa-space-shuttle"></i> Activos fijos</a>
+                    </li>
                     <li class="{{ Request::segment(1) == 'asientos' ? 'active' : '' }}">
                         <a href="{{ route('asientos.index') }}"><i class="fa fa-file-text-o"></i> Asientos</a>
                     </li>
@@ -231,7 +234,7 @@
             </li>
 
             {{-- Referencias Contabilidad --}}
-            <li class="{{ in_array(Request::segment(1), ['folders','centroscosto','documentos','plancuentas']) ? 'active' : '' }}">
+            <li class="{{ in_array(Request::segment(1), ['folders','centroscosto','documentos','plancuentas', 'tipoactivos']) ? 'active' : '' }}">
 
                 <a href="#">
                     <i class="fa fa-circle-o"></i> Referencias <i class="fa fa-angle-left pull-right"></i>
@@ -249,6 +252,9 @@
                     </li>
                     <li class="{{ Request::segment(1) == 'plancuentas' ? 'active' : '' }}">
                         <a href="{{ route('plancuentas.index') }}"><i class="fa fa-circle-o"></i> Plan de cuentas</a>
+                    </li>
+                    <li class="{{ Request::segment(1) == 'tipoactivos' ? 'active' : '' }}">
+                        <a href="{{ route('tipoactivos.index') }}"><i class="fa fa-circle-o"></i> Tipo activo</a>
                     </li>
                 </ul>
             </li>
@@ -270,7 +276,7 @@
                 <ul class="treeview-menu">
                     <li class="{{ Request::segment(1) == 'ajustes' ? 'active' : '' }}">
                         <a href="{{ route('ajustes.index') }}"><i class="fa fa-cog"></i> Ajustes</a>
-                    </li> 
+                    </li>
                     <li class="{{ Request::segment(1) == 'productos' ? 'active' : '' }}">
                         <a href="{{ route('productos.index') }}"><i class="fa fa-barcode"></i> Productos</a>
                     </li>
@@ -279,10 +285,10 @@
                     </li>
                     <li class="{{ Request::segment(1) == 'traslados' ? 'active' : '' }}">
                         <a href="{{ route('traslados.index') }}"><i class="fa fa-arrows"></i> Traslados</a>
-                    </li> 
+                    </li>
                     <li class="{{ Request::segment(1) == 'trasladosubicaciones' ? 'active' : '' }}">
                         <a href="{{ route('trasladosubicaciones.index') }}"><i class="fa fa-compass "></i> Traslados ubicaciones</a>
-                    </li> 
+                    </li>
                 </ul>
             </li>
             {{--Reportes inventario--}}
@@ -351,19 +357,19 @@
                 <a href="#">
                     <i class="fa fa-wpforms"></i> Modulos <i class="fa fa-angle-left pull-right"></i>
                 </a>
-                    <ul class="treeview-menu">
+                <ul class="treeview-menu">
+                    <li class="{{ Request::segment(1) == 'agendatecnica' ? 'active' : '' }}">
+                        <a href="{{ route('agendatecnica.index') }}"><i class="fa fa-calendar"></i> Agenda tecnica</a>
+                    </li>
                     <li class="{{ Request::segment(1) == 'gestionestecnico' ? 'active' : '' }}">
                         <a href="{{ route('gestionestecnico.index') }}"><i class="fa fa-volume-control-phone"></i> Gestión tecnico</a>
                     </li>
                     <li class="{{ Request::segment(1) == 'ordenes' ? 'active' : '' }}">
                         <a href="{{ route('ordenes.index') }}"><i class="fa fa-building-o"></i> Ordenes</a>
                     </li>
-                    <li class="{{ Request::segment(1) == 'agendatecnica' ? 'active' : '' }}">
-                        <a href="{{ route('agendatecnica.index') }}"><i class="fa fa-calendar"></i> Agenda tecnica</a>
-                    </li>
                 </ul>
             </li>
-      
+
             {{-- Referencias Tecnico --}}
             <li class="{{ in_array(Request::segment(1), ['tiposorden','solicitantes','danos','prioridades','conceptostecnico', 'sitios']) ? 'active' : '' }}">
                 <a href="#">
@@ -393,29 +399,35 @@
         </ul>
     </li>
     {{-- Tesoreria --}}
-    <li class="treeview {{ in_array(Request::segment(1), ['facturasp','retefuentes','tipoproveedores', 'tipogastos']) ? 'active' : '' }}">
+    <li class="treeview {{ in_array(Request::segment(1), ['facturasp','ajustesp','retefuentes','tipoproveedores', 'tipogastos', 'conceptosajustep']) ? 'active' : '' }}">
         <a href="#">
-            <i class="fa fa-balance-scale"></i><span> Tesorería</span><i class="fa fa-angle-left pull-right"></i>  
+            <i class="fa fa-balance-scale"></i><span> Tesorería</span><i class="fa fa-angle-left pull-right"></i>
         </a>
         <ul class="treeview-menu">
             {{-- Modulos Tesoreria --}}
-            <li class="{{ in_array(Request::segment(1), ['facturasp']) ? 'active' : '' }}">
+            <li class="{{ in_array(Request::segment(1), ['facturasp', 'ajustesp']) ? 'active' : '' }}">
                 <a href="#">
                     <i class="fa fa-wpforms"></i> Modulos <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
+                    <li class="{{ Request::segment(1) == 'ajustesp' ? 'active' : '' }}">
+                        <a href="{{ route('ajustesp.index') }}"><i class="fa fa-adjust"></i> Ajustes Proveedor</a>
+                    </li>
                     <li class="{{ Request::segment(1) == 'facturasp' ? 'active' : '' }}">
                         <a href="{{ route('facturasp.index') }}"><i class="fa fa-pencil-square-o"></i> Facturas Proveedor</a>
-                    </li> 
+                    </li>
                 </ul>
             </li>
-      
+
             {{-- Referencias Tesoreria --}}
-            <li class="{{ in_array(Request::segment(1), ['retefuentes', 'tipoproveedores', 'tipogastos']) ? 'active' : '' }}">
+            <li class="{{ in_array(Request::segment(1), ['retefuentes', 'tipoproveedores', 'tipogastos', 'conceptosajustep']) ? 'active' : '' }}">
                 <a href="#">
                     <i class="fa fa-circle-o"></i> Referencias <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
+                    <li class="{{ Request::segment(1) == 'conceptosajustep' ? 'active' : '' }}">
+                        <a href="{{ route('conceptosajustep.index') }}"><i class="fa fa-circle-o"></i> Concepto ajuste</a>
+                    </li>
                     <li class="{{ Request::segment(1) == 'retefuentes' ? 'active' : '' }}">
                         <a href="{{ route('retefuentes.index') }}"><i class="fa fa-circle-o"></i> Retefuente</a>
                     </li>

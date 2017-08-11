@@ -142,4 +142,33 @@ class DocumentosController extends Controller
     {
         //
     }
+
+    /**
+     * Evaluate actions detail asiento.
+     *
+     * @return \Illuminate\Http\Response
+     */
+
+    public function evaluate(Request $request)
+    {
+        // Prepare response
+        $response = new \stdClass();
+        $response->action = "";
+        $response->success = false;
+
+        if ($request->has('call')) {
+            if ($request->call == 'ajustep') {
+                $documentos = Documentos::find($request->ajustep2_documentos_doc);
+                if (!$documentos instanceof Documentos) {
+                    $response->errors = "No es posible recuperar documento, verifique información ó por favor consulte al administrador.";
+                }
+                if ($documentos->documentos_codigo == 'FPRO') {
+                    $action = 'modalFacturaProveedor';
+                    $response->action = $action;  
+                    $response->success = true;
+                }
+            }
+        }
+        return response()->json($response);
+    }
 }

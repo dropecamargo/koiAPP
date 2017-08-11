@@ -124,9 +124,6 @@ app || (app = {});
             if ( model instanceof Backbone.Model ) {
                 model.view.remove();
                 this.collection.remove(model);
-
-                // totalize actually in collection
-                this.totalize();
             }
         },
 

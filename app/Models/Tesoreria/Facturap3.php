@@ -34,7 +34,7 @@ class Facturap3 extends Model
 			return true;
 		}else{
 
-			$facturap3 = new Factura3;
+			$facturap3 = new Facturap3;
 			$facturap3->facturap3_facturap1 = $facturap1->id;
 			$facturap3->facturap3_cuota = $facturap1->facturap1_cuotas;
 			$facturap3->facturap3_valor = $facturap1->facturap1_apagar;

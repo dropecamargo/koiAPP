@@ -1,7 +1,7 @@
 @extends('tesoreria.tipogasto.main')
 
 @section('breadcrumb')
-    <li class="active">Tipo de proveedor</li>
+    <li class="active">Tipo de gasto</li>
 @stop
 
 @section('module')

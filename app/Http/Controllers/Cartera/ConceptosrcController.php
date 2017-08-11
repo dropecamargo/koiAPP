@@ -265,7 +265,7 @@ class ConceptosrcController extends Controller
                     $response->action = $action;  
                     $response->success = true;
                 }else if($documentos->documentos_codigo == 'ANTI'){
-                   $action = 'modalAnticipos';
+                    $action = 'modalAnticipos';
                     $response->action = $action;  
                     $response->success = true;
                 }else{
@@ -273,7 +273,6 @@ class ConceptosrcController extends Controller
                 }
             }
         }
-        
         return response()->json($response);
     }
 }

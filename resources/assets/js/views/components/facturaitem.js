@@ -1,5 +1,5 @@
 /**
-* Class FacturaItemView  of Backbone Router
+* Class Factura3ItemView  of Backbone Router
 * @author KOI || @dropecamargo
 * @link http://koi-ti.com
 */

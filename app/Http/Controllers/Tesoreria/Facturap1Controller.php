@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Tesoreria\Facturap1,App\Models\Tesoreria\Facturap2,App\Models\Tesoreria\Facturap3,App\Models\Tesoreria\TipoProveedor,App\Models\Tesoreria\TipoGasto,App\Models\Tesoreria\ReteFuente;
 use App\Models\Inventario\Impuesto;
+use App\Models\Contabilidad\ActivoFijo;
 use App\Models\Base\Tercero,App\Models\Base\Documentos,App\Models\Base\Regional;
 use DB, Log, Datatables, Cache;
 
@@ -180,6 +181,16 @@ class Facturap1Controller extends Controller
                         DB::rollback();
                         return response()->json(['success'=> false, 'errors'=>'No es posible realizar factura proveedor3,por favor verifique la información ó por favor consulte al administrador']);
                     }
+
+                    // Activo fijo
+                    $activosfijos = isset($data['activosfijos']) ? $data['activosfijos'] : [];
+                    $activofijo = ActivoFijo::store($facturap1, $activosfijos);
+                    if (!$activofijo->success) {
+                        DB::rollback();
+                        return response()->json(['success'=> false, 'errors'=> $activofijo->errors]);
+                    }
+                    
+
                     // Update consecutive regional_fpro
                     $regional->regional_fpro = $consecutive;
                     $regional->save();

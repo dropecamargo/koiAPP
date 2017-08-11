@@ -424,6 +424,13 @@ class ModulosTableSeeder extends Seeder
             'nivel2' => 3,
             'nivel3' => 4
         ]);
+        Modulo::create([
+            'name' => 'tipoactivos',
+            'display_name' => 'Tipo activos',
+            'nivel1' => 4,
+            'nivel2' => 3,
+            'nivel3' => 5
+        ]);
 
         //Inventario
         Modulo::create([
@@ -639,33 +646,47 @@ class ModulosTableSeeder extends Seeder
         ]);
         //Modulos
         Modulo::create([
-            'name' => 'facturasp',
-            'display_name' => 'Facturas proveedor',
+            'name' => 'ajustesp',
+            'display_name' => 'Ajustes proveedor',
             'nivel1' => 7,
             'nivel2' => 1,
             'nivel3' => 1
         ]);
+        Modulo::create([
+            'name' => 'facturasp',
+            'display_name' => 'Facturas proveedor',
+            'nivel1' => 7,
+            'nivel2' => 1,
+            'nivel3' => 2
+        ]);
         //Referencias
+        Modulo::create([
+            'name' => 'conceptosajustep',
+            'display_name' => 'Concepto ajuste proveedor',
+            'nivel1' => 7,
+            'nivel2' => 2,
+            'nivel3' => 1
+        ]);
         Modulo::create([
             'name' => 'retefuentes',
             'display_name' => 'Retención de fuente',
             'nivel1' => 7,
             'nivel2' => 2,
-            'nivel3' => 1
+            'nivel3' => 2
         ]);
         Modulo::create([
             'name' => 'tipogastos',
             'display_name' => 'Tipo de gasto',
             'nivel1' => 7,
             'nivel2' => 2,
-            'nivel3' => 2
+            'nivel3' => 3
         ]);
         Modulo::create([
             'name' => 'tipoproveedores',
             'display_name' => 'Tipo de proveedor',
             'nivel1' => 7,
             'nivel2' => 2,
-            'nivel3' => 3
+            'nivel3' => 4
         ]);
 
     }

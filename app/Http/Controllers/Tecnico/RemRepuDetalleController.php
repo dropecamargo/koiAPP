@@ -132,25 +132,24 @@ class RemRepuDetalleController extends Controller
     {
         if($request->ajax()){
             $data = $request->all();
-                
+
             // Recuperar orden
             $orden = Orden::find($request->orden_id);
             if(!$orden instanceof Orden){
                 abort(404);
             }
-            
+
             DB::beginTransaction();
             try {
                 // Recuperar remrepu
                 $remrepu = Remrepu::where('remrepu1_orden', $orden->id)->select('remrepu1.*', 'sucursal_nombre')->where('remrepu1_tipo', 'R')->join('sucursal', 'remrepu1_sucursal', '=', 'sucursal.id')->get();
-                    
+
                 if( count($remrepu) <= 0){
                     DB::rollback();
                     return response()->json(['success' => false, 'errors' => 'No existe ningun producto para realizar una legalización.']);
                 }
 
                 foreach ($remrepu as $father) {
-
                     $childs = RemRepu2::where('remrepu2_remrepu1', $father->id)->get();
 
                     foreach ($childs as $child) {
@@ -185,8 +184,8 @@ class RemRepuDetalleController extends Controller
                                     $child->remrepu2_usado += $usado;
                                     $child->save();
 
-                                    // Duplicate remrepu1 
-                                    $result = RemRepu2::createRemisionL($child, $facturado, $nofacturado, $devuelto, $usado);
+                                    // Duplicate remrepu1
+                                    $result = RemRepu2::createLegalizacion($child, $facturado, $nofacturado, $devuelto, $usado);
                                     if($result != 'OK'){
                                         DB::rollback();
                                         return response()->json(['success' => false, 'errors' => $result]);
@@ -199,7 +198,6 @@ class RemRepuDetalleController extends Controller
 
                 // Commit transaction
                 DB::commit();
-
                 return response()->json(['success' => true, 'id' => $orden->id ]);
             }catch(\Exception $e){
                 DB::rollback();

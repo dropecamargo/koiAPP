@@ -54,9 +54,13 @@ Route::group(['middleware' => 'auth'], function(){
 
 	Route::resource('regionales', 'Admin\RegionalController', ['except' => ['destroy']]);
 	Route::resource('puntosventa', 'Admin\PuntoVentaController', ['except' => ['destroy']]);
-	Route::resource('documento', 'Admin\DocumentosController', ['except' => ['destroy']]);
 	Route::resource('tiposactividad', 'Admin\TipoActividadController', ['except' => ['destroy']]);
 	Route::resource('bitacoras','Admin\BitacoraController', ['only' => ['index']]);
+	Route::group(['prefix' => 'documento'],function()
+	{
+		Route::post('evaluate', ['as' => 'documento.evaluate', 'uses' => 'Admin\DocumentosController@evaluate']);
+	});
+	Route::resource('documento', 'Admin\DocumentosController', ['except' => ['destroy']]);
 
 	Route::group(['prefix' => 'roles'], function()
 	{
@@ -90,6 +94,8 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::resource('documentos', 'Contabilidad\DocumentoController', ['except' => ['destroy']]);
 	Route::resource('folders', 'Contabilidad\FolderController', ['except' => ['destroy']]);
 	Route::resource('centroscosto', 'Contabilidad\CentroCostoController', ['except' => ['destroy']]);
+	Route::resource('tipoactivos', 'Contabilidad\TipoActivoController', ['except' => ['destroy']]);
+	Route::resource('activosfijos', 'Contabilidad\ActivoFijoController', ['except' => ['destroy']]);
 
 	Route::group(['prefix' => 'plancuentas'], function()
 	{
@@ -282,11 +288,18 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::group(['prefix'=>'facturasp'],function()
 	{
 		Route::resource('detalle','Tesoreria\Facturap2Controller',['only'=>['index', 'store', 'destroy']]);
+		Route::resource('cuotas','Tesoreria\Facturap3Controller',['only'=>['index']]);
 		Route::get('validate', ['as' => 'facturasp.validate', 'uses' => 'Tesoreria\Facturap1Controller@validation']);
 	});
+
+	Route::group(['prefix' => 'ajustesp'], function()
+	{
+		Route::resource('detalle', 'Tesoreria\AjustepDetalleController');
+	});
 	Route::resource('facturasp', 'Tesoreria\Facturap1Controller', ['except' => ['destroy','update','edit']]);
+	Route::resource('ajustesp', 'Tesoreria\AjustepController', ['except' => ['destroy']]);
 	Route::resource('retefuentes', 'Tesoreria\ReteFuenteController', ['except' => ['destroy']]);
 	Route::resource('tipogastos', 'Tesoreria\TipoGastoController', ['except' => ['destroy']]);
 	Route::resource('tipoproveedores', 'Tesoreria\TipoProveedorController', ['except' => ['destroy']]);
-
+	Route::resource('conceptosajustep', 'Tesoreria\ConceptoAjustepController', ['except' => ['destroy']]);
 });

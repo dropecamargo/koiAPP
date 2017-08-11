@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Models\Contabilidad;
+namespace App\Models\Base;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Facturap2 extends Model
+class TipoNotificacion extends Model
 {
     /**
      * The database table used by the model.
      *
      * @var string
      */
-    protected $table = 'facturap2';
+    protected $table = 'tiponotificacion';
 
     public $timestamps = false;
 }

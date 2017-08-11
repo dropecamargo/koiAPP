@@ -126,6 +126,7 @@ app || (app = {});
                     var consecutive = 0;
 
                     if(documents == 'facturap') consecutive = resp.regional_fpro;
+                    if(documents == 'ajustep') consecutive = resp.regional_ajup;
 
                     // Set consecutive
                     _this.$consecutive.val( parseInt(consecutive) + 1);

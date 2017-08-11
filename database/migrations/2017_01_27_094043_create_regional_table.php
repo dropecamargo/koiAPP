@@ -26,6 +26,7 @@ class CreateRegionalTable extends Migration
             $table->integer('regional_chp')->unsigned();
             $table->integer('regional_chd')->unsigned();
             $table->integer('regional_fpro')->unsigned();
+            $table->integer('regional_ajup')->unsigned();
         });
     }
 

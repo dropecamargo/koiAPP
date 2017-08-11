@@ -157,6 +157,7 @@
 	            <ul class="nav nav-tabs">
 					<li class="active"><a href="#tab_cartera" data-toggle="tab">Cartera</a></li>
 					<li><a href="#tab_gestioncobro" data-toggle="tab">Gestión Cobro</a></li>
+					<li><a href="#tab_proveedor" data-toggle="tab">Proveedor</a></li>
 				</ul>
 			</div>
 
@@ -193,19 +194,45 @@
 					<div class="box-body table-responsive">
 						<table id="browse-gestioncobro-list" class="table table-hover table-bordered" cellspacing="0">
 							<thead>
-								<thead>
-									<tr>
-										<th width="15%">Concepto</th>
-										<th width="15%">Fecha</th>
-										<th width="15%">Fecha Proxima</th>
-										<th width="35%">Observaciones</th>
-										<th width="20%">Elaboro</th>
-									</tr>
-								</thead>
+								<tr>
+									<th width="15%">Concepto</th>
+									<th width="15%">Fecha</th>
+									<th width="15%">Fecha Proxima</th>
+									<th width="35%">Observaciones</th>
+									<th width="20%">Elaboro</th>
+								</tr>
 							</thead>
 							<tbody>
 								{{--Render gestion cobro--}}
 							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="tab-pane" id="tab_proveedor">
+					<div class="box-body table-responsive">
+						<table id="browse-facturap3-list" class="table table-hover table-bordered" cellspacing="0">
+						    <thead>
+					            <tr>	
+					            	<th>Documento</th>
+	                                <th width="10%">Numero</th>
+	                                <th width="20%">Regional</th>
+	                                <th width="5%">Cuota</th>
+	                                <th width="15%">Vencimiento</th>
+	                                <th width="5%">Dias</th>
+	                                <th width="15%">Valor</th>
+	                                <th width="15%">Saldo</th>
+	                            </tr>
+				           </thead>
+							<tbody>
+								{{--Render proveedor-factura--}}
+							</tbody>
+							<tfoot>
+								   <tr>
+										<td colspan="6"></td>
+										<th>Total</th>
+										<th id="valor">0</th>
+									</tr>
+							</tfoot>
 						</table>
 					</div>
 				</div>
