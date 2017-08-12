@@ -19,7 +19,6 @@ app || (app = {});
             'submit #form-generic-producto': 'onStore',
         },
         parameters: {
-            data: {},
             action: {}
         },
 
@@ -41,10 +40,10 @@ app || (app = {});
         render: function() {
             if ( this.parameters.call == 'M') {
                 this.$modalGeneric.find('.modal-title').text( 'Producto - Editar máquina' );
-                this.$modalGeneric.find('.content-modal').empty().html( this.templateMachine( this.parameters.data ) );
+                this.$modalGeneric.find('.content-modal').empty().html( this.templateMachine({}) );
             }else{
                 this.$modalGeneric.find('.modal-title').text( 'Producto - Agregar serie' );
-                this.$modalGeneric.find('.content-modal').empty().html( this.templateSerie( this.parameters.data ) );
+                this.$modalGeneric.find('.content-modal').empty().html( this.templateSerie({}) );
             }
             this.ready();
 		},

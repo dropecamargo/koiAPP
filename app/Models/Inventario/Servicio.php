@@ -59,7 +59,21 @@ class Servicio extends BaseModel
             $query->where('servicio_activo', true);
             $query->orderBy('servicio_nombre', 'asc');
             $collection = $query->lists('servicio_nombre', 'servicio.id');
+
             $collection->prepend('', '');
             return $collection;
         });
-    }}
+    }
+
+    public static function noDisponible()
+    {
+        $query = Servicio::query();
+        $query->where('servicio_activo', true);
+        $query->where('servicio_nombre', '<>', 'DISPONIBLE');
+        $query->orderBy('servicio_nombre', 'asc');
+        $collection = $query->lists('servicio_nombre', 'servicio.id');
+
+        $collection->prepend('', '');
+        return $collection;
+    }
+}

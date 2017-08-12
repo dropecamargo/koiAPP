@@ -44,7 +44,7 @@ class TerceroController extends Controller
                     if($request->has('tercero_nit')) {
                         $query->whereRaw("tercero_nit LIKE '%{$request->tercero_nit}%'");
                     }
-                    
+
                     if($request->has('cliente')) {
                         $query->where('tercero_cliente', true);
                     }

@@ -29,6 +29,9 @@ app || (app = {});
             //Empresa
             'empresa(/)': 'getEmpresaEdit',
 
+            //Empresa
+            'notificaciones(/)': 'getNotificationsMain',
+
             //Actividades
             'actividades(/)': 'getActividadesMain',
             'actividades/create(/)': 'getActividadesCreate',
@@ -422,6 +425,16 @@ app || (app = {});
 
             this.createEmpresaView = new app.CreateEmpresaView({ model: this.empresaModel });
             this.empresaModel.fetch();
+        },
+
+        // Notifications
+        getNotificationsMain: function () {
+            if ( this.mainNotificationView instanceof Backbone.View ){
+                this.mainNotificationView.stopListening();
+                this.mainNotificationView.undelegateEvents();
+            }
+
+            this.mainNotificationView = new app.MainNotificationView( );
         },
 
         // Tercero
@@ -1486,7 +1499,6 @@ app || (app = {});
             }
 
             this.showProductoView = new app.ShowProductoView({ model: this.productoModel });
-            this.productoModel.fetch();
         },
 
         /**

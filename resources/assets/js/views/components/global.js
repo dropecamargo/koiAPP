@@ -15,6 +15,8 @@ app || (app = {});
 		events: {
             'click .sidebar-toggle': 'clickSidebar',
             'click .history-back': 'clickHistoryBack',
+            'click .view-notification': 'clickViewNotification',
+            'click .view-all-notification': 'clickViewAllNotification',
             'hidden.bs.modal': 'multiModal'
 		},
 
@@ -39,6 +41,42 @@ app || (app = {});
             e.preventDefault();
 
             window.history.back();
+        },
+
+        clickViewNotification: function(e) {
+            var _this = this;
+                notification = this.$(e.currentTarget).attr('data-notification');
+
+            // Update machine
+            $.ajax({
+                url: window.Misc.urlFull( Route.route('notificaciones.update', {notification: notification}) ),
+                type: 'PUT',
+            })
+            .done(function(resp) {
+                if(!_.isUndefined(resp.success)) {
+                    // response success or error
+                    var text = resp.success ? '' : resp.errors;
+                    if( _.isObject( resp.errors ) ) {
+                        text = window.Misc.parseErrors(resp.errors);
+                    }
+
+                    if( !resp.success ) {
+                        alertify.error(text);
+                        return;
+                    }
+
+                    window.Misc.redirect( window.Misc.urlFull( resp.url ) );
+                }
+            })
+            .fail(function(jqXHR, ajaxOptions, thrownError) {
+                alertify.error(thrownError);
+            });
+        },
+
+        clickViewAllNotification: function(e) {
+            e.preventDefault();
+
+            window.Misc.redirect( window.Misc.urlFull( Route.route('notificaciones.index') ) );
         },
 
 		multiModal: function(){

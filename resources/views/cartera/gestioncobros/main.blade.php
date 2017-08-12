@@ -34,7 +34,7 @@
                 <input id="tercero_nombre" name="tercero_nombre" placeholder="Nombre cliente" class="form-control input-sm" type="text" maxlength="15" value="<%- tercero_nombre %>" readonly required>
             </div>
         </div>
-        <div class="row"> 
+        <div class="row">
             <label for="gestioncobro_conceptocob" class="control-label col-md-1">Concepto</label>
             <div class="form-group col-md-3">
                 <select name="gestioncobro_conceptocob" id="gestioncobro_conceptocob" class="form-control select2-default" required>
@@ -44,7 +44,7 @@
                 </select>
             </div>
             <label for="gestioncobro_proxima" class="col-sm-1 control-label">Fecha proxima</label>
-            <div class="form-group col-sm-2">     
+            <div class="form-group col-sm-2">
                 <input id="gestioncobro_proxima" name="gestioncobro_proxima" class="form-control input-sm datepicker" type="text" value="<%- gestioncobro_proxima %>" required>
             </div>
             <label for="gestioncobro_hproxima" class="col-md-1 control-label">Hora proxima</label>
@@ -57,21 +57,21 @@
                         </div>
                     </div>
                 </div>
-            </div> 
+            </div>
         </div>
         <div class="row">
             <label for="gestioncobro_observaciones" class="col-sm-1 control-label">Observaciones</label>
             <div class="form-group col-sm-11">
                 <textarea id="gestioncobro_observaciones" name="gestioncobro_observaciones" class="form-control" rows="2" placeholder="Observaciones"></textarea>
             </div>
-        </div> 
+        </div>
         <table id="browse-factura3-list" class="table table-bordered" cellspacing="0" width="100%">
             <thead>
                 <tr>
                     <th>Documento</th>
                     <th width="5%">Numero</th>
                     <th>Sucursal</th>
-                    <th width="5%">Cuota</th>
+                    <th width="15%">Cuota</th>
                     <th>Fecha</th>
                     <th>Vencimiento</th>
                     <th width="5%">N. Dias</th>

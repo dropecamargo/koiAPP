@@ -464,11 +464,13 @@
                               {{ $producto->producto_vencimiento }}
                           </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-4 col-md-offset-4">
-                                <a class="btn btn-block edit-info-machine">Editar informacion</a>
+                        @if( $producto->servicio_nombre != 'DISPONIBLE')
+                            <div class="row">
+                                <div class="col-md-4 col-md-offset-4">
+                                    <a class="btn btn-block edit-info-machine">Editar informacion</a>
+                                </div>
                             </div>
-                        </div>
+                        @endif
                       </div>
                   </div>
                 @endif
@@ -522,11 +524,11 @@
                                 <i class="fa fa-user"></i>
                             </button>
                         </span>
-                        <input id="producto_tercero" placeholder="Cliente" class="form-control tercero-koi-component" name="producto_tercero" type="text" data-contacto="btn-add-contact" maxlength="15"  data-name="tercero_nombre" data-activo="true" value="<%- tercero_nit %>" required>
+                        <input id="producto_tercero" placeholder="Cliente" class="form-control tercero-koi-component" name="producto_tercero" type="text" data-contacto="btn-add-contact" maxlength="15"  data-name="tercero_nombre" data-activo="true" value="{{ $producto->tercero_nit }}" required>
                     </div>
                 </div>
                 <div class="col-md-8 col-xs-12">
-                    <input id="tercero_nombre" name="tercero_nombre" placeholder="Nombre cliente" class="form-control input-sm" type="text" maxlength="15" value="<%- tercero_nombre %>" readonly required>
+                    <input id="tercero_nombre" name="tercero_nombre" placeholder="Nombre cliente" class="form-control input-sm" type="text" maxlength="15" value="{{ $producto->tercero_nombre }}" readonly required>
                 </div>
             </div>
             <div class="row">
@@ -538,8 +540,8 @@
                                 <i class="fa fa-address-book"></i>
                             </button>
                         </span>
-                        <input id="producto_contacto" name="producto_contacto" type="hidden" value="<%- producto_contacto %>">
-                        <input id="tcontacto_nombre" placeholder="Contacto"  class="form-control" name="tcontacto_nombre" value="<%- tcontacto_nombre %>" type="text" readonly required>
+                        <input id="producto_contacto" name="producto_contacto" type="hidden" value="{{ $producto->producto_contacto }}">
+                        <input id="tcontacto_nombre" placeholder="Contacto"  class="form-control" name="tcontacto_nombre" value="{{ $producto->tcontacto_nombre }}" type="text" readonly required>
                     </div>
                 </div>
                 <div class="form-group col-sm-6">
@@ -547,7 +549,7 @@
                         <div class="input-group-addon">
                             <i class="fa fa-phone"></i>
                         </div>
-                        <input id="tcontacto_telefono" class="form-control input-sm" placeholder="Telefono" name="tcontacto_telefono" value="<%- tcontacto_telefono %>" type="text" data-inputmask="'mask': '(999) 999-99-99'" data-mask readonly required>
+                        <input id="tcontacto_telefono" class="form-control input-sm" placeholder="Telefono" name="tcontacto_telefono" value="{{ $producto->tcontacto_telefono }}" type="text" data-inputmask="'mask': '(999) 999-99-99'" data-mask readonly required>
                     </div>
                 </div>
             </div>
@@ -555,9 +557,15 @@
                 <label for="producto_servicio" class="col-md-1 control-label">Servicio</label>
                 <div class="form-group col-sm-4">
                     <select name="producto_servicio" id="producto_servicio" class="form-control select2-default">
-                        @foreach( App\Models\Inventario\Servicio::getServicios() as $key => $value)
-                            <option  value="{{ $key }}" <%- producto_servicio == '{{ $key }}' ? 'selected': ''%>>{{ $value }}</option>
-                        @endforeach
+                        @if( $producto->servicio_nombre == '' )
+                            @foreach( App\Models\Inventario\Servicio::getServicios() as $key => $value)
+                                <option  value="{{ $key }}" {{ $producto->producto_servicio == $key ? 'selected': '' }}>{{ $value }}</option>
+                            @endforeach
+                        @elseif( $producto->servicio_nombre != 'DISPONIBLE' )
+                            @foreach( App\Models\Inventario\Servicio::noDisponible() as $key => $value)
+                                <option  value="{{ $key }}" {{ $producto->producto_servicio == $key ? 'selected': '' }}>{{ $value }}</option>
+                            @endforeach
+                        @endif
                     </select>
                 </div>
                 <label for="producto_vencimiento" class="col-md-2 control-label">F. Vencimiento</label>
@@ -566,7 +574,7 @@
                     <div class="input-group-addon">
                         <i class="fa fa-calendar"></i>
                     </div>
-                    <input type="text" id="producto_vencimiento" name="producto_vencimiento" class="form-control input-sm datepicker" value="<%- producto_vencimiento %>" required>
+                    <input type="text" id="producto_vencimiento" name="producto_vencimiento" class="form-control input-sm datepicker" value="{{ $producto->producto_vencimiento }}" required>
                 </div>
             </div>
         </script>
@@ -575,13 +583,13 @@
             <div class="row">
                 <label for="producto_nombre" class="col-md-1 control-label">Nombre</label>
                 <div class="form-group col-md-8">
-                    <input type="text" id="producto_nombre" name="producto_nombre" placeholder="Nombre" value="<%- producto_nombre %>" class="form-control input-sm input-toupper" maxlength="20" readonly required>
+                    <input type="text" id="producto_nombre" name="producto_nombre" placeholder="Nombre" value="{{ $producto->producto_nombre }}" class="form-control input-sm input-toupper" maxlength="20" readonly required>
                 </div>
             </div>
             <div class="row">
                 <label for="producto_referencia" class="col-md-1 control-label">Referencia</label>
                 <div class="form-group col-md-6">
-                    <input type="text" id="producto_referencia" name="producto_referencia" placeholder="Referencia" value="<%- producto_referencia %>" class="form-control input-sm input-toupper" maxlength="20" readonly required>
+                    <input type="text" id="producto_referencia" name="producto_referencia" placeholder="Referencia" value="{{ $producto->producto_referencia }}" class="form-control input-sm input-toupper" maxlength="20" readonly required>
                 </div>
             </div>
             <div class="row">

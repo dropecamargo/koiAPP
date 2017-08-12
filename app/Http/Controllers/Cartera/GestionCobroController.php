@@ -6,8 +6,9 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Str;
 
-use App\Models\Cartera\GestionCobro,App\Models\Cartera\ConceptoCob;
+use App\Models\Cartera\GestionCobro, App\Models\Cartera\ConceptoCob, App\Models\Base\Notificacion;
 use App\Models\Base\Tercero;
 use DB, Log, Cache, Auth, Datatables;
 
@@ -21,7 +22,7 @@ class GestionCobroController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            
+
             $query = GestionCobro::query();
 
             // Filter show collection in tercero
@@ -39,7 +40,7 @@ class GestionCobroController extends Controller
                 $gestioncobro = $query->get();
                 return response()->json($gestioncobro);
             }
-            
+
             $query->select('gestioncobro.*', 'conceptocob_nombre', 'tercero_nit', 'tercero_razonsocial', 'tercero_nombre1', 'tercero_nombre2', 'tercero_apellido1', 'tercero_apellido2',DB::raw("(CASE WHEN tercero_persona = 'N'
                     THEN CONCAT(tercero_nombre1,' ',tercero_nombre2,' ',tercero_apellido1,' ',tercero_apellido2,
                             (CASE WHEN (tercero_razonsocial IS NOT NULL AND tercero_razonsocial != '') THEN CONCAT(' - ', tercero_razonsocial) ELSE '' END)
@@ -80,18 +81,19 @@ class GestionCobroController extends Controller
             if ($gestioncobro->isValid($data)) {
                 DB::beginTransaction();
                 try {
-                    // Recupero instancia de Tercero(cliente)  
+                    // Recupero instancia de Tercero(cliente)
                     $tercero = Tercero::where('tercero_nit', $request->gestioncobro_tercero)->first();
                     if(!$tercero instanceof Tercero) {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar cliente, verifique información ó por favor consulte al administrador.']);
                     }
-                    // Recupero instancia de ConceptoCobro  
+                    // Recupero instancia de ConceptoCobro
                     $conceptocobro = ConceptoCob::find($request->gestioncobro_conceptocob);
                     if(!$conceptocobro instanceof ConceptoCob) {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar Concepto Cobro, verifique información ó por favor consulte al administrador.']);
                     }
+
                     $gestioncobro->fill($data);
                     $gestioncobro->gestioncobro_fh = date('Y-m-d H:m:s');
                     $gestioncobro->gestioncobro_proxima = "$request->gestioncobro_proxima $request->gestioncobro_hproxima";
@@ -100,6 +102,17 @@ class GestionCobroController extends Controller
                     $gestioncobro->gestioncobro_usuario_elaboro = Auth::user()->id;
                     $gestioncobro->gestioncobro_fh_elaboro = date('Y-m-d H:m:s');
                     $gestioncobro->save();
+
+                    $url = route('gestioncobros.show', $gestioncobro->id, false);
+                    $descripcion = Str::title($request->tercero_nombre);
+                    $title = trans('notification.call.gestion');
+
+                    // Parameters newNotificacion(tercero->session, tiponotificacion, visto, fecha_visto, fecha, hora, url, descripcion, titulo)
+                    $result = Notificacion::newNotificacion(Auth::user()->id, 'llamada', false, null, $request->gestioncobro_proxima, $request->gestioncobro_hproxima, $url, $descripcion, $title);
+                    if($result != 'OK'){
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $result]);
+                    }
 
                     // Commit Transaction
                     DB::commit();

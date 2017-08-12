@@ -11,7 +11,8 @@
 			<div class="row">
 				<div class="form-group col-md-5">
 					<label class="control-label">Cliente</label>
-                    <div><a href="{{ route('terceros.show', ['terceros' =>  $gestioncobro->gestioncobro_tercero ]) }}" title="Ver tercero">{{ $gestioncobro->tercero_nit }} </a> - {{ $gestioncobro->tercero_nombre }} </div>
+                    <div>Documento: <a href="{{ route('terceros.show', ['terceros' =>  $gestioncobro->gestioncobro_tercero ]) }}" target="_blank" title="Ver tercero">{{ $gestioncobro->tercero_nit }} </a> <br>
+                        Nombre: {{ $gestioncobro->tercero_nombre }} </div>
 				</div>
 				<div class="form-group col-md-4">
 					<label class="control-label">Concepto cobro</label>

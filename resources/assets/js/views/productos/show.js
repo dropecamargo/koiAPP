@@ -22,9 +22,8 @@ app || (app = {});
         * Constructor Method
         */
         initialize: function() {
-
-           this.$('#browse-prodbode-table').hide();
             // Collection the prodbode
+            this.$('#browse-prodbode-table').hide();
             this.prodbodeList = new app.ProdbodeList();
 
             this.$modalGeneric = $('#modal-producto-generic');
@@ -55,16 +54,6 @@ app || (app = {});
                 // tercero, tcontacto, vencimiento and servicio
                 this.$modalGeneric.modal('show');
 
-                var data = {
-                    tercero_nombre: this.model.get('tercero_nombre'),
-                    tercero_nit: this.model.get('tercero_nit'),
-                    tcontacto_nombre: this.model.get('tcontacto_nombre'),
-                    tcontacto_telefono: this.model.get('tcontacto_telefono'),
-                    producto_servicio: this.model.get('producto_servicio'),
-                    producto_contacto: this.model.get('producto_contacto'),
-                    producto_vencimiento: this.model.get('producto_vencimiento')
-                }
-
                 // Open TecnicoActionView
                 if ( this.productoActionView instanceof Backbone.View ){
                     this.productoActionView.stopListening();
@@ -74,7 +63,6 @@ app || (app = {});
                 this.productoActionView = new app.ProductoActionView({
                     model: this.model,
                     parameters: {
-                        data: data,
                         call: 'M'
                     }
                 });
@@ -93,11 +81,6 @@ app || (app = {});
                 // Show modal
                 this.$modalGeneric.modal('show');
 
-                var data = {
-                    producto_nombre: this.model.get('producto_nombre'),
-                    producto_referencia: this.model.get('producto_referencia')
-                }
-
                 // Open TecnicoActionView
                 if ( this.productoActionView instanceof Backbone.View ){
                     this.productoActionView.stopListening();
@@ -107,7 +90,6 @@ app || (app = {});
                 this.productoActionView = new app.ProductoActionView({
                     model: this.model,
                     parameters: {
-                        data: data,
                         call: 'S'
                     }
                 });

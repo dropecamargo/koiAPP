@@ -51,6 +51,7 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::resource('paises', 'Admin\PaisController', ['only' => ['index']]);
 	Route::resource('sucursales', 'Admin\SucursalController', ['except' => ['destroy']]);
 	Route::resource('ubicaciones', 'Admin\UbicacionController', ['except' => ['destroy']]);
+	Route::resource('notificaciones', 'Admin\NotificacionController', ['only' => ['index','update']]);
 
 	Route::resource('regionales', 'Admin\RegionalController', ['except' => ['destroy']]);
 	Route::resource('puntosventa', 'Admin\PuntoVentaController', ['except' => ['destroy']]);

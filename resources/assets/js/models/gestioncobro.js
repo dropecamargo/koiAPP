@@ -20,7 +20,7 @@ app || (app = {});
         	'tercero_nombre':'',
         	'gestioncobro_proxima': moment().format('YYYY-MM-DD'),
             'gestioncobro_fh': moment().format('YYYY-MM-DD'),
-        	'gestioncobro_hproxima': moment().format('HH:mm'),
+        	'gestioncobro_hproxima': moment().format('H:mm'),
         }
     });
 

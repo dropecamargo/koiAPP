@@ -322,7 +322,7 @@
 													<input type="checkbox" id="tercero_vendedor" name="tercero_vendedor" value="tercero_vendedor" <%- parseInt(tercero_vendedor) ? 'checked': ''%>> Vendedor
 												</label>
 											</div>
-										</div>	
+										</div>
 
 										<div class="row">
 										   	<div id="wrapper-coordinador" class="form-group col-md-10 col-md-offset-1 <%- parseInt(tercero_tecnico) || parseInt(tercero_vendedor) ? '' : 'hide' %>">
@@ -335,7 +335,7 @@
 										    </div>
 										</div>
 									</div>
-									
+
 							    	<div class="form-group col-md-6">
 										<div class="row">
 										    <div class="form-group col-md-10">
@@ -617,7 +617,7 @@
 			<label for="tipoajuste_nombre" class="control-label">Nombre</label>
 			<input type="text" id="tipoajuste_nombre" name="tipoajuste_nombre" value="<%- tipoajuste_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="25" required>
 		</div>
-		
+
 	</div>
 	<div class="row">
 		<div class="col-md-2">
@@ -1049,7 +1049,7 @@
     </div>
 </script>
 
-<script type="text/template" id="add-bitacora-item-tpl"> 
+<script type="text/template" id="add-bitacora-item-tpl">
     <td><%- tercero_nombre %></td>
     <td><%- bitacora_campo %></td>
     <td> <%- bitacora_anterior %></td>
@@ -1070,7 +1070,7 @@
     <td class="text-left"><%- lote_fecha %></td>
     <% if(lote_vencimiento != null) { %>
     	<td class="text-left"><%- lote_vencimiento %></td>
-    <% } %> 
+    <% } %>
     <td class="text-left"><%- lote_saldo %></td>
     <td>
     	<div class="form-group">
@@ -1245,7 +1245,7 @@
 				@endforeach
 			</select>
 		</div>
- 
+
 		<div class="form-group col-md-2 col-xs-8 col-sm-3">
 			<br><label class="checkbox-inline" for="cuentabanco_activa">
 				<input type="checkbox" id="cuentabanco_activa" name="cuentabanco_activa" value="cuentabanco_activa" <%- parseInt(cuentabanco_activa) ? 'checked': ''%>> Activo
@@ -1295,7 +1295,7 @@
 	</div>
 </script>
 
-<script type="text/template" id="add-concepto-item-tpl"> 
+<script type="text/template" id="add-concepto-item-tpl">
     <% if( factura3_factura1 == '' ) { %>
         <th colspan="7" class="text-center">NO EXISTEN FACTURAS DE ESTE CLIENTE</th>
 	<% }else{ %>
@@ -1317,7 +1317,7 @@
             </a>
         </td>
     <% } %>
-        	
+
     <td><%- conceptosrc_nombre %></td>
     <td><%- documentos_nombre %></td>
     <td><%- !_.isUndefined(factura1_numero) && !_.isNull(factura1_numero) && factura1_numero != '' ? factura1_numero : '' %></td>
@@ -1329,7 +1329,7 @@
     <td class="text-center">
     	<input type="checkbox" name="check_<%- id_cheque %>" id="check_<%- id_cheque %>" class="change-check-medio">
     </td>
-        	
+
     <td><%- banco_nombre %></td>
     <td><%- chposfechado1_ch_numero %></td>
     <td><%- window.Misc.currency( chposfechado1_valor ) %></td>
@@ -1343,7 +1343,7 @@
     <td><%- banco_nombre %></td>
     <td><%- chposfechado1_ch_numero %></td>
     <td><%- chdevuelto_fecha %></td>
-    <% if( call == 'ajustesc' ) { %> 
+    <% if( call == 'ajustesc' ) { %>
     	<td><input type="checkbox" id="debito_<%- id %>" name="debito_<%- id %>" class="change-naturalezachd"></td>
     	<td><input type="checkbox" id="credito_<%- id %>" name="credito_<%- id %>" class="change-naturalezachd"></td>
     <% } %>
@@ -1358,7 +1358,7 @@
     <td><%- cuentabanco_nombre %></td>
     <td><%- anticipo1_numero %></td>
     <td><%- anticipo1_fecha %></td>
-    <% if( call == 'ajustesc' ) { %> 
+    <% if( call == 'ajustesc' ) { %>
     	<td><input type="checkbox" id="debito_<%- id %>" name="debito_<%- id %>" class="change-naturalezaanti"></td>
     	<td><input type="checkbox" id="credito_<%- id %>" name="credito_<%- id %>" class="change-naturalezaanti"></td>
     <% } %>
@@ -1366,7 +1366,7 @@
     <td><input type="text" id="pagar_<%- id %>" name="pagar_<%- id %>" class="form-control input-sm change-pagar-anti" data-currency-negative></td>
 </script>
 
-<script type="text/template" id="add-factura3-item-tpl"> 
+<script type="text/template" id="add-factura3-item-tpl">
     <td><%- factura3_cuota %></td>
     <td><%- factura3_vencimiento %></td>
     <td><%- window.Misc.currency(factura3_valor) %></td>
@@ -1568,11 +1568,11 @@
 <script type="text/template" id="add-tercero-cartera-tpl">
 	<td>
 		<% if(documentos_codigo == 'FACT'){ %>
-			<a href="<%- window.Misc.urlFull( Route.route('facturas.show', {facturas: factura3_id} ))%>" title="Ver documento" target="_blank"><%- documentos_nombre %></a> 
+			<a href="<%- window.Misc.urlFull( Route.route('facturas.show', {facturas: factura3_id} ))%>" title="Ver documento" target="_blank"><%- documentos_nombre %></a>
 		<% }else if(documentos_codigo == 'CHD') {%>
-			<a href="<%- window.Misc.urlFull( Route.route('chequesdevueltos.show', {chequesdevueltos: factura3_id} ))%>" title="Ver documento" target="_blank"><%- documentos_nombre %></a> 
+			<a href="<%- window.Misc.urlFull( Route.route('chequesdevueltos.show', {chequesdevueltos: factura3_id} ))%>" title="Ver documento" target="_blank"><%- documentos_nombre %></a>
 		<% }else if(documentos_codigo == 'ANTI'){ %>
-			<a href="<%- window.Misc.urlFull( Route.route('anticipos.show', {anticipos: factura3_id} ))%>" title="Ver documento" target="_blank"><%- documentos_nombre %></a> 
+			<a href="<%- window.Misc.urlFull( Route.route('anticipos.show', {anticipos: factura3_id} ))%>" title="Ver documento" target="_blank"><%- documentos_nombre %></a>
 		<% } %>
 	</td>
 	<td><%- factura1_numero %> </td>
@@ -1586,7 +1586,7 @@
     <td>
     	<% if(factura3_chposfechado1 != null){ %>
     		<a href=" <%- window.Misc.urlFull( Route.route('cheques.show', {cheques: factura3_chposfechado1} ))%>" target="_blank" class="btn-default btn-xs" >CHP</a>
-    	<% } %>  
+    	<% } %>
     </td>
 </script>
 <script type="text/template" id="tfoot-tercero-deuda">
@@ -1754,7 +1754,7 @@
             </label>
         </div>
     </div>
-    <% if( ubicacion_select != "false" ){ %> 
+    <% if( ubicacion_select != "false" ){ %>
 	    <div class="row">
 	        <div class="form-group col-md-4">
 	            <label for="ubicacion_sucursal" class="control-label">Sucursal</label>
