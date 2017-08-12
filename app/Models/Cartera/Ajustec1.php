@@ -4,10 +4,9 @@ namespace App\Models\Cartera;
 
 use Illuminate\Database\Eloquent\Model;
 
-use App\Models\BaseModel;
 use Validator, DB;
 
-class Ajustec1 extends BaseModel
+class Ajustec1 extends Model
 {
     /**
 	* The database table used by the model.
@@ -41,7 +40,7 @@ class Ajustec1 extends BaseModel
             // Validar Carrito
             $detalle = isset($data['detalle']) ? $data['detalle'] : null;
             if(!isset($detalle) || $detalle == null || !is_array($detalle) || count($detalle) == 0) {
-                $this->errors = 'Por favor ingrese el detalle para realizar el recibo.';
+                $this->errors = 'Por favor ingrese el detalle para realizar el ajuste de cartera.';
                 return false;
             }
             return true;

@@ -6,8 +6,9 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\Tesoreria\Facturap1,App\Models\Tesoreria\TipoProveedor,App\Models\Tesoreria\TipoGasto,App\Models\Tesoreria\Facturap2, App\Models\Tesoreria\ReteFuente;
+use App\Models\Tesoreria\Facturap1,App\Models\Tesoreria\Facturap2,App\Models\Tesoreria\Facturap3,App\Models\Tesoreria\TipoProveedor,App\Models\Tesoreria\TipoGasto,App\Models\Tesoreria\ReteFuente;
 use App\Models\Inventario\Impuesto;
+use App\Models\Contabilidad\ActivoFijo;
 use App\Models\Base\Tercero,App\Models\Base\Documentos,App\Models\Base\Regional;
 use DB, Log, Datatables, Cache;
 
@@ -36,7 +37,33 @@ class Facturap1Controller extends Controller
             $query->join('tercero', 'facturap1_tercero', '=', 'tercero.id');
             $query->join('regional', 'facturap1_regional', '=', 'regional.id');
 
-            return Datatables::of($query)->make(true);
+
+            // Persistent data filter
+            if($request->has('persistent') && $request->persistent) {
+                session(['searchfacturap_tercero' => $request->has('tercero_nit') ? $request->tercero_nit : '']);
+                session(['searchfacturap_tercero_nombre' => $request->has('tercero_nombre') ? $request->tercero_nombre : '']);
+                session(['searchfacturap_factura' => $request->has('factura') ? $request->factura : '']);
+                session(['searchfacturap_fecha' => $request->has('facturap_fecha') ? $request->facturap_fecha : '']);
+            }
+
+            return Datatables::of($query)
+                ->filter(function ($query) use ($request){
+                    // Referencia 
+                    if($request->has('factura')){
+                        $query->whereRaw("facturap1_factura LIKE '%{$request->factura}%'");
+                    }
+
+                    // Fecha 
+                    if($request->has('facturap_fecha')){
+                        $query->whereRaw("facturap1_fecha LIKE '%{$request->facturap_fecha}%'");
+                    }
+
+                    // Documento Tercero
+                    if($request->has('tercero_nit')) {
+                        $query->whereRaw("tercero_nit LIKE '%{$request->tercero_nit}%'");
+                    }
+                })
+                ->make(true);
         }
         return view('tesoreria.facturap.index');
     }
@@ -71,12 +98,7 @@ class Facturap1Controller extends Controller
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar cliente, por favor verifique la información o consulte al administrador']);
                     }
-                    // 
-                    $nameFactura = Facturap1::where('facturap1_tercero', $tercero->id)->where('facturap1_factura', $request->facturap1_factura)->first();
-                    if ($nameFactura instanceof Facturap1) {
-                        DB::rollback();
-                        return response()->json(['success' => false, 'errors' => "El proveedor ". $tercero->getName() ." ya tiene una factura registrada con el nombre de $request->facturap1_factura, por favor verifique la información o consulte al administrador"]);
-                    }
+
                     // Recupero regional
                     $regional = Regional::find($request->facturap1_regional);
                     if (!$regional instanceof Regional) {
@@ -150,16 +172,34 @@ class Facturap1Controller extends Controller
                         $facturapDetalle->facturap2_facturap1 = $facturap1->id;
                         $facturapDetalle->save();
                     }
+                    // Calculate totalize 
+                    $facturap1->calculateTotal();
+
+                    // Facturap3
+                    $facturap3 = Facturap3::storeFacturap3($facturap1);
+                    if (!$facturap3) {
+                        DB::rollback();
+                        return response()->json(['success'=> false, 'errors'=>'No es posible realizar factura proveedor3,por favor verifique la información ó por favor consulte al administrador']);
+                    }
+
+                    // Activo fijo
+                    $activosfijos = isset($data['activosfijos']) ? $data['activosfijos'] : [];
+                    $activofijo = ActivoFijo::store($facturap1, $activosfijos);
+                    if (!$activofijo->success) {
+                        DB::rollback();
+                        return response()->json(['success'=> false, 'errors'=> $activofijo->errors]);
+                    }
+                    
 
                     // Update consecutive regional_fpro
                     $regional->regional_fpro = $consecutive;
                     $regional->save();
 
                     // Commit
-                    // DB::commit();
-                    // return response()->json(['success' => true, 'id' => $facturap1->id ]);
-                    DB::rollback();
-                    return response()->json(['success' => false, 'errors' => 'TODO OK' ]);
+                    DB::commit();
+                    return response()->json(['success' => true, 'id' => $facturap1->id ]);
+                    // DB::rollback();
+                    // return response()->json(['success' => false, 'errors' => 'TODO OK' ]);
                 } catch (\Exception $e) {
                     DB::rollback();
                     Log::error($e->getMessage());
@@ -218,5 +258,28 @@ class Facturap1Controller extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * Validate tercero name factura.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function validation(Request $request)
+    {
+        // Recupero instancia de tercero
+        $tercero = Tercero::where('tercero_nit', $request->tercero)->first();
+        if (!$tercero instanceof Tercero) {
+            DB::rollback();
+            return response()->json(['success' => false, 'errors' => 'No es posible recuperar cliente, por favor verifique la información o consulte al administrador']);
+        }
+        // Valido nombre factura
+        $nameFactura = Facturap1::where('facturap1_tercero', $tercero->id)->where('facturap1_factura', $request->factura)->first();
+        if ($nameFactura instanceof Facturap1) {
+            DB::rollback();
+            return response()->json(['success' => false, 'errors' => "El proveedor ". $tercero->getName() ." ya tiene una factura registrada con el nombre de $request->facturap1_factura, por favor verifique la información o consulte al administrador"]);
+        }
+
+        return response()->json(['success' => true]);
     }
 }

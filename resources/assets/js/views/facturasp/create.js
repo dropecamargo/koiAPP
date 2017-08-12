@@ -19,7 +19,9 @@ app || (app = {});
 
             'submit #form-facturap2-impuesto': 'onStoreFacturap2',
             'submit #form-facturap2-retefuente': 'onStoreFacturap2',
+            'submit #form-activo-fijo': 'onStoreActivoFijo',
 
+            'change #facturap1_factura': 'onChangeRepeatFactura',
             'change #facturap2_impuesto': 'onChangeImpuesto',
             'change #facturap2_retefuente': 'onChangeRetefuente'
         },
@@ -32,6 +34,7 @@ app || (app = {});
         initialize : function() {
             // Reference collection
             this.detalleFacturap2 = new app.DetalleFacturasp2Collection();
+            this.activoFijoList = new app.ActivoFijoList();
            
             // Events
             this.listenTo( this.model, 'change', this.render );
@@ -74,6 +77,17 @@ app || (app = {});
                     }
                }
             });
+            this.activoFijoListView = new app.ActivosFijosListView( {
+                collection: this.activoFijoList,
+                parameters: {
+                    wrapper: this.el,
+                    edit: true,
+                    form: this.$('#form-activo-fijo'),
+                    dataFilter: {
+                        'id': this.model.get('id')
+                    }
+               }
+            });
         },
         /**
         * Event submit facturap1
@@ -90,6 +104,7 @@ app || (app = {});
                 e.preventDefault();
                 var data = window.Misc.formToJson( e.target );
                     data.facturap2 = this.detalleFacturap2.toJSON();
+                    data.activosfijos = this.activoFijoList.toJSON();
 
                 this.model.save( data, {patch: true, silent: true} );
             }   
@@ -105,13 +120,70 @@ app || (app = {});
                 this.detalleFacturap2.trigger( 'store', data);
             }
         },
+        /**
+        * Store activo fijo
+        */
+        onStoreActivoFijo:function(e){
+            if (!e.isDefaultPrevented()) {
+                e.preventDefault();
+                var data = window.Misc.formToJson( e.target ) ;
+                this.activoFijoList.trigger( 'store', data);
+            }
+        },
 
+        /**
+        *  Change for validation name factura
+        */
+        onChangeRepeatFactura: function (e) {
+            e.preventDefault();
+            var _this = this;
+            if (_this.$('#facturap1_tercero').val() == '') {
+                _this.$(e.target).val('');   
+                return alertify.error('Campo de proveedor se encuentra vacio, por favor verifique información');
+            }
+            if (_this.$(e.target).val() != '') {
+                // Validate
+                $.ajax({
+                    url: window.Misc.urlFull( Route.route( 'facturasp.validate') ),
+                    type: 'GET',
+                    data: {
+                        factura: _this.$(e.target).val(),
+                        tercero: _this.$('#facturap1_tercero').val()
+                    },
+                    beforeSend: function() {
+                        window.Misc.setSpinner( _this.spinner );
+                    }
+                })
+                .done(function(resp) {
+                    window.Misc.removeSpinner( _this.spinner );
+                    if(!_.isUndefined(resp.success)) {
+                        // response success or error
+                        var text = resp.success ? '' : resp.errors;
+                        if( _.isObject( resp.errors ) ) {
+                            text = window.Misc.parseErrors(resp.errors);
+                        }
+
+                        if( !resp.success ) {
+                            alertify.error(text);
+                            return;
+                        }
+                    }
+                })
+                .fail(function(jqXHR, ajaxOptions, thrownError) {
+                    window.Misc.removeSpinner( _this.spinner );
+                    alertify.error(thrownError);
+                });
+            }
+        },
         /**
         *  Change for get porcentage y set valor with impuesto
         */
         onChangeImpuesto: function (e) {
             e.preventDefault();
             var _this = this;
+            if (_this.$('#facturap1_subtotal').inputmask('unmaskedvalue') == 0) {
+                return alertify.error('Campo de proveedor se encuentra vacio, por favor verifique información');
+            }
             if (_this.$(e.target).val() != '') {
                 // Impuesto
                 $.ajax({

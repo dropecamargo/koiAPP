@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+
 use App\Models\Tesoreria\TipoGasto;
 use App\Models\Contabilidad\PlanCuenta;
 use DB, Log, Datatables, Cache;
@@ -69,7 +70,9 @@ class TipoGastoController extends Controller
                     Cache::forget( TipoGasto::$key_cache ); 
                     return response()->json(['success' => true, 'id' =>$tipogasto->id]); 
                 } catch (\Exception $e) {
-                    
+                    DB::rollback();
+                    Log::error($e->getMessage());
+                    return response()->json(['success' => false, 'errors' => trans('app.exception')]);
                 }
             }
             return response()->json(['success' => false, 'errors' => $tipogasto->errors]);
@@ -138,7 +141,9 @@ class TipoGastoController extends Controller
                     Cache::forget( TipoGasto::$key_cache ); 
                     return response()->json(['success' => true, 'id' =>$tipogasto->id]); 
                 } catch (\Exception $e) {
-                    
+                    DB::rollback();
+                    Log::error($e->getMessage());
+                    return response()->json(['success' => false, 'errors' => trans('app.exception')]);
                 }
             }
             return response()->json(['success' => false, 'errors' => $tipogasto->errors]);

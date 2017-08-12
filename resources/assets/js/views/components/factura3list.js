@@ -1,5 +1,5 @@
 /**
-* Class RolesListView  of Backbone Router
+* Class Factura3ListView  of Backbone Router
 * @author KOI || @dropecamargo
 * @link http://koi-ti.com
 */

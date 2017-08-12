@@ -24,6 +24,7 @@ app || (app = {});
             if( this.model.id != undefined ) {
                 // Reference collection
                 this.detalleFacturap2 = new app.DetalleFacturasp2Collection();
+                this.activoFijoList = new app.ActivoFijoList();
 
                 // Reference views
                 this.referenceViews();
@@ -40,6 +41,18 @@ app || (app = {});
                 parameters: {
                     wrapper: this.el,
                     edit: false,
+                    dataFilter: {
+                        'id': this.model.get('id')
+                    }
+               }
+            });
+
+            this.activoFijoListView = new app.ActivosFijosListView( {
+                collection: this.activoFijoList,
+                parameters: {
+                    wrapper: this.el,
+                    edit: false,
+                    form: this.$('#form-activo-fijo'),
                     dataFilter: {
                         'id': this.model.get('id')
                     }

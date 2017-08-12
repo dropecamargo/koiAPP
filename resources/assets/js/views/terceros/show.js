@@ -23,7 +23,9 @@ app || (app = {});
                 this.rolList = new app.RolList();
                 this.detalleCarteraTercero = new app.DetalleCarteraTercero();
                 this.gestionCobroList = new app.GestionCobrosCollection();
+                this.detallecuotaProveedor = new app.DetalleFacturap3List();
                 this.$templateTercero = _.template( ($('#add-tercero-cartera-tpl').html() || '') );
+                this.$templateProveedor = _.template( ($('#show-facturap3-tpl').html() || '') );
 
                 // Reference views
                 this.referenceViews();
@@ -65,7 +67,7 @@ app || (app = {});
                }
             });
 
-            // Detalle list
+            // Detalle list cartera
             this.factura3ListView = new app.Factura3ListView({
                 collection: this.detalleCarteraTercero,
                 parameters: {
@@ -73,6 +75,19 @@ app || (app = {});
                     edit: false,
                     call: 'tercero',
                     template: this.$templateTercero,
+                    dataFilter: {
+                        'tercero': this.model.get('id'),
+                    }
+                }
+            });
+            // Detalle list factura proveedor
+            this.factura3ListView = new app.Facturap3ListView({
+                collection: this.detallecuotaProveedor,
+                parameters: {
+                    wrapper: this.el,
+                    edit: false,
+                    call: 'tercero',
+                    template: this.$templateProveedor,
                     dataFilter: {
                         'tercero': this.model.get('id'),
                     }

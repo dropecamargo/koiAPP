@@ -57,11 +57,15 @@ app || (app = {});
                 columnDefs: [
                     {
                         targets: 0,
-                        width: '15%',
+                        width: '10%',
                         render: function ( data, type, full, row ) {
                            return '<a href="'+ window.Misc.urlFull( Route.route('facturas.show', {facturas: full.id }) )  +'">' + data + '</a>';
                         },
                        
+                    },
+                    {
+                        targets:2,
+                        width:'20%' 
                     },
                     {
                         targets: [5,6,7,8,9],

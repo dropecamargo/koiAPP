@@ -1476,6 +1476,37 @@
 	</div>
 </script>
 
+<script type="text/template" id="add-conceptoajustep-tpl">
+	<div class="row">
+		<div class="form-group col-md-8">
+			<label for="conceptoajustep_nombre" class="control-label">Nombre</label>
+			<input type="text" id="conceptoajustep_nombre" name="conceptoajustep_nombre" value="<%- conceptoajustep_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="25" required>
+		</div>
+    </div>
+    <div class="row">
+		<div class="form-group col-sm-6 col-md-2">
+			<label for="conceptoajustep_plancuentas" class="control-label text-right">Cuenta</label>
+      		<div class="input-group input-group-sm">
+				<span class="input-group-btn">
+					<button type="button" class="btn btn-default btn-flat btn-koi-search-plancuenta-component" data-field="conceptoajustep_plancuentas">
+						<i class="fa fa-tasks"></i>
+					</button>
+				</span>
+				<input id="conceptoajustep_plancuentas" placeholder="Cuenta" class="form-control plancuenta-koi-component" name="conceptoajustep_plancuentas" type="text" maxlength="15" data-wrapper="conceptoajustep-create" data-name="cuenta_nombre" value="<%- plancuentas_cuenta %>">
+			</div>
+		</div>
+		<div class="col-sm-6 col-md-4"><br>
+			<input id="cuenta_nombre" name="cuenta_nombre" placeholder="Nombre cuenta" class="form-control input-sm" type="text" value="<%- plancuentas_nombre %>" maxlength="15" disabled>
+		</div>
+
+		<div class="form-group col-md-2 col-xs-8 col-sm-3">
+			<br><label class="checkbox-inline" for="conceptoajustep_activo">
+				<input type="checkbox" id="conceptoajustep_activo" name="conceptoajustep_activo" value="conceptoajustep_activo" <%- parseInt(conceptoajustep_activo) ? 'checked': ''%>> Activo
+			</label>
+		</div>
+	</div>
+</script>
+
 {{-- templeates Tecnicos --}}
 <script type="text/template" id="add-tipoorden-tpl">
 	<div class="row">
@@ -1588,6 +1619,18 @@
     		<a href=" <%- window.Misc.urlFull( Route.route('cheques.show', {cheques: factura3_chposfechado1} ))%>" target="_blank" class="btn-default btn-xs" >CHP</a>
     	<% } %>
     </td>
+</script>
+<script type="text/template" id="show-facturap3-tpl">
+	<td>
+		<a href="<%- window.Misc.urlFull( Route.route('facturasp.show', {facturasp: facturap3_facturap1} ))%>" title="Ver documento" target="_blank"><%- documentos_nombre %></a> 
+	</td>
+	<td><%- facturap1_numero %> </td>
+    <td><%- regional_nombre %></td>
+    <td><%- facturap3_cuota %></td>
+	<td><%- facturap3_vencimiento %></td>
+	<td><%- days %></td>
+    <td><%- window.Misc.currency(facturap3_valor) %></td>
+    <td><%- window.Misc.currency(facturap3_saldo) %></td>
 </script>
 <script type="text/template" id="tfoot-tercero-deuda">
     <tr>

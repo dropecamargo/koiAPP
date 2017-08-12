@@ -67,4 +67,32 @@ class Facturap1 extends Model
         $facturap1->where('facturap1.id', $id);
         return $facturap1->first();
     }
+
+    public function calculateTotal(){
+        $retenciones = $this->calculateRetenciones();
+        $impuestos = $this->calculateImpuestos();
+        $apagar = $impuestos->total_impuestos + $this->facturap1_subtotal;
+        $apagar = $apagar - $this->facturap1_descuento;
+        $apagar = $apagar - $retenciones->total_retefuentes;
+
+        $this->facturap1_retenciones = $retenciones->total_retefuentes;
+        $this->facturap1_impuestos = $impuestos->total_impuestos;
+        $this->facturap1_apagar = $apagar;
+        $this->save();
+    }
+
+    public function calculateRetenciones(){
+        $facturap2 = Facturap2::query();
+        $facturap2->select(DB::raw('SUM(facturap2_base) AS total_retefuentes'));
+        $facturap2->where('facturap2_impuesto', null);
+        $facturap2->where('facturap2_facturap1', $this->id);
+        return $facturap2->first();
+    }
+    public function calculateImpuestos(){
+        $facturap2 = Facturap2::query();
+        $facturap2->select(DB::raw('SUM(facturap2_base) AS total_impuestos'));
+        $facturap2->where('facturap2_retefuente', null);
+        $facturap2->where('facturap2_facturap1', $this->id);
+        return $facturap2->first();
+    }
 }

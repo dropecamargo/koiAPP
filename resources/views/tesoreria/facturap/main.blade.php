@@ -29,7 +29,8 @@
                         <li class="active"><a href="#tab_facturap" data-toggle="tab">Factura</a></li>
                         <li><a href="#tab_impuesto" data-toggle="tab">Impuesto/Retención</a></li>
                         <li><a href="#tab_contabilidad" data-toggle="tab">Contabilidad</a></li>
-                        <li><a href="#tab_af" data-toggle="tab">Activos/Efectivos</a></li>
+                        <li><a href="#tab_af" data-toggle="tab">Activos fijos</a></li>
+                        <li><a href="#tab_inventario" data-toggle="tab">Inventario</a></li>
                     </ul>
                     <div class="tab-content">
                         <!-- Tab factura proveedor -->
@@ -59,7 +60,7 @@
                                                         <i class="fa fa-user"></i>
                                                     </button>
                                                 </span>
-                                                <input id="facturap1_tercero" placeholder="Cliente" class="form-control tercero-koi-component aaa" name="facturap1_tercero" type="text" maxlength="15" data-wrapper="anticipo-create" data-name="tercero_nombre" value="<%- tercero_nit %>" required>
+                                                <input id="facturap1_tercero" placeholder="Cliente" class="form-control tercero-koi-component" name="facturap1_tercero" type="text" maxlength="15" data-wrapper="facturap1-create" data-name="tercero_nombre" value="<%- tercero_nit %>" required>
                                             </div>
                                         </div>
                                         <div class="col-md-5 col-xs-12">
@@ -220,14 +221,116 @@
                         </div>
                         <!-- Tab activos & efectivos -->
                         <div id="tab_af"  class="tab-pane">
-                            Activos y efectivos
+                            <div class="box box-solid">
+                                <div class="box-body">
+                                    <form  method="POST" accept-charset="UTF-8" id="form-activo-fijo" data-toggle="validator">
+                                        <div class="row">
+                                            <label for="activofijo_placa" class="control-label col-md-1">Placa</label>
+                                            <div class="form-group col-md-2">
+                                                <input type="text" name="activofijo_placa" id="activofijo_placa" class="form-control input-sm input-toupper" placeholder="Placa" maxlength="10" required>
+                                            </div>
+
+                                            <label for="activofijo_serie" class="control-label col-md-1">Serie</label>
+                                            <div class="form-group col-md-2">
+                                                <input type="text" name="activofijo_serie" id="activofijo_serie" class="form-control input-sm input-toupper" placeholder="Serie" maxlength="20" required>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <label for="activofijo_responsable" class="col-md-1 control-label">Responsable</label>
+                                            <div class="form-group col-md-3">
+                                                <div class="input-group input-group-sm">
+                                                    <span class="input-group-btn">
+                                                        <button type="button" class="btn btn-default btn-flat btn-koi-search-tercero-component-table " data-field="activofijo_responsable">
+                                                            <i class="fa fa-user"></i>
+                                                        </button>
+                                                    </span>
+                                                    <input id="activofijo_responsable" placeholder="Responsable" class="form-control tercero-koi-component" name="activofijo_responsable" type="text" maxlength="15" data-wrapper="facturap1-create" data-name="activofijo_tercero_nombre"  required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-5 col-xs-12">
+                                                <input id="activofijo_tercero_nombre" name="activofijo_tercero_nombre" placeholder="Nombre resposanble" class="form-control input-sm" type="text" maxlength="15" readonly required>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <label for="activofijo_tipoactivo" class="control-label col-md-1">Tipo</label>
+                                            <div class="form-group col-md-3">
+                                                <select id="activofijo_tipoactivo" name="activofijo_tipoactivo" class="form-control select2-default-clear">
+                                                    @foreach( App\Models\Contabilidad\TipoActivo::getTiposActivos() as $key => $value)
+                                                        <option  value="{{ $key }}" >{{ $value }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <label for="activofijo_costo" class="control-label col-md-1">Costo</label>
+                                            <div class="form-group col-md-2">
+                                                <input type="text" id="activofijo_costo" name="activofijo_costo" class="form-control input-sm" data-currency required>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <label for="activofijo_compra" class="control-label col-md-1">F. compra</label>
+                                            <div class="form-group col-md-2">
+                                                <div class="input-group">
+                                                    <div class="input-group-addon">
+                                                        <i class="fa fa-calendar"></i>
+                                                    </div>
+                                                    <input type="text" id="activofijo_compra" name="activofijo_compra" class="form-control input-sm datepicker" value="<%- moment().format('YYYY-MM-DD') %>" required>
+                                                </div>
+                                            </div>
+                                            <label for="activofijo_activacion" class="control-label col-md-1">F. activación</label>
+                                            <div class="form-group col-md-2">
+                                                <div class="input-group">
+                                                    <div class="input-group-addon">
+                                                        <i class="fa fa-calendar"></i>
+                                                    </div>
+                                                    <input type="text" id="activofijo_activacion" name="activofijo_activacion" class="form-control input-sm datepicker" value="<%- moment().format('YYYY-MM-DD') %>" required>
+                                                </div>
+                                            </div>
+                                            <label for="activofijo_vida_util" class="control-label col-md-1">Vida útil</label>
+                                            <div class="form-group col-md-1">
+                                                <input type="number" name="activofijo_vida_util" id="activofijo_vida_util" value="1" min="1" class="form-control input-sm">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <label for="activofijo_descripcion" class="control-label col-md-1">Descripción</label>
+                                            <div class="form-group col-md-9">
+                                                <textarea id="activofijo_descripcion" name="activofijo_descripcion" class="form-control" rows="2" placeholder="Descripción del activo"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-2 col-md-offset-5 col-xs-6">
+                                                <button type="submit" class="btn btn-success btn-sm btn-block">{{ trans('app.add') }}</button>
+                                            </div>
+                                        </div><br>
+                                    </form>
+                                    <div class="table-responsive no-padding">
+                                        <table id="browse-activo-fijo-list" class="table table-hover table-bordered table-condensed" cellspacing="0">
+                                            <thead>
+                                                <tr>
+                                                    <th width="5%"></th>
+                                                    <th width="10%">Placa</th>
+                                                    <th width="15%">Serie</th>
+                                                    <th width="40%">Responsable</th>
+                                                    <th width="20%">Tipo</th>
+                                                    <th width="10%">Costo</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {{-- Render content activo fijo --}}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>    
+                        </div>
+                        <!-- Tab inventario -->
+                        <div id="tab_inventario" class="tab-pane">
+                            Inventario
                         </div>
                         <div class="box-footer">
                             <div class="row">
                                 <div class="col-md-2 col-md-offset-4 col-md-6 col-xs-6 text-left">
                                     <a href="{{ route('facturasp.index') }}" class="btn btn-default btn-sm btn-block">{{ trans('app.cancel') }}</a>
                                 </div>
-                                <div class="col-md-2  col-md-5 col-xs-6 text-right">
+                                <div class="col-md-2 col-xs-6 text-right">
                                     <button type="button" class="btn btn-primary btn-sm btn-block submit-facturap">{{ trans('app.save') }}</button>
                                 </div>
                             </div>
@@ -247,6 +350,22 @@
         <% } %>
         <td><%- (impuesto_nombre != null ) ? impuesto_nombre : retefuente_nombre %></td>
         <td><%- facturap2_porcentaje %></td>
-        <td><%- facturap2_base %></td>
+        <td><%- window.Misc.currency (facturap2_base) %></td>
+    </script>
+    <script type="text/template" id="add-activofijo-item-tpl">
+        <%if(edit){ %>
+            <td class="text-center">
+                <a class="btn btn-default btn-xs item-removeactivofijo-remove" data-resource = "<%- id %>">
+                    <span><i class="fa fa-times"></i></span>
+                </a>
+            </td>
+            <td><%- activofijo_placa %></td>
+        <% }else{ %> 
+            <td> <a href="<%- window.Misc.urlFull( Route.route('activosfijos.show', { activosfijos: id } )) %>" title="Ver documento" target="_blank"> <%- activofijo_placa %></a></td>
+        <%} %>
+        <td><%- activofijo_serie %></td>
+        <td><%- tercero_nombre %></td>
+        <td><%- tipoactivo_nombre %></td>
+        <td><%- window.Misc.currency(activofijo_costo) %></td>
     </script>
 @stop

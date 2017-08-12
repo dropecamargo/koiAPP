@@ -20,7 +20,7 @@
                     <li class="active"><a href="#tab_facturap" data-toggle="tab">Factura</a></li>
                     <li><a href="#tab_impuesto" data-toggle="tab">Impuesto/Retención</a></li>
                     <li><a href="#tab_contabilidad" data-toggle="tab">Contabilidad</a></li>
-                    <li><a href="#tab_af" data-toggle="tab">Activos/Efectivos</a></li>
+                    <li><a href="#tab_af" data-toggle="tab">Activos fijos</a></li>
                 </ul>
             </div>
 
@@ -94,6 +94,20 @@
                             </div>                    
                         </div> 
                         <div class="row">
+                            <label for="facturap1_impuestos" class="control-label col-md-1">Impuestos</label>
+                            <div class="form-group col-md-3">
+                                {{ number_format($facturap1->facturap1_impuestos) }}
+                            </div>
+                            <label for="facturap1_retenciones" class="control-label col-md-1">Retenciones</label>
+                            <div class="form-group col-md-2">
+                                {{ number_format( $facturap1->facturap1_retenciones ) }}
+                            </div>                    
+                            <label for="facturap1_apagar" class="control-label col-md-1">A pagar</label>
+                            <div class="form-group col-md-2">
+                                {{ number_format( $facturap1->facturap1_apagar ) }}
+                            </div>
+                        </div>
+                        <div class="row">
                             <label for="facturap1_observaciones" class="col-md-1 control-label">Observaciones</label>
                             <div class="form-group col-md-10">
                                 {{$facturap1->facturap1_observaciones }}
@@ -128,7 +142,26 @@
                 </div>
                 <!-- Tab activos & efectivos -->
                 <div id="tab_af"  class="tab-pane">
-                    Activos y efectivos
+                    <div class="box box-solid">
+                        <div class="box-body">
+                             <div class="table-responsive no-padding">
+                                <table id="browse-activo-fijo-list" class="table table-hover table-bordered table-condensed" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th width="15%">Placa</th>
+                                            <th width="15%">Serie</th>
+                                            <th width="40%">Responsable</th>
+                                            <th width="20%">Tipo</th>
+                                            <th width="10%">Costo</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {{-- Render content activo fijo --}}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="box-footer">
                     <div class="row">

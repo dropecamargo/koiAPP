@@ -134,6 +134,12 @@ app || (app = {});
             'asientos/:asientos(/)': 'getAsientosShow',
             'asientos/:asiento/edit(/)': 'getAsientosEdit',
 
+            'activosfijos(/)': 'getActivosFijosMain',
+
+            'tipoactivos(/)': 'getTipoActivosMain',
+            'tipoactivos/create(/)': 'getTipoActivoCreate',
+            'tipoactivos/:tipoactivos/edit(/)': 'getTipoActivoEdit',
+
             /*
             |-----------------------
             | Inventario
@@ -319,6 +325,11 @@ app || (app = {});
             'facturasp/create(/)': 'getFacturapCreate',
             'facturasp/:facturasp(/)': 'getFacturapShow',
 
+            // Ajustep
+            'ajustesp(/)': 'getAjustespMain',
+            'ajustesp/create(/)': 'getAjustespCreate',
+            'ajustesp/:ajustesp(/)': 'getAjustespShow',
+
             // Retefuente
             'retefuentes(/)': 'getReteFuentesMain',
             'retefuentes/create(/)': 'getReteFuenteCreate',
@@ -333,6 +344,11 @@ app || (app = {});
             'tipogastos(/)': 'getTipoGastosMain',
             'tipogastos/create(/)': 'getTipoGastoCreate',
             'tipogastos/:tipogastos/edit(/)': 'getTipoGastoEdit',
+
+            // Conceptoajustep
+            'conceptosajustep(/)': 'getConceptosAjustepMain',
+            'conceptosajustep/create(/)': 'getConceptosAjustepCreate',
+            'conceptosajustep/:conceptosajustep/edit(/)': 'getConceptosAjustepEdit',
         },
 
         /**
@@ -1125,6 +1141,52 @@ app || (app = {});
 
             this.editAsientoView = new app.EditAsientoView({ model: this.asientoModel });
             this.asientoModel.fetch();
+        },
+
+        // Activo
+        getActivosFijosMain: function () {
+
+            if ( this.mainActivosFijosView instanceof Backbone.View ){
+                this.mainActivosFijosView.stopListening();
+                this.mainActivosFijosView.undelegateEvents();
+            }
+
+            this.mainActivosFijosView = new app.MainActivosFijosView( );
+        },
+
+        // Tipo activo
+        getTipoActivosMain: function () {
+
+            if ( this.mainTipoActivosView instanceof Backbone.View ){
+                this.mainTipoActivosView.stopListening();
+                this.mainTipoActivosView.undelegateEvents();
+            }
+
+            this.mainTipoActivosView = new app.MainTipoActivoView( );
+        },
+
+        getTipoActivoCreate: function () {
+            this.tipoActivoModel = new app.TipoActivoModel();
+
+            if ( this.createTipoActivoView instanceof Backbone.View ){
+                this.createTipoActivoView.stopListening();
+                this.createTipoActivoView.undelegateEvents();
+            }
+
+            this.createTipoActivoView = new app.CreateTipoActivoView({ model: this.tipoActivoModel });
+            this.createTipoActivoView.render();
+        },
+        getTipoActivoEdit: function (tipoactivo) {
+            this.tipoActivoModel = new app.TipoActivoModel();
+            this.tipoActivoModel.set({'id': tipoactivo}, {'silent':true});
+
+            if ( this.createTipoActivoView instanceof Backbone.View ){
+                this.createTipoActivoView.stopListening();
+                this.createTipoActivoView.undelegateEvents();
+            }
+
+            this.createTipoActivoView = new app.CreateTipoActivoView({ model: this.tipoActivoModel });
+            this.tipoActivoModel.fetch();
         },
 
         // Inventario
@@ -2676,6 +2738,38 @@ app || (app = {});
             this.mainAgendaTecnicaView = new app.MainAgendaTecnicaView( );
         },
 
+        //Ajustep
+        getAjustespMain: function () {
+            if ( this.mainAjustepView instanceof Backbone.View ){
+                this.mainAjustepView.stopListening();
+                this.mainAjustepView.undelegateEvents();
+            }
+            this.mainAjustepView = new app.MainAjustepView();
+        },
+
+        getAjustespCreate: function () {
+            this.ajustep1Model = new app.Ajustep1Model();
+
+            if ( this.createAjustepView instanceof Backbone.View ){
+                this.createAjustepView.stopListening();
+                this.createAjustepView.undelegateEvents();
+            }
+
+            this.createAjustepView = new app.CreateAjustepView({ model: this.ajustep1Model });
+            this.createAjustepView.render();
+        },
+
+        getAjustespShow: function (ajustep1Model) {
+            this.ajustep1Model = new app.Ajustep1Model();
+            this.ajustep1Model.set({'id': ajustep1Model}, {'silent':true});
+            if ( this.showAjustepView instanceof Backbone.View ){
+                this.showAjustepView.stopListening();
+                this.showAjustepView.undelegateEvents();
+            }
+
+            this.showAjustepView = new app.ShowAjustepView({ model: this.ajustep1Model });
+        },
+
         // Facturap
         getFacturaspMain: function () {
 
@@ -2814,6 +2908,43 @@ app || (app = {});
 
             this.createTipoGastoView = new app.CreateTipoGastoView({ model: this.tipoGastoModel });
             this.tipoGastoModel.fetch();
+        },
+
+
+        //ConceptoAjustep
+        getConceptosAjustepMain: function () {
+
+            if ( this.mainConceptoAjustepView instanceof Backbone.View ){
+                this.mainConceptoAjustepView.stopListening();
+                this.mainConceptoAjustepView.undelegateEvents();
+            }
+
+            this.mainConceptoAjustepView = new app.MainConceptoAjustepView( );
+        },
+
+        getConceptosAjustepCreate: function () {
+            this.conceptoajustepModel = new app.ConceptoAjustepModel();
+
+            if ( this.createConceptoAjustepView instanceof Backbone.View ){
+                this.createConceptoAjustepView.stopListening();
+                this.createConceptoAjustepView.undelegateEvents();
+            }
+
+            this.createConceptoAjustepView = new app.CreateConceptoAjustepView({ model: this.conceptoajustepModel });
+            this.createConceptoAjustepView.render();
+        },
+
+        getConceptosAjustepEdit: function (conceptoajustep) {
+            this.conceptoajustepModel = new app.ConceptoAjustepModel();
+            this.conceptoajustepModel.set({'id': conceptoajustep}, {'silent':true});
+
+            if ( this.createConceptoAjustepView instanceof Backbone.View ){
+                this.createConceptoAjustepView.stopListening();
+                this.createConceptoAjustepView.undelegateEvents();
+            }
+
+            this.createConceptoAjustepView = new app.CreateConceptoAjustepView({ model: this.conceptoajustepModel });
+            this.conceptoajustepModel.fetch();
         },
     }));
 })(jQuery, this, this.document);

@@ -33,7 +33,6 @@ app || (app = {});
             this.confCollection = { reset: true, data: {} };
 
             // References th totalize
-
             // Events Listeners
             this.listenTo( this.collection, 'add', this.addOne );
             this.listenTo( this.collection, 'reset', this.addAll );
@@ -125,9 +124,6 @@ app || (app = {});
             if ( model instanceof Backbone.Model ) {
                 model.view.remove();
                 this.collection.remove(model);
-
-                // totalize actually in collection
-                this.totalize();
             }
         },
 
