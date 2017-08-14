@@ -82,7 +82,6 @@ class Notificacion extends Model
     public static function getAllNotifications($id){
         $query = Notificacion::query();
         $query->select('notificaciones.*', DB::raw("CASE WHEN (notificacion_hora IS NOT NULL) THEN CONCAT(notificacion_fecha, ' ', DATE_FORMAT(notificacion_hora, '%H:%i')) ELSE notificacion_fecha END AS nfecha"));
-        $query->where('notificacion_fecha', '<=', date('Y-m-d'));
         $query->where('notificacion_tercero', $id);
         $query->orderBy('notificacion_fecha', 'desc');
         return $query;
