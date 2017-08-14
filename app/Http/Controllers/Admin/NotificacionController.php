@@ -19,36 +19,40 @@ class NotificacionController extends Controller
      */
     public function index(Request $request)
     {
+        $query = Notificacion::getAllNotifications( Auth::user()->id );
+
         if($request->ajax()){
-            $notifications = Notificacion::getAllNotifications( Auth::user()->id );
 
             if($request->has('searchDate')){
                 if(!empty($request->searchDate)){
-                    $notifications->whereRaw("notificacion_fecha LIKE '%{$request->searchDate}%'");
+                    $query->whereRaw("notificacion_fecha LIKE '%{$request->searchDate}%'");
                 }
             }
 
             if($request->has('searchType')){
                 if(!empty($request->searchType)){
                     // Join temporal
-                    $notifications->join('tiponotificacion', 'notificacion_tiponotificacion', '=', 'tiponotificacion.id');
-                    $notifications->where('notificacion_tiponotificacion', $request->searchType);
+                    $query->join('tiponotificacion', 'notificacion_tiponotificacion', '=', 'tiponotificacion.id');
+                    $query->where('notificacion_tiponotificacion', $request->searchType);
+
                 }
             }
 
             if($request->has('searchEstado')){
                 if(!empty($request->searchEstado)){
                     if($request->searchEstado == 'T'){
-                        $notifications->where('notificacion_visto', true);
+                        $query->where('notificacion_visto', true);
                     }else{
-                        $notifications->where('notificacion_visto', false);
+                        $query->where('notificacion_visto', false);
                     }
                 }
             }
 
-            return response()->json($notifications->get());
+            $notifications = $query->paginate(10);
+
+            return response()->json( view('admin.notificaciones.filter')->with('notifications', $notifications)->render() );
         }
-        return view('admin.notificaciones.main');
+        return view('admin.notificaciones.main')->with('notifications', $query->paginate(10));
     }
 
     /**
