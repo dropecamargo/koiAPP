@@ -46,7 +46,6 @@ label {
 // Menu notifications
 .navbar-nav>.notifications-menu>.dropdown-menu, .navbar-nav>.messages-menu>.dropdown-menu, .navbar-nav>.tasks-menu>.dropdown-menu{
 	width: 360px;
-	border: 0px solid #000000;
 	-webkit-box-shadow: -2px 3px 15px -4px rgba(0,0,0,0.75);
 	-moz-box-shadow: -2px 3px 15px -4px rgba(0,0,0,0.75);
 	box-shadow: -2px 3px 15px -4px rgba(0,0,0,0.75);
@@ -83,7 +82,7 @@ label {
 
 .notifications-list>.item {
 	cursor: pointer;
-    border-bottom: 1px solid #f4f4f4;
+	border-bottom: 1px solid #dddfe2;
 	padding: 2px 0;
 }
 
