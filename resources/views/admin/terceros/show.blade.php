@@ -213,7 +213,7 @@
 						<table id="browse-facturap3-list" class="table table-hover table-bordered" cellspacing="0">
 						    <thead>
 					            <tr>	
-					            	<th>Documento</th>
+					            	<th>Tipo</th>
 	                                <th width="10%">Numero</th>
 	                                <th width="20%">Regional</th>
 	                                <th width="5%">Cuota</th>
@@ -227,11 +227,11 @@
 								{{--Render proveedor-factura--}}
 							</tbody>
 							<tfoot>
-								   <tr>
-										<td colspan="6"></td>
-										<th>Total</th>
-										<th id="valor">0</th>
-									</tr>
+							   <tr>
+									<td colspan="6"></td>
+									<th>Total</th>
+									<th id="valor">0</th>
+								</tr>
 							</tfoot>
 						</table>
 					</div>

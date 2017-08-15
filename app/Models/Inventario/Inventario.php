@@ -4,7 +4,7 @@ namespace App\Models\Inventario;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Base\Sucursal, App\Models\Base\Documentos;
-use Auth, DB;
+use Auth, DB,Validator;
 
 class Inventario extends Model
 {
@@ -17,8 +17,24 @@ class Inventario extends Model
 
     public $timestamps = false;
 
-    public static function movimiento(Producto $producto, $sucursal, $ubicacion, $documento, $documentoNumero, $uentrada = 0, $usalida = 0, Array $emetros = [],Array $smetros = [], $costo = 0, $costopromedio = 0, $lote = 0, Array $rollo ){
+    public function isValid($data)
+    {
+        $rules = [
+            'inventario_cantidad_entrada' => 'numeric|required',
+            'inventario_sucursal' => 'numeric|required',
+            'inventario_costo' => 'numeric|required'
+        ];
 
+        $validator = Validator::make($data, $rules);
+        if ($validator->passes()) {
+            return true;
+        }
+        $this->errors = $validator->errors();
+        return false;
+    }
+
+    public static function movimiento(Producto $producto, $sucursal, $ubicacion, $documento, $documentoNumero, $uentrada = 0, $usalida = 0, Array $emetros = [],Array $smetros = [], $costo = 0, $costopromedio = 0, $lote = 0, Array $rollo )
+    {
     	 // Validar producto
         $sucursal = Sucursal::find($sucursal);
         if(!$sucursal instanceof Sucursal) {
@@ -69,7 +85,8 @@ class Inventario extends Model
         return 'OK';
     }
 
-    public static function entradaManejaSerie(Producto $referencia, Sucursal $sucursal, $serie, $costo){
+    public static function entradaManejaSerie(Producto $referencia, Sucursal $sucursal, $serie, $costo)
+    {
     	if ( $costo == 0 ) {
     		return "El costo de la serie debe ser diferente de 0.";
     	}
@@ -92,13 +109,14 @@ class Inventario extends Model
     	return 'OK';
     }
 
-    public static function getInventory($documento, $id){
-
+    public static function getInventory($documento, $id)
+    {
         $inventario = Inventario::query();
-        $inventario->select('inventario.*', 'tercero_nit',DB::raw("CONCAT(tercero_nombre1, ' ', tercero_nombre2, ' ', tercero_apellido1, ' ', tercero_apellido2) as tercero_nombre"), 'producto_serie','producto_nombre', 'ubicacion_nombre');
+        $inventario->select('inventario.*', 'tercero_nit',DB::raw("CONCAT(tercero_nombre1, ' ', tercero_nombre2, ' ', tercero_apellido1, ' ', tercero_apellido2) as tercero_nombre"), 'producto_serie','producto_nombre', 'ubicacion_nombre', 'sucursal_nombre');
         $inventario->where('inventario_documentos', $documento);
         $inventario->where('inventario_id_documento', $id);
         $inventario->join('producto', 'inventario_serie', '=' ,'producto.id');
+        $inventario->join('sucursal', 'inventario_sucursal', '=' ,'sucursal.id');
         $inventario->Leftjoin('ubicacion', 'inventario_ubicacion', '=' ,'ubicacion.id');
         $inventario->join('tercero','inventario_usuario_elaboro','=', 'tercero.id');
         $inventario->orderBy('id', 'asc');

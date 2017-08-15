@@ -140,9 +140,8 @@ Route::group(['middleware' => 'auth'], function(){
 		Route::post('validate',['as' =>'productos.validate','uses'=>'Inventario\ProductoController@validation'] );
 		Route::put('machine',['as' =>'productos.machine','uses'=>'Inventario\ProductoController@machine'] );
 		Route::post('storeserie',['as' =>'productos.storeserie','uses'=>'Inventario\ProductoController@storeserie'] );
-		Route::resource('prodbode', 'Inventario\ProdbodeController', ['only' => ['index', 'update']]);
+		Route::resource('prodbode', 'Inventario\ProdbodeController', ['only' => ['index']]);
 	});
-
 
 	Route::group(['prefix' => 'pedidos'], function()
 	{
@@ -164,6 +163,11 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::group(['prefix' => 'trasladosubicaciones'], function()
 	{
 		Route::resource('detalle', 'Inventario\DetalleTrasladoUbicacionController');
+	});
+
+	Route::group(['prefix' => 'entradas'], function()
+	{
+		Route::resource('detalle', 'Inventario\EntradaDetalleController');
 	});
 	Route::resource('modelos','Inventario\ModeloController', ['except' => ['destroy']]);
 	Route::resource('marcas', 'Inventario\MarcaController', ['except' => ['destroy']]);

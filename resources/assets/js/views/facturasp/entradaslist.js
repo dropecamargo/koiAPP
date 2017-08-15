@@ -1,5 +1,5 @@
 /**
-* Class Facturap2DetalleView  of Backbone Router
+* Class EntradasListView  of Backbone Router
 * @author KOI || @dropecamargo
 * @link http://koi-ti.com
 */
@@ -9,11 +9,11 @@ app || (app = {});
 
 (function ($, window, document, undefined) {
 
-    app.Facturap2DetalleView = Backbone.View.extend({
+    app.EntradasListView = Backbone.View.extend({
 
-        el: '#browse-detalle-facturap2-list',
+        el: '#browse-entrada2-treasury-list',
         events: {
-            'click .item-detallefacturap2-remove': 'removeOne',
+            'click .item-entrada-remove': 'removeOne',
         },
         parameters: {
             wrapper: null,
@@ -32,7 +32,6 @@ app || (app = {});
             //Init Attributes
             this.confCollection = { reset: true, data: {} };
 
-            // References th totalize
             // Events Listeners
             this.listenTo( this.collection, 'add', this.addOne );
             this.listenTo( this.collection, 'reset', this.addAll );
@@ -57,14 +56,14 @@ app || (app = {});
         * Render view contact by model
         * @param Object detallePedidocModel Model instance
         */
-        addOne: function (facturap2Model) {
-            var view = new app.DetalleFacturasp2ItemView({
-                model: facturap2Model,
+        addOne: function (entradaModel) {
+            var view = new app.EntradasItemView({
+                model: entradaModel,
                 parameters: {
                     edit: this.parameters.edit
                 }
             });
-            facturap2Model.view = view;
+            entradaModel.view = view;
             this.$el.append( view.render().el );
         },
         /**
@@ -73,13 +72,16 @@ app || (app = {});
         */
         storeOne: function (data) {      
             var _this = this;
-                
+            
+            // Prepare data 
+            data.entrada = window.Misc.formToJson(_this.parameters.formDetail);
+
             // Set Spinner
             window.Misc.setSpinner( this.parameters.wrapper );
 
             // Add model in collection
-            var facturap2Model = new app.Facturap2Model();
-            facturap2Model.save(data, {
+            var entradaModel = new app.EntradaDetalleModel();
+            entradaModel.save(data, {
                 success : function(model, resp) {
                     if(!_.isUndefined(resp.success)) {
                         window.Misc.removeSpinner( _this.parameters.wrapper );
@@ -139,8 +141,7 @@ app || (app = {});
         */
         responseServer: function ( target, resp, opts ) {
             window.Misc.removeSpinner( this.el );
-            window.Misc.clearForm( $('#form-facturap2-retefuente'));
-            window.Misc.clearForm( $('#form-facturap2-impuesto'));
+            window.Misc.clearForm(this.parameters.form);
         }
    });
 

@@ -62,13 +62,13 @@ app || (app = {});
 
         valor: function() {
             return this.reduce(function(sum, model) {
-                return sum + parseFloat(model.get('facturapp3_saldo'))
+                return sum + parseFloat(model.get('facturap3_saldo'))
             }, 0);
         },
 
         calculate: function(modelos){
             var saldo = _.reduce(modelos, function(sum, model) {
-                return sum + parseFloat(model.get('facturapp3_saldo'))
+                return sum + parseFloat(model.get('facturap3_saldo'))
             }, 0);
 
             var count = modelos.length;

@@ -324,8 +324,6 @@ class AjusteController extends Controller
                     $sucursal->save();
 
                     // Commit Transaction
-                    // DB::rollback();
-                    // return response()->json(['success' => false, 'errors' => 'TODO OK']);
                     DB::commit();
                     return response()->json(['success' => true, 'id' => $ajuste->id]);
                 }catch (\Exception $e) {

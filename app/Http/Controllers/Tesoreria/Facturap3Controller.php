@@ -27,10 +27,11 @@ class Facturap3Controller extends Controller
                 if(!$tercero instanceof Tercero){
                     return response()->json(['success' => false, 'errors' => 'No se pudo recuperar el cliente, por favor verifique la informacion o consulte al administrador']);
                 }
-                $query->select('facturap3.*','facturap1_numero','facturap1_fecha','regional_nombre','documentos_nombre','documentos_codigo',DB::raw("DATEDIFF(facturap3_vencimiento, NOW() ) as days"));
+                $query->select('facturap3.*','facturap1_numero','facturap1_fecha','regional_nombre','documentos_nombre','documentos_codigo','tipoproveedor_nombre',DB::raw("DATEDIFF(facturap3_vencimiento, NOW() ) as days"));
 
                 $query->join('facturap1', 'facturap3_facturap1', '=', 'facturap1.id');
                 $query->join('documentos', 'facturap1_documentos', '=', 'documentos.id');
+                $query->join('tipoproveedor', 'facturap1_tipoproveedor', '=', 'tipoproveedor.id');
                 $query->join('regional', 'facturap1_regional', '=', 'regional.id');
                 $query->where('facturap3_saldo', '<>',  0);
                 $query->where('facturap1_tercero', $tercero->id);
@@ -43,7 +44,7 @@ class Facturap3Controller extends Controller
                 }
                 $query->where('facturap3_facturap1', $facturap1->id);
             }
-            $query->orderBy('facturap3_vencimiento', 'asc');
+            $query->orderBy('facturap3_vencimiento', 'desc');
             $factura = $query->get();
         }
         return response()->json($factura);

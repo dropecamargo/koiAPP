@@ -1622,7 +1622,7 @@
 </script>
 <script type="text/template" id="show-facturap3-tpl">
 	<td>
-		<a href="<%- window.Misc.urlFull( Route.route('facturasp.show', {facturasp: facturap3_facturap1} ))%>" title="Ver documento" target="_blank"><%- documentos_nombre %></a> 
+		<a href="<%- window.Misc.urlFull( Route.route('facturasp.show', {facturasp: facturap3_facturap1} ))%>" title="Ver documento" target="_blank"><%- tipoproveedor_nombre %></a> 
 	</td>
 	<td><%- facturap1_numero %> </td>
     <td><%- regional_nombre %></td>

@@ -46,16 +46,17 @@ class ActivoFijo extends Model
         $this->errors = $validator->errors();
         return false;
     }
-    public static function getActivosFijos ($id = null)
+
+    public static function getActivosFijos ()
     {
         $activofijo = ActivoFijo::query();
         $activofijo->select('activofijo.*', 'tipoactivo_nombre', DB::raw("(CASE WHEN tercero_persona = 'N' THEN CONCAT(tercero_nombre1,' ',tercero_nombre2,' ',tercero_apellido1,' ',tercero_apellido2, (CASE WHEN (tercero_razonsocial IS NOT NULL AND tercero_razonsocial != '') THEN CONCAT(' - ', tercero_razonsocial) ELSE '' END) )  ELSE tercero_razonsocial END) AS tercero_nombre") );
         $activofijo->leftJoin('tipoactivo','activofijo_tipoactivo', '=', 'tipoactivo.id');
         $activofijo->leftJoin('tercero', 'activofijo_responsable', '=', 'tercero.id');
-        ($id != null) ? $activofijo->where('activofijo_facturap1', $id) : '';
         return $activofijo->get();
     } 
-    public static function getActivoFijo ($id )
+
+    public static function getActivoFijo ($id)
     {
         $activofijo = ActivoFijo::query();
         $activofijo->select('activofijo.*', 'tipoactivo_nombre', DB::raw("(CASE WHEN tercero_persona = 'N' THEN CONCAT(tercero_nombre1,' ',tercero_nombre2,' ',tercero_apellido1,' ',tercero_apellido2, (CASE WHEN (tercero_razonsocial IS NOT NULL AND tercero_razonsocial != '') THEN CONCAT(' - ', tercero_razonsocial) ELSE '' END) )  ELSE tercero_razonsocial END) AS tercero_nombre") );
@@ -64,6 +65,7 @@ class ActivoFijo extends Model
         $activofijo->where('activofijo.id', $id) ;
         return $activofijo->first();
     } 
+
     public static function store($facturap1, Array $data)
     {
         $response = new \stdClass();

@@ -21,6 +21,7 @@
                     <li><a href="#tab_impuesto" data-toggle="tab">Impuesto/Retención</a></li>
                     <li><a href="#tab_contabilidad" data-toggle="tab">Contabilidad</a></li>
                     <li><a href="#tab_af" data-toggle="tab">Activos fijos</a></li>
+                    <li><a href="#tab_inventario" data-toggle="tab">Inventario</a></li>
                 </ul>
             </div>
 
@@ -113,6 +114,31 @@
                                 {{$facturap1->facturap1_observaciones }}
                             </div>
                         </div>
+
+                        <div class="box box-success">
+                            <div class="box-body table-responsive">
+                                <table id="browse-facturap3-list" class="table table-hover table-bordered" cellspacing="0" width="100%">
+                                    <thead>
+                                        <tr>
+                                            <th>Cuota</th>
+                                            <th>Vencimiento</th>
+                                            <th>Valor</th>
+                                            <th>Saldo</th>
+                                        </tr>
+                                   </thead>
+                                   <tbody>
+                                        {{-- Render factura3 list --}}
+                                   </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="2"></td>
+                                            <th>Total</th>
+                                            <th id="valor">0</th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>  
                 <!-- Tab impuesto -->
@@ -163,6 +189,10 @@
                         </div>
                     </div>
                 </div>
+                <!-- Tab inventory -->
+                <div id="tab_inventario" class="tab-pane">
+                    Inventario
+                </div>
                 <div class="box-footer">
                     <div class="row">
                         <div class="col-md-2 col-md-offset-5 col-md-6 col-xs-6">
@@ -173,4 +203,10 @@
             </div>
         </div>
     </section>
+    <script type="text/template" id="show-facturap-cuota-tpl">
+        <td><%- facturap3_cuota %></td>
+        <td><%-  facturap3_vencimiento %></td>
+        <td><%- window.Misc.currency(facturap3_valor) %></td>
+        <td><%- window.Misc.currency(facturap3_saldo) %></td>
+    </script>
 @stop

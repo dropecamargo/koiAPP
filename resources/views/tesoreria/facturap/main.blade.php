@@ -323,7 +323,92 @@
                         </div>
                         <!-- Tab inventario -->
                         <div id="tab_inventario" class="tab-pane">
-                            Inventario
+                            <form method="POST" accept-charset="UTF-8" id="form-entrada">
+                                <div class="row">
+                                    <label for="" class="control-label col-md-1">Sucursal</label>
+                                    <div class="form-group col-md-3">
+                                        <select name="entrada1_sucursal" id="entrada1_sucursal" class="form-control select2-default-clear change-sucursal-consecutive-koi-component" data-field="entrada1_numero" data-document ="entrada" data-wrapper="spinner-main">
+                                            @foreach( App\Models\Base\Sucursal::getSucursales() as $key => $value)
+                                                <option  value="{{ $key }}">{{ $value }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <label for="entrada1_numero" class="control-label col-md-1">Número</label>
+                                    <div class="form-group col-md-1">
+                                        <input type="text" id="entrada1_numero" name="entrada1_numero" class="form-control input-sm" required readonly>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <label for="entrada1_fecha" class="control-label col-md-1">Fecha</label>
+                                    <div class="form-group col-md-2">
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+                                            </div>
+                                            <input type="text" id="entrada1_fecha" name="entrada1_fecha" class="form-control input-sm datepicker" value="<%- moment().format('YYYY-MM-DD') %>" required>
+                                        </div>
+                                    </div>   
+                                    <label form="entrada1_lote" class="control-label col-md-1">Lote</label>
+                                    <div class="form-group col-md-3">
+                                        <input type="text" id="entrada1_lote" name="entrada1_lote" class="form-control input-sm input-toupper" maxlength="50" placeholder="Lote" required>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <label for="entrada1_observaciones" class="control-label col-md-1">Observaciones</label>
+                                    <div class="form-group col-md-7">
+                                        <textarea id="entrada1_observaciones" name="entrada1_observaciones" class="form-control" rows="2" placeholder="Observaciones"></textarea>
+                                    </div>
+                                </div>
+                            </form>
+                            <form  method="POST" accept-charset="UTF-8" id="form-entrada-detalle" data-toggle="validator">
+                                <div class="row">
+                                    <label for="producto_serie" class="control-label col-md-1">Producto</label>
+                                    <div class="form-group col-md-2">
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default btn-flat btn-koi-search-producto-component"  data-field="producto_serie">
+                                                    <i class="fa fa-barcode"></i>
+                                                </button>
+                                            </span>
+                                            <input id="producto_serie" placeholder="Serie" class="form-control producto-koi-component" name="producto_serie" type="text" maxlength="15" data-wrapper="facturap-create" data-office= "ajuste1_sucursal" data-name="producto_nombre" data-ref="true" required> 
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <input id="producto_nombre" name="producto_nombre" placeholder="Nombre producto" class="form-control input-sm" type="text" maxlength="15" readonly required>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <label for="entrada2_cantidad" class="control-label col-md-1">Cantidad</label>
+                                    <div class="form-group col-md-1">
+                                        <input id="entrada2_cantidad" name="entrada2_cantidad" min="1" class="form-control input-sm " type="number" required>
+                                    </div>
+                                    <label for="entrada2_costo" class="control-label col-md-1">Costo</label>
+                                    <div class="form-group col-md-2">
+                                        <input id="entrada2_costo" name="entrada2_costo" class="form-control input-sm" type="text" data-currency required>
+                                    </div>
+                                    <div class="form-group col-md-1">
+                                        <button type="submit" class="btn btn-success btn-sm btn-block">
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="table-responsive no-padding">
+                                <table id="browse-entrada2-treasury-list" class="table table-hover table-bordered" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th width="5%"></th>
+                                            <th width="10%">Referencia</th>
+                                            <th width="30%">Nombre</th>
+                                            <th width="15%">Cantidad</th>
+                                            <th width="15%">Costo</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {{-- Render content detalle entrada2 --}}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                         <div class="box-footer">
                             <div class="row">
@@ -367,5 +452,20 @@
         <td><%- tercero_nombre %></td>
         <td><%- tipoactivo_nombre %></td>
         <td><%- window.Misc.currency(activofijo_costo) %></td>
+    </script>
+
+    <script type="text/template" id="add-entrada-item-tpl">
+        <%if(edit){ %>
+            <td class="text-center">
+                <a class="btn btn-default btn-xs item-entrada-remove" data-resource = "<%- id %>">
+                    <span><i class="fa fa-times"></i></span>
+                </a>
+            </td>
+        <% } %>
+            
+        <td><%- producto_serie %></td>
+        <td><%- producto_nombre %></td>
+        <td><%- entrada2_cantidad %></td>
+        <td><%- window.Misc.currency(entrada2_costo) %></td>
     </script>
 @stop

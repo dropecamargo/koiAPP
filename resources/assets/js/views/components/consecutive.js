@@ -51,6 +51,7 @@ app || (app = {});
                     if(documents == 'pedido') consecutive = resp.sucursal_pedn;
                     if(documents == 'ajuste') consecutive = resp.sucursal_ajus;
                     if(documents == 'traslados') consecutive = resp.sucursal_tras;
+                    if(documents == 'entrada') consecutive = resp.sucursal_entr;
                     if(documents == 'pedidoc') consecutive = resp.sucursal_pedidoc;
                     if(documents == 'devolucion') consecutive = resp.sucursal_devo;
                     if(documents == 'trasladosubicaciones') consecutive = resp.sucursal_trau;

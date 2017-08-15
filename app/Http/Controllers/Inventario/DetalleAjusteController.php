@@ -7,8 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Inventario\Ajuste2, App\Models\Inventario\Producto, App\Models\Inventario\Ajuste1,App\Models\Inventario\TipoAjuste;
-
 use DB,Log;
+
 class DetalleAjusteController extends Controller
 {
     /**

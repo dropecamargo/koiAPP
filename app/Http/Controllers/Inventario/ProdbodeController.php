@@ -110,25 +110,7 @@ class ProdbodeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if ($request->ajax()) {
-            $prodbode = Prodbode::findOrFail($id);
-            DB::beginTransaction();
-            try {
-                // Producto
-                $prodbode->prodbode_ubicacion1 = $request->data['prodbode_ubicacion1'];
-                $prodbode->save();
-
-                // Commit Transaction
-                DB::commit();
-                return response()->json(['success' => true, 'id' => $prodbode->id]);
-            }catch(\Exception $e){
-                DB::rollback();
-                Log::error($e->getMessage());
-                return response()->json(['success' => false, 'errors' => trans('app.exception')]);
-            }
-            return response()->json(['success' => false, 'errors' => $prodbode->errors]);
-        }
-        abort(403);
+        // 
     }
 
     /**

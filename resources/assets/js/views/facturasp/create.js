@@ -20,6 +20,7 @@ app || (app = {});
             'submit #form-facturap2-impuesto': 'onStoreFacturap2',
             'submit #form-facturap2-retefuente': 'onStoreFacturap2',
             'submit #form-activo-fijo': 'onStoreActivoFijo',
+            'submit #form-entrada-detalle': 'onStoreInventario',
 
             'change #facturap1_factura': 'onChangeRepeatFactura',
             'change #facturap2_impuesto': 'onChangeImpuesto',
@@ -32,16 +33,17 @@ app || (app = {});
         * Constructor Method
         */
         initialize : function() {
+
             // Reference collection
             this.detalleFacturap2 = new app.DetalleFacturasp2Collection();
             this.activoFijoList = new app.ActivoFijoList();
+            this.entradasList = new app.EntradasList();
            
             // Events
             this.listenTo( this.model, 'change', this.render );
             this.listenTo( this.model, 'sync', this.responseServer );
             this.listenTo( this.model, 'request', this.loadSpinner );            
         },
-
 
         /*
         * Render View Element
@@ -70,7 +72,7 @@ app || (app = {});
             this.detalleFacturap2View = new app.Facturap2DetalleView( {
                 collection: this.detalleFacturap2,
                 parameters: {
-                    wrapper: this.el,
+                    wrapper: this.spinner,
                     edit: true,
                     dataFilter: {
                         'id': this.model.get('id')
@@ -80,9 +82,21 @@ app || (app = {});
             this.activoFijoListView = new app.ActivosFijosListView( {
                 collection: this.activoFijoList,
                 parameters: {
-                    wrapper: this.el,
+                    wrapper: this.spinner,
                     edit: true,
                     form: this.$('#form-activo-fijo'),
+                    dataFilter: {
+                        'id': this.model.get('id')
+                    }
+               }
+            });
+            this.entradasListView = new app.EntradasListView( {
+                collection: this.entradasList,
+                parameters: {
+                    wrapper: this.spinner,
+                    edit: true,
+                    form: this.$('#form-entrada-detalle'),
+                    formDetail: this.$('#form-entrada'),
                     dataFilter: {
                         'id': this.model.get('id')
                     }
@@ -99,13 +113,15 @@ app || (app = {});
         * Event Create facturap1
         */
         onStore: function (e) {
-            
+            console.log(window.Misc.formToJson(e.target) , );
             if (!e.isDefaultPrevented()) {
                 e.preventDefault();
                 var data = window.Misc.formToJson( e.target );
                     data.facturap2 = this.detalleFacturap2.toJSON();
                     data.activosfijos = this.activoFijoList.toJSON();
-
+                    if (this.entradasList.length > 1) 
+                        data.entrada1 = window.Misc.formToJson(this.$('#form-entrada'));
+                        data.entrada2 = this.entradasList.toJSON();
                 this.model.save( data, {patch: true, silent: true} );
             }   
         },
@@ -130,7 +146,44 @@ app || (app = {});
                 this.activoFijoList.trigger( 'store', data);
             }
         },
+        /**
+        * Event store inventario validate temporal carDetail
+        */
+        onStoreInventario: function(e){
 
+            this.$('#form-entrada').validator('validate');
+            if (!e.isDefaultPrevented()) {
+                e.preventDefault();
+                var data = window.Misc.formToJson( e.target );
+                    data.tipo = 'E';
+                    data.lote = this.$('#entrada1_lote').val();
+                    
+                window.Misc.evaluateActionsInventory({
+                    'data': data,
+                    'wrap': this.spinner,
+                    'callback': (function (_this) {
+                        return function ( action , tipo)
+                        {      
+                            // Open InventarioActionView
+                            if ( _this.inventarioActionView instanceof Backbone.View ){
+                                _this.inventarioActionView.stopListening();
+                                _this.inventarioActionView.undelegateEvents();
+                            }
+                            _this.inventarioActionView = new app.InventarioActionView({
+                                model: _this.model,
+                                collection: _this.entradasList,
+                                parameters: {
+                                    data: data,
+                                    action: action,
+                                    tipo: tipo
+                                }
+                            });
+                            _this.inventarioActionView.render();
+                        }
+                    })(this)
+                });
+            }
+        },
         /**
         *  Change for validation name factura
         */
@@ -205,6 +258,9 @@ app || (app = {});
                     window.Misc.removeSpinner( _this.spinner );
                     alertify.error(thrownError);
                 });
+            }else{
+                _this.$('#facturap2_impuesto_porcentaje').val('');
+                _this.$('#facturap2_base_impuesto').val('');
             }
         },
         /**
@@ -235,6 +291,9 @@ app || (app = {});
                     window.Misc.removeSpinner( _this.spinner );
                     alertify.error(thrownError);
                 });
+            }else{
+                _this.$('#facturap2_retefuente_porcentaje').val('');
+                _this.$('#facturap2_base_retefuente').val('');
             }
         },
         /**

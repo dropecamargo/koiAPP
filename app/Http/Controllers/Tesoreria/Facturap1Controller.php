@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Tesoreria\Facturap1,App\Models\Tesoreria\Facturap2,App\Models\Tesoreria\Facturap3,App\Models\Tesoreria\TipoProveedor,App\Models\Tesoreria\TipoGasto,App\Models\Tesoreria\ReteFuente;
-use App\Models\Inventario\Impuesto;
+use App\Models\Inventario\Entrada1, App\Models\Inventario\Impuesto;
 use App\Models\Contabilidad\ActivoFijo;
 use App\Models\Base\Tercero,App\Models\Base\Documentos,App\Models\Base\Regional;
 use DB, Log, Datatables, Cache;
@@ -189,8 +189,16 @@ class Facturap1Controller extends Controller
                         DB::rollback();
                         return response()->json(['success'=> false, 'errors'=> $activofijo->errors]);
                     }
-                    
+                     
+                    // Inventario
+                    $entrada1 = isset($data['entrada1']) ? $data['entrada1'] : null;
+                    $entrada2 = isset($data['entrada2']) ? $data['entrada2'] : null;
 
+                    $entrada = Entrada1::store($entrada1, $entrada2, $facturap1->facturap1_tercero);
+                    if (!$entrada->success) {
+                        DB::rollback();
+                        return response()->json(['success'=> false, 'errors'=> $entrada->errors]);
+                    }
                     // Update consecutive regional_fpro
                     $regional->regional_fpro = $consecutive;
                     $regional->save();
@@ -198,8 +206,6 @@ class Facturap1Controller extends Controller
                     // Commit
                     DB::commit();
                     return response()->json(['success' => true, 'id' => $facturap1->id ]);
-                    // DB::rollback();
-                    // return response()->json(['success' => false, 'errors' => 'TODO OK' ]);
                 } catch (\Exception $e) {
                     DB::rollback();
                     Log::error($e->getMessage());

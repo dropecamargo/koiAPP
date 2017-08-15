@@ -24,6 +24,7 @@ app || (app = {});
                 this.detalleCarteraTercero = new app.DetalleCarteraTercero();
                 this.gestionCobroList = new app.GestionCobrosCollection();
                 this.detallecuotaProveedor = new app.DetalleFacturap3List();
+                
                 this.$templateTercero = _.template( ($('#add-tercero-cartera-tpl').html() || '') );
                 this.$templateProveedor = _.template( ($('#show-facturap3-tpl').html() || '') );
 

@@ -40,7 +40,6 @@ app || (app = {});
             // extends parameters
             if( opts !== undefined && _.isObject(opts.parameters) )
                 this.parameters = $.extend({}, this.parameters, opts.parameters);
-
             this.$modalIn = this.$('#modal-inventario-component');
             // Collection item rollo
             this.itemRolloINList = new app.ItemRolloINList();
@@ -72,14 +71,9 @@ app || (app = {});
                         if (resp.tipo == 'E') {
                             _this.$modalIn.find('.content-modal').empty().html(_this.templateAddSeries( ));
                             _this.$modalIn.find('.modal-title').text('Inventario, Entradas De Productos ');
-
-                            // Reference inventario
-                            _this.referenceSerie(resp);
-                        }else{
-                            // Reference inventario
-                            _this.referenceSerie(resp);
                         }
-
+                        // Reference inventario
+                        _this.referenceSerie(resp);
                     },
                     'ProductoMetrado': function(){
                         if (resp.tipo  == 'E') {
@@ -150,8 +144,9 @@ app || (app = {});
             this.$wraperErrorIn = this.$('#error-inventario');
 
             if(atributes.tipo == 'E' ){
+                var cantidad = atributes.data.ajuste2_cantidad_entrada || atributes.data.entrada2_cantidad;
                 this.$wraperSeries = this.$('#browse-series-list');
-                for (var i = 1; i <= atributes.data.ajuste2_cantidad_entrada; i++) {
+                for (var i = 1; i <= cantidad; i++) {
                     this.addOneSerieInventario( new app.ProductoModel({ id: i }) )
                 }
                 // Hide errors
@@ -464,13 +459,15 @@ app || (app = {});
         */
         changeUnidadeVeceEntrada:function(e){
             e.preventDefault();
-            var data = this.LotesProducto.validEntrada(this.parameters.data.ajuste2_cantidad_entrada);
-            if (data.unidades <= this.parameters.data.ajuste2_cantidad_entrada) {
+            var cantidad =  this.parameters.data.ajuste2_cantidad_entrada || this.parameters.data.entrada2_cantidad;
+            var data = this.LotesProducto.validEntrada(cantidad);
+            if (data.unidades <= cantidad) {
                 this.$('#total-vencimiento').html(data.unidades);
                 return;
             }
             return alertify.error(data.success);
         },
+
         responseServer: function ( model, resp, opts ) {
             if(!_.isUndefined(resp.success)) {
                 if( resp.success ) {

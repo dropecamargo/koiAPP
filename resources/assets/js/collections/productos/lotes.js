@@ -30,7 +30,6 @@ app || (app = {});
             _.each(this.models, function(item){ 
                 unidades+= parseFloat( $('#prodbodevence_unidades_'+item.get('id')).val());
             });
-            
             if(unidades >= uentrada) {
                 data.success =  ("No puede superar la cantidad de unidades(" + uentrada +") a ingresar, por favor verifique información.");
             }
