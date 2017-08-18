@@ -25,7 +25,7 @@ class ActivoFijoController extends Controller
                 return Datatables::of($query)->make(true);
             }
             if ($request->has('id')) {
-                $activofijo = ActivoFijo::getActivosFijos($request->id);
+                $activofijo = ActivoFijo::getActivoFijo($request->id);
                 return response()->json($activofijo);
             }
         }

@@ -31,7 +31,7 @@ class Recibo1Controller extends Controller
                 AS tercero_nombre")
             );
             $query->join('tercero','recibo1_tercero', '=', 'tercero.id');
-            return Datatables::of($query)->make(true);
+            return Datatables::of($query->get())->make(true);
         }
         return view('cartera.recibos.index');
     }
@@ -135,6 +135,7 @@ class Recibo1Controller extends Controller
                                         }
 
                                         $factura3->factura3_saldo = $factura3->factura3_saldo <= 0 ? $factura3->factura3_saldo + $item['factura3_valor'] : $factura3->factura3_saldo - $item['factura3_valor'];
+                                        $factura3->factura3_fecha_pago = date('Y-m-d');
                                         $factura3->save();
                                         $recibo2->recibo2_id_doc = $factura3->factura3_factura1;
                                     }

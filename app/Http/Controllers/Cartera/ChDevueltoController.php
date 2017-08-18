@@ -8,7 +8,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Models\Cartera\ChDevuelto,App\Models\Cartera\ChposFechado1,App\Models\Cartera\Causal;
-use App\Models\Base\Tercero,App\Models\Base\Documentos,App\Models\Base\Sucursal;
+use App\Models\Base\Tercero,App\Models\Base\Documentos,App\Models\Base\Regional,App\Models\Base\Sucursal;
 
 use DB, Log, Datatables,Auth;
 
@@ -98,7 +98,7 @@ class ChDevueltoController extends Controller
                     }
                     // Recupero regional de cheque a devolver
                     $regional = Regional::find($sucursal->sucursal_regional);
-                    if (!$sucursal instanceof Regional) {
+                    if (!$regional instanceof Regional) {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar regional de cheque a devolver,por favor verifique la información ó por favor consulte al administrador.']);
                     }

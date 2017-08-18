@@ -9,26 +9,26 @@ use Validator,Cache;
 class TipoGasto extends BaseModel
 {
     /**
-     * The database table used by the model.
-     *
-     * @var string
-     */
+    * The database table used by the model.
+    *
+    * @var string
+    */
     protected $table = 'tipogasto';
 
     public $timestamps = false;
 
     /**
-     * The key used by cache store.
-     *
-     * @var static string
-     */
+    * The key used by cache store.
+    *
+    * @var static string
+    */
     public static $key_cache = '_tipogasto';
 
-     /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
+    /**
+    * The attributes that are mass assignable.
+    *
+    * @var array
+    */
     protected $fillable = ['tipogasto_nombre'];
 
     protected $boolean = ['tipogasto_activo'];

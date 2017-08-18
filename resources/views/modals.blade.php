@@ -750,6 +750,31 @@
 		</div>
 	</div>
 </script>
+<script type="text/template" id="add-facturap3-cuota-tpl">
+	<div class="row">
+		<div class="col-sm-12 col-xs-12">
+			<!-- table table-bordered table-striped -->
+			<div class="box-body table-responsive no-padding">
+				<table id="browse-factura-cuota-list" class="table table-hover table-bordered" cellspacing="0">
+					<thead>
+						<tr>
+							<th></th>
+						  	<th>Fecha</th>
+		                	<th>Vencimiento</th>
+		                	<th>Numero</th>
+		                	<th>Cuota</th>
+		                	<th>Saldo</th>
+		                	<th>A pagar</th>
+            			</tr>
+                    </thead>
+                    <tbody>
+                        {{-- Render content recibo2 --}}
+                    </tbody>
+			    </table>
+			</div>
+		</div>
+	</div>
+</script>
 <script type="text/template" id="add-ch-recibo-tpl">
 	<div class="row">
 		<div class="col-sm-12 col-xs-12">

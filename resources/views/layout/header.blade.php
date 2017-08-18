@@ -16,39 +16,36 @@
             <ul class="nav navbar-nav">
 
                 {{--*/ $detalle = App\Models\Base\Notificacion::getNotifications() /*--}}
-                <li class="dropdown notifications-menu">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                    <i class="fa fa-bell"></i>
-                        <span class="label badge bg-red">{{ count($detalle) > 0 ? '!' : '' }}</span>
+
+                {{-- Menu notificaciones --}}
+                <li class="dropdown messages-menu">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                        <i class="fa fa-bell"></i>
+                        <span class="label label-danger">{{ count($detalle) > 0 ? count($detalle) : '' }}</span>
                     </a>
                     <ul class="dropdown-menu">
                         <li class="header">Notificaciones</li>
                         <li>
-                            <ul class="menu" id="menu-notification">
+                            <ul class="menu">
                                 @foreach( App\Models\Base\Notificacion::getNotifications() as $key => $value)
-                                    <li class="li-notification">
+                                    <li>
                                         <a class="view-notification" data-notification="{{ $value['id'] }}">
-                                            <div class="row">
-                                                <div class="col-xs-6">
-                                                    <i class="fa fa-phone text-green">{{ $value['notificacion_titulo'] }}</i>
-                                                </div>
-                                                <div class="col-xs-6 text-right text-green">
-                                                    {{ $value['nfecha'] }}
-                                                </div>
+                                            <div class="pull-left">
+                                                <i class="fa fa-phone text-green"></i>
                                             </div>
-                                            <div class="row">
-                                                <div class="col-md-12 title-notification">{{ $value['notificacion_descripcion'] }}</div>
-                                            </div>
+                                            <h4 class="text-green">
+                                                {{ $value['notificacion_titulo'] }}
+                                                <small class="text-green">{{ $value['nfecha'] }}</small>
+                                            </h4>
+                                            <p class="text-black">{{ $value['notificacion_descripcion'] }}</p>
                                         </a>
                                     </li>
                                 @endforeach
                             </ul>
                         </li>
-                        <li class="footer-notification">
-                            <a class="view-all-notification">{{ trans('notification.view') }}</a>
-                        </li>
+                        <li class="footer"><a class="view-all-notification">{{ trans('notification.view') }}</a></li>
                     </ul>
-                </li>
+                  </li>
                 <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                          {{-- The user image in the navbar --}}

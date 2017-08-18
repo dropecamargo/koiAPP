@@ -21,6 +21,7 @@ class Facturap3Controller extends Controller
     public function index(Request $request)
     {
         if($request->ajax()){
+
             $query = Facturap3::query();
             if ($request->has('tercero')) {
                 $tercero = Tercero::find($request->tercero);
@@ -44,6 +45,7 @@ class Facturap3Controller extends Controller
                 }
                 $query->where('facturap3_facturap1', $facturap1->id);
             }
+            
             $query->orderBy('facturap3_vencimiento', 'desc');
             $factura = $query->get();
         }

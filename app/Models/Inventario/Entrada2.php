@@ -56,4 +56,14 @@ class Entrada2 extends Model
 		$this->errors = $validator->errors();
 		return false;
 	}
+
+	public static function getEntrada2($id) 
+	{
+		$query = Entrada2::query();
+		$query->select('entrada2.*', 'producto_serie', 'producto_nombre');
+		$query->where('entrada2_entrada1', $id);
+        $query->join('producto', 'entrada2_producto', '=' ,'producto.id');
+        $query->orderBy('entrada2.id', 'asc');
+		return $query->get();
+	}
 }

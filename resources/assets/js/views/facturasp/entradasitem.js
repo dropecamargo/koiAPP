@@ -25,6 +25,8 @@ app || (app = {});
             if( opts !== undefined && _.isObject(opts.parameters) )
                 this.parameters = $.extend({},this.parameters, opts.parameters);
 
+            if (this.parameters.template)
+                 this.template = this.parameters.template;
             // Events Listener
             this.listenTo( this.model, 'change', this.render );
         },

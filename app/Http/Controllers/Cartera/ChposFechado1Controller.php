@@ -127,6 +127,7 @@ class ChposFechado1Controller extends Controller
                             }
 
                             $factura3->factura3_chposfechado1 = $cheque1->id;
+                            $factura3->factura3_fecha_pago = date('Y-m-d');
                             $factura3->save();
 
                             $cheque2->chposfechado2_id_doc = $factura3->id;

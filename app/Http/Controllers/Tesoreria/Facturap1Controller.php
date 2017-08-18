@@ -193,11 +193,13 @@ class Facturap1Controller extends Controller
                     // Inventario
                     $entrada1 = isset($data['entrada1']) ? $data['entrada1'] : null;
                     $entrada2 = isset($data['entrada2']) ? $data['entrada2'] : null;
-
-                    $entrada = Entrada1::store($entrada1, $entrada2, $facturap1->facturap1_tercero);
-                    if (!$entrada->success) {
-                        DB::rollback();
-                        return response()->json(['success'=> false, 'errors'=> $entrada->errors]);
+                    
+                    if (!empty($entrada1) && !empty($entrada1)) {
+                        $entrada = Entrada1::store($facturap1, $entrada1, $entrada2);
+                        if (!$entrada->success) {
+                            DB::rollback();
+                            return response()->json(['success'=> false, 'errors'=> $entrada->errors]);
+                        }
                     }
                     // Update consecutive regional_fpro
                     $regional->regional_fpro = $consecutive;

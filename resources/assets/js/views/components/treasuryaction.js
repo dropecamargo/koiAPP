@@ -10,7 +10,7 @@ app || (app = {});
 
     app.TreasuryActionView = Backbone.View.extend({
         el: 'body',
-        templateFactura: _.template( ($('#add-ajustep-factura-tpl').html() || '') ),
+        templateFactura: _.template( ($('#add-facturap3-cuota-tpl').html() || '') ),
 
         events:{ 
             'submit #form-create-treasury-component-source': 'onStoreItemTreasury',
@@ -32,6 +32,10 @@ app || (app = {});
 
             this.$modalTreasury = this.$('#modal-treasury-component');
 
+            // Ajustep?
+            if( this.parameters.data.call == 'ajustep')
+                this.templateFactura = _.template( ($('#add-ajustep-factura-tpl').html() || '') );
+            
             // Collections
             this.detallecuotaProveedor = new app.DetalleFacturap3List();
 

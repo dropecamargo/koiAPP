@@ -399,19 +399,22 @@
         </ul>
     </li>
     {{-- Tesoreria --}}
-    <li class="treeview {{ in_array(Request::segment(1), ['facturasp','ajustesp','retefuentes','tipoproveedores', 'tipogastos', 'conceptosajustep']) ? 'active' : '' }}">
+    <li class="treeview {{ in_array(Request::segment(1), ['facturasp','ajustesp','egresos','retefuentes','tipoproveedores', 'tipogastos', 'tipopagos', 'conceptosajustep']) ? 'active' : '' }}">
         <a href="#">
             <i class="fa fa-balance-scale"></i><span> Tesorería</span><i class="fa fa-angle-left pull-right"></i>
         </a>
         <ul class="treeview-menu">
             {{-- Modulos Tesoreria --}}
-            <li class="{{ in_array(Request::segment(1), ['facturasp', 'ajustesp']) ? 'active' : '' }}">
+            <li class="{{ in_array(Request::segment(1), ['facturasp', 'ajustesp', 'egresos']) ? 'active' : '' }}">
                 <a href="#">
                     <i class="fa fa-wpforms"></i> Modulos <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
                     <li class="{{ Request::segment(1) == 'ajustesp' ? 'active' : '' }}">
                         <a href="{{ route('ajustesp.index') }}"><i class="fa fa-adjust"></i> Ajustes Proveedor</a>
+                    </li>
+                    <li class="{{ Request::segment(1) == 'egresos' ? 'active' : '' }}">
+                        <a href="{{ route('egresos.index') }}"><i class="fa fa-file-text-o"></i> Egresos</a>
                     </li>
                     <li class="{{ Request::segment(1) == 'facturasp' ? 'active' : '' }}">
                         <a href="{{ route('facturasp.index') }}"><i class="fa fa-pencil-square-o"></i> Facturas Proveedor</a>
@@ -420,7 +423,7 @@
             </li>
 
             {{-- Referencias Tesoreria --}}
-            <li class="{{ in_array(Request::segment(1), ['retefuentes', 'tipoproveedores', 'tipogastos', 'conceptosajustep']) ? 'active' : '' }}">
+            <li class="{{ in_array(Request::segment(1), ['retefuentes', 'tipoproveedores', 'tipogastos', 'conceptosajustep', 'tipopagos']) ? 'active' : '' }}">
                 <a href="#">
                     <i class="fa fa-circle-o"></i> Referencias <i class="fa fa-angle-left pull-right"></i>
                 </a>
@@ -432,10 +435,13 @@
                         <a href="{{ route('retefuentes.index') }}"><i class="fa fa-circle-o"></i> Retefuente</a>
                     </li>
                     <li class="{{ Request::segment(1) == 'tipogastos' ? 'active' : '' }}">
-                        <a href="{{ route('tipogastos.index') }}"><i class="fa fa-circle-o"></i> Tipo gasto</a>
+                        <a href="{{ route('tipogastos.index') }}"><i class="fa fa-circle-o"></i> Tipo de gasto</a>
+                    </li>
+                    <li class="{{ Request::segment(1) == 'tipopagos' ? 'active' : '' }}">
+                        <a href="{{ route('tipopagos.index') }}"><i class="fa fa-circle-o"></i> Tipo de pago</a>
                     </li>
                     <li class="{{ Request::segment(1) == 'tipoproveedores' ? 'active' : '' }}">
-                        <a href="{{ route('tipoproveedores.index') }}"><i class="fa fa-circle-o"></i> Tipo proveedor</a>
+                        <a href="{{ route('tipoproveedores.index') }}"><i class="fa fa-circle-o"></i> Tipo de proveedor</a>
                     </li>
                 </ul>
             </li>

@@ -58,12 +58,18 @@ class Facturap1 extends Model
 
     public static function getFacturap ($id) {
         $facturap1 = Facturap1::query();
-        $facturap1->select('facturap1.*', DB::raw("(CASE WHEN tercero_persona = 'N' THEN CONCAT(tercero_nombre1,' ',tercero_nombre2,' ',tercero_apellido1,' ',tercero_apellido2, (CASE WHEN (tercero_razonsocial IS NOT NULL AND tercero_razonsocial != '') THEN CONCAT(' - ', tercero_razonsocial) ELSE '' END) )  ELSE tercero_razonsocial END) AS tercero_nombre"), 'tercero_nit','tercero_persona','tipogasto_nombre', 'tipoproveedor_nombre', 'regional_nombre');
+        $facturap1->select('entrada1.*','facturap1.*', DB::raw("(CASE WHEN fp.tercero_persona = 'N' THEN CONCAT(fp.tercero_nombre1,' ',fp.tercero_nombre2,' ',fp.tercero_apellido1,' ',fp.tercero_apellido2, (CASE WHEN (fp.tercero_razonsocial IS NOT NULL AND fp.tercero_razonsocial != '') THEN CONCAT(' - ', fp.tercero_razonsocial) ELSE '' END) )  ELSE fp.tercero_razonsocial END) AS tercero_nombre"), 'fp.tercero_nit','fp.tercero_persona','tipogasto_nombre', 'tipoproveedor_nombre', 'regional_nombre', 'sucursal_nombre',
 
-        $facturap1->join('tercero', 'facturap1_tercero', '=', 'tercero.id');
+            DB::raw("(CASE WHEN entr.tercero_persona = 'N' THEN CONCAT(entr.tercero_nombre1,' ',entr.tercero_nombre2,' ',entr.tercero_apellido1,' ',entr.tercero_apellido2, (CASE WHEN (entr.tercero_razonsocial IS NOT NULL AND entr.tercero_razonsocial != '') THEN CONCAT(' - ', entr.tercero_razonsocial) ELSE '' END) )  ELSE entr.tercero_razonsocial END) AS entrada1_elaboro"), 'entr.tercero_nit AS entrada1_nit'
+            );
+
+        $facturap1->join('tercero AS fp', 'facturap1_tercero', '=', 'fp.id');
         $facturap1->join('tipogasto', 'facturap1_tipogasto', '=', 'tipogasto.id');
         $facturap1->join('tipoproveedor', 'facturap1_tipoproveedor', '=', 'tipoproveedor.id');
         $facturap1->join('regional', 'facturap1_regional', '=', 'regional.id');
+        $facturap1->leftJoin('entrada1', 'facturap1_entrada1', '=', 'entrada1.id');
+        $facturap1->leftJoin('sucursal', 'entrada1.entrada1_sucursal', '=', 'sucursal.id');
+        $facturap1->leftJoin('tercero AS entr', 'entrada1.entrada1_usuario_elaboro', '=', 'entr.id');
         $facturap1->where('facturap1.id', $id);
         return $facturap1->first();
     }

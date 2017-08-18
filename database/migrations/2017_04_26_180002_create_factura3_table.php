@@ -21,6 +21,7 @@ class CreateFactura3Table extends Migration
             $table->double('factura3_valor');
             $table->double('factura3_saldo');
             $table->date('factura3_vencimiento');
+            $table->date('factura3_fecha_pago');
             $table->integer('factura3_chposfechado1')->unsigned()->nullable();
 
             $table->foreign('factura3_factura1')->references('id')->on('factura1')->onDelete('restrict');

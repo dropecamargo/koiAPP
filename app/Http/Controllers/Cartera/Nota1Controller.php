@@ -127,6 +127,7 @@ class Nota1Controller extends Controller
                                     return response()->json(['success'=>false, 'errors'=>'No es posible recuperar el numero de la factura, por favor verifique ó consulte con el administrador.']);
                                 }
                                 $factura3->factura3_saldo = $factura3->factura3_saldo <= 0 ? $factura3->factura3_saldo + $item['factura3_valor'] : $factura3->factura3_saldo - $item['factura3_valor'];
+                                $factura3->factura3_fecha_pago = date('Y-m-d');
                                 $factura3->save();
 
                                 $nota2->nota2_id_doc = $factura3->factura3_factura1;

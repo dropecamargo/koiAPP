@@ -330,6 +330,11 @@ app || (app = {});
             'ajustesp/create(/)': 'getAjustespCreate',
             'ajustesp/:ajustesp(/)': 'getAjustespShow',
 
+            // Egreso
+            'egresos(/)': 'getEgresosMain',
+            'egresos/create(/)': 'getEgresoCreate',
+            'egresos/:egresos(/)': 'getEgresoShow',
+
             // Retefuente
             'retefuentes(/)': 'getReteFuentesMain',
             'retefuentes/create(/)': 'getReteFuenteCreate',
@@ -344,6 +349,11 @@ app || (app = {});
             'tipogastos(/)': 'getTipoGastosMain',
             'tipogastos/create(/)': 'getTipoGastoCreate',
             'tipogastos/:tipogastos/edit(/)': 'getTipoGastoEdit',
+
+            // Tipo Pago
+            'tipopagos(/)': 'getTipoPagosMain',
+            'tipopagos/create(/)': 'getTipoPagoCreate',
+            'tipopagos/:tipopagos/edit(/)': 'getTipoPagoEdit',
 
             // Conceptoajustep
             'conceptosajustep(/)': 'getConceptosAjustepMain',
@@ -1184,7 +1194,6 @@ app || (app = {});
                 this.createTipoActivoView.stopListening();
                 this.createTipoActivoView.undelegateEvents();
             }
-
             this.createTipoActivoView = new app.CreateTipoActivoView({ model: this.tipoActivoModel });
             this.tipoActivoModel.fetch();
         },
@@ -2770,6 +2779,38 @@ app || (app = {});
             this.showAjustepView = new app.ShowAjustepView({ model: this.ajustep1Model });
         },
 
+        //Egresos
+        getEgresosMain: function () {
+            if ( this.mainEgresosView instanceof Backbone.View ){
+                this.mainEgresosView.stopListening();
+                this.mainEgresosView.undelegateEvents();
+            }
+            this.mainEgresosView = new app.MainEgresoView();
+        },
+
+        getEgresoCreate: function () {
+            this.egreso1Model = new app.Egreso1Model();
+
+            if ( this.createEgresoView instanceof Backbone.View ){
+                this.createEgresoView.stopListening();
+                this.createEgresoView.undelegateEvents();
+            }
+            this.createEgresoView = new app.CreateEgresoView({ model: this.egreso1Model });
+            this.createEgresoView.render();
+        },
+
+        getEgresoShow: function (egreso1Model) {
+            this.egreso1Model = new app.Egreso1Model();
+            this.egreso1Model.set({'id': egreso1Model}, {'silent':true});
+
+            if ( this.showEgresoView instanceof Backbone.View ){
+                this.showEgresoView.stopListening();
+                this.showEgresoView.undelegateEvents();
+            }
+
+            this.showEgresoView = new app.ShowEgresoView({ model: this.egreso1Model });
+        },
+
         // Facturap
         getFacturaspMain: function () {
 
@@ -2897,19 +2938,41 @@ app || (app = {});
             this.createTipoGastoView.render();
         },
 
-        getTipoGastoEdit: function (tipogasto) {
-            this.tipoGastoModel = new app.TipoGastoModel();
-            this.tipoGastoModel.set({'id': tipogasto}, {'silent':true});
+        // Tipo pagos
+        getTipoPagosMain: function () {
 
-            if ( this.createTipoGastoView instanceof Backbone.View ){
-                this.createTipoGastoView.stopListening();
-                this.createTipoGastoView.undelegateEvents();
+            if ( this.mainTipoPagosView instanceof Backbone.View ){
+                this.mainTipoPagosView.stopListening();
+                this.mainTipoPagosView.undelegateEvents();
             }
 
-            this.createTipoGastoView = new app.CreateTipoGastoView({ model: this.tipoGastoModel });
-            this.tipoGastoModel.fetch();
+            this.mainTipoPagosView = new app.MainTipoPagoView( );
         },
 
+        getTipoPagoCreate: function () {
+            this.tipoPagoModel = new app.TipoPagoModel();
+
+            if ( this.createTipoPagoView instanceof Backbone.View ){
+                this.createTipoPagoView.stopListening();
+                this.createTipoPagoView.undelegateEvents();
+            }
+
+            this.createTipoPagoView = new app.CreateTipoPagoView({ model: this.tipoPagoModel });
+            this.createTipoPagoView.render();
+        },
+
+        getTipoPagoEdit: function (tipopago) {
+            this.tipoPagoModel = new app.TipoPagoModel();
+            this.tipoPagoModel.set({'id': tipopago}, {'silent':true });
+
+            if ( this.createTipoPagoView instanceof Backbone.View ){
+                this.createTipoPagoView.stopListening();
+                this.createTipoPagoView.undelegateEvents();
+            }
+
+            this.createTipoPagoView = new app.CreateTipoPagoView({ model: this.tipoPagoModel });
+            this.tipoPagoModel.fetch();
+        },
 
         //ConceptoAjustep
         getConceptosAjustepMain: function () {

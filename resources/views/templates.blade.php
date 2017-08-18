@@ -1309,6 +1309,20 @@
 	<% } %>
 </script>
 
+<script type="text/template" id="add-factrap3-item-tpl">
+    <% if( facturap3_facturap1 == '' ) { %>
+        <th colspan="7" class="text-center">NO EXISTEN FACTURAS DE ESTE PROVEEDOR</th>
+	<% }else{ %>
+	    <td><input type="checkbox" id="check_<%- id %>" name="check_<%- id %>" class="change-check"></td>
+	    <td><%- moment(facturap1_fecha).format('YYYY-MM-DD') %></td>
+	    <td><%- facturap3_vencimiento %></td>
+	    <td><%- facturap1_numero %></td>
+	    <td><%- facturap3_cuota %></td>
+	    <td><%- window.Misc.currency(facturap3_saldo) %></td>
+	    <td><input type="text" id="pagar_<%- id %>" name="pagar_<%- id %>" class="form-control input-sm change-pagar" data-currency-negative></td>
+	<% } %>
+</script>
+
 <script type="text/template" id="add-cheque-item-tpl">
     <%if(edit){ %>
         <td class="text-center">

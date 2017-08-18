@@ -21,8 +21,8 @@ class Facturap2Controller extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()){
-         $facturapDetalle = Facturap2::getFacturap2($request->id);
-         return response()->json($facturapDetalle);
+            $facturapDetalle = Facturap2::getFacturap2($request->id);
+            return response()->json($facturapDetalle);
         }
         abort(404);
     }

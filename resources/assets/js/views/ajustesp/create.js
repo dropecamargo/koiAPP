@@ -117,7 +117,7 @@ app || (app = {});
         },
 
         /**
-        * Event Create Folder
+        * Event Create Ajustep
         */
         onStore: function (e) {
             if (!e.isDefaultPrevented()) {

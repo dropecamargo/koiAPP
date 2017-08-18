@@ -138,7 +138,19 @@ app || (app = {});
         */
         responseServer: function ( target, resp, opts ) {
             window.Misc.removeSpinner( this.el );
-            window.Misc.clearForm(this.parameters.form);
+
+            if(!_.isUndefined(resp.success)) {
+                // response success or error
+                var text = resp.success ? '' : resp.errors;
+                if( _.isObject( resp.errors ) ) {
+                    text = window.Misc.parseErrors(resp.errors);
+                }
+                if( !resp.success ) {
+                    alertify.error(text);
+                    return;
+                }
+                window.Misc.clearForm(this.parameters.form);
+            }
         }
    });
 

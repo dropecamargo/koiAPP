@@ -54,8 +54,8 @@ class Entrada1 extends Model
 		return false;
 	}
 
-	public static function store ($data,$data2, $tercero) 
-	{
+	public static function store ($facturap1, $data, $data2) 
+	{  
         $response = new \stdClass();
         $response->success = true;
         //Validar Documentos
@@ -80,7 +80,7 @@ class Entrada1 extends Model
         $entrada1->fill($data);
         $entrada1->entrada1_documentos = $documento->id;
         $entrada1->entrada1_sucursal = $sucursal->id;
-        $entrada1->entrada1_tercero = $tercero;
+        $entrada1->entrada1_tercero = $facturap1->facturap1_tercero;
         $entrada1->entrada1_numero = $consecutive;
         $entrada1->entrada1_usuario_elaboro = Auth::user()->id;
         $entrada1->entrada1_fh_elaboro = date('Y-m-d H:m:s');
@@ -220,6 +220,11 @@ class Entrada1 extends Model
         // Update consecutive sucursal_ajus in Sucursal
         $sucursal->sucursal_ajus = $consecutive;
         $sucursal->save();
+
+        // Update fk de entradfa de inventario
+        $facturap1->facturap1_entrada1 = $entrada1->id;
+        $facturap1->save();
+
         return $response;
 	}
 }

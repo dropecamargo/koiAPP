@@ -41,6 +41,13 @@ app || (app = {});
                     'ajustep2_naturaleza': type == 'D' ? 'D' : 'C',
                     'call': concepto.call,
                 }); 
+            }else if( concepto.call == 'egreso' ){
+                modelo = $.extend(object, {
+                    'egreso2_tipopago': concepto.egreso2_tipopago,
+                    'egreso2_tercero': concepto.tercero,
+                    'egreso2_facturap1': model.get('facturap3_facturap1'),
+                    'call': concepto.call,
+                }); 
             }
             return modelo;
         },

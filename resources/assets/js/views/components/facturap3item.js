@@ -12,6 +12,7 @@ app || (app = {});
     app.Facturap3ItemView = Backbone.View.extend({
 
         tagName: 'tr',
+        template: _.template( ($('#add-factrap3-item-tpl').html() || '') ),
         parameters: {
             edit: false,
         },
@@ -37,11 +38,10 @@ app || (app = {});
             var attributes = this.model.toJSON();
             attributes.edit = this.parameters.edit;
             attributes.call = this.parameters.call;
-
             if( attributes.call == 'tercero' ){
                 this.$el.html( this.parameters.template(attributes) );
             }else{
-                this.$el.html( this.template(attributes) );
+                this.$el.html( this.template(attributes));
             }
             return this;
         }

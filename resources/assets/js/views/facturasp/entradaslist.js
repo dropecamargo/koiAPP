@@ -29,20 +29,13 @@ app || (app = {});
             if( opts !== undefined && _.isObject(opts.parameters) )
                 this.parameters = $.extend({},this.parameters, opts.parameters);
 
-            //Init Attributes
-            this.confCollection = { reset: true, data: {} };
-
             // Events Listeners
             this.listenTo( this.collection, 'add', this.addOne );
             this.listenTo( this.collection, 'reset', this.addAll );
             this.listenTo( this.collection, 'request', this.loadSpinner);
             this.listenTo( this.collection, 'store', this.storeOne );
             this.listenTo( this.collection, 'sync', this.responseServer);
-            
-            if( !_.isUndefined(this.parameters.dataFilter.id) && !_.isNull(this.parameters.dataFilter.id) ){
-                this.confCollection.data.id = this.parameters.dataFilter.id;
-                this.collection.fetch( this.confCollection );
-            }
+            this.collection.fetch({ data: {tercero: this.parameters.dataFilter.tercero , facturap1: this.parameters.dataFilter.facturap }, reset: true });
         },
 
         /*
@@ -60,7 +53,8 @@ app || (app = {});
             var view = new app.EntradasItemView({
                 model: entradaModel,
                 parameters: {
-                    edit: this.parameters.edit
+                    edit: this.parameters.edit,
+                    template: this.parameters.template
                 }
             });
             entradaModel.view = view;
@@ -141,7 +135,18 @@ app || (app = {});
         */
         responseServer: function ( target, resp, opts ) {
             window.Misc.removeSpinner( this.el );
-            window.Misc.clearForm(this.parameters.form);
+            if(!_.isUndefined(resp.success)) {
+                // response success or error
+                var text = resp.success ? '' : resp.errors;
+                if( _.isObject( resp.errors ) ) {
+                    text = window.Misc.parseErrors(resp.errors);
+                }
+                if( !resp.success ) {
+                    alertify.error(text);
+                    return;
+                }
+                window.Misc.clearForm(this.parameters.form);
+            }
         }
    });
 

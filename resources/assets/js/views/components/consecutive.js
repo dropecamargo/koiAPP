@@ -128,6 +128,7 @@ app || (app = {});
 
                     if(documents == 'facturap') consecutive = resp.regional_fpro;
                     if(documents == 'ajustep') consecutive = resp.regional_ajup;
+                    if(documents == 'egreso') consecutive = resp.regional_egre;
 
                     // Set consecutive
                     _this.$consecutive.val( parseInt(consecutive) + 1);

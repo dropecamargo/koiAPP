@@ -12,10 +12,10 @@ app || (app = {});
     app.MainNotificationView = Backbone.View.extend({
 
         el: '#notification-main',
-        template: _.template( ($('#add-notification-tpl').html() || '') ),
         events: {
             'click .btn-search': 'search',
             'click .btn-clear': 'clear',
+            'click .pagination a': 'paginate',
         },
 
         /**
@@ -27,14 +27,46 @@ app || (app = {});
             this.$searchEstado = this.$('#search_estado');
             this.$searchType = this.$('#search_typenotification');
 
-            // Coleccion
-            this.notificationList = new app.NotificationList();
-            this.notificationList.fetch({ reset: true });
-
-            this.listenTo( this.notificationList, 'reset', this.addAllNotfication );
-            this.$wraper = $('#notifications-list');
+            this.$spinner = $('#spinner-notification');
         },
 
+        /**
+        * Event preventDefault Paginate
+        **/
+        paginate: function(e) {
+            e.preventDefault();
+
+            var _this = this,
+                url = this.$(e.currentTarget).attr('href'),
+                page = url.split('page=')[1];
+
+            $.ajax({
+                url: window.Misc.urlFull( Route.route('notificaciones.index')),
+                type: 'GET',
+                data: {
+                    page: page,
+                    searchDate: _this.$searchDate.val(),
+                    searchType: _this.$searchType.val(),
+                    searchEstado: _this.$searchEstado.val()
+                },
+                beforeSend: function() {
+                    window.Misc.setSpinner( _this.$spinner );
+                }
+            })
+            .done(function(resp){
+                window.Misc.removeSpinner( _this.$spinner );
+
+                _this.$spinner.html( resp );
+            })
+            .fail(function(jqXHR, ajaxOptions, thrownError) {
+                window.Misc.removeSpinner( _this.$spinner );
+                alertify.error(thrownError);
+            });
+        },
+
+        /**
+        * Event search
+        **/
         search: function(e){
             e.preventDefault();
             var _this = this;
@@ -49,42 +81,18 @@ app || (app = {});
                     searchEstado: _this.$searchEstado.val()
                 },
                 beforeSend: function() {
-                    window.Misc.setSpinner( _this.spinner );
+                    window.Misc.setSpinner( _this.$spinner );
                 }
             })
             .done(function(resp) {
-                window.Misc.removeSpinner( _this.spinner );
-                _this.$wraper.empty();
+                window.Misc.removeSpinner( _this.$spinner );
 
-                _.each( resp, function(item){
-                    _this.call = 'A';
-                    _this.addOneNotification(item);
-                });
+                _this.$spinner.html( resp );
             })
             .fail(function(jqXHR, ajaxOptions, thrownError) {
-                window.Misc.removeSpinner( _this.spinner );
+                window.Misc.removeSpinner( _this.$spinner );
                 alertify.error(thrownError);
             });
-        },
-
-        /**
-        * Render view task by model
-        * @param Object NotificationModel Model instance
-        */
-        addOneNotification: function(NotificationModel){
-            var view = new app.NotificationItemView({
-                model: NotificationModel,
-                parameters: {
-                    call: this.call,
-                }
-            });
-
-            this.$wraper.append( view.render().el );
-        },
-
-        addAllNotfication: function(){
-            this.$wraper.empty();
-            this.notificationList.forEach( this.addOneNotification, this );
         },
 
         clear: function(e){

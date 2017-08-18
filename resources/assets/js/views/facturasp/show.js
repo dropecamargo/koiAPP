@@ -26,8 +26,10 @@ app || (app = {});
                 this.detalleFacturap2 = new app.DetalleFacturasp2Collection();
                 this.activoFijoList = new app.ActivoFijoList();
                 this.detallecuotaProveedor = new app.DetalleFacturap3List();
+                this.entradasList = new app.EntradasList();
 
                 this.$templateProveedor = _.template( ($('#show-facturap-cuota-tpl').html() || '') );
+                this.$templateDetailEntrada = _.template( ($('#show-entrada-detail-tpl').html() || '') );
 
                 // Reference views
                 this.referenceViews();
@@ -73,6 +75,18 @@ app || (app = {});
                         'facturap': this.model.get('id'),
                     }
                 }
+            });
+
+            this.entradasListView = new app.EntradasListView( {
+                collection: this.entradasList,
+                parameters: {
+                    wrapper: this.el,
+                    edit: false,
+                    template: this.$templateDetailEntrada,
+                    dataFilter: {
+                        'facturap': this.model.get('id')
+                    }
+               }
             });
         },
 

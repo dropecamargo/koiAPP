@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
 use App\Models\Tesoreria\TipoGasto;
 use App\Models\Contabilidad\PlanCuenta;
 use DB, Log, Datatables, Cache;

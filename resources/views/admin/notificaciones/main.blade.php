@@ -13,8 +13,8 @@
 		</ol>
     </section>
 
-   	<section class="content">
-        <div class="box box-success" id="notification-main">
+   	<section class="content" id="notification-main">
+        <div class="box box-success">
             <div class="box-body">
                 {!! Form::open(['id' => 'form-koi-search-tercero-component', 'class' => 'form-horizontal', 'data-toggle' => 'validator', 'role' => 'form']) !!}
 	            	<div class="row">
@@ -59,32 +59,40 @@
         </div>
 
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-8 col-md-offset-2">
                 <div class="box box-solid">
                     <div class="box-body" id="spinner-notification">
                         <ul class="notifications-list" id="notifications-list">
+                            @foreach( $notifications as $notification )
+                                @if( !$notification->notificacion_visto )
+                                    <li class="item view-notification notification-true" data-notification="{{ $notification->id }}">
+                                @else
+                                    <li class="item view-notification" data-notification="{{ $notification->id }}">
+                                @endif
+                                    <div class="row">
+                                        <div class="col-md-6 text-left">
+                                            <p class="text-green">
+                                                <i class="fa fa-phone"></i>
+                                                {{ $notification->notificacion_titulo }}
+                                            </p>
+                                        </div>
+                                        <div class="col-md-6 text-right">
+                                            <small><p class="text-green">{{ $notification->nfecha }}</p></small>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <span class="text-description">{{ $notification->notificacion_descripcion }}</span>
+                                        </div>
+                                    </div>
+                                </li>
+                            @endforeach()
                         </ul>
+                        {!! $notifications->render() !!}
                     </div>
                 </div>
             </div>
         </div>
-	</section>
 
-    <script type="text/template" id="add-notification-tpl">
-        <div class="notification-text">
-            <div class="row">
-                <div class="col-md-6 text-left">
-                    <i class="fa fa-phone text-green"><%- notificacion_titulo %></i>
-                </div>
-                <div class="col-md-6 text-right">
-                    <span class="notification-fecha"><%- nfecha %></span>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <span class="notification-description text-black"><%- notificacion_descripcion %></span>
-                </div>
-            </div>
-        </div>
-    </script>
+	</section>
 @stop

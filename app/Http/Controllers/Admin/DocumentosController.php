@@ -6,10 +6,10 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
+use App\Models\Base\Documentos;
+use App\Models\Tesoreria\TipoPago;
 use DB, Log, Datatables;
 
-use App\Models\Base\Documentos;
 
 class DocumentosController extends Controller
 {
@@ -163,6 +163,17 @@ class DocumentosController extends Controller
                     $response->errors = "No es posible recuperar documento, verifique información ó por favor consulte al administrador.";
                 }
                 if ($documentos->documentos_codigo == 'FPRO') {
+                    $action = 'modalFacturaProveedor';
+                    $response->action = $action;  
+                    $response->success = true;
+                }
+            }
+            if ($request->call == 'egreso') {
+                $tipopago = TipoPago::getTipoPago($request->egreso2_tipopago);
+                if (!$tipopago instanceof TipoPago) {
+                    $response->errors = "No es posible recuperar documento, verifique información ó por favor consulte al administrador.";
+                }
+                if ($tipopago->documentos_codigo == 'FPRO') {
                     $action = 'modalFacturaProveedor';
                     $response->action = $action;  
                     $response->success = true;

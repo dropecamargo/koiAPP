@@ -191,7 +191,59 @@
                 </div>
                 <!-- Tab inventory -->
                 <div id="tab_inventario" class="tab-pane">
-                    Inventario
+                    <div class="box box-solid">
+                        <div class="box-body">
+                            @if ($facturap1->facturap1_entrada1 != null)
+                                <div class="row">
+                                    <label class="control-label col-md-1">Sucursal</label>
+                                    <div class="form-group col-md-3"> {{ $facturap1->sucursal_nombre }}</div>
+
+                                    <label class="control-label col-md-1">Número</label>
+                                    <div class="form-group col-md-1"> {{ $facturap1->entrada1_numero }}</div>
+
+                                    <label class="control-label col-md-1">Fecha</label>
+                                    <div class="form-group col-md-1"> {{ $facturap1->entrada1_fecha }}</div>
+                                </div>
+                                <div class="row">
+                                    <label class="control-label col-md-1">Subtotal</label>
+                                    <div class="form-group col-md-1"> {{ number_format($facturap1->entrada1_subtotal) }}</div>
+
+                                    <label class="control-label col-md-1">Descuento</label>
+                                    <div class="form-group col-md-1"> {{ number_format($facturap1->entrada1_descuento) }}</div>
+
+                                    <label class="control-label col-md-1">Iva</label>
+                                    <div class="form-group col-md-1"> {{ $facturap1->entrada1_iva }}</div>
+                                </div>
+                                <div class="row">
+                                    <label class="control-label col-md-1">Observaciones</label>
+                                    <div class="form-group col-md-1"> {{ $facturap1->entrada1_observaciones }}</div>
+                                </div>
+                                <div class="row">
+                                    <label class="control-label col-md-1">Elaboró</label>
+                                    <div class="form-group col-md-3"> {{ $facturap1->entrada1_elaboro }} - {{ $facturap1->entrada1_nit }}</div>
+                                </div>
+                                <div class="table-responsive no-padding">
+                                    <table id="browse-entrada2-treasury-list" class="table table-hover table-bordered table-condensed" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <th width="20%">Referencia</th>
+                                                <th width="40%">Nombre</th>
+                                                <th>Cantidad</th>
+                                                <th>Costo</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {{-- Render content detail entrada --}}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            @else
+                                <div class="box-title">
+                                    <h4 class="text-center">No existe entrada de inventario en la factura proveedor número {{$facturap1->facturap1_numero}}</h4>
+                                </div>
+                            @endif    
+                        </div>
+                    </div>
                 </div>
                 <div class="box-footer">
                     <div class="row">
@@ -208,5 +260,12 @@
         <td><%-  facturap3_vencimiento %></td>
         <td><%- window.Misc.currency(facturap3_valor) %></td>
         <td><%- window.Misc.currency(facturap3_saldo) %></td>
+    </script>
+
+    <script type="text/template" id="show-entrada-detail-tpl">
+        <td><%- producto_serie %></td>
+        <td><%- producto_nombre %></td>
+        <td><%- entrada2_cantidad %></td>
+        <td><%- entrada2_costo %></td>
     </script>
 @stop

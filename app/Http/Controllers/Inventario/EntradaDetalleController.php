@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\Inventario\Entrada2,App\Models\Inventario\Producto;
+use App\Models\Inventario\Entrada1,App\Models\Inventario\Entrada2,App\Models\Inventario\Producto;
+use App\Models\Tesoreria\Facturap1;
 use App\Models\Base\Sucursal;
 use DB,Log;
 
@@ -17,9 +18,21 @@ class EntradaDetalleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if ($request->ajax()) {
+
+            $entrada = [] ;
+            if ($request->has('facturap1')) {
+                $facturap = Facturap1::find($request->facturap1);
+                if (!$facturap instanceof Facturap1) {
+                    return response()->json(['success' => false, 'errors' => 'NO es posible recuperar factura proveedor, por favor consulte con el administrador']);
+                }
+                $entrada = Entrada2::getEntrada2($facturap->facturap1_entrada1);
+            }
+            return response()->json($entrada);
+        }
+        abort(404);
     }
 
     /**

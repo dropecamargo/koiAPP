@@ -301,10 +301,18 @@ Route::group(['middleware' => 'auth'], function(){
 	{
 		Route::resource('detalle', 'Tesoreria\AjustepDetalleController');
 	});
+
+	Route::group(['prefix' => 'egresos'], function()
+	{
+		Route::resource('detalle', 'Tesoreria\EgresoDetalleController');
+	});
+
 	Route::resource('facturasp', 'Tesoreria\Facturap1Controller', ['except' => ['destroy','update','edit']]);
 	Route::resource('ajustesp', 'Tesoreria\AjustepController', ['except' => ['destroy']]);
+	Route::resource('egresos', 'Tesoreria\EgresoController', ['except' => ['destroy']]);
 	Route::resource('retefuentes', 'Tesoreria\ReteFuenteController', ['except' => ['destroy']]);
 	Route::resource('tipogastos', 'Tesoreria\TipoGastoController', ['except' => ['destroy']]);
+	Route::resource('tipopagos', 'Tesoreria\TipoPagoController', ['except' => ['destroy']]);
 	Route::resource('tipoproveedores', 'Tesoreria\TipoProveedorController', ['except' => ['destroy']]);
 	Route::resource('conceptosajustep', 'Tesoreria\ConceptoAjustepController', ['except' => ['destroy']]);
 });

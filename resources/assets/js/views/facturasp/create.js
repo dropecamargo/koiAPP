@@ -113,15 +113,15 @@ app || (app = {});
         * Event Create facturap1
         */
         onStore: function (e) {
-            console.log(window.Misc.formToJson(e.target) , );
             if (!e.isDefaultPrevented()) {
                 e.preventDefault();
                 var data = window.Misc.formToJson( e.target );
                     data.facturap2 = this.detalleFacturap2.toJSON();
                     data.activosfijos = this.activoFijoList.toJSON();
-                    if (this.entradasList.length > 1) 
+                    if (this.entradasList.length > 0){
                         data.entrada1 = window.Misc.formToJson(this.$('#form-entrada'));
                         data.entrada2 = this.entradasList.toJSON();
+                    } 
                 this.model.save( data, {patch: true, silent: true} );
             }   
         },

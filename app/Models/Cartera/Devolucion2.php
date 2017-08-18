@@ -119,6 +119,7 @@ class Devolucion2 extends Model
         }
         // Update saldo
         $factura3->factura3_saldo = $factura3->factura3_saldo - $total;
+        $factura3->factura3_fecha_pago = date('Y-m-d');
         $factura3->save();
 		return 'OK';
 	}

@@ -45,27 +45,33 @@ label {
 
 // Menu notifications
 .navbar-nav>.notifications-menu>.dropdown-menu, .navbar-nav>.messages-menu>.dropdown-menu, .navbar-nav>.tasks-menu>.dropdown-menu{
-	width: 300px;
-	border: 0px solid #000000;
+	width: 360px;
 	-webkit-box-shadow: -2px 3px 15px -4px rgba(0,0,0,0.75);
 	-moz-box-shadow: -2px 3px 15px -4px rgba(0,0,0,0.75);
 	box-shadow: -2px 3px 15px -4px rgba(0,0,0,0.75);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    overflow-x: hidden;
 }
 
-.li-notification {
-	font-size: 11px;
-	cursor: pointer;
+.navbar-nav>.messages-menu>.dropdown-menu>li .menu>li>a>h4 {
+    margin: 0 0 0 15px;
+    font-size: 13px;
+    position: relative;
 }
 
-.title-notification {
-	font-size: 10px;
-	font-weight: normal;
+.navbar-nav>.messages-menu>.dropdown-menu>li .menu>li>a {
+    cursor: pointer;
 }
 
-.footer-notification {
-	text-align: center;
-	cursor: pointer;
-	font-size: 10px;
+.navbar-nav>.messages-menu>.dropdown-menu>li .menu>li>a>p {
+    margin: 0 0 0 15px;
+    font-size: 11px;
+}
+
+.navbar-nav>.messages-menu>.dropdown-menu>li.footer>a {
+    cursor: pointer;
 }
 
 .notifications-list {
@@ -76,7 +82,7 @@ label {
 
 .notifications-list>.item {
 	cursor: pointer;
-    border-bottom: 1px solid #f4f4f4;
+	border-bottom: 1px solid #dddfe2;
 	padding: 2px 0;
 }
 
@@ -84,36 +90,22 @@ label {
 	background-color: #F4F4F4;
 }
 
-.notification-text .row{
+.notifications-list .row{
 	margin: 0px 1px 0px 1px;
 }
 
-.notification-fecha {
-	display: block;
-	font-size: 10px;
+.text-description {
+	font-size: 12px;
+	margin: 0 0 0 18px;
 }
 
-.notification-description {
-	display: block;
-	font-size: 10px;
-}
-
-.visto-notification {
+.notification-true {
 	background-color: #EDF2FA;
+}
 
-	.title-notification {
-		font-size: 10px;
-		font-weight: normal;
-	}
-
-	.text-green{
-		font-weight: normal;
-	}
-
-	.li-notification {
-		font-size: 11px;
-		cursor: pointer;
-	}
+.pagination {
+	float: right;
+	margin: 10px 0px 1px 0px;
 }
 
 .dropdown-submenu>a:after {

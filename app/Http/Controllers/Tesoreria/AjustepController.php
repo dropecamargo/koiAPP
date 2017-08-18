@@ -145,7 +145,6 @@ class AjustepController extends Controller
 
                     // Commit Transaction
                     DB::commit();
-                    // return response()->json(['success' => false, 'errors' => 'TODO OK']);
                     return response()->json(['success' => true, 'id' => $ajustep->id]);
                 } catch (\Exception $e) {
                     DB::rollback();
