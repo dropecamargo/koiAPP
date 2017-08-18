@@ -22,7 +22,7 @@
             <form method="POST" accept-charset="UTF-8" id="form-devolucion1" data-toggle="validator">
                 <div class="row">
                     <label for="devolucion1_sucursal" class="col-sm-1 col-md-1 control-label">Sucursal</label>
-                    <div class="form-group col-sm-2">
+                    <div class="form-group col-sm-3">
                         <select name="devolucion1_sucursal" id="devolucion1_sucursal" class="form-control select2-default change-sucursal-consecutive-koi-component" data-wrapper="devolucion-create" data-field="devolucion1_numero" data-document ="devolucion">
                             @foreach( App\Models\Base\Sucursal::getSucursales() as $key => $value)
                             <option  value="{{ $key }}" <%- devolucion1_sucursal == '{{ $key }}' ? 'selected': ''%>>{{ $value }}</option>
@@ -39,15 +39,15 @@
                     </div>
                 </div>
                 <div class="row">
-                    <label for="devolucion_factura1" class="col-sm-1 control-label">Factura</label>
+                    <label for="devolucion_factura1" class="col-sm-1 control-label">N° factura</label>
                     <div class="form-group col-sm-2">
                         <div class="input-group input-group-sm">
                             <span class="input-group-btn">
-                                <button type="button" class="btn btn-default btn-flat" data-field="devolucion1_factura1">
+                                <button type="button" class="btn btn-default btn-flat btn-koi-search-factura-component" data-field="devolucion1_factura1">
                                     <i class="fa fa-search"></i>
                                 </button>
                             </span>
-                             <input id="devolucion1_factura1" placeholder="Número factura" class="form-control factura-koi-component" name="devolucion1_factura1" type="text" maxlength="15" required data-sucursal="devolucion1_sucursal" data-name="devolucion1_nombre_tercero" data-nit="devolucion1_tercero" data-wrapper="factura-create">
+                             <input id="devolucion1_factura1" placeholder="Número factura" class="form-control factura-koi-component" name="devolucion1_factura1" type="text" maxlength="15" required data-sucursal="devolucion1_sucursal" data-name="devolucion1_nombre_tercero" data-nit="devolucion1_tercero" data-devueltas="false" data-wrapper="factura-create">
                         </div>
                     </div>
                     <label for="devolucion1_tercero" class="col-sm-1 control-label">Cliente</label>
