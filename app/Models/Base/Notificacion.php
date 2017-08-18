@@ -71,9 +71,8 @@ class Notificacion extends Model
             $query->select('notificaciones.*', DB::raw("CASE WHEN (notificacion_hora IS NOT NULL) THEN CONCAT(notificacion_fecha, ' ', DATE_FORMAT(notificacion_hora, '%H:%i')) ELSE notificacion_fecha END AS nfecha"));
             $query->where('notificacion_fecha', '<=', date('Y-m-d'));
             $query->where('notificacion_tercero', Auth::user()->id);
-            $query->where('notificacion_visto', false);
-            $query->orderBy('notificacion_fecha', 'desc');
-            $query->limit(5);
+            $query->orderBy('nfecha', 'desc');
+            $query->limit(10);
 
             return $query->get();
         });
@@ -83,7 +82,8 @@ class Notificacion extends Model
         $query = Notificacion::query();
         $query->select('notificaciones.*', DB::raw("CASE WHEN (notificacion_hora IS NOT NULL) THEN CONCAT(notificacion_fecha, ' ', DATE_FORMAT(notificacion_hora, '%H:%i')) ELSE notificacion_fecha END AS nfecha"));
         $query->where('notificacion_tercero', $id);
-        $query->orderBy('notificacion_fecha', 'desc');
+        $query->where('notificacion_fecha', '<=', date('Y-m-d'));
+        $query->orderBy('nfecha', 'desc');
         return $query;
     }
 }
