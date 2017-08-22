@@ -9,7 +9,7 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Tesoreria\Ajustep1, App\Models\Tesoreria\Ajustep2, App\Models\Tesoreria\ConceptoAjustep, App\Models\Tesoreria\Facturap3;
 use App\Models\Base\Tercero, App\Models\Base\Regional, App\Models\Base\Documentos;
-use DB, Log, Datatables, Auth;
+use DB, Log, Datatables, Auth, App, View;
 
 class AjustepController extends Controller
 {
@@ -204,5 +204,27 @@ class AjustepController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * Export pdf the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function exportar($id)
+    {
+        $ajustep = Ajustep1::getAjustep($id);
+        if(!$ajustep instanceof Ajustep1){
+            abort(404);
+        }
+
+        $detalle = Ajustep2::getAjustep2($ajustep->id);
+        $title = sprintf('Ajuste proveedor N° %s', $ajustep->ajustep1_numero);
+
+        // Export pdf
+        $pdf = App::make('dompdf.wrapper');
+        $pdf->loadHTML(View::make('tesoreria.ajustesp.export',  compact('ajustep', 'detalle', 'title'))->render());
+        return $pdf->stream(sprintf('%s_%s_%s_%s.pdf', 'ajustep', $ajustep->id, date('Y_m_d'), date('H_m_s')));
     }
 }

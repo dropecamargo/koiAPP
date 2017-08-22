@@ -12,6 +12,9 @@ app || (app = {});
     app.ShowAjustepView = Backbone.View.extend({
 
         el: '#ajustep-show',
+        events:{
+            'click .export-ajustep': 'exportAjustep'
+        },
         /**
         * Constructor Method
         */
@@ -40,6 +43,16 @@ app || (app = {});
                     }
                 }
             });
-        }
+        },
+
+        /*
+        * Redirect export pdf
+        */
+        exportAjustep:function(e){
+            e.preventDefault();
+
+            // Redirect to pdf
+            window.open( window.Misc.urlFull( Route.route('ajustesp.exportar', { ajustesp: this.model.get('id') })) );
+        },
     });
 })(jQuery, this, this.document);

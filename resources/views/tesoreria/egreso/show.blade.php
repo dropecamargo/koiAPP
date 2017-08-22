@@ -17,6 +17,32 @@
                     <label class="control-label">Fecha</label>
                     <div>{{ $egreso->egreso1_fecha }}</div>
                 </div>
+                @if(!$egreso->egreso1_anulado)
+                    <div class="form-group col-md-7">
+                        <div class="dropdown pull-right">
+                            <label class="label label-success">ESTADO: ACTIVO</label>
+                            <a href="#" class="dropdown-toggle a-color" data-toggle="dropdown">Opciones <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li role="presentation">
+                                    <a role="menuitem" tabindex="-1" href="#" class="anular-egreso">
+                                        <i class="fa fa-ban"></i>Anular
+                                    </a>
+                                    <a role="menuitem" tabindex="-1" href="#" class="export-egreso">
+                                        <i class="fa fa-file-pdf-o"></i>Exportar
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>           
+                    </div>
+                @else
+                    <label class=" label label-default col-md-1  col-md-offset-5">ESTADO: ANULADA</label>
+                    <div class="form-group col-md-1">
+                        <button type="button" class="btn btn-block btn-danger btn-sm export-egreso">
+                            <i class="fa fa-file-pdf-o"></i>
+                        </button>
+                    </div>
+                @endif
+
             </div>
             <div class="row">
                 <div class="form-group col-md-3">
@@ -27,9 +53,24 @@
                     <label class="control-label">Numero</label>
                     <div>{{ $egreso->egreso1_numero }}</div>
                 </div>
-                <div class="form-group col-md-4">
+            </div>
+            <div>
+            <div class="row">
+                <div class="form-group col-md-3">
                     <label class="control-label">Cuenta</label>
                     <div>{{ $egreso->cuentabanco_nombre }}</div>
+                </div>
+                <div class="form-group col-md-2">
+                    <label class="control-label">N° cheque</label>
+                    <div>{{ $egreso->egreso1_numero_cheque }}</div>
+                </div>
+                <div class="form-group col-md-2">
+                    <label class="control-label">Fecha cheque</label>
+                    <div>{{ $egreso->egreso1_fecha_cheque }}</div>
+                </div>
+                <div class="form-group col-md-2">
+                    <label class="control-label">Valor cheque</label>
+                    <div>{{ number_format($egreso->egreso1_valor_cheque) }}</div>
                 </div>
             </div>
             <div class="row">
@@ -69,4 +110,8 @@
             </div>
         </div>
     </div>
+
+    <script type="text/template" id="egreso-anular-confirm-tpl">
+        <p>¿Está seguro que desea anular el egreso número <b> <%- id %> </b>?</p>
+    </script>
 @stop

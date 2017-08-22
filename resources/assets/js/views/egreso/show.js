@@ -13,6 +13,8 @@ app || (app = {});
 
         el: '#egreso-show',
         events:{
+            'click .anular-egreso': 'anularEgreso',
+            'click .export-egreso': 'exportEgreso'
         },
 
         /**
@@ -48,7 +50,62 @@ app || (app = {});
                }
             });
         },
+        /*
+        * Redirect export pdf
+        */
+        exportEgreso:function(e){
+            e.preventDefault();
 
+            // Redirect to pdf
+            window.open( window.Misc.urlFull( Route.route('egresos.exportar', { egresos: this.model.get('id') })) );
+        },
+        /*
+        * Redirect anular factura
+        */  
+        anularEgreso:function(e){
+            e.preventDefault();
+            var _this = this;
+            var anularConfirm = new window.app.ConfirmWindow({
+                parameters: {
+                    dataFilter: { id: _this.model.get('id') },
+                    template: _.template( ($('#egreso-anular-confirm-tpl').html() || '') ),
+                    titleConfirm: 'Anular egreso',
+                    onConfirm: function () {
+                        // Anular factura
+                        $.ajax({
+                            url: window.Misc.urlFull( Route.route('egresos.anular', { egresos: _this.model.get('id') }) ),
+                            type: 'GET',
+                            beforeSend: function() {
+                                window.Misc.setSpinner( _this.el );
+                            }
+                        })
+                        .done(function(resp) {
+                            window.Misc.removeSpinner( _this.el );
+
+                            if(!_.isUndefined(resp.success)) {
+                                // response success or error
+                                var text = resp.success ? '' : resp.errors;
+                                if( _.isObject( resp.errors ) ) {
+                                    text = window.Misc.parseErrors(resp.errors);
+                                }
+
+                                if( !resp.success ) {
+                                    alertify.error(text);
+                                    return;
+                                }
+
+                                window.Misc.successRedirect( resp.msg, window.Misc.urlFull(Route.route('egresos.show', { egresos: _this.model.get('id') })) );
+                            }
+                        })
+                        .fail(function(jqXHR, ajaxOptions, thrownError) {
+                            window.Misc.removeSpinner( _this.el );
+                            alertify.error(thrownError);
+                        });
+                    }
+                }
+            });
+            anularConfirm.render();
+        },
         /**
         * fires libraries js
         */

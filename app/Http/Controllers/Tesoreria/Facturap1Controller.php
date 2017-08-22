@@ -7,10 +7,10 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Tesoreria\Facturap1,App\Models\Tesoreria\Facturap2,App\Models\Tesoreria\Facturap3,App\Models\Tesoreria\TipoProveedor,App\Models\Tesoreria\TipoGasto,App\Models\Tesoreria\ReteFuente;
-use App\Models\Inventario\Entrada1, App\Models\Inventario\Impuesto;
+use App\Models\Inventario\Entrada1, App\Models\Inventario\Entrada2, App\Models\Inventario\Impuesto;
 use App\Models\Contabilidad\ActivoFijo;
 use App\Models\Base\Tercero,App\Models\Base\Documentos,App\Models\Base\Regional;
-use DB, Log, Datatables, Cache;
+use App, View, DB, Log, Datatables, Cache;
 
 class Facturap1Controller extends Controller
 {
@@ -289,5 +289,28 @@ class Facturap1Controller extends Controller
         }
 
         return response()->json(['success' => true]);
+    }
+
+    /**
+     * Export pdf the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function exportar($id)
+    {
+        $facturap = Facturap1::getFacturap($id);
+        if(!$facturap instanceof Facturap1) {
+            abort(404);
+        }
+        $facturap2 = Facturap2::getFacturap2($facturap->id);
+        $entrada2 = Entrada2::getEntrada2($facturap->facturap1_entrada1);
+        $activofijo = ActivoFijo::getActivoFijo($facturap->id);
+        $title = sprintf('Factura proveedor N° %s', $facturap->facturap1_numero);
+
+        // // Export pdf
+        $pdf = App::make('dompdf.wrapper');
+        $pdf->loadHTML(View::make('tesoreria.facturap.exportar',  compact('facturap', 'facturap2', 'entrada2', 'activofijo','title'))->render());
+        return $pdf->stream(sprintf('%s_%s_%s_%s.pdf', 'facturap', $facturap->id, date('Y_m_d'), date('H_m_s')));
     }
 }

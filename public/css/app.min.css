@@ -30,13 +30,16 @@ label {
 .dropdown-submenu:hover > .dropdown-menu {
   display: block; }
 
-.navbar-nav > .notifications-menu > .dropdown-menu, .navbar-nav > .messages-menu > .dropdown-menu, .navbar-nav > .tasks-menu > .dropdown-menu {
+.navbar-nav > .messages-menu > .dropdown-menu {
   width: 360px;
   box-shadow: -2px 3px 15px -4px rgba(0, 0, 0, 0.75);
   margin: 0;
   padding: 0;
   list-style: none;
   overflow-x: hidden; }
+
+.navbar-nav > .messages-menu > .dropdown-menu > li .menu > li {
+  border-bottom: 1px solid #dddfe2; }
 
 .navbar-nav > .messages-menu > .dropdown-menu > li .menu > li > a > h4 {
   margin: 0 0 0 15px;

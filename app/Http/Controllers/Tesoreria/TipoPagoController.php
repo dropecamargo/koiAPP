@@ -56,9 +56,8 @@ class TipoPagoController extends Controller
                     $tipopago->fillBoolean($data);
 
                     if ($request->has('tipopago_documentos')) {
-                        dd('jj');
                         $documentos = Documentos::find($request->tipopago_documentos);
-                        if (!$plancuenta instanceof Documentos) {
+                        if (!$documentos instanceof Documentos) {
                             DB::rollback();
                             return response()->json(['success' => false, 'errors' => 'No es posible recuperar documentos, por favor verifique información o consulte con el administrador']);
                         }

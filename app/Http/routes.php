@@ -300,11 +300,19 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::group(['prefix' => 'ajustesp'], function()
 	{
 		Route::resource('detalle', 'Tesoreria\AjustepDetalleController');
+		Route::get('exportar/{ajustesp}', ['as' => 'ajustesp.exportar', 'uses' => 'Tesoreria\AjustepController@exportar']);
 	});
 
 	Route::group(['prefix' => 'egresos'], function()
 	{
 		Route::resource('detalle', 'Tesoreria\EgresoDetalleController');
+		Route::get('anular/{egresos}', ['as' => 'egresos.anular', 'uses' => 'Tesoreria\EgresoController@anular']);
+		Route::get('exportar/{egresos}', ['as' => 'egresos.exportar', 'uses' => 'Tesoreria\EgresoController@exportar']);
+	});
+
+	Route::group(['prefix' => 'facturasp'], function()
+	{
+		Route::get('exportar/{facturasp}', ['as' => 'facturasp.exportar', 'uses' => 'Tesoreria\Facturap1Controller@exportar']);
 	});
 
 	Route::resource('facturasp', 'Tesoreria\Facturap1Controller', ['except' => ['destroy','update','edit']]);

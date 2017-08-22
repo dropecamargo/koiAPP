@@ -1,4 +1,4 @@
-@extends('inventario.ajustes.exportar.layout', ['type' => 'pdf', 'title' => $title])
+@extends('reportes.layout', ['type' => 'pdf', 'title' => $title])
 
 @section('content')
 
@@ -26,7 +26,6 @@
 			</tr>
 		</tbody>
 	</table>
-
     <br>
     {{-- Detalle ajuste --}}
     <table class="rtable" border="0" cellspacing="0" cellpadding="0">

@@ -9,7 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Tesoreria\Egreso1, App\Models\Tesoreria\Egreso2, App\Models\Tesoreria\Facturap1, App\Models\Tesoreria\Facturap3, App\Models\Tesoreria\TipoPago;
 use App\Models\Base\Tercero,App\Models\Base\Documentos, App\Models\Base\Regional;
 use App\Models\Cartera\CuentaBanco;
-use DB, Log, Datatables, Auth;
+use DB, Log, Datatables, Auth, App, View;
 
 class EgresoController extends Controller
 {
@@ -213,5 +213,56 @@ class EgresoController extends Controller
     public function destroy($id)
     {
         //
+    }
+    /**
+     * Anular the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function anular(Request $request, $id)
+    {
+        if ($request->ajax()) {
+            $egreso = Egreso1::findOrFail($id);
+            DB::beginTransaction();
+            try {
+
+                // Egreso
+                $egreso->egreso1_anulado = true;
+                $egreso->egreso1_usuario_anulo = Auth::user()->id;
+                $egreso->egreso1_fh_anulo = date('Y-m-d H:m:s');
+                $egreso->save();
+
+                // Commit Transaction
+                DB::commit();
+                return response()->json(['success' => true, 'msg' => 'Egreso anulado con exito.']);
+            }catch(\Exception $e){
+                DB::rollback();
+                Log::error($e->getMessage());
+                return response()->json(['success' => false, 'errors' => trans('app.exception')]);
+            }
+        }
+        abort(403);
+    }
+    /**
+     * Export pdf the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function exportar($id)
+    {
+        $egreso = Egreso1::getEgreso($id);
+        if(!$egreso instanceof Egreso1){
+            abort(404);
+        }
+
+        $detalle = Egreso2::getEgreso2($egreso->id);
+        $title = sprintf('Egreso N° %s', $egreso->egreso1_numero);
+
+        // Export pdf
+        $pdf = App::make('dompdf.wrapper');
+        $pdf->loadHTML(View::make('tesoreria.egreso.export',  compact('egreso', 'detalle', 'title'))->render());
+        return $pdf->stream(sprintf('%s_%s_%s_%s.pdf', 'egreso', $egreso->id, date('Y_m_d'), date('H_m_s')));
     }
 }

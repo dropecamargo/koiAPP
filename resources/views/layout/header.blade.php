@@ -29,7 +29,11 @@
                             <ul class="menu">
                                 @foreach( App\Models\Base\Notificacion::getNotifications() as $key => $value)
                                     <li>
-                                        <a class="view-notification" data-notification="{{ $value['id'] }}">
+                                        @if( !$value['notificacion_visto'] )
+                                            <a class="view-notification notification-true" data-notification="{{ $value['id'] }}">
+                                        @else
+                                            <a class="view-notification" data-notification="{{ $value['id'] }}">
+                                        @endif
                                             <div class="pull-left">
                                                 <i class="fa fa-phone text-green"></i>
                                             </div>

@@ -8,7 +8,7 @@
 		@if($type == 'pdf')
 			<style type="text/css">
 				body {
-					font-size: 8;
+					font-size: 7;
 					font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
 					font-weight: normal;
 				}
@@ -45,6 +45,7 @@
 
 				.titleespecial{
 					font-size: 10;
+					font-weight: bold;
 					background-color: #000000;
 					color: #FFFFFF;
 				}
@@ -55,7 +56,6 @@
 				}
 
 				.rtable th {
-					border: 1px solid black;
 					padding-left: 2px;
 				}
 
@@ -101,7 +101,12 @@
 				.center{
 					text-align: center;
 				}
-
+				
+				.foot{
+					padding-top: 30px;
+					width: 100%;
+					font-size: 7;
+				}
 				.bold{
 					font-weight: bold;
 				}

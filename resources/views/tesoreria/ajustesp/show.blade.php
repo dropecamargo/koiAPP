@@ -13,6 +13,12 @@
                     <label class="control-label">Código</label>
                     <div>{{ $ajustep->id }}</div>
                 </div>
+
+                <div class="form-group col-md-1 col-md-offset-8">
+                    <button type="button" class="btn btn-block btn-danger btn-sm export-ajustep">
+                        <i class="fa fa-file-pdf-o"></i>
+                    </button>
+                </div>
             </div>
             <div class="row">
                 <div class="form-group col-md-3">

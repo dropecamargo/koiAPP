@@ -24,7 +24,7 @@ class Egreso1 extends BaseModel
     *
     * @var array
     */
-    protected $fillable = ['egreso1_fecha','egreso1_fecha_cheque', 'egreso1_valor_cheque', 'egreso1_observaciones'];
+    protected $fillable = ['egreso1_fecha','egreso1_fecha_cheque', 'egreso1_valor_cheque','egreso1_numero_cheque', 'egreso1_observaciones'];
 
     protected $boolean = ['egreso1_anulado'];
 
@@ -55,14 +55,16 @@ class Egreso1 extends BaseModel
     }
     public static function getEgreso($id){
         $query = Egreso1::query();
-        $query->select('egreso1.*','regional_nombre','cuentabanco_nombre',DB::raw("(CASE WHEN tercero_persona = 'N'
-                    THEN CONCAT(tercero_nombre1,' ',tercero_nombre2,' ',tercero_apellido1,' ',tercero_apellido2,
-                            (CASE WHEN (tercero_razonsocial IS NOT NULL AND tercero_razonsocial != '') THEN CONCAT(' - ', tercero_razonsocial) ELSE '' END)
+        $query->select('egreso1.*','regional_nombre','cuentabanco_nombre',DB::raw("(CASE WHEN t.tercero_persona = 'N'
+                    THEN CONCAT(t.tercero_nombre1,' ',t.tercero_nombre2,' ',t.tercero_apellido1,' ',t.tercero_apellido2,
+                            (CASE WHEN (t.tercero_razonsocial IS NOT NULL AND t.tercero_razonsocial != '') THEN CONCAT(' - ', t.tercero_razonsocial) ELSE '' END)
                         )
-                    ELSE tercero_razonsocial END)
-                AS tercero_nombre")
+                    ELSE t.tercero_razonsocial END)
+                AS tercero_nombre"), 
+                DB::raw("CONCAT(elab.tercero_nombre1, ' ', elab.tercero_nombre2, ' ', elab.tercero_apellido1, ' ', elab.tercero_apellido2) as elaboro_nombre")
             );
-        $query->join('tercero', 'egreso1_tercero', '=', 'tercero.id');
+        $query->join('tercero as t', 'egreso1_tercero', '=', 't.id');
+        $query->join('tercero as elab', 'egreso1_usuario_elaboro', '=', 'elab.id');
         $query->join('regional', 'egreso1_regional', '=', 'regional.id');
         $query->join('cuentabanco', 'egreso1_cuentas', '=', 'cuentabanco.id');
         $query->where('egreso1.id', $id);

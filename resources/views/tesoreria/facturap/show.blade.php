@@ -22,6 +22,11 @@
                     <li><a href="#tab_contabilidad" data-toggle="tab">Contabilidad</a></li>
                     <li><a href="#tab_af" data-toggle="tab">Activos fijos</a></li>
                     <li><a href="#tab_inventario" data-toggle="tab">Inventario</a></li>
+                    <li class="pull-right">
+                        <button type="button" class="btn btn-block btn-danger btn-sm export-facturap">
+                            <i class="fa fa-file-pdf-o"></i>
+                        </button>
+                    </li>
                 </ul>
             </div>
 

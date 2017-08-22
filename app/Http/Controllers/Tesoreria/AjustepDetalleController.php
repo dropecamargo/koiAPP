@@ -23,20 +23,7 @@ class AjustepDetalleController extends Controller
         if($request->ajax()){
             $ajustep2 = [];
             if($request->has('ajustep')) {
-                $query = Ajustep2::query();
-                $query->select('ajustep2.*', 'documentos_nombre','facturap3_cuota','facturap1_numero', 'ajustep2_valor as facturap3_valor', DB::raw("(CASE WHEN tercero_persona = 'N'
-                        THEN CONCAT(tercero_nombre1,' ',tercero_nombre2,' ',tercero_apellido1,' ',tercero_apellido2,
-                                (CASE WHEN (tercero_razonsocial IS NOT NULL AND tercero_razonsocial != '') THEN CONCAT(' - ', tercero_razonsocial) ELSE '' END)
-                            )
-                        ELSE tercero_razonsocial END)
-                    AS tercero_nombre")
-                );
-                $query->join('tercero', 'ajustep2_tercero', '=', 'tercero.id');
-                $query->join('documentos', 'ajustep2_documentos_doc', '=', 'documentos.id');
-                $query->leftJoin('facturap3','ajustep2_id_doc', '=', 'facturap3.id');
-                $query->leftJoin('facturap1','facturap3_facturap1', '=', 'facturap1.id');
-                $query->where('ajustep2_ajustep1', $request->ajustep);
-                $ajustep2 = $query->get();
+                $ajustep2 = Ajustep2::getAjustep2($request->ajustep);
             }
             return response()->json($ajustep2);
         }

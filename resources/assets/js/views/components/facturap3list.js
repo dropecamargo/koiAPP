@@ -36,7 +36,7 @@ app || (app = {});
             this.listenTo( this.collection, 'request', this.loadSpinner);
             this.listenTo( this.collection, 'sync', this.responseServer);
 
-            this.collection.fetch({ data: {tercero: this.parameters.dataFilter.tercero , facturap1: this.parameters.dataFilter.facturap1}, reset: true });
+            this.collection.fetch({ data: {tercero: this.parameters.dataFilter.tercero , facturap1: this.parameters.dataFilter.facturap}, reset: true });
         },
 
         /*

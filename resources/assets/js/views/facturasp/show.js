@@ -13,6 +13,7 @@ app || (app = {});
 
         el: '#facturap-show',
         events:{
+            'click .export-facturap': 'exportFacturap'
         },
 
         /**
@@ -89,7 +90,15 @@ app || (app = {});
                }
             });
         },
+        /*
+        * Redirect export pdf
+        */
+        exportFacturap:function(e){
+            e.preventDefault(); 
 
+            // Redirect to pdf
+            window.open( window.Misc.urlFull( Route.route('facturasp.exportar', { facturasp: this.model.get('id') })) );
+        },
         /**
         * fires libraries js
         */
