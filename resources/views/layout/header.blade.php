@@ -14,17 +14,16 @@
         {{-- Navbar Right Menu --}}
         <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
-
-                {{--*/ $detalle = App\Models\Base\Notificacion::getNotifications() /*--}}
+                {{--*/ $detalle = App\Models\Base\Notificacion::getCountNotifications() /*--}}
 
                 {{-- Menu notificaciones --}}
                 <li class="dropdown messages-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                         <i class="fa fa-bell"></i>
-                        <span class="label label-danger">{{ count($detalle) > 0 ? count($detalle) : '' }}</span>
+                        <span class="label label-danger">{{ $detalle > 0 ? $detalle : '' }}</span>
                     </a>
                     <ul class="dropdown-menu">
-                        <li class="header">Notificaciones</li>
+                        <li class="header">{{ $detalle > 0 ? 'Tienes '.$detalle.' notificaciones' : 'No tiene notificaciones' }}</li>
                         <li>
                             <ul class="menu">
                                 @foreach( App\Models\Base\Notificacion::getNotifications() as $key => $value)
