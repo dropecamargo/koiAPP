@@ -86,4 +86,13 @@ class Notificacion extends Model
         $query->orderBy('nfecha', 'desc');
         return $query;
     }
+
+    public static function getCountNotifications(){
+        $query = Notificacion::query();
+        $query->select('notificaciones.*');
+        $query->where('notificacion_tercero', Auth::user()->id);
+        $query->where('notificacion_fecha', '<=', date('Y-m-d'));
+        $query->where('notificacion_visto', false);
+        return $query->count();
+    }
 }
