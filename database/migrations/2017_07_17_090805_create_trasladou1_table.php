@@ -18,7 +18,7 @@ class CreateTrasladou1Table extends Migration
             $table->increments('id');
             $table->integer('trasladou1_numero')->unsigned();
             $table->integer('trasladou1_sucursal')->unsigned();
-            $table->integer('trasladou1_origen')->unsigned();
+            $table->integer('trasladou1_origen')->unsigned()->nullable();
             $table->integer('trasladou1_destino')->unsigned();
             $table->date('trasladou1_fecha');
             $table->integer('trasladou1_tipotraslado')->unsigned();

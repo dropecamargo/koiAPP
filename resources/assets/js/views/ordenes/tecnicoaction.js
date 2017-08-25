@@ -13,10 +13,14 @@ app || (app = {});
 
         el: '#orden-content-section',
         templateRemision: _.template(($('#add-remision-tpl').html() || '')),
+        templateFactura: _.template(($('#add-factura-tecnico-tpl').html() || '')),
         events: {
             'click .click-store-remsion': 'onStoreRemision',
             'click .click-add-item': 'submitForm',
             'submit #form-remrepu': 'onStoreItem',
+
+            'click .click-store-factura': 'submitFormFactura',
+            'submit #form-factura-tecnico': 'submitCloseOrden',
         },
         parameters: {
             data: {},
@@ -35,7 +39,9 @@ app || (app = {});
             this.remrepu = new app.RemRepuCollection();
 
             this.$modalCreate =  this.$('#modal-create-remision');
+            this.$modalFactura =  this.$('#modal-create-factura');
             this.$form =  this.$('#form-remrepu');
+            this.$formFactura =  this.$('#form-factura-tecnico');
 
             this.listenTo( this.collection, 'sync', this.responseServer );
         },
@@ -44,11 +50,26 @@ app || (app = {});
         * Render View Element
         */
         render: function() {
-            var data = {sucursal: this.parameters.data.remrempu1_sucursal}
-            this.$modalCreate.find('.content-modal').empty().html( this.templateRemision( data ) );
-            this.el = this.$('#browse-legalizacions-list');
+           var resp = this.parameters,
+           _this = this,
+            stuffToDo = {
+                'remision': function() {
+                    _this.$modalCreate.modal('show');
+                    var data = {sucursal: resp.data.remrempu1_sucursal};
+                    _this.$modalCreate.find('.content-modal').empty().html( _this.templateRemision( data ) );
+                    _this.el = _this.$('#browse-legalizacions-list');
 
-            this.referenceView();
+                    _this.referenceView();
+                },
+                'factura': function() {
+                    _this.$modalFactura.modal('show');
+                    _this.$modalFactura.find('.content-modal').empty().html( _this.templateFactura(_this.model.toJSON() ) );
+                    _this.ready();
+                }
+            };
+            if (stuffToDo[resp.action]) {
+                stuffToDo[resp.action]();
+            }
 		},
 
         /**
@@ -73,6 +94,12 @@ app || (app = {});
         */
         submitForm: function(e){
             this.$form.submit();
+        },
+        /**
+        * Sumbit form
+        */
+        submitFormFactura: function(e){
+            this.$formFactura.submit();
         },
 
         /**
@@ -104,6 +131,49 @@ app || (app = {});
             this.collection.trigger( 'store', data );
         },
 
+        /**
+        *  Close orden and submit factura
+        */
+        submitCloseOrden: function(e){
+            e.preventDefault();
+            var _this = this;
+            var data = window.Misc.formToJson( e.target );
+                data.tercero = _this.model.get('tercero_nit');
+                data.id_orden = _this.model.get('id');
+                data.factura2 = _this.parameters.data;
+            // Cerrar orden
+            $.ajax({
+                url: window.Misc.urlFull( Route.route('ordenes.cerrar') ),
+                type: 'POST',
+                data : data,
+                beforeSend: function() {
+                    window.Misc.setSpinner( _this.spinner );
+                }
+            })
+            .done(function(resp) {
+                window.Misc.removeSpinner( _this.spinner );
+
+                if(!_.isUndefined(resp.success)) {
+                    // response success or error
+                    var text = resp.success ? '' : resp.errors;
+                    if( _.isObject( resp.errors ) ) {
+                        text = window.Misc.parseErrors(resp.errors);
+                    }
+
+                    if( !resp.success ) {
+                        alertify.error(text);
+                        return;
+                    }
+
+                    window.Misc.successRedirect( resp.msg, window.Misc.urlFull(Route.route('ordenes.show', { ordenes: _this.model.get('id') })) );
+                }
+            })
+            .fail(function(jqXHR, ajaxOptions, thrownError) {
+                window.Misc.removeSpinner( _this.spinner );
+                alertify.error(thrownError);
+            });
+        },
+
     	/**
         * fires libraries js
         */
@@ -114,6 +184,15 @@ app || (app = {});
 
             if( typeof window.initComponent.initValidator == 'function' )
                 window.initComponent.initValidator();
+
+            if( typeof window.initComponent.initDatePicker == 'function' )
+                window.initComponent.initDatePicker();
+
+            if( typeof window.initComponent.initInputMask == 'function' )
+                window.initComponent.initInputMask();
+
+            if( typeof window.initComponent.initSelect2 == 'function' )
+                window.initComponent.initSelect2();
         },
 
         /**

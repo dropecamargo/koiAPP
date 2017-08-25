@@ -296,11 +296,6 @@
                 <a href="#">
                     <i class="fa fa-bar-chart-o"></i> Reportes<i class= "fa fa-angle-left pull-right"></i>
                 </a>
-                <ul class="treeview-menu">
-                    <li class="">
-                        <a href="#"><i class="fa fa-circle-o"></i> Reporte1</a>
-                    </li>
-                </ul>
             </li>
 
             {{-- Referencias inventario --}}

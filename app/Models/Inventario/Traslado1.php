@@ -52,7 +52,8 @@ class Traslado1 extends Model
 
 	public static function getTraslado($id){
         $query = Traslado1::query();
-        $query->select('traslado1.*', 'o.sucursal_nombre as origen', 'd.sucursal_nombre as destino', 'u.username as username_elaboro');
+        $query->select('traslado1.*', 'o.sucursal_nombre as origen', 'd.sucursal_nombre as destino', 'u.username as username_elaboro', 'tipotraslado_nombre');
+        $query->join('tipotraslado', 'traslado1_tipotraslado', '=', 'tipotraslado.id');
         $query->join('sucursal as o', 'traslado1_origen', '=', 'o.id');
         $query->join('sucursal as d', 'traslado1_destino', '=', 'd.id');
         $query->join('tercero as u', 'traslado1_usuario_elaboro', '=', 'u.id');

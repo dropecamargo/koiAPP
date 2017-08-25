@@ -24,11 +24,7 @@ class DetalleTrasladoUbicacionController extends Controller
         if ($request->ajax()) {
             $detalle = [];
             if($request->has('traslado')) {
-                $query = TrasladoUbicacion2::query();
-                $query->select('producto.id', 'trasladou2_cantidad', 'producto_serie', 'producto_nombre');
-                $query->join('producto', 'trasladou2_producto', '=', 'producto.id');
-                $query->where('trasladou2_trasladou1', $request->traslado);
-                $detalle = $query->get();
+                $detalle = TrasladoUbicacion2::getTrasladoUbicacion2($request->traslado);
             }
             return response()->json($detalle);
         }
@@ -62,10 +58,14 @@ class DetalleTrasladoUbicacionController extends Controller
                     if (!$sucursal instanceof Sucursal) {
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar SUCURSAL, por favor verifique la información o consulte al administrador.']);
                     }
+                    $origen = null;
                     // Recupero ubicacion de origen
-                    $origen = Ubicacion::find($request->origen);
-                    if (!$origen instanceof Ubicacion) {
-                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar UBICACIÓN ORIGEN, por favor verifique la información o consulte al administrador.']);
+                    if ($request->has('origen')) {
+                        $origen = Ubicacion::find($request->origen);
+                        if (!$origen instanceof Ubicacion) {
+                            return response()->json(['success' => false, 'errors' => 'No es posible recuperar UBICACIÓN ORIGEN, por favor verifique la información o consulte al administrador.']);
+                        }
+                        $origen = $origen->id;
                     }
                     // Recupero ubicacion de destino
                    $destino = Ubicacion::find($request->destino);
@@ -73,7 +73,7 @@ class DetalleTrasladoUbicacionController extends Controller
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar UBICACIÓN DESTINO, por favor verifique la información o consulte al administrador.']);
                     }
                     // Valid origen and destino are equals
-                    if ($origen->id == $destino->id ) {
+                    if ($origen == $destino->id ) {
                         return response()->json(['success' => false, 'errors' => "No es posible realizar TRASLADO de $origen->ubicacion_nombre a $destino->ubicacion_nombre, por favor verifique la información o consulte al administrador."]);
                     }
 
@@ -93,7 +93,7 @@ class DetalleTrasladoUbicacionController extends Controller
                         return response()->json(['success' => false,'errors' => "No es posible realizar movimientos cantidad no valida, por favor verifique la información ó consulte al administrador"]);
                     }
                     // Valido que esta ubicacion exista en prodbode con producto dentro ella 
-                    $prodbode = Prodbode::where('prodbode_sucursal', $sucursal->id)->where('prodbode_serie', $producto->id)->where('prodbode_ubicacion', $origen->id)->first();
+                    $prodbode = Prodbode::where('prodbode_sucursal', $sucursal->id)->where('prodbode_serie', $producto->id)->where('prodbode_ubicacion', $origen)->first();
                     if (!$prodbode instanceof Prodbode) {
                         return response()->json(['success' => false,'errors' => "No es posible realizar movimientos en ubicacion de origen $origen->ubicacion_nombre, por favor verifique la información ó consulte al administrador"]);
                     }

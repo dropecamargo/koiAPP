@@ -54,6 +54,24 @@ class Visita extends Model
     public static function getVisita($id)
     {
         $query = Visita::query();
-        return $query->first();
+        $query->select('visita.*',   
+            DB::raw("
+                CONCAT(
+                    (CASE WHEN tercero_persona = 'N'
+                        THEN CONCAT(tercero_nombre1,' ',tercero_nombre2,' ',tercero_apellido1,' ',tercero_apellido2,
+                            (CASE WHEN (tercero_razonsocial IS NOT NULL AND tercero_razonsocial != '') THEN CONCAT(' - ', tercero_razonsocial) ELSE '' END)
+                        )
+                        ELSE tercero_razonsocial
+                    END)
+                
+                ) AS tercero_nombre"
+            ));
+        $query->join('orden', 'visita_orden', '=', 'orden.id');
+        $query->join('tercero', 'visita_tecnico', '=', 'tercero.id');
+        $query->where('visita_orden', $id);
+        $query->orderBy('id', 'asc');
+        $visita = $query->get();
+        return $visita; 
     }
+
 }

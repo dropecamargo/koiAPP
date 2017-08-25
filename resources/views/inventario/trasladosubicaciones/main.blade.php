@@ -42,7 +42,7 @@
             <div class="row">
                 <div class="form-group col-sm-3">
                     <label for="trasladou1_origen" class="control-label">Ubicación origen</label>
-                    <select name="trasladou1_origen" id="trasladou1_origen" class="form-control select2-default-clear" required></select>
+                    <select name="trasladou1_origen" id="trasladou1_origen" class="form-control select2-default-clear"></select>
                 </div>
                 <div class="form-group col-sm-3">
                     <label for="trasladou1_destino" class="control-label">Ubicación destino</label>

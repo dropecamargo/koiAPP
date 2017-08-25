@@ -27,6 +27,29 @@
 	            </div>
 	        </div>
 	    </div>
+	    <!-- Modal info factura -->
+	    <div class="modal fade" id="modal-create-factura" data-backdrop="static" data-keyboard="false" aria-hidden="true">
+	        <div class="modal-dialog modal-xlg" role="document">
+	            <div class="modal-content">
+	                <div class="modal-header small-box {{ config('koi.template.bg') }}">
+	                    <button type="button" class="close icon-close-koi" data-dismiss="modal" aria-label="Close">
+	                        <span aria-hidden="true">&times;</span>
+	                    </button>
+	                    <h4><strong>Tecnico - Nueva factura</strong></h4>
+	                </div>
+	                {!! Form::open(['id' => 'form-factura-tecnico', 'data-toggle' => 'validator']) !!}
+	                    <div class="modal-body" id="modal-factura-wrapper-show-info">
+	                        <div class="content-modal">
+	                        </div>
+	                    </div>
+	                {!! Form::close() !!}
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary btn-sm click-store-factura">Continuar</button>
+                    </div>
+	            </div>
+	        </div>
+	    </div>
 
 	    <script type="text/template" id="add-remision-tpl">
 		    <div class="row">
@@ -71,6 +94,99 @@
 		            </tbody>
 		        </table>
 		    </div>
+		</script>
+		<script type="text/template" id="add-factura-tecnico-tpl">
+			<div class="row">
+				<label class="control-label col-md-1">Tercero</label>
+				<div class="form-group col-md-11">
+					<%- tercero_nombre %>
+				</div>
+			</div>
+			<div class="row">
+				<label class="control-label col-md-1">Contacto</label>
+				<div class="form-group col-md-11">
+					<%- tcontacto_nombre %>	 
+				</div>
+			</div>
+            <div class="row">
+                <label for="factura1_puntoventa" class="col-md-1 control-label">Punto Venta</label>
+                <div class="form-group col-md-6">
+                    <select name="factura1_puntoventa" id="factura1_puntoventa" class="form-control select2-default change-puntoventa-consecutive-koi-component" data-wrapper="factura-create" data-field="factura1_numero" >
+                        @foreach( App\Models\Base\PuntoVenta::getPuntosVenta() as $key => $value)
+                        	<option  value="{{ $key }}">{{ $value }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <label for="factura1_numero" class="col-md-1 control-label">Número</label>
+                <div class="form-group col-md-2">     
+                    <input id="factura1_numero" name="factura1_numero" class="form-control input-sm" type="number" min="1" required readonly>
+                </div>
+            </div>
+            <div class="row">
+                <label for="factura1_sucursal" class="col-md-1 control-label">Sucursal</label>
+                <div class="form-group col-md-6">
+                    <select name="factura1_sucursal" id="factura1_sucursal" class="form-control select2-default-clear" >
+                        @foreach( App\Models\Base\Sucursal::getSucursales() as $key => $value)
+                        	<option  value="{{ $key }}">{{ $value }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <label for="factura1_fecha" class="col-md-1 control-label">Fecha</label>
+                <div class="form-group col-md-3">
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
+                        </div>
+                    	<input type="text" id="factura1_fecha" name="factura1_fecha" value="<%- moment().format('YYYY-MM-DD') %>" class="form-control input-sm datepicker" required>
+                    </div>
+                </div>
+            </div>
+            <div class="row"> 
+                <label for="factura1_formapago" class="col-md-1 control-label">Pago</label>
+                <div class="form-group col-md-2">
+                    <select name="factura1_formapago" id="factura1_formapago" class="form-control" required>
+                        @foreach( config('koi.produccion.formaspago') as $key => $value)
+                            <option value="{{ $key }}">{{ $value }}</option>
+                        @endforeach
+                    </select>
+                </div>                                           
+                <label for="factura1_plazo" class="col-md-1 control-label">Plazo</label>
+                <div class="form-group col-md-1">     
+                    <input id="factura1_plazo" name="factura1_plazo" class="form-control input-sm" type="number" min="0"  required>
+                </div>
+
+                <label for="factura1_cuotas" class="col-md-1 control-label">Cuotas</label>
+                <div class="form-group col-md-1">     
+                    <input id="factura1_cuotas" name="factura1_cuotas" class="form-control input-sm" type="number" min="0" required>
+                </div>
+
+                <label for="factura1_primerpago" class="col-md-1 control-label">Primer Pago</label>
+                <div class="form-group col-md-3">
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
+                        </div>
+						<input type="text" id="factura1_primerpago" name="factura1_primerpago" value="<%- moment().format('YYYY-MM-DD') %>" class="form-control input-sm datepicker" required>
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="row">
+                <label for="factura1_vendedor" class="col-md-1 control-label">Vendedor</label>
+                <div class="form-group col-md-6">
+                    <select name="factura1_vendedor" id="factura1_vendedor" class="form-control select2-default">
+                        @foreach( App\Models\Base\Tercero::getSellers() as $key => $value)
+                        	<option  value="{{ $key }}">{{ $value }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-12">
+                	<label for="factura1_observaciones" class="control-label">Observaciones</label>
+                    <textarea id="factura1_observaciones" name="factura1_observaciones" class="form-control" rows="2" placeholder="Observaciones"></textarea>
+                </div>
+            </div>
 		</script>
 	</section>
 @stop

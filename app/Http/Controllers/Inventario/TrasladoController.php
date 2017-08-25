@@ -9,7 +9,7 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Inventario\Traslado1,App\Models\Inventario\Traslado2,App\Models\Inventario\TipoTraslado,App\Models\Inventario\Producto,App\Models\Inventario\Lote,App\Models\Inventario\Prodbode,App\Models\Inventario\Inventario,App\Models\Inventario\Rollo;
 use App\Models\Base\Documentos, App\Models\Base\Sucursal;
-use DB,Log,Datatables,Auth;
+use DB,Log,Datatables,Auth, App, View;
 
 class TrasladoController extends Controller
 {
@@ -308,5 +308,26 @@ class TrasladoController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * Export pdf the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function exportar($id)
+    {
+        $traslado = Traslado1::getTraslado($id);
+        if(!$traslado instanceof Traslado1) {
+            abort(404);
+        }
+        $detalle = Traslado2::getTraslado2($traslado->id);
+        $title = sprintf('Traslado %s', $traslado->traslado1_numero);
+
+        // Export pdf
+        $pdf = App::make('dompdf.wrapper');
+        $pdf->loadHTML(View::make('inventario.traslados.export',  compact('traslado', 'detalle', 'title'))->render());
+        return $pdf->stream(sprintf('%s_%s_%s_%s.pdf', 'traslado', $traslado->id, date('Y_m_d'), date('H_m_s')));
     }
 }

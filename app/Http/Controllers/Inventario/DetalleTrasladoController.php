@@ -24,11 +24,7 @@ class DetalleTrasladoController extends Controller
         if ($request->ajax()) {
             $detalle = [];
             if($request->has('traslado')) {
-                $query = Traslado2::query();
-                $query->select('producto.id', 'traslado2_cantidad', 'traslado2_costo', 'producto_serie', 'producto_nombre');
-                $query->join('producto', 'traslado2_producto', '=', 'producto.id');
-                $query->where('traslado2_traslado1', $request->traslado);
-                $detalle = $query->get();
+                $detalle = Traslado2::getTraslado2($request->traslado);
             }
             return response()->json($detalle);
         }

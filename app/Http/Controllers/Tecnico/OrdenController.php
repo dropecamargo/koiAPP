@@ -7,9 +7,12 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\Models\Base\Tercero, App\Models\Base\Documentos, App\Models\Base\Sucursal, App\Models\Base\Regional, App\Models\Base\Contacto, App\Models\Inventario\Producto, App\Models\Tecnico\Orden, App\Models\Tecnico\Sitio, App\Models\Tecnico\Visita, App\Models\Tecnico\RemRepu, App\Models\Tecnico\RemRepu2;
+use App\Models\Base\Tercero, App\Models\Base\Documentos, App\Models\Base\Sucursal, App\Models\Base\Regional, App\Models\Base\Contacto,App\Models\Base\PuntoVenta;
+use App\Models\Tecnico\Orden, App\Models\Tecnico\Sitio, App\Models\Tecnico\Visita, App\Models\Tecnico\RemRepu, App\Models\Tecnico\RemRepu2;
+use App\Models\Inventario\Producto, App\Models\Inventario\SubCategoria, App\Models\Inventario\Lote, App\Models\Inventario\Prodbode, App\Models\Inventario\Inventario, App\Models\Inventario\Rollo;
+use App\Models\Cartera\Factura1, App\Models\Cartera\Factura2, App\Models\Cartera\Factura3;
 
-use DB, Log, Datatables, Auth, Mail;
+use DB, Log, Datatables, Auth, Mail, App, View;
 
 class OrdenController extends Controller
 {
@@ -183,7 +186,6 @@ class OrdenController extends Controller
 
                     // Commit Transaction
                     DB::commit();
-                    
                     return response()->json(['success' => true, 'id' => $orden->id]);
                 }catch(\Exception $e){
                     DB::rollback();
@@ -318,59 +320,190 @@ class OrdenController extends Controller
         }
         abort(404);
     }
+    /**
+     * Evaluate actions close orden.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function evaluate(Request $request, $id)
+    {
+        if ($request->ajax()) {
 
+            $orden = Orden::findOrFail($id);
+            if(!$orden instanceof Orden){
+                abort(404);
+            }
+
+            // Valid 
+            $valid = Orden::closeValid($orden->id);
+            if ( !$valid->success ) {
+                return response()->json(['success' => false, 'errors' => $valid->errors ]);
+            }
+
+            if ($valid->numFacturado > 0) {
+                return response()->json(['success' => true, 'action' => 'render']);
+            }else {
+                DB::beginTransaction();
+                try {
+                    // Orden
+                    $orden->orden_abierta = false;
+                    $orden->orden_usuario_cerro = Auth::user()->id;
+                    $orden->orden_fh_cerro = date('Y-m-d H:m:s');
+                    $orden->save();
+                    
+                    // Commit Transaction
+                    DB::commit();
+                    return response()->json(['success' => true, 'msg' => 'Orden cerrada con exito.' , 'action' => 'redirect']);
+                }catch(\Exception $e){
+                    DB::rollback();
+                    Log::error($e->getMessage());
+                    return response()->json(['success' => false, 'errors' => trans('app.exception')]);
+                }
+            }
+        }
+        abort(403);
+    }
     /**
      * Cerrar the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function cerrar(Request $request, $id)
-    {
+    public function cerrar(Request $request)
+    {   
         if ($request->ajax()) {
-            $orden = Orden::findOrFail($id);
+            $orden = Orden::findOrFail($request->id_orden);
             if(!$orden instanceof Orden){
                 abort(404);
             }
-
-            DB::beginTransaction();
-            try {
-                // Validar remrepu
-                $remrepu = RemRepu::where('remrepu1_orden', $orden->id)->where('remrepu1_tipo', 'R')->get();
-                if( count($remrepu) <= 0){
-                    DB::rollback();
-                    return response()->json(['success' => false, 'errors' => 'No existen legalizaciones, por favor verifique la información para poder cerrar la orden.']);
-                }
-                foreach ($remrepu as $father) {
-                    $remrepu2 = RemRepu2::where('remrepu2_remrepu1', $father->id)->first();
-                    if($remrepu2->remrepu2_saldo != 0){
+            $data = $request->all();
+            $factura1 = new Factura1;
+            if ($factura1->isValid($data) ) {
+                DB::beginTransaction();
+                try {
+                    //Validar documentos
+                    $documento = Documentos::where('documentos_codigo', Factura1::$default_document)->first();
+                    if (!$documento instanceof Documentos) {
                         DB::rollback();
-                        return response()->json(['success' => false, 'errors' => 'La legalizacion no esta completa, por favor verifique la información para poder cerrar la orden.']);
+                        return response()->json(['success'=> false, 'errors' => 'No es posible recuperar documentos,por favor verifique la información ó por favor consulte al administrador.']);
                     }
-                }
+                    // Validar vendedor
+                    $vendedor = Tercero::find($request->factura1_vendedor);
+                    if (!$vendedor instanceof Tercero) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar vendedor, por favor verifique la información o consulte al administrador']);
+                    }
+                    // Validar sucursal
+                    $sucursal = Sucursal::find($request->factura1_sucursal);
+                    if(!$sucursal instanceof Sucursal) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar sucursal,por favor verifique la información ó por favor consulte al administrador.']);
+                    }
+                    // Validar punto venta
+                    $puntoventa = PuntoVenta::find($request->factura1_puntoventa);
+                    if(!$puntoventa instanceof PuntoVenta) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar punto venta,por favor verifique la información ó por favor consulte al administrador.']);
+                    }
+                    // Consecutive punto venta 
+                    $consecutive = $puntoventa->puntoventa_numero + 1;
 
-                // Validar vistia minima
-                $visita = Visita::where('visita_orden', $orden->id)->get();
-                if(count($visita) == 0){
+                    // Factura1
+                    $factura1->fill($data);
+                    $factura1->factura1_sucursal = $sucursal->id;
+                    $factura1->factura1_numero = $consecutive;
+                    $factura1->factura1_puntoventa = $puntoventa->id;
+                    $factura1->factura1_prefijo = $puntoventa->puntoventa_prefijo;
+                    $factura1->factura1_documentos = $documento->id;
+                    $factura1->factura1_tercero = $orden->orden_tercero;
+                    $factura1->factura1_tercerocontacto = $orden->orden_contacto;
+                    $factura1->factura1_vendedor = $vendedor->id;
+                    $factura1->factura1_usuario_elaboro = Auth::user()->id;
+                    $factura1->factura1_fh_elaboro = date('Y-m-d H:m:s');
+                    $factura1->save();
+
+                    foreach ($data['factura2'] as $item) {
+                        if ($item['remrepu2_facturado']) {
+                            $producto = Producto::where('producto_serie', $item['remrepu2_serie'])->first();
+                            if (!$producto instanceof Producto) {
+                                DB::rollback();
+                                return response()->json(['success' => false , 'errors' => 'No es posible recuperar producto, por favor verifique la información ó por favor consulte al administrador.']);
+                            }
+                            //SubCategoria validate
+                            $subcategoria = SubCategoria::find($producto->producto_subcategoria);
+                            if (!$subcategoria instanceof SubCategoria) {
+                                DB::rollback();
+                                return response()->json(['success' => false, 'errors' => 'No es posible recuperar subcategoria, por favor verifique información o consulte al administrador']);
+                            }
+
+                            //Detalle factura
+                            $factura2 = new Factura2;
+                            $factura2->fill($item);
+                            $factura2->factura2_factura1 = $factura1->id;
+                            $factura2->factura2_producto = $producto->id;
+                            $factura2->factura2_subcategoria = $subcategoria->id;
+                            $factura2->factura2_margen = $subcategoria->subcategoria_margen_nivel1;
+                            $factura2->save();
+
+                            $inventory = Orden::inventarioFactura( $producto, $orden->id, $factura1->id ,$sucursal->id, $item['remrepu2_facturado'] );
+                            if ($inventory != 'OK') {
+                                DB::rollback();
+                                return response()->json(['success' => false, 'errors' => $inventory ]);
+                            }
+                        }
+                    }
+                    $factura3 = Factura3::storeFactura3($factura1);
+                    if (!$factura3) {
+                        DB::rollback();
+                        return response()->json(['success'=> false, 'errors'=>'No es posible realizar factura3,por favor verifique la información ó por favor consulte al administrador']);
+                    }
+                    
+                    // Update consecutive puntoventa_numero in PuntoVenta
+                    $puntoventa->puntoventa_numero = $consecutive;
+                    $puntoventa->save();
+                    
+                    // Orden
+                    $orden->orden_abierta = false;
+                    $orden->orden_usuario_cerro = Auth::user()->id;
+                    $orden->orden_fh_cerro = date('Y-m-d H:m:s');
+                    $orden->save();
+                    
+                    // Commit Transaction
                     DB::rollback();
-                    return response()->json(['success' => false, 'errors' => 'Necesita ingresar una visita, por favor verifique la información para poder cerrar la orden.']);
-                }
+                    return response()->json(['success' => false, 'errors' => 'TODO OK']);
 
-                // Orden
-                $orden->orden_abierta = false;
-                $orden->orden_usuario_cerro = Auth::user()->id;
-                $orden->orden_fh_cerro = date('Y-m-d H:m:s');
-                $orden->save();
-                
-                // Commit Transaction
-                DB::commit();
-                return response()->json(['success' => true, 'msg' => 'Orden cerrada con exito.']);
-            }catch(\Exception $e){
-                DB::rollback();
-                Log::error($e->getMessage());
-                return response()->json(['success' => false, 'errors' => trans('app.exception')]);
+                    // DB::commit();
+                    // return response()->json(['success' => true, 'msg' => 'Orden cerrada con exito.']);
+                }catch(\Exception $e){
+                    DB::rollback();
+                    Log::error($e->getMessage());
+                    return response()->json(['success' => false, 'errors' => trans('app.exception')]);
+                }
             }
+            return response()->json(['success' => false, 'errors' => $factura1->errors]);
         }
-        abort(403);
     }
+    /**
+     * Export pdf the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function exportar($id)
+    {
+        $orden = Orden::getOrden($id);
+        if(!$orden instanceof Orden) {
+            abort(404);
+        }
+        $visita = Visita::getVisita($orden->id);
+        $remision = RemRepu::getRemision($orden->id);
+        $title = sprintf('Orden N° %s', $orden->orden_numero);
+
+        // Export pdf
+        $pdf = App::make('dompdf.wrapper');
+        $pdf->loadHTML(View::make('tecnico.orden.export',  compact('orden', 'visita', 'remision', 'title'))->render());
+        return $pdf->stream(sprintf('%s_%s_%s_%s.pdf', 'orden', $orden->id, date('Y_m_d'), date('H_m_s')));
+    }
+
+
 }

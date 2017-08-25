@@ -12,6 +12,9 @@ app || (app = {});
     app.ShowTrasladoUbicacionView = Backbone.View.extend({
 
         el: '#trasladosubicaciones-show',
+        events: {
+            'click .export-trasladoubicacion': 'exportTrasladoUbicacion',
+        },
 
         /**
         * Constructor Method
@@ -42,6 +45,15 @@ app || (app = {});
                     }
                 }
             });
+        },
+        /*
+        * Redirect export pdf
+        */
+        exportTrasladoUbicacion:function(e){
+            e.preventDefault(); 
+
+            // Redirect to pdf
+            window.open( window.Misc.urlFull( Route.route('trasladosubicaciones.exportar', { trasladosubicaciones: this.model.get('id') })) );
         }
     });
 

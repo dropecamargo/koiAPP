@@ -4,8 +4,8 @@ namespace App\Models\Tecnico;
 
 use Illuminate\Database\Eloquent\Model;
 
-use Validator;
 use App\Models\Tecnico\RemRepu2;
+use Validator, DB;
 
 class RemRepu extends Model
 {
@@ -41,5 +41,19 @@ class RemRepu extends Model
         }
         $this->errors = $validator->errors();
         return false;
+    }
+    // Use en export.pdf
+    public static function getRemision($orden) 
+    {
+        $query = RemRepu::query();
+        $query->select('remrepu2.*','remrepu1.*', 'sucursal_nombre',DB::raw("CONCAT((CASE WHEN tercero_persona = 'N' THEN CONCAT(tercero_nombre1,' ',tercero_nombre2,' ',tercero_apellido1,' ',tercero_apellido2,(CASE WHEN (tercero_razonsocial IS NOT NULL AND tercero_razonsocial != '') THEN CONCAT(' - ', tercero_razonsocial) ELSE '' END)) ELSE tercero_razonsocial END)) AS tecnico_nombre"), 'producto_nombre', 'producto_serie');
+        $query->join('remrepu2', 'remrepu1.id', '=', 'remrepu2.remrepu2_remrepu1');
+        $query->join('producto', 'remrepu2.remrepu2_producto', '=', 'producto.id');
+        $query->join('tercero', 'remrepu1_tecnico', '=', 'tercero.id');
+        $query->join('sucursal', 'remrepu1_sucursal', '=', 'sucursal.id');
+        $query->where('remrepu1_orden',$orden);
+
+        $remrepu1 = $query->get();
+        return $remrepu1;
     }
 }

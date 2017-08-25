@@ -36,4 +36,15 @@ class TrasladoUbicacion2 extends Model
         $this->errors = $validator->errors();
         return false;
     }
+
+    public static function getTrasladoUbicacion2($id)
+    {
+        $query = TrasladoUbicacion2::query();
+        $query->select('producto.id', 'trasladou2_cantidad', 'producto_serie', 'producto_nombre');
+        $query->join('producto', 'trasladou2_producto', '=', 'producto.id');
+        $query->where('trasladou2_trasladou1', $id);
+        $trasladou2 = $query->get();
+        return $trasladou2;
+    }
+
 }

@@ -12,6 +12,9 @@ app || (app = {});
     app.ShowPedidocView = Backbone.View.extend({
 
         el: '#pedidoc-show',
+        events: {
+            'click .export-pedidoc': 'exportPedido',
+        },
 
         /**
         * Constructor Method
@@ -43,6 +46,16 @@ app || (app = {});
                     }
                 }
             });
+        },
+
+        /*
+        * Redirect export pdf
+        */
+        exportPedido:function(e){
+            e.preventDefault(); 
+
+            // Redirect to pdf
+            window.open( window.Misc.urlFull( Route.route('pedidosc.exportar', { pedidosc: this.model.get('id') })) );
         }
     });
 

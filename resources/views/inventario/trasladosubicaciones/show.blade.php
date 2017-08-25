@@ -17,6 +17,19 @@
                     <label class="control-label">Número</label>
                     <div>{{ $trasladou->trasladou1_numero }}</div>
                 </div>
+
+                <div class="form-group col-md-6">
+                    <div class="dropdown pull-right">
+                    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Opciones <span class="caret"></span></button>
+                        <ul class="dropdown-menu">
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="#" class="export-trasladoubicacion">
+                                    <i class="fa fa-file-pdf-o"></i>Exportar
+                                </a>
+                            </li>
+                        </ul>
+                    </div>           
+                </div>
             </div>
 
             <div class="row">

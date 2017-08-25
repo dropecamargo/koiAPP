@@ -80,6 +80,7 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::group(['prefix' => 'pedidosc'], function()
 	{
 		Route::resource('detalle', 'Comercial\DetallePedidoController');
+		Route::get('exportar/{pedidosc}', ['as' => 'pedidosc.exportar', 'uses' => 'Comercial\PedidoController@exportar']);
 	});
 	Route::resource('presupuestoasesor', 'Comercial\PresupuestoAsesorController', ['only' => ['index', 'store']]);
 	Route::resource('pedidosc', 'Comercial\PedidoController',['except' => ['destroy']]);
@@ -159,10 +160,12 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::group(['prefix' => 'traslados'], function()
 	{
 		Route::resource('detalle', 'Inventario\DetalleTrasladoController');
+		Route::get('exportar/{traslados}', ['as' => 'traslados.exportar', 'uses' => 'Inventario\TrasladoController@exportar']);
 	});
 	Route::group(['prefix' => 'trasladosubicaciones'], function()
 	{
 		Route::resource('detalle', 'Inventario\DetalleTrasladoUbicacionController');
+		Route::get('exportar/{trasladosubicaciones}', ['as' => 'trasladosubicaciones.exportar', 'uses' => 'Inventario\TrasladoUbicacionController@exportar']);
 	});
 
 	Route::group(['prefix' => 'entradas'], function()
@@ -266,8 +269,12 @@ Route::group(['middleware' => 'auth'], function(){
 		Route::resource('visitas','Tecnico\VisitaController',['only'=>['index', 'store', 'destroy']]);
 		Route::resource('remrepuestos','Tecnico\RemRepuController',['only'=>['index', 'store']]);
 		Route::resource('imagenes','Tecnico\OrdenImagenController',['only'=>['index', 'store', 'destroy']]);
-		Route::get('cerrar/{ordenes}', ['as' => 'ordenes.cerrar', 'uses' => 'Tecnico\OrdenController@cerrar']);
+
+		Route::post('cerrar', ['as' => 'ordenes.cerrar', 'uses' => 'Tecnico\OrdenController@cerrar']);
+		
 		Route::get('mail/{ordenes}', ['as' => 'ordenes.mail', 'uses' => 'Tecnico\OrdenController@mail']);
+		Route::get('exportar/{ordenes}', ['as' => 'ordenes.exportar', 'uses' => 'Tecnico\OrdenController@exportar']);
+		Route::get('evaluate/{ordenes}', ['as' => 'ordenes.evaluate', 'uses' => 'Tecnico\OrdenController@evaluate']);
 
 		Route::group(['prefix' => 'detalle'],function(){
 			Route::resource('remrepuestos','Tecnico\RemRepuDetalleController',['only'=>['index', 'store', 'update']]);

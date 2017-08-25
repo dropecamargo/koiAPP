@@ -33,7 +33,7 @@ class CreateFactura1Table extends Migration
             $table->double('factura1_retencion');
             $table->double('factura1_total');
             $table->text('factura1_observaciones');
-            $table->integer('factura1_pedidoc1')->unsigned();
+            $table->integer('factura1_pedidoc1')->unsigned()->nullable();
             $table->boolean('factura1_anulada')->default(false);
             $table->integer('factura1_usuario_elaboro')->unsigned()->nullable();
             $table->dateTime('factura1_fh_elaboro');

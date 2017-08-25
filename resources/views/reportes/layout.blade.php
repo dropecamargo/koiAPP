@@ -44,12 +44,20 @@
 				}
 
 				.titleespecial{
-					font-size: 10;
+					font-size: 9;
 					font-weight: bold;
 					background-color: #000000;
 					color: #FFFFFF;
 				}
-
+				.subtitleespecial{
+					font-size: 8;
+					font-weight: bold;
+					background-color: #f2f2f2;
+					color: #000000;
+				}
+				.separator {
+					border-bottom: 1px solid black;
+				}
 				.rtable {
 					width: 100%;
 				    border-collapse: collapse;

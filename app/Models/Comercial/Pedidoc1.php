@@ -65,9 +65,10 @@ class Pedidoc1 extends BaseModel
 	public static function getPedidoc($id)
 	{
 		$query = Pedidoc1::query();
-		$query->select('pedidoc1.*','sucursal_nombre','tercero_nit',DB::raw("CONCAT(tercero_nombre1, ' ', tercero_nombre2, ' ', tercero_apellido1, ' ', tercero_apellido2) as tercero_nombre"));
+		$query->select('pedidoc1.*','sucursal_nombre','t.tercero_nit',DB::raw("CONCAT(t.tercero_nombre1, ' ', t.tercero_nombre2, ' ', t.tercero_apellido1, ' ', t.tercero_apellido2) as tercero_nombre"), DB::raw("CONCAT(elab.tercero_nombre1, ' ', elab.tercero_nombre2, ' ', elab.tercero_apellido1, ' ', elab.tercero_apellido2) as elaboro_nombre"));
 		$query->join('sucursal','pedidoc1.pedidoc1_sucursal','=', 'sucursal.id');
-		$query->join('tercero','pedidoc1.pedidoc1_tercero','=', 'tercero.id');
+		$query->join('tercero as t','pedidoc1.pedidoc1_tercero','=', 't.id');
+		$query->join('tercero as elab','pedidoc1.pedidoc1_tercero','=', 'elab.id');
 		$query->where('pedidoc1.id',$id);
 		return $query->first();
 	}

@@ -27,7 +27,7 @@ app || (app = {});
             'click .submit-legalizacion': 'submitLegalizacion',
             'submit #form-legalizacion': 'clickAddlegalizacion',
 
-            'click .click-cerrar-orden': 'clickCloseOrden',
+            'click .click-evaluate-orden': 'clickEvaluateOrden',
         },
 
         /**
@@ -61,7 +61,6 @@ app || (app = {});
             this.$el.html( this.template(attributes) );
 
             this.$form = this.$('#form-orden');
-            this.$modalCreate =  $('#modal-create-remision');
 
             this.$formvisitasp = this.$('#form-visitas');
             this.$formremision = this.$('#form-remision');
@@ -171,8 +170,6 @@ app || (app = {});
                 var data = window.Misc.formToJson( e.target );
                     data.orden_id = this.model.get('id');
 
-                this.$modalCreate.modal('show');
-
                 // Open TecnicoActionView
                 if ( this.tecnicoActionView instanceof Backbone.View ){
                     this.tecnicoActionView.stopListening();
@@ -184,6 +181,7 @@ app || (app = {});
                     collection: this.remision,
                     parameters: {
                         data: data,
+                        action: 'remision',
                         remrepu2: this.remrepu,
                     }
                 });
@@ -318,22 +316,21 @@ app || (app = {});
                 });
             }
         },
-
         /**
-        *  Close orden
+        * Evaluate orden
         */
-        clickCloseOrden: function(e){
+
+        clickEvaluateOrden: function(e) {
             e.preventDefault();
             var _this = this;
-            // Cerrar orden
-            $.ajax({
-                url: window.Misc.urlFull( Route.route('ordenes.cerrar', { ordenes: _this.model.get('id') }) ),
+            
+            $.ajax ({
+                url: window.Misc.urlFull( Route.route('ordenes.evaluate', { ordenes: _this.model.get('id') }) ),
                 type: 'GET',
                 beforeSend: function() {
                     window.Misc.setSpinner( _this.spinner );
                 }
-            })
-            .done(function(resp) {
+            }).done(function(resp){
                 window.Misc.removeSpinner( _this.spinner );
 
                 if(!_.isUndefined(resp.success)) {
@@ -347,15 +344,32 @@ app || (app = {});
                         alertify.error(text);
                         return;
                     }
+                    if (resp.action == 'redirect') {
+                        window.Misc.successRedirect( resp.msg, window.Misc.urlFull(Route.route('ordenes.show', { ordenes: _this.model.get('id') })) );
+                    } else if (resp.action == 'render') {
+                        // Open TecnicoActionView
+                        if ( _this.tecnicoActionView instanceof Backbone.View ){
+                            _this.tecnicoActionView.stopListening();
+                            _this.tecnicoActionView.undelegateEvents();
+                        }
+                        console.log(_this.remrepu.toJSON());
+                        _this.tecnicoActionView = new app.TecnicoActionView({
+                            model: _this.model,
+                            parameters: {
+                                action: 'factura',
+                                data: _this.remrepu.toJSON()
+                            }
+                        });
 
-                    window.Misc.successRedirect( resp.msg, window.Misc.urlFull(Route.route('ordenes.show', { ordenes: _this.model.get('id') })) );
+                        _this.tecnicoActionView.render();
+                    } 
                 }
-            })
-            .fail(function(jqXHR, ajaxOptions, thrownError) {
+            }).fail(function(jqXHR, ajaxOptions, thrownError) {
                 window.Misc.removeSpinner( _this.spinner );
                 alertify.error(thrownError);
             });
         },
+
 
         /**
         * fires libraries js

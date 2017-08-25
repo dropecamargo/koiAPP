@@ -12,7 +12,9 @@ app || (app = {});
     app.ShowTrasladoView = Backbone.View.extend({
 
         el: '#traslados-show',
-
+        events: {
+            'click .export-traslado': 'exportTraslado',
+        },
         /**
         * Constructor Method
         */
@@ -42,6 +44,16 @@ app || (app = {});
                     }
                 }
             });
+        }, 
+
+        /*
+        * Redirect export pdf
+        */
+        exportTraslado:function(e){
+            e.preventDefault(); 
+
+            // Redirect to pdf
+            window.open( window.Misc.urlFull( Route.route('traslados.exportar', { traslados: this.model.get('id') })) );
         }
     });
 

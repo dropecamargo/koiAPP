@@ -10,8 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Comercial\Pedidoc1, App\Models\Comercial\Pedidoc2;
 use App\Models\Inventario\Producto,App\Models\Inventario\SubCategoria;
 use App\Models\Base\Tercero,App\Models\Base\Sucursal,App\Models\Base\Documentos,App\Models\Base\Contacto;
-
-use DB,Log,Datatables,Auth;
+use DB, Log, Datatables, Auth, App, View;
 
 class PedidoController extends Controller
 {
@@ -225,5 +224,26 @@ class PedidoController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * Export pdf the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function exportar($id)
+    {
+        $pedidoc = Pedidoc1::getPedidoc($id);
+        if(!$pedidoc instanceof Pedidoc1) {
+            abort(404);
+        }
+        $detalle = Pedidoc2::getPedidoc2($pedidoc->id);
+        $title = sprintf('Pedido comercial %s', $pedidoc->pedidoc1_numero);
+
+        // Export pdf
+        $pdf = App::make('dompdf.wrapper');
+        $pdf->loadHTML(View::make('comercial.pedidos.export',  compact('pedidoc', 'detalle', 'title'))->render());
+        return $pdf->stream(sprintf('%s_%s_%s_%s.pdf', 'pedidoc', $pedidoc->id, date('Y_m_d'), date('H_m_s')));
     }
 }

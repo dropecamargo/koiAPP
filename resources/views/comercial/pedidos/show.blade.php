@@ -23,6 +23,28 @@
                         <label class="control-label">Número</label>
                         <div>{{ $pedidoComercial->pedidoc1_numero }}</div>
                     </div>
+                    @if(!$pedidoComercial->pedidoc1_anular)
+                        <div class="form-group col-md-3">
+                            <div class="dropdown pull-right">
+                            <label class="label label-success">ESTADO: ACTIVO</label>
+                                <a href="#" class="dropdown-toggle a-color" data-toggle="dropdown">Opciones <span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li role="presentation">
+                                        <a role="menuitem" tabindex="-1" href="#" class="export-pedidoc">
+                                            <i class="fa fa-file-pdf-o"></i>Exportar
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    @else
+                        <label class=" label label-default col-md-1  col-md-offset-2">ESTADO: ANULADA</label>
+                        <div class="form-group col-md-1">
+                            <button type="button" class="btn btn-block btn-danger btn-sm export-pedidoc">
+                                <i class="fa fa-file-pdf-o"></i>
+                            </button>
+                        </div>
+                    @endif
             	</div>
             	<div class="row">
     		        <div class="form-group col-md-12">

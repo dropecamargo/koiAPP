@@ -581,7 +581,7 @@
                                                             <div class="info-box-content">
                                                                 <span class="info-box-number"><h5><b>¿Está seguro que desea cerrar la orden?</b></h5></span>
                                                                 <span>
-                                                                    <div class="col-sm-2 col-sm-offset-10 click-cerrar-orden">
+                                                                    <div class="col-sm-2 col-sm-offset-10 click-evaluate-orden">
                                                                         <a href="#" class="btn btn-sm btn-default">SI</a>
                                                                     </div>
                                                                 </span>

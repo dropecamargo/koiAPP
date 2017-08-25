@@ -20,6 +20,11 @@
                     <li><a href="#tab_visitas" data-toggle="tab">Visitas</a></li>
                     <li><a href="#tab_remisiones" data-toggle="tab">Remisiones</a></li>
                     <li><a href="#tab_imagenes" data-toggle="tab">Imagenes</a></li>
+                    <li class="pull-right">
+                        <button type="button" class="btn btn-block btn-danger btn-sm export-orden">
+                            <i class="fa fa-file-pdf-o"></i>
+                        </button>
+                    </li>
                 </ul>
             </div>
 

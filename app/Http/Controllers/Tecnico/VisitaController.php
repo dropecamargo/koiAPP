@@ -7,10 +7,10 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use DB, Log, Cache,Auth;
 use App\Models\Tecnico\Visita, App\Models\Tecnico\Visitap, App\Models\Tecnico\Contadoresp, App\Models\Tecnico\Orden;
 use App\Models\Inventario\Producto;
 use App\Models\Base\Tercero;
+use DB, Log, Cache,Auth;
 
 class VisitaController extends Controller
 {
@@ -24,25 +24,8 @@ class VisitaController extends Controller
          
        if ($request->ajax())
         {
-            $query = Visita::query();
-            $query->where('visita_orden', $request->orden_id);
-            $query->select('visita.*',   
-                DB::raw("
-                    CONCAT(
-                        (CASE WHEN tercero_persona = 'N'
-                            THEN CONCAT(tercero_nombre1,' ',tercero_nombre2,' ',tercero_apellido1,' ',tercero_apellido2,
-                                (CASE WHEN (tercero_razonsocial IS NOT NULL AND tercero_razonsocial != '') THEN CONCAT(' - ', tercero_razonsocial) ELSE '' END)
-                            )
-                            ELSE tercero_razonsocial
-                        END)
-                    
-                    ) AS tercero_nombre"
-                ));
-            $query->join('orden', 'visita_orden', '=', 'orden.id');
-            $query->join('tercero', 'visita_tecnico', '=', 'tercero.id');
-            $query->orderBy('id', 'asc');
-
-            return response()->json( $query->get() );          
+            $query = Visita::getVisita($request->orden_id);
+            return response()->json( $query );          
         }
         abort(404);
      }

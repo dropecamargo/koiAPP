@@ -71,6 +71,7 @@ app || (app = {});
             });
             detalleFacturaModel.view = view;
             this.$el.append( view.render().el );
+            
             //setter subtotal de registro 
             this.setterModel(detalleFacturaModel);
             //totalize actually in collection

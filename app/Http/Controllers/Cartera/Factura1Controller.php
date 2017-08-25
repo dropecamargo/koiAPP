@@ -49,11 +49,6 @@ class Factura1Controller extends Controller
                     if ($request->has('sucursal')) {
                         $query->where('factura1_sucursal', $request->sucursal);
                     }
-
-                    // Devoluciones
-                    if ($request->has('devueltas')) {
-                        # code...
-                    }
                 })
             ->make(true);
         }
@@ -108,7 +103,7 @@ class Factura1Controller extends Controller
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'El contacto seleccionado no corresponde al cliente, por favor seleccione de nuevo el contacto o consulte al administrador.']);
                     }
-                    // VAlidar vendedor
+                    // Validar vendedor
                     $vendedor = Tercero::find($request->factura1_vendedor);
                     if (!$vendedor instanceof Tercero) {
                         DB::rollback();
@@ -148,6 +143,7 @@ class Factura1Controller extends Controller
                     $factura1->factura1_usuario_elaboro = Auth::user()->id;
                     $factura1->factura1_fh_elaboro = date('Y-m-d H:m:s');
                     $factura1->save();
+                    
                     foreach ($data['factura2'] as $item) {
                         $producto = Producto::where('producto_serie', $item['producto_serie'])->first();
                         if (!$producto instanceof Producto) {
@@ -164,7 +160,7 @@ class Factura1Controller extends Controller
                         $pedidoc2 = Pedidoc2::where('pedidoc2_pedidoc1', $pedidoc1->id)->where('pedidoc2_producto',$producto->id)->first();
                         if (!$pedidoc2 instanceof Pedidoc2) {
                             DB::rollback();
-                            return response()->json(['success'=>false , 'errors'=> 'No es posible recuperar subcategoria, por favor verifique información o consulte al administrador']);
+                            return response()->json(['success'=>false , 'errors'=> 'No es posible recuperar detalle pedido, por favor verifique información o consulte al administrador']);
                         }
 
                         //Detalle factura

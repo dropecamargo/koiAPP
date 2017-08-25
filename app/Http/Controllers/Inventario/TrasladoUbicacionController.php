@@ -9,7 +9,7 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Inventario\TrasladoUbicacion1,App\Models\Inventario\TrasladoUbicacion2,App\Models\Inventario\TipoTraslado,App\Models\Inventario\Producto,App\Models\Inventario\Lote,App\Models\Inventario\Prodbode,App\Models\Inventario\Inventario,App\Models\Inventario\Rollo;
 use App\Models\Base\Documentos, App\Models\Base\Sucursal, App\Models\Base\Ubicacion;
-use DB,Log,Datatables,Auth;
+use DB,Log,Datatables,Auth, App, View;
 
 class TrasladoUbicacionController extends Controller
 {
@@ -23,7 +23,7 @@ class TrasladoUbicacionController extends Controller
         if ($request->ajax()) {
             $query = TrasladoUbicacion1::query();
             $query->select('trasladou1.id', 'trasladou1_numero', 'trasladou1_fecha', 'o.ubicacion_nombre as ubicacion_origen', 'd.ubicacion_nombre as ubicacion_destino');   
-            $query->join('ubicacion as o', 'trasladou1_origen', '=', 'o.id');
+            $query->leftJoin('ubicacion as o', 'trasladou1_origen', '=', 'o.id');
             $query->join('ubicacion as d', 'trasladou1_destino', '=', 'd.id');
             return Datatables::of($query)->make(true);
         }
@@ -68,12 +68,16 @@ class TrasladoUbicacionController extends Controller
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar sucursal, por favor verifique la información o consulte al administrador.']);
                     }
-                    
-                    // Recuperar origen
-                    $origen = Ubicacion::find($request->trasladou1_origen);
-                    if(!$origen instanceof Ubicacion) {
-                        DB::rollback();
-                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar sucursal origen, por favor verifique la información o consulte al administrador.']);
+                    // Origen
+                    $origen = null;
+                    if ($request->has('trasladou1_origen')) {
+                        // Recuperar origen
+                        $origen = Ubicacion::find($request->trasladou1_origen);
+                        if(!$origen instanceof Ubicacion) {
+                            DB::rollback();
+                            return response()->json(['success' => false, 'errors' => 'No es posible recuperar sucursal origen, por favor verifique la información o consulte al administrador.']);
+                        }
+                        $origen = $origen->id;
                     }
                     // Recuperar destino
                     $destino = Ubicacion::find($request->trasladou1_destino);
@@ -97,7 +101,7 @@ class TrasladoUbicacionController extends Controller
                     $trasladou->trasladou1_numero = $consecutive;
                     $trasladou->trasladou1_tipotraslado = $tipotraslado->id;
                     $trasladou->trasladou1_sucursal = $sucursal->id;
-                    $trasladou->trasladou1_origen = $origen->id;
+                    $trasladou->trasladou1_origen = $origen;
                     $trasladou->trasladou1_destino = $destino->id;
                     $trasladou->trasladou1_usuario_elaboro = Auth::user()->id;
                     $trasladou->trasladou1_fh_elaboro = date('Y-m-d H:m:s'); 
@@ -130,7 +134,7 @@ class TrasladoUbicacionController extends Controller
                         //Maneja Serie
                         if ($producto->producto_maneja_serie == true) {
 
-                            $lote = Lote::actualizar($producto, $sucursal->id, '', 'S', 1, $origen->id ,$trasladou->trasladou1_fecha, null);
+                            $lote = Lote::actualizar($producto, $sucursal->id, '', 'S', 1, $origen ,$trasladou->trasladou1_fecha, null);
                             if (!$lote instanceof Lote) {
                                 dd($lote);
                                 DB::rollback();
@@ -142,7 +146,7 @@ class TrasladoUbicacionController extends Controller
                                 return response()->json(['success' => false, 'errors'=> $result]);
                             }
                             // Inventario
-                            $inventario = Inventario::movimiento($producto, $sucursal->id, $origen->id,'TRAU', $trasladou->id, 0, 1, [], [],$producto->producto_costo, $producto->producto_costo,$lote->id, []);
+                            $inventario = Inventario::movimiento($producto, $sucursal->id, $origen,'TRAU', $trasladou->id, 0, 1, [], [],$producto->producto_costo, $producto->producto_costo,$lote->id, []);
                             if ($inventario != 'OK') {
                                 DB::rollback();
                                 return response()->json(['success' => false,'errors '=> $inventario]);
@@ -169,7 +173,7 @@ class TrasladoUbicacionController extends Controller
                                     
                                      list($text, $rollo) = explode("_", $key);
                                     // Individualiza en rollo --- $rollo hace las veces de lote 
-                                    $rollo = Rollo::actualizar($producto, $sucursal->id, 'S', $rollo, $trasladou->trasladou1_fecha, $valueItem, $origen->id);
+                                    $rollo = Rollo::actualizar($producto, $sucursal->id, 'S', $rollo, $trasladou->trasladou1_fecha, $valueItem, $origen);
                                     if (!$rollo->success) {
                                         DB::rollback();
                                         return response()->json(['success' => false, 'errors' => $rollo->error]);
@@ -181,7 +185,7 @@ class TrasladoUbicacionController extends Controller
                                         return response()->json(['success' => false, 'errors'=> $result]);
                                     }
                                     // Inventario
-                                    $inventario = Inventario::movimiento($producto, $sucursal->id, $origen->id, 'TRAU', $trasladou->id, 0, 0, [], $rollo->cantidad, $producto->producto_costo, $producto->producto_costo,0,$rollo->rollos);
+                                    $inventario = Inventario::movimiento($producto, $sucursal->id, $origen, 'TRAU', $trasladou->id, 0, 0, [], $rollo->cantidad, $producto->producto_costo, $producto->producto_costo,0,$rollo->rollos);
                                     if ($inventario != 'OK') {
                                         DB::rollback();
                                         return response()->json(['success' => false,'errors '=> $inventario]);
@@ -209,7 +213,7 @@ class TrasladoUbicacionController extends Controller
 
                                 if ($value > 0) {
                                     // Individualiza en lote
-                                    $lote = Lote::actualizar($producto, $sucursal->id, $lote, 'S', $value, $origen->id);
+                                    $lote = Lote::actualizar($producto, $sucursal->id, $lote, 'S', $value, $origen);
                                     if (!$lote instanceof Lote) {
                                         DB::rollback();
                                         return response()->json(['success' => false, 'errors' => $lote]);
@@ -221,7 +225,7 @@ class TrasladoUbicacionController extends Controller
                                         return response()->json(['success' => false, 'errors'=> $result]);
                                     }
                                     // Inventario
-                                    $inventario = Inventario::movimiento($producto, $sucursal->id, $origen->id,'TRAU', $trasladou->id, 0, $value, [], [], $producto->producto_costo, $producto->producto_costo,$lote->id,[]);
+                                    $inventario = Inventario::movimiento($producto, $sucursal->id, $origen,'TRAU', $trasladou->id, 0, $value, [], [], $producto->producto_costo, $producto->producto_costo,$lote->id,[]);
                                     if ($inventario != 'OK') {
                                         DB::rollback();
                                         return response()->json(['success' => false,'errors '=> $inventario]);
@@ -271,7 +275,7 @@ class TrasladoUbicacionController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show(Request $request, $id)
-    {
+    {   
         $trasladou = TrasladoUbicacion1::getTrasladoUbicacion($id);
         if(!$trasladou instanceof TrasladoUbicacion1){
             abort(404);
@@ -316,5 +320,26 @@ class TrasladoUbicacionController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * Export pdf the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function exportar($id)
+    {
+        $trasladou = TrasladoUbicacion1::getTrasladoUbicacion($id);
+        if(!$trasladou instanceof TrasladoUbicacion1) {
+            abort(404);
+        }
+        $detalle = TrasladoUbicacion2::getTrasladoUbicacion2($trasladou->id);
+        $title = sprintf('Traslado ubicación n°%s', $trasladou->trasladou1_numero);
+
+        // Export pdf
+        $pdf = App::make('dompdf.wrapper');
+        $pdf->loadHTML(View::make('inventario.trasladosubicaciones.export',  compact('trasladou', 'detalle', 'title'))->render());
+        return $pdf->stream(sprintf('%s_%s_%s_%s.pdf', 'trasladou', $trasladou->id, date('Y_m_d'), date('H_m_s')));
     }
 }

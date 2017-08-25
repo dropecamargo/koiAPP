@@ -12,6 +12,9 @@ app || (app = {});
     app.ShowOrdenView = Backbone.View.extend({
 
         el: '#orden-show',
+        events:{
+            'click .export-orden': 'exportOrden'
+        },
 
         /**
         * Constructor Method
@@ -85,7 +88,17 @@ app || (app = {});
                     }
                 }
             });
-        }
+        },
+
+        /*
+        * Redirect export pdf
+        */
+        exportOrden:function(e){
+            e.preventDefault(); 
+
+            // Redirect to pdf
+            window.open( window.Misc.urlFull( Route.route('ordenes.exportar', { ordenes: this.model.get('id') })) );
+        },
     });
 
 })(jQuery, this, this.document);

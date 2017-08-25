@@ -44,10 +44,10 @@ class Factura1 extends BaseModel
 			'factura1_cuotas' => 'required|numeric|min:0',
 			'factura1_plazo' => 'required|numeric|min:0',
 			'factura1_primerpago' => 'required|date',
-			'factura1_descuento' => 'required|numeric',
-			'factura1_bruto' => 'required|numeric',
-			'factura1_iva' => 'required|numeric',
-			'factura1_total' => 'required|numeric'
+			'factura1_descuento' => 'numeric',
+			'factura1_bruto' => 'numeric',
+			'factura1_iva' => 'numeric',
+			'factura1_total' => 'numeric'
 		];
 
 		$validator = Validator::make($data, $rules);
