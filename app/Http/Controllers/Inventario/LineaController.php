@@ -56,11 +56,11 @@ class LineaController extends Controller
                     $linea->fillBoolean($data);
                     $linea->save();
 
-                    // Commit Transaction
-                    DB::commit();
                     //Forget cache
                     Cache::forget( Linea::$key_cache );
 
+                    // Commit Transaction
+                    DB::commit();
                     return response()->json(['success' => true, 'id' => $linea->id]);
                 }catch(\Exception $e){
                     DB::rollback();
@@ -119,6 +119,9 @@ class LineaController extends Controller
                     $linea->fill($data);
                     $linea->fillBoolean($data);
                     $linea->save();
+
+                    //Forget cache
+                    Cache::forget( Linea::$key_cache );
 
                     // Commit Transaction
                     DB::commit();

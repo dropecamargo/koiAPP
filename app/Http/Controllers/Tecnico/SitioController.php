@@ -57,12 +57,11 @@ class SitioController extends Controller
                     $sitio->fillBoolean($data);
                     $sitio->save();
 
-                    // Commit Transaction
-                    DB::commit();
-                    
                     //Forget Cache
                     Cache::forget( Sitio::$key_cache );
-                    
+
+                    // Commit Transaction
+                    DB::commit();
                     return response()->json(['success' => true, 'id' => $sitio->id]);
                 }catch(\Exception $e){
                     DB::rollback();
@@ -121,10 +120,12 @@ class SitioController extends Controller
                     $sitio->fill($data);
                     $sitio->fillBoolean($data);
                     $sitio->save();
+
+                    //Forget Cache
+                    Cache::forget( Sitio::$key_cache );
                     
                     // Commit Transaction
                     DB::commit();
-                    
                     return response()->json(['success' => true, 'id' => $sitio->id]);
                 }catch(\Exception $e){
                     DB::rollback();

@@ -137,7 +137,6 @@ class ChDevueltoController extends Controller
 
                     // Commit Transaction
                     DB::commit();
-                    // return response()->json(['success' => false, 'errors' => 'todo OK']);
                     return response()->json(['success' => true, 'msg' => 'Cheque posfechado devuelto con exito.']);
                 } catch (\Exception $e) {
                     DB::rollback();

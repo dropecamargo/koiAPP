@@ -58,11 +58,11 @@ class ModeloController extends Controller
                     $modelo->fillBoolean($data);
                     $modelo->save();
 
-                    // Commit Transaction
-                    DB::commit();
                     //Forget cache
                     Cache::forget( Modelo::$key_cache );
 
+                    // Commit Transaction
+                    DB::commit();
                     return response()->json(['success' => true, 'id' => $modelo->id]);
                 }catch(\Exception $e){
                     DB::rollback();
@@ -124,11 +124,11 @@ class ModeloController extends Controller
                     $modelo->fillBoolean($data);
                     $modelo->save();
 
+                    //Forget cache
+                    Cache::forget( Modelo::$key_cache );
+
                     // Commit Transaction
                     DB::commit();
-                    // Forget cache
-                    //Cache::forget( Modelo::$key_cache );
-
                     return response()->json(['success' => true, 'id' => $modelo->id]);
                 }catch(\Exception $e){
                     DB::rollback();

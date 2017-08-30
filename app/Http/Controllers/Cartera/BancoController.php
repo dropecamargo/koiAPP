@@ -57,6 +57,7 @@ class BancoController extends Controller
 
                     //Forget cache
                     Cache::forget( Banco::$key_cache );
+
                     // Commit Transaction
                     DB::commit();
                     return response()->json(['success' => true, 'id' => $banco->id]);
@@ -120,6 +121,7 @@ class BancoController extends Controller
 
                     //Forget cache
                     Cache::forget( Banco::$key_cache );
+                    
                     // Commit Transaction
                     DB::commit();
                     return response()->json(['success' => true, 'id' => $banco->id]);

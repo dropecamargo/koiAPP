@@ -57,10 +57,11 @@ class SolicitanteController extends Controller
                     $solicitante->fillBoolean($data);
                     $solicitante->save();
 
-                    // Commit Transaction
-                    DB::commit();
                     //Forget Cache
                     Cache::forget( Solicitante::$key_cache );
+
+                    // Commit Transaction
+                    DB::commit();
                     return response()->json(['success' => true, 'id' => $solicitante->id]);
                 }catch(\Exception $e){
                     DB::rollback();
@@ -119,9 +120,12 @@ class SolicitanteController extends Controller
                     $solicitante->fill($data);
                     $solicitante->fillBoolean($data);
                     $solicitante->save();
+
+                    //Forget Cache
+                    Cache::forget( Solicitante::$key_cache );
+                    
                     // Commit Transaction
                     DB::commit();
-                    
                     return response()->json(['success' => true, 'id' => $solicitante->id]);
                 }catch(\Exception $e){
                     DB::rollback();

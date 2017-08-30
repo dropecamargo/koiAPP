@@ -269,8 +269,7 @@ class OrdenController extends Controller
                     $orden->save();
 
                     // Commit Transaction
-                    DB::commit();          
-                              
+                    DB::commit();           
                     return response()->json(['success' => true, 'id' => $orden->id]);
                 }catch(\Exception $e){
                     DB::rollback();
@@ -423,7 +422,7 @@ class OrdenController extends Controller
                     $factura1->save();
 
                     foreach ($data['factura2'] as $item) {
-                        if ($item['remrepu2_facturado']) {
+                        if ($item['remrepu2_facturado'] > 0) {
                             $producto = Producto::where('producto_serie', $item['remrepu2_serie'])->first();
                             if (!$producto instanceof Producto) {
                                 DB::rollback();
@@ -438,14 +437,25 @@ class OrdenController extends Controller
 
                             //Detalle factura
                             $factura2 = new Factura2;
-                            $factura2->fill($item);
                             $factura2->factura2_factura1 = $factura1->id;
                             $factura2->factura2_producto = $producto->id;
                             $factura2->factura2_subcategoria = $subcategoria->id;
                             $factura2->factura2_margen = $subcategoria->subcategoria_margen_nivel1;
+                            $factura2->factura2_costo = $producto->producto_precio1;
+                            $factura2->factura2_precio_venta = $item['remrepu2_precio_venta'];
+                            $factura2->factura2_descuento_valor = $item['remrepu2_descuento_valor'];
+                            $factura2->factura2_descuento_porcentaje = $item['remrepu2_descuento_porcentaje'];
+                            $factura2->factura2_iva_valor = $item['remrepu2_iva_valor'];
+                            $factura2->factura2_iva_porcentaje = $item['remrepu2_iva_porcentaje'];
+                            $factura2->factura2_cantidad = empty($item['remrepu2_facturado']) ? $item['remrepu2_cantidad'] : $item['remrepu2_facturado'];
                             $factura2->save();
 
-                            $inventory = Orden::inventarioFactura( $producto, $orden->id, $factura1->id ,$sucursal->id, $item['remrepu2_facturado'] );
+                            $factura1->factura1_bruto += $factura2->factura2_precio_venta;
+                            $factura1->factura1_descuento += $factura2->factura2_descuento_valor;
+                            $factura1->factura1_total += ($factura2->factura2_precio_venta + $factura2->factura2_iva_valor) - $factura2->factura2_descuento_valor;
+                            $factura1->save();
+
+                            $inventory = Orden::inventarioFactura( $producto, $orden->id, $factura1->id ,$sucursal->id, $factura2->factura2_cantidad );
                             if ($inventory != 'OK') {
                                 DB::rollback();
                                 return response()->json(['success' => false, 'errors' => $inventory ]);
@@ -467,13 +477,9 @@ class OrdenController extends Controller
                     $orden->orden_usuario_cerro = Auth::user()->id;
                     $orden->orden_fh_cerro = date('Y-m-d H:m:s');
                     $orden->save();
-                    
-                    // Commit Transaction
-                    DB::rollback();
-                    return response()->json(['success' => false, 'errors' => 'TODO OK']);
 
-                    // DB::commit();
-                    // return response()->json(['success' => true, 'msg' => 'Orden cerrada con exito.']);
+                    DB::commit();
+                    return response()->json(['success' => true, 'msg' => 'Orden cerrada con exito.']);
                 }catch(\Exception $e){
                     DB::rollback();
                     Log::error($e->getMessage());

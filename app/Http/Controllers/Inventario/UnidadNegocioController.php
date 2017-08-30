@@ -55,11 +55,11 @@ class UnidadNegocioController extends Controller
                     $unidadnegocio->fillBoolean($data);
                     $unidadnegocio->save();
 
-                    // Commit Transaction
-                    DB::commit();
                     // Forget cache
                     Cache::forget( UnidadNegocio::$key_cache );
 
+                    // Commit Transaction
+                    DB::commit();
                     return response()->json(['success' => true, 'id' => $unidadnegocio->id]);
                 }catch(\Exception $e){
                     DB::rollback();
@@ -120,11 +120,11 @@ class UnidadNegocioController extends Controller
                     $unidadnegocio->fillBoolean($data);
                     $unidadnegocio->save();
 
-                    // Commit Transaction
-                    DB::commit();
                     // Forget cache
                     Cache::forget( UnidadNegocio::$key_cache );
 
+                    // Commit Transaction
+                    DB::commit();
                     return response()->json(['success' => true, 'id' => $unidadnegocio->id]);
                 }catch(\Exception $e){
                     DB::rollback();

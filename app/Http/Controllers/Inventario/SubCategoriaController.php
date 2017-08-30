@@ -54,10 +54,11 @@ class SubCategoriaController extends Controller
                     $subcategoria->fillBoolean($data);
                     $subcategoria->save();
 
-                    // Commit Transaction
-                    DB::commit();
                     //Forget cache
                     Cache::forget( SubCategoria::$key_cache );
+
+                    // Commit Transaction
+                    DB::commit();
                     return response()->json(['success' => true, 'id' => $subcategoria->id]);
                 }catch(\Exception $e){
                     DB::rollback();
@@ -116,6 +117,9 @@ class SubCategoriaController extends Controller
                     $subcategoria->fill($data);
                     $subcategoria->fillBoolean($data);
                     $subcategoria->save();
+
+                    //Forget cache
+                    Cache::forget( SubCategoria::$key_cache );
                     
                     // Commit Transaction
                     DB::commit();

@@ -20,6 +20,7 @@ app || (app = {});
             'click .submit-pedidosc' : 'submitForm',
             'submit #form-pedidoc1' :'onStore',
             'submit #form-detalle-pedidoc' :'onStoreItem',
+            
             'change .desc-porcentage': 'changePorcentage',
             'change .desc-value': 'changeValue',
             'change .desc-finally': 'changeFinally',

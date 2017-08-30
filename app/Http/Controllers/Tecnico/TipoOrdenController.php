@@ -57,10 +57,11 @@ class TipoOrdenController extends Controller
                     $tipoorden->fillBoolean($data);
                     $tipoorden->save();
 
-                    // Commit Transaction
-                    DB::commit();
                     //Forget Cache
                     Cache::forget( TipoOrden::$key_cache );
+
+                    // Commit Transaction
+                    DB::commit();
                     return response()->json(['success' => true, 'id' => $tipoorden->id]);
                 }catch(\Exception $e){
                     DB::rollback();
@@ -119,9 +120,12 @@ class TipoOrdenController extends Controller
                     $tipoorden->fill($data);
                     $tipoorden->fillBoolean($data);
                     $tipoorden->save();
+
+                    //Forget Cache
+                    Cache::forget( TipoOrden::$key_cache );
+                    
                     // Commit Transaction
                     DB::commit();
-                    
                     return response()->json(['success' => true, 'id' => $tipoorden->id]);
                 }catch(\Exception $e){
                     DB::rollback();

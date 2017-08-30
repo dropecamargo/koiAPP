@@ -76,12 +76,11 @@ class UbicacionController extends Controller
                     $ubicacion->ubicacion_sucursal = $sucursal->id;
                     $ubicacion->save();
 
-                    // Commit Transaction
-                    DB::commit();
-
                     // Forget cache
                     Cache::forget( Ubicacion::$key_cache );
 
+                    // Commit Transaction
+                    DB::commit();
                     return response()->json(['success' => true, 'id' => $ubicacion->id]);
                 }catch(\Exception $e){
                     DB::rollback();
@@ -149,12 +148,11 @@ class UbicacionController extends Controller
                     $ubicacion->ubicacion_sucursal = $sucursal->id;
                     $ubicacion->save();
 
-                    // Commit Transaction
-                    DB::commit();
-
                     // Forget cache
                     Cache::forget( Ubicacion::$key_cache );
-
+                    
+                    // Commit Transaction
+                    DB::commit();
                     return response()->json(['success' => true, 'id' => $ubicacion->id]);
                 }catch(\Exception $e){
                     DB::rollback();

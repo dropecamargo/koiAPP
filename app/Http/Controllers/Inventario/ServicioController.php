@@ -56,12 +56,11 @@ class ServicioController extends Controller
                     $servicio->fillBoolean($data);
                     $servicio->save();
 
-                    // Commit Transaction
-                    DB::commit();
-
                     //Forget cache
                     Cache::forget( Servicio::$key_cache );
-
+                    
+                    // Commit Transaction
+                    DB::commit();
                     return response()->json(['success' => true, 'id' => $servicio->id]);
                 }catch(\Exception $e){
                     DB::rollback();

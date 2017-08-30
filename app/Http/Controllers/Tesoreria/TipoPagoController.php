@@ -73,11 +73,11 @@ class TipoPagoController extends Controller
                     $tipopago->tipopago_plancuentas = $plancuenta->id;
                     $tipopago->save();
 
+                    // Forget cache
+                    Cache::forget( TipoPago::$key_cache );
+
                     // Commit Transaction
                     DB::commit();
-                    
-                    // Forget cache
-                    Cache::forget( TipoPago::$key_cache ); 
                     return response()->json(['success' => true, 'id' =>$tipopago->id]); 
                 } catch (\Exception $e) {
                     DB::rollback();
@@ -151,11 +151,11 @@ class TipoPagoController extends Controller
                     $tipopago->tipopago_plancuentas = $plancuenta->id;
                     $tipopago->save();
 
+                    // Forget cache
+                    Cache::forget( TipoPago::$key_cache );
+                    
                     // Commit Transaction
                     DB::commit();
-                    
-                    // Forget cache
-                    Cache::forget( TipoPago::$key_cache ); 
                     return response()->json(['success' => true, 'id' =>$tipopago->id]); 
                 } catch (\Exception $e) {
                     DB::rollback();

@@ -66,12 +66,11 @@ class SucursalController extends Controller
                         $sucursal->save();
                     }
 
-                    // Commit Transaction
-                    DB::commit();
-
                     // Forget cache
                     Cache::forget( Sucursal::$key_cache );
 
+                    // Commit Transaction
+                    DB::commit();
                     return response()->json(['success' => true, 'id' => $sucursal->id]);
                 }catch(\Exception $e){
                     DB::rollback();
@@ -146,12 +145,12 @@ class SucursalController extends Controller
                         $sucursal->sucursal_ubicaciones = true;
                     }
                     $sucursal->save();
-                    // Commit Transaction
-                    DB::commit();
-                    
+
                     // Forget cache
                     Cache::forget( Sucursal::$key_cache );
-
+                    
+                    // Commit Transaction
+                    DB::commit();
                     return response()->json(['success' => true, 'id' => $sucursal->id]);
                 }catch(\Exception $e){
                     DB::rollback();

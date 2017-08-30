@@ -21,8 +21,9 @@ class RemRepuDetalleController extends Controller
     {
         if ($request->ajax()) {
             $remrepu2 = RemRepu2::query();
-            $remrepu2->select('remrepu2.*', 'producto_nombre AS remrepu2_nombre', 'producto_serie AS remrepu2_serie', 'remrepu1_numero', 'sucursal_nombre', 'remrepu1_tipo');
+            $remrepu2->select('remrepu2.*', 'producto_precio1 AS remrepu2_costo', 'impuesto_porcentaje AS remrepu2_iva_porcentaje' ,'producto_nombre AS remrepu2_nombre', 'producto_serie AS remrepu2_serie', 'remrepu1_numero', 'sucursal_nombre', 'remrepu1_tipo');
             $remrepu2->join('producto', 'remrepu2_producto','=','producto.id');
+            $remrepu2->join('impuesto', 'producto_impuesto','=','impuesto.id');
             $remrepu2->join('remrepu1', 'remrepu2_remrepu1','=','remrepu1.id');
             $remrepu2->join('sucursal', 'remrepu1_sucursal','=','sucursal.id');
 
@@ -76,6 +77,7 @@ class RemRepuDetalleController extends Controller
             }
             return response()->json(['success' => false, 'errors' => $remrepu2->errors]);
         }
+        abort(403);
     }
 
     /**
@@ -109,7 +111,25 @@ class RemRepuDetalleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        if ($request->ajax()) {
+            $data = $request->all();
+            $remrepu2 = RemRepu2::findOrFail($id);
+            if ($remrepu2->isValid($data)) {
+                try {
+                    // Recupero instancia de producto
+                    $producto = Producto::where('producto_serie', $request->remrepu2_serie)->first();
+                    if(!$producto instanceof Producto) {
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar producto, por favor verifique la información o consulte al administrador.']);
+                    }
+                    return response()->json(['success' => true, 'id' => $remrepu2->id, 'remrepu2_subtotal' => $data['remrepu2_precio_venta'] ]);
+                }catch(\Exception $e){
+                    Log::error($e->getMessage());
+                    return response()->json(['success' => false, 'errors' => trans('app.exception')]);
+                }
+            }
+            return response()->json(['success' => false, 'errors' => $remrepu2->errors]);
+        }
+        abort(403);
     }
 
     /**

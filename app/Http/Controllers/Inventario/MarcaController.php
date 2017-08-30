@@ -57,11 +57,11 @@ class MarcaController extends Controller
                     $marca->fillBoolean($data);
                     $marca->save();
 
-                    // Commit Transaction
-                    DB::commit();
                     //Forget cache
                     Cache::forget( Marca::$key_cache );
 
+                    // Commit Transaction
+                    DB::commit();
                     return response()->json(['success' => true, 'id' => $marca->id]);
                 }catch(\Exception $e){
                     DB::rollback();
@@ -120,9 +120,12 @@ class MarcaController extends Controller
                     $marca->fill($data);
                     $marca->fillBoolean($data);
                     $marca->save();
+
+                    //Forget cache
+                    Cache::forget( Marca::$key_cache );
+                    
                     // Commit Transaction
                     DB::commit();
-                    
                     return response()->json(['success' => true, 'id' => $marca->id]);
                 }catch(\Exception $e){
                     DB::rollback();

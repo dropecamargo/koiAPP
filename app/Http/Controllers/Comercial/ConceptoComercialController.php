@@ -60,7 +60,6 @@ class ConceptoComercialController extends Controller
                     // Commit Transaction
                     DB::commit();
                     return response()->json(['success' => true, 'id' => $conceptocomercial->id]);
-
                 } catch (\Exception $e) {
                     DB::rollback();
                     Log::error($e->getMessage());

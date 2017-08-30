@@ -23,9 +23,16 @@ app || (app = {});
  			'remrepu2_saldo': '',
  			'remrepu2_devuelto': '',
  			'remrepu2_usado': '',
+            'remrepu2_precio_venta' : 0,
+            'remrepu2_descuento_valor': 0,
+            'remrepu2_descuento_porcentaje': 0,
+            'remrepu2_iva_porcentaje': 0,
+            'remrepu2_costo': 0,
+            'remrepu2_subtotal': 0,
+            'remrepu2_iva_valor':0,
  			'remrepu1_numero': '',
  			'remrepu1_tipo': '',
- 			'sucursal_nombre': '',
+ 			'sucursal_nombre': ''
         }
     });
 

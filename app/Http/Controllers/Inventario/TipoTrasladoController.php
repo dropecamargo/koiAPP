@@ -54,10 +54,11 @@ class TipoTrasladoController extends Controller
                     $tipotraslado->fillBoolean($data);
                     $tipotraslado->save();
 
-                    // Commit Transaction
-                    DB::commit();
                     // Forget cache
                     Cache::forget( TipoTraslado::$key_cache );
+
+                    // Commit Transaction
+                    DB::commit();
                     return response()->json(['success' => true, 'id' => $tipotraslado->id]);
                 } catch (\Exception $e) {
 
@@ -116,6 +117,10 @@ class TipoTrasladoController extends Controller
                     $tipotraslado->fill($data);
                     $tipotraslado->fillBoolean($data);
                     $tipotraslado->save();
+
+                    // Forget cache
+                    Cache::forget( TipoTraslado::$key_cache );
+                    
                     // Commit Transaction
                     DB::commit();
                     return response()->json(['success' => true, 'id' => $tipotraslado->id]);

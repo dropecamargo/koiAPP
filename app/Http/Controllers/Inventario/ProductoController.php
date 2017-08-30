@@ -76,6 +76,7 @@ class ProductoController extends Controller
                             $query->join('prodbode', 'producto.id','=','prodbode.prodbode_serie');
                             $sucursal = Sucursal::find($request->sucursal);
                             ($sucursal instanceof Sucursal) ? $query->where('prodbode_sucursal', $sucursal->id) : '' ;
+                            $query->whereRaw('prodbode_cantidad > 0');
                             $query->where('producto_maneja_serie', false);
                             $query->where('producto_metrado', false);
                             $query->where('producto_vence', false);

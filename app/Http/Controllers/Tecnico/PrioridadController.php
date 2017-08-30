@@ -57,10 +57,11 @@ class PrioridadController extends Controller
                     $prioridad->fillBoolean($data);
                     $prioridad->save();
 
-                    // Commit Transaction
-                    DB::commit();
                     //Forget Cache
                     Cache::forget( Prioridad::$key_cache );
+
+                    // Commit Transaction
+                    DB::commit();
                     return response()->json(['success' => true, 'id' => $prioridad->id]);
                 }catch(\Exception $e){
                     DB::rollback();
@@ -119,9 +120,12 @@ class PrioridadController extends Controller
                     $prioridad->fill($data);
                     $prioridad->fillBoolean($data);
                     $prioridad->save();
+
+                    //Forget Cache
+                    Cache::forget( Prioridad::$key_cache );
+                    
                     // Commit Transaction
                     DB::commit();
-                    
                     return response()->json(['success' => true, 'id' => $prioridad->id]);
                 }catch(\Exception $e){
                     DB::rollback();

@@ -56,11 +56,11 @@ class UnidadesMedidaController extends Controller
                     $unidad->fillBoolean($data);
                     $unidad->save();
 
-                    // Commit Transaction
-                    DB::commit();
                     // Forget cache
                     Cache::forget( Unidad::$key_cache );
 
+                    // Commit Transaction
+                    DB::commit();
                     return response()->json(['success' => true, 'id' => $unidad->id]);
                 }catch(\Exception $e){
                     DB::rollback();
@@ -121,11 +121,11 @@ class UnidadesMedidaController extends Controller
                     $unidad->fillBoolean($data);
                     $unidad->save();
 
-                    // Commit Transaction
-                    DB::commit();
                     // Forget cache
                     Cache::forget( Unidad::$key_cache );
-
+                    
+                    // Commit Transaction
+                    DB::commit();
                     return response()->json(['success' => true, 'id' => $unidad->id]);
                 }catch(\Exception $e){
                     DB::rollback();

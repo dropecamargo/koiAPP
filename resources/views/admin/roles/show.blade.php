@@ -7,7 +7,7 @@
         </h1>
         <ol class="breadcrumb">
             <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> {{ trans('app.home') }}</a></li>
-            <li><a href="{{ route('ordenes.index') }}">Roles</a></li>
+            <li><a href="{{ route('roles.index') }}">Roles</a></li>
             <li class="active">{{ $rol->id }}</li>
         </ol>
     </section>

@@ -30,6 +30,8 @@ app || (app = {});
 
             if( this.parameters.call == 'index' ){
                 this.template = _.template( ($('#legalizacion-item-list-tpl').html() || '') );
+            }else if (this.parameters.call == 'aFacturar') {
+                this.template = _.template( ($('#a-facturar-item-list-tpl').html() || '') );
             }else{
                 this.template = _.template( ($('#remrepu-item-list-tpl').html() || '') );
             }
@@ -44,14 +46,12 @@ app || (app = {});
         render: function(){
             var attributes = this.model.toJSON();
                 attributes.edit = this.parameters.edit;
-
                 if(attributes.remrepu1_tipo == 'L'){
                     this.template = _.template( ($('#remrepu-show-list-tpl').html() || '') );
                 }
-                
             this.$el.html( this.template(attributes) );
             return this;
-        },
+        }
     });
 
 })(jQuery, this, this.document);

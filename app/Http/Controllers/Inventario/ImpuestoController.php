@@ -64,11 +64,12 @@ class ImpuestoController extends Controller
                         $impuesto->impuesto_plancuentas = $plancuenta->id;
                     }
                     $impuesto->save();
-                    // Commit Transaction
-                    DB::commit();
+
                     //Forget cache
                     Cache::forget( Impuesto::$key_cache );
 
+                    // Commit Transaction
+                    DB::commit();
                     return response()->json(['success' => true, 'id' => $impuesto->id]);
                 }catch(\Exception $e){
                     DB::rollback();
@@ -138,9 +139,11 @@ class ImpuestoController extends Controller
                     }
                     $impuesto->save();
                     
+                    //Forget cache
+                    Cache::forget( Impuesto::$key_cache );
+                    
                     // Commit Transaction
                     DB::commit();
-                    
                     return response()->json(['success' => true, 'id' => $impuesto->id]);
                 }catch(\Exception $e){
                     DB::rollback();

@@ -150,8 +150,6 @@ class EgresoController extends Controller
                     $regional->save();
 
                     // Commit Transaction
-                    // DB::rollback();
-                    // return response()->json(['success' => false, 'errors' => 'TODO OK']);
                     DB::commit();
                     return response()->json(['success' => true, 'id' => $egreso->id]);
                 } catch (\Exception $e) {

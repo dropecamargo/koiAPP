@@ -352,12 +352,10 @@ app || (app = {});
                             _this.tecnicoActionView.stopListening();
                             _this.tecnicoActionView.undelegateEvents();
                         }
-                        console.log(_this.remrepu.toJSON());
                         _this.tecnicoActionView = new app.TecnicoActionView({
                             model: _this.model,
                             parameters: {
                                 action: 'factura',
-                                data: _this.remrepu.toJSON()
                             }
                         });
 

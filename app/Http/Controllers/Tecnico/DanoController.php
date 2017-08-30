@@ -57,10 +57,11 @@ class DanoController extends Controller
                     $dano->fillBoolean($data);
                     $dano->save();
 
+                    //Forget Cache
+                    Cache::forget( Dano::$key_cache );
+
                     // Commit Transaction
                     DB::commit();
-                    //Forget Cache
-                     Cache::forget( Dano::$key_cache );
                     return response()->json(['success' => true, 'id' => $dano->id]);
                 }catch(\Exception $e){
                     DB::rollback();
@@ -119,10 +120,12 @@ class DanoController extends Controller
                     $dano->fill($data);
                     $dano->fillBoolean($data);
                     $dano->save();
-                    
+
+                    //Forget Cache
+                    Cache::forget( Dano::$key_cache );
+
                     // Commit Transaction
                     DB::commit();
-                    
                     return response()->json(['success' => true, 'id' => $dano->id]);
                 }catch(\Exception $e){
                     DB::rollback();

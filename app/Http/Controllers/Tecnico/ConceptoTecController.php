@@ -121,6 +121,7 @@ class ConceptoTecController extends Controller
 
                     //Forget cache
                     Cache::forget( ConceptoTecnico::$key_cache );
+                    
                     // Commit Transaction
                     DB::commit();
                     return response()->json(['success' => true, 'id' => $conceptotecnico->id]);

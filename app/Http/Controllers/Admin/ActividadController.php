@@ -80,11 +80,11 @@ class ActividadController extends Controller
                     $actividad->fill($data);
                     $actividad->save();
 
-                    // Commit Transaction
-                    DB::commit();
                     //Forget cache
                     Cache::forget( Actividad::$key_cache );
 
+                    // Commit Transaction
+                    DB::commit();
                     return response()->json(['success' => true, 'id' => $actividad->id]);
                 }catch(\Exception $e){
                     DB::rollback();
@@ -144,9 +144,11 @@ class ActividadController extends Controller
                     $actividad->fill($data);
                     $actividad->save();
 
+                    //Forget cache
+                    Cache::forget( Actividad::$key_cache );
+
                     // Commit Transaction
                     DB::commit();
-
                     return response()->json(['success' => true, 'id' => $actividad->id]);
                 }catch(\Exception $e){
                     DB::rollback();

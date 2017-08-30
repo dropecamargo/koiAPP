@@ -97,7 +97,6 @@ class ContactoController extends Controller
                     $contacto->tcontacto_tercero = $tercero->id;
                     $contacto->save();
 
-
                     // Commit Transaction
                     DB::commit();
                     return response()->json(['success' => true,

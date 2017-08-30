@@ -104,14 +104,14 @@ class TerceroController extends Controller
                     $tercero->fillBoolean($data);
                     $tercero->save();
 
-                    // Commit Transaction
-                    DB::commit();
                     // Forget cache
                     Cache::forget( Tercero::$key_cache_tadministrators );
                     Cache::forget( Tercero::$key_cache_badvisors );
                     Cache::forget( Tercero::$key_cache_sellers );
                     Cache::forget( Tercero::$key_cache_technicals );
 
+                    // Commit Transaction
+                    DB::commit();
                     return response()->json(['success' => true, 'id' => $tercero->id]);
                 }catch(\Exception $e){
                     DB::rollback();
@@ -171,14 +171,14 @@ class TerceroController extends Controller
                     $tercero->fillBoolean($data);
                     $tercero->save();
 
-                    // Commit Transaction
-                    DB::commit();
                     // Forget cache
                     Cache::forget( Tercero::$key_cache_tadministrators );
                     Cache::forget( Tercero::$key_cache_badvisors );
                     Cache::forget( Tercero::$key_cache_sellers );
                     Cache::forget( Tercero::$key_cache_technicals );
-
+                    
+                    // Commit Transaction
+                    DB::commit();
                     return response()->json(['success' => true, 'id' => $tercero->id]);
                 }catch(\Exception $e){
                     DB::rollback();

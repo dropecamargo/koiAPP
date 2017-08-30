@@ -55,10 +55,11 @@ class TipoAjusteController extends Controller
                     $tipoajuste->fillBoolean($data);
                     $tipoajuste->save();
 
-                    // Commit Transaction
-                    DB::commit();
                     // Forget cache
                     Cache::forget( TipoAjuste::$key_cache );
+
+                    // Commit Transaction
+                    DB::commit();
                     return response()->json(['success' => true, 'id' => $tipoajuste->id]);
                 } catch (\Exception $e) {
 
@@ -117,11 +118,14 @@ class TipoAjusteController extends Controller
                     $tipoajuste->fill($data);
                     $tipoajuste->fillBoolean($data);
                     $tipoajuste->save();
+                    
+                    // Forget cache
+                    Cache::forget( TipoAjuste::$key_cache );
+
                     // Commit Transaction
                     DB::commit();
                     return response()->json(['success' => true, 'id' => $tipoajuste->id]);
                 } catch (\Exception $e) {
-
                     DB::rollback();
                     Log::error($e->getMessage());
                     return response()->json(['success' => false, 'errors' => trans('app.exception')]); 

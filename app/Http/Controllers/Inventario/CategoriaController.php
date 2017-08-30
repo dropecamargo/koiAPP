@@ -56,11 +56,11 @@ class CategoriaController extends Controller
                     $categoria->fillBoolean($data);
                     $categoria->save();
 
-                    // Commit Transaction
-                    DB::commit();
                     //Forget cache
                     Cache::forget( Categoria::$key_cache );
 
+                    // Commit Transaction
+                    DB::commit();
                     return response()->json(['success' => true, 'id' => $categoria->id]);
                 }catch(\Exception $e){
                     DB::rollback();
@@ -119,9 +119,12 @@ class CategoriaController extends Controller
                     $categoria->fill($data);
                     $categoria->fillBoolean($data);
                     $categoria->save();
+
+                    //Forget cache
+                    Cache::forget( Categoria::$key_cache );
+                    
                     // Commit Transaction
                     DB::commit();
-                    
                     return response()->json(['success' => true, 'id' => $categoria->id]);
                 }catch(\Exception $e){
                     DB::rollback();

@@ -58,11 +58,11 @@ class PuntoVentaController extends Controller
                     $puntoventa->fillBoolean($data);
                     $puntoventa->save();
 
-                    // Commit Transaction
-                    DB::commit();
                     // Forget cache
                     Cache::forget( PuntoVenta::$key_cache );
 
+                    // Commit Transaction
+                    DB::commit();
                     return response()->json(['success' => true, 'id' => $puntoventa->id]);
                 }catch(\Exception $e){
                     DB::rollback();
@@ -123,11 +123,11 @@ class PuntoVentaController extends Controller
                     $puntoventa->fillBoolean($data);
                     $puntoventa->save();
 
-                    // Commit Transaction
-                    DB::commit();
                     // Forget cache
                     Cache::forget( PuntoVenta::$key_cache );
-
+                    
+                    // Commit Transaction
+                    DB::commit();
                     return response()->json(['success' => true, 'id' => $puntoventa->id]);
                 }catch(\Exception $e){
                     DB::rollback();

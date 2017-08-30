@@ -51,7 +51,10 @@ app || (app = {});
 			this.$remision = this.$inputContent.attr("data-remision");
 			this.$orden = this.$inputContent.attr("data-orden");
 			this.$sucursal = this.$inputContent.attr("data-sucursal");
-
+			
+			// remove for add item in factura orden
+			if (! _.isUndefined( this.$inputName.attr('data-id') ) ) 
+				this.$inputName.removeAttr('data-id');
 			// Filters
 			this.$equalsRef = this.$inputContent.attr("data-ref");
 			if((this.$equalsRef == "true" || this.$equalsRef == "false") && this.$inputSucursal.val() == '' ){
@@ -110,6 +113,7 @@ app || (app = {});
 			if (! _.isUndefined(this.$inputPrecio1)) {
 				this.$inputPrecio1.val(window.Misc.currency(data.producto_precio1));
 				this.$('#pedidoc2_iva_porcentaje').val(data.impuesto_porcentaje) ;
+				this.$('#remrepu2_iva_porcentaje').val(data.impuesto_porcentaje) ;
 			}
 			if(!_.isUndefined(data.producto_maneja_serie) && data.producto_maneja_serie == 1){
 				this.$('#ajuste2_cantidad_salida').val(1).prop('readonly' , true);

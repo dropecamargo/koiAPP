@@ -56,9 +56,9 @@ class RolController extends Controller
 
                     // Forget cache
                     Cache::forget( Rol::$key_cache );
+
                     // Commit Transaction
                     DB::commit();
-
                     return response()->json(['success' => true, 'id' => $rol->id]);
                 }catch(\Exception $e){
                     DB::rollback();
@@ -126,11 +126,12 @@ class RolController extends Controller
                     // rol
                     $rol->fill($data);
                     $rol->save();
-                    // Commit Transaction
-                    DB::commit();
+                    
                     // Forget cache
                     Cache::forget( Rol::$key_cache );
 
+                    // Commit Transaction
+                    DB::commit();
                     return response()->json(['success' => true, 'id' => $rol->id]);
                 }catch(\Exception $e){
                     DB::rollback();

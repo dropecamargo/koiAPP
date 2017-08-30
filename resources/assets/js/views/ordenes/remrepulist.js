@@ -105,7 +105,6 @@ app || (app = {});
                             alertify.error(text);
                             return;
                         }
-
                         // Add model in collection
                         _this.collection.add(model);
                     }
@@ -157,6 +156,7 @@ app || (app = {});
                 }
 
                 window.Misc.clearForm( $('#form-remrepu') );
+                window.Misc.clearForm( $('#form-factura-tecnico-detail') );
             }
         }
    });
