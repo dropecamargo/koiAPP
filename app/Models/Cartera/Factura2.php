@@ -55,7 +55,8 @@ class Factura2 extends BaseModel
 		return $query->get();
 	}
 
-	public static function modelCreate($data){
+	public static function modelCreate ($data) 
+	{
 		$factura2 = new Factura2;
 	    $factura2->id = uniqid();
 	    $factura2->producto_nombre = $data->producto_nombre;
@@ -71,6 +72,17 @@ class Factura2 extends BaseModel
 	    $factura2->factura2_margen = $data->pedidoc2_margen;
 	    $factura2->producto_id = $data->pedidoc2_producto;
 	    $factura2->maneja_serie = $data->producto_maneja_serie;
+	    return $factura2;
+	}
+	public static function remRmpuModelCreate ($data) 
+	{
+		$factura2 = new Factura2;
+	    $factura2->id = uniqid();
+	    $factura2->producto_nombre = $data->remrepu2_nombre;
+	    $factura2->producto_serie = $data->remrepu2_serie;
+	    $factura2->factura2_cantidad = $data->remrepu2_facturado;
+	    $factura2->factura2_costo = $data->remrepu2_costo;
+	    $factura2->factura2_iva_porcentaje = $data->remrepu2_iva_porcentaje;
 	    return $factura2;
 	}
 }

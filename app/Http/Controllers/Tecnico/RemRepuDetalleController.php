@@ -20,23 +20,16 @@ class RemRepuDetalleController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $remrepu2 = RemRepu2::query();
-            $remrepu2->select('remrepu2.*', 'producto_precio1 AS remrepu2_costo', 'impuesto_porcentaje AS remrepu2_iva_porcentaje' ,'producto_nombre AS remrepu2_nombre', 'producto_serie AS remrepu2_serie', 'remrepu1_numero', 'sucursal_nombre', 'remrepu1_tipo');
-            $remrepu2->join('producto', 'remrepu2_producto','=','producto.id');
-            $remrepu2->join('impuesto', 'producto_impuesto','=','impuesto.id');
-            $remrepu2->join('remrepu1', 'remrepu2_remrepu1','=','remrepu1.id');
-            $remrepu2->join('sucursal', 'remrepu1_sucursal','=','sucursal.id');
-
+            $remrepu2 = RemRepu2::getRemRepu2();
             if ($request->has('remrepu2_remrepu1')) {
                 $remrepu2->where('remrepu2_remrepu1', $request->remrepu2_remrepu1);
-                return $remrepu2->get();
             }
             if ($request->has('orden_id')) {
                 $remrepu2->whereIn('remrepu2_remrepu1', DB::table('remrepu1')->select('remrepu1.id')->where('remrepu1_orden', $request->orden_id) );
                 $remrepu2->where('remrepu1_tipo', 'R');
                 $remrepu2->orderBy('sucursal_nombre', 'desc');
-                return $remrepu2->get();
             }
+            return $remrepu2->get();
         }
         abort(403);
     }
@@ -64,8 +57,10 @@ class RemRepuDetalleController extends Controller
             $remrepu2 = new RemRepu2;
             if ($remrepu2->isValid($data)) {
                 try {
+                    $serie = ($request->has('remrepu2_serie') ) ? $request->remrepu2_serie : $request->remrepu2_serie_tec ;
+
                     // Recupero instancia de producto
-                    $producto = Producto::where('producto_serie', $request->remrepu2_serie)->first();
+                    $producto = Producto::where('producto_serie', $serie)->first();
                     if(!$producto instanceof Producto) {
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar producto, por favor verifique la información o consulte al administrador.']);
                     }

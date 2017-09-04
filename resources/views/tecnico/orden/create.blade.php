@@ -195,31 +195,31 @@
 	                    <div class="form-group col-md-2">
 	                        <div class="input-group input-group-sm">
 	                            <span class="input-group-btn">
-	                                <button type="button" class="btn btn-default btn-flat btn-koi-search-producto-component"  data-field="remrepu2_serie">
+	                                <button type="button" class="btn btn-default btn-flat btn-koi-search-producto-component"  data-field="producto_serie">
 	                                    <i class="fa fa-barcode"></i>
 	                                </button>
 	                            </span>
-	                            <input id="remrepu2_serie" placeholder="Serie" class="form-control producto-koi-component" name="remrepu2_serie" type="text" maxlength="15" data-wrapper="orden-content-section" data-name="remrepu2_nombre" data-ref="false" data-price="remrepu2_costo">
+	                            <input id="producto_serie" placeholder="Serie" class="form-control producto-koi-component" name="producto_serie" type="text" maxlength="15" data-wrapper="orden-content-section" data-name="producto_nombre" data-inventory="false" data-price="factura2_costo">
 	                        </div>
 	                    </div>
 	                    <div class="form-group col-md-4">
-	                        <input id="remrepu2_nombre" name="remrepu2_nombre" placeholder="Nombre producto" class="form-control input-sm" type="text" maxlength="15" readonly required>
+	                        <input id="producto_nombre" name="producto_nombre" placeholder="Nombre producto" class="form-control input-sm" type="text" maxlength="15" readonly required>
 	                    </div>
 
-	                    <label for="remrepu2_cantidad" class="col-xs-6 col-md-1 col-md-1 control-label">Cantidad </label>
+	                    <label for="factura2_cantidad" class="col-xs-6 col-md-1 col-md-1 control-label">Cantidad </label>
 	                    <div class="col-xs-6 col-md-1 col-md-1 form-group">
-	                        <input type="number" name="remrepu2_cantidad" id="remrepu2_cantidad"  class="form-control  input-sm" required min="0">
+	                        <input type="number" name="factura2_cantidad" id="factura2_cantidad"  class="form-control  input-sm" required min="0">
 	                    </div>
 
-	                    <label for="remrepu2_costo" class="col-xs-6 col-md-1 col-md-1 control-label">Precio </label>
+	                    <label for="factura2_costo" class="col-xs-6 col-md-1 col-md-1 control-label">Precio </label>
 	                    <div class="form-group col-xs-6 col-md-2">
-	                        <input type="text" name="remrepu2_costo" id="remrepu2_costo" class="form-control input-sm" data-currency  required>
+	                        <input type="text" name="factura2_costo" id="factura2_costo" class="form-control input-sm" data-currency  required>
 	                    </div>
 	                </div>
 	                <div class="row">
 	                    <label class="col-xs-12 col-md-1 col-md-1 control-label">Descuento</label>
 	                    <div class="form-group col-xs-8 col-md-1 col-md-1">
-	                        <input type="text" id="remrepu2_descuento_porcentaje" name="remrepu2_descuento_porcentaje" class="spinner-percentage  input-sm form-control desc-porcentage" min="0"  max ="100" value="0" required>
+	                        <input type="text" id="factura2_descuento_porcentaje" name="factura2_descuento_porcentaje" class="spinner-percentage  input-sm form-control desc-porcentage" min="0"  max ="100" value="0" required>
 	                    </div>
 	                    <div class="col-xs-4 col-md-1 col-md-1">
 	                        <label class="radio-inline without-padding">
@@ -227,7 +227,7 @@
 	                        </label>
 	                    </div>
 	                    <div class="col-xs-8 col-md-2 col-md-2 form-group">
-	                        <input type="text" id="remrepu2_descuento_valor" name="remrepu2_descuento_valor" value="0" class="form-control input-sm desc-value" data-currency-price required>
+	                        <input type="text" id="factura2_descuento_valor" name="factura2_descuento_valor" value="0" class="form-control input-sm desc-value" data-currency-price required>
 	                    </div>
 	                    <div class="col-xs-4 col-md-1 col-md-1">
 	                        <label class="radio-inline without-padding">
@@ -236,7 +236,7 @@
 	                    </div>
 
 	                    <div class="form-group col-xs-8 col-md-2 col-md-2">
-	                        <input type="text" id="remrepu2_precio_venta" name="remrepu2_precio_venta" value="0" class="form-control input-sm desc-finally" data-currency-price required>
+	                        <input type="text" id="factura2_precio_venta" name="factura2_precio_venta" value="0" class="form-control input-sm desc-finally" data-currency-price required>
 	                    </div>
 	                    <div class="col-xs-4 col-md-1 col-md-1">
 	                        <label class="radio-inline without-padding">
@@ -245,7 +245,7 @@
 	                    </div>
 	                    <label class="col-xs-12 col-md-1 col-md-1 control-label">Iva</label>
 	                    <div class="form-group col-md-1 col-md-1">
-	                        <input type="text" class="input-sm form-control spinner-percentage" min="0" id="remrepu2_iva_porcentaje" name="remrepu2_iva_porcentaje" required>
+	                        <input type="text" class="input-sm form-control spinner-percentage" min="0" id="factura2_iva_porcentaje" name="factura2_iva_porcentaje" required>
 	                    </div>
 	                    <div class="col-md-1 col-md-1">
 	                        <button type="submit" class="btn btn-success btn-sm btn-block">
@@ -255,15 +255,15 @@
 	                </div>
             	{!! Form::close() !!}
                 <div class="table-responsive no-padding">
-	                <table id="browse-afacturar-list" class="table table-hover table-bordered" cellspacing="0">
+                    <table id="browse-detalle-factura-list" class="table table-hover table-bordered" cellspacing="0">
 	                    <thead>
 	                        <tr>
 	                            <th width="10%">Referencia</th>
 	                            <th width="35%">Nombre</th>
-	                            <th width="5%">Cant</th>
+	                            <th width="3%">Cant</th>
 	                            <th width="15%">Precio</th>
 	                            <th width="15%">Descuento</th>
-	                            <th width="10%">Iva</th>
+	                            <th width="9%">Iva</th>
 	                            <th  width="10%">Total</th>
 	                        </tr>
 	                    </thead>
@@ -271,28 +271,19 @@
 	                    <tfoot>
 	                        <tr>
 	                            <th colspan="3" class="text-right">Total: </th>
-	                            <th id=""></th>
-	                            <th id=""></th>
-	                            <th id=""></th>
-	                            <th id=""></th>
+	                            <th id="precio-product"></th>
+	                            <th id="descuento-product"></th>
+	                            <th id="iva-product"></th>
+	                            <th id="totalize-product"></th>
 	                        </tr>
 	                    </tfoot>
 
 	                    <tbody>
-	                        {{-- Render content detalle --}}
+	                        {{-- Render content detalle factura --}}
 	                    </tbody>
-	                </table>
+                	</table>
             	</div>
         	</div>
-		</script>
-		<script type="text/template" id="a-facturar-item-list-tpl">
-				<td><a href="#" class="click-render-item" data-id="<%- id %>" ><%- remrepu2_serie %></a></td>
-				<td><%- remrepu2_nombre %></td>
-				<td><%- (remrepu2_facturado == '') ? remrepu2_cantidad : remrepu2_facturado %></td>
-				<td><%- window.Misc.currency(remrepu2_costo) %></td>
-				<td><%- window.Misc.currency(remrepu2_descuento_valor) %></td>
-				<td><%- window.Misc.currency(remrepu2_iva_valor) %></td>
-				<td><%- window.Misc.currency(remrepu2_subtotal) %></td>
 		</script>
 	</section>
 @stop

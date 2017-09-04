@@ -162,24 +162,4 @@
         </div>
     </script>
 
-    <script type="text/template" id="add-factura-item-tpl">
-        <%if(edit){ %>
-            <td class="text-center">
-                <a class="btn btn-default btn-xs item-detallefactura-remove" data-resource = "<%- id %>">
-                    <span><i class="fa fa-times"></i></span>
-                </a>
-            </td>
-        <% } %>
-        <%if(edit){ %>
-            <td><a href="#" class="a-click-modals-lotes-koi" data-id = "<%- id %>"><%- producto_serie %></a></td>
-        <% }else{ %>
-            <td><%- producto_serie %></td>
-        <% } %>  
-        <td><%- producto_nombre %></td>
-        <td><%- factura2_cantidad %></td>
-        <td><%- window.Misc.currency(factura2_costo) %></td>
-        <td><%- window.Misc.currency(factura2_descuento_valor) %></td>
-        <td><%- factura2_iva_porcentaje %></td>
-        <td><%- window.Misc.currency(factura2_subtotal) %></td>
-    </script>
 @stop

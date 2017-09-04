@@ -66,7 +66,6 @@ app || (app = {});
                     call: this.parameters.call
                 }
             });
-
             remRepu2Model.view = view;
             this.$el.prepend( view.render().el );
         },
@@ -156,7 +155,6 @@ app || (app = {});
                 }
 
                 window.Misc.clearForm( $('#form-remrepu') );
-                window.Misc.clearForm( $('#form-factura-tecnico-detail') );
             }
         }
    });

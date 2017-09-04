@@ -5,7 +5,7 @@ namespace App\Models\Tecnico;
 use Illuminate\Database\Eloquent\Model;
 
 use App\Models\Inventario\Prodbode, App\Models\Tecnico\RemRepu, App\Models\Inventario\Producto, App\Models\Inventario\Lote, App\Models\Inventario\Inventario, App\Models\Base\Sucursal, App\Models\Base\Documentos;
-use Validator, Auth;
+use Validator, Auth, DB;
 
 class RemRepu2 extends Model
 {
@@ -29,7 +29,7 @@ class RemRepu2 extends Model
     public function isValid($data)
     {
         $rules = [
-            'remrepu2_cantidad' => 'required|numeric|min:1',
+            'remrepu2_cantidad' => 'required_if:remrepu2_facturado_tec,""|numeric|min:1',
         ];
 
         $validator = Validator::make($data, $rules);
@@ -38,6 +38,17 @@ class RemRepu2 extends Model
         }
         $this->errors = $validator->errors();
         return false;
+    }
+
+    public static function getRemRepu2 () 
+    {
+        $remrepu2 = RemRepu2::query();
+        $remrepu2->select('remrepu2.*', 'producto_precio1 AS remrepu2_costo', 'impuesto_porcentaje AS remrepu2_iva_porcentaje' ,'producto_nombre AS remrepu2_nombre', 'producto_serie AS remrepu2_serie', 'remrepu1_numero', 'sucursal_nombre', 'remrepu1_tipo');
+        $remrepu2->join('producto', 'remrepu2_producto','=','producto.id');
+        $remrepu2->join('impuesto', 'producto_impuesto','=','impuesto.id');
+        $remrepu2->join('remrepu1', 'remrepu2_remrepu1','=','remrepu1.id');
+        $remrepu2->join('sucursal', 'remrepu1_sucursal','=','sucursal.id');
+        return $remrepu2;
     }
 
     public static function createLegalizacion($child, $facturado, $nofacturado, $devuelto, $usado) {

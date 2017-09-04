@@ -82,7 +82,13 @@ class ProductoController extends Controller
                             $query->where('producto_vence', false);
                             $query->where('producto_unidad', true);
                         }
-}
+                    }
+                    if ($request->has('whitOutInventory')) {
+                        $query->where('producto_maneja_serie', false);
+                        $query->where('producto_metrado', false);
+                        $query->where('producto_vence', false);
+                        $query->where('producto_unidad', false);
+                    }
                 })
                 ->make(true);
         }

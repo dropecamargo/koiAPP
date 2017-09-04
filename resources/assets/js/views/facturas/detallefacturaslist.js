@@ -44,9 +44,11 @@ app || (app = {});
             this.listenTo( this.collection, 'request', this.loadSpinner);
             this.listenTo( this.collection, 'store', this.storeOne );
             this.listenTo( this.collection, 'sync', this.responseServer);
-            if( !_.isUndefined(this.parameters.dataFilter.id) && !_.isNull(this.parameters.dataFilter.id) || !_.isUndefined(this.parameters.dataFilter.id_pedido) && !_.isNull(this.parameters.dataFilter.id_pedido) ){
+
+            if( !_.isUndefined(this.parameters.dataFilter.id) && !_.isNull(this.parameters.dataFilter.id) || !_.isUndefined(this.parameters.dataFilter.id_pedido) && !_.isNull(this.parameters.dataFilter.id_pedido) || !_.isUndefined(this.parameters.dataFilter.orden_id) && !_.isNull(this.parameters.dataFilter.orden_id) ){
                 this.confCollection.data.id = this.parameters.dataFilter.id;
                 this.confCollection.data.codigo_pedido = this.parameters.dataFilter.id_pedido;
+                this.confCollection.data.codigo_orden = this.parameters.dataFilter.orden_id;
                 this.collection.fetch( this.confCollection );
             }
         },
@@ -66,7 +68,8 @@ app || (app = {});
             var view = new app.DetalleFacturasItemView({
                 model: detalleFacturaModel,
                 parameters: {
-                    edit: this.parameters.edit
+                    edit: this.parameters.edit,
+                    template: this.parameters.template
                 }
             });
             detalleFacturaModel.view = view;
@@ -74,6 +77,7 @@ app || (app = {});
             
             //setter subtotal de registro 
             this.setterModel(detalleFacturaModel);
+
             //totalize actually in collection
             this.totalize();
         },
@@ -90,30 +94,38 @@ app || (app = {});
             var model = _.find(this.collection.models, function(item){
                 return item.get('producto_serie') == data.producto_serie;
             });
-            if(model instanceof Backbone.Model ) {
-                model.save(data, {
-                    success : function(model, resp) {
-                        if(!_.isUndefined(resp.success)) {
-                            window.Misc.removeSpinner( _this.parameters.wrapper );
 
-                            // response success or error
-                            var text = resp.success ? '' : resp.errors;
-                            if( _.isObject( resp.errors ) ) {
-                                text = window.Misc.parseErrors(resp.errors);
-                            }
+            if(!(model instanceof Backbone.Model) ) 
+                var model = new app.Factura2Model();
 
-                            if( !resp.success ) {
-                                alertify.error(text);
-                                return;
-                            }
-                        }
-                    },
-                    error : function(model, error) {
+            model.save(data, {
+                success : function(model, resp) {
+                    if(!_.isUndefined(resp.success)) {
                         window.Misc.removeSpinner( _this.parameters.wrapper );
-                        alertify.error(error.statusText)
+
+                        // response success or error
+                        var text = resp.success ? '' : resp.errors;
+                        if( _.isObject( resp.errors ) ) {
+                            text = window.Misc.parseErrors(resp.errors);
+                        }
+
+                        if( !resp.success ) {
+                            alertify.error(text);
+                            return;
+                        }
+                        //setter subtotal de registro 
+                        _this.setterModel(model);
+                        //totalize actually in collection
+                        _this.totalize();
+                        // Add model in collection
+                        _this.collection.add(model);
                     }
-                });
-            }
+                },
+                error : function(model, error) {
+                    window.Misc.removeSpinner( _this.parameters.wrapper );
+                    alertify.error(error.statusText)
+                }
+            });
         },
         /**
         * Render all view Marketplace of the collection
@@ -139,11 +151,11 @@ app || (app = {});
         */
         setterModel: function(model){
             var iva = model.get('factura2_iva_porcentaje')  / 100;
-                costo = (parseFloat(model.get('factura2_costo'))) * parseFloat(model.get('factura2_cantidad'));
                 descuento = (parseFloat(model.get('factura2_descuento_valor'))) * parseFloat(model.get('factura2_cantidad') ) ;
-                ivaValor = (costo-descuento) * iva ;
-
-            model.set('factura2_subtotal', (costo - descuento) + parseFloat(model.get('factura2_iva_valor')));
+                costo = (parseFloat(model.get('factura2_costo'))) * parseFloat(model.get('factura2_cantidad')) - descuento;
+                ivaValor = costo * iva;
+                subtotal = costo + ivaValor;
+            model.set('factura2_subtotal', subtotal);
             model.set('factura2_iva_valor', ivaValor);
         },
         /**
@@ -175,6 +187,7 @@ app || (app = {});
         */
         responseServer: function ( target, resp, opts ) {
             window.Misc.removeSpinner( this.el );
+            window.Misc.clearForm( $('#form-factura-tecnico-detail') );
         }
    });
 

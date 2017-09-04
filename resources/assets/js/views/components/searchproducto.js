@@ -57,6 +57,7 @@ app || (app = {});
 				this.$inputName.removeAttr('data-id');
 			// Filters
 			this.$equalsRef = this.$inputContent.attr("data-ref");
+			this.$whitOutInventory = this.$inputContent.attr("data-inventory");
 			if((this.$equalsRef == "true" || this.$equalsRef == "false") && this.$inputSucursal.val() == '' ){
 				alertify.error('Por favor ingrese sucursal antes agregar producto.');
                 return;
@@ -74,6 +75,7 @@ app || (app = {});
                         data.producto_nombre = _this.$searchNombre.val();
                         data.producto_referencia = _this.$searchReferencia.val();
                         data.equalsRef = _this.$equalsRef;
+                        data.whitOutInventory = _this.$whitOutInventory;
                         data.remision = _this.$remision;
                         data.orden = _this.$orden;
                         data.sucursal = _this.$sucursal;
@@ -113,7 +115,7 @@ app || (app = {});
 			if (! _.isUndefined(this.$inputPrecio1)) {
 				this.$inputPrecio1.val(window.Misc.currency(data.producto_precio1));
 				this.$('#pedidoc2_iva_porcentaje').val(data.impuesto_porcentaje) ;
-				this.$('#remrepu2_iva_porcentaje').val(data.impuesto_porcentaje) ;
+				this.$('#factura2_iva_porcentaje').val(data.impuesto_porcentaje) ;
 			}
 			if(!_.isUndefined(data.producto_maneja_serie) && data.producto_maneja_serie == 1){
 				this.$('#ajuste2_cantidad_salida').val(1).prop('readonly' , true);

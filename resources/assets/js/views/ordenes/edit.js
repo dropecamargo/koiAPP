@@ -345,8 +345,11 @@ app || (app = {});
                         return;
                     }
                     if (resp.action == 'redirect') {
+
                         window.Misc.successRedirect( resp.msg, window.Misc.urlFull(Route.route('ordenes.show', { ordenes: _this.model.get('id') })) );
+                        
                     } else if (resp.action == 'render') {
+
                         // Open TecnicoActionView
                         if ( _this.tecnicoActionView instanceof Backbone.View ){
                             _this.tecnicoActionView.stopListening();

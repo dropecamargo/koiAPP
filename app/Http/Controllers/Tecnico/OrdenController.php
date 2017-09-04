@@ -422,44 +422,37 @@ class OrdenController extends Controller
                     $factura1->save();
 
                     foreach ($data['factura2'] as $item) {
-                        if ($item['remrepu2_facturado'] > 0) {
-                            $producto = Producto::where('producto_serie', $item['remrepu2_serie'])->first();
-                            if (!$producto instanceof Producto) {
-                                DB::rollback();
-                                return response()->json(['success' => false , 'errors' => 'No es posible recuperar producto, por favor verifique la información ó por favor consulte al administrador.']);
-                            }
-                            //SubCategoria validate
-                            $subcategoria = SubCategoria::find($producto->producto_subcategoria);
-                            if (!$subcategoria instanceof SubCategoria) {
-                                DB::rollback();
-                                return response()->json(['success' => false, 'errors' => 'No es posible recuperar subcategoria, por favor verifique información o consulte al administrador']);
-                            }
+                        $producto = Producto::where('producto_serie', $item['producto_serie'])->first();
+                        if (!$producto instanceof Producto) {
+                            DB::rollback();
+                            return response()->json(['success' => false , 'errors' => 'No es posible recuperar producto, por favor verifique la información ó por favor consulte al administrador.']);
+                        }
+                        //SubCategoria validate
+                        $subcategoria = SubCategoria::find($producto->producto_subcategoria);
+                        if (!$subcategoria instanceof SubCategoria) {
+                            DB::rollback();
+                            return response()->json(['success' => false, 'errors' => 'No es posible recuperar subcategoria, por favor verifique información o consulte al administrador']);
+                        }
 
-                            //Detalle factura
-                            $factura2 = new Factura2;
-                            $factura2->factura2_factura1 = $factura1->id;
-                            $factura2->factura2_producto = $producto->id;
-                            $factura2->factura2_subcategoria = $subcategoria->id;
-                            $factura2->factura2_margen = $subcategoria->subcategoria_margen_nivel1;
-                            $factura2->factura2_costo = $producto->producto_precio1;
-                            $factura2->factura2_precio_venta = $item['remrepu2_precio_venta'];
-                            $factura2->factura2_descuento_valor = $item['remrepu2_descuento_valor'];
-                            $factura2->factura2_descuento_porcentaje = $item['remrepu2_descuento_porcentaje'];
-                            $factura2->factura2_iva_valor = $item['remrepu2_iva_valor'];
-                            $factura2->factura2_iva_porcentaje = $item['remrepu2_iva_porcentaje'];
-                            $factura2->factura2_cantidad = empty($item['remrepu2_facturado']) ? $item['remrepu2_cantidad'] : $item['remrepu2_facturado'];
-                            $factura2->save();
+                        //Detalle factura
+                        $factura2 = new Factura2;
+                        $factura2->fill($item);
+                        $factura2->factura2_factura1 = $factura1->id;
+                        $factura2->factura2_producto = $producto->id;
+                        $factura2->factura2_subcategoria = $subcategoria->id;
+                        $factura2->factura2_margen = $subcategoria->subcategoria_margen_nivel1;
+                        $factura2->factura2_costo = $producto->producto_precio1;
+                        $factura2->save();
 
-                            $factura1->factura1_bruto += $factura2->factura2_precio_venta;
-                            $factura1->factura1_descuento += $factura2->factura2_descuento_valor;
-                            $factura1->factura1_total += ($factura2->factura2_precio_venta + $factura2->factura2_iva_valor) - $factura2->factura2_descuento_valor;
-                            $factura1->save();
+                        $factura1->factura1_bruto += $factura2->factura2_precio_venta;
+                        $factura1->factura1_descuento += $factura2->factura2_descuento_valor;
+                        $factura1->factura1_total += ($factura2->factura2_precio_venta + $factura2->factura2_iva_valor) - $factura2->factura2_descuento_valor;
+                        $factura1->save();
 
-                            $inventory = Orden::inventarioFactura( $producto, $orden->id, $factura1->id ,$sucursal->id, $factura2->factura2_cantidad );
-                            if ($inventory != 'OK') {
-                                DB::rollback();
-                                return response()->json(['success' => false, 'errors' => $inventory ]);
-                            }
+                        $inventory = Orden::inventarioFactura( $producto, $orden->id, $factura1->id ,$sucursal->id, $factura2->factura2_cantidad );
+                        if ($inventory != 'OK') {
+                            DB::rollback();
+                            return response()->json(['success' => false, 'errors' => $inventory ]);
                         }
                     }
                     $factura3 = Factura3::storeFactura3($factura1);
@@ -478,6 +471,7 @@ class OrdenController extends Controller
                     $orden->orden_fh_cerro = date('Y-m-d H:m:s');
                     $orden->save();
 
+                    // Commit Transaction
                     DB::commit();
                     return response()->json(['success' => true, 'msg' => 'Orden cerrada con exito.']);
                 }catch(\Exception $e){
