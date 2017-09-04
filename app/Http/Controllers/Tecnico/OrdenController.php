@@ -449,10 +449,12 @@ class OrdenController extends Controller
                         $factura1->factura1_total += ($factura2->factura2_precio_venta + $factura2->factura2_iva_valor) - $factura2->factura2_descuento_valor;
                         $factura1->save();
 
-                        $inventory = Orden::inventarioFactura( $producto, $orden->id, $factura1->id ,$sucursal->id, $factura2->factura2_cantidad );
-                        if ($inventory != 'OK') {
-                            DB::rollback();
-                            return response()->json(['success' => false, 'errors' => $inventory ]);
+                        if ($producto->producto_unidad) {
+                            $inventory = Orden::inventarioFactura( $producto, $orden->id, $factura1->id ,$sucursal->id, $factura2->factura2_cantidad );
+                            if ($inventory != 'OK') {
+                                DB::rollback();
+                                return response()->json(['success' => false, 'errors' => $inventory ]);
+                            }
                         }
                     }
                     $factura3 = Factura3::storeFactura3($factura1);
