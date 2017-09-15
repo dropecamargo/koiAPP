@@ -33,6 +33,7 @@ class CreatePlancuentaTable extends Migration
             $table->integer('plancuentas_nivel6')->default(0);
             $table->integer('plancuentas_nivel7')->default(0);
             $table->integer('plancuentas_nivel8')->default(0);
+            $table->integer('plancuentas_equivalente')->default(0);
 
             $table->foreign('plancuentas_centro')->references('id')->on('centrocosto')->onDelete('restrict');
         });

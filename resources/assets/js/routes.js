@@ -125,6 +125,10 @@ app || (app = {});
             'plancuentas/create(/)': 'getPlanCuentasCreate',
             'plancuentas/:plancuenta/edit(/)': 'getPlanCuentasEdit',
 
+            'plancuentasnif(/)': 'getPlanCuentasNifMain',
+            'plancuentasnif/create(/)': 'getPlanCuentasNifCreate',
+            'plancuentasnif/:plancuentanif/edit(/)': 'getPlanCuentasNifEdit',
+
             'centroscosto(/)': 'getCentrosCostoMain',
             'centroscosto/create(/)': 'getCentrosCostoCreate',
             'centroscosto/:centrocosto/edit(/)': 'getCentrosCostoEdit',
@@ -133,6 +137,9 @@ app || (app = {});
             'asientos/create(/)': 'getAsientosCreate',
             'asientos/:asientos(/)': 'getAsientosShow',
             'asientos/:asiento/edit(/)': 'getAsientosEdit',
+
+            'asientosnif(/)': 'getAsientosNifMain',
+            'asientosnif/:asientonif/edit(/)': 'getAsientosNifEdit',
 
             'activosfijos(/)': 'getActivosFijosMain',
 
@@ -1063,6 +1070,41 @@ app || (app = {});
             this.createPlanCuentaView = new app.CreatePlanCuentaView({ model: this.planCuentaModel });
             this.planCuentaModel.fetch();
         },
+      // Plan cuentas
+        getPlanCuentasNifMain: function () {
+
+            if ( this.mainPlanCuentasNifView instanceof Backbone.View ){
+                this.mainPlanCuentasNifView.stopListening();
+                this.mainPlanCuentasNifView.undelegateEvents();
+            }
+
+            this.mainPlanCuentasNifView = new app.MainPlanCuentasNifView( );
+        },
+
+        getPlanCuentasNifCreate: function () {
+            this.planCuentaNifModel = new app.PlanCuentaNifModel();
+
+            if ( this.createPlanCuentaNifView instanceof Backbone.View ){
+                this.createPlanCuentaNifView.stopListening();
+                this.createPlanCuentaNifView.undelegateEvents();
+            }
+
+            this.createPlanCuentaNifView = new app.CreatePlanCuentaNifView({ model: this.planCuentaNifModel });
+            this.createPlanCuentaNifView.render();
+        },
+
+        getPlanCuentasNifEdit: function (plancuentanif) {
+            this.planCuentaNifModel = new app.PlanCuentaNifModel();
+            this.planCuentaNifModel.set({'id': plancuentanif}, {silent: true});
+
+            if ( this.createPlanCuentaNifView instanceof Backbone.View ){
+                this.createPlanCuentaNifView.stopListening();
+                this.createPlanCuentaNifView.undelegateEvents();
+            }
+
+            this.createPlanCuentaNifView = new app.CreatePlanCuentaNifView({ model: this.planCuentaNifModel });
+            this.planCuentaNifModel.fetch();
+        },
 
         // Centro de Costos
         getCentrosCostoMain: function () {
@@ -1152,7 +1194,33 @@ app || (app = {});
             this.editAsientoView = new app.EditAsientoView({ model: this.asientoModel });
             this.asientoModel.fetch();
         },
+        // Asientos NIF
+         getAsientosNifMain: function () {
 
+            if ( this.mainAsientosNifView instanceof Backbone.View ){
+                this.mainAsientosNifView.stopListening();
+                this.mainAsientosNifView.undelegateEvents();
+            }
+
+            this.mainAsientosNifView = new app.MainAsientosNifView( );
+        },
+          getAsientosNifEdit: function (asiento) {
+            this.asientoNifModel = new app.AsientoNifModel();
+            this.asientoNifModel.set({'id': asiento}, {'silent':true});
+
+            if ( this.editAsientoNifView instanceof Backbone.View ){
+                this.editAsientoNifView.stopListening();
+                this.editAsientoNifView.undelegateEvents();
+            }
+
+            if ( this.createAsientoView instanceof Backbone.View ){
+                this.createAsientoView.stopListening();
+                this.createAsientoView.undelegateEvents();
+            }
+
+            this.editAsientoNifView = new app.EditAsientoNifView({ model: this.asientoNifModel });
+            this.asientoNifModel.fetch();
+        },
         // Activo
         getActivosFijosMain: function () {
 

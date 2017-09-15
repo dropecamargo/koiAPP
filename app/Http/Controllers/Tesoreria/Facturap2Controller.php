@@ -82,6 +82,7 @@ class Facturap2Controller extends Controller
             }
             return response()->json(['success' => false, 'errors' => $facturapDetalle->errors]);
         }
+        abort(404);
     }
 
     /**

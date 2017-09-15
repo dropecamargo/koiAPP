@@ -24,7 +24,7 @@ class DocumentoController extends Controller
             $query = Documento::query();
             $query->select('documento.id as id', 'documento_codigo', 'documento_nombre', 'folder_codigo', 'folder.id as folder_id');
             $query->leftJoin('folder', 'documento_folder', '=', 'folder.id');
-            return Datatables::of($query)->make(true);
+            return Datatables::of($query->get())->make(true);
         }
         return view('contabilidad.documentos.index');
     }
@@ -56,6 +56,7 @@ class DocumentoController extends Controller
                 try {
                     // Documento
                     $documento->fill($data);
+                    $documento->fillBoolean($data);
                     $documento->save();
 
                     // Commit Transaction
@@ -64,7 +65,7 @@ class DocumentoController extends Controller
                     //Forget cache
                     Cache::forget( Documento::$key_cache );
                     
-                    return response()->json(['success' => true, 'id' => $documento->id]);
+                    return response()->json(['success' => true, 'id' => $documento->id ]);
                 }catch(\Exception $e){
                     DB::rollback();
                     Log::error($e->getMessage());
@@ -124,6 +125,7 @@ class DocumentoController extends Controller
                 try {
                     // Documento
                     $documento->fill($data);
+                    $documento->fillBoolean($data);
                     $documento->save();
 
                     // Commit Transaction

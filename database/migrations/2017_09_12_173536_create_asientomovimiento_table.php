@@ -20,6 +20,8 @@ class CreateAsientomovimientoTable extends Migration
             $table->string('movimiento_tipo', 2);
             $table->boolean('movimiento_nuevo')->default(false)->nullable();
             $table->string('movimiento_facturap', 200)->nullable();
+            $table->integer('movimiento_factura')->nullable()->unsigned();
+            $table->integer('movimiento_puntoventa')->nullable()->unsigned();
             $table->integer('movimiento_sucursal')->nullable()->unsigned();
             $table->string('movimiento_serie', 15)->nullable();
             $table->integer('movimiento_producto')->nullable()->unsigned();
@@ -30,8 +32,10 @@ class CreateAsientomovimientoTable extends Migration
             $table->text('movimiento_observaciones')->nullable();
 
             $table->foreign('movimiento_asiento2')->references('id')->on('asiento2')->onDelete('restrict');
+            $table->foreign('movimiento_factura')->references('id')->on('factura1')->onDelete('restrict');
             $table->foreign('movimiento_producto')->references('id')->on('producto')->onDelete('restrict');
             $table->foreign('movimiento_sucursal')->references('id')->on('sucursal')->onDelete('restrict');
+            $table->foreign('movimiento_puntoventa')->references('id')->on('puntoventa')->onDelete('restrict');
         });
     }
 

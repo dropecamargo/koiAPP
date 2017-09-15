@@ -19,6 +19,7 @@ app || (app = {});
 
             'submit #form-facturap2-impuesto': 'onStoreFacturap2',
             'submit #form-facturap2-retefuente': 'onStoreFacturap2',
+            'submit #facturap4-centrocosto': 'onStoreFacturap4',
             'submit #form-activo-fijo': 'onStoreActivoFijo',
             'submit #form-entrada-detalle': 'onStoreInventario',
 
@@ -36,6 +37,7 @@ app || (app = {});
 
             // Reference collection
             this.detalleFacturap2 = new app.DetalleFacturasp2Collection();
+            this.detalleFacturap4 = new app.DetalleFacturasp4Collection();
             this.activoFijoList = new app.ActivoFijoList();
             this.entradasList = new app.EntradasList();
            
@@ -69,6 +71,8 @@ app || (app = {});
         * Reference views
         */
         referenceViews:function(){ 
+            
+            // View facturap detail
             this.detalleFacturap2View = new app.Facturap2DetalleView( {
                 collection: this.detalleFacturap2,
                 parameters: {
@@ -79,6 +83,20 @@ app || (app = {});
                     }
                }
             });
+
+            // View facturap centro of costo
+            this.detalleFacturap4View = new app.Facturap4DetalleView( {
+                collection: this.detalleFacturap4,
+                parameters: {
+                    wrapper: this.spinner,
+                    edit: true,
+                    dataFilter: {
+                        'id': this.model.get('id')
+                    }
+               }
+            });
+
+            // View activo fijo
             this.activoFijoListView = new app.ActivosFijosListView( {
                 collection: this.activoFijoList,
                 parameters: {
@@ -90,6 +108,8 @@ app || (app = {});
                     }
                }
             });
+
+            // View entradas inventory
             this.entradasListView = new app.EntradasListView( {
                 collection: this.entradasList,
                 parameters: {
@@ -134,6 +154,16 @@ app || (app = {});
                 var data = window.Misc.formToJson( e.target ) ;
                     data.facturap1 = window.Misc.formToJson( this.$form ); 
                 this.detalleFacturap2.trigger( 'store', data);
+            }
+        },
+        /**
+        * Store facturap4 centro costo
+        */
+        onStoreFacturap4:function(e){
+            if (!e.isDefaultPrevented()) {
+                e.preventDefault();
+                var data = window.Misc.formToJson( e.target );
+                this.detalleFacturap4.trigger( 'store', data);
             }
         },
         /**

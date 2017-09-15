@@ -25,6 +25,7 @@ class AsientoContableDocumento {
 
         if (!$this->asiento->isValid($data)) {
         	$this->asiento_error = $this->asiento->errors;
+        	return;
         }
         $this->asiento->fill($data);
 
@@ -212,7 +213,7 @@ class AsientoContableDocumento {
 			}
 		}
 		return 'OK';
-	}
+	}	
 
 	public function saldosTerceros(PlanCuenta $cuenta, Tercero $tercero, $naturaleza, $debito = 0, $credito = 0, $xmes, $xano)
 	{

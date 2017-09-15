@@ -4,7 +4,7 @@ namespace App\Models\Contabilidad;
 
 use Illuminate\Database\Eloquent\Model;
 
-use App\Models\Inventario\Producto;
+use App\Models\Inventario\Producto, App\Models\Tesoreria\Facturap1;
 
 class AsientoMovimiento extends Model
 {
@@ -26,7 +26,7 @@ class AsientoMovimiento extends Model
         if(!isset($data['Tipo']) || trim($data['Tipo']) == '') {
             $response->error = "Tipo es obligatorio para generar movimiento, por favor verifique la información del asiento o consulte al administrador.";
             return $response;
-        }
+        }   
 
         // Movimientos factura proveedor FP
         if( $data['Tipo'] == 'FP')
@@ -41,6 +41,14 @@ class AsientoMovimiento extends Model
         }else if( in_array($data['Tipo'], ['IP', 'IH']) ) {
 
             $result = $this->storeInventario($asiento2, $data);
+            if($result != 'OK') {
+                $response->error = $result;
+                return $response;
+            }
+
+        // Movimientos factura padre F, factura hijos FH
+        }else if( in_array($data['Tipo'], ['F', 'FH'])){
+            $result = $this->storeFactura($asiento2, $data);
             if($result != 'OK') {
                 $response->error = $result;
                 return $response;
@@ -62,10 +70,10 @@ class AsientoMovimiento extends Model
             return "Valor no puede ser menor o igual a 0.";
         }
 
-        // Validar factura
-        if(!isset($data['Factura']) || trim($data['Factura']) == '') {
-            return "Factura es obligatoria.";
-        }
+        // // Validar factura
+        // if(!isset($data['Factura']) || trim($data['Factura']) == '') {
+        //     return "Factura es obligatoria.";
+        // }
 
         // Validar factura
         if(!isset($data['Naturaleza']) || trim($data['Naturaleza']) == '') {
@@ -73,38 +81,38 @@ class AsientoMovimiento extends Model
         }
 
         // Validar naturaleza
-        if($data['Naturaleza'] == 'D') {
-            $facturap = Facturap::where('facturap1_factura', $data['Factura'])->where('facturap1_tercero', $asiento2->asiento2_beneficiario)->first();
-            if(!$facturap instanceof Facturap) {
-                return "Para realizar movimientos de naturaleza débito de ingresar un numero de factura existente.";
-            }
-        }
+        // if($data['Naturaleza'] == 'D') {
+        //     $facturap = Facturap1::where('facturap1_factura', $data['Factura'])->where('facturap1_tercero', $asiento2->asiento2_beneficiario)->first();
+        //     if(!$facturap instanceof Facturap1) {
+        //         return "Para realizar movimientos de naturaleza débito de ingresar un numero de factura existente.";
+        //     }
+        // }
 
         // Validar cuotas
-        if(!isset($data['Cuotas']) || !is_numeric($data['Cuotas']) || $data['Cuotas'] <= 0) {
-            return "Cuotas no pueden ser menor o igual a 0.";
-        }
-
+        // if(!isset($data['Cuotas']) || !is_numeric($data['Cuotas']) || $data['Cuotas'] <= 0) {
+        //     return "Cuotas no pueden ser menor o igual a 0.";
+        // }
+        
         if($data['Nuevo'] == true)
         {
-            // Validar sucursal
-            if(!isset($data['Sucursal']) || !is_numeric($data['Sucursal']) || $data['Sucursal'] <= 0) {
-                return "Sucursal es obligatoria.";
-            }
+            // // Validar sucursal
+            // if(!isset($data['Sucursal']) || !is_numeric($data['Sucursal']) || $data['Sucursal'] <= 0) {
+            //     return "Sucursal es obligatoria.";
+            // }
 
-            // Validar fecha
-            if(!isset($data['Fecha']) || trim($data['Fecha']) == '') {
-                return "Fecha es obligatoria.";
-            }
+            // // Validar fecha
+            // if(!isset($data['Fecha']) || trim($data['Fecha']) == '') {
+            //     return "Fecha es obligatoria.";
+            // }
 
-            // Validar periodo
-            if(!isset($data['Periodicidad']) || !is_numeric($data['Periodicidad']) || $data['Periodicidad'] <= 0) {
-                return "Periodicidad (días) para cuotas no puede ser menor o igual a 0.";
-            }
+            // // Validar periodo
+            // if(!isset($data['Periodicidad']) || !is_numeric($data['Periodicidad']) || $data['Periodicidad'] <= 0) {
+            //     return "Periodicidad (días) para cuotas no puede ser menor o igual a 0.";
+            // }
 
-            $this->movimiento_sucursal = $data['Sucursal'];
-            $this->movimiento_fecha = $data['Fecha'];
-            $this->movimiento_periodicidad = $data['Periodicidad'];
+            // $this->movimiento_sucursal = $data['Sucursal'];
+            // $this->movimiento_fecha = $data['Fecha'];
+            // $this->movimiento_periodicidad = $data['Periodicidad'];
         }
 
         $this->movimiento_facturap = $data['Factura'];
@@ -164,6 +172,34 @@ class AsientoMovimiento extends Model
                 $this->movimiento_item = $data['Item'];
             break;
         }
+        return 'OK';
+    }
+
+    public function storeFactura(Asiento2 $asiento2, Array $data)
+    {
+        switch ($data['Tipo']) {
+            // Factura padre
+            case 'F':
+                // Validar factura
+                // if(!isset($data['Factura']) || trim($data['Factura']) == '') {
+                //     return "Factura es obligatoria.";
+                // }
+                $this->movimiento_factura = $data['Factura'];
+            break;
+
+             // Factura hijo
+            case 'FH':
+                // Validar factura -> child
+                if(isset($data['FacturaChild']) && trim($data['FacturaChild']) != '') {
+                    $this->movimiento_factura4 = $data['FacturaChild'];
+                }
+
+                if(isset($data['Valor']) && trim($data['Valor']) != '') {
+                    $this->movimiento_valor = $data['Valor'];
+                }
+            break;
+        }
+        $this->movimiento_nuevo = $data['Nuevo'];
         return 'OK';
     }
 }

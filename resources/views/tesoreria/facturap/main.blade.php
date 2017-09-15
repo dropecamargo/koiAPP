@@ -28,9 +28,10 @@
                     <ul class="nav nav-tabs">
                         <li class="active"><a href="#tab_facturap" data-toggle="tab">Factura</a></li>
                         <li><a href="#tab_impuesto" data-toggle="tab">Impuesto/Retención</a></li>
-                        <li><a href="#tab_contabilidad" data-toggle="tab">Contabilidad</a></li>
                         <li><a href="#tab_af" data-toggle="tab">Activos fijos</a></li>
                         <li><a href="#tab_inventario" data-toggle="tab">Inventario</a></li>
+                        <li><a href="#tab_centrocosto" data-toggle="tab">Centro costo</a></li>
+                        <li><a href="#tab_contabilidad" data-toggle="tab">Contabilidad</a></li>
                     </ul>
                     <div class="tab-content">
                         <!-- Tab factura proveedor -->
@@ -215,10 +216,7 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- Tab contabilidad -->
-                        <div id="tab_contabilidad" class="tab-pane">
-                            Contabilidad
-                        </div>
+
                         <!-- Tab activos & efectivos -->
                         <div id="tab_af"  class="tab-pane">
                             <div class="box box-solid">
@@ -410,6 +408,74 @@
                                 </table>
                             </div>
                         </div>
+                        <!-- Tab centro costo -->
+                        <div id="tab_centrocosto" class="tab-pane">
+                            <div class="box box-solid">
+                                <div class="box-body">
+                                    <form  method="POST" accept-charset="UTF-8" id="facturap4-centrocosto" data-toggle="validator">
+                                        <div class="row">
+                                        
+                                            <div class="form-group col-md-5">
+                                                <label for="facturap4_centrocosto" class="control-label text-right">Unidad de decisión</label>
+                                                <select name="facturap4_centrocosto" id="facturap4_centrocosto" class="form-control select2-default-clear" data-placeholder="Seleccione centro de costo">
+                                                    @foreach( App\Models\Contabilidad\CentroCosto::getCentrosCosto() as $key => $value)
+                                                        <option value="{{ $key }}">{{ $value }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+
+                                            <div class="form-group col-md-2">
+                                                <label for="facturap4_valor" class="control-label text-right ">Valor</label>
+                                                <input type="text" id="facturap4_valor" name="facturap4_valor" class="input-sm form-control" data-currency>
+                                            </div>
+
+                                            <div class="form-group col-md-2">
+                                                <label for="facturap4_valor_porcentaje" class="control-label text-right ">Porcentaje</label>
+                                                <br>
+                                                <input type="text" id="facturap4_valor_porcentaje" name="facturap4_valor_porcentaje" class="input-sm form-control spinner-percentage" value="0">
+                                            </div>
+
+                                            <div class="form-group col-md-1">
+                                                <label for="facturap4_valor_porcion" class="control-label text-right ">Porción</label>
+                                                <input type="number" id="facturap4_valor_porcion" name="facturap4_valor_porcion" min="1" class="input-sm form-control">
+                                            </div>
+
+                                            <div class="form-group col-md-1">
+                                                <br>
+                                                <button type="submit" class="btn btn-success btn-sm btn-block">
+                                                    <i class="fa fa-plus"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <div class="table-responsive no-padding">
+                                        <table id="browse-centro-facturap4-list" class="table table-hover table-bordered" cellspacing="0">
+                                            <thead>
+                                                <tr>
+                                                    <th width="5%"></th>
+                                                    <th width="45%">Unidad de desición</th>
+                                                    <th width="45%">Valor</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {{-- Render content detalle --}}
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <th colspan="2" class="text-right">Total</th>
+                                                    <th></th>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>    
+                        </div>
+
+                        <!-- Tab contabilidad -->
+                        <div id="tab_contabilidad" class="tab-pane">
+                            Contabilidad
+                        </div>
                         <div class="box-footer">
                             <div class="row">
                                 <div class="col-md-2 col-md-offset-4 col-md-6 col-xs-6 text-left">
@@ -429,6 +495,17 @@
         <%if(edit){ %>
             <td class="text-center">
                 <a class="btn btn-default btn-xs item-detallefacturap2-remove" data-resource = "<%- id %>">
+                    <span><i class="fa fa-times"></i></span>
+                </a>
+            </td>
+        <% } %>
+        <td><%- centrocosto_nombre %></td>
+        <td><%- facturap4_valor %></td>
+    </script>
+    <script type="text/template" id="add-factura4-item-tpl">
+        <%if(edit){ %>
+            <td class="text-center">
+                <a class="btn btn-default btn-xs item-centrofacturap4-remove" data-resource = "<%- id %>">
                     <span><i class="fa fa-times"></i></span>
                 </a>
             </td>

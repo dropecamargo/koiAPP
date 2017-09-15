@@ -197,14 +197,14 @@
     </li>
 
     {{-- Contabilidad --}}
-    <li class="treeview {{ in_array(Request::segment(1), ['asientos','activosfijos','folders','documentos','plancuentas', 'tipoactivos','centroscosto','rplancuentas','rmayorbalance']) ? 'active' : '' }}">
+    <li class="treeview {{ in_array(Request::segment(1), ['asientos','asientosnif','activosfijos','folders','documentos','plancuentas','plancuentasnif', 'tipoactivos','centroscosto','rplancuentas','rmayorbalance']) ? 'active' : '' }}">
         <a href="#">
             <i class="fa fa-book"></i> <span>Contabilidad</span><i class="fa fa-angle-left pull-right"></i>
         </a>
 
         <ul class="treeview-menu">
             {{-- Modulos contabilidad --}}
-            <li class="{{ in_array(Request::segment(1), ['asientos','activosfijos']) ? 'active' : '' }}">
+            <li class="{{ in_array(Request::segment(1), ['asientos','asientosnif','activosfijos']) ? 'active' : '' }}">
                 <a href="#">
                     <i class="fa fa-wpforms"></i> Módulos <i class="fa fa-angle-left pull-right"></i>
                 </a>
@@ -214,6 +214,9 @@
                     </li>
                     <li class="{{ Request::segment(1) == 'asientos' ? 'active' : '' }}">
                         <a href="{{ route('asientos.index') }}"><i class="fa fa-file-text-o"></i> Asientos</a>
+                    </li>
+                    <li class="{{ Request::segment(1) == 'asientosnif' ? 'active' : '' }}">
+                        <a href="{{ route('asientosnif.index') }}"><i class="fa fa-file-text"></i> Asientos NIF</a>
                     </li>
                 </ul>
             </li>
@@ -234,7 +237,7 @@
             </li>
 
             {{-- Referencias Contabilidad --}}
-            <li class="{{ in_array(Request::segment(1), ['folders','centroscosto','documentos','plancuentas', 'tipoactivos']) ? 'active' : '' }}">
+            <li class="{{ in_array(Request::segment(1), ['folders','centroscosto','documentos','plancuentas', 'tipoactivos', 'plancuentasnif']) ? 'active' : '' }}">
 
                 <a href="#">
                     <i class="fa fa-circle-o"></i> Referencias <i class="fa fa-angle-left pull-right"></i>
@@ -252,6 +255,9 @@
                     </li>
                     <li class="{{ Request::segment(1) == 'plancuentas' ? 'active' : '' }}">
                         <a href="{{ route('plancuentas.index') }}"><i class="fa fa-circle-o"></i> Plan de cuentas</a>
+                    </li>
+                    <li class="{{ Request::segment(1) == 'plancuentasnif' ? 'active' : '' }}">
+                        <a href="{{ route('plancuentasnif.index') }}"><i class="fa fa-circle-o"></i> Plan de cuentas NIF</a>
                     </li>
                     <li class="{{ Request::segment(1) == 'tipoactivos' ? 'active' : '' }}">
                         <a href="{{ route('tipoactivos.index') }}"><i class="fa fa-circle-o"></i> Tipo activo</a>

@@ -24,7 +24,6 @@ class CreateAsiento2Table extends Migration
             $table->integer('asiento2_centro')->unsigned()->nullable();
             $table->double('asiento2_base')->default(0);
             $table->text('asiento2_detalle')->nullable();
-            $table->integer('asiento2_ordenp')->unsigned()->nullable();
 
             $table->integer('asiento2_nivel1')->default(0);
             $table->integer('asiento2_nivel2')->default(0);

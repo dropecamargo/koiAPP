@@ -106,6 +106,13 @@ Route::group(['middleware' => 'auth'], function(){
 	});
     Route::resource('plancuentas', 'Contabilidad\PlanCuentasController', ['except' => ['destroy']]);
 
+	Route::group(['prefix' => 'plancuentasnif'], function()
+	{
+		Route::get('nivel', ['as' => 'plancuentasnif.nivel', 'uses' => 'Contabilidad\PlanCuentasNifController@nivel']);
+		Route::get('search', ['as' => 'plancuentasnif.search', 'uses' => 'Contabilidad\PlanCuentasNifController@search']);
+	});
+    Route::resource('plancuentasnif', 'Contabilidad\PlanCuentasNifController', ['except' => ['destroy']]);
+
 	Route::group(['prefix' => 'asientos'], function()
 	{
 		Route::resource('detalle', 'Contabilidad\DetalleAsientoController', ['only' => ['index', 'store', 'destroy']]);
@@ -119,6 +126,20 @@ Route::group(['middleware' => 'auth'], function(){
 		});
 	});
 	Route::resource('asientos', 'Contabilidad\AsientoController', ['only' => ['index', 'create', 'store', 'edit', 'update', 'show']]);
+	
+	Route::group(['prefix' => 'asientosnif'], function()
+	{
+		Route::resource('detalle', 'Contabilidad\DetalleAsientoNifController', ['only' => ['index', 'store', 'destroy']]);
+		Route::get('exportar/{asientosnif}', ['as' => 'asientosnif.exportar', 'uses' => 'Contabilidad\AsientoNifController@exportar']);
+
+		Route::group(['prefix' => 'detalle'], function()
+		{
+			Route::post('evaluate', ['as' => 'asientosnif.detalle.evaluate', 'uses' => 'Contabilidad\DetalleAsientoNifController@evaluate']);
+			Route::post('validate', ['as' => 'asientosnif.detalle.validate', 'uses' => 'Contabilidad\DetalleAsientoNifController@validation']);
+			Route::get('movimientos', ['as' => 'asientosnif.detalle.movimientos', 'uses' => 'Contabilidad\DetalleAsientoNifController@movimientos']);
+		});
+	});
+	Route::resource('asientosnif', 'Contabilidad\AsientoNifController', ['only' => ['index', 'edit', 'update', 'show']]);
     /*
 	|-------------------------
 	| Reportes Routes
@@ -301,6 +322,7 @@ Route::group(['middleware' => 'auth'], function(){
 	{
 		Route::resource('detalle','Tesoreria\Facturap2Controller',['only'=>['index', 'store', 'destroy']]);
 		Route::resource('cuotas','Tesoreria\Facturap3Controller',['only'=>['index']]);
+		Route::resource('valorescentroscostos','Tesoreria\Facturap4Controller',['only'=>['index', 'store']]);
 		Route::get('validate', ['as' => 'facturasp.validate', 'uses' => 'Tesoreria\Facturap1Controller@validation']);
 	});
 
