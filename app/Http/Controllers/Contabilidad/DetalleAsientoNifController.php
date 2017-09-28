@@ -199,8 +199,8 @@ class DetalleAsientoNifController extends Controller
             DB::beginTransaction();
             try {
 
-                $asiento2 = Asiento2::find($id);
-                if(!$asiento2 instanceof Asiento2){
+                $asiento2 = AsientoNif2::find($id);
+                if(!$asiento2 instanceof AsientoNif2){
                     return response()->json(['success' => false, 'errors' => 'No es posible definir beneficiario, por favor verifique la información del asiento o consulte al administrador.']);
                 }
                 // Eliminar movimiento

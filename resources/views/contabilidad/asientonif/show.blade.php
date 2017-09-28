@@ -92,12 +92,12 @@
 
         		<div class="row">
 					<div class="col-md-2 col-md-offset-5 col-sm-6 col-xs-6 text-left">
-						<a href="{{ route('asientos.index') }}" class="btn btn-default btn-sm btn-block">{{ trans('app.comeback') }}</a>
+						<a href="{{ route('asientosnif.index') }}" class="btn btn-default btn-sm btn-block">{{ trans('app.comeback') }}</a>
 					</div>
 				</div><br>
 
 				<div class="box-body table-responsive">
-					<table id="browse-detalle-asiento-list" class="table table-hover table-bordered" cellspacing="0" width="100%">
+					<table id="browse-detalle-asienton-list" class="table table-hover table-bordered" cellspacing="0" width="100%">
 			            <tr>
 			                <th>Cuenta</th>
 			                <th>Nombre</th>

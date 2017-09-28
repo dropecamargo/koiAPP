@@ -24,13 +24,13 @@ app || (app = {});
 
         debitos: function() {
             return this.reduce(function(sum, model) {
-                return sum + parseFloat(model.get('asientonif2_debito'))
+                return sum + parseFloat(model.get('asienton2_debito'))
             }, 0);
         },
 
         creditos: function() {
             return this.reduce(function(sum, model) {
-                return sum + parseFloat(model.get('asientonif2_credito'))
+                return sum + parseFloat(model.get('asienton2_credito'))
             }, 0);
         },
 

@@ -255,9 +255,9 @@ app || (app = {});
                     alertify.error(text);
                     return;
                 }
-
+                console.log(resp.id);
                 // Redirect to show view
-                window.Misc.redirect( window.Misc.urlFull( Route.route('asientosnif.edit', { asientos: resp.id}) ) );
+                window.Misc.redirect( window.Misc.urlFull( Route.route('asientosnif.edit', { asientosnif: resp.id }) ) );
             }
         }
     });

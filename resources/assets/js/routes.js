@@ -139,6 +139,7 @@ app || (app = {});
             'asientos/:asiento/edit(/)': 'getAsientosEdit',
 
             'asientosnif(/)': 'getAsientosNifMain',
+            'asientosnif/:asientonif(/)': 'getAsientosNifShow',
             'asientosnif/:asientonif/edit(/)': 'getAsientosNifEdit',
 
             'activosfijos(/)': 'getActivosFijosMain',
@@ -1203,6 +1204,20 @@ app || (app = {});
             }
 
             this.mainAsientosNifView = new app.MainAsientosNifView( );
+        },
+        /**
+        * show view show asiento NIF contable
+        */
+        getAsientosNifShow: function (asientoNif) {
+            this.asientoNifModel = new app.AsientoNifModel();
+            this.asientoNifModel.set({'id': asientoNif}, {'silent':true});
+
+            if ( this.showAsientoNifView instanceof Backbone.View ){
+                this.showAsientoNifView.stopListening();
+                this.showAsientoNifView.undelegateEvents();
+            }
+
+            this.showAsientoNifView = new app.ShowAsientoNifView({ model: this.asientoNifModel });
         },
           getAsientosNifEdit: function (asiento) {
             this.asientoNifModel = new app.AsientoNifModel();

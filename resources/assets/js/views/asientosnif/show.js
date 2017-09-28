@@ -1,5 +1,5 @@
 /**
-* Class ShowAsientoView
+* Class ShowAsientoNifView
 * @author KOI || @dropecamargo
 * @link http://koi-ti.com
 */
@@ -9,9 +9,9 @@ app || (app = {});
 
 (function ($, window, document, undefined) {
 
-    app.ShowAsientoView = Backbone.View.extend({
+    app.ShowAsientoNifView = Backbone.View.extend({
 
-        el: '#asientos-show',
+        el: '#asientosnif-show',
 
         /**
         * Constructor Method
@@ -20,7 +20,7 @@ app || (app = {});
             // Model exist
             if( this.model.id != undefined ) {
              
-                this.asientoCuentasList = new app.AsientoCuentasList();
+                this.asientoNifCuentasList = new app.AsientoNifCuentasList();
 
                 // Reference views
                 this.referenceViews();
@@ -32,10 +32,11 @@ app || (app = {});
         */
         referenceViews: function () {
             // Detalle asiento list
-            this.cuentasListView = new app.AsientoCuentasListView({
-                collection: this.asientoCuentasList,
+            this.cuentasListView = new app.AsientoNifCuentasListView({
+                collection: this.asientoNifCuentasList,
                 parameters: {
-                    wrapper: this.el,
+                    wrapper: this.spinner,
+                    edit: false,
                     dataFilter: {
                         'asiento': this.model.get('id')
                     }

@@ -69,7 +69,7 @@ class AsientoNifController extends Controller
             return response()->json($asientoNif);
         }
 
-        return view('contabilidad.asientonif.show', ['asientonif' => $asientoNif]);
+        return view('contabilidad.asientonif.show', ['asientoNif' => $asientoNif]);
     }
 
     /**
@@ -80,6 +80,7 @@ class AsientoNifController extends Controller
      */
     public function edit($id)
     {
+        
         $asientoNif = AsientoNif::findOrFail($id);
         if($asientoNif->asienton1_preguardado == false) {
             return redirect()->route('asientosnif.show', ['asientoNif' => $asientoNif]);
