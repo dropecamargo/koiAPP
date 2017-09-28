@@ -9,7 +9,7 @@ use App\Http\Controllers\Controller;
 
 use DB, Log, Datatables, Auth, View, App;
 
-use App\Classes\AsientoContableDocumento;
+use App\Classes\AsientoNifContableDocumento;
 
 use App\Models\Contabilidad\AsientoNif, App\Models\Contabilidad\AsientoNif2, App\Models\Contabilidad\PlanCuentaNif, App\Models\Base\Tercero, App\Models\Contabilidad\Documento, App\Models\Contabilidad\CentroCosto;
 
@@ -108,11 +108,11 @@ class AsientoNifController extends Controller
                     // Recupero items asiento 2
 
                     $query = AsientoNif2::query();
-                    $query->select('asienton2.*', 'plancuentas_cuenta', 'plancuentas_tipo', 'tercero_nit',
+                    $query->select('asienton2.*', 'plancuentasn_cuenta', 'plancuentasn_tipo', 'tercero_nit',
                         DB::raw("(CASE WHEN asienton2_credito != 0 THEN 'C' ELSE 'D' END) as asienton2_naturaleza")
                     );
                     $query->join('tercero', 'asienton2_beneficiario', '=', 'tercero.id');
-                    $query->join('plancuentas', 'asienton2_cuenta', '=', 'plancuentas.id');
+                    $query->join('plancuentasn', 'asienton2_cuenta', '=', 'plancuentasn.id');
                     $query->where('asienton2_asiento', $asientoNif->id);
                     $asientoNif2 = $query->get();
 
@@ -120,7 +120,7 @@ class AsientoNifController extends Controller
                     foreach ($asientoNif2 as $item) {
                         $arCuenta = [];
                         $arCuenta['Id'] = $item->id;
-                        $arCuenta['Cuenta'] = $item->plancuentas_cuenta;
+                        $arCuenta['Cuenta'] = $item->plancuentasn_cuenta;
                         $arCuenta['Tercero'] = $item->tercero_nit;
                         $arCuenta['Naturaleza'] = $item->asienton2_naturaleza;
                         $arCuenta['CentroCosto'] = $item->asienton2_centro;
@@ -135,26 +135,26 @@ class AsientoNifController extends Controller
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'Por favor ingrese detalle para el asiento contable.']);
                     }
-                    // // Creo el objeto para manejar el asiento
-                    // $objAsiento = new AsientoContableDocumento($data, $asientoNif);
-                    // if($objAsiento->asiento_error) {
-                    //     DB::rollback();
-                    //     return response()->json(['success' => false, 'errors' => $objAsiento->asiento_error]);
-                    // }
+                    // Creo el objeto para manejar el asiento
+                    $objAsiento = new AsientoNifContableDocumento($data, $asientoNif);
+                    if($objAsiento->asiento_error) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $objAsiento->asiento_error]);
+                    }
 
-                    // // Preparar asiento
-                    // $result = $objAsiento->asientoCuentas($cuentas);
-                    // if($result != 'OK'){
-                    //     DB::rollback();
-                    //     return response()->json(['success' => false, 'errors' => $result]);
-                    // }
+                    // Preparar asiento
+                    $result = $objAsiento->asientoCuentas($cuentas);
+                    if($result != 'OK'){
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $result]);
+                    }
 
-                    // // Insertar asiento
-                    // $result = $objAsiento->insertarAsiento();
-                    // if($result != 'OK') {
-                    //     DB::rollback();
-                    //     return response()->json(['success' => false, 'errors' => $result]);
-                    // }
+                    // Insertar asiento
+                    $result = $objAsiento->insertarAsientoNif();
+                    if($result != 'OK') {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $result]);
+                    }
 
                     // Insertar movimientos asiento
                     foreach ($asientoNif2 as $item) {

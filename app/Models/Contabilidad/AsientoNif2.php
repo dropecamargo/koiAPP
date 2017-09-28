@@ -20,6 +20,20 @@ class AsientoNif2 extends Model
 
     public $timestamps = false;
 
+    public function isValid($data)
+    {
+        $rules = [
+            'plancuentasn_cuenta' => 'required|integer',
+            'asienton2_naturaleza' => 'required'
+        ];
+
+        $validator = Validator::make($data, $rules);
+        if ($validator->passes()) {
+            return true;
+        }
+        $this->errors = $validator->errors();
+        return false;
+    }
     public static function getAsientoNif2($asientoNif)
     {
         $query = AsientoNif2::query();
@@ -136,7 +150,7 @@ class AsientoNif2 extends Model
         }
 
         // Validar base
-        if( !empty($cuenta->plancuentasn_tasa) && $cuenta->plancuentasn_tasa > 0 && (!$request->has('asiento2_base') || $request->asiento2_base == 0) ) {
+        if( !empty($cuenta->plancuentasn_tasa) && $cuenta->plancuentasn_tasa > 0 && (!$request->has('asienton2_base') || $request->asienton2_base == 0) ) {
             return "Para la cuenta {$cuenta->plancuentasn_cuenta} debe existir base.";
         }
 
@@ -152,15 +166,15 @@ class AsientoNif2 extends Model
 
         // Validar centro de costo
         $centrocosto = null;
-        if($request->has('asiento2_centro')) {
-            $centrocosto = CentroCosto::find($request->asiento2_centro);
+        if($request->has('asienton2_centro')) {
+            $centrocosto = CentroCosto::find($request->asienton2_centro);
             if(!$centrocosto instanceof CentroCosto) {
                 return "No es posible recuperar centro de costo, por favor verifique la información del asiento o consulte al administrador.";
             }
         }
 
         // Validar valor
-        if(!$request->has('asiento2_valor') || !is_numeric($request->asiento2_valor) || $request->asiento2_valor <= 0) {
+        if(!$request->has('asienton2_valor') || !is_numeric($request->asienton2_valor) || $request->asienton2_valor <= 0) {
             return "Valor no puede ser menor o igual a 0, por favor verifique la información del asiento o consulte al administrador";
         }
 
@@ -170,8 +184,8 @@ class AsientoNif2 extends Model
     public static function validarOrdenp(Request $request)
     {
         // Validate centro costo
-        if($request->has('asiento2_centro')) {
-            $centrocosto = CentroCosto::find($request->asiento2_centro);
+        if($request->has('asienton2_centro')) {
+            $centrocosto = CentroCosto::find($request->asienton2_centro);
             if(!$centrocosto instanceof CentroCosto || $centrocosto->centrocosto_codigo != 'OP') {
                 return 'Para asociar orden de producción a ítem asiento se requiere centro costo OP, por favor verifique la información del asiento o consulte al administrador.';
             }
@@ -179,8 +193,8 @@ class AsientoNif2 extends Model
 
         // Validate orden
         $ordenp = null;
-        if($request->has('asiento2_orden')) {
-            $ordenp = Ordenp::whereRaw("CONCAT(orden_numero,'-',SUBSTRING(orden_ano, -2)) = '{$request->asiento2_orden}'")->first();
+        if($request->has('asienton2_orden')) {
+            $ordenp = Ordenp::whereRaw("CONCAT(orden_numero,'-',SUBSTRING(orden_ano, -2)) = '{$request->asienton2_orden}'")->first();
         }
         if(!$ordenp instanceof Ordenp) {
             return 'No es posible recuperar orden de producción, por favor verifique la información o consulte al administrador.';
@@ -208,7 +222,7 @@ class AsientoNif2 extends Model
         // Recuperar factura
         $facturap = Facturap::where('facturap1_factura', $request->facturap1_factura)->where('facturap1_tercero', $tercero->id)->first();
         // Validar naturaleza
-        if($request->asiento2_naturaleza == 'D') {
+        if($request->asienton2_naturaleza == 'D') {
             if(!$facturap instanceof Facturap) {
                 return "Para realizar movimientos de naturaleza débito de ingresar un numero de factura existente.";
             }
@@ -228,8 +242,8 @@ class AsientoNif2 extends Model
                     $suma_valor += $request->get("movimiento_valor_{$cuota->id}");
                 }
             }
-            if($suma_valor != $request->asiento2_valor) {
-                return "Las suma de los valores debe ser igual al valor del item del asiento: valor {$request->asiento2_valor}, suma $suma_valor, diferencia ".abs($request->asiento2_valor - $suma_valor);
+            if($suma_valor != $request->asienton2_valor) {
+                return "Las suma de los valores debe ser igual al valor del item del asiento: valor {$request->asienton2_valor}, suma $suma_valor, diferencia ".abs($request->asienton2_valor - $suma_valor);
             }
         }else{
             // Validar sucursal
@@ -314,7 +328,7 @@ class AsientoNif2 extends Model
 
         if ($producto->producto_metrado == true) {
             // Producto metrado
-            if($request->asiento2_naturaleza == 'D') {
+            if($request->asienton2_naturaleza == 'D') {
                 for ($item = 1; $item <= $request->movimiento_cantidad; $item++) {
                     if(!$request->has("itemrollo_metros_$item") || $request->get("itemrollo_metros_$item") <=0) {
                         $response->errors = "Por favor ingrese valor en metros para el item rollo $item, debe ser mayor a 0.";
@@ -353,12 +367,12 @@ class AsientoNif2 extends Model
                     return $response;
                 }
                 // Costo salida
-                $response->asiento2_valor = $costo;
+                $response->asienton2_valor = $costo;
             }
 
         }elseif ($producto->producto_serie == true) {
             // Producto serie
-            if($request->asiento2_naturaleza == 'D') {
+            if($request->asienton2_naturaleza == 'D') {
                 $series = [];
                 for ($item = 1; $item <= $request->movimiento_cantidad; $item++) {
                     if(!$request->has("producto_serie_$item") || $request->get("producto_serie_$item") == '') {
@@ -402,7 +416,7 @@ class AsientoNif2 extends Model
             }
         }elseif($producto->producto_unidades == true) {
             // Producto normal
-            if($request->asiento2_naturaleza == 'C') {
+            if($request->asienton2_naturaleza == 'C') {
                 // Recuperar prodbode
                 $prodbode = Prodbode::prodbode($producto, $request->movimiento_sucursal);
                 if(!$prodbode instanceof Prodbode || $request->movimiento_cantidad > $prodbode->disponibles) {
@@ -416,7 +430,7 @@ class AsientoNif2 extends Model
                     $response->errors = $costo;
                     return $response;
                 }
-                $response->asiento2_valor = $costo;
+                $response->asienton2_valor = $costo;
             }
         }
 
@@ -428,9 +442,10 @@ class AsientoNif2 extends Model
     {
         $response = new \stdClass();
         $response->success = false;
+        $cuenta = $request->has('plancuentasn_cuenta') ? $request->plancuentasn_cuenta : $request->plancuentas_cuenta; 
 
         // Recuperar cuenta
-        $objCuenta = PlanCuentaNif::where('plancuentasn_cuenta', $request->plancuentas_cuenta)->first();
+        $objCuenta = PlanCuentaNif::where('plancuentasn_cuenta', $cuenta)->first();
         if(!$objCuenta instanceof PlanCuentaNif) {
             $response->error = 'No es posible recuperar cuenta, por favor verifique la información del asiento o consulte al administrador.';
             return $response;
@@ -440,13 +455,13 @@ class AsientoNif2 extends Model
             // Preparar movimiento Facturap
             $datamov = [];
             $datamov['Tipo'] = 'FP';
-            $datamov['Naturaleza'] = $request->asiento2_naturaleza;
+            $datamov['Naturaleza'] = $request->asienton2_naturaleza;
             $datamov['Factura'] = $request->facturap1_factura;
 
             // Recuperar factura
             $facturap = Facturap1::where('facturap1_factura', $request->facturap1_factura)->where('facturap1_tercero', $this->asienton2_beneficiario)->first();
             // Validar naturaleza
-            // if($request->asiento2_naturaleza == 'D') {
+            // if($request->asienton2_naturaleza == 'D') {
             //     if(!$facturap instanceof Facturap1) {
             //         $response->error = 'Para realizar movimientos de naturaleza débito de ingresar un numero de factura existente.';
             //         return $response;
@@ -468,8 +483,8 @@ class AsientoNif2 extends Model
                         $suma_valor += $request->get("movimiento_valor_{$cuota->id}");
                     }
                 }
-                if($suma_valor != $request->asiento2_valor) {
-                    $response->error = "Las suma de los valores debe ser igual al valor del item del asiento: valor {$request->asiento2_valor}, suma $suma_valor, diferencia ".abs($request->asiento2_valor - $suma_valor);
+                if($suma_valor != $request->asienton2_valor) {
+                    $response->error = "Las suma de los valores debe ser igual al valor del item del asiento: valor {$request->asienton2_valor}, suma $suma_valor, diferencia ".abs($request->asienton2_valor - $suma_valor);
                     return $response;
                 }
 
@@ -494,7 +509,7 @@ class AsientoNif2 extends Model
             }else{
                 // En caso no existir factura se crea
                 $datamov['Nuevo'] = true;
-                $datamov['Valor'] = $request->asiento2_valor;
+                $datamov['Valor'] = $request->asienton2_valor;
                 $datamov['Sucursal'] = $request->facturap1_sucursal;
                 $datamov['Fecha'] = $request->facturap1_vencimiento;
                 $datamov['Cuotas'] = $request->facturap1_cuotas;
@@ -524,7 +539,7 @@ class AsientoNif2 extends Model
             // Preparar movimiento padre
             $datamov = [];
             $datamov['Tipo'] = 'IP';
-            $datamov['Naturaleza'] = $request->asiento2_naturaleza;
+            $datamov['Naturaleza'] = $request->asienton2_naturaleza;
             $datamov['Sucursal'] = $request->movimiento_sucursal;
             $datamov['Producto'] = $producto->id;
             $datamov['Valor'] = $request->movimiento_cantidad;
@@ -542,7 +557,7 @@ class AsientoNif2 extends Model
             if ($producto->producto_metrado == true) {
                 // Producto metrado
                 // Debito
-                if($request->asiento2_naturaleza == 'D') {
+                if($request->asienton2_naturaleza == 'D') {
                     for ($item = 1; $item <= $request->movimiento_cantidad; $item++) {
                         if(!$request->has("itemrollo_metros_$item") || $request->get("itemrollo_metros_$item") <=0) {
                             $response->error = "Por favor ingrese valor en metros para el item rollo $item, debe ser mayor a 0.";
@@ -582,7 +597,7 @@ class AsientoNif2 extends Model
             }elseif ($producto->producto_serie == true) {
                 // Producto serie
                 // Debito
-                if($request->asiento2_naturaleza == 'D') {
+                if($request->asienton2_naturaleza == 'D') {
                     for ($item = 1; $item <= $request->movimiento_cantidad; $item++) {
                         if(!$request->has("producto_serie_$item") || $request->get("producto_serie_$item") == '') {
                             $response->error = "Por favor ingrese serie para el item $item";
@@ -605,7 +620,7 @@ class AsientoNif2 extends Model
             // Preparar movimiento Factura
             $datamov = [];
             $datamov['Tipo'] = 'F';
-            $datamov['Naturaleza'] = $request->asiento2_naturaleza;
+            $datamov['Naturaleza'] = $request->asienton2_naturaleza;
             $datamov['Nuevo'] = false;
             $datamov['Factura'] = $request->factura1_orden;
             $datamov['Valor'] = $request->factura1_pagar;

@@ -24,6 +24,25 @@ class AsientoNif extends Model
      */
     // protected $fillable = ['asienton1_mes', 'asienton1_ano', 'asienton1_dia', 'asienton1_folder', 'asienton1_documento', 'asienton1_numero', 'asienton1_detalle', 'asienton1_documentos', 'asienton1_id_documentos'];
 
+    public function isValid($data)
+    {
+        $rules = [
+            'asienton1_mes' => 'required|integer',
+            'asienton1_ano' => 'required|integer',
+            'asienton1_dia' => 'required|integer',
+            'asienton1_numero' => 'required|integer',
+            'asienton1_folder' => 'required|integer',
+            'asienton1_documento' => 'required|integer',
+            'asienton1_beneficiario' => 'required'
+        ];
+
+        $validator = Validator::make($data, $rules);
+        if ($validator->passes()) {
+            return true;
+        }
+        $this->errors = $validator->errors();
+        return false;
+    }
 
     public static function getAsientoNif($id)
     {
