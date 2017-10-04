@@ -210,7 +210,15 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::resource('servicios', 'Inventario\ServicioController', ['except' => ['edit','destroy']]);
 	Route::resource('unidadesnegocio', 'Inventario\UnidadNegocioController', ['except' => ['destroy']]);
 
-   	/*
+    /*
+	|-------------------------
+	| Reportes Routes
+	|-------------------------
+	*/
+	Route::resource('rexistencias', 'Reporte\ExistenciaController', ['only' => ['index']]);
+	Route::resource('rmovimientosproductos', 'Reporte\MovProductoController', ['only' => ['index']]);
+
+   	/*	
 	|-------------------------
 	| Cartera Routes
 	|-------------------------

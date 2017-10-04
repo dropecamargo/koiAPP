@@ -7,10 +7,10 @@ return [
     'image' => '/images/koi.png',
 
     'app' => [
-        'name' => 'Signsupply',
-        'site' => 'http://signsupply.com.co/',
+        'name' => 'Koi-ti APP',
+        'site' => 'http://www.koi-ti.com',
         'image' => [
-            'logo' => '/images/logo.png',
+            'logo' => '/images/koi.png',
             'avatar' => '/images/avatar.svg'
         ],
         'ano' => 2015

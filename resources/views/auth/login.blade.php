@@ -54,7 +54,7 @@
 					</div>
 					<div class="row">
 						<div class="col-xs-offset-7 col-xs-5">
-							<button type="submit" class="btn btn-block btn-warning" style="vertical-align: middle">{{ trans('app.login') }}</button>
+							<button type="submit" class="btn btn-block btn-primary" style="vertical-align: middle">{{ trans('app.login') }}</button>
 						</div>
 					</div>
 				{!! Form::close() !!}

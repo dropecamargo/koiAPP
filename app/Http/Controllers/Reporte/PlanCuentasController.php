@@ -32,7 +32,7 @@ class PlanCuentasController extends Controller
             $plancuentas = $query->get();
 
             // Prepare data
-            $title = 'Plan de Unico de Cuentas - P.U.C';
+            $title = 'Listado de producto en inventario según la subcategoria';
             $type = $request->type;
 
             // Generate file

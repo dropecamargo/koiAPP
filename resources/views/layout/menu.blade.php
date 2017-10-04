@@ -268,7 +268,7 @@
     </li>
 
     {{-- Inventario --}}
-    <li class="treeview {{ in_array(Request::segment(1), ['unidades', 'productos','lineas','marcas','modelos','categorias','impuestos','pedidos','ajustes','tiposajuste','subcategorias','servicios','unidadesnegocio','traslados','trasladosubicaciones','tipostraslados']) ? 'active' : '' }}">
+    <li class="treeview {{ in_array(Request::segment(1), ['unidades', 'productos','lineas','marcas','modelos','categorias','impuestos','pedidos','ajustes','tiposajuste','subcategorias','servicios','unidadesnegocio','traslados','trasladosubicaciones','tipostraslados','rexistencias', 'rmovimientosproductos']) ? 'active' : '' }}">
         <a href="#">
             <i class="fa fa-list"></i> <span>Inventario</span><i class="fa fa-angle-left pull-right"></i>
         </a>
@@ -298,10 +298,18 @@
                 </ul>
             </li>
             {{--Reportes inventario--}}
-            <li class="">
+            <li class="{{ in_array(Request::segment(1), ['rexistencias', 'rmovimientosproductos']) ? 'active' : '' }}">
                 <a href="#">
                     <i class="fa fa-bar-chart-o"></i> Reportes<i class= "fa fa-angle-left pull-right"></i>
                 </a>
+                <ul class="treeview-menu">
+<!--                     <li class="{{ Request::segment(1) == 'rexistencias' ? 'active' : '' }}">
+                        <a href="{{ route('rexistencias.index') }}"><i class="fa fa-circle-o"></i> Existencias</a>
+                    </li>
+                    <li class="{{ Request::segment(1) == 'rmovimientosproductos' ? 'active' : '' }}">
+                        <a href="{{ route('rmovimientosproductos.index') }}"><i class="fa fa-circle-o"></i> Movimiento de producto</a>
+                    </li> -->
+                </ul>
             </li>
 
             {{-- Referencias inventario --}}

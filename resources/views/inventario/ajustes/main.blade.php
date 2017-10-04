@@ -24,7 +24,7 @@
                     <div class="form-group col-sm-3">
                         <select name="ajuste1_sucursal" id="ajuste1_sucursal" class="form-control select2-default change-sucursal-consecutive-koi-component" data-field="ajuste1_numero" data-document ="ajuste" data-wrapper="ajuste-create">
                         @foreach( App\Models\Base\Sucursal::getSucursales() as $key => $value)
-                        <option  value="{{ $key }}" <%- ajuste1_sucursal == '{{ $key }}' ? 'selected': ''%>>{{ $value }}</option>
+                            <option  value="{{ $key }}" <%- ajuste1_sucursal == '{{ $key }}' ? 'selected': ''%>>{{ $value }}</option>
                         @endforeach
                         </select>
                     </div>
@@ -127,7 +127,6 @@
                     <div class="col-sm-5 ">
                         <input id="producto_nombre" name="producto_nombre" placeholder="Nombre producto" class="form-control input-sm" type="text" maxlength="15" readonly required>
                     </div>
-
                 </div>
                 <div class="row">
                     <% if(tipoajuste_tipo == 'R' || tipoajuste_tipo == 'E') { %>
