@@ -21,41 +21,31 @@ class ExistenciaController extends Controller
     public function index(Request $request)
     {
         if ($request->has('type')) {
-            // dd($request->all());
-            // $query = Producto::select('producto.*', 'prodbode_cantidad', 'subcategoria_nombre', 'sucursal_nombre');
-            // $query->join('sucursal', 'prodbode.prodbode_sucursal', '=', 'sucursal.id');
-            // $query->join('subcategoria', 'producto_subcategoria', '=', 'subcategoria.id');
-            $array = array('type' =>'pdf' , 'sub_categoria'=> 1 , 'check_sucursal_1' => '1', 'check_sucursal_2' => '2', 'check_sucursal_3' => '3', 'check_sucursal_4' => '4' );
-            $data = $request->all();
-            dd($data);
-            $array = array_splice($data, 2);  
-            $array = array_flatten($array);
-            $query = Prodbode::select('producto_serie','producto_nombre','prodbode_cantidad');   
+
+            $query = Prodbode::select('producto_serie','producto_nombre','producto_costo','producto_precio1','prodbode_cantidad');   
             $query->join('producto', 'prodbode.prodbode_serie','=','producto.id');
+            $query->join('subcategoria', 'producto_subcategoria', '=', 'subcategoria.id');
+            // $query->join('sucursal', 'prodbode_sucursal', '=', 'sucursal.id');
             $query->groupBy('prodbode_sucursal','prodbode_serie');
-            
+
             /* Begin filters */
             if ($request->has('sub_categoria')) {
                 $subcategoria = SubCategoria::find($request->subcategoria);
                 if ($subcategoria instanceof SubCategoria){
                     $query->where('producto_subcategoria', $subcategoria->id );
                 }
-            }
-            // Define que sucursales se escogieron
-            $sucursales = Sucursal::query()->get();
-            $countSucursal = 0;
-            foreach ($sucursales as $sucursal) {
-                if ($request->has("check_sucursal_$sucursal->id")) {
-                    $countSucursal++;
-                    $query->where('prodbode_sucursal', $sucursal->id);
-                }
+            } 
+            if ($request->has('filter_sucursal')) {
+                $query->whereIn('prodbode_sucursal', $request->filter_sucursal);
+                $countSucursal = count($request->filter_sucursal);
             }
             /* End filters */
 
             $query->orderBy('producto_serie', 'asc');
             $producto['query'] = $query->get();
-            $producto['numSucursal'] = $countSucursal == 0 ? $sucursales->count() : $countSucursal;
-            
+            // $producto['numSucursal'] = isset($countSucursal) ? $countSucursal : Sucursal::count();
+            $producto['numSucursal'] = isset($countSucursal) ? $countSucursal : 3;
+
             // Prepare data
             $title = 'Listado de producto en inventario según la subcategoria';
             $type = $request->type;

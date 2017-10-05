@@ -215,6 +215,7 @@ Route::group(['middleware' => 'auth'], function(){
 	| Reportes Routes
 	|-------------------------
 	*/
+	Route::resource('ractivosfijos', 'Reporte\ActivoFijoController', ['only' => ['index']]);
 	Route::resource('rexistencias', 'Reporte\ExistenciaController', ['only' => ['index']]);
 	Route::resource('rmovimientosproductos', 'Reporte\MovProductoController', ['only' => ['index']]);
 
@@ -287,6 +288,13 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::resource('cheques', 'Cartera\ChposFechado1Controller', ['except' => ['destroy']]);
 	Route::resource('chequesdevueltos', 'Cartera\ChDevueltoController', ['except' => ['destroy']]);
 	Route::resource('carteraterceros', 'Cartera\CarteraController', ['only' => ['index']]);
+    /*
+	|-------------------------
+	| Reportes Routes
+	|-------------------------
+	*/
+	Route::resource('rcarteraedades', 'Reporte\CarteraEdadController', ['only' => ['index']]);
+	Route::resource('rhistorialclientes', 'Reporte\HistorialClienteController', ['only' => ['index']]);
 
 	/*
 	|-------------------------

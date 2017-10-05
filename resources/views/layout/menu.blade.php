@@ -77,7 +77,7 @@
     </li>
 
     {{--Cartera--}}
-    <li class="{{ in_array(Request::segment(1), ['autorizacionesca','bancos','conceptosrc','conceptocobros','cuentabancos','autorizaco','mediopagos', 'recibos', 'conceptonotas', 'notas','facturas','conceptosajustec','ajustesc','devoluciones','anticipos','cheques','chequesdevueltos','gestioncobros','causas']) ? 'active' : '' }}">
+    <li class="{{ in_array(Request::segment(1), ['autorizacionesca','bancos','conceptosrc','conceptocobros','cuentabancos','autorizaco','mediopagos', 'recibos', 'conceptonotas', 'notas','facturas','conceptosajustec','ajustesc','devoluciones','anticipos','cheques','chequesdevueltos','gestioncobros','causas','rcarteraedades', 'rhistorialclientes']) ? 'active' : '' }}">
         <a href="#">
             <i class="fa fa-suitcase"></i> <span>Cartera</span><i class="fa fa-angle-left pull-right"></i>
         </a>
@@ -114,6 +114,20 @@
                     </li>
                     <li class="{{ Request::segment(1) == 'recibos' ? 'active' : '' }}">
                         <a href="{{ route('recibos.index') }}"><i class="fa fa-file-text-o"></i> Recibos de caja</a>
+                    </li>
+                </ul>
+            </li>
+            {{-- Reportes cartera --}}
+            <li class="{{ in_array(Request::segment(1), ['rcarteraedades', 'rhistorialclientes']) ? 'active' : '' }}">
+                <a href="#">
+                    <i class="fa fa-bar-chart-o"></i> Reportes <i class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="treeview-menu">
+                    <li class="{{ Request::segment(1) == 'rcarteraedades' ? 'active' : '' }}">
+                        <a href="{{ route('rcarteraedades.index') }}"><i class="fa fa-circle-o"></i> Cartera edad</a>
+                    </li>
+                    <li class="{{ Request::segment(1) == 'rhistorialclientes' ? 'active' : '' }}">
+                        <a href="{{ route('rhistorialclientes.index') }}"><i class="fa fa-circle-o"></i> Historial clientes</a>
                     </li>
                 </ul>
             </li>
@@ -268,7 +282,7 @@
     </li>
 
     {{-- Inventario --}}
-    <li class="treeview {{ in_array(Request::segment(1), ['unidades', 'productos','lineas','marcas','modelos','categorias','impuestos','pedidos','ajustes','tiposajuste','subcategorias','servicios','unidadesnegocio','traslados','trasladosubicaciones','tipostraslados','rexistencias', 'rmovimientosproductos']) ? 'active' : '' }}">
+    <li class="treeview {{ in_array(Request::segment(1), ['unidades', 'productos','lineas','marcas','modelos','categorias','impuestos','pedidos','ajustes','tiposajuste','subcategorias','servicios','unidadesnegocio','traslados','trasladosubicaciones','tipostraslados','rexistencias', 'rmovimientosproductos','ractivosfijos']) ? 'active' : '' }}">
         <a href="#">
             <i class="fa fa-list"></i> <span>Inventario</span><i class="fa fa-angle-left pull-right"></i>
         </a>
@@ -298,17 +312,20 @@
                 </ul>
             </li>
             {{--Reportes inventario--}}
-            <li class="{{ in_array(Request::segment(1), ['rexistencias', 'rmovimientosproductos']) ? 'active' : '' }}">
+            <li class="{{ in_array(Request::segment(1), ['rexistencias', 'rmovimientosproductos', 'ractivosfijos']) ? 'active' : '' }}">
                 <a href="#">
                     <i class="fa fa-bar-chart-o"></i> Reportes<i class= "fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
-<!--                     <li class="{{ Request::segment(1) == 'rexistencias' ? 'active' : '' }}">
+                    <li class="{{ Request::segment(1) == 'ractivosfijos' ? 'active' : '' }}">
+                        <a href="{{ route('ractivosfijos.index') }}"><i class="fa fa-circle-o"></i> Activos fijos</a>
+                    </li>
+                    <li class="{{ Request::segment(1) == 'rexistencias' ? 'active' : '' }}">
                         <a href="{{ route('rexistencias.index') }}"><i class="fa fa-circle-o"></i> Existencias</a>
                     </li>
                     <li class="{{ Request::segment(1) == 'rmovimientosproductos' ? 'active' : '' }}">
                         <a href="{{ route('rmovimientosproductos.index') }}"><i class="fa fa-circle-o"></i> Movimiento de producto</a>
-                    </li> -->
+                    </li>
                 </ul>
             </li>
 

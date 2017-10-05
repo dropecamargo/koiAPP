@@ -19,7 +19,7 @@
 			 	<input class="hidden" id="type-reporte-koi-component" name="type"></input>
 				<div class="box-body">
 					<div class="row">
-						<div class="form-group col-md-offset-4 col-md-4">
+						<div class="form-group col-md-4 col-md-offset-4">
 							<label for="sub_categoria" class="control-label">Sub categoria</label>
 							<select name="sub_categoria" id="sub_categoria" class="form-control select2-default-clear">
 								@foreach( App\Models\Inventario\SubCategoria::getSubCategorias() as $key => $value)
@@ -28,27 +28,23 @@
 							</select>
 						</div>
 					</div>
-					<div class="box box-solid">
-						<div class="box-header whit-border col-md-offset-6"><h4><strong>Sucursales</strong></h4></div>
-						<div class="box-body col-md-offset-1">
-							@foreach( App\Models\Base\Sucursal::getSucursales() as $key => $value)
-								@if($value != '')
-									<div class="form-group col-md-3">
-										<label class="checkbox-inline" for="check_sucursal_{{$key}}">
-											<input type="checkbox" name="check_sucursal_{{$key}}" value="{{$key}}"> {{$value}}
-										</label>
-									</div>
-								@endif
-							@endforeach
+					<div class="row">
+	                    <div class="form-group col-md-4 col-md-offset-4">
+						<label for="filter_sucursal" class="control-label">Sucursales</label>
+							<select name="filter_sucursal[ ]" class="form-control select2-default" multiple="multiple">
+								@foreach( App\Models\Base\Sucursal::getSucursales() as $key => $value)
+		                        	<option value="{{ $key }}"> {{ $value }}</option>
+								@endforeach
+							</select>
 						</div>
 					</div>
-					<div class="row">
-						<div class="col-md-2 col-md-offset-4 col-sm-6 col-xs-6">
+					<div class="box-footer">
+						<div class="col-md-2 col-md-offset-4 col-md-6 col-xs-6">
 							<button type="submit" class="btn btn-default btn-sm btn-block btn-export-xls-koi-component">
 								<i class="fa fa-file-text-o"></i> {{ trans('app.xls') }}
 							</button>
 						</div>
-						<div class="col-md-2 col-sm-6 col-xs-6">
+						<div class="col-md-2 col-md-6 col-xs-6">
 							<button type="submit" class="btn btn-default btn-sm btn-block btn-export-pdf-koi-component">
 								<i class="fa fa-file-pdf-o"></i> {{ trans('app.pdf') }}
 							</button>
