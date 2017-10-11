@@ -21,7 +21,7 @@
 					<div class="row">
 						<div class="form-group col-md-4 col-md-offset-4">
 							<label for="sub_categoria" class="control-label">Sub categoria</label>
-							<select name="sub_categoria" id="sub_categoria" class="form-control select2-default-clear">
+							<select name="sub_categoria" id="sub_categoria" class="form-control select2-default-clear" data-placeholder="Todas">
 								@foreach( App\Models\Inventario\SubCategoria::getSubCategorias() as $key => $value)
 								    <option value="{{ $key }}">{{ $value }}</option>
 								@endforeach
@@ -31,7 +31,7 @@
 					<div class="row">
 	                    <div class="form-group col-md-4 col-md-offset-4">
 						<label for="filter_sucursal" class="control-label">Sucursales</label>
-							<select name="filter_sucursal[ ]" class="form-control select2-default" multiple="multiple">
+							<select name="filter_sucursal[ ]" class="form-control select2-default" multiple="multiple" data-placeholder="Todas">
 								@foreach( App\Models\Base\Sucursal::getSucursales() as $key => $value)
 		                        	<option value="{{ $key }}"> {{ $value }}</option>
 								@endforeach

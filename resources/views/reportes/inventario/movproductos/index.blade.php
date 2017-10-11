@@ -62,7 +62,7 @@
 	                            <div class="input-group-addon">
 	                                <i class="fa fa-calendar"></i>
 	                            </div>
-	                            <input type="text" id="filter_fecha_fin" name="filter_fecha_fin" value="{{ date('Y-m-d') }}" class="form-control input-sm datepicker" required>
+	                            <input type="text" id="filter_fecha_fin" name="filter_fecha_fin"  class="form-control input-sm datepicker" required>
 	                        </div>
 	                    </div>
 					</div>

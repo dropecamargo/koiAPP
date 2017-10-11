@@ -3,10 +3,6 @@
 @section('content')
 	<table class="rtable" border="0" cellspacing="0" cellpadding="0">
 		<thead>
-			{{--<tr>
-				<th width="5%">REFERENCIA</th>
-				<th width="5%">NOMBRE</th>
-			</tr>--}}
 
 			<tr>
 				<th width="10%" class="left">DOCUMENTO</th>
@@ -22,6 +18,11 @@
 			</tr>
 		</thead>
 		<tbody>
+			@if ($inventario->isEmpty())
+				<tr class="subtitle">
+					<th colspan="10" class="center">NO SE ENCUENTRAN REGISTROS PARA ESTE REPORTE</th>
+				</tr>
+			@endif
 			@foreach($inventario as $item)
 				<tr>
 					<td class="left">{{ $item->documentos_nombre }}</td>

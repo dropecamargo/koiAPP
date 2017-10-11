@@ -18,10 +18,10 @@
 			</tr>
 		</thead>
 		<tbody>
-			{{--@foreach($historyClient as $item)
+			{{--@foreach($activoFijo as $item)
 				<tr>
-					<td>{{ $item->documentos_nombre }}</td>
-					<td>{{ $item->ajustec1_numero }}</td>
+					<td>{{ $item->activofijo_placa }}</td>
+					<td>{{ $item->activofijo_serie }}</td>
 					<td>{{ $item->activofijo_descripcion }}</td>
 					<td>{{ number_format($item->activofijo_costo) }}</td>
 					<td>{{ number_format($item->activofijo_depreciacion) }}</td>

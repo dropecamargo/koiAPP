@@ -4,8 +4,9 @@
 	<table class="rtable" border="1" cellspacing="0" cellpadding="0">
 		<thead>
 			<tr>
-				<th width="5%">REFERENCIA</th>
-				<th colspan="{{ $producto['numSucursal'] + 3}}">NOMBRE PRODUCTO</th>
+				<th width="10%">REFERENCIA</th>
+				<th colspan="{{ $producto['numSucursal']}}">NOMBRE PRODUCTO</th>
+				<th colspan="3">SUBCATEGORIA</th>
 			</tr>
 
 			<tr>
@@ -14,24 +15,33 @@
 				@for($i = 1; $i <= $producto['numSucursal'] ; $i++) 
 					<th width="5%" class="center">BOD{{ $i }}</th>
 				@endfor
-				<th width="10%" class="center">TOTAL</th>
-				<th width="15%" class="center">PRECIO VENTA</th>
+				<th width="5%" class="center">TOTAL</th>
+				<th width="5%" class="center">PRECIO VENTA</th>
 			</tr>
 		</thead>
-		<tbody>
+		<tbody class="subtitle">
+			@if($producto['query']->isEmpty())
+				<tr class="subtitle">
+					<th colspan="{{$producto['numSucursal'] + 4 }}" class="center">NO SE ENCUENTRAN REGISTROS PARA ESTE REPORTE</th>
+				</tr>
+			@endif
 			@foreach($producto['query'] as $item)
 				<tr>
-					<td class="left">{{ $item->producto_serie }}</td>
-					<td class="left" colspan="{{ $producto['numSucursal'] + 3 }}">{{ $item->producto_nombre }}</td>
+					<th class="left">{{ $item->serie }}</th>
+					<th class="left" colspan="{{ $producto['numSucursal'] }}">{{ $item->nombre }}</th>
+					<th class="left" colspan="3">{{ $item->subcategoria }}</th>
 				</tr>
 				<tr>
 					<td></td>
-					<td class="center">{{ number_format($item->producto_costo) }}</td>
-					@for($i = 1; $i <= $producto['numSucursal'] ; $i++) 
-						<td width="5%" class="center"></td>
+					<td class="center">{{ number_format($item->costo) }}</td>
+
+					@for($i = 1; $i <= $producto['numSucursal'] ; $i++)
+						{{--*/ $unidad = 'unidad'.$i /*--}} 
+						<td width="5%" class="center">{{ $item->$unidad }}</td>
 					@endfor
-					<td class="center">{{ number_format($item->producto_co) }}</td>
-					<td class="center">{{ $item->producto_precio1 }}</td>
+
+					<td width="5%" class="center">{{ number_format($item->precio) }}</td>
+					<td class="center">{{ number_format($item->precio) }}</td>
 				</tr>
 			@endforeach
 		</tbody>

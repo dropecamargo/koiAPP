@@ -26,7 +26,6 @@ class ActivoFijoController extends Controller
             // Prepare data
             $title = "Listado de activos fijos";
             $type = $request->type;
-
             switch ($type) {
                 case 'xls':
                     Excel::create(sprintf('%s_%s_%s', 'activoFijo', date('Y_m_d'), date('H_m_s')), function($excel) use($activoFijo, $title, $type) {

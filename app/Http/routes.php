@@ -368,4 +368,11 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::resource('tipopagos', 'Tesoreria\TipoPagoController', ['except' => ['destroy']]);
 	Route::resource('tipoproveedores', 'Tesoreria\TipoProveedorController', ['except' => ['destroy']]);
 	Route::resource('conceptosajustep', 'Tesoreria\ConceptoAjustepController', ['except' => ['destroy']]);
+
+    /*
+	|-------------------------
+	| Reportes Routes
+	|-------------------------
+	*/
+	Route::resource('rhistorialproveedores', 'Reporte\HistorialProveedorController', ['only' => ['index']]);
 });

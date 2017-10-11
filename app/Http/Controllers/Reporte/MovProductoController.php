@@ -45,7 +45,7 @@ class MovProductoController extends Controller
             $query->join('sucursal', 'inventario_sucursal', '=', 'sucursal.id');
             $query->join('tercero', 'inventario_usuario_elaboro', '=', 'tercero.id');
             $inventario = $query->get();
-
+            // dd($inventario->, $inventario);
             // Prepare data
             $title = "Listado de movimiento producto $producto->producto_serie - $producto->producto_nombre";
             $type = $request->type;

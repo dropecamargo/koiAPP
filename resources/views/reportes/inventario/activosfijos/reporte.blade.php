@@ -12,6 +12,11 @@
 			</tr>
 		</thead>
 		<tbody>
+			@if($activoFijo->isEmpty())
+				<tr class="subtitle">
+					<th colspan="5" class="center">NO SE ENCUENTRAN REGISTROS PARA ESTE REPORTE</th>
+				</tr>
+			@endif
 			@foreach($activoFijo as $item)
 				<tr>
 					<td>{{ $item->activofijo_placa }}</td>

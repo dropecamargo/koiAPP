@@ -304,7 +304,7 @@ app || (app = {});
         addOneItemRolloInventario: function (itemRolloModel) {
             // Prepare lote encabezado
             if (this.parameters.tipo == 'E') 
-                itemRolloModel.set({rollo_lote: this.parameters.data.lote});
+                itemRolloModel.set({rollo_lote: this.parameters.data.lote });
 
             var view = new app.ItemRolloINListView({
                 model: itemRolloModel,

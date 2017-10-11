@@ -75,6 +75,16 @@
 					background-color: #f2f2f2
 				}
 
+				.subtitle td {
+					border: 0px ;
+					border-left: 1px solid black;
+				}
+				.subtitle th {
+					background: black;
+					color: #FFFFFF;
+					border: 0px;
+				}
+
 				.htable {
 					width: 100%;
 				}
