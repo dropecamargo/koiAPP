@@ -373,7 +373,7 @@
         </ul>
     </li>
     {{-- Tecnico --}}
-    <li class="treeview {{ in_array(Request::segment(1), ['ordenes','tiposorden','solicitantes', 'sitios', 'danos','prioridades','conceptostecnico','gestionestecnico', 'agendatecnica']) ? 'active' : '' }}">
+    <li class="treeview {{ in_array(Request::segment(1), ['ordenes','tiposorden','solicitantes', 'sitios', 'danos','prioridades','conceptostecnico','gestionestecnico', 'agendatecnica', 'rordenesabiertas']) ? 'active' : '' }}">
         <a href="#">
             <i class="fa fa-cogs"></i> <span>Tecnico</span><i class="fa fa-angle-left pull-right"></i>
         </a>
@@ -395,7 +395,17 @@
                     </li>
                 </ul>
             </li>
-
+            {{-- Reportes  Tesoreria --}}
+            <li class="{{ in_array(Request::segment(1), ['rordenesabiertas']) ? 'active' : '' }}">
+                <a href="#">
+                    <i class="fa fa-bar-chart-o"></i> Reportes<i class= "fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="treeview-menu">
+                    <li class="{{ Request::segment(1) == 'rordenesabiertas' ? 'active' : '' }}">
+                        <a href="{{ route('rordenesabiertas.index') }}"><i class="fa fa-circle-o"></i> Ordenes abiertas</a>
+                    </li>
+                </ul>
+            </li>
             {{-- Referencias Tecnico --}}
             <li class="{{ in_array(Request::segment(1), ['tiposorden','solicitantes','danos','prioridades','conceptostecnico', 'sitios']) ? 'active' : '' }}">
                 <a href="#">
@@ -425,7 +435,7 @@
         </ul>
     </li>
     {{-- Tesoreria --}}
-    <li class="treeview {{ in_array(Request::segment(1), ['facturasp','ajustesp','egresos','retefuentes','tipoproveedores', 'tipogastos', 'tipopagos', 'conceptosajustep', 'rhistorialproveedores']) ? 'active' : '' }}">
+    <li class="treeview {{ in_array(Request::segment(1), ['facturasp','ajustesp','egresos','retefuentes','tipoproveedores', 'tipogastos', 'tipopagos', 'conceptosajustep', 'rhistorialproveedores', 'rcarteraedadesproveedores']) ? 'active' : '' }}">
         <a href="#">
             <i class="fa fa-balance-scale"></i><span> Tesorería</span><i class="fa fa-angle-left pull-right"></i>
         </a>
@@ -448,11 +458,14 @@
                 </ul>
             </li>
             {{-- Reportes  Tesoreria --}}
-            <li class="{{ in_array(Request::segment(1), ['rhistorialproveedores']) ? 'active' : '' }}">
+            <li class="{{ in_array(Request::segment(1), ['rhistorialproveedores', 'rcarteraedadesproveedores']) ? 'active' : '' }}">
                 <a href="#">
                     <i class="fa fa-bar-chart-o"></i> Reportes<i class= "fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
+                    <li class="{{ Request::segment(1) == 'rcarteraedadesproveedores' ? 'active' : '' }}">
+                        <a href="{{ route('rcarteraedadesproveedores.index') }}"><i class="fa fa-circle-o"></i> Cartera proveedores</a>
+                    </li>
                     <li class="{{ Request::segment(1) == 'rhistorialproveedores' ? 'active' : '' }}">
                         <a href="{{ route('rhistorialproveedores.index') }}"><i class="fa fa-circle-o"></i> Historial proveedores</a>
                     </li>

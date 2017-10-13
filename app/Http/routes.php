@@ -328,7 +328,12 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::resource('gestionestecnico', 'Tecnico\GestionTecnicoController', ['except' => ['destroy']]);
 	Route::resource('agendatecnica', 'Tecnico\AgendaTecnicaController', ['except' => ['destroy']]);
 	Route::resource('sitios', 'Tecnico\SitioController', ['except' => ['destroy']]);
-
+    /*
+	|-------------------------
+	| Reportes Routes
+	|-------------------------
+	*/
+	Route::resource('rordenesabiertas', 'Reporte\OrdenesAbiertasController', ['only' => ['index']]);
 	/*
 	|-------------------------
 	| Tesoreria Routes
@@ -375,4 +380,5 @@ Route::group(['middleware' => 'auth'], function(){
 	|-------------------------
 	*/
 	Route::resource('rhistorialproveedores', 'Reporte\HistorialProveedorController', ['only' => ['index']]);
+	Route::resource('rcarteraedadesproveedores', 'Reporte\CarteraEdadProveedorController', ['only' => ['index']]);
 });

@@ -8,7 +8,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Models\Base\Tercero;
-use App\Models\Tesoreria\Ajustep1, App\Models\Tesoreria\Facturap1;
+use App\Models\Tesoreria\Ajustep2, App\Models\Tesoreria\Facturap1, App\Models\Tesoreria\Egreso2;
 use Excel, View, App, DB;
 
 class HistorialProveedorController extends Controller
@@ -32,14 +32,20 @@ class HistorialProveedorController extends Controller
                 $i = 0;
 
                 // querie ajuste proveedor
-                // $ajusteProveedor = Ajustep1::historyProveiderReport($tercero, $historyProveider, $i);
-                // $historyProveider = $ajusteProveedor->ajusteProveedor;
-                // $i = $ajusteProveedor->position;
+                $ajusteProveedor = Ajustep2::historyProveiderReport($tercero, $historyProveider, $i);
+                $historyProveider = $ajusteProveedor->ajusteProveedor;
+                $i = $ajusteProveedor->position;
 
                 // querie factura proveedor
                 $facturaProveedor = Facturap1::historyProveiderReport($tercero, $historyProveider, $i);
                 $historyProveider = $facturaProveedor->facturaProveedor;
                 $i = $facturaProveedor->position;
+
+                // querie egresos proveedor
+                $egreso = Egreso2::historyProveiderReport($tercero, $historyProveider, $i);
+                $historyProveider = $egreso->egreso;
+                $i = $egreso->position;
+
 
                 // dd($historyProveider, $i);
             }

@@ -5,6 +5,7 @@ namespace App\Models\Tesoreria;
 use Illuminate\Database\Eloquent\Model;
 
 use App\Models\BaseModel;
+use App\Models\Base\Tercero;
 use Validator, DB;
 
 class Ajustep2 extends BaseModel
@@ -58,4 +59,40 @@ class Ajustep2 extends BaseModel
 
         return $ajustep2;
 	}
+
+    /**
+    * Function for reportes history client in cartera
+    */
+    public static function historyProveiderReport(Tercero $tercero, Array $historyProveider, $i ) 
+    {
+        $response = new \stdClass();
+        $response->success = false;
+        $response->ajusteProveedor = [];
+        $response->position = 0;
+
+        $query = Ajustep2::query();
+        $query->select('ajustep2.*', 'docafecta.documentos_nombre as docafecta', 'documento.documentos_nombre as documento','ajustep1_numero','ajustep1_fh_elaboro', 'regional_nombre');
+        $query->where('ajustep2_tercero', $tercero->id);
+        $query->join('ajustep1', 'ajustep1.id', '=', 'ajustep2_ajustep1');
+        $query->join('regional', 'ajustep1.ajustep1_regional', '=', 'regional.id');
+        $query->join('documentos as documento', 'ajustep1.ajustep1_documentos', '=', 'documento.id');
+        $query->join('documentos as docafecta', 'ajustep2.ajustep2_documentos_doc', '=', 'docafecta.id');
+        $ajusteProveedor = $query->get();
+
+        foreach ($ajusteProveedor as $value) {
+            $historyProveider[$i]['documento'] = $value->documento;
+            $historyProveider[$i]['numero'] = $value->ajustep1_numero;
+            $historyProveider[$i]['regional'] = $value->regional_nombre;
+            $historyProveider[$i]['docafecta'] = $value->docafecta;
+            $historyProveider[$i]['id_docafecta'] = $value->ajustep2_id_doc;
+            $historyProveider[$i]['cuota'] = 1;
+            $historyProveider[$i]['naturaleza'] = $value->ajustep2_naturaleza;
+            $historyProveider[$i]['valor'] = $value->ajustep2_valor;
+            $historyProveider[$i]['elaboro_fh'] = $value->ajustep1_fh_elaboro;
+            $i++;
+        }
+        $response->ajusteProveedor = $historyProveider;
+        $response->position = $i;
+        return $response;
+    }
 }
