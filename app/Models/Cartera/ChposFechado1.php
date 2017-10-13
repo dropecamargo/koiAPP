@@ -5,6 +5,7 @@ namespace App\Models\Cartera;
 use Illuminate\Database\Eloquent\Model;
 
 use App\Models\BaseModel;
+use App\Models\Base\Tercero;
 use Validator,DB;
 
 class ChposFechado1 extends BaseModel
@@ -80,5 +81,41 @@ class ChposFechado1 extends BaseModel
 			$item->save();		
 		}
 		return true;
+	}
+    /**
+    * Function for reportes history client in cartera
+    */
+	public static function historyClientReport(Tercero $tercero, Array $historyClient, $i ) 
+	{
+        $response = new \stdClass();
+        $response->success = false;
+        $response->cheque = [];
+        $response->position = 0;
+
+        $query = ChposFechado1::query();
+        $query->select('chposfechado1.*', 'docafecta.documentos_nombre as docafecta', 'documento.documentos_nombre as documento', 'chposfechado2_id_doc', 'chposfechado2_valor', 'sucursal_nombre');
+        $query->where('chposfechado1_tercero', $tercero->id);
+        $query->join('chposfechado2', 'chposfechado1.id', '=', 'chposfechado2_chposfechado1');
+        $query->join('sucursal', 'chposfechado1_sucursal', '=', 'sucursal.id');
+        $query->join('documentos as documento', 'chposfechado1_documentos', '=', 'documento.id');
+        $query->join('documentos as docafecta', 'chposfechado2_documentos_doc', '=', 'docafecta.id');
+        $cheque = $query->get();
+
+
+        foreach ($cheque as $value) {
+        	$historyClient[$i]['documento'] = $value->documento;
+        	$historyClient[$i]['numero'] = $value->chposfechado1_numero;
+        	$historyClient[$i]['sucursal'] = $value->sucursal_nombre;
+        	$historyClient[$i]['docafecta'] = $value->docafecta;
+        	$historyClient[$i]['id_docafecta'] = $value->chposfechado2_id_doc;
+        	$historyClient[$i]['cuota'] = $value->chposfechado2_id_doc;
+        	$historyClient[$i]['naturaleza'] ='D';
+        	$historyClient[$i]['valor'] = $value->chposfechado2_valor;
+        	$historyClient[$i]['elaboro_fh'] = $value->chposfechado1_fh_elaboro;
+        	$i++;
+        }
+        $response->cheque = $historyClient;
+        $response->position = $i;
+        return $response;
 	}
 }

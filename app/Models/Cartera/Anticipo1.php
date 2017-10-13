@@ -4,6 +4,7 @@ namespace App\Models\Cartera;
 
 use Illuminate\Database\Eloquent\Model;
 
+use App\Models\Base\Tercero;
 use Validator,DB;
 
 class Anticipo1 extends Model
@@ -61,5 +62,38 @@ class Anticipo1 extends Model
 		$query->where('anticipo1.id',$id);
 		return $query->first();
 	}
+    /**
+    * Function for reportes history client in cartera
+    */
+	public static function historyClientReport(Tercero $tercero, Array $historyClient, $i)
+	{
+        $response = new \stdClass();
+        $response->success = false;
+        $response->anticipo = [];
+        $response->position = 0;
 
+        $query = Anticipo1::query();
+        $query->select('anticipo1.*', 'sucursal_nombre', 'documentos_nombre');
+	    $query->join('sucursal', 'anticipo1_sucursal', '=', 'sucursal.id');
+        $query->join('documentos', 'anticipo1_documentos', '=', 'documentos.id');
+        $query->where('anticipo1_tercero', $tercero->id);
+        $anticipo = $query->get();
+
+        foreach ($anticipo as $value) {
+        	$historyClient[$i]['documento'] = $value->documentos_nombre;
+        	$historyClient[$i]['numero'] = $value->anticipo1_numero;
+        	$historyClient[$i]['sucursal'] = $value->sucursal_nombre;
+        	$historyClient[$i]['docafecta'] = $value->documentos_nombre;
+        	$historyClient[$i]['id_docafecta'] = $value->anticipo1_numero;
+        	$historyClient[$i]['cuota'] = 0;
+        	$historyClient[$i]['naturaleza'] = 'D';
+        	$historyClient[$i]['valor'] = $value->anticipo1_valor;
+        	$historyClient[$i]['elaboro_fh'] = $value->anticipo1_fh_elaboro;
+        	$i++;
+        }
+
+        $response->anticipo = $historyClient;
+        $response->position = $i;
+        return $response;
+	}
 }

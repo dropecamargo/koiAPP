@@ -5,7 +5,7 @@ namespace App\Models\Cartera;
 use Illuminate\Database\Eloquent\Model;
 
 use App\Models\BaseModel;
-use App\Models\Cartera\Recibo1;
+use App\Models\Base\Tercero;
 use DB, Validator;
 
 class Recibo1 extends BaseModel
@@ -70,5 +70,41 @@ class Recibo1 extends BaseModel
 		$query->join('cuentabanco', 'recibo1_cuentas', '=', 'cuentabanco.id');
 		$query->where('recibo1.id', $id);
         return $query->first();
+	}
+    /**
+    * Function for reportes history client in cartera
+    */
+	public static function historyClientReport(Tercero $tercero, Array $historyClient, $i ) 
+	{
+        $response = new \stdClass();
+        $response->success = false;
+        $response->recibo = [];
+        $response->position = 0;
+
+        $query = Recibo1::query();
+        $query->select('recibo1.*', 'docafecta.documentos_nombre as docafecta', 'documento.documentos_nombre as documento', 'recibo2_id_doc', 'recibo2_naturaleza', 'recibo2_valor', 'sucursal_nombre');
+        $query->where('recibo1_tercero', $tercero->id);
+        $query->join('recibo2', 'recibo1.id', '=', 'recibo2_recibo1');
+        $query->join('sucursal', 'recibo1_sucursal', '=', 'sucursal.id');
+        $query->join('documentos as documento', 'recibo1_documentos', '=', 'documento.id');
+        $query->join('documentos as docafecta', 'recibo2_documentos_doc', '=', 'docafecta.id');
+        $recibo = $query->get();
+
+
+        foreach ($recibo as $value) {
+        	$historyClient[$i]['documento'] = $value->documento;
+        	$historyClient[$i]['numero'] = $value->recibo1_numero;
+        	$historyClient[$i]['sucursal'] = $value->sucursal_nombre;
+        	$historyClient[$i]['docafecta'] = $value->docafecta;
+        	$historyClient[$i]['id_docafecta'] = $value->recibo2_id_doc;
+        	$historyClient[$i]['cuota'] = 0;
+        	$historyClient[$i]['naturaleza'] = $value->recibo2_naturaleza;
+        	$historyClient[$i]['valor'] = $value->recibo2_valor;
+        	$historyClient[$i]['elaboro_fh'] = $value->recibo1_fh_elaboro;
+        	$i++;
+        }
+        $response->recibo = $historyClient;
+        $response->position = $i;
+        return $response;
 	}
 }

@@ -5,6 +5,7 @@ namespace App\Models\Cartera;
 use Illuminate\Database\Eloquent\Model;
 
 use App\Models\BaseModel;
+use App\Models\Base\Tercero;
 use Validator, DB;
 
 class Nota1 extends BaseModel
@@ -61,5 +62,41 @@ class Nota1 extends BaseModel
 		$query->join('conceptonota','nota1_conceptonota','=','conceptonota.id');
 		$query->where('nota1.id', $id);
 		return $query->first();
+	}
+    /**
+    * Function for reportes history client in cartera
+    */
+	public static function historyClientReport(Tercero $tercero, Array $historyClient, $i ) 
+	{
+        $response = new \stdClass();
+        $response->success = false;
+        $response->nota = [];
+        $response->position = 0;
+
+        $query = Nota1::query();
+        $query->select('nota1.*', 'docafecta.documentos_nombre as docafecta', 'documento.documentos_nombre as documento', 'nota2_id_doc', 'nota2_valor', 'sucursal_nombre');
+        $query->where('nota1_tercero', $tercero->id);
+        $query->join('nota2', 'nota1.id', '=', 'nota2_nota1');
+        $query->join('sucursal', 'nota1_sucursal', '=', 'sucursal.id');
+        $query->join('documentos as documento', 'nota1_documentos', '=', 'documento.id');
+        $query->join('documentos as docafecta', 'nota2_documentos_doc', '=', 'docafecta.id');
+        $nota = $query->get();
+
+
+        foreach ($nota as $value) {
+        	$historyClient[$i]['documento'] = $value->documento;
+        	$historyClient[$i]['numero'] = $value->nota1_numero;
+        	$historyClient[$i]['sucursal'] = $value->sucursal_nombre;
+        	$historyClient[$i]['docafecta'] = $value->docafecta;
+        	$historyClient[$i]['id_docafecta'] = $value->nota2_id_doc;
+        	$historyClient[$i]['cuota'] = 0;
+        	$historyClient[$i]['naturaleza'] ='D';
+        	$historyClient[$i]['valor'] = $value->nota2_valor;
+        	$historyClient[$i]['elaboro_fh'] = $value->nota1_fh_elaboro;
+        	$i++;
+        }
+        $response->nota = $historyClient;
+        $response->position = $i;
+        return $response;
 	}
 }

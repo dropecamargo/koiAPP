@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use App\Models\Base\Tercero;
+use App\Models\Tesoreria\Ajustep1, App\Models\Tesoreria\Facturap1;
+use Excel, View, App, DB;
+
 class HistorialProveedorController extends Controller
 {
     /**
@@ -18,22 +22,34 @@ class HistorialProveedorController extends Controller
     {
         if ($request->has('type')) {
             $query = null;
-            $historyProveider = null;
+            $historyProveider = [];
             
             /* Begin filters */
             if ($request->has('filter_tercero')) {
+                $tercero =  Tercero::select('id', DB::raw("(CASE WHEN tercero_persona = 'N' THEN CONCAT(tercero_nombre1,'',tercero_nombre2,' ',tercero_apellido1,' ',tercero_apellido2, (CASE WHEN (tercero_razonsocial IS NOT NULL AND tercero_razonsocial != '') THEN CONCAT(' - ', tercero_razonsocial) ELSE '' END)) ELSE tercero_razonsocial END) AS tercero_nombre"))->where('tercero_nit', $request->filter_tercero)->first();
 
+                // initial position the array
+                $i = 0;
+
+                // querie ajuste proveedor
+                // $ajusteProveedor = Ajustep1::historyProveiderReport($tercero, $historyProveider, $i);
+                // $historyProveider = $ajusteProveedor->ajusteProveedor;
+                // $i = $ajusteProveedor->position;
+
+                // querie factura proveedor
+                $facturaProveedor = Facturap1::historyProveiderReport($tercero, $historyProveider, $i);
+                $historyProveider = $facturaProveedor->facturaProveedor;
+                $i = $facturaProveedor->position;
+
+                // dd($historyProveider, $i);
             }
             
-            if ($request->has('filter_fecha_inicio') && $request->has('filter_fecha_fin')) {
-
-            }
+            // if ($request->has('filter_fecha_inicio') && $request->has('filter_fecha_fin')) {
+            // }
             /* End filters */
 
-            // dd($request->all()); 
-
             // Prepare data
-            $title = "Historial del proveedor...";
+            $title = "Historial del proveedor $tercero->tercero_nombre";
             $type = $request->type;
 
             switch ($type) {

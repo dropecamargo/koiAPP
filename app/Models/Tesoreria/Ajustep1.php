@@ -4,6 +4,7 @@ namespace App\Models\Tesoreria;
 
 use Illuminate\Database\Eloquent\Model;
 
+use App\Models\Base\Tercero;
 use Validator, DB;
 
 class Ajustep1 extends Model
@@ -65,5 +66,40 @@ class Ajustep1 extends Model
 		$query->join('documentos','ajustep1_documentos','=','documentos.id');
 		$query->where('ajustep1.id', $id);
 		return $query->first();
+	}
+    /**
+    * Function for reportes history client in cartera
+    */
+	public static function historyProveiderReport(Tercero $tercero, Array $historyProveider, $i)
+	{
+        $response = new \stdClass();
+        $response->success = false;
+        $response->ajusteProveedor = [];
+        $response->position = 0;
+
+       	$query = Ajustep1::query();
+       	$query->select('ajustep1_numero', 'ajustep1_fh_elaboro', 'ajustep2_id_doc', 'ajustep2_naturaleza', 'ajustep2_valor', 'docafecta.documentos_nombre as docafecta', 'documento.documentos_nombre as documento', 'regional_nombre' );
+       	$query->where('ajustep1_tercero', $tercero->id); 
+        $query->join('ajustep2', 'ajustep1.id', '=', 'ajustep2_ajustep1');
+        $query->join('regional', 'ajustep1_regional', '=', 'regional.id');
+        $query->join('documentos as documento', 'ajustep1_documentos', '=', 'documento.id');
+        $query->join('documentos as docafecta', 'ajustep2_documentos_doc', '=', 'docafecta.id');
+        $ajusteProveedor = $query->get();
+
+        foreach ($ajusteProveedor as $value) {
+        	$historyProveider[$i]['documento'] = $value->documento;
+        	$historyProveider[$i]['numero'] = $value->ajustep1_numero;
+        	$historyProveider[$i]['regional'] = $value->regional_nombre;
+        	$historyProveider[$i]['docafecta'] = $value->docafecta;
+        	$historyProveider[$i]['id_docafecta'] = $value->ajustep2_id_doc;
+        	$historyProveider[$i]['cuota'] = $value->ajustep2_id_doc;
+        	$historyProveider[$i]['naturaleza'] = $value->ajustep2_naturaleza;
+        	$historyProveider[$i]['valor'] = $value->ajustep2_valor;
+        	$historyProveider[$i]['elaboro_fh'] = $value->ajustep1_fh_elaboro;
+        	$i++;
+        }
+        $response->ajusteProveedor = $historyProveider;
+        $response->position = $i;
+        return $response;
 	}
 }

@@ -3,6 +3,8 @@
 namespace App\Models\Tesoreria;
 
 use Illuminate\Database\Eloquent\Model;
+
+use App\Models\Base\Tercero;
 use Validator, DB;
 
 class Facturap1 extends Model
@@ -100,5 +102,40 @@ class Facturap1 extends Model
         $facturap2->where('facturap2_retefuente', null);
         $facturap2->where('facturap2_facturap1', $this->id);
         return $facturap2->first();
+    }
+
+    /**
+    * Function for reportes history proveedor
+    */
+    public static function historyProveiderReport(Tercero $tercero, Array $historyClient, $i ) 
+    {
+        $response = new \stdClass();
+        $response->success = false;
+        $response->facturaProveedor = [];
+        $response->position = 0;
+
+        $query = Facturap1::query();
+        $query->select('facturap1.*', 'regional_nombre', 'documentos_nombre');
+        $query->join('regional', 'facturap1_regional', '=', 'regional.id');
+        $query->join('documentos', 'facturap1_documentos', '=', 'documentos.id');
+        $query->where('facturap1_tercero', $tercero->id);
+        $facturaProveedor = $query->get();
+
+        foreach ($facturaProveedor as $value) {
+            $historyClient[$i]['documento'] = $value->documentos_nombre;
+            $historyClient[$i]['numero'] = $value->facturap1_numero;
+            $historyClient[$i]['regional'] = $value->regional_nombre;
+            $historyClient[$i]['docafecta'] = $value->documentos_nombre;
+            $historyClient[$i]['id_docafecta'] = $value->facturap1_numero;
+            $historyClient[$i]['cuota'] = $value->facturap1_cuotas;
+            $historyClient[$i]['naturaleza'] = $value->facturap1_cuotas > 1 ? 'C' : 'D';
+            $historyClient[$i]['valor'] = $value->facturap1_subtotal;
+            $historyClient[$i]['elaboro_fh'] = $value->facturap1_fecha;
+            $i++;
+        }
+
+        $response->facturaProveedor = $historyClient;
+        $response->position = $i;
+        return $response;
     }
 }

@@ -5,6 +5,7 @@ namespace App\Models\Cartera;
 use Illuminate\Database\Eloquent\Model;
 
 use App\Models\BaseModel;
+use App\Models\Base\Tercero;
 use Validator,DB;
 
 class Factura1 extends BaseModel
@@ -107,5 +108,39 @@ class Factura1 extends BaseModel
 		}
 
 		return true;
+	}
+	/**
+	* Function for reportes history client in cartera
+	*/
+	public static function historyClientReport(Tercero $tercero, Array $historyClient, $i ) 
+	{
+     	$response = new \stdClass();
+        $response->success = false;
+        $response->factura = [];
+        $response->position = 0;
+
+        $query = Factura1::query();
+        $query->select('factura1.*', 'sucursal_nombre', 'documentos_nombre');
+        $query->join('sucursal', 'factura1_sucursal', '=', 'sucursal.id');
+        $query->join('documentos', 'factura1_documentos', '=', 'documentos.id');
+        $query->where('factura1_tercero', $tercero->id);
+        $factura = $query->get();
+
+        foreach ($factura as $value) {
+        	$historyClient[$i]['documento'] = $value->documentos_nombre;
+        	$historyClient[$i]['numero'] = $value->factura1_numero;
+        	$historyClient[$i]['sucursal'] = $value->sucursal_nombre;
+        	$historyClient[$i]['docafecta'] = $value->documentos_nombre;
+        	$historyClient[$i]['id_docafecta'] = $value->factura1_numero;
+        	$historyClient[$i]['cuota'] = $value->factura1_cuotas;
+        	$historyClient[$i]['naturaleza'] = $value->factura1_cuotas > 1 ? 'C' : 'D';
+        	$historyClient[$i]['valor'] = ($value->factura1_bruto + $value->factura1_iva) - $value->factura1_descuento - $value->factura1_retencion;
+        	$historyClient[$i]['elaboro_fh'] = $value->factura1_fh_elaboro;
+        	$i++;
+        }
+
+     	$response->factura = $historyClient;
+        $response->position = $i;
+        return $response;
 	}
 }

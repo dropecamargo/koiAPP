@@ -8,7 +8,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Models\Base\Tercero;
-use App\Models\Cartera\Ajustec2;
+use App\Models\Cartera\Ajustec2, App\Models\Cartera\Factura1, App\Models\Cartera\Anticipo1, App\Models\Cartera\Recibo1, App\Models\Cartera\Nota1, App\Models\Cartera\ChposFechado1, App\Models\Cartera\ChDevuelto;
 use Excel, View, App, DB;
 
 class HistorialClienteController extends Controller
@@ -22,32 +22,55 @@ class HistorialClienteController extends Controller
     {
         if ($request->has('type')) {
             $query = null;
-            $historyClient = null;
+            $historyClient = [];
             /* Begin filters */
             if ($request->has('filter_tercero')) {
 
-                $tercero =  Tercero::select('id', DB::raw("(CASE WHEN tercero_persona = 'N'
-                    THEN CONCAT(tercero_nombre1,' ',tercero_nombre2,' ',tercero_apellido1,' ',tercero_apellido2,
-                            (CASE WHEN (tercero_razonsocial IS NOT NULL AND tercero_razonsocial != '') THEN CONCAT(' - ', tercero_razonsocial) ELSE '' END)
-                        )
-                    ELSE tercero_razonsocial END)
-                AS tercero_nombre"))->where('tercero_nit', $request->filter_tercero)->first();
+                $tercero =  Tercero::select('id', DB::raw("(CASE WHEN tercero_persona = 'N' THEN CONCAT(tercero_nombre1,'',tercero_nombre2,' ',tercero_apellido1,' ',tercero_apellido2, (CASE WHEN (tercero_razonsocial IS NOT NULL AND tercero_razonsocial != '') THEN CONCAT(' - ', tercero_razonsocial) ELSE '' END)) ELSE tercero_razonsocial END) AS tercero_nombre"))->where('tercero_nit', $request->filter_tercero)->first();
+
+                // initial position the array
+                $i = 0;
+
+                // querie ajuste cartera
+                $ajusteCartera = Ajustec2::historyClientReport($tercero, $historyClient, $i);
+                $historyClient = $ajusteCartera->ajusteCartera;
+                $i = $ajusteCartera->position;
                 
-                $query = Ajustec2::query();
-                $query->select('ajustec2.*', 'documentos_nombre', 'ajustec1_numero','ajustec1_fh_elaboro' ,'conceptoajustec_plancuentas');
-                $query->where('ajustec2_tercero', $tercero->id);
-                $query->join('tercero', 'ajustec2_tercero', '=', 'tercero.id');
-                $query->join('ajustec1', 'ajustec1.id', '=', 'ajustec2_ajustec1');
-                $query->join('documentos', 'documentos.id', '=', 'ajustec2_documentos_doc');
-                $query->join('conceptoajustec', 'conceptoajustec.id', '=', 'ajustec1_conceptoajustec');
-                $historyClient = $query->get();
-                // dd($historyClient);
+                // querie factura
+                $factura = Factura1::historyClientReport($tercero, $historyClient, $i);
+                $historyClient = $factura->factura;
+                $i = $factura->position;
+
+                // querie anticipo
+                $anticipo = Anticipo1::historyClientReport($tercero, $historyClient, $i);
+                $historyClient = $anticipo->anticipo;
+                $i = $anticipo->position;
+
+                // querie recibos
+                $recibo = Recibo1::historyClientReport($tercero, $historyClient, $i);
+                $historyClient = $recibo->recibo;
+                $i = $recibo->position;
+
+                // querie notas
+                $nota = Nota1::historyClientReport($tercero, $historyClient, $i);
+                $historyClient = $nota->nota;
+                $i = $nota->position;
+
+                // querie cheques
+                $cheque = ChposFechado1::historyClientReport($tercero, $historyClient, $i);
+                $historyClient = $cheque->cheque;
+                $i = $cheque->position;
+
+                // querie cheques devueltos 
+                $chequeDevuelto = ChDevuelto::historyClientReport($tercero, $historyClient, $i);
+                $historyClient = $chequeDevuelto->chequeDevuelto;
+                $i = $chequeDevuelto->position;
+
+                // $historyClient = $query->get();
                 // if ($request->has('filter_fecha_inicio') && $request->has('filter_fecha_fin')) {
                 // }
             }
             /* End filters */
-
-            // dd($request->all()); 
 
             // Prepare data
             $title = "Historial del cliente $tercero->tercero_nombre";

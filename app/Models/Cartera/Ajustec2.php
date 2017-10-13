@@ -5,6 +5,7 @@ namespace App\Models\Cartera;
 use Illuminate\Database\Eloquent\Model;
 
 use App\Models\BaseModel;
+use App\Models\Base\Tercero;
 use Validator;
 
 class Ajustec2 extends BaseModel
@@ -37,5 +38,42 @@ class Ajustec2 extends BaseModel
         }
 		$this->errors = $validator->errors();
 		return false;
+	}
+    /**
+    * Function for reportes history client in cartera
+    */
+	public static function historyClientReport(Tercero $tercero, Array $historyClient, $i ) 
+	{
+        $response = new \stdClass();
+        $response->success = false;
+        $response->ajusteCartera = [];
+        $response->position = 0;
+
+        $query = Ajustec2::query();
+        $query->select('ajustec2.*', 'docafecta.documentos_nombre as docafecta', 'documento.documentos_nombre as documento','ajustec1_numero','ajustec1_fh_elaboro' ,'conceptoajustec_plancuentas', 'sucursal_nombre');
+        $query->where('ajustec2_tercero', $tercero->id);
+        $query->join('ajustec1', 'ajustec1.id', '=', 'ajustec2_ajustec1');
+        $query->join('sucursal', 'ajustec1.ajustec1_sucursal', '=', 'sucursal.id');
+        $query->join('documentos as documento', 'ajustec1.ajustec1_documentos', '=', 'documento.id');
+        $query->join('documentos as docafecta', 'ajustec2.ajustec2_documentos_doc', '=', 'docafecta.id');
+        $query->join('conceptoajustec', 'conceptoajustec.id', '=', 'ajustec1_conceptoajustec');
+        $ajusteCartera = $query->get();
+
+
+        foreach ($ajusteCartera as $value) {
+        	$historyClient[$i]['documento'] = $value->documento;
+        	$historyClient[$i]['numero'] = $value->ajustec1_numero;
+        	$historyClient[$i]['sucursal'] = $value->sucursal_nombre;
+        	$historyClient[$i]['docafecta'] = $value->docafecta;
+        	$historyClient[$i]['id_docafecta'] = $value->ajustec2_id_doc;
+        	$historyClient[$i]['cuota'] = $value->conceptoajustec_plancuentas;
+        	$historyClient[$i]['naturaleza'] = $value->ajustec2_naturaleza;
+        	$historyClient[$i]['valor'] = $value->ajustec2_valor;
+        	$historyClient[$i]['elaboro_fh'] = $value->ajustec1_fh_elaboro;
+        	$i++;
+        }
+        $response->ajusteCartera = $historyClient;
+        $response->position = $i;
+        return $response;
 	}
 }
