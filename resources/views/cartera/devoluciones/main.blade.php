@@ -35,7 +35,12 @@
                     </div>
                     <label for="devolucion1_fecha" class="col-sm-1 control-label">Fecha</label>
                     <div class="form-group col-sm-2">     
-                        <input id="devolucion1_fecha" name="devolucion1_fecha" class="form-control input-sm datepicker" type="text" value="<%- devolucion1_fecha %>" required>
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <input id="devolucion1_fecha" name="devolucion1_fecha" class="form-control input-sm datepicker-back" type="text" value="{{ date('Y-m-d')}}" required>
+                        </div>
                     </div>
                 </div>
                 <div class="row">

@@ -130,7 +130,7 @@ class Nota1Controller extends Controller
                                 $factura3->factura3_fecha_pago = date('Y-m-d');
                                 $factura3->save();
 
-                                $nota2->nota2_id_doc = $factura3->factura3_factura1;
+                                $nota2->nota2_id_doc = $factura3->id;
                                 $nota2->nota2_valor = $item['factura3_valor'];
                             break;
                             case 'CHD':

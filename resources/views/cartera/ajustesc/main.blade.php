@@ -34,14 +34,14 @@
                     <div class="form-group col-md-1">     
                         <input id="ajustec1_numero" name="ajustec1_numero" class="form-control input-sm" type="number" min="1" value="<%- ajustec1_numero %>" required readonly>
                     </div>
-
-                    <label for="ajustec1_conceptoajustec" class="col-md-1 control-label">Concepto</label>
-                    <div class="form-group col-md-3">
-                        <select name="ajustec1_conceptoajustec" id="ajustec1_conceptoajustec" class="form-control select2-default" required>
-                        @foreach( App\Models\Cartera\ConceptoAjustec::getConceptoAjustec() as $key => $value)
-                            <option  value="{{ $key }}" <%- ajustec1_sucursal == '{{ $key }}' ? 'selected': ''%>>{{ $value }}</option>
-                        @endforeach
-                        </select>
+                    <label for="ajustec1_fecha" class="col-sm-1 control-label">Fecha</label>
+                    <div class="form-group col-md-2">
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <input id="ajustec1_fecha" name="ajustec1_fecha" class="form-control input-sm datepicker-back" type="text" value="{{ date('Y-m-d')}}" required>
+                        </div>
                     </div>
                 </div>
                 <div class="row">
@@ -56,8 +56,18 @@
                             <input id="ajustec1_tercero" placeholder="Cliente" class="form-control tercero-koi-component" name="ajustec1_tercero" type="text" maxlength="15" data-wrapper="ajustec-create" data-name="tercero_nombre" value="<%- tercero_nit %>" required>
                         </div>
                     </div>
-                    <div class="col-md-6 col-xs-10">
+                    <div class="col-md-6 col-xs-12">
                         <input id="tercero_nombre" name="tercero_nombre" placeholder="Nombre cliente" class="form-control input-sm" type="text" maxlength="15" value="<%- tercero_nombre %>" readonly required>
+                    </div>
+                </div>
+                <div class="row">
+                    <label for="ajustec1_conceptoajustec" class="col-md-1 control-label">Concepto</label>
+                    <div class="form-group col-md-3">
+                        <select name="ajustec1_conceptoajustec" id="ajustec1_conceptoajustec" class="form-control select2-default" required>
+                        @foreach( App\Models\Cartera\ConceptoAjustec::getConceptoAjustec() as $key => $value)
+                            <option  value="{{ $key }}" <%- ajustec1_sucursal == '{{ $key }}' ? 'selected': ''%>>{{ $value }}</option>
+                        @endforeach
+                        </select>
                     </div>
                 </div>
                 <div class="row">

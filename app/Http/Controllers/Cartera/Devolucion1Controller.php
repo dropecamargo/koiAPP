@@ -22,7 +22,7 @@ class Devolucion1Controller extends Controller
     {
         if ($request->ajax()) {
             $query = Devolucion1::query();
-            $query->select('devolucion1.*', 'tercero_nit', 'tercero_razonsocial', 'tercero_nombre1', 'tercero_nombre2', 'tercero_apellido1', 'tercero_apellido2','sucursal.sucursal_nombre',DB::raw("(CASE WHEN tercero_persona = 'N'
+            $query->select('devolucion1.*', 'factura1_numero','tercero_nit', 'tercero_razonsocial', 'tercero_nombre1', 'tercero_nombre2', 'tercero_apellido1', 'tercero_apellido2','sucursal.sucursal_nombre',DB::raw("(CASE WHEN tercero_persona = 'N'
                     THEN CONCAT(tercero_nombre1,' ',tercero_nombre2,' ',tercero_apellido1,' ',tercero_apellido2,
                             (CASE WHEN (tercero_razonsocial IS NOT NULL AND tercero_razonsocial != '') THEN CONCAT(' - ', tercero_razonsocial) ELSE '' END)
                         )
@@ -31,6 +31,7 @@ class Devolucion1Controller extends Controller
             );
             $query->join('tercero','devolucion1_tercero', '=', 'tercero.id');
             $query->join('sucursal','devolucion1_sucursal', '=', 'sucursal.id');
+            $query->join('factura1','devolucion1_factura', '=', 'factura1.id');
             return Datatables::of($query)->make(true);
         }
         return view('cartera.devoluciones.index');

@@ -136,7 +136,7 @@ class Ajustec1Controller extends Controller
                                     $factura3->factura3_fecha_pago = date('Y-m-d');
                                     $factura3->save();
                                     
-                                    $ajustec2->ajustec2_id_doc = $factura3->factura3_factura1;
+                                    $ajustec2->ajustec2_id_doc = $factura3->id;
                                     $ajustec2->ajustec2_valor = $item['factura3_valor'];
                                 }
                                 break;

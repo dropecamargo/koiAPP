@@ -35,7 +35,12 @@
 
                 <div class="form-group col-sm-2">
                     <label for="trasladou1_fecha" class="control-label">Fecha</label>
-                    <input type="text" id="trasladou1_fecha" name="trasladou1_fecha" placeholder="Fecha" value="<%- trasladou1_fecha %>" class="form-control input-sm datepicker" required>
+                     <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
+                        </div>
+                        <input type="text" id="trasladou1_fecha" name="trasladou1_fecha" placeholder="Fecha" value="{{ date('Y-m-d') }}" class="form-control input-sm datepicker-back" required>
+                    </div>
                 </div>
             </div>
 

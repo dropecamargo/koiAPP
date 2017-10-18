@@ -82,7 +82,7 @@ class Recibo1 extends BaseModel
         $response->position = 0;
 
         $query = Recibo1::query();
-        $query->select('recibo1.*', 'docafecta.documentos_nombre as docafecta', 'documento.documentos_nombre as documento', 'recibo2_id_doc', 'recibo2_naturaleza', 'recibo2_valor', 'sucursal_nombre');
+        $query->select('recibo1.*', 'docafecta.documentos_nombre as docafecta',  'docafecta.documentos_codigo as afectaCode', 'documento.documentos_nombre as documento', 'recibo2_id_doc', 'recibo2_naturaleza', 'recibo2_valor', 'sucursal_nombre');
         $query->where('recibo1_tercero', $tercero->id);
         $query->join('recibo2', 'recibo1.id', '=', 'recibo2_recibo1');
         $query->join('sucursal', 'recibo1_sucursal', '=', 'sucursal.id');
@@ -92,15 +92,25 @@ class Recibo1 extends BaseModel
 
 
         foreach ($recibo as $value) {
+            $reciboItem = [];
+            if ($value->afectaCode == 'FACT') {
+                $query = Recibo2::select('factura1_numero', 'factura3_cuota');
+                $query->leftJoin('factura3','recibo2_id_doc', '=', 'factura3.id');
+                $query->leftJoin('factura1','factura3_factura1', '=', 'factura1.id');
+                $query->where('factura3.id', $value->recibo2_id_doc);
+                $reciboItem = $query->first();
+            }
         	$historyClient[$i]['documento'] = $value->documento;
         	$historyClient[$i]['numero'] = $value->recibo1_numero;
         	$historyClient[$i]['sucursal'] = $value->sucursal_nombre;
-        	$historyClient[$i]['docafecta'] = $value->docafecta;
-        	$historyClient[$i]['id_docafecta'] = $value->recibo2_id_doc;
-        	$historyClient[$i]['cuota'] = 0;
+        	$historyClient[$i]['docafecta'] = empty($reciboItem) ? '-' : $value->docafecta;
+        	$historyClient[$i]['id_docafecta'] = empty($reciboItem) ? '-' : $reciboItem->factura1_numero;
+        	$historyClient[$i]['cuota'] = empty($reciboItem) ? '-' : $reciboItem->factura3_cuota;
         	$historyClient[$i]['naturaleza'] = $value->recibo2_naturaleza;
         	$historyClient[$i]['valor'] = $value->recibo2_valor;
+            $historyClient[$i]['fecha'] = $value->recibo1_fecha;
         	$historyClient[$i]['elaboro_fh'] = $value->recibo1_fh_elaboro;
+            $historyClient[$i]['afectaCode'] = $value->afectaCode;
         	$i++;
         }
         $response->recibo = $historyClient;

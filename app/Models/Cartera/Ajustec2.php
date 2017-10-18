@@ -50,7 +50,7 @@ class Ajustec2 extends BaseModel
         $response->position = 0;
 
         $query = Ajustec2::query();
-        $query->select('ajustec2.*', 'docafecta.documentos_nombre as docafecta', 'documento.documentos_nombre as documento','ajustec1_numero','ajustec1_fh_elaboro' ,'conceptoajustec_plancuentas', 'sucursal_nombre');
+        $query->select('ajustec2.*', 'docafecta.documentos_nombre as docafecta', 'docafecta.documentos_codigo as afectaCode' ,'documento.documentos_nombre as documento','ajustec1_numero','ajustec1_fh_elaboro' ,'ajustec1_fecha','conceptoajustec_plancuentas', 'sucursal_nombre');
         $query->where('ajustec2_tercero', $tercero->id);
         $query->join('ajustec1', 'ajustec1.id', '=', 'ajustec2_ajustec1');
         $query->join('sucursal', 'ajustec1.ajustec1_sucursal', '=', 'sucursal.id');
@@ -61,15 +61,26 @@ class Ajustec2 extends BaseModel
 
 
         foreach ($ajusteCartera as $value) {
+            $ajusteCartera2 = [];
+            if ($value->afectaCode == 'FACT') {
+                $query = Ajustec2::select('factura1_numero', 'factura3_cuota');
+                $query->leftJoin('factura3','ajustec2_id_doc', '=', 'factura3.id');
+                $query->leftJoin('factura1','factura3_factura1', '=', 'factura1.id');
+                $query->where('factura3.id', $value->ajustec2_id_doc);
+                $ajusteCartera2 = $query->first();
+            }
         	$historyClient[$i]['documento'] = $value->documento;
         	$historyClient[$i]['numero'] = $value->ajustec1_numero;
         	$historyClient[$i]['sucursal'] = $value->sucursal_nombre;
         	$historyClient[$i]['docafecta'] = $value->docafecta;
-        	$historyClient[$i]['id_docafecta'] = $value->ajustec2_id_doc;
-        	$historyClient[$i]['cuota'] = $value->conceptoajustec_plancuentas;
+        	$historyClient[$i]['id_docafecta'] = empty($ajusteCartera2) ? '-' : $ajusteCartera2->factura1_numero;
+        	$historyClient[$i]['cuota'] = empty($ajusteCartera2) ? '-' : $ajusteCartera2->factura3_cuota;
         	$historyClient[$i]['naturaleza'] = $value->ajustec2_naturaleza;
         	$historyClient[$i]['valor'] = $value->ajustec2_valor;
-        	$historyClient[$i]['elaboro_fh'] = $value->ajustec1_fh_elaboro;
+        	$historyClient[$i]['fecha'] = $value->ajustec1_fecha;
+            $historyClient[$i]['elaboro_fh'] = $value->ajustec1_fh_elaboro;
+            $historyClient[$i]['afectaCode'] = $value->afectaCode;
+            
         	$i++;
         }
         $response->ajusteCartera = $historyClient;

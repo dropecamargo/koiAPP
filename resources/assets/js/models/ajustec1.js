@@ -18,7 +18,8 @@ app || (app = {});
         	'ajustec1_numero': '',	
         	'ajustec1_tercero': '',	
         	'ajustec1_conceptoajustec': '',	
-        	'ajustec1_observaciones': '',
+            'ajustec1_observaciones': '',
+        	'ajustec1_fecha': moment().format('YYYY-MM-DD'),
             'tercero_nit': '',   
         	'tercero_nombre': ''
         }

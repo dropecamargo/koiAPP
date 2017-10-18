@@ -37,7 +37,12 @@
                     
                     <label for="recibo1_fecha" class="col-md-1 control-label">Fecha</label>
                     <div class="form-group col-md-2">
-                        <input type="text" id="recibo1_fecha" name="recibo1_fecha" class="form-control input-sm datepicker" value="<%- recibo1_fecha %>">
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <input type="text" id="recibo1_fecha" name="recibo1_fecha" class="form-control input-sm datepicker-back" value="{{date('Y-m-d')}}">
+                        </div>
                     </div> 
                 </div>
                 <div class="row">
@@ -52,7 +57,12 @@
                     
                     <label for="recibo1_fecha_pago" class="col-md-offset-2 col-md-1 control-label">Fecha pago</label>
                     <div class="form-group col-md-2">
-                        <input type="text" id="recibo1_fecha_pago" name="recibo1_fecha_pago" class="form-control input-sm datepicker" value="<%- recibo1_fecha_pago %>" required>
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <input type="text" id="recibo1_fecha_pago" name="recibo1_fecha_pago" class="form-control input-sm datepicker" value="<%- recibo1_fecha_pago %>" required>
+                        </div>
                     </div>
                 </div>
                 <div class="row">

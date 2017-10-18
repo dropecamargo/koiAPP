@@ -88,6 +88,7 @@ class Anticipo1 extends Model
         	$historyClient[$i]['cuota'] = 0;
         	$historyClient[$i]['naturaleza'] = 'D';
         	$historyClient[$i]['valor'] = $value->anticipo1_valor;
+            $historyClient[$i]['fecha'] = $value->anticipo1_fecha;
         	$historyClient[$i]['elaboro_fh'] = $value->anticipo1_fh_elaboro;
         	$i++;
         }

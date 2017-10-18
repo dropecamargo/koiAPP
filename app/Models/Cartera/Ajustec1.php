@@ -22,7 +22,7 @@ class Ajustec1 extends Model
 	*
 	* @var array
 	*/
-    protected $fillable = ['ajustec1_numero', 'ajustec1_observaciones'];
+    protected $fillable = ['ajustec1_fecha','ajustec1_observaciones'];
 
     public static $default_document = 'AJUC';
 

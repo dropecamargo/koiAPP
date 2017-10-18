@@ -32,13 +32,14 @@
                     <label for="traslado1_numero" class="control-label">Número</label>
                     <input id="traslado1_numero" name="traslado1_numero" placeholder="Número" class="form-control input-sm input-toupper" type="number" readonly required>
                 </div>
-                <div class="form-group col-sm-3">
-                    <label for="traslado1_tipotraslado" class="control-label">Tipo</label>
-                      <select name="traslado1_tipotraslado" id="traslado1_tipotraslado" class="form-control select2-default-clear" required>
-                        @foreach( App\Models\Inventario\TipoTraslado::getTiposTraslados() as $key => $value)
-                            <option value="{{ $key }}" <%- traslado1_tipotraslado == '{{ $key }}' ? 'selected': ''%>>{{ $value }}</option>
-                        @endforeach
-                    </select>
+                <div class="form-group col-sm-2">
+                    <label for="traslado1_fecha" class="control-label">Fecha</label>
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
+                        </div>
+                        <input type="text" id="traslado1_fecha" name="traslado1_fecha" placeholder="Fecha" value="{{ date('Y-m-d') }}" class="form-control input-sm datepicker-back" required>
+                    </div>
                 </div>
             </div>
 
@@ -51,9 +52,13 @@
                         @endforeach
                     </select>
                 </div>
-                <div class="form-group col-sm-2">
-                    <label for="traslado1_fecha" class="control-label">Fecha</label>
-                    <input type="text" id="traslado1_fecha" name="traslado1_fecha" placeholder="Fecha" value="<%- traslado1_fecha %>" class="form-control input-sm datepicker" required>
+                <div class="form-group col-sm-3">
+                    <label for="traslado1_tipotraslado" class="control-label">Tipo</label>
+                      <select name="traslado1_tipotraslado" id="traslado1_tipotraslado" class="form-control select2-default-clear" required>
+                        @foreach( App\Models\Inventario\TipoTraslado::getTiposTraslados() as $key => $value)
+                            <option value="{{ $key }}" <%- traslado1_tipotraslado == '{{ $key }}' ? 'selected': ''%>>{{ $value }}</option>
+                        @endforeach
+                    </select>
                 </div>
             </div>
 

@@ -65,18 +65,33 @@
                                 <div class="row">
                                     <label for="pedido1_fecha" class="col-sm-1  control-label">Fecha</label>
                                     <div class="form-group col-sm-2 ">
-                                        <input type="text" id="pedido1_fecha" name="pedido1_fecha" class="form-control input-sm datepicker" value="<%- pedido1_fecha %>" required>
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+                                            </div>
+                                            <input type="text" id="pedido1_fecha" name="pedido1_fecha" class="form-control input-sm datepicker-back" value="{{date('Y-m-d')}}" required>
+                                        </div>
                                     </div> 
                                     <label for="pedido1_fecha_estimada" class="col-sm-2 control-label">Fecha Estimada De Llegada</label>
                                     <div class="form-group col-sm-2 ">
-                                        <input type="text" id="pedido1_fecha_estimada" name="pedido1_fecha_estimada" class="form-control input-sm datepicker" value="<%- pedido1_fecha_estimada %>" required>
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+                                            </div>
+                                            <input type="text" id="pedido1_fecha_estimada" name="pedido1_fecha_estimada" class="form-control input-sm datepicker" value="<%- pedido1_fecha_estimada %>" required>
+                                        </div>
                                     </div> 
                                 </div>
                                      
                                 <div class="row">
                                     <label for="pedido1_fecha_anticipo" class="col-sm-1  control-label">Fecha Anticipo</label>
                                     <div class="form-group col-sm-2">
-                                        <input type="text" id="pedido1_fecha_anticipo" name="pedido1_fecha_anticipo" class="form-control input-sm datepicker" value="<%- pedido1_fecha_anticipo %>" required>
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+                                            </div>
+                                            <input type="text" id="pedido1_fecha_anticipo" name="pedido1_fecha_anticipo" class="form-control input-sm datepicker" value="<%- pedido1_fecha_anticipo %>" required>
+                                        </div>
                                     </div> 
                                     <label for="pedido1_anticipo" class="col-sm-2 control-label">Valor Antcipo</label>
                                     <div class="form-group col-sm-2 ">

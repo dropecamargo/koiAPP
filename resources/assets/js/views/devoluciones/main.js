@@ -36,7 +36,7 @@ app || (app = {});
                     { data: 'devolucion1_numero', name: 'devolucion1_numero' },
                     { data: 'sucursal_nombre', name: 'sucursal_nombre' },
                     { data: 'tercero_nombre', name: 'devolucion1_tercero' },
-                    { data: 'devolucion1_factura', name: 'devolucion1_factura' },
+                    { data: 'factura1_numero', name: 'factura1_numero' },
                     { data: 'tercero_razonsocial', name: 'tercero_razonsocial'},
                     { data: 'tercero_nombre1', name: 'tercero_nombre1' },
                     { data: 'tercero_nombre2', name: 'tercero_nombre2' },

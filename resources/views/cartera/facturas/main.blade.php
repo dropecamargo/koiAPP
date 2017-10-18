@@ -40,7 +40,12 @@
                     </div>
                     <label for="factura1_fecha" class="col-sm-1 col-md-1 control-label">Fecha</label>
                     <div class="form-group col-sm-2">
-                        <input type="text" id="factura1_fecha" name="factura1_fecha" value="<%- factura1_fecha %>" class="form-control input-sm datepicker" required>
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <input type="text" id="factura1_fecha" name="factura1_fecha" value="{{ date('Y-m-d') }}" class="form-control input-sm datepicker-back" required>
+                        </div>
                     </div>
                 </div>
                 <div class="row">
@@ -101,7 +106,12 @@
 
                     <label for="factura1_primerpago" class="col-sm-1 col-md-1 control-label">Primer Pago</label>
                     <div class="form-group col-sm-2">
-                        <input type="text" id="factura1_primerpago" name="factura1_primerpago" value="<%- factura1_primerpago %>" class="form-control input-sm datepicker" required>
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <input type="text" id="factura1_primerpago" name="factura1_primerpago" value="<%- factura1_primerpago %>" class="form-control input-sm datepicker" required>
+                        </div>
                     </div>
                 </div>
                 <div class="row">

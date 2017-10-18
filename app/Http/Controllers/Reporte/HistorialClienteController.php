@@ -21,7 +21,6 @@ class HistorialClienteController extends Controller
     public function index(Request $request)
     {
         if ($request->has('type')) {
-            $query = null;
             $historyClient = [];
             /* Begin filters */
             if ($request->has('filter_tercero')) {

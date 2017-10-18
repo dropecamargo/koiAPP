@@ -74,7 +74,7 @@ class Nota1 extends BaseModel
         $response->position = 0;
 
         $query = Nota1::query();
-        $query->select('nota1.*', 'docafecta.documentos_nombre as docafecta', 'documento.documentos_nombre as documento', 'nota2_id_doc', 'nota2_valor', 'sucursal_nombre');
+        $query->select('nota1.*', 'docafecta.documentos_nombre as docafecta', 'docafecta.documentos_codigo as afectaCode', 'documento.documentos_nombre as documento', 'nota2_id_doc', 'nota2_valor', 'sucursal_nombre');
         $query->where('nota1_tercero', $tercero->id);
         $query->join('nota2', 'nota1.id', '=', 'nota2_nota1');
         $query->join('sucursal', 'nota1_sucursal', '=', 'sucursal.id');
@@ -82,17 +82,27 @@ class Nota1 extends BaseModel
         $query->join('documentos as docafecta', 'nota2_documentos_doc', '=', 'docafecta.id');
         $nota = $query->get();
 
-
         foreach ($nota as $value) {
+            $notaItem = [];
+            if ($value->afectaCode == 'FACT') {
+                $query = Nota2::select('factura1_numero', 'factura3_cuota');
+                $query->leftJoin('factura3','nota2_id_doc', '=', 'factura3.id');
+                $query->leftJoin('factura1','factura3_factura1', '=', 'factura1.id');
+                $query->where('factura3.id', $value->nota2_id_doc);
+                $notaItem = $query->first();
+            }
         	$historyClient[$i]['documento'] = $value->documento;
         	$historyClient[$i]['numero'] = $value->nota1_numero;
         	$historyClient[$i]['sucursal'] = $value->sucursal_nombre;
-        	$historyClient[$i]['docafecta'] = $value->docafecta;
-        	$historyClient[$i]['id_docafecta'] = $value->nota2_id_doc;
-        	$historyClient[$i]['cuota'] = 0;
+        	$historyClient[$i]['docafecta'] = empty($notaItem) ? '-' : $value->docafecta;
+        	$historyClient[$i]['id_docafecta'] = empty($notaItem) ? '-' : $notaItem->factura1_numero;
+        	$historyClient[$i]['cuota'] = empty($notaItem) ? '-' : $notaItem->factura1_cuota;
         	$historyClient[$i]['naturaleza'] ='D';
         	$historyClient[$i]['valor'] = $value->nota2_valor;
+            $historyClient[$i]['fecha'] = $value->nota1_fecha;
         	$historyClient[$i]['elaboro_fh'] = $value->nota1_fh_elaboro;
+            $historyClient[$i]['afectaCode'] = $value->afectaCode;
+
         	$i++;
         }
         $response->nota = $historyClient;

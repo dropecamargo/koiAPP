@@ -266,11 +266,18 @@ var app = app || {};
         * Init Datepicker
         */
         initDatePicker: function () {
-
             $('.datepicker').datepicker({
                 autoclose: true,
                 language: 'es',
                 format: 'yyyy-mm-dd'
+            });
+
+            $('.datepicker-back').datepicker({
+                autoclose: true,
+                language: 'es',
+                format: 'yyyy-mm-dd',
+                startDate: moment( $('.datepicker-back').val() ).startOf('month').format('YYYY-MM-DD'),
+                endDate: moment( $('.datepicker-back').val() ).endOf('month').format('YYYY-MM-DD')
             });
         },
         /**

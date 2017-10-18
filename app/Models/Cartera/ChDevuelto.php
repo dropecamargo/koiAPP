@@ -82,7 +82,9 @@ class ChDevuelto extends Model
         	$historyClient[$i]['cuota'] = 1;
         	$historyClient[$i]['naturaleza'] ='D';
         	$historyClient[$i]['valor'] = $value->chdevuelto_valor;
-        	$historyClient[$i]['elaboro_fh'] = $value->chdevuelto_fh_elaboro;
+            $historyClient[$i]['fecha'] = $value->chdevuelto_fecha;
+            $historyClient[$i]['elaboro_fh'] = $value->chdevuelto_fh_elaboro;
+            $historyClient[$i]['afectaCode'] = 'CHD';
         	$i++;
         }
         $response->chequeDevuelto = $historyClient;

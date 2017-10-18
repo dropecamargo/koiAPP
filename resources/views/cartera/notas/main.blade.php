@@ -37,7 +37,12 @@
                     
                     <label for="nota1_fecha" class="col-md-1 control-label">Fecha</label>
                     <div class="form-group col-md-2">
-                        <input type="text" id="nota1_fecha" name="nota1_fecha" class="form-control input-sm datepicker" value="<%- nota1_fecha %>">
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <input type="text" id="nota1_fecha" name="nota1_fecha" class="form-control input-sm datepicker-back" value="{{ date('Y-m-d') }}">
+                        </div>
                     </div> 
                 </div>
                 <div class="row">

@@ -32,9 +32,15 @@
                     <div class="form-group col-sm-1 col-md-1">     
                         <input id="anticipo1_numero" name="anticipo1_numero" class="form-control input-sm" type="number" min="1" value="<%- anticipo1_numero %>" required readonly>
                     </div>
+
                     <label for="anticipo1_fecha" class="col-sm-1 control-label">Fecha</label>
-                    <div class="form-group col-sm-2">     
-                        <input id="anticipo1_fecha" name="anticipo1_fecha" class="form-control input-sm datepicker" type="text" value="<%- anticipo1_fecha %>" required>
+                    <div class="form-group col-sm-2"> 
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <input id="anticipo1_fecha" name="anticipo1_fecha" class="form-control input-sm datepicker-back" type="text" value="{{ date('Y-m-d') }}" required>
+                        </div>    
                     </div>
                 </div>
                 <div class="row">

@@ -59,7 +59,7 @@ class CarteraEdadController extends Controller
                 $query->where('factura1_tercero', $tercero->id);
             }
             if ($request->has('filter_sucursal')) {
-                $query->where('factura1_sucursal', $request->filter_sucursal);
+                $query->whereIn('factura1_sucursal', $request->filter_sucursal);
             }
             // if ($request->has('filter_mes') && $request->has('filter_ano')) {
             // }

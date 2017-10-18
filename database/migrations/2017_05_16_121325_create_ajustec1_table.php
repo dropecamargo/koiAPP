@@ -18,6 +18,7 @@ class CreateAjustec1Table extends Migration
             $table->increments('id');
             $table->integer('ajustec1_sucursal')->unsigned();
             $table->integer('ajustec1_numero')->unsigned();
+            $table->integer('ajustec1_fecha');
             $table->integer('ajustec1_documentos')->unsigned();
             $table->integer('ajustec1_tercero')->unsigned();
             $table->integer('ajustec1_conceptoajustec')->unsigned();

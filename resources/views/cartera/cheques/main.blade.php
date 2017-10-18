@@ -57,9 +57,15 @@
                     <div class="form-group col-sm-1 col-md-1">     
                         <input id="chposfechado1_numero" name="chposfechado1_numero" class="form-control input-sm" type="number" min="1" value="<%- chposfechado1_numero %>" required readonly>
                     </div>
+
                     <label for="chposfechado1_fecha" class="col-sm-1 control-label">Fecha</label>
                     <div class="form-group col-sm-2">     
-                        <input id="chposfechado1_fecha" name="chposfechado1_fecha" class="form-control input-sm datepicker" type="text" value="<%- chposfechado1_fecha %>" required>
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <input id="chposfechado1_fecha" name="chposfechado1_fecha" class="form-control input-sm datepicker-back" type="text" value="{{ date('Y-m-d') }}" required>
+                        </div>
                     </div>
                     <label for="chposfechado1_central_riesgo" class="control-label col-sm-1">Central de riesgo</label>
                     <div class="form-group col-sm-1">
@@ -96,7 +102,12 @@
                     </div>
                     <label for="chposfechado1_ch_fecha" class="control-label col-sm-1">Fecha cheque</label>
                     <div class="form-group col-sm-2">
-                        <input type="text" name="chposfechado1_ch_fecha" id="chposfechado1_ch_fecha" class="form-control input-sm datepicker" value="<%- chposfechado1_ch_fecha %>" required>
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <input type="text" name="chposfechado1_ch_fecha" id="chposfechado1_ch_fecha" class="form-control input-sm datepicker" value="<%- chposfechado1_ch_fecha %>" required>
+                        </div>
                     </div>
                 </div>
                 <div class="row">

@@ -93,7 +93,7 @@ class ChposFechado1 extends BaseModel
         $response->position = 0;
 
         $query = ChposFechado1::query();
-        $query->select('chposfechado1.*', 'docafecta.documentos_nombre as docafecta', 'documento.documentos_nombre as documento', 'chposfechado2_id_doc', 'chposfechado2_valor', 'sucursal_nombre');
+        $query->select('chposfechado1.*', 'docafecta.documentos_nombre as docafecta', 'docafecta.documentos_codigo as afectaCode','documento.documentos_nombre as documento', 'chposfechado2_id_doc', 'chposfechado2_valor', 'sucursal_nombre');
         $query->where('chposfechado1_tercero', $tercero->id);
         $query->join('chposfechado2', 'chposfechado1.id', '=', 'chposfechado2_chposfechado1');
         $query->join('sucursal', 'chposfechado1_sucursal', '=', 'sucursal.id');
@@ -103,15 +103,25 @@ class ChposFechado1 extends BaseModel
 
 
         foreach ($cheque as $value) {
-        	$historyClient[$i]['documento'] = $value->documento;
+            $chequeItem = [];
+            if ($value->afectaCode == 'FACT') {
+                $query = ChposFechado2::select('factura1_numero', 'factura3_cuota');
+                $query->leftJoin('factura3','chposfechado2_id_doc', '=', 'factura3.id');
+                $query->leftJoin('factura1','factura3_factura1', '=', 'factura1.id');
+                $query->where('factura3.id', $value->chposfechado2_id_doc);
+                $chequeItem = $query->first();
+            }
+        	$historyClient[$i]['documento'] = "$value->documento *";
         	$historyClient[$i]['numero'] = $value->chposfechado1_numero;
         	$historyClient[$i]['sucursal'] = $value->sucursal_nombre;
         	$historyClient[$i]['docafecta'] = $value->docafecta;
-        	$historyClient[$i]['id_docafecta'] = $value->chposfechado2_id_doc;
-        	$historyClient[$i]['cuota'] = $value->chposfechado2_id_doc;
-        	$historyClient[$i]['naturaleza'] ='D';
+        	$historyClient[$i]['id_docafecta'] = empty($chequeItem) ? '-' : $chequeItem->factura1_numero;
+        	$historyClient[$i]['cuota'] = empty($chequeItem) ? '-' : $chequeItem->factura1_cuota;
+        	$historyClient[$i]['naturaleza'] ='C';
         	$historyClient[$i]['valor'] = $value->chposfechado2_valor;
-        	$historyClient[$i]['elaboro_fh'] = $value->chposfechado1_fh_elaboro;
+            $historyClient[$i]['fecha'] = $value->chposfechado1_fecha;
+            $historyClient[$i]['elaboro_fh'] = $value->chposfechado1_fh_elaboro;
+        	$historyClient[$i]['afectaCode'] = $value->afectaCode;
         	$i++;
         }
         $response->cheque = $historyClient;

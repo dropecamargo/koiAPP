@@ -31,7 +31,7 @@ class Factura1 extends BaseModel
 	*
 	* @var array
 	*/
-    protected $fillable = ['factura1_cuotas','factura1_primerpago','factura1_plazo','factura1_observaciones','factura1_bruto','factura1_descuento','factura1_iva','factura1_retencion','factura1_total'];
+    protected $fillable = ['factura1_cuotas','factura1_primerpago','factura1_plazo','factura1_observaciones','factura1_bruto','factura1_descuento','factura1_iva','factura1_retencion','factura1_total', 'factura1_fecha'];
 
 
     protected $boolean = ['factura1_anular'];
@@ -130,12 +130,14 @@ class Factura1 extends BaseModel
         	$historyClient[$i]['documento'] = $value->documentos_nombre;
         	$historyClient[$i]['numero'] = $value->factura1_numero;
         	$historyClient[$i]['sucursal'] = $value->sucursal_nombre;
-        	$historyClient[$i]['docafecta'] = $value->documentos_nombre;
-        	$historyClient[$i]['id_docafecta'] = $value->factura1_numero;
-        	$historyClient[$i]['cuota'] = $value->factura1_cuotas;
-        	$historyClient[$i]['naturaleza'] = $value->factura1_cuotas > 1 ? 'C' : 'D';
+        	$historyClient[$i]['docafecta'] = '-';
+        	$historyClient[$i]['id_docafecta'] = '-';
+        	$historyClient[$i]['cuota'] = '-';
+        	$historyClient[$i]['naturaleza'] = 'D'; //Factura siempre es de tipo debito
         	$historyClient[$i]['valor'] = ($value->factura1_bruto + $value->factura1_iva) - $value->factura1_descuento - $value->factura1_retencion;
         	$historyClient[$i]['elaboro_fh'] = $value->factura1_fh_elaboro;
+            $historyClient[$i]['fecha'] = $value->factura1_fecha;
+        	$historyClient[$i]['afectaCode'] = $value->afectaCode;
         	$i++;
         }
 

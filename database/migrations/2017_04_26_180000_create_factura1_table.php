@@ -25,6 +25,7 @@ class CreateFactura1Table extends Migration
             $table->integer('factura1_tercerocontacto')->unsigned();
             $table->integer('factura1_cuotas');
             $table->integer('factura1_plazo');
+            $table->date('factura1_fecha');
             $table->date('factura1_primerpago');
             $table->integer('factura1_vendedor')->unsigned();
             $table->double('factura1_bruto');

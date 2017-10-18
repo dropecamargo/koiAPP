@@ -51,7 +51,12 @@
                     </div>
                     <label for="ajuste1_fecha" class="col-sm-1 control-label">Fecha</label>
                     <div class="form-group col-sm-2">
-                        <input type="text" id="ajuste1_fecha" name="ajuste1_fecha" class="form-control input-sm datepicker" value="<%- ajuste1_fecha %>" required>
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <input type="text" id="ajuste1_fecha" name="ajuste1_fecha" class="form-control input-sm datepicker-back" value="{{ date('Y-m-d') }}" required>
+                        </div>
                     </div>
                 </div>
                 <div class="row">

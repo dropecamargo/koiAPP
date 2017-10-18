@@ -10,9 +10,8 @@
 				<th width="10%">AFEC DOC</th>
 				<th width="15%">AFEC #</th>
 				<th class="center" width="15%">AFEC CUOTA</th>
-				<th width="15%">FECHA E</th>
 				<th width="15%">FECHA DOC</th>
-				<th width="15%">FECHA PAGO</th>
+				<th width="15%">FECHA E</th>
 				<th width="15%">DEBITO</th>
 				<th width="15%">CREDITO</th>
 			</tr>
@@ -23,6 +22,7 @@
 					<th colspan="11" class="center">NO SE ENCUENTRAN REGISTROS PARA ESTE REPORTE</th>
 				</tr>
 			@else
+				{{--*/ $tdebito = $tcredito = 0; /*--}}
 				@for($i = 0; $i < count($historyClient); $i++)
 					<tr>
 						<td>{{ $historyClient[$i]['documento'] }}</td>
@@ -31,20 +31,28 @@
 						<td>{{ $historyClient[$i]['docafecta'] }}</td>
 						<td>{{ $historyClient[$i]['id_docafecta'] }}</td>
 						<td class="center">{{ $historyClient[$i]['cuota'] }}</td>
-						<td>{{ $historyClient[$i]['elaboro_fh'] }}</td>
-						<td>{{ $historyClient[$i]['elaboro_fh'] }}</td>
+						<td>{{ $historyClient[$i]['fecha'] }}</td>
 						<td>{{ $historyClient[$i]['elaboro_fh'] }}</td>
 
 						@if ($historyClient[$i]['naturaleza'] == 'C')
-							<td>{{ 0 }}</td>
-							<td>{{ number_format ($historyClient[$i]['valor']) }}</td>
+							<td class="right">{{ 0 }}</td>
+							{{--*/ ($historyClient[$i]['afectaCode'] != 'CHP') ? $tcredito += $historyClient[$i]['valor']: ''; /*--}}
+							<td class="right">{{ number_format ($historyClient[$i]['valor'],2,'.',',') }}</td>
 						@else
-							<td>{{ number_format ($historyClient[$i]['valor']) }}</td>
-							<td>{{ 0 }}</td>
+							{{--*/ ($historyClient[$i]['afectaCode'] != 'CHP') ? $tdebito += $historyClient[$i]['valor']: '' ; /*--}}
+							<td class="right">{{ number_format ($historyClient[$i]['valor'],2,'.',',') }}</td>
+							<td class="right">{{ 0 }}</td>
 						@endif
 					</tr>
 				@endfor
 			@endif
 		</tbody>
+		<tfoot>
+			<tr>
+				<th colspan="8" class="right">Total(es)</th>
+				<th class="right">{{ number_format($tdebito,2,'.',',') }}</th>
+				<th class="right">{{ number_format($tcredito,2,'.',',') }}</th>
+			</tr>
+		</tfoot>
 	</table>
 @stop
