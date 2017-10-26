@@ -173,7 +173,7 @@
     </li>
 
     {{-- Comercial --}}
-    <li class="treeview {{ in_array(Request::segment(1), ['presupuestoasesor', 'pedidosc', 'gestionescomercial' ,'conceptoscomercial']) ? 'active' : '' }}">
+    <li class="treeview {{ in_array(Request::segment(1), ['presupuestoasesor', 'pedidosc', 'gestionescomercial' ,'conceptoscomercial', 'rsabanaventascostos']) ? 'active' : '' }}">
         <a href="#">
             <i class="fa fa-globe"></i> <span>Comercial</span><i class="fa fa-angle-left pull-right"></i>
         </a>
@@ -193,6 +193,17 @@
                     </li>
                     <li class="{{ Request::segment(1) == 'presupuestoasesor' ? 'active' : '' }}">
                         <a href="{{ route('presupuestoasesor.index') }}"><i class="fa fa-handshake-o"></i> Presupuesto</a>
+                    </li>
+                </ul>
+            </li>
+            {{-- Reportes comerical --}}
+            <li class="{{ in_array(Request::segment(1), ['rsabanaventascostos']) ? 'active' : '' }}">
+                <a href="#">
+                    <i class="fa fa-bar-chart-o"></i> Reportes <i class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="treeview-menu">
+                    <li class="{{ Request::segment(1) == 'rsabanaventascostos' ? 'active' : '' }}">
+                        <a href="{{ route('rsabanaventascostos.index') }}"><i class="fa fa-circle-o"></i> Sábana de ventas</a>
                     </li>
                 </ul>
             </li>

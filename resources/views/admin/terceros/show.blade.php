@@ -156,8 +156,10 @@
             <div class="nav-tabs-custom tab-success tab-whithout-box-shadow">
 	            <ul class="nav nav-tabs">
 					<li class="active"><a href="#tab_cartera" data-toggle="tab">Cartera</a></li>
-					<li><a href="#tab_gestioncobro" data-toggle="tab">Gestión Cobro</a></li>
 					<li><a href="#tab_proveedor" data-toggle="tab">Proveedor</a></li>
+					<li><a href="#tab_gestioncobro" data-toggle="tab">Gestión Cobro</a></li>
+					<li><a href="#tab_gestioncomercial" data-toggle="tab">Gestión Comercial</a></li>
+					<li><a href="#tab_gestiontecnica" data-toggle="tab">Gestión Técnica</a></li>
 				</ul>
 			</div>
 
@@ -190,24 +192,6 @@
 						</div>
 					</div>
 				</div>
-				<div class="tab-pane" id="tab_gestioncobro">
-					<div class="box-body table-responsive">
-						<table id="browse-gestioncobro-list" class="table table-hover table-bordered" cellspacing="0">
-							<thead>
-								<tr>
-									<th width="15%">Concepto</th>
-									<th width="15%">Fecha</th>
-									<th width="15%">Fecha Proxima</th>
-									<th width="35%">Observaciones</th>
-									<th width="20%">Elaboro</th>
-								</tr>
-							</thead>
-							<tbody>
-								{{--Render gestion cobro--}}
-							</tbody>
-						</table>
-					</div>
-				</div>
 				<div class="tab-pane" id="tab_proveedor">
 					<div class="box-body table-responsive">
 						<table id="browse-facturap3-list" class="table table-hover table-bordered" cellspacing="0">
@@ -233,6 +217,60 @@
 									<th id="valor">0</th>
 								</tr>
 							</tfoot>
+						</table>
+					</div>
+				</div>
+				<div class="tab-pane" id="tab_gestioncobro">
+					<div class="box-body table-responsive">
+						<table id="browse-gestioncobro-list" class="table table-hover table-bordered" cellspacing="0">
+							<thead>
+								<tr>
+									<th width="15%">Concepto</th>
+									<th width="15%">Fecha</th>
+									<th width="15%">Fecha Próxima</th>
+									<th width="35%">Observaciones</th>
+									<th width="20%">Elaboró</th>
+								</tr>
+							</thead>
+							<tbody>
+								{{--Render gestion cobro--}}
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="tab-pane" id="tab_gestioncomercial">
+					<div class="box-body table-responsive">
+						<table id="browse-gestioncomercial-list" class="table table-hover table-bordered" cellspacing="0">
+							<thead>
+								<tr>
+									<th width="15%">Concepto</th>
+									<th width="15%">Fecha Inicio</th>
+									<th width="15%">Fecha Final</th>
+									<th width="35%">Observaciones</th>
+									<th width="20%">Elaboró</th>
+								</tr>
+							</thead>
+							<tbody>
+								{{--Render gestion comercial--}}
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="tab-pane" id="tab_gestiontecnica">
+					<div class="box-body table-responsive">
+						<table id="browse-gestiontecnica-list" class="table table-hover table-bordered" cellspacing="0">
+							<thead>
+								<tr>
+									<th width="15%">Concepto</th>
+									<th width="15%">Fecha</th>
+									<th width="15%">Fecha Próxima</th>
+									<th width="35%">Observaciones</th>
+									<th width="20%">Elaboró</th>
+								</tr>
+							</thead>
+							<tbody>
+								{{--Render gestion tecnica--}}
+							</tbody>
 						</table>
 					</div>
 				</div>

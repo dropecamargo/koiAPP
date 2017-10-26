@@ -209,38 +209,45 @@ class TerceroController extends Controller
      */
     public function dv(Request $request)
     {
-        // Calc dv
-        $primer = substr($request->tercero_nit,0,1);
-        $longitud = strlen($request->tercero_nit);
-        $verificacion = [
-            0=>71, 1=>67, 2=>59,
-            3=>53, 4=>47, 5=>43,
-            6=>41, 7=>37, 8=>29,
-            9=>23, 10=>19, 11=>17,
-            12=>13, 13=>7, 14=>3
-        ];
-        //$a contendra el valor de la sumatoria de los productos de cada posicion del nit * el factor correspondiente en el array de verificacion
-        //$b residuo($a,11)
-        //si $b=0 => digito =0
-        //si $b=1 => digito =1
-        //si $b!=0 && $b!=1 => digito =11-$b
-        $a = 0;
-        $posicionnit = ($longitud-1);
-        for($i=14; $i >= (15-$longitud); $i--) {
-            $a += ($verificacion[$i]*substr($request->tercero_nit, $posicionnit,1));
-            $posicionnit--;
+        if ($request->has('tercero_nit')) {
+
+            // Valid nit 
+            if (! Tercero::isValidNit($request->all())) {
+                return response()->json(['success' => false, 'errors' => "El nit $request->tercero_nit ya se encuentra registrado"]);
+            }
+            // Calc dv
+            $primer = substr($request->tercero_nit,0,1);
+            $longitud = strlen($request->tercero_nit);
+            $verificacion = [
+                0=>71, 1=>67, 2=>59,
+                3=>53, 4=>47, 5=>43,
+                6=>41, 7=>37, 8=>29,
+                9=>23, 10=>19, 11=>17,
+                12=>13, 13=>7, 14=>3
+            ];
+            //$a contendra el valor de la sumatoria de los productos de cada posicion del nit * el factor correspondiente en el array de verificacion
+            //$b residuo($a,11)
+            //si $b=0 => digito =0
+            //si $b=1 => digito =1
+            //si $b!=0 && $b!=1 => digito =11-$b
+            $a = 0;
+            $posicionnit = ($longitud-1);
+            for($i=14; $i >= (15-$longitud); $i--) {
+                $a += ($verificacion[$i]*substr($request->tercero_nit, $posicionnit,1));
+                $posicionnit--;
+            }
+
+            $b = $a%11;
+            if($b==0) {
+                $dv = 0;
+            }else if($b==1) {
+                $dv = 1;
+            }else {
+                $dv = (11-$b);
+            }
+            return response()->json(['success' => true, 'dv' => $dv]);
         }
 
-        $b = $a%11;
-        if($b==0) {
-            $dv = 0;
-        }else if($b==1) {
-            $dv = 1;
-        }else {
-            $dv = (11-$b);
-        }
-
-        return response()->json(['success' => true, 'dv' => $dv]);
     }
 
     /**

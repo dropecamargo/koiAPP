@@ -55,7 +55,7 @@ app || (app = {});
             this.num = new Array();
 
             // Validate nomenclaturas
-            this.validaciones = ['Agencia','Agrupación','Almacen','Autopista','Avenida','Avenida Carrera','Barrio','Boulevar','Calle','Camino','Carrera','Carretera','Casa','Celula','Centro Comercial','Ciudadela','Conjunto','Conjunto Residencial','Corregimiento','Departamento','Deposito','Edificio','Entrada','Etapa','Finca','Hacienda','Lote','Modulo','Municipio','Parcela','Parque','Parqueadero','Pasaje','Paseo','Predio','Puente','Puesto','Salón','Salón Comunal','Sector','Suite','Terminal','Terraza','Torre','Unidad','Unidad Residencial','Urbanización','Variante','Vereda','Zona','Zona Franca'];
+            this.validaciones = ['Agencia','Agrupación','Almacen','Autopista','Avenida','Avenida Carrera','Barrio','Boulevar','Calle','Camino','Carrera','Carretera','Casa','Celula','Centro Comercial','Ciudadela','Conjunto','Conjunto Residencial','Corregimiento','Departamento','Deposito','Edificio','Entrada','Etapa','Finca','Hacienda','Lote','Modulo','Municipio','Parcela','Parque','Parqueadero','Pasaje','Paseo','Predio','Puente','Puesto','Salón','Salón Comunal','Sector','Suite','Terminal','Terraza','Torre','Unidad','Unidad Residencial','Urbanización','Variante','Vereda','Zona','Zona Franca', 'Via'];
 
             // to fire plugins
             if( typeof window.initComponent.initToUpper == 'function' )

@@ -23,6 +23,8 @@ app || (app = {});
                 this.rolList = new app.RolList();
                 this.detalleCarteraTercero = new app.DetalleCarteraTercero();
                 this.gestionCobroList = new app.GestionCobrosCollection();
+                this.gestionComercialList = new app.GestionComercialCollection();
+                this.gestionTecnicaList = new app.GestionTecnicaCollection();
                 this.detallecuotaProveedor = new app.DetalleFacturap3List();
                 
                 this.$templateTercero = _.template( ($('#add-tercero-cartera-tpl').html() || '') );
@@ -49,6 +51,26 @@ app || (app = {});
             // Gestion Cobro list
             this.gestionCobroListView = new app.GestionCobroListView( {
                 collection: this.gestionCobroList,
+                parameters: {
+                    dataFilter: {
+                        'tercero': this.model.get('id')
+                    }
+               }
+            });
+
+            // Gestion Comercial list
+            this.gestionComercialListView = new app.GestionComercialListView( {
+                collection: this.gestionComercialList,
+                parameters: {
+                    dataFilter: {
+                        'tercero': this.model.get('id')
+                    }
+               }
+            });
+
+            // Gestion Tecnica list
+            this.gestionTecnicaListView = new app.GestionTecnicaListView( {
+                collection: this.gestionTecnicaList,
                 parameters: {
                     dataFilter: {
                         'tercero': this.model.get('id')

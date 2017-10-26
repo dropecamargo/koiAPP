@@ -31,7 +31,6 @@ class Empresa extends Model
 		$query->leftJoin('actividad', 'tercero_actividad', '=', 'actividad.id');
     	return $query->first();
     }
-
     public function setEmpresaNmContadorAttribute($name)
     {
         $this->attributes['empresa_nm_contador'] = strtoupper($name);

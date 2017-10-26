@@ -6,7 +6,7 @@
 				<label for="tercero_nit" class="control-label">Documento</label>
 				<div class="row">
 					<div class="col-md-9">
-						<input id="tercero_nit" value="<%- tercero_nit %>" placeholder="Nit" class="form-control input-sm change-nit-koi-component" name="tercero_nit" type="text" required data-field="tercero_digito">
+						<input id="tercero_nit" value="<%- tercero_nit %>" placeholder="Nit" class="form-control input-sm change-nit-koi-component" name="tercero_nit" type="text" required data-field="tercero_digito" maxlength="15">
 					</div>
 					<div class="col-md-3">
 						<input id="tercero_digito" value="<%- tercero_digito %>" class="form-control input-sm" name="tercero_digito" type="text" readonly required>
@@ -90,12 +90,12 @@
 
 			<div class="form-group col-md-3">
 				<label for="tercero_municipio" class="control-label">Municipio</label>
-				<select name="tercero_municipio" id="tercero_municipio" class="form-control choice-select-autocomplete" data-ajax-url="<%- window.Misc.urlFull(Route.route('municipios.index'))%>" data-placeholder="Seleccione" placeholder="Seleccione" data-initial-value="<%- tercero_municipio %>">
+				<select name="tercero_municipio" id="tercero_municipio" class="form-control choice-select-autocomplete" data-ajax-url="<%- window.Misc.urlFull(Route.route('municipios.index'))%>" data-placeholder="Seleccione" data-initial-value="<%- tercero_municipio %>">
 				</select>
 			</div>
 			<div class="form-group col-md-3">
 				<label for="tercero_pais" class="control-label">Pais</label>
-				<select name="tercero_pais" id="tercero_pais" class="form-control choice-select-autocomplete" data-ajax-url="<%- window.Misc.urlFull(Route.route('paises.index'))%>" data-placeholder="Seleccione" placeholder="Seleccione" data-initial-value="<%- tercero_pais %>">
+				<select name="tercero_pais" id="tercero_pais" class="form-control choice-select-autocomplete" data-ajax-url="<%- window.Misc.urlFull(Route.route('paises.index'))%>" data-placeholder="Seleccione" data-initial-value="<%- tercero_pais %>">
 				</select>
 			</div>
 
@@ -113,7 +113,7 @@
 					<div class="input-group-addon">
 						<i class="fa fa-phone"></i>
 					</div>
-					<input id="tercero_telefono1" value="<%- tercero_telefono1 %>" class="form-control input-sm" name="tercero_telefono1" type="text" data-inputmask="'mask': '(999) 999-99-99'" data-mask>
+					<input id="tercero_telefono1" value="<%- tercero_telefono1 %>" class="form-control input-sm" name="tercero_telefono1" type="text" data-inputmask="'mask': '(999) 999-99-99  EXT 999'" data-mask>
 				</div>
 			</div>
 
@@ -123,7 +123,7 @@
 					<div class="input-group-addon">
 						<i class="fa fa-phone"></i>
 					</div>
-					<input id="tercero_telefono2" value="<%- tercero_telefono2 %>" class="form-control input-sm" name="tercero_telefono2" type="text" data-inputmask="'mask': '(999) 999-99-99'" data-mask>
+					<input id="tercero_telefono2" value="<%- tercero_telefono2 %>" class="form-control input-sm" name="tercero_telefono2" type="text" data-inputmask="'mask': '(999) 999-99-99  EXT 999'" data-mask>
 				</div>
 			</div>
 
@@ -133,7 +133,7 @@
 					<div class="input-group-addon">
 						<i class="fa fa-fax"></i>
 					</div>
-					<input id="tercero_fax" value="<%- tercero_fax %>" class="form-control input-sm" name="tercero_fax" type="text" data-inputmask="'mask': '(999) 999-99-99'" data-mask>
+					<input id="tercero_fax" value="<%- tercero_fax %>" class="form-control input-sm" name="tercero_fax" type="text" data-inputmask="'mask': '(999) 999-99-99  EXT 999'" data-mask>
 				</div>
 			</div>
 
@@ -471,12 +471,12 @@
 
 <script type="text/template" id="add-contacto-tpl">
     <div class="row">
-		<div class="form-group col-md-4">
+		<div class="form-group col-md-6">
 			<label for="tcontacto_nombres" class="control-label">Nombres</label>
 			<input type="text" id="tcontacto_nombres" name="tcontacto_nombres" value="<%- tcontacto_nombres %>" placeholder="Nombres" class="form-control input-sm input-toupper" maxlength="200" required>
 		</div>
 
-		<div class="form-group col-md-4">
+		<div class="form-group col-md-6">
 			<label for="tcontacto_apellidos" class="control-label">Apellidos</label>
 			<input type="text" id="tcontacto_apellidos" name="tcontacto_apellidos" value="<%- tcontacto_apellidos %>" placeholder="Apellidos" class="form-control input-sm input-toupper" maxlength="200" required>
 		</div>
@@ -521,7 +521,7 @@
 				<div class="input-group-addon">
 					<i class="fa fa-phone"></i>
 				</div>
-				<input id="tcontacto_telefono" value="<%- tcontacto_telefono %>" class="form-control input-sm" name="tcontacto_telefono" type="text" data-inputmask="'mask': '(999) 999-99-99'" data-mask required>
+				<input id="tcontacto_telefono" value="<%- tcontacto_telefono %>" class="form-control input-sm" name="tcontacto_telefono" type="text" data-inputmask="'mask': '(999) 999-99-99  EXT 999'" data-mask required>
 			</div>
 		</div>
 

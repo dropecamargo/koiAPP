@@ -82,16 +82,15 @@ app || (app = {});
             this.createTContactoView.render();
         },
 
-        createOne: function(tercero) {
-             var _this = this;
-
+        createOne: function(tercero, municipio, telefono, direccion, nomenclatura) {
+            var _this = this;  
             if ( this.createTContactoView instanceof Backbone.View ){
                 this.createTContactoView.stopListening();
                 this.createTContactoView.undelegateEvents();
             }
 
             this.createTContactoView = new app.CreateTContactoView({
-                model: new app.ContactoModel(),
+                model: new app.ContactoModel({tcontacto_municipio: municipio, tcontacto_telefono: telefono, tcontacto_direccion: direccion, tcontacto_direccion_nomenclatura: nomenclatura}),
                 collection: _this.collection,
                 parameters: {
                     'tercero_id': tercero

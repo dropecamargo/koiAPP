@@ -68,9 +68,8 @@ class ExistenciaController extends Controller
                 $list->groupBy('auxreporte_varchar1', 'auxreporte_varchar3');
                 $list->orderBy('auxreporte_varchar1','auxreporte_varchar3');
                 $producto['query'] = $list->get();
-                // dd();
                 $producto['numSucursal'] = isset($countSucursal) ? $countSucursal : Sucursal::count();
-                
+                DB::rollback();
             } catch ( \Exception $e) {
                 DB::rollback();
                 Log::error($e->getMessage());

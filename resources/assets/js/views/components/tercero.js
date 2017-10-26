@@ -35,26 +35,32 @@ app || (app = {});
 	            this.$modalComponent = this.$('#modal-add-resource-component');
 	            this.$wraperContent = this.$modalComponent.find('.modal-body');
    			}
+            if ( $(e.currentTarget).val() != '') {
+                $.ajax({
+                    url: window.Misc.urlFull(Route.route('terceros.dv')),
+                    type: 'GET',
+                    data: { tercero_nit: $(e.currentTarget).val() },
+                    beforeSend: function() {
+                        window.Misc.setSpinner( _this.$wraperContent );
+                    }
+                })
+                .done(function(resp) {
+                    window.Misc.removeSpinner( _this.$wraperContent );
+                    if(resp.success) {
+                        // Dv
+                        _this.$dv.val(resp.dv);
+                    }else {
+                        _this.$dv.val('');
+                        $(e.currentTarget).val('');
+                        alertify.error(resp.errors);
+                    }
 
-            $.ajax({
-                url: window.Misc.urlFull(Route.route('terceros.dv')),
-                type: 'GET',
-                data: { tercero_nit: $(e.currentTarget).val() },
-                beforeSend: function() {
-                    window.Misc.setSpinner( _this.$wraperContent );
-                }
-            })
-            .done(function(resp) {
-                window.Misc.removeSpinner( _this.$wraperContent );
-                if(resp.success) {
-                    // Dv
-                    _this.$dv.val(resp.dv);
-                }
-            })
-            .fail(function(jqXHR, ajaxOptions, thrownError) {
-                window.Misc.removeSpinner( _this.$wraperContent );
-                alertify.error(thrownError);
-            });
+                })
+                .fail(function(jqXHR, ajaxOptions, thrownError) {
+                    window.Misc.removeSpinner( _this.$wraperContent );
+                    alertify.error(thrownError);
+                });
+            }
         },
 
         actividadChanged: function(e) {

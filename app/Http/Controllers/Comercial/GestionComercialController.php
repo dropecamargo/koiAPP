@@ -23,6 +23,22 @@ class GestionComercialController extends Controller
         if ($request->ajax()) {
             
             $query = GestionComercial::query();
+              // Filter show collection in tercero
+            if ($request->has('tercero')) {
+                $query->select('gestioncomercial.*', 'conceptocom_nombre', DB::raw(DB::raw("(CASE WHEN tercero_persona = 'N'
+                    THEN CONCAT(tercero_nombre1,' ',tercero_nombre2,' ',tercero_apellido1,' ',tercero_apellido2,
+                            (CASE WHEN (tercero_razonsocial IS NOT NULL AND tercero_razonsocial != '') THEN CONCAT(' - ', tercero_razonsocial) ELSE '' END)
+                        )
+                    ELSE tercero_razonsocial END)
+                AS usuario_nombre")));
+
+                $query->join('tercero','gestioncomercial_usuario_elaboro', '=', 'tercero.id');
+                $query->join('conceptocom','gestioncomercial_conceptocom', '=', 'conceptocom.id');
+                $query->where('gestioncomercial_tercero', $request->tercero);
+                $gestioncomercial = $query->get();
+                return response()->json($gestioncomercial);
+            }
+
             $query->select('gestioncomercial.*', 'conceptocom_nombre', 'tercero_nit', 'tercero_razonsocial', 'tercero_nombre1', 'tercero_nombre2', 'tercero_apellido1', 'tercero_apellido2',DB::raw("(CASE WHEN tercero_persona = 'N'
                     THEN CONCAT(tercero_nombre1,' ',tercero_nombre2,' ',tercero_apellido1,' ',tercero_apellido2,
                             (CASE WHEN (tercero_razonsocial IS NOT NULL AND tercero_razonsocial != '') THEN CONCAT(' - ', tercero_razonsocial) ELSE '' END)

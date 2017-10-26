@@ -708,15 +708,15 @@
 		<div class="row">
 			<div class="form-group col-md-12">
 			<label class="col-md-2 col-xs-12 control-label">Nombre</label>
-				<div class="col-md-5">
+				<div class="col-md-4">
 				    <select name="component-select" id="component-select" class="form-control" required>
 	                    <option value="" selected>Seleccione</option>
 	                    <option value="si">Si</option>
 	                    <option value="no">No</option>
 	                </select>
 				</div>
-				<div class="col-md-5" id="component-input" hidden>
-					<input type="text" class="form-control input-sm" name="component-input-text" id="component-input-text">
+				<div class="col-md-6" id="component-input" hidden>
+					<input type="text" class="form-control input-sm" name="component-input-text" id="component-input-text" placeholder="Nombre">
 				</div>
 			</div>
 		</div>
@@ -735,12 +735,14 @@
 	{!! Form::open(['id' => 'form-address-component', 'data-toggle' => 'validator', 'role' => 'form']) !!}
 	<div class="modal-body koi-component-address-modal-body">
 		<div class="row">
-			<div class="col-md-offset-2">
 				<label for="koi_direccion" class="col-md-1 control-label">Direccion</label>
-				<div class="form-group col-md-8">
+				<div class="form-group col-md-5">
 					{!! Form::text('koi_direccion', null, ['id' => 'koi_direccion', 'class' => 'form-control input-sm','disabled']) !!}
 				</div>
-			</div>
+				<label for="koi_direccion" class="col-md-1 control-label text-right">DIAN</label>
+				<div class="form-group col-md-5">
+					{!! Form::text('koi_direccion_nm', null, ['id' => 'koi_direccion_nm', 'class' => 'form-control input-sm','disabled']) !!}
+				</div>
 		</div>
 
 		<div class="row">
@@ -773,12 +775,8 @@
 			</div>
 		</div>
 
-		<div class="row other-controls ">
-			<label for="koi_direccion" class="col-md-2 col-xs-12 control-label text-right">Dirección DIAN</label>
-			<div class="col-md-6">
-				{!! Form::text('koi_direccion_nm', null, ['id' => 'koi_direccion_nm', 'class' => 'form-control input-sm','disabled']) !!}
-			</div>
-			<div class="col-md-2 koi-component-remove-last">
+		<div class="row other-controls">
+			<div class="col-md-offset-4 col-md-2 koi-component-remove-last">
 				<a class="btn btn-default btn-block"><i class="fa fa-backward"> Regresar</i></a>
 			</div>
 			<div class="col-md-2 koi-component-remove">

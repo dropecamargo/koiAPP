@@ -65,6 +65,7 @@ class Tercero extends BaseModel implements AuthenticatableContract,
      * @var array
      */
     protected $hidden = ['password', 'remember_token'];
+    
 
     public function isValid($data)
     {
@@ -153,7 +154,18 @@ class Tercero extends BaseModel implements AuthenticatableContract,
         $this->errors = $validator->errors();
         return false;
     }
+    public static function isValidNit($nit)
+    {   
+        $rules = [
+            'tercero_nit' => 'required|max:15|min:1|unique:tercero'
+        ];
 
+        $validator = Validator::make($nit, $rules);
+        if ($validator->passes()) {
+            return true;
+        }
+        return false;
+    }
     public static function getTercero($id)
     {
         $query = Tercero::query();

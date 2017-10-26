@@ -170,6 +170,7 @@ return [
             'URB' => 'Urbanización',
             'VTE' => 'Variante',
             'VDA' => 'Vereda',
+            'VIA' => 'Via',
             'ZN' => 'Zona',
             'ZF' => 'Zona Franca',
             '#' => '#',

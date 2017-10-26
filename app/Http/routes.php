@@ -87,6 +87,12 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::resource('conceptoscomercial', 'Comercial\ConceptoComercialController',['except' => ['destroy']]);
 	Route::resource('gestionescomercial', 'Comercial\GestionComercialController',['except' => ['destroy']]);
 
+    /*
+	|-------------------------
+	| Reportes Routes
+	|-------------------------
+	*/
+	Route::resource('rsabanaventascostos', 'Reporte\SabanaDeVentasCostoController', ['only' => ['index']]);
 
 	/*
 	|--------------------------

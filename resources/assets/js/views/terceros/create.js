@@ -70,6 +70,12 @@ app || (app = {});
             this.$tecnico = this.$('#tercero_tecnico');
             this.$vendedor = this.$('#tercero_vendedor');
 
+            // Reference unput fields
+            this.$municipio = this.$('#tercero_municipio');
+            this.$telefono = this.$('#tercero_telefono1');
+            this.$direccion = this.$('#tercero_direccion');
+            this.$nomenclatura = this.$('#tercero_nomenclatura');
+
             this.$username = this.$('#username');
             this.$password = this.$('#password');
             this.$password_confirmation = this.$('#password_confirmation');
@@ -97,7 +103,7 @@ app || (app = {});
                     edit: true,
                     wrapper: this.$('#wrapper-tcontacto'),
                     dataFilter: {
-                        'tercero_id': this.model.get('id')
+                        'tercero_id': this.model.get('id'),
                     }
                }
             });
@@ -140,7 +146,7 @@ app || (app = {});
         },
 
         addContacto: function() {
-            this.contactsListView.trigger('createOne', this.model.get('id'));
+            this.contactsListView.trigger('createOne', this.model.get('id'), this.$municipio.val(),this.$telefono.val(), this.$direccion.val(), this.$nomenclatura.text(), this.contactsListView);
         },
 
         changedTechnical: function(e) {
@@ -294,7 +300,8 @@ app || (app = {});
                 }
 
                 // Redirect to edit tercero
-                Backbone.history.navigate(Route.route('terceros.edit', { terceros: resp.id}), { trigger:true });
+                // Backbone.history.navigate(Route.route('terceros.edit', { terceros: resp.id}), { trigger:true });
+                window.Misc.redirect( window.Misc.urlFull( Route.route('terceros.index')) );
             }
         }
     });
