@@ -61,6 +61,14 @@ class ConceptosrcController extends Controller
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar plan de cuenta, verifique información ó por favor consulte al administrador.']);
                     }
+
+                    // Valid correctly use the cuenta
+                    $result = $plancuentas->validarSubnivelesCuenta();
+                    if ($result != 'OK') {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $result ]);
+                    }  
+
                     if ($request->has('conceptosrc_documentos')) {
                         $documentos = Documentos::find($request->conceptosrc_documentos);
                         if(!$documentos instanceof Documentos){
@@ -140,6 +148,14 @@ class ConceptosrcController extends Controller
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar plan de cuenta, verifique información ó por favor consulte al administrador.']);
                     }
+
+                    // Valid correctly use the cuenta
+                    $result = $plancuentas->validarSubnivelesCuenta();
+                    if ($result != 'OK') {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $result ]);
+                    } 
+
                     if ($request->has('conceptosrc_documentos')) {
                         $documentos = Documentos::find($request->conceptosrc_documentos);
                         if(!$documentos instanceof Documentos){

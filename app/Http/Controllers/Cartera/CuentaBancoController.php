@@ -54,20 +54,28 @@ class CuentaBancoController extends Controller
             if ($cuentabanco->isValid($data)) {
                 DB::beginTransaction();
                 try {
-                    //Recuperar Banco && plancuentas
+                    //Recuperar Banco 
                     $banco = Banco::find($request->cuentabanco_banco);
                     if(!$banco instanceof Banco) {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar banco, verifique información ó por favor consulte al administrador.']);
                     }
 
+                    // Recuperar cuenta 
                     $plancuentas = PlanCuenta::where('plancuentas_cuenta', $request->cuentabanco_plancuentas)->first();
                     if(!$plancuentas instanceof PlanCuenta) {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar plan de cuenta, verifique información ó por favor consulte al administrador.']);
-                    }    
+                    }  
 
-                    // cuentaBanco
+                    // Valid correctly use the cuenta
+                    $result = $plancuentas->validarSubnivelesCuenta();
+                    if ($result != 'OK') {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $result ]);
+                    }  
+
+                    // Cuenta Banco
                     $cuentabanco->fill($data);
                     $cuentabanco->fillBoolean($data);
                     $cuentabanco->cuentabanco_banco = $banco->id;
@@ -145,7 +153,14 @@ class CuentaBancoController extends Controller
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar plan de cuenta, verifique información ó por favor consulte al administrador.']);
                     }
 
-                    // cuentaBanco
+                    // Valid correctly use the cuenta
+                    $result = $plancuentas->validarSubnivelesCuenta();
+                    if ($result != 'OK') {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $result ]);
+                    }  
+               
+                    // Cuenta Banco
                     $cuentabanco->fill($data);
                     $cuentabanco->fillBoolean($data);
                     $cuentabanco->cuentabanco_banco = $banco->id;

@@ -60,6 +60,13 @@ class ConceptoAjustecController extends Controller
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar plan de cuenta, verifique información ó por favor consulte al administrador.']);
                     }
 
+                    // Valid correctly use the cuenta
+                    $result = $plancuentas->validarSubnivelesCuenta();
+                    if ($result != 'OK') {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $result ]);
+                    }  
+
                     // ConceptoAjustec
                     $conceptoajustec->fill($data);
                     $conceptoajustec->fillBoolean($data);
@@ -124,6 +131,20 @@ class ConceptoAjustecController extends Controller
             if ($conceptoajustec->isValid($data)) {
                 DB::beginTransaction();
                 try {
+
+                    // Recuperar cuenta
+                    $plancuentas = PlanCuenta::where('plancuentas_cuenta', $request->conceptoajustec_plancuentas)->first();
+                    if(!$plancuentas instanceof PlanCuenta){
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar plan de cuenta, verifique información ó por favor consulte al administrador.']);
+                    }
+
+                    // Valid correctly use the cuenta
+                    $result = $plancuentas->validarSubnivelesCuenta();
+                    if ($result != 'OK') {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $result ]);
+                    }  
                     // ConceptoAjustec
                     $conceptoajustec->fill($data);
                     $conceptoajustec->fillBoolean($data);

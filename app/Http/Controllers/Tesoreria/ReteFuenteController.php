@@ -50,15 +50,23 @@ class ReteFuenteController extends Controller
             if ($retefuente->isValid($data)) {
                 DB::beginTransaction();
                 try {
-                    // ReteFuente
-                    $retefuente->fill($data);
-                    $retefuente->fillBoolean($data);
-                    
+                    // Recuperar cuenta
                     $plancuenta = PlanCuenta::where('plancuentas_cuenta',$request->retefuente_plancuentas)->first();
                     if (!$plancuenta instanceof PlanCuenta) {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar plan de cuentas, por favor verifique información o consulte con el administrador']);
                     }
+    
+                    // Valid correctly use the cuenta
+                    $result = $plancuenta->validarSubnivelesCuenta();
+                    if ($result != 'OK') {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $result ]);
+                    }
+
+                    // ReteFuente
+                    $retefuente->fill($data);
+                    $retefuente->fillBoolean($data);
                     $retefuente->retefuente_plancuentas = $plancuenta->id;
                     $retefuente->save();
 
@@ -121,15 +129,24 @@ class ReteFuenteController extends Controller
             if ($retefuente->isValid($data)) {
                 DB::beginTransaction();
                 try {
-                    // ReteFuente
-                    $retefuente->fill($data);
-                    $retefuente->fillBoolean($data);
-                    
+
+                    // Recuperar cuenta 
                     $plancuenta = PlanCuenta::where('plancuentas_cuenta',$request->retefuente_plancuentas)->first();
                     if (!$plancuenta instanceof PlanCuenta) {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar plan de cuentas, por favor verifique información o consulte con el administrador']);
                     }
+
+                    // Valid correctly use the cuenta
+                    $result = $plancuenta->validarSubnivelesCuenta();
+                    if ($result != 'OK') {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $result ]);
+                    }
+
+                    // ReteFuente
+                    $retefuente->fill($data);
+                    $retefuente->fillBoolean($data);
                     $retefuente->retefuente_plancuentas = $plancuenta->id;
                     $retefuente->save();
 

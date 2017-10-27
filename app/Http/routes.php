@@ -16,9 +16,19 @@
 | Routes Auth
 |--------------------------------------------------------------------------
 */
-Route::post('login', ['as' => 'login', 'uses' => 'Auth\AuthController@postLogin']);
+Route::group(['prefix' => 'auth'], function()
+{
+	Route::post('login', ['as' => 'auth.login', 'uses' => 'Auth\AuthController@postLogin']);
+	Route::get('logout', ['as' => 'auth.logout', 'uses' => 'Auth\AuthController@getLogout']);
+	Route::get('integrate', ['as' => 'auth.integrate', 'uses' => 'Auth\AuthController@integrate']);
+});
 Route::get('login', ['as' => 'login', 'uses' => 'Auth\AuthController@getLogin']);
-Route::get('logout', ['as' => 'logout', 'uses' => 'Auth\AuthController@getLogout']);
+
+/*
+|--------------------------------------------------------------------------
+| Secure Routes Application
+|--------------------------------------------------------------------------
+*/
 
 Route::group(['middleware' => 'auth'], function(){
 	Route::get('/', ['as' => 'dashboard', 'uses' => 'HomeController@index']);

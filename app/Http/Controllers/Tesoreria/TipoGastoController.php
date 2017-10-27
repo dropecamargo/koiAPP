@@ -50,15 +50,23 @@ class TipoGastoController extends Controller
             if ($tipogasto->isValid($data)) {
                 DB::beginTransaction();
                 try {
-                    // TipoGasto
-                    $tipogasto->fill($data);
-                    $tipogasto->fillBoolean($data);
-                    
+                    // Recuperar cuenta
                     $plancuenta = PlanCuenta::where('plancuentas_cuenta',$request->tipogasto_plancuentas)->first();
                     if (!$plancuenta instanceof PlanCuenta) {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar plan de cuentas, por favor verifique información o consulte con el administrador']);
                     }
+
+                    // Valid correctly use the cuenta
+                    $result = $plancuenta->validarSubnivelesCuenta();
+                    if ($result != 'OK') {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $result ]);
+                    }
+
+                    // Tipo Gasto
+                    $tipogasto->fill($data);
+                    $tipogasto->fillBoolean($data);
                     $tipogasto->tipogasto_plancuentas = $plancuenta->id;
                     $tipogasto->save();
 
@@ -121,15 +129,24 @@ class TipoGastoController extends Controller
             if ($tipogasto->isValid($data)) {
                 DB::beginTransaction();
                 try {
-                    // TipoGasto
-                    $tipogasto->fill($data);
-                    $tipogasto->fillBoolean($data);
-                    
+
+                    // Recuperar cuenta
                     $plancuenta = PlanCuenta::where('plancuentas_cuenta',$request->tipogasto_plancuentas)->first();
                     if (!$plancuenta instanceof PlanCuenta) {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar plan de cuentas, por favor verifique información o consulte con el administrador']);
                     }
+
+                    // Valid correctly use the cuenta
+                    $result = $plancuenta->validarSubnivelesCuenta();
+                    if ($result != 'OK') {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $result ]);
+                    }
+
+                    // Tipo Gasto
+                    $tipogasto->fill($data);
+                    $tipogasto->fillBoolean($data);
                     $tipogasto->tipogasto_plancuentas = $plancuenta->id;
                     $tipogasto->save();
 

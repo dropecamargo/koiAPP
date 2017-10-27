@@ -59,6 +59,13 @@ class ConceptoNotaController extends Controller
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar la cuenta, por favor verifique la informacion ó consulte al administrador.']);
                     }
 
+                    // Valid correctly use the cuenta
+                    $result = $plancuentas->validarSubnivelesCuenta();
+                    if ($result != 'OK') {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $result ]);
+                    } 
+
                     $conceptonota->fill($data);
                     $conceptonota->fillBoolean($data);
                     $conceptonota->conceptonota_plancuentas = $plancuentas->id;
@@ -123,13 +130,22 @@ class ConceptoNotaController extends Controller
             if ($conceptonota->isValid($data)) {
                 DB::beginTransaction();
                 try {
+
+                    // Recuperar cuenta
                     $plancuentas = PlanCuenta::where('plancuentas_cuenta', $request->conceptonota_plancuentas)->first();
                     if(!$plancuentas instanceof PlanCuenta){
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar la cuenta, por favor verifique la informacion ó consulte al administrador.']);
                     }
 
-                    // conceptonota
+                    // Valid correctly use the cuenta
+                    $result = $plancuentas->validarSubnivelesCuenta();
+                    if ($result != 'OK') {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $result ]);
+                    }
+
+                    // Conceptonota
                     $conceptonota->fill($data);
                     $conceptonota->fillBoolean($data);
                     $conceptonota->conceptonota_plancuentas = $plancuentas->id;

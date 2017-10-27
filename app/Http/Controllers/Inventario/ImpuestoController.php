@@ -61,6 +61,13 @@ class ImpuestoController extends Controller
                             DB::rollback();
                             return response()->json(['success' => false, 'errors' => 'No es posible recuperar plan de cuenta por favor verifique información o consulte con el administrador']);
                         }
+
+                        // Valid correctly use the cuenta
+                        $result = $plancuenta->validarSubnivelesCuenta();
+                        if ($result != 'OK') {
+                            DB::rollback();
+                            return response()->json(['success' => false, 'errors' => $result ]);
+                        }   
                         $impuesto->impuesto_plancuentas = $plancuenta->id;
                     }
                     $impuesto->save();
@@ -135,6 +142,12 @@ class ImpuestoController extends Controller
                             DB::rollback();
                             return response()->json(['success' => false, 'errors' => 'No es posible recuperar plan de cuenta por favor verifique información o consulte con el administrador']);
                         }
+                        // Valid correctly use the cuenta
+                        $result = $plancuenta->validarSubnivelesCuenta();
+                        if ($result != 'OK') {
+                            DB::rollback();
+                            return response()->json(['success' => false, 'errors' => $result ]);
+                        } 
                         $impuesto->impuesto_plancuentas = $plancuenta->id;
                     }
                     $impuesto->save();

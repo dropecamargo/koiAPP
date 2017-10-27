@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Listeners;
-use Log;
+use App\Models\Base\Empresa;
 
 class UserEventListener
 {
@@ -9,14 +9,19 @@ class UserEventListener
      * Handle user login events.
      */
     public function onUserLogin($event) {
-        Log::info('hola');
+        
+        // Get empresa
+        $empresa = Empresa::getEmpresa();
+        session([ 'empresa' => $empresa ]);
     }
 
     /**
      * Handle user logout events.
      */
     public function onUserLogout($event) {
-        Log::info('hola');
+
+        // Clean session 
+        session()->flush();
     }
 
     /**
@@ -27,14 +32,13 @@ class UserEventListener
     public function subscribe($events)
     {   
         $events->listen(
-            'App\Events\UserLoggedIn',
+            'auth.login',
             'App\Listeners\UserEventListener@onUserLogin'
         );
 
         $events->listen(
-            'App\Events\UserLoggedOut',
+            'auth.logout',
             'App\Listeners\UserEventListener@onUserLogout'
         );
     }
-
 }

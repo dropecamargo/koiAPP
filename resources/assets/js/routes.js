@@ -3020,7 +3020,18 @@ app || (app = {});
             this.createTipoGastoView = new app.CreateTipoGastoView({ model: this.tipoGastoModel });
             this.createTipoGastoView.render();
         },
+      getTipoGastoEdit: function (tipogasto) {
+            this.tipoGastoModel = new app.TipoGastoModel();
+            this.tipoGastoModel.set({'id': tipogasto}, {'silent':true});
 
+            if ( this.createTipoGastoView instanceof Backbone.View ){
+                this.createTipoGastoView.stopListening();
+                this.createTipoGastoView.undelegateEvents();
+            }
+
+            this.createTipoGastoView = new app.CreateTipoGastoView({ model: this.tipoGastoModel });
+            this.tipoGastoModel.fetch();
+        },
         // Tipo pagos
         getTipoPagosMain: function () {
 

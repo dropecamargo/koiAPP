@@ -50,15 +50,23 @@ class TipoProveedorController extends Controller
             if ($tipoproveedor->isValid($data)) {
                 DB::beginTransaction();
                 try {
-                    // TipoProveedor
-                    $tipoproveedor->fill($data);
-                    $tipoproveedor->fillBoolean($data);
-                    
+                    // Recuperar cuenta
                     $plancuenta = PlanCuenta::where('plancuentas_cuenta',$request->tipoproveedor_plancuentas)->first();
                     if (!$plancuenta instanceof PlanCuenta) {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar plan de cuentas, por favor verifique información o consulte con el administrador']);
                     }
+
+                    // Valid correctly use the cuenta
+                    $result = $plancuenta->validarSubnivelesCuenta();
+                    if ($result != 'OK') {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $result ]);
+                    }
+
+                    // TipoProveedor
+                    $tipoproveedor->fill($data);
+                    $tipoproveedor->fillBoolean($data);
                     $tipoproveedor->tipoproveedor_plancuentas = $plancuenta->id;
                     $tipoproveedor->save();
 
@@ -121,15 +129,24 @@ class TipoProveedorController extends Controller
             if ($tipoproveedor->isValid($data)) {
                 DB::beginTransaction();
                 try {
-                    // TipoProveedor
-                    $tipoproveedor->fill($data);
-                    $tipoproveedor->fillBoolean($data);
                     
+                    // Recuperar cuenta
                     $plancuenta = PlanCuenta::where('plancuentas_cuenta',$request->tipoproveedor_plancuentas)->first();
                     if (!$plancuenta instanceof PlanCuenta) {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar plan de cuentas, por favor verifique información o consulte con el administrador']);
                     }
+    
+                    // Valid correctly use the cuenta
+                    $result = $plancuenta->validarSubnivelesCuenta();
+                    if ($result != 'OK') {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $result ]);
+                    }
+
+                    // TipoProveedor
+                    $tipoproveedor->fill($data);
+                    $tipoproveedor->fillBoolean($data);
                     $tipoproveedor->tipoproveedor_plancuentas = $plancuenta->id;
                     $tipoproveedor->save();
 

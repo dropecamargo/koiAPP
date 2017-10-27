@@ -51,10 +51,7 @@ class TipoPagoController extends Controller
             if ($tipopago->isValid($data)) {
                 DB::beginTransaction();
                 try {
-                    // TipoPago
-                    $tipopago->fill($data);
-                    $tipopago->fillBoolean($data);
-
+                    // Recuperar documentos
                     if ($request->has('tipopago_documentos')) {
                         $documentos = Documentos::find($request->tipopago_documentos);
                         if (!$documentos instanceof Documentos) {
@@ -64,12 +61,23 @@ class TipoPagoController extends Controller
                         $tipopago->tipopago_documentos = $documentos->id;
                     }
 
+                    // Recuperar cuenta
                     $plancuenta = PlanCuenta::where('plancuentas_cuenta',$request->tipopago_plancuentas)->first();
                     if (!$plancuenta instanceof PlanCuenta) {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar plan de cuentas, por favor verifique información o consulte con el administrador']);
                     }
 
+                    // Valid correctly use the cuenta
+                    $result = $plancuenta->validarSubnivelesCuenta();
+                    if ($result != 'OK') {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $result ]);
+                    }
+
+                    // TipoPago
+                    $tipopago->fill($data);
+                    $tipopago->fillBoolean($data);
                     $tipopago->tipopago_plancuentas = $plancuenta->id;
                     $tipopago->save();
 
@@ -132,9 +140,8 @@ class TipoPagoController extends Controller
             if ($tipopago->isValid($data)) {
                 DB::beginTransaction();
                 try {
-                    // TipoPago
-                    $tipopago->fill($data);
-                    $tipopago->fillBoolean($data);
+                    
+                    // Recuperar documentos
                     if ($request->has('tipopago_documentos')) {
                         $documentos = Documentos::find($request->tipopago_documentos);
                         if (!$documentos instanceof Documentos) {
@@ -143,11 +150,24 @@ class TipoPagoController extends Controller
                         }
                         $tipopago->tipopago_documentos = $documentos->id;
                     }
+
+                    // Recuperar cuenta
                     $plancuenta = PlanCuenta::where('plancuentas_cuenta',$request->tipopago_plancuentas)->first();
                     if (!$plancuenta instanceof PlanCuenta) {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar plan de cuentas, por favor verifique información o consulte con el administrador']);
                     }
+
+                    // Valid correctly use the cuenta
+                    $result = $plancuenta->validarSubnivelesCuenta();
+                    if ($result != 'OK') {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $result ]);
+                    }
+
+                    // TipoPago
+                    $tipopago->fill($data);
+                    $tipopago->fillBoolean($data);
                     $tipopago->tipopago_plancuentas = $plancuenta->id;
                     $tipopago->save();
 

@@ -60,6 +60,13 @@ class ConceptoAjustepController extends Controller
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar plan de cuenta, verifique información ó por favor consulte al administrador.']);
                     }
 
+                    // Valid correctly use the cuenta
+                    $result = $plancuentas->validarSubnivelesCuenta();
+                    if ($result != 'OK') {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $result ]);
+                    }
+
                     // ConceptoAjustep
                     $conceptoajustep->fill($data);
                     $conceptoajustep->fillBoolean($data);
@@ -130,6 +137,13 @@ class ConceptoAjustepController extends Controller
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar plan de cuenta, verifique información ó por favor consulte al administrador.']);
                     }
+                    
+                    // Valid correctly use the cuenta
+                    $result = $plancuentas->validarSubnivelesCuenta();
+                    if ($result != 'OK') {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $result ]);
+                    }
 
                     // ConceptoAjustep
                     $conceptoajustep->fill($data);
@@ -139,9 +153,11 @@ class ConceptoAjustepController extends Controller
 
                     //Forget cache
                     Cache::forget( ConceptoAjustep::$key_cache );
+
                     // Commit Transaction
                     DB::commit();
                     return response()->json(['success' => true, 'id' => $conceptoajustep->id]);
+                    
                 }catch(\Exception $e){
                     DB::rollback();
                     Log::error($e->getMessage());
