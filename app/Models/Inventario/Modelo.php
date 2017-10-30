@@ -45,7 +45,7 @@ class Modelo extends BaseModel
     public function isValid($data)
     {
         $rules = [
-            'modelo_nombre' => 'required|max:200',
+            'modelo_nombre' => 'required|max:200|unique:modelo',
         
         ];
 

@@ -36,7 +36,7 @@ class SubCategoria extends BaseModel
     public function isValid($data)
     {
         $rules = [
-            'subcategoria_nombre' => 'required|max:25',
+            'subcategoria_nombre' => 'required|max:25|unique:subcategoria',
             'subcategoria_margen_nivel1' => 'required|numeric',
             'subcategoria_margen_nivel2' => 'required|numeric',
             'subcategoria_margen_nivel3' => 'required|numeric'

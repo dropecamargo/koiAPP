@@ -40,7 +40,7 @@ class TipoAjuste extends BaseModel
 	public function isValid($data)
 	{
 		$rules = [
-			'tipoajuste_nombre' => 'required|max:25',
+			'tipoajuste_nombre' => 'required|max:25|unique:tipoajuste',
 			'tipoajuste_sigla' => 'required|max:3',
 			'tipoajuste_tipo' => 'required|max:1',
 

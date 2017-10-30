@@ -37,7 +37,7 @@ class Servicio extends BaseModel
     public function isValid($data)
     {
         $rules = [
-            'servicio_nombre' => 'required|max:25'
+            'servicio_nombre' => 'required|max:25|unique:servicio'
         ];
 
         $validator = Validator::make($data, $rules);

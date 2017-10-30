@@ -36,7 +36,7 @@ class TipoGasto extends BaseModel
     public function isValid($data)
     {
         $rules = [
-            'tipogasto_nombre' => 'required|max:25',
+            'tipogasto_nombre' => 'required|max:25|unique:tipogasto',
             'tipogasto_plancuentas' => 'required'
         ];
 

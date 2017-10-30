@@ -42,7 +42,7 @@ class Linea extends BaseModel
     public function isValid($data)
     {
         $rules = [
-            'linea_nombre' => 'required|max: 25',
+            'linea_nombre' => 'required|max: 25|unique:linea',
         ];
 
         $validator = Validator::make($data, $rules);

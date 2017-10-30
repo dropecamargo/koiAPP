@@ -36,7 +36,7 @@ class Marca extends BaseModel
     public function isValid($data)
     {
         $rules = [
-            'marca_nombre' => 'required|max:200'
+            'marca_nombre' => 'required|max:200|unique:marca'
         ];
 
         $validator = Validator::make($data, $rules);

@@ -37,7 +37,7 @@ class ConceptoAjustep extends BaseModel
 	public function isValid($data)
 	{
 		$rules = [
-			'conceptoajustep_nombre' => 'required|max:25',
+			'conceptoajustep_nombre' => 'required|max:25|unique:conceptoajustep',
 			'conceptoajustep_plancuentas' => 'required',
 		];
 

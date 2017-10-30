@@ -43,7 +43,14 @@ class Producto extends BaseModel
     public function isValid($data)
     {
         $rules = [
-            'producto_referencia' => 'required|max:20|unique:producto'
+            'producto_referencia' => 'required|max:20|unique:producto',
+            'producto_unidadnegocio' => 'required',
+            'producto_linea' => 'required',
+            'producto_categoria' => 'required',
+            'producto_subcategoria' => 'required',
+            'producto_marca' => 'required',
+            'producto_modelo' => 'required',
+            'producto_impuesto' => 'required'
         ];
 
         if ($this->exists){

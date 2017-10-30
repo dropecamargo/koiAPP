@@ -41,7 +41,7 @@ class UnidadNegocio extends BaseModel
     public function isValid($data)
     {
         $rules = [
-            'unidadnegocio_nombre' => 'required|max:25'
+            'unidadnegocio_nombre' => 'required|max:25|unique:unidadnegocio'
         ];
 
         $validator = Validator::make($data, $rules);

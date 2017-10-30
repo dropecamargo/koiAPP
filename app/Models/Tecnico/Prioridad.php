@@ -38,7 +38,7 @@ class Prioridad extends BaseModel
     public function isValid($data)
     {
         $rules = [
-            'prioridad_nombre' => 'required|max:200'
+            'prioridad_nombre' => 'required|max:200|unique:prioridad'
         ];
 
         $validator = Validator::make($data, $rules);

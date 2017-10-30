@@ -38,7 +38,7 @@ class Dano extends BaseModel
     public function isValid($data)
     {
         $rules = [
-            'dano_nombre' => 'required|max:200'
+            'dano_nombre' => 'required|max:200|unique:dano'
         ];
 
         $validator = Validator::make($data, $rules);

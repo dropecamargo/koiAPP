@@ -36,7 +36,7 @@ class TipoProveedor extends BaseModel
     public function isValid($data)
     {
         $rules = [
-            'tipoproveedor_nombre' => 'required|max:25',
+            'tipoproveedor_nombre' => 'required|max:25|unique:tipoproveedor',
             'tipoproveedor_plancuentas' => 'required'
         ];
 

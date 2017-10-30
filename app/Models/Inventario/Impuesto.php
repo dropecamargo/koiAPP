@@ -36,7 +36,7 @@ class Impuesto extends BaseModel
     public function isValid($data)
     {
         $rules = [
-            'impuesto_nombre' => 'required|max:100',
+            'impuesto_nombre' => 'required|max:100|unique:impuesto',
             'impuesto_porcentaje' => 'required|numeric'
         ];
 

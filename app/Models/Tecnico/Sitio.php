@@ -37,7 +37,7 @@ class Sitio extends BaseModel
     public function isValid($data)
     {
         $rules = [
-            'sitio_nombre' => 'required|max:25'
+            'sitio_nombre' => 'required|max:25|unique:sitio'
         ];
 
         $validator = Validator::make($data, $rules);

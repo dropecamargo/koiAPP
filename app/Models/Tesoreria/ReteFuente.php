@@ -36,7 +36,7 @@ class ReteFuente extends BaseModel
     public function isValid($data)
     {
         $rules = [
-            'retefuente_nombre' => 'required|max:100',
+            'retefuente_nombre' => 'required|max:100|unique:retefuente',
             'retefuente_tarifa_natural' => 'numeric',
             'retefuente_tarifa_juridico' => 'numeric',
             'retefuente_base' => 'required|numeric'

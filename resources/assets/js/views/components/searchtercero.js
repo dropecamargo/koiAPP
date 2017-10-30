@@ -43,6 +43,10 @@ app || (app = {});
 
             this.$tercerosSearchTable = this.$modalComponent.find('#koi-search-tercero-component-table');
             
+            /* Render in <a> dashboard */
+            this.$fieldRender = this.$($(e.currentTarget)).attr("data-render");
+            /* --- */
+
             this.$inputContent = this.$("#"+$(e.currentTarget).attr("data-field"));
             this.$wraperConten = this.$("#"+this.$inputContent.attr("data-wrapper"));
             this.$inputName = this.$("#"+this.$inputContent.attr("data-name"));
@@ -95,6 +99,11 @@ app || (app = {});
                         width: '15%',
                         searchable: false,
                         render: function ( data, type, full, row ) {
+
+                            // Render show tercero in dashboard
+                            if (_this.$fieldRender == "show") 
+                                return '<a href='+ window.Misc.urlFull( Route.route('terceros.show', { terceros: full.id}))+'>' + data + '</a>';
+                            
                         	return '<a href="#" class="a-koi-search-tercero-component-table">' + data + '</a>';
                         }
                     },

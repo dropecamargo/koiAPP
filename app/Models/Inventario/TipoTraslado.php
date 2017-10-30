@@ -41,7 +41,7 @@ class TipoTraslado extends BaseModel
 	public function isValid($data)
 	{
 		$rules = [
-			'tipotraslado_nombre' => 'required|max:25',
+			'tipotraslado_nombre' => 'required|max:25|unique:tipotraslado',
 			'tipotraslado_sigla' => 'required|max:3',
 		];
 

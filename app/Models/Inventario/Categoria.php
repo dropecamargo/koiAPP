@@ -36,7 +36,7 @@ class Categoria extends BaseModel
     public function isValid($data)
     {
         $rules = [
-            'categoria_nombre' => 'required|max:200'
+            'categoria_nombre' => 'required|max:200|unique:categoria'
         ];
 
         $validator = Validator::make($data, $rules);

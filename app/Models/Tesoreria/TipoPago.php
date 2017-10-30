@@ -37,7 +37,7 @@ class TipoPago extends BaseModel
     public function isValid($data)
     {
         $rules = [
-            'tipopago_nombre' => 'required|max:25',
+            'tipopago_nombre' => 'required|max:25|unique:tipopago',
             'tipopago_plancuentas' => 'required'
         ];
 

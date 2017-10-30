@@ -43,6 +43,11 @@ app || (app = {});
             this.$searchNombre = this.$('#koi_search_producto_nombre');
 
             this.$productosSearchTable = this.$modalComponent.find('#koi-search-producto-component-table');
+
+            /* Render in <a> dashboard */
+            this.$fieldRender = this.$($(e.currentTarget)).attr("data-render");
+            /* --- */
+            
 			this.$inputContent = this.$("#"+$(e.currentTarget).attr("data-field"));
 			this.$inputName = this.$("#"+this.$inputContent.attr("data-name"));
 			this.$inputCosto = this.$("#"+this.$inputContent.attr("data-costo"));
@@ -93,6 +98,10 @@ app || (app = {});
 						width: '10%',
 						searchable: false,
 						render: function ( data, type, full, row ) {
+                            // Render show tercero in dashboard
+                            if (_this.$fieldRender == "show") 
+                                return '<a href='+ window.Misc.urlFull( Route.route('productos.show', { productos: full.id}))+'>' + data + '</a>';
+
 							return '<a href="#" class="a-koi-search-producto-component-table">' + data + '</a>';
 						}
 					}
