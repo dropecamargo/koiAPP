@@ -492,7 +492,7 @@ class ProductoController extends Controller
         if ($request->has('producto_referencia')) {
              // Valid referencia 
             if (! Producto::isValidReferencia($request->all())) {
-                return response()->json(['success' => false, 'errors' => "El nit $request->producto_referencia ya se encuentra registrado"]);
+                return response()->json(['success' => false, 'errors' => "La referencia $request->producto_referencia ya se encuentra registrado"]);
             }
             return response()->json(['success' => true ]);
         }

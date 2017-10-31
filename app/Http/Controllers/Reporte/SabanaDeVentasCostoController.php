@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\Models\Cartera\Factura1;
+use App\Models\Cartera\Factura1, App\Models\Cartera\Devolucion1;
 use App\Models\Base\Regional;
 use App\Models\Report\AuxReport;
 use Excel, View, App, DB, Validator;
@@ -34,6 +34,11 @@ class SabanaDeVentasCostoController extends Controller
             //             ->withInput();
             // }
             /* End validation*/
+         
+            // Regionales
+            $regionales = Regional::query()->select('regional.id', 'regional_nombre');
+            $validation = $this->validFilters($request, $regionales); 
+            $regionales = $validation->query;
 
             // Factura
             $query = Factura1::query();
@@ -52,32 +57,26 @@ class SabanaDeVentasCostoController extends Controller
             $validation = $this->validFilters($request, $query); 
             $facturas = $validation->query;
 
-
-            // Devolucion
-            // $query = Devolucion1::query();
-            // $query->select('regional.id AS regional', 'regional_nombre', 'unidadnegocio.id AS unidadnegocio','unidadnegocio_nombre', 'linea.id AS linea','linea_nombre', 'categoria.id AS categoria','categoria_nombre','subcategoria.id AS subcategoria','subcategoria_nombre',
-            //     DB::raw('SUM(factura2_precio_venta * (factura2_cantidad - factura2_devueltas)) AS ventas'),
-            //     DB::raw('SUM(factura2_descuento_valor * (factura2_cantidad - factura2_devueltas)) AS descuentos'));
-            // $query->join('factura2', 'factura1.id', '=', 'factura2_factura1');
-            // $query->join('sucursal', 'factura1_sucursal', '=', 'sucursal.id');
-            // $query->join('regional', 'sucursal_regional', '=', 'regional.id');
-            // $query->join('producto', 'factura2_producto', '=', 'producto.id');
-            // $query->join('unidadnegocio','producto.producto_unidadnegocio', '=', 'unidadnegocio.id');
-            // $query->join('linea','producto.producto_linea', '=', 'linea.id');
-            // $query->join('categoria','producto.producto_categoria', '=', 'categoria.id');
-            // $query->join('subcategoria', 'producto.producto_subcategoria', '=', 'subcategoria.id');
-            // $query->groupBy('regional.id','producto_unidadnegocio', 'producto_linea', 'producto_categoria', 'producto_subcategoria');
-            // $validation = $this->validFilters($request, $query); 
-            // $facturas = $validation->query;
-
-
-            // Regionales
-            $regionales = Regional::query()->select('regional.id', 'regional_nombre');
-            $validation = $this->validFilters($request, $regionales); 
-            $regionales = $validation->query;
-
             //Insert 
             AuxReport::insertInTable($facturas, $regionales->pluck('id'), 'F', false);
+
+            // Devolucion
+            $query = Devolucion1::query();
+            $query->select('regional.id AS regional', 'regional_nombre', 'unidadnegocio.id AS unidadnegocio','unidadnegocio_nombre', 'linea.id AS linea','linea_nombre', 'categoria.id AS categoria','categoria_nombre','subcategoria.id AS subcategoria','subcategoria_nombre',
+                DB::raw('SUM(devolucion2_precio * devolucion2_cantidad) AS devoluciones'));
+            $query->join('devolucion2', 'devolucion1.id', '=', 'devolucion2_devolucion1');
+            $query->join('sucursal', 'devolucion1_sucursal', '=', 'sucursal.id');
+            $query->join('regional', 'sucursal_regional', '=', 'regional.id');
+            $query->join('producto', 'devolucion2_producto', '=', 'producto.id');
+            $query->join('unidadnegocio','producto.producto_unidadnegocio', '=', 'unidadnegocio.id');
+            $query->join('linea','producto.producto_linea', '=', 'linea.id');
+            $query->join('categoria','producto.producto_categoria', '=', 'categoria.id');
+            $query->join('subcategoria', 'producto.producto_subcategoria', '=', 'subcategoria.id');
+            $query->groupBy('regional.id','producto_unidadnegocio', 'producto_linea', 'producto_categoria', 'producto_subcategoria');
+            $validation = $this->validFilters($request, $query); 
+            $devoluciones = $validation->query;
+
+            dd("facturas",$facturas, "devoluciones",$devoluciones);
 
             // List report
             $query = AuxReport::query();
