@@ -66,7 +66,18 @@ class Producto extends BaseModel
         $this->errors = $validator->errors();
         return false;
     }
+    public static function isValidReferencia($referencia)
+    {
+        $rules = [
+            'producto_referencia' => 'required|max:15|min:1|unique:producto'
+        ];
 
+        $validator = Validator::make($referencia, $rules);
+        if ($validator->passes()) {
+            return true;
+        }
+        return false;
+    }
     public static function getProduct($id)
     {
         $query = Producto::query();

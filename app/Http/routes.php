@@ -179,6 +179,7 @@ Route::group(['middleware' => 'auth'], function(){
 		Route::put('machine',['as' =>'productos.machine','uses'=>'Inventario\ProductoController@machine'] );
 		Route::post('storeserie',['as' =>'productos.storeserie','uses'=>'Inventario\ProductoController@storeserie'] );
 		Route::resource('prodbode', 'Inventario\ProdbodeController', ['only' => ['index']]);
+		Route::get('referencia',['as' =>'productos.referencia','uses'=>'Inventario\ProductoController@referencia'] );
 	});
 
 	Route::group(['prefix' => 'pedidos'], function()

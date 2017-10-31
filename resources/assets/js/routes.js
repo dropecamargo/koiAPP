@@ -404,6 +404,7 @@ app || (app = {});
             this.componentSearchTerceroView = new app.ComponentSearchTerceroView();
             this.componentSearchProductoView = new app.ComponentSearchProductoView();
             this.componentTerceroView = new app.ComponentTerceroView();
+            this.componentProductView = new app.ComponentProductView();
             this.componentReporteView = new app.ComponentReporteView();
             this.componentCreateResourceView = new app.ComponentCreateResourceView();
             this.componentSearchCuentaView = new app.ComponentSearchCuentaView();

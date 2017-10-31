@@ -482,4 +482,19 @@ class ProductoController extends Controller
         }
         abort(404);
     }
+    /**
+     * Validate productos referencia.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function referencia(Request $request)
+    {
+        if ($request->has('producto_referencia')) {
+             // Valid referencia 
+            if (! Producto::isValidReferencia($request->all())) {
+                return response()->json(['success' => false, 'errors' => "El nit $request->producto_referencia ya se encuentra registrado"]);
+            }
+            return response()->json(['success' => true ]);
+        }
+    }
 }

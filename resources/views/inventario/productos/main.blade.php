@@ -21,7 +21,7 @@
         <div class="row">
                 <label for="producto_referencia" class="control-label col-md-1 col-sm-2">Referencia</label>
             <div class="form-group col-md-3 col-sm-10">
-                <input type="text" id="producto_referencia" name="producto_referencia" value="<%- producto_referencia %>" placeholder="Referencia producto" class="form-control input-sm input-toupper" maxlength="20" required>
+                <input type="text" id="producto_referencia" name="producto_referencia" value="<%- producto_referencia %>" placeholder="Referencia producto" class="form-control input-sm input-toupper change-referencia-koi-component" maxlength="20" required>
             </div>
                 <label for="producto_ref_proveedor" class="control-label col-md-1 col-sm-2">Proveedor</label>
             <div class="form-group col-md-3 col-sm-10">
