@@ -20,7 +20,7 @@
 			<tr><td colspan="{{ $regionales->count() + 2 }}"></td></tr>
 			{{--*/ $auxSubCategoria = 0; /*--}}	
 			@foreach($sabanaVentas as $item)
-				{{--*/ $totalLineV = $totalLineD  = 0; /*--}}	
+				{{--*/ $totalLineV = $totalLineD  = $totalLineDev = 0; /*--}}	
 				
 				<tr>
 					<td colspan="{{ $regionales->count() + 2 }}" class="bold">{{ $item->auxreporte_varchar1 }}</td>
@@ -53,6 +53,15 @@
 								<td>{{ number_format($item->$referenceDescuento,2,'.',',') }}</td>
 						@endforeach
 						<td>{{ number_format($totalLineD,2,'.',',') }}</td>
+					</tr>
+					<tr>
+						<td class="center">DEVOLUCIONES</td>
+						@foreach ($regionales as $key => $regional)
+							{{--*/$referenceDevolucion = $regional->id."d"; $totalLineDev += $item->$referenceDevolucion/*--}}
+								<td>{{ number_format($item->$referenceDevolucion,2,'.',',') }}</td>
+						@endforeach
+						<td>{{ number_format($totalLineDev,2,'.',',') }}</td>
+
 					</tr>
 				@endif
 				{{--*/ $auxSubCategoria = $item->auxreporte_integer4;  /*--}}	

@@ -59,7 +59,7 @@ class SabanaDeVentasCostoController extends Controller
 
             //Insert 
             AuxReport::insertInTable($facturas, $regionales->pluck('id'), 'F', false);
-
+        
             // Devolucion
             $query = Devolucion1::query();
             $query->select('regional.id AS regional', 'regional_nombre', 'unidadnegocio.id AS unidadnegocio','unidadnegocio_nombre', 'linea.id AS linea','linea_nombre', 'categoria.id AS categoria','categoria_nombre','subcategoria.id AS subcategoria','subcategoria_nombre',
@@ -76,16 +76,19 @@ class SabanaDeVentasCostoController extends Controller
             $validation = $this->validFilters($request, $query); 
             $devoluciones = $validation->query;
 
-            dd("facturas",$facturas, "devoluciones",$devoluciones);
+            //Insert 
+            AuxReport::insertInTable($devoluciones, $regionales->pluck('id'), 'DEV', false);
+
+            // dd("facturas",$facturas, "devoluciones",$devoluciones);
 
             // List report
             $query = AuxReport::query();
             $query->select('auxreporte_varchar1','auxreporte_varchar2','auxreporte_varchar3','auxreporte_varchar4','auxreporte_integer1','auxreporte_integer2','auxreporte_integer3','auxreporte_integer4', 
-                DB::raw("SUM(auxreporte_double0) AS 1V ,SUM(auxreporte_double1) AS 1D,
-                        SUM(auxreporte_double2) AS 2V, SUM(auxreporte_double3) AS 2D,
-                        SUM(auxreporte_double4) AS 3V, SUM(auxreporte_double5) AS 3D,
-                        SUM(auxreporte_double6) AS 4V, SUM(auxreporte_double7) AS 4D,
-                        SUM(auxreporte_double8) AS 5V, SUM(auxreporte_double9) AS 5D"));
+                DB::raw("SUM(auxreporte_double0) AS 1V ,SUM(auxreporte_double1) AS 1D,SUM(auxreporte_double2) AS 1d, 
+                        SUM(auxreporte_double3) AS 2V, SUM(auxreporte_double4) AS 2D, SUM(auxreporte_double5) AS 2d,
+                        SUM(auxreporte_double6) AS 3V, SUM(auxreporte_double7) AS 3D, SUM(auxreporte_double8) AS 3d,
+                        SUM(auxreporte_double9) AS 4V, SUM(auxreporte_double10) AS 4D,SUM(auxreporte_double11) AS 4d,
+                        SUM(auxreporte_double12) AS 5V, SUM(auxreporte_double13) AS 5D, SUM(auxreporte_double14) AS 5d"));
             $query->groupBy('auxreporte_varchar1', 'auxreporte_varchar2', 'auxreporte_varchar3', 'auxreporte_varchar4');
 
             // Prepare data

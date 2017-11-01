@@ -25,21 +25,21 @@ class AuxReport extends Model
     		'2V' => 'auxreporte_double3',
     		'2D' => 'auxreporte_double4',
     		'2d' => 'auxreporte_double5',
-    		'3V' => 'auxreporte_double5',
-    		'3D' => 'auxreporte_double6',
-    		'3d' => 'auxreporte_double7',
-    		'4V' => 'auxreporte_double8',
-    		'4D' => 'auxreporte_double9',
-    		'4d' => 'auxreporte_double10',
-    		'5V' => 'auxreporte_double11',
-    		'5D' => 'auxreporte_double12',
-    		'5d' => 'auxreporte_double13',
+    		'3V' => 'auxreporte_double6',
+    		'3D' => 'auxreporte_double7',
+    		'3d' => 'auxreporte_double8',
+    		'4V' => 'auxreporte_double9',
+    		'4D' => 'auxreporte_double10',
+    		'4d' => 'auxreporte_double11',
+    		'5V' => 'auxreporte_double12',
+    		'5D' => 'auxreporte_double13',
+    		'5d' => 'auxreporte_double14',
     	);
+        
     	DB::beginTransaction();
     	try {
     		if ($type == 'F') {
 
-    			$d = [];
 	    		foreach ($document as $key => $item) 
 	    		{
 	    			$referenciaVenta = $item->regional.'V';
@@ -59,7 +59,23 @@ class AuxReport extends Model
 			        $auxReport->save();
 	    		}
     		} elseif ($type == 'DEV') {
-    			
+
+                foreach ($document as $key => $item) 
+                {
+                    $referenciaDevolucion = $item->regional.'d';
+
+                    $auxReport = new AuxReport;
+                    $auxReport->auxreporte_varchar1 = $item->unidadnegocio_nombre; 
+                    $auxReport->auxreporte_varchar2 = $item->linea_nombre; 
+                    $auxReport->auxreporte_varchar3 = $item->categoria_nombre; 
+                    $auxReport->auxreporte_varchar4 = $item->subcategoria_nombre; 
+                    $auxReport->$valuesRegionales[$referenciaDevolucion] = $item->devoluciones;
+                    $auxReport->auxreporte_integer1 = $item->unidadnegocio; 
+                    $auxReport->auxreporte_integer2 = $item->linea; 
+                    $auxReport->auxreporte_integer3 = $item->categoria; 
+                    $auxReport->auxreporte_integer4 = $item->subcategoria; 
+                    $auxReport->save();
+                }
     		}
 
     		if ($rollback) 

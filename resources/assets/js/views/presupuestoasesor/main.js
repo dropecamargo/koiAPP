@@ -14,11 +14,10 @@ app || (app = {});
         el: '#presupuestoasesor-create',
         template: _.template( ($('#add-presupuesto-tpl').html() || '') ),
         events: {
-            'change .change-asesor': 'changeAsesor',
+            'click .click-btn-search': 'search',
             'submit #form-presupuestoasesor': 'onStore',
             'change .change-input-presupuesto': 'changePresupuesto'
         },
-
         /**
         * Constructor Method
         */
@@ -27,14 +26,16 @@ app || (app = {});
             if( opts !== undefined && _.isObject(opts.parameters) )
                 this.parameters = $.extend({}, this.parameters, opts.parameters);
 
+            this.$form = this.$('#form-presupuestoasesor');
             this.$wraperForm = this.$('#render-div-asesor');
 
             // Reference to fields
             this.$asesor = this.$('#presupuestoasesor_asesor');
+            this.$subcategoria = this.$('#presupuestoasesor_subcategoria');
             this.$ano = this.$('#presupuestoasesor_ano');
 
             this.meses = {};
-            this.subcategorias = {};
+            this.regionales = {};
         },
 
         /**
@@ -55,28 +56,29 @@ app || (app = {});
         changePresupuesto: function (e) {
 
             var mes = $(e.currentTarget).attr("data-mes"),
-                subcategoria = $(e.currentTarget).attr("data-subcategoria");
+                regional = $(e.currentTarget).attr("data-regional");
 
             // Total subcategoria
-            this.totalCategoria(subcategoria);
+            this.totalRegional(regional);
 
             // Total meses
             this.totalMes(mes);
+
         },
 
-        totalCategoria: function(subcategoria) {
+        totalRegional: function(regional) {
             var total = 0;
             _.each(this.meses, function(name, month) {
-                total += parseFloat( this.$('#presupuestoasesor_valor_' + subcategoria + '_' + month).inputmask('unmaskedvalue') );
+                    total += parseFloat( this.$('#presupuestoasesor_valor_' + month + '_' + regional).inputmask('unmaskedvalue') );
             });
 
-            this.$('#presupuestoasesor_total_subcategoria_' + subcategoria).html( window.Misc.currency(total) );
+            this.$('#presupuestoasesor_total_regional_' + regional).html( window.Misc.currency(total) );
         },
 
         totalMes: function(mes) {
             var total = 0;
-            _.each(this.subcategorias, function(subcategoria) {
-                total += parseFloat( this.$('#presupuestoasesor_valor_' + subcategoria.id + '_' + mes).inputmask('unmaskedvalue') );
+            _.each(this.regionales, function(regional) {
+                total += parseFloat( this.$('#presupuestoasesor_valor_' + mes + '_' + regional.id).inputmask('unmaskedvalue') );
             });
 
             this.$('#presupuestoasesor_total_mes_' + mes).html( window.Misc.currency(total) );
@@ -126,10 +128,13 @@ app || (app = {});
         },
 
         /**
-        * Event Change Asesor
+        * Event click search
         */
-        changeAsesor: function (e) {
+        search: function (e) {
         	var _this = this;
+            
+            if ( _this.$form.validator('validate').has('.has-error').length == 1)
+                return;
 
             $.ajax({
                 type: 'GET',
@@ -137,6 +142,7 @@ app || (app = {});
                 url: window.Misc.urlFull(Route.route('presupuestoasesor.index')),
                 data: { 
                     presupuestoasesor_asesor: _this.$asesor.val(),
+                    presupuestoasesor_subcategoria: _this.$subcategoria.val(),
                     presupuestoasesor_ano: _this.$ano.val()
                 },
                 beforeSend: function() {
@@ -147,7 +153,7 @@ app || (app = {});
                 window.Misc.removeSpinner( _this.el );
                 if(resp.success) {
                     _this.meses = resp.meses;
-                    _this.subcategorias = resp.subcategorias;
+                    _this.regionales = resp.regionales;
                     
                     // asesor
                     _this.$wraperForm.html( _this.template( resp ) );
