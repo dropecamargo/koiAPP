@@ -71,7 +71,7 @@ app || (app = {});
             _.each(this.meses, function(name, month) {
                     total += parseFloat( this.$('#presupuestoasesor_valor_' + month + '_' + regional).inputmask('unmaskedvalue') );
             });
-
+            console.log(total);
             this.$('#presupuestoasesor_total_regional_' + regional).html( window.Misc.currency(total) );
         },
 
@@ -80,6 +80,7 @@ app || (app = {});
             _.each(this.regionales, function(regional) {
                 total += parseFloat( this.$('#presupuestoasesor_valor_' + mes + '_' + regional.id).inputmask('unmaskedvalue') );
             });
+            console.log(total);
 
             this.$('#presupuestoasesor_total_mes_' + mes).html( window.Misc.currency(total) );
         },
@@ -108,7 +109,6 @@ app || (app = {});
                     if(resp.success) {
                         alertify.success(resp.message);
                         return;
-                        
                     }else{
                         if( !_.isObject( resp.errors ) ) {
                             alertify.error(JSON.stringify(resp.errors));

@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Models\Cartera\Factura1, App\Models\Cartera\Devolucion1;
+use App\Models\Comercial\PresupuestoAsesor;
 use App\Models\Base\Regional;
 use App\Models\Report\AuxReport;
 use Excel, View, App, DB, Validator;
@@ -39,6 +40,9 @@ class SabanaDeVentasCostoController extends Controller
             $regionales = Regional::query()->select('regional.id', 'regional_nombre');
             $validation = $this->validFilters($request, $regionales); 
             $regionales = $validation->query;
+
+            // Presupuesto 
+            $query = PresupuestoAsesor::query();
 
             // Factura
             $query = Factura1::query();
@@ -78,8 +82,6 @@ class SabanaDeVentasCostoController extends Controller
 
             //Insert 
             AuxReport::insertInTable($devoluciones, $regionales->pluck('id'), 'DEV', false);
-
-            // dd("facturas",$facturas, "devoluciones",$devoluciones);
 
             // List report
             $query = AuxReport::query();

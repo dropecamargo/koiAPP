@@ -81,52 +81,17 @@
                                 <input type="text" id="presupuestoasesor_valor_<%- month %>_<%- regional.id %>" name="presupuestoasesor_valor_<%- month %>_<%- regional.id %>" class="form-control input-sm change-input-presupuesto" data-mes="<%- month %>" value="<%- !_.isUndefined(regional.presupuesto[month]) ? regional.presupuesto[month] : 0 %>" data-mes="<%- month %>"  data-regional="<%- regional.id %>" data-currency-precise>
                             </td>
                         <% }); %>
-                            <th class="text-right" id="presupuestoasesor_total_mes_<%- month %>" >0</th>
+                            <th class="text-right" id="presupuestoasesor_total_mes_<%- month %>" ><%- !_.isUndefined(total_mes[month]) ?  window.Misc.currency(total_mes[month]) : window.Misc.currency(0) %></th>
                         </tr>
                     <% }); %>
                    <tr>
                         <th>Total</th>
                         <% _.each(regionales, function(regional) { %>
-                            <th id="presupuestoasesor_total_regional_<%- regional.id %>" class="text-right">0</th>
+                            <th id="presupuestoasesor_total_regional_<%- regional.id %>" class="text-right"><%- !_.isUndefined(total_regionales[regional.id]) ?  window.Misc.currency(total_regionales[regional.id]) : window.Misc.currency(0) %></th>
                         <% }); %>
                     </tr>
                 </tbody>
             </table>
         </div>
     </script>
-    <!--     <div class="table-responsive">
-            <table id="presupuesto-table" class="table table-bordered table-striped" cellspacing="0" width="100%">
-                <thead>
-                    <tr>
-                       <th width="10%">Sub Categoria</th>
-                        <% _.each(meses, function(name, month) { %>
-                            <th width="7%"><%- name %></th>
-                        <% }); %>
-                        <th width="6">Total</th>
-                    </tr>
-                </thead>                
-
-                <tbody>
-                    <% _.each(subcategorias, function(subcategoria) { %>
-                        <tr>
-                            <th>
-                                <%- subcategoria.subcategoria_nombre %>
-                            </th>
-                            <% _.each(meses, function(name, month) { %>
-                                <td class="padding-custom-grid">
-                                    <input type="text" id="presupuestoasesor_valor_<%- subcategoria.id %>_<%- month %>" name="presupuestoasesor_valor_<%- subcategoria.id %>_<%- month %>" class="form-control input-sm change-input-presupuesto" value="<%- !_.isUndefined(subcategoria.presupuesto[month]) ? subcategoria.presupuesto[month] : 0 %>" data-mes="<%- month %>" data-subcategoria="<%- subcategoria.id %>" data-currency-precise>
-                                </td>
-                            <% }); %>
-                            <th class="text-right" id="presupuestoasesor_total_subcategoria_<%- subcategoria.id %>" ><%- !_.isUndefined(total_subcategorias[subcategoria.id]) ?  window.Misc.currency(total_subcategorias[subcategoria.id]) : window.Misc.currency(0) %></th>
-                        </tr>
-                    <% }); %>
-                    <tr>
-                        <th>Total</th>
-                        <% _.each(meses, function(name, month) { %>
-                            <th id="presupuestoasesor_total_mes_<%- month %>" class="text-right"><%- !_.isUndefined(total_mes[month]) ?  window.Misc.currency(total_mes[month]) : window.Misc.currency(0) %></th>
-                        <% }); %>
-                    </tr>
-                </tbody>
-            </table>
-        </div> -->
 @stop
