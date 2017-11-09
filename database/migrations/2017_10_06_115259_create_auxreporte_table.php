@@ -18,6 +18,7 @@ class CreateAuxreporteTable extends Migration
             $table->string('auxreporte_varchar1', 100);
             $table->string('auxreporte_varchar2', 100);
             $table->string('auxreporte_varchar3', 100);
+            $table->string('auxreporte_varchar4', 100);
             $table->double('auxreporte_double0')->default(0);
             $table->double('auxreporte_double1')->default(0);
             $table->double('auxreporte_double2')->default(0);

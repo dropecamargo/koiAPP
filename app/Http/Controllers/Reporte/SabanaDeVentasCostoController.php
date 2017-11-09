@@ -36,6 +36,15 @@ class SabanaDeVentasCostoController extends Controller
             // }
             /* End validation*/
          
+            // $validation = array_where($request->filter_regional, function ($key, $value) {
+            //     if ($value != "0") {
+            //         return true;
+            //     }
+            // });
+
+            // Array costos
+            $arrayCostos = [];
+
             // Regionales
             $regionales = Regional::query()->select('regional.id', 'regional_nombre');
             $validation = $this->validFilters($request, $regionales); 
@@ -43,6 +52,16 @@ class SabanaDeVentasCostoController extends Controller
 
             // Presupuesto 
             $query = PresupuestoAsesor::query();
+            $query->select(DB::raw('SUM(presupuestoasesor_valor) AS valor'), 'presupuestoasesor_regional AS regional', 'presupuestoasesor_subcategoria AS subcategoria');
+            // $query->whereIn('presupuestoasesor_regional', $request->filter_regional);
+            $query->groupBy('presupuestoasesor_regional');
+            $presupuestoAux = $query->get();
+            $presupuesto = [];
+
+            // Prepare array
+            foreach ($presupuestoAux as $item) {
+                $presupuesto = array_merge(array("$item->regional-$item->subcategoria" => $item->valor), $presupuesto);
+            }
 
             // Factura
             $query = Factura1::query();
@@ -62,7 +81,7 @@ class SabanaDeVentasCostoController extends Controller
             $facturas = $validation->query;
 
             //Insert 
-            AuxReport::insertInTable($facturas, $regionales->pluck('id'), 'F', false);
+            AuxReport::insertInTable($facturas, $arrayCostos, 'F', false);
         
             // Devolucion
             $query = Devolucion1::query();
@@ -81,7 +100,7 @@ class SabanaDeVentasCostoController extends Controller
             $devoluciones = $validation->query;
 
             //Insert 
-            AuxReport::insertInTable($devoluciones, $regionales->pluck('id'), 'DEV', false);
+            AuxReport::insertInTable($devoluciones, $arrayCostos, 'DEV', false);
 
             // List report
             $query = AuxReport::query();
@@ -109,7 +128,7 @@ class SabanaDeVentasCostoController extends Controller
 
                 case 'pdf':
                     $pdf = App::make('dompdf.wrapper');
-                    $pdf->loadHTML(View::make('reportes.comercial.sabanaventascostos.reporte',  compact('sabanaVentas', 'regionales' ,'title', 'type'))->render());
+                    $pdf->loadHTML(View::make('reportes.comercial.sabanaventascostos.reporte',  compact('sabanaVentas', 'presupuesto', 'regionales' ,'title', 'type'))->render());
                     $pdf->setPaper('letter', 'landscape')->setWarnings(false);
                     return $pdf->stream(sprintf('%s_%s_%s.pdf', 'sabanaVentas', date('Y_m_d'), date('H_m_s')));
                 break;

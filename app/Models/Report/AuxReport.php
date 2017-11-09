@@ -16,7 +16,7 @@ class AuxReport extends Model
 
     public $timestamps = false;
 
-    public static function insertInTable($document, $regionales, $type, $rollback) 
+    public static function insertInTable($document, Array $arrayCostos, $type, $rollback) 
     {
     	$valuesRegionales = array(
     		'1V' => 'auxreporte_double0',
@@ -57,6 +57,12 @@ class AuxReport extends Model
 			        $auxReport->auxreporte_integer3 = $item->categoria; 
 			        $auxReport->auxreporte_integer4 = $item->subcategoria; 
 			        $auxReport->save();
+
+                    if (!isset($arrayCostos["$item->regional_$item->unidadnegocio_$item->linea_$item->categoria_$item->subcategoria"])) {
+                        dd('hoal');
+                    }else{
+
+                    }
 	    		}
     		} elseif ($type == 'DEV') {
 
@@ -75,6 +81,12 @@ class AuxReport extends Model
                     $auxReport->auxreporte_integer3 = $item->categoria; 
                     $auxReport->auxreporte_integer4 = $item->subcategoria; 
                     $auxReport->save();
+
+                    if (!isset($arrayCostos["$item->regional_$item->unidadnegocio_$item->linea_$item->categoria_$item->subcategoria"])) {
+                        dd('hoal');
+                    }else{
+                        
+                    }
                 }
     		}
 
