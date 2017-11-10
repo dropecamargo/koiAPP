@@ -17,7 +17,8 @@ app || (app = {});
         idAttribute: 'id',
         defaults: {
             'categoria_nombre': '',
-            'categoria_activo': 1
+            'categoria_activo': 1,
+            'categoria_linea': ''
         }
     });
 

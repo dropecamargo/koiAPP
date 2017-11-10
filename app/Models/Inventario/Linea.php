@@ -45,6 +45,12 @@ class Linea extends BaseModel
             'linea_nombre' => 'required|max: 25|unique:linea',
         ];
 
+        if ($this->exists){
+            $rules['linea_nombre'] .= ',linea_nombre,' . $this->id;
+        }else{
+            $rules['linea_nombre'] .= '|required';
+        }
+
         $validator = Validator::make($data, $rules);
         if ($validator->passes())
         {
@@ -52,6 +58,15 @@ class Linea extends BaseModel
         }
         $this->errors = $validator->errors();
         return false;
+    }
+    
+    public static function getLine ($id)
+    {
+        $query = Linea::query();
+        $query->select('linea.*', 'unidadnegocio_nombre');
+        $query->leftJoin('unidadnegocio', 'linea_unidadnegocio', '=', 'unidadnegocio.id');
+        $line = $query->where('linea.id', $id)->first();
+        return $line;
     }
 
     public static function getlineas()

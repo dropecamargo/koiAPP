@@ -17,7 +17,8 @@ app || (app = {});
         idAttribute: 'id',
         defaults: {
         	'linea_nombre' : '',
-        	'linea_activo' : 1,
+            'linea_activo' : 1,
+        	'linea_unidadnegocio' : '',
         }
     });
 

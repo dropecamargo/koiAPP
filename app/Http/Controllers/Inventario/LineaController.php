@@ -8,7 +8,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use DB, Log, Datatables, Cache;
-use App\Models\Inventario\Linea;
+use App\Models\Inventario\Linea, App\Models\Inventario\UnidadNegocio;
 
 class LineaController extends Controller
 {
@@ -21,7 +21,7 @@ class LineaController extends Controller
     {
         if ($request->ajax()) {
             $query = Linea::query();
-            $query->select('linea.id' , 'linea.linea_nombre' , 'linea.linea_activo');
+            $query->select('linea.id' , 'linea_nombre' , 'linea_activo');
             return Datatables::of($query)->make(true);
         }
         return view('inventario.lineas.index');
@@ -45,15 +45,24 @@ class LineaController extends Controller
      */
     public function store(Request $request)
     {
-         if ($request->ajax()) {
+        if ($request->ajax()) {
             $data = $request->all();
             $linea = new Linea;
             if ($linea->isValid($data)) {
                 DB::beginTransaction();
                 try {
-                    // linea
+                    
+                    // Recuperar unidad de negocio
+                    $unidadNegocio = UnidadNegocio::find($request->linea_unidadnegocio);
+                    if (! $unidadNegocio instanceof UnidadNegocio) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar UNIDAD DE NEGOCIO por favor verifique información o consulte con el administrador']);
+                    }
+
+                    // Linea
                     $linea->fill($data);
                     $linea->fillBoolean($data);
+                    $linea->linea_unidadnegocio = $unidadNegocio->id;
                     $linea->save();
 
                     //Forget cache
@@ -81,7 +90,7 @@ class LineaController extends Controller
      */
     public function show(Request $request, $id)
     {
-        $linea = Linea::findOrFail($id);
+        $linea = Linea::getLine($id);
         if ($request->ajax()) {
             return response()->json($linea);
         }
@@ -115,9 +124,18 @@ class LineaController extends Controller
             if ($linea->isValid($data)) {
                 DB::beginTransaction();
                 try {
-                    // linea
+
+                    // Recuperar unidad de negocio
+                    $unidadNegocio = UnidadNegocio::find($request->linea_unidadnegocio);
+                    if (! $unidadNegocio instanceof UnidadNegocio) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar UNIDAD DE NEGOCIO por favor verifique información o consulte con el administrador']);
+                    }
+
+                    // Linea
                     $linea->fill($data);
                     $linea->fillBoolean($data);
+                    $linea->linea_unidadnegocio = $unidadNegocio->id;
                     $linea->save();
 
                     //Forget cache

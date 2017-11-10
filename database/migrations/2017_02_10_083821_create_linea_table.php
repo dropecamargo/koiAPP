@@ -18,6 +18,9 @@ class CreateLineaTable extends Migration
             $table->increments('id');
             $table->string('linea_nombre', 25);
             $table->boolean('linea_activo')->default(false);
+            $table->integer('linea_unidadnegocio')->unsigned();
+
+            $table->foreign('linea_unidadnegocio')->references('id')->on('unidadnegocio')->onDelete('restrict');
         });
     }
 

@@ -1017,7 +1017,17 @@
 			<label for="categoria_nombre" class="control-label">Nombre</label>
 			<input type="text" id="categoria_nombre" name="categoria_nombre" value="<%- categoria_nombre %>" placeholder="Categoria" class="form-control input-sm input-toupper" maxlength="25" required>
 		</div>
-
+	</div>
+	<div class="row">
+		<div class="form-group col-md-6">
+			<label for="categoria_linea" class="control-label">Linea</label>
+			<select name="categoria_linea" id="categoria_linea" class="form-control select2-default" required>
+				<option value="" selected>Seleccione</option>
+				@foreach( App\Models\Inventario\Linea::getLineas() as $key => $value)
+					<option value="{{ $key }}" <%- categoria_linea == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
+				@endforeach
+			</select>
+		</div>	
 		<div class="form-group col-md-2 col-xs-8 col-sm-3">
 			<br><label class="checkbox-inline" for="categoria_activo">
 				<input type="checkbox" id="categoria_activo" name="categoria_activo" value="categoria_activo" <%- parseInt(categoria_activo) ? 'checked': ''%>> Activo
@@ -1105,8 +1115,20 @@
 			<label for="linea_nombre" class="control-label">Nombre</label>
 			<input type="text" id="linea_nombre" name="linea_nombre" value="<%- linea_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="50" required>
 		</div>
+	</div>
+	<div class="row">
+		<div class="form-group col-md-6">
+			<label for="linea_unidadnegocio" class="control-label">Unidad de negocio</label>
+			<select name="linea_unidadnegocio" id="linea_unidadnegocio" class="form-control select2-default" required>
+				<option value="" selected>Seleccione</option>
+				@foreach( App\Models\Inventario\UnidadNegocio::getUnidadesNegocio() as $key => $value)
+					<option value="{{ $key }}" <%- linea_unidadnegocio == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
+				@endforeach
+			</select>
+		</div>	
 		<div class="form-group col-md-2 col-xs-8 col-sm-2">
-			<br><label class="checkbox-inline" for="linea_activo">
+			<br>
+			<label class="checkbox-inline" for="linea_activo">
 				<input type="checkbox" id="linea_activo" name="linea_activo" value="linea_activo" <%- parseInt(linea_activo) ? 'checked': ''%>> Activo
 			</label>
 		</div>

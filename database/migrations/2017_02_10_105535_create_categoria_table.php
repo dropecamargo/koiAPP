@@ -18,6 +18,9 @@ class CreateCategoriaTable extends Migration
             $table->increments('id');
             $table->string('categoria_nombre', 25);
             $table->boolean('categoria_activo')->default(false);
+            $table->integer('categoria_linea')->unsigned();
+
+            $table->foreign('categoria_linea')->references('id')->on('linea')->onDelete('restrict');
         });
     }
 

@@ -21,6 +21,9 @@ class CreateSubcategoriaTable extends Migration
             $table->double('subcategoria_margen_nivel2');
             $table->double('subcategoria_margen_nivel3');
             $table->boolean('subcategoria_activo')->default(false);
+            $table->integer('subcategoria_categoria')->unsigned();
+
+            $table->foreign('subcategoria_categoria')->references('id')->on('categoria')->onDelete('restrict');
         });
     }
 
