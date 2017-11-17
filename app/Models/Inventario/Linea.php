@@ -43,6 +43,7 @@ class Linea extends BaseModel
     {
         $rules = [
             'linea_nombre' => 'required|max: 25|unique:linea',
+            'linea_unidadnegocio' => 'required'
         ];
 
         if ($this->exists){

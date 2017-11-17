@@ -59,7 +59,7 @@ class AuxReport extends Model
 			        $auxReport->save();
 
                     if (!isset($arrayCostos["$item->regional_$item->unidadnegocio_$item->linea_$item->categoria_$item->subcategoria"])) {
-                        dd('hoal');
+                        // dd('hoal');
                     }else{
 
                     }
@@ -83,7 +83,7 @@ class AuxReport extends Model
                     $auxReport->save();
 
                     if (!isset($arrayCostos["$item->regional_$item->unidadnegocio_$item->linea_$item->categoria_$item->subcategoria"])) {
-                        dd('hoal');
+                        // dd('hoal');
                     }else{
                         
                     }

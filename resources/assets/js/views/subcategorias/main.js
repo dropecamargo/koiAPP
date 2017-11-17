@@ -27,7 +27,12 @@ app || (app = {});
                 processing: true,
                 serverSide: true,
                 language: window.Misc.dataTableES(),
-                ajax: window.Misc.urlFull( Route.route('subcategorias.index') ),
+                ajax: {
+                    url: window.Misc.urlFull( Route.route('subcategorias.index') ),
+                    data: function(data){
+                        data.datatables = true;
+                    }
+                },
                 columns: [
                     { data: 'id', name: 'id' },
                     { data: 'subcategoria_nombre', name: 'subcategoria_nombre' },

@@ -260,6 +260,29 @@
 	</div>
 </div>
 
+<!-- Modal Authorizations -->
+<div class="modal fade" id="modal-authorizations-component" data-backdrop="static" data-keyboard="false" aria-hidden="true">
+	<div class="modal-dialog modal-md" role="document">
+		<div class="modal-content">
+			<div class="modal-header small-box {{ config('koi.template.bg') }}">
+				<button type="button" class="close icon-close-koi" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="inner-title-modal modal-title"></h4>
+			</div>
+			<form id="form-authorizations-component" method="POST" data-toggle='validator'>
+				<div class="modal-body">
+					<div class="content-modal"></div>
+				</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancelar</button>
+				<button type="submit" class="btn btn-primary btn-sm abc">Autorizar</button>
+			</div>
+			</form>
+		</div>
+	</div>
+</div>
+
 <script type="text/template" id="koi-search-tercero-component-tpl">
 	<div class="modal-header small-box {{ config('koi.template.bg') }}">
 		<button type="button" class="close icon-close-koi" data-dismiss="modal" aria-label="Close">
@@ -948,4 +971,26 @@
 			</div>
 		</div>
 	</div>
+</script>
+
+<script type="text/template" id="add-autorizaco-tpl">
+	<form id="form-autorizaco" accept-charset="UTF-8" data-toggle="validator">
+		<div class="row">
+	        <div class="form-group col-md-6">
+	       		<label for="autorizaco_vencimiento" class="control-label">Fecha vencimiento</label>
+	            <div class="input-group">
+	                <div class="input-group-addon">
+	                    <i class="fa fa-calendar"></i>
+	                </div>
+	                <input type="text" id="autorizaco_vencimiento" name="autorizaco_vencimiento" class="form-control input-sm datepicker" value="<%- moment().format('YYYY-MM-DD') %>" required>
+	            </div>
+	        </div>
+		</div>
+		<div class="row">
+	        <div class="form-group col-md-12">
+				<label for="autorizaco_observaciones" class="control-label">Observaciones</label>
+	            <textarea id="autorizaco_observaciones" name="autorizaco_observaciones" class="form-control" rows="2" placeholder="Observaciones"></textarea>
+	        </div>
+		</div>
+	</form>
 </script>

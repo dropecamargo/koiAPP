@@ -41,8 +41,8 @@
                             </div>
                         </div>
                     @else
-                        <label class=" label label-default col-md-1  col-md-offset-2">ESTADO: ANULADA</label>
-                        <div class="form-group col-md-1">
+                        <label class=" label label-default col-md-offset-1">ESTADO: ANULADA</label>
+                        <div class="form-group col-md-1 pull-right">
                             <button type="button" class="btn btn-block btn-danger btn-sm export-factura">
                                 <i class="fa fa-file-pdf-o"></i>
                             </button>

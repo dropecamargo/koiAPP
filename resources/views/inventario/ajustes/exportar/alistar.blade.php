@@ -1,4 +1,4 @@
-@extends('inventario.ajustes.exportar.layout', ['type' => 'pdf', 'title' => $title])
+@extends('reportes.layout', ['type' => 'pdf', 'title' => $title])
 
 @section('content')
     <table class="htable" border="0" cellspacing="0" cellpadding="0">

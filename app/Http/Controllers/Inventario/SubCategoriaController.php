@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\Inventario\SubCategoria;
+use App\Models\Inventario\SubCategoria, App\Models\Inventario\Categoria;
 use DB, Log, Datatables, Cache;
 
 class SubCategoriaController extends Controller
@@ -20,7 +20,20 @@ class SubCategoriaController extends Controller
     {
         if ($request->ajax()) {
             $query = SubCategoria::query();
-            return Datatables::of($query)->make(true);
+        
+            // Return Datatable
+            if ($request->has('datatables')) {
+                return Datatables::of($query)->make(true);
+            }
+
+            // Return Json in select2 product
+            if ($request->has('product')) {
+                $subcategories = [];
+                $query->select('subcategoria.id' , 'subcategoria_nombre AS name');
+                $query->where('subcategoria_categoria', $request->id);
+                $subcategories = $query->get();
+                return response()->json($subcategories);
+            }
         }
         return view('inventario.subcategoria.index');
     }
@@ -49,9 +62,18 @@ class SubCategoriaController extends Controller
             if ($subcategoria->isValid($data)) {
                 DB::beginTransaction();
                 try {
+                    
+                    // Recuperar categoria
+                    $categoria = Categoria::find($request->subcategoria_categoria);
+                    if (! $categoria instanceof Categoria) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar LINEA por favor verifique información o consulte con el administrador']);
+                    }
+
                     //SubCategoria
                     $subcategoria->fill($data);
                     $subcategoria->fillBoolean($data);
+                    $subcategoria->subcategoria_categoria = $categoria->id;
                     $subcategoria->save();
 
                     //Forget cache
@@ -79,7 +101,7 @@ class SubCategoriaController extends Controller
      */
     public function show(Request $request, $id)
     {
-        $subcategoria = SubCategoria::findOrFail($id);
+        $subcategoria = SubCategoria::getSubCategoria($id);
         if ($request->ajax()) {
             return response()->json($subcategoria);
         }
@@ -113,9 +135,18 @@ class SubCategoriaController extends Controller
             if ($subcategoria->isValid($data)) {
                 DB::beginTransaction();
                 try {
-                    // SubCategoria
+
+                    // Recuperar categoria
+                    $categoria = Categoria::find($request->subcategoria_categoria);
+                    if (! $categoria instanceof Categoria) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar LINEA por favor verifique información o consulte con el administrador']);
+                    }
+                    
+                    //SubCategoria
                     $subcategoria->fill($data);
                     $subcategoria->fillBoolean($data);
+                    $subcategoria->subcategoria_categoria = $categoria->id;
                     $subcategoria->save();
 
                     //Forget cache

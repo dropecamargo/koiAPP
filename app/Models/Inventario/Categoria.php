@@ -36,8 +36,15 @@ class Categoria extends BaseModel
     public function isValid($data)
     {
         $rules = [
-            'categoria_nombre' => 'required|max:200|unique:categoria'
+            'categoria_nombre' => 'required|max:200|unique:categoria',
+            'categoria_linea' => 'required'
         ];
+
+        if ($this->exists){
+            $rules['categoria_nombre'] .= ',categoria_nombre,' . $this->id;
+        }else{
+            $rules['categoria_nombre'] .= '|required';
+        }
 
         $validator = Validator::make($data, $rules);
         if ($validator->passes()) {
@@ -46,7 +53,15 @@ class Categoria extends BaseModel
         $this->errors = $validator->errors();
         return false;
     }
-
+    public static function getCategoria($id)
+    {
+        $query = Categoria::query();
+        $query->select('categoria.*', 'linea_nombre');
+        $query->leftJoin('linea', 'categoria_linea', '=', 'linea.id');
+        $categoria = $query->where('categoria.id', $id)->first();
+        return $categoria;
+    }
+    
     public static function getCategorias()
     {
         if ( Cache::has(self::$key_cache)) {

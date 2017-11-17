@@ -17,7 +17,8 @@ app || (app = {});
             'ifChecked #producto_maneja_serie': 'serieChange',
             'ifChecked #producto_metrado': 'metradoChange',
             'ifChecked #producto_vence': 'venceChange',
-            'submit #form-productos': 'onStore'
+            'submit #form-productos': 'onStore',
+            'change .change-complete-options': 'completeOptions',
         },
         parameters: {
         },
@@ -119,9 +120,63 @@ app || (app = {});
 
             if( typeof window.initComponent.initInputMask == 'function' )
                 window.initComponent.initInputMask();  
-           
         },
 
+        /**
+        * complete options in selects
+        */
+        completeOptions: function (e)
+        {
+            // Prepare data
+            var _this = this;
+                id = $(e.target).val();
+                field = $(e.target).attr('data-field');
+                complete = $(e.target).attr('data-complete')
+                route = '';
+
+            switch (complete)
+            {
+                case 'line': 
+                    route = 'lineas.index';
+                break;
+                case 'category':
+                    route = 'categorias.index';
+                break;
+                case 'subcategory':
+                    route = 'subcategorias.index';
+                break;
+            }
+
+            // Prepare field to complete
+            _this.$field = _this.$('#' + field);    
+
+            // Begin request
+            if( typeof(complete) !== 'undefined' && !_.isUndefined(complete) && !_.isNull(complete) && complete != '' ){
+                $.ajax({
+                    url: window.Misc.urlFull( Route.route(route) ),
+                    data: {
+                        id: id,
+                        product: true
+                    },
+                    type: 'GET',
+                    beforeSend: function() {
+                        window.Misc.setSpinner( _this.el );
+                    }
+                })
+                .done(function(resp) {
+                    window.Misc.removeSpinner( _this.el );
+                    _this.$field.empty().val(0).removeAttr('disabled');
+                    _this.$field.append("<option value=></option>");
+                    _.each(resp, function(item){
+                        _this.$field.append("<option value="+item.id+">"+item.name+"</option>");
+                    });
+                })
+                .fail(function(jqXHR, ajaxOptions, thrownError) {
+                    window.Misc.removeSpinner( _this.el );
+                    alertify.error(thrownError);
+                });
+            }
+        },
         /**
         * Load spinner on the request
         */

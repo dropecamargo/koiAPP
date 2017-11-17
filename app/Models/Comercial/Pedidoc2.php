@@ -47,9 +47,12 @@ class Pedidoc2 extends Model
 	public static function getPedidoc2($id)
 	{
 		$query = Pedidoc2::query();
-		$query->select('pedidoc2.*','producto_serie','producto_nombre','producto_maneja_serie')->where('pedidoc2_pedidoc1',$id);
+		$query->select('pedidoc2.*','producto_serie','producto_nombre','producto_maneja_serie', DB::raw("((((pedidoc2_precio_venta - pedidoc2_descuento_valor) * pedidoc2_cantidad) * 100) / (pedidoc2_costo * pedidoc2_cantidad)) AS pedidoc2_margen_porcentaje "));
+
         $query->join('producto', 'pedidoc2_producto', '=' ,'producto.id');
         $query->orderBy('pedidoc2.id', 'asc');
-		return  $query->get();
+		$query->where('pedidoc2_pedidoc1',$id);
+		$pedido = $query->get();
+		return  $pedido;
 	}
 }

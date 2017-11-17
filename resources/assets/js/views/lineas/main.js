@@ -27,7 +27,12 @@ app || (app = {});
 				processing: true,
                 serverSide: true,
             	language: window.Misc.dataTableES(),
-                ajax: window.Misc.urlFull( Route.route('lineas.index') ),
+                ajax: {
+                    url: window.Misc.urlFull( Route.route('lineas.index') ),
+                    data: function(data){
+                        data.datatables = true;
+                    }
+                },
                 columns: [
                     { data: 'id', name: 'id' },
                     { data: 'linea_nombre', name: 'linea_nombre' },

@@ -44,6 +44,7 @@ app || (app = {});
             // Change modal title
             this.$el.find('.inner-title-modal').html( this.parameters['titleConfirm'] );
 			this.$el.modal('show');
+            this.ready();
 
             // delegate events
 	        $(this.el).off('click', '.confirm-action');
@@ -57,15 +58,27 @@ app || (app = {});
         * Confirm
         */
         onConfirm: function (e) {
-
             e.preventDefault();
             var _this = this;
-
-			this.$el.modal('hide');
+            var data = [];
 
             if( typeof this.parameters.onConfirm == 'function' ) {
                 this.parameters.onConfirm.call(null, this.parameters.dataFilter );
             }
+
+			this.$el.modal('hide');
+        },
+
+        /**
+        * fires libraries js
+        */
+        ready: function () {
+            
+            // to fire plugins    
+            if( typeof window.initComponent.initValidator == 'function' )
+                window.initComponent.initValidator();
+            if( typeof window.initComponent.initDatePicker == 'function' )
+                window.initComponent.initDatePicker();
         }
    });
 

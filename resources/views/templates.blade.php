@@ -1021,7 +1021,7 @@
 	<div class="row">
 		<div class="form-group col-md-6">
 			<label for="categoria_linea" class="control-label">Linea</label>
-			<select name="categoria_linea" id="categoria_linea" class="form-control select2-default" required>
+			<select name="categoria_linea" id="categoria_linea" class="form-control select2-default-clear">
 				<option value="" selected>Seleccione</option>
 				@foreach( App\Models\Inventario\Linea::getLineas() as $key => $value)
 					<option value="{{ $key }}" <%- categoria_linea == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
@@ -1037,9 +1037,20 @@
 </script>
 <script type="text/template" id="add-subcategoria-tpl">
 	<div class="row">
-		<div class="form-group col-md-8">
+		<div class="form-group col-md-6">
 			<label for="subcategoria_nombre" class="control-label">Nombre</label>
-			<input type="text" id="subcategoria_nombre" name="subcategoria_nombre" value="<%- subcategoria_nombre %>" placeholder="SubCategoria" class="form-control input-sm input-toupper" maxlength="25" required>
+			<input type="text" id="subcategoria_nombre" name="subcategoria_nombre" value="<%- subcategoria_nombre %>" placeholder="Sub categoría" class="form-control input-sm input-toupper" maxlength="25" required>
+		</div>
+    </div>
+    <div class="row">
+		<div class="form-group col-md-6">
+			<label for="subcategoria_categoria" class="control-label">Categoría</label>
+			<select name="subcategoria_categoria" id="subcategoria_categoria" class="form-control select2-default-clear">
+				<option value="" selected>Seleccione</option>
+				@foreach( App\Models\Inventario\Categoria::getCategorias() as $key => $value)
+					<option value="{{ $key }}" <%- subcategoria_categoria == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
+				@endforeach
+			</select>
 		</div>
     </div>
     <div class="row">
@@ -1119,7 +1130,7 @@
 	<div class="row">
 		<div class="form-group col-md-6">
 			<label for="linea_unidadnegocio" class="control-label">Unidad de negocio</label>
-			<select name="linea_unidadnegocio" id="linea_unidadnegocio" class="form-control select2-default" required>
+			<select name="linea_unidadnegocio" id="linea_unidadnegocio" class="form-control select2-default-clear">
 				<option value="" selected>Seleccione</option>
 				@foreach( App\Models\Inventario\UnidadNegocio::getUnidadesNegocio() as $key => $value)
 					<option value="{{ $key }}" <%- linea_unidadnegocio == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>

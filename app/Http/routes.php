@@ -90,8 +90,10 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::group(['prefix' => 'pedidosc'], function()
 	{
 		Route::resource('detalle', 'Comercial\DetallePedidoController');
+		Route::get('anular/{pedidosc}', ['as' => 'pedidosc.anular', 'uses' => 'Comercial\PedidoController@anular']);
 		Route::get('exportar/{pedidosc}', ['as' => 'pedidosc.exportar', 'uses' => 'Comercial\PedidoController@exportar']);
 	});
+	Route::resource('autorizacionesco', 'Comercial\AutorizaComercialController', ['only' => ['index', 'store']]);
 	Route::resource('presupuestoasesor', 'Comercial\PresupuestoAsesorController', ['only' => ['index', 'store']]);
 	Route::resource('pedidosc', 'Comercial\PedidoController',['except' => ['destroy']]);
 	Route::resource('conceptoscomercial', 'Comercial\ConceptoComercialController',['except' => ['destroy']]);

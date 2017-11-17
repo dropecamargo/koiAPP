@@ -20,9 +20,22 @@ class LineaController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
+
             $query = Linea::query();
-            $query->select('linea.id' , 'linea_nombre' , 'linea_activo');
-            return Datatables::of($query)->make(true);
+
+            // Return a Datatable
+            if ($request->has('datatables')) {
+                return Datatables::of($query)->make(true);
+            }
+
+            // Return Json in select2 product
+            if ($request->has('product')) {
+                $lines = [];
+                $query->select('linea.id' , 'linea_nombre AS name');
+                $query->where('linea_unidadnegocio', $request->id);
+                $lines = $query->get();
+                return response()->json($lines);
+            }
         }
         return view('inventario.lineas.index');
     }

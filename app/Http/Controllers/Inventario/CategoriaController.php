@@ -6,9 +6,9 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use DB, Log, Datatables, Cache;
 
-use App\Models\Inventario\Categoria;
+use App\Models\Inventario\Categoria, App\Models\Inventario\Linea;
+use DB, Log, Datatables, Cache;
 
 class CategoriaController extends Controller
 {
@@ -21,7 +21,20 @@ class CategoriaController extends Controller
     {
         if ($request->ajax()) {
             $query = Categoria::query();
-            return Datatables::of($query)->make(true);
+            
+            // Return Datatable
+            if ($request->has('datatables')) {
+                return Datatables::of($query)->make(true);
+            }
+
+            // Return Json in select2 product
+            if ($request->has('product')) {
+                $categories = [];
+                $query->select('categoria.id' , 'categoria_nombre AS name');
+                $query->where('categoria_linea', $request->id);
+                $categories = $query->get();
+                return response()->json($categories);
+            }
         }
         return view('inventario.categoria.index');
     }
@@ -46,14 +59,22 @@ class CategoriaController extends Controller
     {
         if ($request->ajax()) {
             $data = $request->all();
-
             $categoria = new Categoria;
             if ($categoria->isValid($data)) {
                 DB::beginTransaction();
                 try {
+
+                    // Recuperar linea
+                    $linea = Linea::find($request->categoria_linea);
+                    if (! $linea instanceof Linea) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar LINEA por favor verifique información o consulte con el administrador']);
+                    }
+
                     //Categoria
                     $categoria->fill($data);
                     $categoria->fillBoolean($data);
+                    $categoria->categoria_linea =  $linea->id;
                     $categoria->save();
 
                     //Forget cache
@@ -81,7 +102,7 @@ class CategoriaController extends Controller
      */
     public function show(Request $request, $id)
     {
-        $categoria = Categoria::findOrFail($id);
+        $categoria = Categoria::getCategoria($id);
         if ($request->ajax()) {
             return response()->json($categoria);
         }
@@ -115,9 +136,18 @@ class CategoriaController extends Controller
             if ($categoria->isValid($data)) {
                 DB::beginTransaction();
                 try {
-                    // categoria
+
+                    // Recuperar linea
+                    $linea = Linea::find($request->categoria_linea);
+                    if (! $linea instanceof Linea) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar LINEA por favor verifique información o consulte con el administrador']);
+                    }
+
+                    // Categoria
                     $categoria->fill($data);
                     $categoria->fillBoolean($data);
+                    $categoria->categoria_linea =  $linea->id;
                     $categoria->save();
 
                     //Forget cache

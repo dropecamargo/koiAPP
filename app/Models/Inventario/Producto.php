@@ -43,7 +43,8 @@ class Producto extends BaseModel
     public function isValid($data)
     {
         $rules = [
-            'producto_referencia' => 'required|max:20|unique:producto',
+            'producto_referencia' => 'required|max:20',
+            'producto_serie' => 'unique:producto',
             'producto_unidadnegocio' => 'required',
             'producto_linea' => 'required',
             'producto_categoria' => 'required',
@@ -54,9 +55,7 @@ class Producto extends BaseModel
         ];
 
         if ($this->exists){
-            $rules['producto_referencia'] .= ',producto_referencia,' . $this->id;
-        }else{
-            $rules['producto_referencia'] .= '|required';
+            $rules['producto_serie'] .= ",producto_serie,$this->id";
         }
 
         $validator = Validator::make($data, $rules);

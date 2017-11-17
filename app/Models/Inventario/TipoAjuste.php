@@ -46,6 +46,12 @@ class TipoAjuste extends BaseModel
 
 		];
 
+        if ($this->exists){
+            $rules['tipoajuste_nombre'] .= ',tipoajuste_nombre,' . $this->id;
+        }else{
+            $rules['tipoajuste_nombre'] .= '|required';
+        }
+
 		$validator = Validator::make($data, $rules);
 		if ($validator->passes()) {
 			return true;

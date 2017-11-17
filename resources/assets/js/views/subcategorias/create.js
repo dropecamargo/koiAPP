@@ -56,7 +56,6 @@ app || (app = {});
 
             var attributes = this.model.toJSON();
             this.$wraperForm.html( this.template(attributes) );
-
             this.ready();
         },
 
@@ -73,6 +72,9 @@ app || (app = {});
 
             if( typeof window.initComponent.initSpinner == 'function' )
                 window.initComponent.initSpinner();
+
+            if( typeof window.initComponent.initSelect2 == 'function' )
+                window.initComponent.initSelect2();
         },
 
         /**

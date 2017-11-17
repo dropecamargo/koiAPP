@@ -22,7 +22,7 @@
             <form method="POST" accept-charset="UTF-8" id="form-pedidoc1" data-toggle="validator">
                 <div class="row">
                     <label for="pedidoc1_sucursal" class="col-md-1 col-md-1 control-label">Sucursal</label>
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-md-4">
                         <select name="pedidoc1_sucursal" id="pedidoc1_sucursal" class="form-control select2-default change-sucursal-consecutive-koi-component" data-field="pedidoc1_numero" data-document ="pedidoc" data-wrapper="pedidoc1-create">
                             @foreach( App\Models\Base\Sucursal::getSucursales() as $key => $value)
                             <option  value="{{ $key }}" <%- pedidoc1_sucursal == '{{ $key }}' ? 'selected': ''%>>{{ $value }}</option>
@@ -250,7 +250,7 @@
             </td>
         <% } %>
 
-        <td><%- producto_serie %></td>
+        <td title="Margen: <%- pedidoc2_margen_porcentaje %>"><%- producto_serie %></td>
         <td><%- producto_nombre %></td>
         <td><%- pedidoc2_cantidad %></td>
         <td><%- window.Misc.currency(pedidoc2_costo) %></td>
@@ -258,4 +258,5 @@
         <td><%- pedidoc2_iva_porcentaje %></td>
         <td><%- window.Misc.currency(pedidoc2_subtotal) %></td>
     </script>
+
 @stop

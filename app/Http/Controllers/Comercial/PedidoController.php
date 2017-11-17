@@ -40,6 +40,8 @@ class PedidoController extends Controller
             $query->join('tercero as v', 'pedidoc1.pedidoc1_vendedor', '=', 'v.id');
             $query->join('sucursal', 'pedidoc1.pedidoc1_sucursal', '=', 'sucursal.id');
             $query->join('tcontacto', 'pedidoc1.pedidoc1_contacto', '=', 'tcontacto.id');
+            $query->orderBy('pedidoc1.id', 'desc');
+
             return Datatables::of($query)
                 ->filter(function($query) use($request) {
                     // Tercero
@@ -150,6 +152,7 @@ class PedidoController extends Controller
                         }
                         $pedidoComercial2 = new Pedidoc2;
                         $pedidoComercial2->fill($item);
+                        $pedidoComercial2->pedidoc2_precio_venta = $request->pedidoc2_precio_venta > 0 ? $request->pedidoc2_precio_venta: $request->pedidoc2_costo;
                         $pedidoComercial2->pedidoc2_pedidoc1 = $pedidoComercial->id;
                         $pedidoComercial2->pedidoc2_producto = $producto->id;
                         $pedidoComercial2->pedidoc2_subcategoria = $subcategoria->id;
@@ -224,6 +227,36 @@ class PedidoController extends Controller
     public function destroy($id)
     {
         //
+    }
+    /**
+     * Anular the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function anular(Request $request, $id)
+    {
+        if ($request->ajax()) {
+            $pedidoc1 = Pedidoc1::findOrFail($id);
+            DB::beginTransaction();
+            try {
+
+                // Pedidoc1
+                $pedidoc1->pedidoc1_anular = true;
+                $pedidoc1->pedidoc1_usuario_anulo = Auth::user()->id;
+                $pedidoc1->pedidoc1_fh_anulo = date('Y-m-d H:m:s');
+                $pedidoc1->save();
+
+                // Commit Transaction
+                DB::commit();
+                return response()->json(['success' => true, 'msg' => 'Pedido comercial anulado con exito.']);
+            }catch(\Exception $e){
+                DB::rollback();
+                Log::error($e->getMessage());
+                return response()->json(['success' => false, 'errors' => trans('app.exception')]);
+            }
+        }
+        abort(403);
     }
 
     /**

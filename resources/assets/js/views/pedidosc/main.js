@@ -50,13 +50,19 @@ app || (app = {});
                 columnDefs: [
                     {
                         targets: 0,
-                        width: '25%',
+                        width: '15%',
                         render: function ( data, type, full, row ) {
                            return '<a href="'+ window.Misc.urlFull( Route.route('pedidosc.show', {pedidosc: full.id }) )  +'">' + data + '</a>';
                         },
-                       
                     }, 
-                ]
+                ],
+                fnRowCallback: function( row, data ) {
+                    if ( data.pedidoc1_anular == 1 ) {
+                        $(row).css( {"color":"red"} );
+                    }else{
+                        $(row).css( {"color":"green"} );
+                    }
+                }
             });
         }
     });

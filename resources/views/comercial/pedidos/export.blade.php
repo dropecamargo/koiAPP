@@ -3,15 +3,12 @@
 @section('content')
 	<table class="htable" border="0" cellspacing="0" cellpadding="0">
 		<thead>
-			<tr>
-				<th>&nbsp;</th>
-				<th>&nbsp;</th>
-				<th>&nbsp;</th>
-				<th>&nbsp;</th>
-				<th>&nbsp;</th>
-				<th>&nbsp;</th>
-				<th>&nbsp;</th>
-				<th>&nbsp;</th>
+			<tr class="titleespecial">
+				@if($pedidoc->pedidoc1_anular)
+					<th colspan="8" class="center">PEDIDO ANULADO</th>
+				@else
+					<th colspan="8" class="center">PEDIDO ACTIVO</th>
+				@endif
 			</tr>
 		</thead>
 		<tbody>

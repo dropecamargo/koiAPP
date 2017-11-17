@@ -24,7 +24,7 @@ app || (app = {});
 	        // Extends parameters
             if( opts !== undefined && _.isObject(opts.parameters) )
                 this.parameters = $.extend({},this.parameters, opts.parameters);
-
+            
             // Events Listener
             this.listenTo( this.model, 'change', this.render );
         },
@@ -35,6 +35,9 @@ app || (app = {});
         render: function(){
             var attributes = this.model.toJSON();
             attributes.edit = this.parameters.edit;
+            if ( attributes.pedidoc2_margen_porcentaje < 100 && !attributes.edit) 
+                this.$el.addClass('bg-menor360');
+            
             this.$el.html( this.template(attributes) );
             return this;
         }

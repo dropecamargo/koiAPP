@@ -13,6 +13,12 @@
                     <label class="control-label">Nombre</label>
                     <div>{{ $categoria->categoria_nombre }}</div>
                 </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-4">
+                    <label class="control-label">Linea</label>
+                    <div>{{ $categoria->linea_nombre }}</div>
+                </div>
                 <div class="form-group col-md-2 col-xs-8 col-sm-3"><br>
                     <label class="checkbox-inline" for="categoria_activo">
                         <input type="checkbox" id="categoria_activo" name="categoria_activo" value="categoria_activo" disabled {{ $categoria->categoria_activo ? 'checked': '' }}> Activo

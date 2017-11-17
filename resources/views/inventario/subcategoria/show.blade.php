@@ -9,12 +9,17 @@
     <div class="box box-success">
         <div class="box-body">
             <div class="row">
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-12">
                     <label class="control-label">Nombre</label>
                     <div>{{ $subcategoria->subcategoria_nombre }}</div>
                 </div>
             </div>
-
+            <div class="row">
+                <div class="form-group col-md-12">
+                    <label class="control-label">Categoría</label>
+                    <div>{{ $subcategoria->categoria_nombre }}</div>
+                </div>
+            </div>
             <div class="row">
                 <div class="form-group col-md-3">
                     <label class="control-label">Nivel 1</label>
