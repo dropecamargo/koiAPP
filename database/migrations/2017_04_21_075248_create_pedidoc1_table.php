@@ -33,8 +33,8 @@ class CreatePedidoc1Table extends Migration
             $table->double('pedidoc1_retencion');
             $table->double('pedidoc1_total');
             $table->text('pedidoc1_observaciones');
-            $table->integer('pedidoc1_autorizacion_ca')->unsigned();
-            $table->integer('pedidoc1_autorizacion_co')->unsigned();
+            $table->string('pedidoc1_autorizacion_ca', 40)->nullable();
+            $table->string('pedidoc1_autorizacion_co', 40)->nullable();
             $table->boolean('pedidoc1_anular')->default(0);
             $table->integer('pedidoc1_usuario_elaboro')->unsigned();
             $table->datetime('pedidoc1_fh_elaboro');

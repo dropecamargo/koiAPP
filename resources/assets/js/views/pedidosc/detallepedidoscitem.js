@@ -35,7 +35,7 @@ app || (app = {});
         render: function(){
             var attributes = this.model.toJSON();
             attributes.edit = this.parameters.edit;
-            if ( attributes.pedidoc2_margen_porcentaje < 100 && !attributes.edit) 
+            if ( attributes.pedidoc2_margen_porcentaje < 100 && !attributes.edit && attributes.pedidoc1_autorizacion_co == null) 
                 this.$el.addClass('bg-menor360');
             
             this.$el.html( this.template(attributes) );

@@ -33,9 +33,11 @@
                                         <a role="menuitem" tabindex="-1" href="#" class="anular-pedidoc">
                                             <i class="fa fa-ban"></i>Anular pedido
                                         </a>
-                                        <a role="menuitem" tabindex="-1" href="#" class="authco-pedidoc">
-                                            <i class="fa fa-gavel"></i>Autorizar comercial
-                                        </a>
+                                        @if($pedidoComercial->pedidoc1_autorizacion_co == null)
+                                            <a role="menuitem" tabindex="-1" href="#" class="authco-pedidoc">
+                                                <i class="fa fa-gavel"></i>Autorizar comercial
+                                            </a>
+                                        @endif
                                         <a role="menuitem" tabindex="-1" href="#" class="export-pedidoc">
                                             <i class="fa fa-file-pdf-o"></i>Exportar
                                         </a>

@@ -16,6 +16,7 @@ class CreateAutorizacoTable extends Migration
             $table->engine = 'InnoDB';
 
             $table->increments('id');
+            $table->string('autorizaco_numero',40)->unique();
             $table->integer('autorizaco_pedidoc2')->unsigned();
             $table->date('autorizaco_vencimiento');
             $table->integer('autorizaco_producto')->unsigned();
