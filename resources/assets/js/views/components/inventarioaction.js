@@ -19,7 +19,7 @@ app || (app = {});
         templateAddItemsProductVence: _.template( ($('#product-vence-tpl').html() || '') ),
         templateChooseItemsProductVence: _.template( ($('#product-choose-vence-tpl').html() || '') ),
 
-    	events:{ 
+    	events:{
             'submit #form-create-inventario-entrada-component-source': 'onStoreItemInventario',
             'change .cantidad-salidau-koi-inventario': 'changedCantidadUnidadesSalida',
             'change .unidades-vence-koi-inventario': 'changeUnidadeVeceEntrada',
@@ -68,7 +68,7 @@ app || (app = {});
                 _this = this,
                 stuffToDo = {
                     'modalSerie': function() {
-                        if (resp.tipo == 'E') {
+                        if (resp.tipo == 'E' || resp.data.ajuste2_cantidad_entrada) {
                             _this.$modalIn.find('.content-modal').empty().html(_this.templateAddSeries( ));
                             _this.$modalIn.find('.modal-title').text('Inventario, Entradas De Productos ');
                         }
@@ -76,9 +76,9 @@ app || (app = {});
                         _this.referenceSerie(resp);
                     },
                     'ProductoMetrado': function(){
-                        if (resp.tipo  == 'E') {
+                        if (resp.tipo  == 'E' || resp.data.ajuste2_cantidad_entrada) {
                             _this.$modalIn.find('.content-modal').empty().html(_this.templateAddItemRollo(resp) );
-                            _this.$modalIn.find('.modal-title').text('Inventario - Entradas de productos metrados'); 
+                            _this.$modalIn.find('.modal-title').text('Inventario - Entradas de productos metrados');
                             _this.referenceMetrado(resp);
                         }else{
                             _this.$modalIn.find('.content-modal').empty().html(_this.templateChooseItemsRollo(resp) );
@@ -87,9 +87,9 @@ app || (app = {});
                         }
                     },
                     'ProductoVence': function(){
-                        if (resp.tipo  == 'E') {
+                        if (resp.tipo  == 'E' || resp.data.ajuste2_cantidad_entrada) {
                             _this.$modalIn.find('.content-modal').empty().html(_this.templateAddItemsProductVence(resp) );
-                            _this.$modalIn.find('.modal-title').text('Inventario - Entradas de productos con fecha de vencimiento '); 
+                            _this.$modalIn.find('.modal-title').text('Inventario - Entradas de productos con fecha de vencimiento ');
                             _this.referenceVencimiento(resp);
                         }
                         else{
@@ -99,7 +99,7 @@ app || (app = {});
                         }
                     },
                     'NoSerieNoMetros': function(){
-                        if (resp.tipo == 'E') {
+                        if (resp.tipo == 'E' || resp.data.ajuste2_cantidad_entrada > 0) {
                             _this.collection.trigger('store',resp.data);
                         }else{
                             _this.$modalIn.find('.modal-dialog').addClass('modal-xlg');
@@ -166,7 +166,7 @@ app || (app = {});
             this.$wraper = this.$('#modal-wrapper-inventario');
             this.$wraperFormIn = this.$modalIn.find('.content-modal');
             this.$wraperErrorIn = this.$('#error-inventario');
-            
+
             this.$wraperSeries = this.$('#browse-series-lotes-list');
             if (atributes.data.ubicacion) {
                 // Use in traslados de ubicación
@@ -180,7 +180,7 @@ app || (app = {});
 
             // Open modal
             this.$modalIn.modal('show');
-  
+
         },
 
       	/**
@@ -243,14 +243,14 @@ app || (app = {});
             });
             this.$wraperSeries.append( view.render().el );
             this.ready();
-            
+
         },
 
         /**
         * Render all view tast of the collection
         */
         addAllProductoLote: function () {
-            var _this = this; 
+            var _this = this;
             this.LotesProducto.forEach(function(model, index) {
                 _this.addOneProductoLote(model)
             });
@@ -281,7 +281,7 @@ app || (app = {});
                     type: this.parameters.tipo
                 }
             });
-            
+
             productoModel.view = view;
             this.$wraperVence.append( view.render().el );
             this.ready();
@@ -303,7 +303,7 @@ app || (app = {});
         */
         addOneItemRolloInventario: function (itemRolloModel) {
             // Prepare lote encabezado
-            if (this.parameters.tipo == 'E') 
+            if (this.parameters.tipo == 'E')
                 itemRolloModel.set({rollo_lote: this.parameters.data.lote });
 
             var view = new app.ItemRolloINListView({
@@ -321,7 +321,7 @@ app || (app = {});
         */
         onStoreItemInventario: function (e){
             if (!e.isDefaultPrevented()) {
-                e.preventDefault(); 
+                e.preventDefault();
                 if (this.parameters.action == 'modalSerie') {
                     this.parameters.data = $.extend({}, this.parameters.data, window.Misc.formToJson(e.target));
                     this.collection.trigger('store', this.parameters.data);
@@ -370,28 +370,28 @@ app || (app = {});
         changedCantidadUnidadesSalida: function(e){
             if (!e.isDefaultPrevented()) {
                 e.preventDefault();
-                
+
                 if (this.parameters.action == 'ProductoMetrado' ) {
                      // Valid total
                     var ingresadas = 0;
-                    var result =_.every(this.itemRolloINList.models, function(itemRolloModel) { 
+                    var result =_.every(this.itemRolloINList.models, function(itemRolloModel) {
                         if( itemRolloModel.get('rollo_saldo') < parseFloat( this.$('#item_'+itemRolloModel.get('id')).val() ) ) {
                             alertify.error("Cantidad insuficiente para este item, (" + itemRolloModel.get('rollo_saldo') + ") SALDO, (" + this.$('#item_'+itemRolloModel.get('id')).val() + ") INGRESADAS, por favor verifique información.");
                             return false;
                         }
-                        return  true; 
+                        return  true;
                     });
                 }else{
                      // Valid total
                     var ingresadas = 0;
-                    var result =_.every(this.LotesProducto.models, function(lote) { 
+                    var result =_.every(this.LotesProducto.models, function(lote) {
                         if( lote.get('lote_saldo') < parseFloat( this.$('#item_'+lote.get('id')).val() ) ) {
                             alertify.error("Cantidad insuficiente para este item, (" + lote.get('lote_saldo') + ") SALDO, (" + this.$('#item_'+lote.get('id')).val() + ") INGRESADAS, por favor verifique información.");
                             return false;
                         }
-                        return  true; 
+                        return  true;
                     });
-                }   
+                }
             }
         },
 
@@ -403,15 +403,15 @@ app || (app = {});
 
             // Valid total
             var ingresadas = 0;
-            _.each(this.itemRolloINList.models, function(itemRolloModel){ 
+            _.each(this.itemRolloINList.models, function(itemRolloModel){
                 ingresadas+= parseFloat( this.$('#itemrollo_metros_'+itemRolloModel.get('id')).val() * this.$('#rollos_'+itemRolloModel.get('id')).val() );
             });
-            
+
             if(ingresadas >= this.parameters.data.ajuste2_cantidad_entrada) {
                 alertify.error("No puede superar la cantidad de metros(" + this.parameters.data.ajuste2_cantidad_entrada +") a ingresar, por favor verifique información.");
                 return;
             }
-         
+
             this.itemRolloINList.add( new app.ItemRolloModel({ id: shortid.uuid() }) );
         },
         /*
@@ -436,7 +436,7 @@ app || (app = {});
                 model = this.LotesProducto.get(resource);
 
             if ( model instanceof Backbone.Model ) {
-                this.LotesProducto.remove(model);                
+                this.LotesProducto.remove(model);
                 model.view.remove();
             }
         },
@@ -450,7 +450,7 @@ app || (app = {});
                 model = this.itemRolloINList.get(resource);
 
             if ( model instanceof Backbone.Model ) {
-                this.itemRolloINList.remove(model);                
+                this.itemRolloINList.remove(model);
                 model.view.remove();
             }
         },
@@ -475,7 +475,7 @@ app || (app = {});
                     this.$modalIn.modal('hide');
 
                     // Clear Form of car temp
-                    if (!_.isUndefined(this.parameters.form)) 
+                    if (!_.isUndefined(this.parameters.form))
                         window.Misc.clearForm(this.parameters.form);
                 }
             }

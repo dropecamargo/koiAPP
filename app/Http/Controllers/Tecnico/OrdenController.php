@@ -25,7 +25,7 @@ class OrdenController extends Controller
     {
         if($request->ajax()){
             $query = Orden::query();
-            $query->select('orden.*', 'sucursal_nombre', DB::raw("SUBSTRING_INDEX(orden_fh_servicio, ' ', 1) as orden_fecha_servicio"), DB::raw("SUBSTRING_INDEX(orden_fh_servicio, ' ', -1) as orden_hora_servicio"), 
+            $query->select('orden.*', 'sucursal_nombre', DB::raw("SUBSTRING_INDEX(orden_fh_servicio, ' ', 1) as orden_fecha_servicio"), DB::raw("SUBSTRING_INDEX(orden_fh_servicio, ' ', -1) as orden_hora_servicio"),
                 DB::raw("
                     CONCAT(
                         (CASE WHEN tercero_persona = 'N'
@@ -39,7 +39,8 @@ class OrdenController extends Controller
             );
             $query->join('tercero', 'orden_tercero', '=', 'tercero.id');
             $query->join('sucursal', 'orden_sucursal', '=', 'sucursal.id');
-
+            $query->orderBy('orden.id', 'desc');
+            
            // Persistent data filter
             if($request->has('persistent') && $request->persistent) {
                 session(['searchorden_orden_id' => $request->has('id') ? $request->id : '']);
@@ -103,7 +104,7 @@ class OrdenController extends Controller
                 try {
                     $producto = null;
 
-                    // Recupero instancia de Documento  
+                    // Recupero instancia de Documento
                     $documento = Documentos::where('documentos_codigo' , Orden::$default_document)->first();
                     if (!$documento instanceof Documentos) {
                         DB::rollback();
@@ -115,7 +116,7 @@ class OrdenController extends Controller
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar sucursal,por favor verifique la información ó por favor consulte al administrador.']);
                     }
-                    //  Recupero instancia de regional 
+                    //  Recupero instancia de regional
                     $regional = Regional::find($sucursal->sucursal_regional);
                     if (!$regional instanceof Regional) {
                         DB::rollback();
@@ -162,7 +163,7 @@ class OrdenController extends Controller
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'El contacto no corresponde al cliente. por favor verifique la información o consulte al administrador.']);
                     }
-                    
+
                     // Consecutive regional_ord
                     $consecutive = $regional->regional_ord + 1;
 
@@ -235,7 +236,7 @@ class OrdenController extends Controller
             return redirect()->route('ordenes.show', ['orden' => $orden]);
         }
 
-        return view('tecnico.orden.create', ['orden' => $orden]);  
+        return view('tecnico.orden.create', ['orden' => $orden]);
     }
 
     /**
@@ -261,7 +262,7 @@ class OrdenController extends Controller
                     if(!$producto instanceof Producto ) {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar producto, por favor verifique la información o consulte al administrador.']);
-                    } 
+                    }
 
                     // ordenes
                     $orden->orden_serie = $producto->id;
@@ -269,7 +270,7 @@ class OrdenController extends Controller
                     $orden->save();
 
                     // Commit Transaction
-                    DB::commit();           
+                    DB::commit();
                     return response()->json(['success' => true, 'id' => $orden->id]);
                 }catch(\Exception $e){
                     DB::rollback();
@@ -333,7 +334,7 @@ class OrdenController extends Controller
                 abort(404);
             }
 
-            // Valid 
+            // Valid
             $valid = Orden::closeValid($orden->id);
             if ( !$valid->success ) {
                 return response()->json(['success' => false, 'errors' => $valid->errors ]);
@@ -349,7 +350,7 @@ class OrdenController extends Controller
                     $orden->orden_usuario_cerro = Auth::user()->id;
                     $orden->orden_fh_cerro = date('Y-m-d H:m:s');
                     $orden->save();
-                    
+
                     // Commit Transaction
                     DB::commit();
                     return response()->json(['success' => true, 'msg' => 'Orden cerrada con exito.' , 'action' => 'redirect']);
@@ -369,7 +370,7 @@ class OrdenController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function cerrar(Request $request)
-    {   
+    {
         if ($request->ajax()) {
             $orden = Orden::findOrFail($request->id_orden);
             if(!$orden instanceof Orden){
@@ -404,7 +405,7 @@ class OrdenController extends Controller
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar punto venta,por favor verifique la información ó por favor consulte al administrador.']);
                     }
-                    // Consecutive punto venta 
+                    // Consecutive punto venta
                     $consecutive = $puntoventa->puntoventa_numero + 1;
 
                     // Factura1
@@ -462,11 +463,11 @@ class OrdenController extends Controller
                         DB::rollback();
                         return response()->json(['success'=> false, 'errors'=>'No es posible realizar factura3,por favor verifique la información ó por favor consulte al administrador']);
                     }
-                    
+
                     // Update consecutive puntoventa_numero in PuntoVenta
                     $puntoventa->puntoventa_numero = $consecutive;
                     $puntoventa->save();
-                    
+
                     // Orden
                     $orden->orden_abierta = false;
                     $orden->orden_usuario_cerro = Auth::user()->id;

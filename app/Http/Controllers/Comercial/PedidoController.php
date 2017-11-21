@@ -32,9 +32,9 @@ class PedidoController extends Controller
                             )
                             ELSE t.tercero_razonsocial
                         END)
-                    
+
                     ) AS tercero_nombre"
-                )   
+                )
             );
             $query->join('tercero as t', 'pedidoc1.pedidoc1_tercero', '=', 't.id');
             $query->join('tercero as v', 'pedidoc1.pedidoc1_vendedor', '=', 'v.id');
@@ -130,9 +130,9 @@ class PedidoController extends Controller
                     $pedidoComercial->pedidoc1_contacto = $contacto->id;
                     $pedidoComercial->pedidoc1_vendedor = $vendedor->id;
                     $pedidoComercial->pedidoc1_usuario_elaboro = Auth::user()->id;
-                    $pedidoComercial->pedidoc1_fh_elaboro = date('Y-m-d H:m:s'); 
+                    $pedidoComercial->pedidoc1_fh_elaboro = date('Y-m-d H:m:s');
                     $pedidoComercial->save();
-                    
+
                     $items = isset($data['detalle']) ? $data['detalle'] : null;
 
                     // Pedidoc2
@@ -152,12 +152,12 @@ class PedidoController extends Controller
                         }
                         $pedidoComercial2 = new Pedidoc2;
                         $pedidoComercial2->fill($item);
-                        $pedidoComercial2->pedidoc2_precio_venta = $request->pedidoc2_precio_venta > 0 ? $request->pedidoc2_precio_venta: $request->pedidoc2_costo;
+                        $pedidoComercial2->pedidoc2_precio_venta = $item['pedidoc2_precio_venta'] > 0 ? $item['pedidoc2_precio_venta'] : $item['pedidoc2_costo'];
                         $pedidoComercial2->pedidoc2_pedidoc1 = $pedidoComercial->id;
                         $pedidoComercial2->pedidoc2_producto = $producto->id;
                         $pedidoComercial2->pedidoc2_subcategoria = $subcategoria->id;
                         $pedidoComercial2->pedidoc2_margen = $subcategoria->subcategoria_margen_nivel1;
-                        $pedidoComercial2->save();  
+                        $pedidoComercial2->save();
                     }
                     // Update consecutive sucursal_pedidoc in Sucursal
                     $sucursal->sucursal_pedidoc = $consecutive;
@@ -182,7 +182,7 @@ class PedidoController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show(Request $request, $id)
-    {   
+    {
 
         $pedidoComercial = Pedidoc1::getPedidoc($id);
         if(!$pedidoComercial instanceof Pedidoc1) {
@@ -192,7 +192,7 @@ class PedidoController extends Controller
             return response()->json($pedidoComercial);
         }
         return view('comercial.pedidos.show', ['pedidoComercial' => $pedidoComercial]);
-        
+
     }
 
     /**

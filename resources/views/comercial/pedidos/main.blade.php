@@ -23,15 +23,17 @@
                 <div class="row">
                     <label for="pedidoc1_sucursal" class="col-md-1 col-md-1 control-label">Sucursal</label>
                     <div class="form-group col-md-4">
-                        <select name="pedidoc1_sucursal" id="pedidoc1_sucursal" class="form-control select2-default change-sucursal-consecutive-koi-component" data-field="pedidoc1_numero" data-document ="pedidoc" data-wrapper="pedidoc1-create">
+                        <select name="pedidoc1_sucursal" id="pedidoc1_sucursal" class="form-control select2-default change-sucursal-consecutive-koi-component" data-field="pedidoc1_numero" data-document ="pedidoc" data-wrapper="pedidoc1-create" required>
                             @foreach( App\Models\Base\Sucursal::getSucursales() as $key => $value)
-                            <option  value="{{ $key }}" <%- pedidoc1_sucursal == '{{ $key }}' ? 'selected': ''%>>{{ $value }}</option>
+                                <option  value="{{ $key }}" <%- pedidoc1_sucursal == '{{ $key }}' ? 'selected': ''%>>{{ $value }}</option>
                             @endforeach
                         </select>
+                        <div class="help-block with-errors"></div>
                     </div>
                     <label for="pedidoc1_numero" class="col-md-1 col-md-1 control-label">Número</label>
                     <div class="form-group col-md-1 col-md-1">
                         <input id="pedidoc1_numero" name="pedidoc1_numero" class="form-control input-sm" type="number" min="1" value="<%- pedidoc1_numero %>" required readonly>
+                        <div class="help-block with-errors"></div>
                     </div>
                     <label for="pedidoc1_fecha" class="col-md-1 col-md-1 control-label">Fecha</label>
                     <div class="form-group col-md-2">
@@ -41,6 +43,7 @@
                             </div>
                             <input type="text" id="pedidoc1_fecha" name="pedidoc1_fecha" value="<%- pedidoc1_fecha %>" class="form-control input-sm datepicker" required>
                         </div>
+                        <div class="help-block with-errors"></div>
                     </div>
                 </div>
                 <div class="row">
@@ -54,6 +57,7 @@
                             </span>
                             <input id="pedidoc1_tercero" placeholder="Cliente" class="form-control tercero-koi-component" name="pedidoc1_tercero" type="text" maxlength="15" data-contacto="btn-add-contact" data-wrapper="pedidoc1-create"  data-name="pedidoc1_terecero_nombre" value="<%- tercero_nit %>" data-address="tercero_direccion" required>
                         </div>
+                        <div class="help-block with-errors"></div>
                     </div>
                     <div class="col-md-4 col-xs-12">
                         <input id="pedidoc1_terecero_nombre" name="pedidoc1_terecero_nombre" placeholder="Nombre cliente" class="form-control input-sm" type="text" maxlength="15" value="<%- tercero_nombre %>" readonly required>
@@ -71,34 +75,37 @@
                                     <i class="fa fa-address-book"></i>
                                 </button>
                             </span>
-                            <input id="pedidoc1_contacto" name="pedidoc1_contacto" type="hidden" value="<%- pedidoc1_contacto %>">
+                            <input id="pedidoc1_contacto" name="pedidoc1_contacto" type="hidden" value="<%- pedidoc1_contacto %>" required>
                             <input id="tcontacto_nombre" placeholder="Contacto" class="form-control" name="tcontacto_nombre" type="text" value="<%- contacto_nombre %>" readonly required>
                         </div>
+                        <div class="help-block with-errors"></div>
                     </div>
                     <label for="tcontacto_direccion" class="col-md-2 control-label"> Dirección de despacho</label>
                     <div class="col-md-4 col-xs-12">
                         <input id="tcontacto_direccion" name="tcontacto_direccion" placeholder="Direccion contacto" class="form-control input-sm" type="text" readonly required>
+                        <div class="help-block with-errors"></div>
                     </div>
                 </div>
                 <div class="row">
                     <label for="pedidoc1_formapago" class="col-md-1 col-md-1 control-label">Pago</label>
-                    <div class="form-group col-md-2">
+                    <div class="form-group col-md-3">
                         <select name="pedidoc1_formapago" id="pedidoc1_formapago" class="form-control" required>
                             @foreach( config('koi.produccion.formaspago') as $key => $value)
                                 <option value="{{ $key }}" <%- pedidoc1_formapago == '{{ $key }}' ? 'selected': ''%>>{{ $value }}</option>
                             @endforeach
                         </select>
+                        <div class="help-block with-errors"></div>
                     </div>
                     <label for="pedidoc1_plazo" class="col-md-1 col-md-1 control-label">Plazo</label>
                     <div class="form-group col-md-1 col-md-1">
-                        <input id="pedidoc1_plazo" name="pedidoc1_plazo" class="form-control input-sm" type="number" min="0"  required>
+                        <input id="pedidoc1_plazo" name="pedidoc1_plazo" class="form-control input-sm" type="number" min="0"  data-error="Requerido" required>
+                        <div class="help-block with-errors"></div>
                     </div>
-
                     <label for="pedidoc1_cuotas" class="col-md-1 col-md-1 control-label">Cuotas</label>
                     <div class="form-group col-md-1 col-md-1">
-                        <input id="pedidoc1_cuotas   " name="pedidoc1_cuotas" class="form-control input-sm" type="number" min="0" required>
+                        <input id="pedidoc1_cuotas   " name="pedidoc1_cuotas" class="form-control input-sm" type="number" min="0" data-error="Requerido" required>
+                        <div class="help-block with-errors"></div>
                     </div>
-
                     <label for="pedidoc1_primerpago" class="col-md-1 col-md-1 control-label">Primer Pago</label>
                     <div class="form-group col-md-2">
                         <div class="input-group">
@@ -107,25 +114,27 @@
                             </div>
                             <input type="text" id="pedidoc1_primerpago" name="pedidoc1_primerpago" value="<%- pedidoc1_primerpago %>" class="form-control input-sm datepicker" required>
                         </div>
+                        <div class="help-block with-errors"></div>
                     </div>
                 </div>
                 <div class="row">
                     <label for="pedidoc1_vendedor" class="col-md-1 col-md-1 control-label">Vendedor</label>
-                    <div class="form-group col-md-4">
-                        <select name="pedidoc1_vendedor" id="pedidoc1_vendedor" class="form-control select2-default">
+                    <div class="form-group col-md-6">
+                        <select name="pedidoc1_vendedor" id="pedidoc1_vendedor" class="form-control select2-default" required>
                             @foreach( App\Models\Base\Tercero::getSellers() as $key => $value)
                             <option  value="{{ $key }}" <%- pedidoc1_vendedor == '{{ $key }}' ? 'selected': ''%>>{{ $value }}</option>
                             @endforeach
                         </select>
+                        <div class="help-block with-errors"></div>
                     </div>
                 </div>
                 <div class="row">
                     <label for="pedidoc1_observaciones" class="col-md-1 col-md-1 control-label">Observaciones</label>
-                    <div class="form-group col-md-10">
+                    <div class="form-group col-md-11">
                         <textarea id="pedidoc1_observaciones" name="pedidoc1_observaciones" class="form-control" rows="2" placeholder="Observaciones"><%- pedidoc1_observaciones %></textarea>
                     </div>
                 </div>
-            </form>
+            </form><br>
             <div class="row">
                 <div class="col-md-2 col-md-offset-4 col-md-6 col-xs-6 text-left">
                     <a href="{{ route('pedidosc.index') }}" class="btn btn-default btn-sm btn-block">{{ trans('app.cancel') }}</a>
@@ -133,8 +142,7 @@
                 <div class="col-md-2  col-md-5 col-xs-6 text-right">
                     <button type="button" class="btn btn-primary btn-sm btn-block submit-pedidosc">{{ trans('app.save') }}</button>
                 </div>
-            </div>
-            <br>
+            </div><br>
             <div id="detalle-pedidoc1">
                 <!-- Render tpl search and tpl pedidoc2-->
             </div>
@@ -172,7 +180,7 @@
     </script>
 
     <script type="text/template" id="add-detailt-pedidosc-tpl">
-        <div class="box-body box box-success">
+        <div class="box-body box box-solid">
             <form method="POST" accept-charset="UTF-8" id="form-detalle-pedidoc" data-toggle="validator">
                 <div class="row">
                     <label  class="control-label col-md-1 col-md-1">Producto</label>

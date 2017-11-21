@@ -32,7 +32,8 @@ class Factura1Controller extends Controller
             $query->join('tercero','factura1_tercero', '=', 'tercero.id');
             $query->join('puntoventa','factura1_puntoventa', '=', 'puntoventa.id');
             $query->join('sucursal','factura1_sucursal', '=', 'sucursal.id');
-            
+            $query->orderBy('factura1.id', 'desc');
+
             return Datatables::of($query)
                 ->filter(function($query) use($request) {
                     // Número
@@ -126,7 +127,7 @@ class Factura1Controller extends Controller
                         DB:rollback();
                         return response()->json(['success'=> false, 'errors'=>'No es posible recuperar punto venta,por favor verifique la información ó por favor consulte al administrador.']);
                     }
-                    // Consecutive punto venta 
+                    // Consecutive punto venta
                     $consecutive = $puntoventa->puntoventa_numero + 1;
 
                     // Factura1
@@ -143,7 +144,7 @@ class Factura1Controller extends Controller
                     $factura1->factura1_usuario_elaboro = Auth::user()->id;
                     $factura1->factura1_fh_elaboro = date('Y-m-d H:m:s');
                     $factura1->save();
-                    
+
                     foreach ($data['factura2'] as $item) {
                         $producto = Producto::where('producto_serie', $item['producto_serie'])->first();
                         if (!$producto instanceof Producto) {
@@ -197,9 +198,9 @@ class Factura1Controller extends Controller
                             $items = isset($item['items']) ? $item['items'] : null;
                             foreach ($items as $key => $valueItem) {
                                 if ($valueItem > 0) {
-                                    
+
                                      list($text, $rollo) = explode("_", $key);
-                                    // Individualiza en rollo --- $rollo hace las veces de lote 
+                                    // Individualiza en rollo --- $rollo hace las veces de lote
                                     $rollo = Rollo::actualizar($producto, $sucursal->id, 'S', $rollo, $factura1->factura1_fecha, $valueItem, $sucursal->sucursal_defecto);
                                     if (!$rollo->success) {
                                         DB::rollback();
@@ -265,9 +266,9 @@ class Factura1Controller extends Controller
                 } catch (\Exception $e) {
                     DB::rollback();
                     Log::error($e->getMessage());
-                    return response()->json(['success' => false, 'errors' => trans('app.exception')]); 
+                    return response()->json(['success' => false, 'errors' => trans('app.exception')]);
                 }
-            }   
+            }
             return response()->json(['success' => false, 'errors' => $factura1->errors]);
         }
         abort(403);
@@ -345,7 +346,7 @@ class Factura1Controller extends Controller
             $factura1 = $query->first();
             if (!$factura1 instanceof Factura1) {
                 return response()->json([ 'success' => false ]);
-            }            
+            }
             return response()->json(['success' => true , 'id' => $factura1->id , 'cliente' => $factura1->tercero_nombre, 'nit' => $factura1->tercero_nit  ]);
         }
         abort(403);

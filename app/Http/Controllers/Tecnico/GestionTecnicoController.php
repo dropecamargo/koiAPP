@@ -21,7 +21,7 @@ class GestionTecnicoController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            
+
             $query = GestionTecnico::query();
 
             // Filter show collection in tercero
@@ -36,10 +36,11 @@ class GestionTecnicoController extends Controller
                 $query->join('tercero','gestiontecnico_usuario_elaboro', '=', 'tercero.id');
                 $query->join('conceptotec','gestiontecnico_conceptotec', '=', 'conceptotec.id');
                 $query->where('gestiontecnico_tercero', $request->tercero);
+                $query->orderBy('gestiontecnico.id', 'desc');
                 $gestiontecnico = $query->get();
                 return response()->json($gestiontecnico);
             }
-            
+
             $query->select('gestiontecnico.*', 'conceptotec_nombre', 'tercero_nit', 'tercero_razonsocial', 'tercero_nombre1', 'tercero_nombre2', 'tercero_apellido1', 'tercero_apellido2',DB::raw("(CASE WHEN tercero_persona = 'N'
                     THEN CONCAT(tercero_nombre1,' ',tercero_nombre2,' ',tercero_apellido1,' ',tercero_apellido2,
                             (CASE WHEN (tercero_razonsocial IS NOT NULL AND tercero_razonsocial != '') THEN CONCAT(' - ', tercero_razonsocial) ELSE '' END)
@@ -80,7 +81,7 @@ class GestionTecnicoController extends Controller
             if ($gestiontecnico->isValid($data)) {
                 DB::beginTransaction();
                 try {
-                    // Recupero instancia de Tercero(cliente)  
+                    // Recupero instancia de Tercero(cliente)
                     $tercero = Tercero::where('tercero_nit', $request->gestiontecnico_tercero)->first();
                     if(!$tercero instanceof Tercero) {
                         DB::rollback();
@@ -92,7 +93,7 @@ class GestionTecnicoController extends Controller
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar concepto tecnico, verifique información ó por consulte al administrador']);
                     }
-                    // Recupero instancia de Tercero(tecnico)  
+                    // Recupero instancia de Tercero(tecnico)
                     $tecnico = Tercero::find($request->gestiontecnico_tecnico);
                     if (!$tecnico instanceof Tercero) {
                         DB::rollback();
@@ -102,13 +103,13 @@ class GestionTecnicoController extends Controller
                     $gestiontecnico->gestiontecnico_tercero = $tercero->id;
                     $gestiontecnico->gestiontecnico_conceptotec = $conceptotec->id;
                     $gestiontecnico->gestiontecnico_tecnico = $tecnico->id;
-                    $gestiontecnico->gestiontecnico_fh = date('Y-m-d H:m:s'); 
-                    $gestiontecnico->gestiontecnico_inicio = "$request->gestiontecnico_inicio $request->gestiontecnico_hinicio"; 
-                    $gestiontecnico->gestiontecnico_finalizo = "$request->gestiontecnico_finalizo $request->gestiontecnico_hfinalizo"; 
+                    $gestiontecnico->gestiontecnico_fh = date('Y-m-d H:m:s');
+                    $gestiontecnico->gestiontecnico_inicio = "$request->gestiontecnico_inicio $request->gestiontecnico_hinicio";
+                    $gestiontecnico->gestiontecnico_finalizo = "$request->gestiontecnico_finalizo $request->gestiontecnico_hfinalizo";
                     $gestiontecnico->gestiontecnico_usuario_elaboro = Auth::user()->id;
-                    $gestiontecnico->gestiontecnico_fh_elaboro = date('Y-m-d H:m:s'); 
+                    $gestiontecnico->gestiontecnico_fh_elaboro = date('Y-m-d H:m:s');
                     $gestiontecnico->save();
-                    
+
                     // Commit Transaction
                     DB::commit();
                     return response()->json(['success' => true, 'id' => $gestiontecnico->id]);
@@ -130,7 +131,7 @@ class GestionTecnicoController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show(Request $request, $id)
-    {   
+    {
         $gestiontecnico = GestionTecnico::getGestionTecnico($id);
         if(!$gestiontecnico instanceof GestionTecnico) {
             abort(404);

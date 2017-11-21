@@ -31,9 +31,10 @@ class Nota1Controller extends Controller
             );
             $query->join('sucursal', 'nota1_sucursal', '=', 'sucursal.id');
             $query->join('tercero', 'nota1_tercero', '=', 'tercero.id');
+            $query->orderBy('nota1.id', 'desc');
             return Datatables::of($query)->make(true);
         }
-        return view('cartera.notas.index');  
+        return view('cartera.notas.index');
     }
 
     /**
@@ -66,7 +67,7 @@ class Nota1Controller extends Controller
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar sucursal, verifique información ó por favor consulte al administrador.']);
                     }
-                    // Recuperar Regional 
+                    // Recuperar Regional
                     $regional = Regional::find($sucursal->sucursal_regional);
                     if(!$regional instanceof Regional) {
                         DB::rollback();
@@ -108,7 +109,7 @@ class Nota1Controller extends Controller
 
                     $nota2 = isset($data['nota2']) ? $data['nota2'] : null;
                     foreach ($nota2 as $item)
-                    {   
+                    {
                         $documentos = Documentos::find($item['nota2_documentos_doc']);
                         if(!$documentos instanceof Documentos) {
                             DB::rollback();
@@ -137,7 +138,7 @@ class Nota1Controller extends Controller
                                 $chdevuelto = ChDevuelto::find($item['chdevuelto_id']);
                                 if ( !$chdevuelto instanceof ChDevuelto ) {
                                     DB::rollback();
-                                    return response()->json(['success'=>false, 'errors'=>"No es posible recuperar cheque devuelto, por favor verifique ó consulte con el administrador."]);   
+                                    return response()->json(['success'=>false, 'errors'=>"No es posible recuperar cheque devuelto, por favor verifique ó consulte con el administrador."]);
                                 }
                                 $chdevuelto->chdevuelto_saldo = $chdevuelto->chdevuelto_saldo <= 0 ? $chdevuelto->chdevuelto_saldo + $item['nota2_valor'] : $chdevuelto->chdevuelto_saldo - $item['nota2_valor'];
                                 $chdevuelto->save();
@@ -149,7 +150,7 @@ class Nota1Controller extends Controller
                                 $anticipo = Anticipo1::find( $item['anticipo_id'] );
                                 if (!$anticipo instanceof Anticipo1) {
                                     DB::rollback();
-                                    return response()->json(['success'=>false, 'errors'=>"No es posible recuperar anticipo, por favor verifique ó consulte con el administrador."]); 
+                                    return response()->json(['success'=>false, 'errors'=>"No es posible recuperar anticipo, por favor verifique ó consulte con el administrador."]);
                                 }
                                 $anticipo->anticipo1_saldo = $anticipo->anticipo1_saldo <= 0 ? $anticipo->anticipo1_saldo + $item['nota2_valor'] : $anticipo->anticipo1_saldo - $item['nota2_valor'];
                                 $anticipo->save();

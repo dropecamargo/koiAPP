@@ -36,6 +36,7 @@ class ChDevueltoController extends Controller
                 $query->join('chposfechado1', 'chdevuelto_chposfechado1', '=', 'chposfechado1.id');
                 $query->join('banco','chposfechado1_banco', '=', 'banco.id');
                 $query->join('sucursal','chdevuelto_sucursal', '=', 'sucursal.id');
+                $query->orderBy('chdevuelto.id', 'desc');
                 return Datatables::of($query)->make(true);
             }
 
@@ -78,7 +79,7 @@ class ChDevueltoController extends Controller
             if ($chdevuelto->isValid($data)) {
                 DB::beginTransaction();
                 try {
-                    // Recupero instancia de Documento  
+                    // Recupero instancia de Documento
                     $documento = Documentos::where('documentos_codigo' , ChDevuelto::$default_document)->first();
                     if (!$documento instanceof Documentos) {
                         DB::rollback();

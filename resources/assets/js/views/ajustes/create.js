@@ -15,7 +15,7 @@ app || (app = {});
         template: _.template(($('#add-ajuste-tpl').html() || '') ),
         templateDetailt: _.template(($('#add-detailt-ajuste-tpl').html() || '') ),
         events: {
-            'click .submit-ajuste': 'submitFormAjuste', 
+            'click .submit-ajuste': 'submitFormAjuste',
             'submit #form-ajustes' :'onStore',
             'submit #form-detalle-ajuste' :'onStoreItem',
             'change .change-in-or-exit-koi-component': 'changeTipoAjuste',
@@ -28,16 +28,16 @@ app || (app = {});
         * Constructor Method
         */
         initialize : function() {
-           
+
             // Attributes
             this.$wraperForm = this.$('#render-form-ajuste');
 
             this.detalleAjuste = new app.AjustesDetalleCollection();
-            
+
             // Events
             this.listenTo( this.model, 'change', this.render );
             this.listenTo( this.model, 'sync', this.responseServer );
-            this.listenTo( this.model, 'request', this.loadSpinner );            
+            this.listenTo( this.model, 'request', this.loadSpinner );
         },
 
 
@@ -45,27 +45,25 @@ app || (app = {});
         * Render View Element
         */
         render: function() {
-                        
+
             var attributes = this.model.toJSON();
             this.$wraperForm.html( this.template(attributes) );
 
             this.$form = this.$('#form-ajustes');
             this.$divDetalle = this.$('#detalle-ajuste');
-            
-             //Reference field select 
+
+             //Reference field select
             this.$selectTipoAjuste = $('#ajuste1_tipoajuste');
-            this.$fieldCantidadEntrada = $('#ajuste2_cantidad_entrada');
-            this.$fieldCantidadSalida = $('#ajuste2_cantidad_salida');
-            this.$fieldCosto = $('#ajuste2_costo');
-            
+
+
             // Reference views
             this.referenceViews();
-            
+
             this.ready();
         },
 
 
-        referenceViews:function(){ 
+        referenceViews:function(){
             this.detalleAjustesView = new app.DetalleAjustesView( {
                 collection: this.detalleAjuste,
                 parameters: {
@@ -87,14 +85,14 @@ app || (app = {});
         * Event Create Ajuste
         */
         onStore: function (e) {
-            
+
             if (!e.isDefaultPrevented()) {
                 e.preventDefault();
                 var data = window.Misc.formToJson( e.target );
                     data.ajuste2 = this.detalleAjuste.toJSON();
                 this.model.save( data, {patch: true, silent: true} );
 
-            }   
+            }
         },
         /**
         * Event store ajuste2 validate temporal carDetail
@@ -113,7 +111,7 @@ app || (app = {});
                     'wrap': this.$el,
                     'callback': (function (_this) {
                         return function ( action , tipo)
-                        {      
+                        {
                             // Open InventarioActionView
                             if ( _this.inventarioActionView instanceof Backbone.View ){
                                 _this.inventarioActionView.stopListening();
@@ -135,7 +133,7 @@ app || (app = {});
                 });
             }
         },
-        
+
         /**
         * Event define tipoAjuste
         */
@@ -151,18 +149,18 @@ app || (app = {});
             })
             .done(function(resp) {
                 window.Misc.removeSpinner( _this.el );
-                
+
                 //Render form detalle ajuste
                 _this.$divDetalle.empty().html( _this.templateDetailt(resp) );
 
                 //Hide input lote
-                (resp.tipoajuste_tipo == 'S') ? _this.$('#ajuste1_lotes').hide() : _this.$('#ajuste1_lotes').show(); 
+                (resp.tipoajuste_tipo == 'S') ? _this.$('#ajuste1_lotes').hide() : _this.$('#ajuste1_lotes').show();
 
                 // Clear collection
                 _this.detalleAjuste.reset();
 
                 _this.ready();
-            })       
+            })
             .fail(function(jqXHR, ajaxOptions, thrownError) {
                 window.Misc.removeSpinner( _this.el );
                 alertify.error(thrownError);
@@ -172,16 +170,13 @@ app || (app = {});
         * Change tipo reclacificacion
         */
         changeReclacification:function(e){
-            if (!e.isDefaultPrevented()) {
-                e.preventDefault();
+            e.preventDefault();
 
-                if ('#'+$(e.currentTarget).attr('id') == this.$fieldCantidadEntrada.selector) { 
-                    $(this.$fieldCantidadSalida.selector).html(this.divDetalle).hide();
-                }else{
-                    $(this.$fieldCantidadEntrada.selector).html(this.divDetalle).hide();
-                    $(this.$fieldCosto.selector).html(this.divDetalle).prop('readonly',true);
-                    $('#ajuste2_producto').html(this.divDetalle).attr('data-costo', 'ajuste2_costo');              
-                }
+            if ($(e.target).attr('id') == $('#ajuste2_cantidad_entrada').attr('id')) {
+                $('#ajuste2_cantidad_salida').removeAttr("required").prop('readonly', true);
+            }else{
+                $('#ajuste2_cantidad_entrada').removeAttr("required").prop('readonly', true);
+                $('#ajuste2_costo').prop('readonly',true);
             }
         },
         /**
@@ -190,17 +185,17 @@ app || (app = {});
         ready: function () {
             // to fire plugins
             if( typeof window.initComponent.initICheck == 'function' )
-                window.initComponent.initICheck(); 
+                window.initComponent.initICheck();
 
             if( typeof window.initComponent.initInputMask == 'function' )
                 window.initComponent.initInputMask();
-            
+
             if( typeof window.initComponent.initToUpper == 'function' )
                 window.initComponent.initToUpper();
-            
+
             if( typeof window.initComponent.initSelect2 == 'function' )
                 window.initComponent.initSelect2();
-            
+
             if( typeof window.initComponent.initValidator == 'function' )
                 window.initComponent.initValidator();
 
@@ -213,7 +208,7 @@ app || (app = {});
         */
         loadSpinner: function (model, xhr, opts) {
             window.Misc.setSpinner( this.el );
-            
+
         },
 
         /**
@@ -231,7 +226,7 @@ app || (app = {});
 
                 if( !resp.success ) {
                     alertify.error(text);
-                    return; 
+                    return;
                 }
             }
             window.Misc.redirect( window.Misc.urlFull( Route.route('ajustes.show', { ajustes: resp.id})) );

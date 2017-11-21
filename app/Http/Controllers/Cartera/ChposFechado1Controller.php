@@ -33,6 +33,7 @@ class ChposFechado1Controller extends Controller
             $query->join('tercero','chposfechado1_tercero', '=', 'tercero.id');
             $query->join('banco','chposfechado1_banco', '=', 'banco.id');
             $query->join('sucursal','chposfechado1_sucursal', '=', 'sucursal.id');
+            $query->orderBy('chposfechado1.id', 'desc');
             return Datatables::of($query)->make(true);
         }
         return view('cartera.cheques.index');
@@ -62,30 +63,30 @@ class ChposFechado1Controller extends Controller
             if ($cheque1->isValid($data)) {
                 DB::beginTransaction();
                 try {
-                    // Recupero instancia de Documento  
+                    // Recupero instancia de Documento
                     $documento = Documentos::where('documentos_codigo' , ChposFechado1::$default_document)->first();
                     if (!$documento instanceof Documentos) {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar documentos,por favor verifique la información ó por favor consulte al administrador.']);
                     }
-                    // Recupero instancia de Sucursal  
+                    // Recupero instancia de Sucursal
                     $sucursal = Sucursal::find($request->chposfechado1_sucursal);
                     if(!$sucursal instanceof Sucursal) {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar sucursal, verifique información ó por favor consulte al administrador.']);
                     }
-                    // Recupero instancia de Regional  
+                    // Recupero instancia de Regional
                     $regional = Regional::find($sucursal->sucursal_regional);
                     if(!$regional instanceof Regional) {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar regional, verifique información ó por favor consulte al administrador.']);
                     }
-                    // Recupero instancia de Tercero(cliente)  
+                    // Recupero instancia de Tercero(cliente)
                     $tercero = Tercero::where('tercero_nit', $request->chposfechado1_tercero)->first();
                     if(!$tercero instanceof Tercero) {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar cliente, verifique información ó por favor consulte al administrador.']);
-                    }  
+                    }
                     // Recupero instancia de Banco
                     $banco = Banco::find($request->chposfechado1_banco);
                     if (!$banco instanceof Banco) {
@@ -123,7 +124,7 @@ class ChposFechado1Controller extends Controller
                             $factura = Factura1::where( 'id', $factura3->factura3_factura1 )->where('factura1_tercero', $tercero->id)->first();
                             if( !$factura instanceof Factura1 ){
                                 DB::rollback();
-                                return response()->json(['success'=>false, 'errors'=>"La factura #$factura3->factura1_numero ingresada no corresponde al cliente, por favor verifique ó consulte con el administrador."]);   
+                                return response()->json(['success'=>false, 'errors'=>"La factura #$factura3->factura1_numero ingresada no corresponde al cliente, por favor verifique ó consulte con el administrador."]);
                             }
 
                             $factura3->factura3_chposfechado1 = $cheque1->id;

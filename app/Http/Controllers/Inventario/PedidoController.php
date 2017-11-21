@@ -23,7 +23,7 @@ class PedidoController extends Controller
     {
          if ($request->ajax()) {
             $query = Pedido1::query();
-            $query->select('pedido1.*','tercero_nombre1','tercero_nit', 'tercero_razonsocial', 'tercero_nombre1', 'tercero_nombre2', 'tercero_apellido1', 'tercero_apellido2','sucursal_nombre', 
+            $query->select('pedido1.*','tercero_nit', 'tercero_razonsocial', 'tercero_nombre1', 'tercero_nombre2', 'tercero_apellido1', 'tercero_apellido2','sucursal_nombre',
                 DB::raw("
                     CONCAT(
                         (CASE WHEN tercero_persona = 'N'
@@ -32,12 +32,13 @@ class PedidoController extends Controller
                             )
                             ELSE tercero_razonsocial
                         END)
-                    
+
                     ) AS tercero_nombre"
-                )   
+                )
             );
             $query->join('tercero', 'pedido1.pedido1_tercero', '=', 'tercero.id');
             $query->join('sucursal', 'pedido1.pedido1_sucursal', '=', 'sucursal.id');
+            $query->orderBy('pedido1.id', 'desc');
             return Datatables::of($query)->make(true);
         }
 
@@ -68,7 +69,7 @@ class PedidoController extends Controller
             if ($pedido->isValid($data)) {
                 DB::beginTransaction();
                 try {
-                    
+
                     //valida Documentos
                     $documento = Documentos::where('documentos_codigo', Pedido1::$default_document)->first();
                     if(!$documento instanceof Documentos) {
@@ -88,7 +89,7 @@ class PedidoController extends Controller
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar tercero, por favor verifique información o consulte al administrador.']);
                     }
 
-                    
+
                     $consecutive = $sucursal->sucursal_pedn + 1;
                     // Pedido
                     $pedido->fill($data);
@@ -106,7 +107,7 @@ class PedidoController extends Controller
                     $detalle['Pedido'] = $pedido->id;
                     $detalle['Cantidad'] =  $request->pedido2_cantidad;
                     $detalle['Precio'] =  $request->pedido2_precio;
-                   
+
                     $result = $pedidoDetalle->storePedido2($detalle);
                     if(!$result->success) {
                         DB::rollback();
@@ -140,7 +141,7 @@ class PedidoController extends Controller
      */
     public function show(Request $request, $id)
     {
-  
+
         $pedido = Pedido1::getPedido($id);
         if(!$pedido instanceof Pedido1) {
             abort(404);
@@ -158,15 +159,15 @@ class PedidoController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    {   
+    {
         $pedido = Pedido1::getPedido($id);
-       
+
         if(!$pedido instanceof Pedido1) {
             abort(404);
         }
 
 
-        return view('inventario.pedidos.edit', ['pedido1' => $pedido]);   
+        return view('inventario.pedidos.edit', ['pedido1' => $pedido]);
     }
 
     /**

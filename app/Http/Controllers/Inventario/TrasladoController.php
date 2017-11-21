@@ -22,9 +22,10 @@ class TrasladoController extends Controller
     {
         if ($request->ajax()) {
             $query = Traslado1::query();
-            $query->select('traslado1.id', 'traslado1_numero', 'traslado1_fecha', 'o.sucursal_nombre as sucursa_origen', 'd.sucursal_nombre as sucursa_destino');   
+            $query->select('traslado1.id', 'traslado1_numero', 'traslado1_fecha', 'o.sucursal_nombre as sucursa_origen', 'd.sucursal_nombre as sucursa_destino');
             $query->join('sucursal as o', 'traslado1_origen', '=', 'o.id');
             $query->join('sucursal as d', 'traslado1_destino', '=', 'd.id');
+            $query->orderBy('traslado1_fecha', 'desc');
             return Datatables::of($query)->make(true);
         }
         return view('inventario.traslados.index');
@@ -54,21 +55,21 @@ class TrasladoController extends Controller
             if ($traslado->isValid($data)) {
                 DB::beginTransaction();
                 try {
-                    
+
                     //Validar Documentos
                     $documento = Documentos::where('documentos_codigo', Traslado1::$default_document)->first();
                     if(!$documento instanceof Documentos) {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar documentos,por favor verifique la información ó por favor consulte al administrador.']);
                     }
-                    
+
                     // Recuperar origen
                     $origen = Sucursal::find($request->traslado1_sucursal);
                     if(!$origen instanceof Sucursal) {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar sucursal origen, por favor verifique la información o consulte al administrador.']);
                     }
-                    
+
                     // Recuperar destino
                     $destino = Sucursal::find($request->traslado1_destino);
                     if(!$destino instanceof Sucursal) {
@@ -93,7 +94,7 @@ class TrasladoController extends Controller
                     $traslado->traslado1_origen = $origen->id;
                     $traslado->traslado1_destino = $destino->id;
                     $traslado->traslado1_usuario_elaboro = Auth::user()->id;
-                    $traslado->traslado1_fh_elaboro = date('Y-m-d H:m:s'); 
+                    $traslado->traslado1_fh_elaboro = date('Y-m-d H:m:s');
                     $traslado->save();
 
                     foreach ($data['detalle'] as $item) {
@@ -153,15 +154,15 @@ class TrasladoController extends Controller
                                 DB::rollback();
                                 return response()->json(['success' => false,'errors '=> $inventario]);
                             }
-                        //Maneja Metros   
+                        //Maneja Metros
                         }else if($producto->producto_metrado == true){
                             $items = isset($item['items']) ? $item['items'] : null;
                             foreach ($items as $key => $valueItem) {
                                 if ($valueItem > 0) {
-                                    
+
                                     list($text, $rollo) = explode("_", $key);
 
-                                    // Individualiza en rollo --- $rollo hace las veces de lote 
+                                    // Individualiza en rollo --- $rollo hace las veces de lote
                                     $rollo = Rollo::actualizar($producto, $origen->id, 'S', $rollo, $traslado->traslado1_fecha, $valueItem, "");
                                     if (!$rollo->success) {
                                         DB::rollback();
@@ -242,7 +243,7 @@ class TrasladoController extends Controller
                     // Update consecutive sucursal_tras in Sucursal origen
                     $origen->sucursal_tras = $consecutive;
                     $origen->save();
-                    
+
                     // Commit Transaction
                     DB::commit();
                     return response()->json(['success' => true, 'id' => $traslado->id ]);

@@ -20,7 +20,7 @@ class Recibo1Controller extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
-    {   
+    {
         if ($request->ajax()) {
             $query = Recibo1::query();
             $query->select('recibo1.*', DB::raw("(CASE WHEN tercero_persona = 'N'
@@ -31,6 +31,7 @@ class Recibo1Controller extends Controller
                 AS tercero_nombre")
             );
             $query->join('tercero','recibo1_tercero', '=', 'tercero.id');
+            $query->orderBy('recibo1.id', 'desc');
             return Datatables::of($query->get())->make(true);
         }
         return view('cartera.recibos.index');
@@ -78,17 +79,17 @@ class Recibo1Controller extends Controller
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar cliente, verifique información ó por favor consulte al administrador.']);
                     }
-                    
+
                     $sucursal = Sucursal::find($request->recibo1_sucursal);
                     if(!$sucursal instanceof Sucursal) {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar sucursal, verifique información ó por favor consulte al administrador.']);
-                    } 
+                    }
                     $regional = Regional::find($sucursal->sucursal_regional);
                     if(!$regional instanceof Regional) {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar regional, verifique información ó por favor consulte al administrador.']);
-                    }                    
+                    }
                     // Consecutive
                     $consecutive = $regional->regional_reci + 1;
 
@@ -131,7 +132,7 @@ class Recibo1Controller extends Controller
                                         $factura = Factura1::where( 'id', $factura3->factura3_factura1 )->where('factura1_tercero', $tercero->id)->first();
                                         if( !$factura instanceof Factura1 ){
                                             DB::rollback();
-                                            return response()->json(['success'=>false, 'errors'=>"La factura #$factura3->factura1_numero ingresada no corresponde al cliente, por favor verifique ó consulte con el administrador."]);   
+                                            return response()->json(['success'=>false, 'errors'=>"La factura #$factura3->factura1_numero ingresada no corresponde al cliente, por favor verifique ó consulte con el administrador."]);
                                         }
 
                                         $factura3->factura3_saldo = $factura3->factura3_saldo <= 0 ? $factura3->factura3_saldo + $item['factura3_valor'] : $factura3->factura3_saldo - $item['factura3_valor'];
@@ -149,7 +150,7 @@ class Recibo1Controller extends Controller
                                     $chdevuelto = ChDevuelto::find($item['chdevuelto_id']);
                                     if ( !$chdevuelto instanceof ChDevuelto ) {
                                         DB::rollback();
-                                        return response()->json(['success'=>false, 'errors'=>"No es posible recuperar cheque devuelto, por favor verifique ó consulte con el administrador."]);   
+                                        return response()->json(['success'=>false, 'errors'=>"No es posible recuperar cheque devuelto, por favor verifique ó consulte con el administrador."]);
                                     }
                                     $chdevuelto->chdevuelto_saldo = $chdevuelto->chdevuelto_saldo <= 0 ? $chdevuelto->chdevuelto_saldo + $item['recibo2_valor'] : $chdevuelto->chdevuelto_saldo - $item['recibo2_valor'];
                                     $chdevuelto->save();
@@ -160,7 +161,7 @@ class Recibo1Controller extends Controller
                                     $anticipo = Anticipo1::find( $item['anticipo_id'] );
                                     if (!$anticipo instanceof Anticipo1) {
                                         DB::rollback();
-                                        return response()->json(['success'=>false, 'errors'=>"No es posible recuperar anticipo, por favor verifique ó consulte con el administrador."]); 
+                                        return response()->json(['success'=>false, 'errors'=>"No es posible recuperar anticipo, por favor verifique ó consulte con el administrador."]);
                                     }
                                     $anticipo->anticipo1_saldo = $anticipo->anticipo1_saldo <= 0 ? $anticipo->anticipo1_saldo + $item['recibo2_valor'] : $anticipo->anticipo1_saldo - $item['recibo2_valor'];
                                     $anticipo->save();
@@ -176,7 +177,7 @@ class Recibo1Controller extends Controller
                         }
                         $recibo2->save();
                     }
-                    
+
                     foreach ($data['recibo3'] as $value) {
                         // Recupero instancia de MedioPago
                         $mediopago = MedioPago::find($value['recibo3_mediopago']);
@@ -186,7 +187,7 @@ class Recibo1Controller extends Controller
                         }
                         // Cuando es cheque o tarjeta estos vienen con datos que hay que guardar
                         if ( $value['recibo3_banco_medio'] != "" && $value['recibo3_numero_medio'] != "" && $value['recibo3_vence_medio'] != "" ) {
-                            // Recupero instancia de cheque para cambiar indicativo de activo 
+                            // Recupero instancia de cheque para cambiar indicativo de activo
                             if ($mediopago->mediopago_ch) {
                                 $cheque = ChposFechado1::where('chposfechado1_ch_numero',$value['recibo3_numero_medio'])->first();
                                 if (!$cheque instanceof ChposFechado1) {

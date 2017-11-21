@@ -31,6 +31,7 @@ class EgresoController extends Controller
             );
             $query->join('tercero','egreso1_tercero', '=', 'tercero.id');
             $query->join('regional','egreso1_regional', '=', 'regional.id');
+            $query->orderBy('egreso1.id', 'desc');
             return Datatables::of($query->get())->make(true);
         }
         return view('tesoreria.egreso.index');
@@ -132,7 +133,7 @@ class EgresoController extends Controller
                             $facturap1 = Facturap1::where( 'id', $facturap3->facturap3_facturap1 )->where('facturap1_tercero', $tercero->id)->first();
                             if( !$facturap1 instanceof Facturap1 ){
                                 DB::rollback();
-                                return response()->json(['success'=>false, 'errors'=>"La factura #$facturap3->facturap1_numero ingresada no corresponde al cliente, por favor verifique ó consulte con el administrador."]);   
+                                return response()->json(['success'=>false, 'errors'=>"La factura #$facturap3->facturap1_numero ingresada no corresponde al cliente, por favor verifique ó consulte con el administrador."]);
                             }
 
                             $facturap3->facturap3_saldo = $facturap3->facturap3_saldo <= 0 ? $facturap3->facturap3_saldo + $item['facturap3_valor'] : $facturap3->facturap3_saldo - $item['facturap3_valor'];

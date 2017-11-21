@@ -251,9 +251,8 @@ class ProductoController extends Controller
         if (!$producto instanceof Producto) {
             $response->errors = "No es posible recuperar PRODUCTO,verifique información ó por favor consulte al administrador.";
         }
-
         if ($producto->producto_unidad == true) {
-            if($tipoMovimiento == 'E'){
+            if($tipoMovimiento == 'E' || $request->has('ajuste2_cantidad_entrada')){
                 if ($producto->producto_maneja_serie == true) {
                     $action = 'modalSerie';
                     $response->action = $action;
@@ -489,7 +488,7 @@ class ProductoController extends Controller
     public function referencia(Request $request)
     {
         if ($request->has('producto_referencia')) {
-             // Valid referencia 
+             // Valid referencia
             if (! Producto::isValidReferencia($request->all())) {
                 return response()->json(['success' => false, 'errors' => "La referencia $request->producto_referencia ya se encuentra registrado"]);
             }

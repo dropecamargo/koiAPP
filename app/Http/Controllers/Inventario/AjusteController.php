@@ -27,7 +27,7 @@ class AjusteController extends Controller
             $query->select('ajuste1.*', 'sucursal_nombre', 'tipoajuste_nombre');
             $query->join('tipoajuste', 'ajuste1.ajuste1_tipoajuste','=','tipoajuste.id');
             $query->join('sucursal', 'ajuste1.ajuste1_sucursal','=','sucursal.id');
-
+            $query->orderBy('ajuste1.id', 'desc');
             // Persistent data filter
             if($request->has('persistent') && $request->persistent) {
                 session(['searchajuste_ajuste_tipo' => $request->has('tipo') ? $request->tipo : '']);
@@ -52,7 +52,6 @@ class AjusteController extends Controller
                     }
                 })->make(true);
         }
-
         return view('inventario.ajustes.index');
     }
 
@@ -119,7 +118,7 @@ class AjusteController extends Controller
                             return response()->json(['success' => false,'errors'=>'No es posible recuperar el producto,por favor verifique la información ó por favor consulte al administrador']);
                         }
 
-                        if ($tipoAjuste->tipoajuste_tipo == 'E') {
+                        if ($tipoAjuste->tipoajuste_tipo == 'E' || $item['ajuste2_cantidad_entrada'] > 0) {
 
                             // Detalle ajuste != Manejaserie
                             if ($producto->producto_maneja_serie != true) {

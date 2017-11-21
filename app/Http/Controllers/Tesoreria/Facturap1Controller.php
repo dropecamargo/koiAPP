@@ -36,7 +36,7 @@ class Facturap1Controller extends Controller
                 ));
             $query->join('tercero', 'facturap1_tercero', '=', 'tercero.id');
             $query->join('regional', 'facturap1_regional', '=', 'regional.id');
-
+            $query->orderBy('facturap1.id', 'desc');
 
             // Persistent data filter
             if($request->has('persistent') && $request->persistent) {
@@ -48,12 +48,12 @@ class Facturap1Controller extends Controller
 
             return Datatables::of($query)
                 ->filter(function ($query) use ($request){
-                    // Referencia 
+                    // Referencia
                     if($request->has('factura')){
                         $query->whereRaw("facturap1_factura LIKE '%{$request->factura}%'");
                     }
 
-                    // Fecha 
+                    // Fecha
                     if($request->has('facturap_fecha')){
                         $query->whereRaw("facturap1_fecha LIKE '%{$request->facturap_fecha}%'");
                     }
@@ -172,7 +172,7 @@ class Facturap1Controller extends Controller
                         $facturapDetalle->facturap2_facturap1 = $facturap1->id;
                         $facturapDetalle->save();
                     }
-                    // Calculate totalize 
+                    // Calculate totalize
                     $facturap1->calculateTotal();
 
                     // Facturap3
@@ -189,11 +189,11 @@ class Facturap1Controller extends Controller
                         DB::rollback();
                         return response()->json(['success'=> false, 'errors'=> $activofijo->errors]);
                     }
-                     
+
                     // Inventario
                     $entrada1 = isset($data['entrada1']) ? $data['entrada1'] : null;
                     $entrada2 = isset($data['entrada2']) ? $data['entrada2'] : null;
-                    
+
                     if (!empty($entrada1) && !empty($entrada1)) {
                         $entrada = Entrada1::store($facturap1, $entrada1, $entrada2);
                         if (!$entrada->success) {
@@ -242,7 +242,7 @@ class Facturap1Controller extends Controller
      */
     public function edit($id)
     {
-        // 
+        //
     }
 
     /**
@@ -254,7 +254,7 @@ class Facturap1Controller extends Controller
      */
     public function update(Request $request, $id)
     {
-        // 
+        //
     }
 
     /**

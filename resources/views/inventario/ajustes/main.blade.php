@@ -18,10 +18,10 @@
     </section>
     <script type="text/template" id="add-ajuste-tpl">
         <div class="box-body">
-            <form method="POST" accept-charset="UTF-8" id="form-ajustes" data-toggle="validator"> 
-                <div class="row"> 
+            <form method="POST" accept-charset="UTF-8" id="form-ajustes" data-toggle="validator">
+                <div class="row">
                     <label for="ajuste1_sucursal" class="col-sm-1 control-label">Sucursal</label>
-                    <div class="form-group col-sm-3">
+                    <div class="form-group col-sm-4">
                         <select name="ajuste1_sucursal" id="ajuste1_sucursal" class="form-control select2-default change-sucursal-consecutive-koi-component" data-field="ajuste1_numero" data-document ="ajuste" data-wrapper="ajuste-create">
                         @foreach( App\Models\Base\Sucursal::getSucursales() as $key => $value)
                             <option  value="{{ $key }}" <%- ajuste1_sucursal == '{{ $key }}' ? 'selected': ''%>>{{ $value }}</option>
@@ -29,13 +29,13 @@
                         </select>
                     </div>
                     <label for="ajuste1_numero" class="col-sm-1 control-label">Número</label>
-                    <div class="form-group col-sm-1">     
+                    <div class="form-group col-sm-1">
                         <input id="ajuste1_numero" name="ajuste1_numero" class="form-control input-sm" type="number" min="1" value="<%- ajuste1_numero %>" required readonly>
                     </div>
                 </div>
-                <div class="row"> 
+                <div class="row">
                     <label for="ajuste1_tipoajuste" class="col-sm-1 control-label">Tipo</label>
-                    <div class="form-group col-sm-3">
+                    <div class="form-group col-sm-4">
                         <select name="ajuste1_tipoajuste" id="ajuste1_tipoajuste" class="form-control select2-default change-in-or-exit-koi-component">
                         @foreach( App\Models\Inventario\TipoAjuste::getTiposAjustes() as $key => $value)
                         <option  value="{{ $key }}" <%- ajuste1_tipoajuste == '{{ $key }}' ? 'selected': ''%>>{{ $value }}</option>
@@ -46,8 +46,8 @@
                         <label for="ajuste1_lote" class="col-sm-1 control-label">Lote</label>
                         <div class="form-group col-sm-2">
                             <input type="text" id="ajuste1_lote" name="ajuste1_lote" placeholder="Lote" class="input-toupper form-control" value="" required>
-                        </div> 
-                        
+                        </div>
+
                     </div>
                     <label for="ajuste1_fecha" class="col-sm-1 control-label">Fecha</label>
                     <div class="form-group col-sm-2">
@@ -61,12 +61,12 @@
                 </div>
                 <div class="row">
                     <label for="ajuste1_observaciones" class="col-sm-1 control-label">Observaciones</label>
-                    <div class="form-group col-md-10">
+                    <div class="form-group col-md-11">
                         <textarea id="ajuste1_observaciones" name="ajuste1_observaciones" class="form-control" rows="2" placeholder="Observaciones Ajustes"><%- ajuste1_observaciones %></textarea>
                     </div>
                 </div>
-          
-            </form>           
+
+            </form>
             <div class="row">
                 <div class="col-md-2 col-md-offset-4 col-sm-6 col-xs-6 text-left">
                     <a href="{{ route('ajustes.index') }}" class="btn btn-default btn-sm btn-block">{{ trans('app.cancel') }}</a>
@@ -75,7 +75,7 @@
                     <button type="button" class="btn btn-primary btn-sm btn-block submit-ajuste">{{ trans('app.save') }}</button>
                 </div>
             </div>
-            <br>    
+            <br>
             <div id="detalle-ajuste">
                 <!-- Render detailt -->
             </div>
@@ -107,7 +107,7 @@
                 </a>
             </td>
         <% } %>
-            
+
         <td><%- producto_serie %></td>
         <td><%- producto_nombre %></td>
         <td><%-(ajuste2_cantidad_entrada <= 0) ? '0' : ajuste2_cantidad_entrada %></td>
@@ -126,7 +126,7 @@
                                     <i class="fa fa-barcode"></i>
                                 </button>
                             </span>
-                            <input id="producto_serie" placeholder="Serie" class="form-control producto-koi-component" name="producto_serie" type="text" maxlength="15" data-wrapper="ajuste-create" data-office= "ajuste1_sucursal" data-name="producto_nombre" required <%- tipoajuste_tipo=='S' ? 'data-costo=ajuste2_costo': '' %> <%- tipoajuste_tipo=='S' ?  'data-ref=false' : 'data-ref=true' %>> 
+                            <input id="producto_serie" placeholder="Serie" class="form-control producto-koi-component" name="producto_serie" type="text" maxlength="15" data-wrapper="ajuste-create" data-office= "ajuste1_sucursal" data-name="producto_nombre" required <%- tipoajuste_tipo=='S' || tipoajuste_tipo=='R' ? 'data-costo=ajuste2_costo': '' %> <%- tipoajuste_tipo=='S' ?  'data-ref=false' : 'data-ref=true' %>>
                         </div>
                     </div>
                     <div class="col-sm-5 ">
@@ -135,7 +135,7 @@
                 </div>
                 <div class="row">
                     <% if(tipoajuste_tipo == 'R' || tipoajuste_tipo == 'E') { %>
-                        <div id="ajuste2_cantidad_entradas" class="col-md-1 col-md-offset-2">
+                        <div id="ajuste2_cantidad_entradas" class="col-md-1 <%- tipoajuste_tipo == 'R' ? 'col-md-offset-1' : 'col-md-offset-2' %>">
                         <label for="ajuste2_cantidad_entrada" class="control-label">Cantidad Entrada</label>
                             <input id="ajuste2_cantidad_entrada" name="ajuste2_cantidad_entrada" min="1" class="form-control input-sm <%- tipoajuste_tipo == 'R' ? 'koi-changed-reclacification':'' %>" type="number" required>
                         </div>

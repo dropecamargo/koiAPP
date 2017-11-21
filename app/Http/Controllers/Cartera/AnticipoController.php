@@ -34,9 +34,10 @@ class AnticipoController extends Controller
                 );
                 $query->join('tercero','anticipo1_tercero', '=', 'tercero.id');
                 $query->join('sucursal','anticipo1_sucursal', '=', 'sucursal.id');
+                $query->orderBy('anticipo1.id', 'desc');
                 return Datatables::of($query)->make(true);
             }
-            
+
             if ( $request->has('tercero') ) {
                 $anticipo = [];
                 $query->select('anticipo1.*','cuentabanco_nombre');
@@ -75,25 +76,25 @@ class AnticipoController extends Controller
             if ($anticipo1->isValid($data)) {
                 DB::beginTransaction();
                 try {
-                    // Recupero instancia de Documento  
+                    // Recupero instancia de Documento
                     $documento = Documentos::where('documentos_codigo' , Anticipo1::$default_document)->first();
                     if (!$documento instanceof Documentos) {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar documentos,por favor verifique la información ó por favor consulte al administrador.']);
                     }
-                    // Recupero instancia de CuentaBanco  
+                    // Recupero instancia de CuentaBanco
                     $cuentabanco = CuentaBanco::find($request->anticipo1_cuentas);
                     if(!$cuentabanco instanceof CuentaBanco) {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar la cuenta, verifique información ó por favor consulte al administrador.']);
                     }
-                    // Recupero instancia de Tercero(cliente)  
+                    // Recupero instancia de Tercero(cliente)
                     $tercero = Tercero::where('tercero_nit', $request->anticipo1_tercero)->first();
                     if(!$tercero instanceof Tercero) {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar cliente, verifique información ó por favor consulte al administrador.']);
-                    }  
-                    // Recupero instancia de Tercero  
+                    }
+                    // Recupero instancia de Tercero
                     $vendedor = Tercero::find($request->anticipo1_vendedor);
                     if(!$vendedor instanceof Tercero) {
                         DB::rollback();
@@ -104,7 +105,7 @@ class AnticipoController extends Controller
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => "{$vendedor->getName()} , no es vendedor, verifique información ó por favor consulte al administrador."]);
                     }
-                    // Recupero instancia de Sucursal  
+                    // Recupero instancia de Sucursal
                     $sucursal = Sucursal::find($request->anticipo1_sucursal);
                     if(!$sucursal instanceof Sucursal) {
                         DB::rollback();
@@ -118,19 +119,19 @@ class AnticipoController extends Controller
                     }
                     // consecutive
                     $consecutive = $regional->regional_anti + 1;
-                    
+
                     $anticipo1->fill($data);
-                    $anticipo1->anticipo1_sucursal = $sucursal->id;  
+                    $anticipo1->anticipo1_sucursal = $sucursal->id;
                     $anticipo1->anticipo1_numero = $consecutive;
-                    $anticipo1->anticipo1_tercero = $tercero->id;  
-                    $anticipo1->anticipo1_cuentas = $cuentabanco->id;  
-                    $anticipo1->anticipo1_vendedor = $vendedor->id;  
-                    $anticipo1->anticipo1_documentos = $documento->id;  
-                    $anticipo1->anticipo1_valor = $request->anticipo1_valor;  
+                    $anticipo1->anticipo1_tercero = $tercero->id;
+                    $anticipo1->anticipo1_cuentas = $cuentabanco->id;
+                    $anticipo1->anticipo1_vendedor = $vendedor->id;
+                    $anticipo1->anticipo1_documentos = $documento->id;
+                    $anticipo1->anticipo1_valor = $request->anticipo1_valor;
                     $anticipo1->anticipo1_saldo = $anticipo1->anticipo1_valor;
                     $anticipo1->anticipo1_usuario_elaboro = Auth::user()->id;
                     $anticipo1->anticipo1_fh_elaboro = date('Y-m-d H:m:s');
-                    $anticipo1->save();  
+                    $anticipo1->save();
 
                     // Anticipo2
                     foreach ($data['anticipo2'] as $value) {
@@ -190,7 +191,7 @@ class AnticipoController extends Controller
             }
             return response()->json(['success' => false, 'errors' => $anticipo1->errors]);
         }
-        abort(403);            
+        abort(403);
     }
 
     /**

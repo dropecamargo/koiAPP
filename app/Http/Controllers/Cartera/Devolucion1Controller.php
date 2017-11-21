@@ -32,6 +32,7 @@ class Devolucion1Controller extends Controller
             $query->join('tercero','devolucion1_tercero', '=', 'tercero.id');
             $query->join('sucursal','devolucion1_sucursal', '=', 'sucursal.id');
             $query->join('factura1','devolucion1_factura', '=', 'factura1.id');
+            $query->orderBy('devolucion1.id', 'desc');
             return Datatables::of($query)->make(true);
         }
         return view('cartera.devoluciones.index');
@@ -85,9 +86,9 @@ class Devolucion1Controller extends Controller
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar cliente, por favor verifique la información o consulte al administrador']);
                     }
-                    // Consecutive sucursal 
+                    // Consecutive sucursal
                     $consecutive = $sucursal->sucursal_devo + 1;
-                    
+
                     $devolucion1->fill($data);
                     $devolucion1->devolucion1_documentos = $documento->id;
                     $devolucion1->devolucion1_sucursal = $sucursal->id;
@@ -207,7 +208,7 @@ class Devolucion1Controller extends Controller
                 } catch (\Exception $e) {
                     DB::rollback();
                     Log::error($e->getMessage());
-                    return response()->json(['success' => false, 'errors' => trans('app.exception')]); 
+                    return response()->json(['success' => false, 'errors' => trans('app.exception')]);
                 }
             }
             return response()->json(['success' => false, 'errors' => $devolucion1->errors]);

@@ -30,6 +30,7 @@ class Ajustec1Controller extends Controller
                 AS tercero_nombre")
             );
             $query->join('tercero','ajustec1_tercero', '=', 'tercero.id');
+            $query->orderBy('ajustec1.id', 'desc');
             return Datatables::of($query)->make(true);
         }
         return view('cartera.ajustesc.index');
@@ -71,7 +72,7 @@ class Ajustec1Controller extends Controller
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar cliente, verifique información ó por favor consulte al administrador.']);
                     }
-                    
+
                     $sucursal = Sucursal::find($request->ajustec1_sucursal);
                     if(!$sucursal instanceof Sucursal) {
                         DB::rollback();
@@ -117,7 +118,7 @@ class Ajustec1Controller extends Controller
                         $ajustec2->ajustec2_ajustec1 = $ajustec->id;
                         $ajustec2->ajustec2_naturaleza = $item['ajustec2_naturaleza'];
                         $ajustec2->ajustec2_documentos_doc = $documentos->id;
-                        
+
                         switch ($documentos->documentos_codigo) {
                             case 'FACT':
                                 $tercero = Tercero::getTercero($item['ajustec2_tercero']);
@@ -135,7 +136,7 @@ class Ajustec1Controller extends Controller
                                     }
                                     $factura3->factura3_fecha_pago = date('Y-m-d');
                                     $factura3->save();
-                                    
+
                                     $ajustec2->ajustec2_id_doc = $factura3->id;
                                     $ajustec2->ajustec2_valor = $item['factura3_valor'];
                                 }
@@ -145,7 +146,7 @@ class Ajustec1Controller extends Controller
                                 $chdevuelto = ChDevuelto::find($item['chdevuelto_id']);
                                 if ( !$chdevuelto instanceof ChDevuelto ) {
                                     DB::rollback();
-                                    return response()->json(['success'=>false, 'errors'=>"No es posible recuperar cheque devuelto, por favor verifique ó consulte con el administrador."]);   
+                                    return response()->json(['success'=>false, 'errors'=>"No es posible recuperar cheque devuelto, por favor verifique ó consulte con el administrador."]);
                                 }
 
                                 if($item['ajustec2_naturaleza'] == 'D'){
@@ -162,19 +163,19 @@ class Ajustec1Controller extends Controller
                                 $anticipo = Anticipo1::find( $item['anticipo_id'] );
                                 if (!$anticipo instanceof Anticipo1) {
                                     DB::rollback();
-                                    return response()->json(['success'=>false, 'errors'=>"No es posible recuperar anticipo, por favor verifique ó consulte con el administrador."]); 
+                                    return response()->json(['success'=>false, 'errors'=>"No es posible recuperar anticipo, por favor verifique ó consulte con el administrador."]);
                                 }
                                 $anticipo->anticipo1_saldo = $anticipo->anticipo1_saldo <= 0 ? $anticipo->anticipo1_saldo + $item['ajustec2_valor'] : $anticipo->anticipo1_saldo - $item['ajustec2_valor'];
                                 $anticipo->save();
                                 $ajustec2->ajustec2_id_doc = $anticipo->id;
                                 $ajustec2->ajustec2_valor = $item['ajustec2_valor'];
-                            break;    
+                            break;
                             default:
                                 $tercero = Tercero::where('tercero_nit',$item['ajustec2_tercero'])->first();
                                 $ajustec2->ajustec2_valor = $item['ajustec2_valor'];
                             break;
                         }
-                        // Recupero instancia de Tercero 
+                        // Recupero instancia de Tercero
                         if(!$tercero instanceof Tercero){
                             DB::rollback();
                             return response()->json(['success'=>false, 'errors'=>'No es posible recuperar cliente, verifique información ó por favor consulte al administrador.']);

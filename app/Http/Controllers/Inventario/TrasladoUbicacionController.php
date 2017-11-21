@@ -22,9 +22,10 @@ class TrasladoUbicacionController extends Controller
     {
         if ($request->ajax()) {
             $query = TrasladoUbicacion1::query();
-            $query->select('trasladou1.id', 'trasladou1_numero', 'trasladou1_fecha', 'o.ubicacion_nombre as ubicacion_origen', 'd.ubicacion_nombre as ubicacion_destino');   
+            $query->select('trasladou1.id', 'trasladou1_numero', 'trasladou1_fecha', 'o.ubicacion_nombre as ubicacion_origen', 'd.ubicacion_nombre as ubicacion_destino');
             $query->leftJoin('ubicacion as o', 'trasladou1_origen', '=', 'o.id');
             $query->join('ubicacion as d', 'trasladou1_destino', '=', 'd.id');
+            $query->orderBy('trasladou1_fecha', 'desc');
             return Datatables::of($query)->make(true);
         }
         return view('inventario.trasladosubicaciones.index');
@@ -54,14 +55,14 @@ class TrasladoUbicacionController extends Controller
             if ($trasladou->isValid($data)) {
                 DB::beginTransaction();
                 try {
-                    
+
                     //Validar Documentos
                     $documento = Documentos::where('documentos_codigo', TrasladoUbicacion1::$default_document)->first();
                     if(!$documento instanceof Documentos) {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar documentos,por favor verifique la información ó por favor consulte al administrador.']);
                     }
-                    
+
                     // Recuperar
                     $sucursal = Sucursal::find($request->trasladou1_sucursal);
                     if(!$sucursal instanceof Sucursal) {
@@ -104,7 +105,7 @@ class TrasladoUbicacionController extends Controller
                     $trasladou->trasladou1_origen = $origen;
                     $trasladou->trasladou1_destino = $destino->id;
                     $trasladou->trasladou1_usuario_elaboro = Auth::user()->id;
-                    $trasladou->trasladou1_fh_elaboro = date('Y-m-d H:m:s'); 
+                    $trasladou->trasladou1_fh_elaboro = date('Y-m-d H:m:s');
                     $trasladou->save();
 
                     foreach ($data['detalle'] as $item) {
@@ -165,14 +166,14 @@ class TrasladoUbicacionController extends Controller
                                 DB::rollback();
                                 return response()->json(['success' => false,'errors '=> $inventario]);
                             }
-                        //Maneja Metros   
+                        //Maneja Metros
                         }else if($producto->producto_metrado == true){
                             $items = isset($item['items']) ? $item['items'] : null;
                             foreach ($items as $key => $valueItem) {
                                 if ($valueItem > 0) {
-                                    
+
                                      list($text, $rollo) = explode("_", $key);
-                                    // Individualiza en rollo --- $rollo hace las veces de lote 
+                                    // Individualiza en rollo --- $rollo hace las veces de lote
                                     $rollo = Rollo::actualizar($producto, $sucursal->id, 'S', $rollo, $trasladou->trasladou1_fecha, $valueItem, $origen);
                                     if (!$rollo->success) {
                                         DB::rollback();
@@ -252,7 +253,7 @@ class TrasladoUbicacionController extends Controller
                     // Update consecutive sucursal_trau in Sucursal
                     $sucursal->sucursal_trau = $consecutive;
                     $sucursal->save();
-                    
+
                     // Commit Transaction
                     DB::commit();
                     // DB::rollback();
@@ -275,7 +276,7 @@ class TrasladoUbicacionController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show(Request $request, $id)
-    {   
+    {
         $trasladou = TrasladoUbicacion1::getTrasladoUbicacion($id);
         if(!$trasladou instanceof TrasladoUbicacion1){
             abort(404);

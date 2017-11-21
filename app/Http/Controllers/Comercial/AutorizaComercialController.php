@@ -18,7 +18,7 @@ class AutorizaComercialController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
     }
@@ -47,7 +47,7 @@ class AutorizaComercialController extends Controller
             if ($authComercial->isValid($data)) {
                 DB::beginTransaction();
                 try {
-                    
+
                     // Pedido
                     $pedidoc1 = Pedidoc1::findOrFail($request->id);
                     if (!$pedidoc1 instanceof Pedidoc1) {
@@ -55,14 +55,14 @@ class AutorizaComercialController extends Controller
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar pedido comercial, por favor verifique información o consulte al administrador']);
                     }
 
-                    // Pedido Detalle 
+                    // Pedido Detalle
                     $query = Pedidoc2::query();
                     $query->select('pedidoc2.*', 'subcategoria_margen_nivel1', 'subcategoria_margen_nivel2', 'subcategoria_margen_nivel3');
                     $query->join('subcategoria', 'pedidoc2_subcategoria', '=', 'subcategoria.id');
                     $query->where('pedidoc2_pedidoc1', $pedidoc1->id);
                     $pedidoc2 = $query->get();
 
-                    // Number autorizacion 
+                    // Number autorizacion
                     $number = uniqid();
 
                     // Autorizacion comercial
@@ -82,15 +82,15 @@ class AutorizaComercialController extends Controller
                     }
 
                     // Update pedido1
-                    $pedidoc1->pedidoc1_autorizacion_co = $number;           
+                    $pedidoc1->pedidoc1_autorizacion_co = $number;
                     $pedidoc1->save();
-                    
+
                     DB::commit();
                     return response()->json(['success' => true, 'msg' => 'Pedido comercial anulado con exito.', 'id' => $request->id]);
                 } catch (\Exception $e) {
                     DB::rollback();
                     Log::error($e->getMessage());
-                    return response()->json(['success' => false, 'errors' => trans('app.exception')]); 
+                    return response()->json(['success' => false, 'errors' => trans('app.exception')]);
                 }
             }
             return response()->json(['success' => false, 'errors' => $authComercial->errors]);

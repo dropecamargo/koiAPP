@@ -30,6 +30,7 @@ class AjustepController extends Controller
                 AS tercero_nombre")
             );
             $query->join('tercero','ajustep1_tercero', '=', 'tercero.id');
+            $query->orderBy('ajustep1.id', 'desc');
             return Datatables::of($query)->make(true);
         }
         return view('tesoreria.ajustesp.index');
@@ -71,7 +72,7 @@ class AjustepController extends Controller
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar cliente, verifique información ó por favor consulte al administrador.']);
                     }
-                    
+
                     $regional = Regional::find($request->ajustep1_regional);
                     if(!$regional instanceof Regional) {
                         DB::rollback();
@@ -99,7 +100,7 @@ class AjustepController extends Controller
                     $ajustep->save();
 
                     $detalle = isset($data['detalle']) ? $data['detalle'] : null;
-                    foreach ($detalle as $item) 
+                    foreach ($detalle as $item)
                     {
                         // Recupero instancia de Documentos
                         $documentos = Documentos::find($item['ajustep2_documentos_doc']);
@@ -108,7 +109,7 @@ class AjustepController extends Controller
                             return response()->json(['success'=>false, 'errors'=>'No es posible recuperar documento, verifique información ó por favor consulte al administrador.']);
                         }
                         $tercero = Tercero::getTercero($item['ajustep2_tercero']);
-                        // Recupero instancia de Tercero 
+                        // Recupero instancia de Tercero
                         if(!$tercero instanceof Tercero){
                             DB::rollback();
                             return response()->json(['success'=>false, 'errors'=>'No es posible recuperar cliente, verifique información ó por favor consulte al administrador.']);
