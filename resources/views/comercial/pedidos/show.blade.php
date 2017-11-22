@@ -103,7 +103,7 @@
             			<div>{{ $pedidoComercial->pedidoc1_observaciones }}</div>
             		</div>
             	</div>
-            	<div id="" class="box box-success">
+            	<div class="box box-success">
 		            <div class="table-responsive no-padding">
 		                <table id="browse-detalle-pedidoc-list" class="table table-bordered" cellspacing="0">
 		                    <thead>
@@ -133,6 +133,23 @@
 		                </table>
             		</div>
             	</div>
+                <div class="box box-success">
+                    <div class="table table-responsive no-padding">
+                        <table id="browse-detalle-authorizations-list" class="table table-bordered" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th width="5%">Item</th>
+                                    <th width="60%">Observación</th>
+                                    <th width="20%">Usuario</th>
+                                    <th width="15%">Fecha</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{-- Render content authorizations--}}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
             <div class="box-footer with-border">
                 <div class="row">

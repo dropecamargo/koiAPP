@@ -1987,3 +1987,9 @@
     <td><%- window.Misc.currency(factura2_subtotal) %></td>
 </script>
 
+<script type="text/template" id="add-authcommercial-item-tpl">
+    <td><%- item %></td>
+    <td><%- observaciones %></td>
+    <td><%- user %></td>
+    <td><%- fecha %></td>
+</script>

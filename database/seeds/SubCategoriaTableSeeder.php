@@ -16,7 +16,8 @@ class SubCategoriaTableSeeder extends Seeder
             'subcategoria_nombre' => 'S. SUBCATEGORIA',
             'subcategoria_margen_nivel1' => '10',
             'subcategoria_margen_nivel2' => '20',
-        	'subcategoria_margen_nivel3' => '30',
+            'subcategoria_margen_nivel3' => '30',
+        	'subcategoria_categoria' => 1,
         	'subcategoria_activo' => true
     	]);
     }

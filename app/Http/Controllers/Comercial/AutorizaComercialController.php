@@ -20,7 +20,18 @@ class AutorizaComercialController extends Controller
      */
     public function index(Request $request)
     {
-        //
+        if ($request->ajax()){
+            $authorization = [];
+
+            $query = AutorizaComercial::query();
+            $query->select('autorizaco.id as item','autorizaco_observaciones as observaciones', 'username as user', 'autorizaco_fh_aprobo as fecha');
+            $query->join('pedidoc2', 'autorizaco_pedidoc2', '=', 'pedidoc2.id');
+            $query->join('tercero', 'autorizaco_usuario_aprobo', '=', 'tercero.id');
+            $query->where('pedidoc2_pedidoc1', $request->id);
+            $authorization = $query->get();
+            return response()->json($authorization);
+        }
+        abort(404);
     }
 
     /**

@@ -28,6 +28,7 @@ app || (app = {});
             // Model exist
             if( this.model.id != undefined ) {
                 this.detallePedidoc = new app.PedidocDetalleCollection();
+                this.authorizationList = new app.AuthorizationComercialList();
                 
                 // Reference views
                 this.referenceViews();
@@ -46,6 +47,18 @@ app || (app = {});
                     edit: false,
                     dataFilter: {
                         id: this.model.get('id')
+                    }
+                }
+            });
+
+            // Authorization commercial list
+            this.authorizationListView = new app.AuthorizationComercialView({
+                collection: this.authorizationList,
+                parameters: {
+                    wrapper: this.el,
+                    edit: false,
+                    dataFilter: {
+                        pedido: this.model.get('id')
                     }
                 }
             });

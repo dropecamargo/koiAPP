@@ -176,9 +176,14 @@ class ModulosTableSeeder extends Seeder
             'nivel2' => 1
         ]);
         Modulo::create([
-            'display_name' => 'Referencias',
+            'display_name' => 'Reportes',
             'nivel1' => 2,
             'nivel2' => 2
+        ]);
+        Modulo::create([
+            'display_name' => 'Referencias',
+            'nivel1' => 2,
+            'nivel2' => 3
         ]);
 
         // Modulo
@@ -245,69 +250,83 @@ class ModulosTableSeeder extends Seeder
             'nivel2' => 1,
             'nivel3' => 9
         ]);
-
+        // Reportes
+        Modulo::create([
+            'name' => 'rcarteraedades',
+            'display_name' => 'Cartera edad',
+            'nivel1' => 2,
+            'nivel2' => 2,
+            'nivel3' => 1
+        ]);
+        Modulo::create([
+            'name' => 'rhistorialclientes',
+            'display_name' => 'Historial clientes',
+            'nivel1' => 2,
+            'nivel2' => 2,
+            'nivel3' => 2
+        ]);
         // Referencia
         Modulo::create([
             'name' => 'autorizacionesca',
             'display_name' => 'Autorizacion de cartera',
             'nivel1' => 2,
-            'nivel2' => 2,
+            'nivel2' => 3,
             'nivel3' => 1
         ]);
         Modulo::create([
             'name' => 'bancos',
             'display_name' => 'Bancos',
             'nivel1' => 2,
-            'nivel2' => 2,
+            'nivel2' => 3,
             'nivel3' => 2
         ]);
         Modulo::create([
             'name' => 'causas',
             'display_name' => 'Causas',
             'nivel1' => 2,
-            'nivel2' => 2,
+            'nivel2' => 3,
             'nivel3' => 3
         ]);
         Modulo::create([
             'name' => 'cuentabancos',
             'display_name' => 'Cuentas de banco',
             'nivel1' => 2,
-            'nivel2' => 2,
+            'nivel2' => 3,
             'nivel3' => 4
         ]);
         Modulo::create([
             'name' => 'conceptonotas',
             'display_name' => 'Concepto de nota',
             'nivel1' => 2,
-            'nivel2' => 2,
+            'nivel2' => 3,
             'nivel3' => 5
         ]);
         Modulo::create([
             'name' => 'conceptocobros',
             'display_name' => 'Concepto cobro',
             'nivel1' => 2,
-            'nivel2' => 2,
+            'nivel2' => 3,
             'nivel3' => 6
         ]);
         Modulo::create([
             'name' => 'conceptosajustec',
             'display_name' => 'Concepto ajuste de cartera',
             'nivel1' => 2,
-            'nivel2' => 2,
+            'nivel2' => 3,
             'nivel3' => 7
         ]);
         Modulo::create([
             'name' => 'conceptosrc',
             'display_name' => 'Concepto recibo de caja',
             'nivel1' => 2,
-            'nivel2' => 2,
+            'nivel2' => 3,
             'nivel3' => 8
         ]);
         Modulo::create([
             'name' => 'mediopagos',
             'display_name' => 'Medios de pago',
             'nivel1' => 2,
-            'nivel2' => 2,
+            'nivel2' => 3,
             'nivel3' => 9
         ]);
 
@@ -318,9 +337,14 @@ class ModulosTableSeeder extends Seeder
         	'nivel2' => 1
     	]);
         Modulo::create([
-            'display_name' => 'Referencias',
+            'display_name' => 'Reportes',
             'nivel1' => 3,
             'nivel2' => 2
+        ]);
+        Modulo::create([
+            'display_name' => 'Referencias',
+            'nivel1' => 3,
+            'nivel2' => 3
         ]);
         // Modulos
         Modulo::create([
@@ -344,12 +368,20 @@ class ModulosTableSeeder extends Seeder
             'nivel2' => 1,
             'nivel3' => 3
         ]);
+        // Reportes
+        Modulo::create([
+            'name' => 'rsabanaventascostos',
+            'display_name' => 'Sábana de ventas',
+            'nivel1' => 3,
+            'nivel2' => 2,
+            'nivel3' => 1
+        ]);
         // Referencias
         Modulo::create([
             'name' => 'conceptoscomercial',
             'display_name' => 'Concepto comercial',
             'nivel1' => 3,
-            'nivel2' => 2,
+            'nivel2' => 3,
             'nivel3' => 1
         ]);
     	// Contabilidad
@@ -372,13 +404,26 @@ class ModulosTableSeeder extends Seeder
 
     	//Modulos
         Modulo::create([
-            'name' => 'asientos',
-            'display_name' => 'Asientos',
+            'name' => 'activosfijos',
+            'display_name' => 'Activos fijos',
             'nivel1' => 4,
             'nivel2' => 1,
             'nivel3' => 1
         ]);
-
+        Modulo::create([
+            'name' => 'asientos',
+            'display_name' => 'Asientos',
+            'nivel1' => 4,
+            'nivel2' => 1,
+            'nivel3' => 2
+        ]);
+        Modulo::create([
+            'name' => 'asientosnif',
+            'display_name' => 'Asientos NIF',
+            'nivel1' => 4,
+            'nivel2' => 1,
+            'nivel3' => 3
+        ]);
     	//Reportes
         Modulo::create([
             'name' => 'rplancuentas',
@@ -425,11 +470,18 @@ class ModulosTableSeeder extends Seeder
             'nivel3' => 4
         ]);
         Modulo::create([
+            'name' => 'plancuentasnif',
+            'display_name' => 'Plan de cuentas NIF',
+            'nivel1' => 4,
+            'nivel2' => 3,
+            'nivel3' => 5
+        ]);
+        Modulo::create([
             'name' => 'tipoactivos',
             'display_name' => 'Tipo activos',
             'nivel1' => 4,
             'nivel2' => 3,
-            'nivel3' => 5
+            'nivel3' => 6
         ]);
 
         //Inventario
@@ -439,9 +491,14 @@ class ModulosTableSeeder extends Seeder
             'nivel2' => 1
         ]);
         Modulo::create([
-            'display_name' => 'Referencias',
+            'display_name' => 'Reportes',
             'nivel1' => 5,
             'nivel2' => 2
+        ]);
+        Modulo::create([
+            'display_name' => 'Referencias',
+            'nivel1' => 5,
+            'nivel2' => 3
         ]);
 
         //Modulos
@@ -473,83 +530,111 @@ class ModulosTableSeeder extends Seeder
             'nivel2' => 1,
             'nivel3' => 4
         ]);
-
+        Modulo::create([
+            'name' => 'trasladosubicaciones',
+            'display_name' => 'Traslados ubicaciones',
+            'nivel1' => 5,
+            'nivel2' => 1,
+            'nivel3' => 5
+        ]);
+        // Reportes
+        Modulo::create([
+            'name' => 'ractivosfijos',
+            'display_name' => 'Activos fijos',
+            'nivel1' => 5,
+            'nivel2' => 2,
+            'nivel3' => 1
+        ]);
+        Modulo::create([
+            'name' => 'rexistencias',
+            'display_name' => 'Existencias',
+            'nivel1' => 5,
+            'nivel2' => 2,
+            'nivel3' => 2
+        ]);
+        Modulo::create([
+            'name' => 'rmovimientosproductos',
+            'display_name' => 'Movimiento de producto',
+            'nivel1' => 5,
+            'nivel2' => 2,
+            'nivel3' => 3
+        ]);
         //Referencia
         Modulo::create([
             'name' => 'categorias',
             'display_name' => 'Categorias',
             'nivel1' => 5,
-            'nivel2' => 2,
+            'nivel2' => 3,
             'nivel3' => 1
         ]);
         Modulo::create([
             'name' => 'impuestos',
             'display_name' => 'Impuestos',
             'nivel1' => 5,
-            'nivel2' => 2,
+            'nivel2' => 3,
             'nivel3' => 2
         ]);
         Modulo::create([
             'name' => 'lineas',
             'display_name' => 'Lineas',
             'nivel1' => 5,
-            'nivel2' => 2,
+            'nivel2' => 3,
             'nivel3' => 3
         ]);
         Modulo::create([
             'name' => 'marcas',
             'display_name' => 'Marcas',
             'nivel1' => 5,
-            'nivel2' => 2,
+            'nivel2' => 3,
             'nivel3' => 4
         ]);
         Modulo::create([
             'name' => 'modelos',
             'display_name' => 'Modelos',
             'nivel1' => 5,
-            'nivel2' => 2,
+            'nivel2' => 3,
             'nivel3' => 5
         ]);
         Modulo::create([
             'name' => 'servicios',
             'display_name' => 'Servicios',
             'nivel1' => 5,
-            'nivel2' => 2,
+            'nivel2' => 3,
             'nivel3' => 6
         ]);
         Modulo::create([
             'name' => 'subcategorias',
             'display_name' => 'Subcategorias',
             'nivel1' => 5,
-            'nivel2' => 2,
+            'nivel2' => 3,
             'nivel3' => 7
         ]);
         Modulo::create([
             'name' => 'tiposajuste',
             'display_name' => 'Tipo ajuste',
             'nivel1' => 5,
-            'nivel2' => 2,
+            'nivel2' => 3,
             'nivel3' => 8
         ]);
         Modulo::create([
             'name' => 'tipostraslados',
             'display_name' => 'Tipo de traslado',
             'nivel1' => 5,
-            'nivel2' => 2,
+            'nivel2' => 3,
             'nivel3' => 9
         ]);
         Modulo::create([
             'name' => 'unidades',
             'display_name' => 'Unidades',
             'nivel1' => 5,
-            'nivel2' => 2,
+            'nivel2' => 3,
             'nivel3' => 10
         ]);
         Modulo::create([
             'name' => 'unidadesnegocio',
             'display_name' => 'Unidades de negocio',
             'nivel1' => 5,
-            'nivel2' => 2,
+            'nivel2' => 3,
             'nivel3' => 11
         ]);
 
@@ -561,9 +646,15 @@ class ModulosTableSeeder extends Seeder
         ]);
 
         Modulo::create([
-            'display_name' => 'Referencias',
+            'display_name' => 'Reportes',
             'nivel1' => 6,
             'nivel2' => 2
+        ]);
+
+        Modulo::create([
+            'display_name' => 'Referencias',
+            'nivel1' => 6,
+            'nivel2' => 3
         ]);
 
         //Modulos
@@ -588,48 +679,55 @@ class ModulosTableSeeder extends Seeder
             'nivel2' => 1,
             'nivel3' => 3
         ]);
-
+        // Reportes
+        Modulo::create([
+            'name' => 'rordenesabiertas',
+            'display_name' => 'Ordenes abiertas',
+            'nivel1' => 6,
+            'nivel2' => 2,
+            'nivel3' => 1
+        ]);
         //Referencias
         Modulo::create([
             'name' => 'conceptostecnico',
             'display_name' => 'Concepto tecnico',
             'nivel1' => 6,
-            'nivel2' => 2,
+            'nivel2' => 3,
             'nivel3' => 1
         ]);
         Modulo::create([
             'name' => 'danos',
             'display_name' => 'Daños',
             'nivel1' => 6,
-            'nivel2' => 2,
+            'nivel2' => 3,
             'nivel3' => 2
         ]);
         Modulo::create([
             'name' => 'prioridades',
             'display_name' => 'Prioridades',
             'nivel1' => 6,
-            'nivel2' => 2,
+            'nivel2' => 3,
             'nivel3' => 3
         ]);
         Modulo::create([
             'name' => 'sitios',
             'display_name' => 'Sitios de atencion',
             'nivel1' => 6,
-            'nivel2' => 2,
+            'nivel2' => 3,
             'nivel3' => 4
         ]);
         Modulo::create([
             'name' => 'solicitantes',
             'display_name' => 'Solicitantes',
             'nivel1' => 6,
-            'nivel2' => 2,
+            'nivel2' => 3,
             'nivel3' => 5
         ]);
         Modulo::create([
             'name' => 'tiposorden',
             'display_name' => 'Tipo de Orden',
             'nivel1' => 6,
-            'nivel2' => 2,
+            'nivel2' => 3,
             'nivel3' => 6
         ]);
 
@@ -640,9 +738,14 @@ class ModulosTableSeeder extends Seeder
             'nivel2' => 1
         ]);
         Modulo::create([
-            'display_name' => 'Referencias',
+            'display_name' => 'Reportes',
             'nivel1' => 7,
             'nivel2' => 2
+        ]);
+        Modulo::create([
+            'display_name' => 'Referencias',
+            'nivel1' => 7,
+            'nivel2' => 3
         ]);
         //Modulos
         Modulo::create([
@@ -653,41 +756,70 @@ class ModulosTableSeeder extends Seeder
             'nivel3' => 1
         ]);
         Modulo::create([
-            'name' => 'facturasp',
-            'display_name' => 'Facturas proveedor',
+            'name' => 'egresos',
+            'display_name' => 'Egresos',
             'nivel1' => 7,
             'nivel2' => 1,
             'nivel3' => 2
         ]);
+        Modulo::create([
+            'name' => 'facturasp',
+            'display_name' => 'Facturas proveedor',
+            'nivel1' => 7,
+            'nivel2' => 1,
+            'nivel3' => 3
+        ]);
+        // Reportes
+        Modulo::create([
+            'name' => 'rcarteraedadesproveedores',
+            'display_name' => 'Cartera proveedor',
+            'nivel1' => 7,
+            'nivel2' => 2,
+            'nivel3' => 1
+        ]);
+        Modulo::create([
+            'name' => 'rhistorialproveedores',
+            'display_name' => 'Historial proveedor',
+            'nivel1' => 7,
+            'nivel2' => 2,
+            'nivel3' => 2
+        ]);
+
         //Referencias
         Modulo::create([
             'name' => 'conceptosajustep',
             'display_name' => 'Concepto ajuste proveedor',
             'nivel1' => 7,
-            'nivel2' => 2,
+            'nivel2' => 3,
             'nivel3' => 1
         ]);
         Modulo::create([
             'name' => 'retefuentes',
             'display_name' => 'Retención de fuente',
             'nivel1' => 7,
-            'nivel2' => 2,
+            'nivel2' => 3,
             'nivel3' => 2
         ]);
         Modulo::create([
             'name' => 'tipogastos',
             'display_name' => 'Tipo de gasto',
             'nivel1' => 7,
-            'nivel2' => 2,
+            'nivel2' => 3,
             'nivel3' => 3
+        ]);
+        Modulo::create([
+            'name' => 'tipopagos',
+            'display_name' => 'Tipo de pago',
+            'nivel1' => 7,
+            'nivel2' => 3,
+            'nivel3' => 4
         ]);
         Modulo::create([
             'name' => 'tipoproveedores',
             'display_name' => 'Tipo de proveedor',
             'nivel1' => 7,
-            'nivel2' => 2,
-            'nivel3' => 4
+            'nivel2' => 3,
+            'nivel3' => 5
         ]);
-
     }
 }
