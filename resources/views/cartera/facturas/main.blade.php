@@ -22,7 +22,7 @@
             <form method="POST" accept-charset="UTF-8" id="form-factura1" data-toggle="validator">
                 <div class="row">
                     <label for="factura1_puntoventa" class="col-sm-1 col-md-1 control-label">Punto Venta</label>
-                    <div class="form-group col-sm-2">
+                    <div class="form-group col-sm-3">
                         <select name="factura1_puntoventa" id="factura1_puntoventa" class="form-control select2-default change-puntoventa-consecutive-koi-component" data-wrapper="factura-create" data-field="factura1_numero" >
                             @foreach( App\Models\Base\PuntoVenta::getPuntosVenta() as $key => $value)
                             <option  value="{{ $key }}" <%- factura1_puntoventa == '{{ $key }}' ? 'selected': ''%>>{{ $value }}</option>
@@ -30,7 +30,7 @@
                         </select>
                     </div>
                     <label for="factura1_numero" class="col-sm-1 col-md-1 control-label">Número</label>
-                    <div class="form-group col-sm-1 col-md-1">     
+                    <div class="form-group col-sm-1 col-md-1">
                         <input id="factura1_numero" name="factura1_numero" class="form-control input-sm" type="number" min="1" value="<%- factura1_numero %>" required readonly>
                     </div>
                     <label for="factura1_sucursal" class="col-sm-1 col-md-1 control-label">Sucursal</label>
@@ -50,7 +50,7 @@
                 </div>
                 <div class="row">
                     <label for="factura1_tercero" class="col-sm-1 col-md-1 control-label">Cliente</label>
-                    <div class="form-group col-sm-2">
+                    <div class="form-group col-sm-3">
                         <div class="input-group input-group-sm">
                             <span class="input-group-btn">
                                 <button type="button" class="btn btn-default btn-flat btn-koi-search-tercero-component-table" data-field="factura1_tercero">
@@ -62,14 +62,14 @@
                     </div>
                     <div class="col-sm-4 col-xs-10">
                         <input id="factura1_terecero_nombre" name="factura1_terecero_nombre" placeholder="Nombre cliente" class="form-control input-sm" type="text" maxlength="15" value="<%- tercero_nombre %>" readonly required>
-                    </div>  
+                    </div>
                     <div class="col-sm-4 col-xs-10">
                         <input id="tercero_direccion" name="tercero_direccion" placeholder="Dirección cliente" class="form-control input-sm" type="text" readonly required>
                     </div>
                 </div>
                 <div class="row">
                     <label for="tcontacto_nombre" class="col-sm-1 col-md-1 control-label">Contacto</label>
-                    <div class="form-group col-sm-4">
+                    <div class="form-group col-sm-5">
                         <div class="input-group input-group-sm">
                             <span class="input-group-btn">
                                 <button type="button" class="btn btn-default btn-flat btn-koi-search-contacto-component-table" data-field="factura1_tercerocontacto" data-name="tcontacto_nombre" data-address="tcontacto_direccion" id="btn-add-contact">
@@ -79,7 +79,7 @@
                             <input id="factura1_tercerocontacto" name="factura1_tercerocontacto" type="hidden" value="<%- factura1_tercerocontacto %>">
                             <input id="tcontacto_nombre" placeholder="Contacto" class="form-control" name="tcontacto_nombre" type="text" value="<%- contacto_nombre %>" readonly required>
                         </div>
-                    </div>  
+                    </div>
                     <label for="tcontacto_direccion" class="col-sm-2 control-label"> Dirección de despacho</label>
                     <div class="col-sm-4 col-xs-10">
                         <input id="tcontacto_direccion" name="tcontacto_direccion" placeholder="Direccion contacto" class="form-control input-sm" type="text" readonly required>
@@ -87,20 +87,20 @@
                 </div>
                 <div class="row">
                     <label for="factura1_pedido" class="col-sm-1 col-md-1 control-label">N° Pedido</label>
-                    <div class="form-group col-sm-1">
+                    <div class="form-group col-sm-2">
                         <input name="factura1_pedido" id="factura1_pedido" class="form-control" readonly="" required>
-                    </div>  
+                    </div>
                     <label for="factura1_formapago" class="col-sm-1 col-md-1 control-label">Pago</label>
                     <div class="form-group col-sm-1">
                         <input name="factura1_formapago" id="factura1_formapago" class="form-control" required>
-                    </div>                                           
+                    </div>
                     <label for="factura1_plazo" class="col-sm-1 col-md-1 control-label">Plazo</label>
-                    <div class="form-group col-sm-1 col-md-1">     
+                    <div class="form-group col-sm-1 col-md-1">
                         <input id="factura1_plazo" name="factura1_plazo" class="form-control input-sm" type="number" min="0"  required>
                     </div>
 
                     <label for="factura1_cuotas" class="col-sm-1 col-md-1 control-label">Cuotas</label>
-                    <div class="form-group col-sm-1 col-md-1">     
+                    <div class="form-group col-sm-1 col-md-1">
                         <input id="factura1_cuotas" name="factura1_cuotas" class="form-control input-sm" type="number" min="0" required>
                     </div>
 
@@ -116,13 +116,13 @@
                 </div>
                 <div class="row">
                     <label for="factura1_vendedor" class="col-sm-1 col-md-1 control-label">Vendedor</label>
-                    <div class="form-group col-sm-4">
+                    <div class="form-group col-sm-6">
                         <select name="factura1_vendedor" id="factura1_vendedor" class="form-control" placeholder="Nombre Vendedor"></select>
                     </div>
                 </div>
                 <div class="row">
                     <label for="factura1_observaciones" class="col-sm-1 col-md-1 control-label">Observaciones</label>
-                    <div class="form-group col-md-10">
+                    <div class="form-group col-md-11">
                         <textarea id="factura1_observaciones" name="factura1_observaciones" class="form-control" rows="2" placeholder="Observaciones"><%- factura1_observaciones %></textarea>
                     </div>
                 </div>
