@@ -20,8 +20,9 @@
 				<div class="box-body">
 					<div class="row">
 						<div class="form-group col-md-4 col-md-offset-4">
-							<label for="sub_categoria" class="control-label">Sub categoria</label>
-							<select name="sub_categoria" id="sub_categoria" class="form-control select2-default-clear" data-placeholder="Todas">
+							<label for="filter_subcategoria" class="control-label">Sub categoria</label>
+							<select name="filter_subcategoria[]" id="filter_subcategoria" class="form-control select2-default" multiple="multiple">
+                                <option value="0">TODAS</option>
 								@foreach( App\Models\Inventario\SubCategoria::getSubCategorias() as $key => $value)
 								    <option value="{{ $key }}">{{ $value }}</option>
 								@endforeach
@@ -30,8 +31,9 @@
 					</div>
 					<div class="row">
 	                    <div class="form-group col-md-4 col-md-offset-4">
-						<label for="filter_sucursal" class="control-label">Sucursales</label>
-							<select name="filter_sucursal[ ]" class="form-control select2-default" multiple="multiple" data-placeholder="Todas">
+                            <label for="filter_sucursal" class="control-label">Sucursales</label>
+							<select name="filter_sucursal[ ]" class="form-control select2-default" multiple="multiple">
+                                <option value="0">TODAS</option>
 								@foreach( App\Models\Base\Sucursal::getSucursales() as $key => $value)
 		                        	<option value="{{ $key }}"> {{ $value }}</option>
 								@endforeach
@@ -52,6 +54,15 @@
 					</div>
 				</div>
 			</form>
+            @if (count($errors) > 0)
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
 		</div>
 	</section>
 @stop

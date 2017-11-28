@@ -24,7 +24,7 @@ class Prodbode extends Model
 	    return $query->first();
     }
 
-    public  static function actualizar(Producto $producto, $sucursal, $tipo, $cantidad, $ubicacion)
+    public static function actualizar(Producto $producto, $sucursal, $tipo, $cantidad, $ubicacion)
  	{
         // Validar sucursal
         $sucursal = Sucursal::find($sucursal);
@@ -87,5 +87,14 @@ class Prodbode extends Model
 		$prodbode->save();
 
         return $prodbode;
+    }
+    public static function reportExist( $sucursal, $producto)
+    {
+        $query = Prodbode::query();
+        $query->select('prodbode_serie', 'prodbode_sucursal','prodbode_cantidad as cantidad', 'prodbode_metros as metros' );
+        $query->where('prodbode_serie', $producto);
+        $query->where('prodbode_sucursal', $sucursal);
+        $cantidades = $query->get();
+        return $cantidades;
     }
 }
