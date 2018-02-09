@@ -1,6 +1,6 @@
 <header class="main-header">
     <a href="{{ route('dashboard') }}" class="logo">
-        <span class="logo-mini"><img src="{{ asset(config('koi.app.image.logo')) }}" width="40" height="40"/></span>
+        <span class="logo-mini">KOI</span>
         {{-- logo for regular state and mobile devices --}}
         <span class="logo-lg"><b>{{ config('koi.app.name') }}</b></span>
     </a>
