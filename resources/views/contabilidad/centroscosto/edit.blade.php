@@ -1,18 +1,18 @@
 @extends('contabilidad.centroscosto.main')
 
-@section('breadcrumb')	
+@section('breadcrumb')
 	<li><a href="{{ route('centroscosto.index') }}">Centros de costo</a></li>
 	<li><a href="{{ route('centroscosto.show', ['centroscosto' => $centrocosto->id]) }}">{{ $centrocosto->centrocosto_codigo }}</a></li>
 	<li class="active">Editar</li>
 @stop
 
 @section('module')
-	<div class="box box-success" id="centrocosto-create">
-	 	{!! Form::open(['id' => 'form-centrocosto', 'data-toggle' => 'validator']) !!}			
+	<div class="box box-primary" id="centrocosto-create">
+	 	{!! Form::open(['id' => 'form-centrocosto', 'data-toggle' => 'validator']) !!}
 			<div class="box-body" id="render-form-centrocosto">
 				{{-- Render form centrocosto --}}
 			</div>
-			
+
 	        <div class="box-footer with-border">
 	        	<div class="row">
 					<div class="col-md-2 col-md-offset-4 col-sm-6 col-xs-6 text-left">

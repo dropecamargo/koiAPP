@@ -7,12 +7,12 @@
 @stop
 
 @section('module')
-	<div class="box box-success" id="folder-create">
+	<div class="box box-primary" id="folder-create">
 		{!! Form::open(['id' => 'form-folder', 'data-toggle' => 'validator']) !!}
 			<div class="box-body" id="render-form-folder">
 				{{-- Render form folders --}}
 			</div>
-			
+
 	        <div class="box-footer with-border">
 	        	<div class="row">
 					<div class="col-md-2 col-md-offset-4 col-sm-6 col-xs-6 text-left">

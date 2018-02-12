@@ -28,7 +28,7 @@
                     {!! Form::open(['id' => 'form-causal-choise', 'data-toggle' => 'validator']) !!}
                         <div class="modal-body">
                             <div class="content-modal">
-                                
+
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -54,12 +54,12 @@
                         </select>
                     </div>
                     <label for="chposfechado1_numero" class="col-sm-1 col-md-1 control-label">Número</label>
-                    <div class="form-group col-sm-1 col-md-1">     
+                    <div class="form-group col-sm-1 col-md-1">
                         <input id="chposfechado1_numero" name="chposfechado1_numero" class="form-control input-sm" type="number" min="1" value="<%- chposfechado1_numero %>" required readonly>
                     </div>
 
                     <label for="chposfechado1_fecha" class="col-sm-1 control-label">Fecha</label>
-                    <div class="form-group col-sm-2">     
+                    <div class="form-group col-sm-2">
                         <div class="input-group">
                             <div class="input-group-addon">
                                 <i class="fa fa-calendar"></i>
@@ -129,7 +129,7 @@
                     <div class="form-group col-sm-11">
                         <textarea id="chposfechado1_observaciones" name="chposfechado1_observaciones" class="form-control" rows="2" placeholder="Observaciones"></textarea>
                     </div>
-                </div>    
+                </div>
             </form>
             <div class="box-footer">
                 <div class="col-md-2 col-md-offset-4 col-sm-6 col-xs-6 text-left">
@@ -139,10 +139,10 @@
                     <button type="button" class="btn btn-primary btn-sm btn-block submit-cheque1">{{ trans('app.save') }}</button>
                 </div>
             </div>
-            <div class="box box-success" id="detail-chposfechado" hidden>
+            <div class="box box-primary" id="detail-chposfechado" hidden>
                 <div class="box-body">
-                <form method="POST" accept-charset="UTF-8" id="form-chposfechado2" data-toggle="validator"> 
-                    <div class="row"> 
+                <form method="POST" accept-charset="UTF-8" id="form-chposfechado2" data-toggle="validator">
+                    <div class="row">
                         <label for="chposfechado2_conceptosrc" class="control-label col-md-1">Concepto</label>
                         <div class="form-group col-md-3">
                             <select name="chposfechado2_conceptosrc" id="chposfechado2_conceptosrc" class="form-control select2-default change-concepto" data-tercero="chposfechado1_tercero" required>
@@ -165,7 +165,7 @@
                                 <th>Cuota</th>
                                 <th>Valor</th>
                             </tr>
-                        </thead>   
+                        </thead>
                         <tbody>
                             {{-- Render content chposfechado2 --}}
                         </tbody>

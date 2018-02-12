@@ -6,7 +6,7 @@
 @stop
 
 @section('module')
-	<div class="box box-success" id="retefuente-create">
+	<div class="box box-primary" id="retefuente-create">
 		{!! Form::open(['id' => 'form-retefuente', 'data-toggle' => 'validator']) !!}
 			<div class="box-body" id="render-form-retefuente">
 				{{-- Render form retefuente --}}

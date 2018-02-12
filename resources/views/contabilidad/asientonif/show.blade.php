@@ -11,9 +11,9 @@
 			<li class="active">{{ $asientoNif->id }}</li>
 		</ol>
 	</section>
-	
+
 	<section class="content">
-		<div class="box box-success" id="asientosnif-show">
+		<div class="box box-primary" id="asientosnif-show">
 			<div class="box-body">
 				<div class="row">
 					<div class="form-group col-md-1">

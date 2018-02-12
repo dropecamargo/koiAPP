@@ -6,12 +6,12 @@
 
 @section('module')
     <div id="ubicaciones-main">
-        <div class="box box-success">
+        <div class="box box-primary">
             <div class="box-body table-responsive">
                 <table id="ubicaciones-search-table" class="table table-bordered table-striped" cellspacing="0" width="100%">
                     <thead>
                         <tr>
-                            <th>ID</th>
+                            <th>Código</th>
                             <th>Nombre</th>
                             <th>Sucursal</th>
                             <th>Activo</th>

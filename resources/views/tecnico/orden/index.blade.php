@@ -13,10 +13,9 @@
 
     <section class="content">
     	<div id="orden-main">
-            <div class="box box-success">
+            <div class="box box-primary">
                 <div class="box-body">
-
-                {!! Form::open(['id' => 'form-koi-search-tercero-component', 'class' => 'form-horizontal', 'data-toggle' => 'validator', 'role' => 'form']) !!}
+                    {!! Form::open(['id' => 'form-koi-search-tercero-component', 'class' => 'form-horizontal', 'data-toggle' => 'validator', 'role' => 'form']) !!}
                         <div class="form-group">
                             <label for="searchorden_orden_id" class="col-md-1 control-label">Código</label>
                             <div class="col-md-2">
@@ -62,7 +61,7 @@
                             </div>
                         </div>
                     {!! Form::close() !!}
-                    
+
                     <div class="box-body table-responsive">
                         <table id="orden-search-table" class="table table-bordered table-striped" cellspacing="0" width="100%">
                             <thead>
@@ -75,7 +74,7 @@
                                 </tr>
                             </thead>
                         </table>
-                    </div>  
+                    </div>
                 </div>
             </div>
         </div>

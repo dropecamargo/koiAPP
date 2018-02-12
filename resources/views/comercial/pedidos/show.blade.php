@@ -6,7 +6,7 @@
 @stop
 
 @section('module')
-    <div class="box box-success">
+    <div class="box box-primary">
         <div class="box-body" id="pedidoc-show">
             <div id="render-pedidoc-show">
             	<div class="row">
@@ -95,7 +95,7 @@
                     <div class="form-group col-md-2 col-xs-4">
                         <label class="control-label">F. Primer Pago</label>
                         <div>{{$pedidoComercial->pedidoc1_primerpago}}</div>
-                    </div>   
+                    </div>
                 </div>
             	<div class="row">
             		<div class="form-group col-md-12">
@@ -103,7 +103,7 @@
             			<div>{{ $pedidoComercial->pedidoc1_observaciones }}</div>
             		</div>
             	</div>
-            	<div class="box box-success">
+            	<div class="box box-primary">
 		            <div class="table-responsive no-padding">
 		                <table id="browse-detalle-pedidoc-list" class="table table-bordered" cellspacing="0">
 		                    <thead>
@@ -133,7 +133,7 @@
 		                </table>
             		</div>
             	</div>
-                <div class="box box-success">
+                <div class="box box-primary">
                     <div class="table table-responsive no-padding">
                         <table id="browse-detalle-authorizations-list" class="table table-bordered" cellspacing="0">
                             <thead>
@@ -159,8 +159,8 @@
                 </div>
             </div>
         </div>
-    </div> 
+    </div>
     <script type="text/template" id="pedidoc-close-confirm-tpl">
         <p>¿Está seguro que desea cerrar el pedido comerical de venta número <b> <%- id %> </b>?</p>
-    </script>       
+    </script>
 @stop

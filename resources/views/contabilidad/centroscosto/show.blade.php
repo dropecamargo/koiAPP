@@ -1,14 +1,14 @@
 @extends('contabilidad.centroscosto.main')
 
-@section('breadcrumb')	
+@section('breadcrumb')
 	<li><a href="{{ route('centroscosto.index') }}">Centros de costo</a></li>
 	<li class="active">{{ $centrocosto->centrocosto_codigo }}</li>
 @stop
 
 @section('module')
-	<div class="box box-success">
+	<div class="box box-primary">
 		<div class="box-body">
-			<div class="row">	
+			<div class="row">
 				<div class="form-group col-md-2">
 					<label class="control-label">Código</label>
 					<div>{{ $centrocosto->centrocosto_codigo }}</div>
@@ -23,14 +23,14 @@
 				</div>
 			</div>
 
-			<div class="row">	
+			<div class="row">
 				<div class="form-group col-md-12">
 					<label class="control-label">Descripcion 1</label>
 					<div>{{ $centrocosto->centrocosto_descripcion1 }}</div>
 				</div>
 			</div>
 
-			<div class="row">	
+			<div class="row">
 				<div class="form-group col-md-12">
 					<label class="control-label">Descripcion 2</label>
 					<div>{{ $centrocosto->centrocosto_descripcion2 }}</div>
@@ -44,7 +44,7 @@
 				</div>
 			</div>
 
-			<div class="row">	
+			<div class="row">
 				<div class="form-group col-md-2 col-xs-4 col-sm-4">
 					<label class="control-label">Titulo</label>
 					<div>{{ $centrocosto->centrocosto_estructura == 'S' ? 'Si' : 'No' }}</div>
@@ -53,7 +53,7 @@
 					<br>
 					<label class="checkbox-inline" for="centrocosto_activo">
 						<input type="checkbox" id="centrocosto_activo" name="centrocosto_activo" value="centrocosto_activo" disabled {{ $centrocosto->centrocosto_activo ? 'checked': '' }}> Activo
-					</label>				
+					</label>
 				</div>
 			</div>
 		</div>

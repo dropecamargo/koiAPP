@@ -29,18 +29,18 @@
                         </select>
                     </div>
                     <label for="anticipo1_numero" class="col-sm-1 col-md-1 control-label">Número</label>
-                    <div class="form-group col-sm-1 col-md-1">     
+                    <div class="form-group col-sm-1 col-md-1">
                         <input id="anticipo1_numero" name="anticipo1_numero" class="form-control input-sm" type="number" min="1" value="<%- anticipo1_numero %>" required readonly>
                     </div>
 
                     <label for="anticipo1_fecha" class="col-sm-1 control-label">Fecha</label>
-                    <div class="form-group col-sm-2"> 
+                    <div class="form-group col-sm-2">
                         <div class="input-group">
                             <div class="input-group-addon">
                                 <i class="fa fa-calendar"></i>
                             </div>
                             <input id="anticipo1_fecha" name="anticipo1_fecha" class="form-control input-sm datepicker-back" type="text" value="{{ date('Y-m-d') }}" required>
-                        </div>    
+                        </div>
                     </div>
                 </div>
                 <div class="row">
@@ -98,9 +98,9 @@
                     <button type="button" class="btn btn-primary btn-sm btn-block submit-anticipo1">{{ trans('app.save') }}</button>
                 </div>
             </div>
-            <div class="box box-success">
+            <div class="box box-primary">
                 <div class="box-body">
-                    <form method="POST" accept-charset="UTF-8" id="form-anticipo2" data-toggle="validator"> 
+                    <form method="POST" accept-charset="UTF-8" id="form-anticipo2" data-toggle="validator">
                         <div class="row">
                             <div class="col-sm-2">
                                 <div class="form-group col-sm-12">
@@ -130,7 +130,7 @@
                                     <th width="15%">Fecha</th>
                                     <th width="15%">Valor</th>
                                 </tr>
-                            </thead>   
+                            </thead>
                             <tbody>
                                 {{-- Render content anticipo2 --}}
                             </tbody>
@@ -144,10 +144,10 @@
                         </table>
                     </div>
                 </div>
-                <div class="box box-success">
+                <div class="box box-primary">
                     <div class="box-body">
-                        <form method="POST" accept-charset="UTF-8" id="form-anticipo3" data-toggle="validator"> 
-                            <div class="row"> 
+                        <form method="POST" accept-charset="UTF-8" id="form-anticipo3" data-toggle="validator">
+                            <div class="row">
                                 <label for="anticipo3_conceptosrc" class="control-label col-md-1">Concepto</label>
                                 <div class="form-group col-md-3">
                                     <select name="anticipo3_conceptosrc" id="anticipo3_conceptosrc" class="form-control select2-default" required>
@@ -164,7 +164,7 @@
                                             <option  value="{{ $key }}">{{ $value }}</option>
                                         @endforeach
                                     </select>
-                                </div> 
+                                </div>
                                 <label for="anticipo3_valor" class="control-label col-md-1">Valor</label>
                                 <div class="form-group col-md-2">
                                     <input type="text" id="anticipo3_valor" name="anticipo3_valor" class="form-control input-sm" placeholder="Valor" data-currency required>
@@ -186,7 +186,7 @@
                                         <th>Naturaleza</th>
                                         <th>Valor</th>
                                     </tr>
-                                </thead>   
+                                </thead>
                                 <tbody>
                                     {{-- Render content anticipo3 --}}
                                 </tbody>
@@ -214,7 +214,7 @@
                         <option value="{{ $key }}">{{ $value }}</option>
                     @endforeach
                 </select>
-            </div>    
+            </div>
             <div class="form-group col-sm-3">
                 <label class="control-label" for="anticipo2_numero_medio">Numero</label>
                 <input type="text" name="anticipo2_numero_medio" id="anticipo2_numero_medio" maxlength="25" class="input-sm form-control" placeholder="Número de cuenta" required>
@@ -244,7 +244,7 @@
                 </a>
             </td>
         <% } %>
-            
+
         <td><%- conceptosrc_nombre %></td>
         <td class="text-left"><%- anticipo3_naturaleza == 'D' ? 'Debito' : 'Credito' %></td>
         <td class="text-right"><%- window.Misc.currency( anticipo3_valor ) %></td>
@@ -258,11 +258,11 @@
                 </a>
             </td>
         <% } %>
-            
+
         <td><%- mediopago %></td>
         <td><%- banco %></td>
         <td><%- anticipo2_numero_medio %></td>
         <td><%- anticipo2_vence_medio %></td>
         <td><%- window.Misc.currency( anticipo2_valor )%></td>
     </script>
-@stop 
+@stop

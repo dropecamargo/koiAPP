@@ -12,7 +12,7 @@
     </section>
     <section class="content">
         <div id="facturasp-main">
-            <div class="box box-success">
+            <div class="box box-primary">
                 <div class="box-body">
                     {!! Form::open(['id' => 'form-koi-search-facturap-component', 'class' => 'form-horizontal', 'data-toggle' => 'validator', 'role' => 'form']) !!}
                         <div class="form-group">
@@ -56,7 +56,7 @@
                             </div>
                             <div class="col-md-2 col-xs-4">
                                 <a href="{{ route('facturasp.create') }}" class="btn btn-default btn-block btn-sm">
-                                    <i class="fa fa-plus"></i> Nueva factura 
+                                    <i class="fa fa-plus"></i> Nueva factura
                                 </a>
                             </div>
                         </div>

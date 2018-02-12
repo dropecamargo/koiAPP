@@ -6,7 +6,7 @@
 
 @section('module')
 	<div id="plancuentasnif-main">
-		<div class="box box-success">
+		<div class="box box-primary">
 			<div class="box-body">
 				{!! Form::open(['id' => 'form-koi-search-plancuentanif-component', 'class' => 'form-horizontal', 'data-toggle' => 'validator', 'role' => 'form']) !!}
 					<div class="form-group">

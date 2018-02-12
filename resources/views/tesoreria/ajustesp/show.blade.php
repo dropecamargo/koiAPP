@@ -6,7 +6,7 @@
 @stop
 
 @section('module')
-    <div class="box box-success" id="ajustep-show">
+    <div class="box box-primary" id="ajustep-show">
         <div class="box-body">
             <div class="row">
                 <div class="form-group col-md-3">
@@ -48,7 +48,7 @@
             <!-- table table-bordered table-striped -->
             <div class="box box-solid">
                 <div class="box-body table-responsive no-padding">
-                    <table id="browse-detalle-ajustep-list" class="table table-hover table-bordered" cellspacing="0">
+                    <table id="browse-detalle-ajustep-list" class="table table-bordered" cellspacing="0">
                         <thead>
                             <tr>
                                 <td colspan="4"></td>

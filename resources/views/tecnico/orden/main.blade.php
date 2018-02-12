@@ -26,7 +26,7 @@
             <div class="box box-solid" id="spinner-main">
                 <div class="row">
                     <div class="form-group col-md-12">
-                        <div class="nav-tabs-custom tab-success tab-whithout-box-shadow">
+                        <div class="nav-tabs-custom tab-primary tab-whithout-box-shadow">
                             <ul class="nav nav-tabs">
                                 <li class="active"><a href="#tab_orden" data-toggle="tab">Orden</a></li>
                                 <% if( typeof(orden_serie) !== 'undefined' && !_.isUndefined(orden_serie) && !_.isNull(orden_serie) && orden_serie != '') { %>

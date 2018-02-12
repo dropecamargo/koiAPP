@@ -1,19 +1,18 @@
 @extends('contabilidad.plancuentasnif.main')
 
-@section('breadcrumb')	
+@section('breadcrumb')
 	<li><a href="{{ route('plancuentasnif.index') }}">Plan de cuentas</a></li>
 	<li class="active">{{ $plancuentanif->plancuentasn_cuenta }}</li>
 @stop
 
 
 @section('module')
-	<div class="box box-success">
-
+	<div class="box box-primary">
 		<div class="box-body">
 			<div class="row">
 				<div class="form-group col-md-3">
 					<label class="control-label">Cuenta</label>
-					<div>{{ $plancuentanif->plancuentasn_cuenta }}</div>      
+					<div>{{ $plancuentanif->plancuentasn_cuenta }}</div>
 				</div>
 
 				<div class="form-group col-md-1">
@@ -64,7 +63,7 @@
 				</div>
 			</div>
 		</div>
-		
+
 		<div class="box-footer with-border">
         	<div class="row">
 				<div class="col-md-2 col-md-offset-4 col-sm-6 col-xs-6 text-left">

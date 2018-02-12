@@ -7,7 +7,7 @@
 @stop
 
 @section('module')
-	<div class="box box-success" id="tipoactivo-create">
+	<div class="box box-primary" id="tipoactivo-create">
 		{!! Form::open(['id' => 'form-tipoactivo', 'data-toggle' => 'validator']) !!}
 			<div class="box-body" id="render-form-tipoactivo">
 				{{-- Render form tipoactivo --}}

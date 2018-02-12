@@ -19,8 +19,8 @@
 
     <script type="text/template" id="add-ajustep-tpl">
         <div class="box-body">
-            <form method="POST" accept-charset="UTF-8" id="form-ajustep" data-toggle="validator"> 
-                <div class="row"> 
+            <form method="POST" accept-charset="UTF-8" id="form-ajustep" data-toggle="validator">
+                <div class="row">
                     <label for="ajustep1_regional" class="col-md-1 control-label">Regional</label>
                     <div class="form-group col-md-3">
                         <select name="ajustep1_regional" id="ajustep1_regional" class="form-control select2-default-clear change-regional-consecutive-koi-component" data-field="ajustep1_numero" data-document ="ajustep" data-wrapper="ajustep-create" required>
@@ -29,9 +29,9 @@
                         @endforeach
                         </select>
                     </div>
-                    
+
                     <label for="ajustep1_numero" class="col-md-1 control-label">Número</label>
-                    <div class="form-group col-md-1">     
+                    <div class="form-group col-md-1">
                         <input id="ajustep1_numero" name="ajustep1_numero" class="form-control input-sm" type="number" min="1" value="<%- ajustep1_numero %>" required readonly>
                     </div>
 
@@ -68,7 +68,7 @@
                 </div>
             </form>
         </div>
-        
+
         <div class="box-footer with-border">
             <div class="row">
                 <div class="col-md-2 col-md-offset-4 col-sm-6 col-xs-6 text-left">
@@ -84,9 +84,9 @@
     </script>
 
     <script type="text/template" id="add-detail-tpl">
-        <div class="box box-success">
+        <div class="box box-primary">
             <div class="box-body">
-                <form method="POST" accept-charset="UTF-8" id="form-detail-ajustep" data-toggle="validator"> 
+                <form method="POST" accept-charset="UTF-8" id="form-detail-ajustep" data-toggle="validator">
                     <div class="row">
                         <label for="ajustep2_tercero" class="col-md-offset-1 col-md-1 control-label">Tercero</label>
                         <div class="form-group col-md-3">
@@ -178,7 +178,7 @@
                 </a>
             </td>
         <% } %>
-            
+
         <td><%- tercero_nombre %></td>
         <td><%- documentos_nombre %></td>
         <td><%- facturap1_numero %></td>

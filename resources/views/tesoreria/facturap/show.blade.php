@@ -15,7 +15,7 @@
 
     <section class="content">
         <div class="box box-solid" id="facturap-show">
-            <div class="nav-tabs-custom tab-success tab-whithout-box-shadow">
+            <div class="nav-tabs-custom tab-primary tab-whithout-box-shadow">
                 <ul class="nav nav-tabs">
                     <li class="active"><a href="#tab_facturap" data-toggle="tab">Factura</a></li>
                     <li><a href="#tab_impuesto" data-toggle="tab">Impuesto/Retención</a></li>
@@ -40,7 +40,7 @@
                                 {{ $facturap1->regional_nombre }}
                             </div>
                             <label for="facturap1_numero" class="col-md-1 control-label">Número</label>
-                            <div class="form-group col-md-1">     
+                            <div class="form-group col-md-1">
                                 {{ $facturap1->facturap1_numero }}
                             </div>
                         </div>
@@ -93,12 +93,12 @@
                             <label for="facturap1_subtotal" class="control-label col-md-1">Subtotal</label>
                             <div class="form-group col-md-2">
                                 {{number_format( $facturap1->facturap1_subtotal ) }}
-                            </div>                    
+                            </div>
                             <label for="facturap1_descuento" class="control-label col-md-1">Descuento</label>
                             <div class="form-group col-md-2">
                                 {{number_format( $facturap1->facturap1_descuento ) }}
-                            </div>                    
-                        </div> 
+                            </div>
+                        </div>
                         <div class="row">
                             <label for="facturap1_impuestos" class="control-label col-md-1">Impuestos</label>
                             <div class="form-group col-md-3">
@@ -107,7 +107,7 @@
                             <label for="facturap1_retenciones" class="control-label col-md-1">Retenciones</label>
                             <div class="form-group col-md-2">
                                 {{ number_format( $facturap1->facturap1_retenciones ) }}
-                            </div>                    
+                            </div>
                             <label for="facturap1_apagar" class="control-label col-md-1">A pagar</label>
                             <div class="form-group col-md-2">
                                 {{ number_format( $facturap1->facturap1_apagar ) }}
@@ -120,7 +120,7 @@
                             </div>
                         </div>
 
-                        <div class="box box-success">
+                        <div class="box box-primary">
                             <div class="box-body table-responsive">
                                 <table id="browse-facturap3-list" class="table table-hover table-bordered" cellspacing="0" width="100%">
                                     <thead>
@@ -145,7 +145,7 @@
                             </div>
                         </div>
                     </div>
-                </div>  
+                </div>
                 <!-- Tab impuesto -->
                 <div id="tab_impuesto" class="tab-pane">
                     <div class="box box-solid">
@@ -246,7 +246,7 @@
                                 <div class="box-title">
                                     <h4 class="text-center">No existe entrada de inventario en la factura proveedor número {{$facturap1->facturap1_numero}}</h4>
                                 </div>
-                            @endif    
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -256,7 +256,7 @@
                             <a href="{{ route('facturasp.index') }}" class="btn btn-default btn-sm btn-block">{{ trans('app.comeback') }}</a>
                         </div>
                     </div>
-                </div>  
+                </div>
             </div>
         </div>
     </section>

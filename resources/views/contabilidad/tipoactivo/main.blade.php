@@ -42,9 +42,9 @@
             </div>
             <div class="col-sm-6 col-md-4"><br>
                 <input id="tipoactivo_cuenta_nombre" name="tipoactivo_cuenta_nombre" placeholder="Nombre cuenta" class="form-control input-sm" type="text" value="<%- plancuentas_nombre %>" maxlength="15" required disabled>
-            </div>
+            </div><br>
             <div class="form-group col-md-2 col-xs-8 col-sm-3">
-                <label class="checkbox-inline" for="tipoactivo_activo    ">
+                <label class="checkbox-inline" for="tipoactivo_activo">
                     <input type="checkbox" id="tipoactivo_activo" name="tipoactivo_activo" value="tipoactivo_activo" <%- tipoactivo_activo ? 'checked': ''%>> Activo
                 </label>
             </div>

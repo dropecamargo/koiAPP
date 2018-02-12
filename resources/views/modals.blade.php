@@ -44,7 +44,7 @@
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				<h4 class="inner-title-modal modal-title"></h4>
 			</div>
-			
+
 			<form id="form-create-inventario-entrada-component-source" data-toggle="validator">
 				<div class="modal-body" id="modal-wrapper-inventario">
 					<div id="error-inventario" class="alert alert-danger"></div>
@@ -52,7 +52,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancelar</button>
-					<button type="submit" class="btn btn-primary btn-sm" id="button-koi-inventory-modal">Continuar</button>
+					<button type="submit" class="btn btn-primary btn-sm" id="">Continuar</button>
 				</div>
 			</form>
 		</div>
@@ -66,7 +66,7 @@
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				<h4 class="inner-title-modal modal-title"></h4>
 			</div>
-			
+
 			<form id="form-create-treasury-component-source" data-toggle="validator">
 				<div class="modal-body" id="modal-wrapper-treasury">
 					<div id="error-treasury" class="alert alert-danger"></div>
@@ -74,7 +74,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancelar</button>
-					<button type="submit" class="btn btn-primary btn-sm" id="button-koi-inventory-modal">Continuar</button>
+					<button type="submit" class="btn btn-primary btn-sm" id="">Continuar</button>
 				</div>
 			</form>
 		</div>
@@ -151,7 +151,7 @@
 			<div class="content-modal"></div>
 		</div>
 	</div>
-</div>	
+</div>
 
 <!-- Modal search pedidoc -->
 <div class="modal fade" id="modal-search-pedidoc-component" data-backdrop="static" data-keyboard="false" aria-hidden="true">
@@ -178,7 +178,7 @@
 				</button>
 				<h4 class="inner-title-modal modal-title"></h4>
 			</div>
-			
+
 			<form id="form-concepto-cartera-component" data-toggle="validator">
 				<div class="modal-body" id="modal-wrapper-concepto-cartera">
 					<div id="error-concepto-cartera" class="alert alert-danger"></div>
@@ -202,7 +202,7 @@
 				</button>
 				<h4 class="inner-title-modal modal-title">Cheques tercero</h4>
 			</div>
-			
+
 			<form id="form-mediopago-component" data-toggle="validator">
 				<div class="modal-body" id="modal-wrapper-mediopago">
 					<div class="content-modal"></div>
@@ -225,7 +225,7 @@
 				</button>
 				<h4 class="inner-title-modal modal-title">Cheques devueltos - tercero</h4>
 			</div>
-			
+
 			<form id="form-chd-component" data-toggle="validator">
 				<div class="modal-body" id="modal-wrapper-chd">
 					<div class="content-modal"></div>
@@ -612,7 +612,7 @@
 			<div class="box-body table-responsive no-padding">
 				<table id="browse-itemtollo-list" class="table table-hover table-bordered" cellspacing="0">
 		            <tr>
-		            	<th>Lote</th>	
+		            	<th>Lote</th>
 		            	<th>Rollos</th>
 		                <th>Metros  (m)</th>
 		                <th class="text-center">
@@ -622,7 +622,7 @@
 		                </th>
 		            </tr>
 		            <tbody>
-		            	
+
 		            </tbody>
 		            <tfoot>
 		            	<tr>
@@ -676,14 +676,14 @@
 		                <th width="40%">Lote</th>
 		                <th  width="20%">Unidades</th>
 		                <th width="35%">Fecha De Vencimiento</th>
-		                <th width="5%" class="text-center">		               		
+		                <th width="5%" class="text-center">
 		                	<button id="btn-vencimiento-entradau-koi-inventario" type="button" class="btn btn-success btn-sm">
 								<i class="fa fa-plus"></i>
 							</button>
 						</th>
 		            </tr>
 		            <tbody>
-		            	
+
 		            </tbody>
 		            <tfoot>
 		            	<tr>

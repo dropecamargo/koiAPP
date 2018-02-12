@@ -107,7 +107,7 @@
             </div>
         </div>
 
-        <div class="box box-success">
+        <div class="box box-primary">
             <div class="box-body">
                 <form method="POST" accept-charset="UTF-8" id="form-egreso2" data-toggle="validator">
                     <div class="row">
@@ -156,7 +156,7 @@
                                 <th>Tipo</th>
                                 <th>Valor</th>
                             </tr>
-                        </thead>   
+                        </thead>
                         <tbody>
                             {{-- Render content egreso2 --}}
                         </tbody>
@@ -173,7 +173,7 @@
                 </a>
             </td>
         <% } %>
-            
+
         <td><%- tercero2_nombre %></td>
         <td><%- tipopago_nombre %></td>
         <td class="text-right"><%- !_.isUndefined(facturap3_valor) && !_.isNull(facturap3_valor) && facturap3_valor != '' ? window.Misc.currency( facturap3_valor ) : window.Misc.currency( egreso2_valor ) %></td>

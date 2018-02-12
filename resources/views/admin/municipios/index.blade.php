@@ -15,14 +15,14 @@
 
 	<section class="content">
 		<div id="municipios-main">
-			<div class="box box-success">
+			<div class="box box-primary">
 				<div class="box-body table-responsive">
 					<table id="municipios-search-table" class="table table-bordered table-striped" cellspacing="0" width="100%">
 				        <thead>
 				            <tr>
-				                <th>Codigo Dpto.</th>
+				                <th>Código Dpto.</th>
 				                <th>Departamento</th>
-				                <th>Codigo Mpio.</th>
+				                <th>Código Mpio.</th>
 				                <th>Municipio</th>
 				            </tr>
 				        </thead>
@@ -30,5 +30,5 @@
 				</div>
 			</div>
 		</div>
-    </section>    
+    </section>
 @stop

@@ -17,7 +17,7 @@ app || (app = {});
         * Constructor Method
         */
         initialize : function() {
-            
+
             this.$paisesSearchTable = this.$('#paises-search-table');
 
             this.$paisesSearchTable.DataTable({
@@ -31,17 +31,18 @@ app || (app = {});
                     }
                 },
                 columns: [
-                    { data: 'id', name: 'id' },
                     { data: 'pais_codigo', name: 'pais_codigo' },
                     { data: 'pais_nombre', name: 'pais_nombre'},
                 ],
                 columnDefs: [
                     {
                         targets: 0,
-                        searchable:false,
-                        width: '15%',
+                        width: '10%',
                     }
-                ]
+                ],
+                order: [
+                	[ 1, 'asc' ],
+                ],
 			});
         }
     });

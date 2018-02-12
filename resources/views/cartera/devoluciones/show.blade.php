@@ -6,7 +6,7 @@
 @stop
 
 @section('module')
-	<div class="box box-success">
+	<div class="box box-primary">
 		<div class="box-body" id="devolucion-show">
 			<div id="render-devolucion-show">
 				<div class="row">
@@ -60,7 +60,7 @@
             		</div>
             	</div>
 			</div>
-			<div class="box box-success">
+			<div class="box box-primary">
 				<div class="table-responsive no-padding">
 	                <table id="browse-detalle-devolucion-list" class="table table-hover table-bordered" cellspacing="0">
                     <thead>

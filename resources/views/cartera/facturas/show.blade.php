@@ -6,7 +6,7 @@
 @stop
 
 @section('module')
-    <div class="box box-success">
+    <div class="box box-primary">
         <div class="box-body" id="factura-show">
             <div id="render-factura-show">
             	<div class="row">
@@ -98,7 +98,7 @@
             			<div>{{ $factura->factura1_observaciones }}</div>
             		</div>
             	</div>
-            	<div class="box box-success">
+            	<div class="box box-primary">
 		            <div class="table-responsive no-padding">
 		                <table id="browse-detalle-factura-list" class="table table-hover table-bordered" cellspacing="0">
 		                    <thead>
@@ -128,7 +128,7 @@
 		                </table>
             		</div>
             	</div>
-                <div class="box box-success">
+                <div class="box box-primary">
                     <div class="box-body table-responsive">
                         <table id="browse-factura3-list" class="table table-hover table-bordered" cellspacing="0" width="100%">
                             <thead>

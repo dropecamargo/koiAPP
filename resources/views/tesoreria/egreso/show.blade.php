@@ -6,7 +6,7 @@
 @stop
 
 @section('module')
-    <div class="box box-success" id="egreso-show">
+    <div class="box box-primary" id="egreso-show">
         <div class="box-body">
             <div class="row">
                 <div class="form-group col-md-3">
@@ -32,7 +32,7 @@
                                     </a>
                                 </li>
                             </ul>
-                        </div>           
+                        </div>
                     </div>
                 @else
                     <label class=" label label-default col-md-1  col-md-offset-5">ESTADO: ANULADA</label>

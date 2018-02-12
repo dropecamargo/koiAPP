@@ -11,7 +11,7 @@
         </ol>
     </section>
     <section class="content">
-        <div class="box box-success" id="presupuestoasesor-create">
+        <div class="box box-primary" id="presupuestoasesor-create">
             <form method="POST" accept-charset="UTF-8" id="form-presupuestoasesor" data-toggle="validator">
                 <div class="box-body">
                     <div class="row">

@@ -6,7 +6,7 @@
 @stop
 
 @section('module')
-	<div class="box box-success" id="mediopago-create">
+	<div class="box box-primary" id="mediopago-create">
 		{!! Form::open(['id' => 'form-mediopago', 'data-toggle' => 'validator']) !!}
 			<div class="box-body" id="render-form-mediopago">
 				{{-- Render form mediopago --}}

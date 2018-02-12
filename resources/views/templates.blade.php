@@ -575,14 +575,12 @@
 
 <script type="text/template" id="add-tipoactividad-tpl">
     <div class="row">
-		<div class="col-md-4 col-md-offset-4 text-left">
+		<div class="form-group col-md-6">
 			<label for="tipoactividad_nombre" class="control-label">Nombre</label>
 			<input type="text" id="tipoactividad_nombre" name="tipoactividad_nombre" value="<%- tipoactividad_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="25" required>
-		</div>
-	</div>
-	<br>
-	<div class="row">
-    	<div class="col-md-1 col-md-offset-4 text-left">
+		</div><br>
+
+    	<div class="form-group col-md-1 text-left">
 	    	<label class="checkbox-inline" for="tipoactividad_activo">
 				<input type="checkbox" id="tipoactividad_activo" name="tipoactividad_activo" value="tipoactividad_activo" <%- parseInt(tipoactividad_activo) ? 'checked': ''%>> Activo
 			</label>
@@ -752,10 +750,10 @@
 			<label>Tipo contabilidad </label>
 			<div class="row">
 				<label class="checkbox-inline" for="documento_actual">
-					<input type="checkbox" id="documento_actual" name="documento_actual" value="documento_actual" <%- parseInt(documento_actual) ? 'checked': ''%>> Normal ?	
+					<input type="checkbox" id="documento_actual" name="documento_actual" value="documento_actual" <%- parseInt(documento_actual) ? 'checked': ''%>> Normal ?
 				</label>
 				<label class="checkbox-inline" for="documento_nif">
-					<input type="checkbox" id="documento_nif" name="documento_nif" value="documento_nif" <%- parseInt(documento_nif) ? 'checked': ''%>> Nif ?	
+					<input type="checkbox" id="documento_nif" name="documento_nif" value="documento_nif" <%- parseInt(documento_nif) ? 'checked': ''%>> Nif ?
 				</label>
 			</div>
 		</div>
@@ -768,8 +766,7 @@
 			<label for="folder_codigo" class="control-label">Código</label>
 			<input type="text" id="folder_codigo" name="folder_codigo" value="<%- folder_codigo %>" placeholder="Código" class="form-control input-sm input-toupper" maxlength="4" required>
 		</div>
-    </div>
-    <div class="row">
+
 		<div class="form-group col-md-8">
 			<label for="folder_nombre" class="control-label">Nombre</label>
 			<input type="text" id="folder_nombre" name="folder_nombre" value="<%- folder_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="50" required>
@@ -1027,7 +1024,7 @@
 					<option value="{{ $key }}" <%- categoria_linea == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
 				@endforeach
 			</select>
-		</div>	
+		</div>
 		<div class="form-group col-md-2 col-xs-8 col-sm-3">
 			<br><label class="checkbox-inline" for="categoria_activo">
 				<input type="checkbox" id="categoria_activo" name="categoria_activo" value="categoria_activo" <%- parseInt(categoria_activo) ? 'checked': ''%>> Activo
@@ -1093,7 +1090,7 @@
 
 <script type="text/template" id="add-servicio-tpl">
 	<div class="row">
-		<div class="form-group col-sm-4">
+		<div class="form-group col-sm-5">
 			<label for="servicio_nombre" class="control-label">Nombre</label>
 			<input type="text" id="servicio_nombre" name="servicio_nombre" value="<%- servicio_nombre %>" placeholder="Servicio" class="form-control input-sm input-toupper" maxlength="25" required>
 		</div>
@@ -1136,7 +1133,7 @@
 					<option value="{{ $key }}" <%- linea_unidadnegocio == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
 				@endforeach
 			</select>
-		</div>	
+		</div>
 		<div class="form-group col-md-2 col-xs-8 col-sm-2">
 			<br>
 			<label class="checkbox-inline" for="linea_activo">
@@ -1314,12 +1311,11 @@
 
 <script type="text/template" id="add-mediopago-tpl">
 	<div class="row">
-		<div class="form-group col-md-4">
+		<div class="form-group col-md-5">
 			<label for="mediopago_nombre" class="control-label">Nombre</label>
 			<input type="text" id="mediopago_nombre" name="mediopago_nombre" value="<%- mediopago_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="25" required>
 		</div>
-	</div>
-	<div class="row">
+
 		<div class="form-group col-md-1 col-xs-8 col-sm-2">
 			<br><label class="checkbox-inline" for="mediopago_activo">
 				<input type="checkbox" id="mediopago_activo" name="mediopago_activo" value="mediopago_activo" <%- parseInt(mediopago_activo) ? 'checked': ''%>> Activo
@@ -1362,7 +1358,7 @@
 				<input id="cuentabanco_plancuentas" placeholder="Cuenta" class="form-control plancuenta-koi-component" name="cuentabanco_plancuentas" type="text" maxlength="15" data-name="cuenta_nombre" value="<%- plancuentas_cuenta %>">
 			</div>
 		</div>
-		<div class="col-sm-6 col-md-4"><br>
+		<div class="col-sm-6 col-md-6"><br>
 			<input id="cuenta_nombre" name="cuenta_nombre" placeholder="Nombre cuenta" class="form-control input-sm" type="text" value="<%- plancuentas_nombre %>" maxlength="15" disabled>
 		</div>
 	</div>
@@ -1388,11 +1384,11 @@
 
 <script type="text/template" id="add-conceptosrc-tpl">
 	<div class="row">
-		<div class="form-group col-md-3">
+		<div class="form-group col-md-4">
 			<label for="conceptosrc_nombre" class="control-label">Nombre</label>
 			<input type="text" id="conceptosrc_nombre" name="conceptosrc_nombre" value="<%- conceptosrc_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="25" required>
 		</div>
-		<div class="form-group col-md-3">
+		<div class="form-group col-md-4">
 			<label for="conceptosrc_documentos" class="control-label">Documento</label>
 			<select name="conceptosrc_documentos" id="conceptosrc_documentos" class="form-control select2-default">
 				<option value="" selected>Seleccione</option>
@@ -1768,7 +1764,7 @@
 </script>
 <script type="text/template" id="show-facturap3-tpl">
 	<td>
-		<a href="<%- window.Misc.urlFull( Route.route('facturasp.show', {facturasp: facturap3_facturap1} ))%>" title="Ver documento" target="_blank"><%- tipoproveedor_nombre %></a> 
+		<a href="<%- window.Misc.urlFull( Route.route('facturasp.show', {facturasp: facturap3_facturap1} ))%>" title="Ver documento" target="_blank"><%- tipoproveedor_nombre %></a>
 	</td>
 	<td><%- facturap1_numero %> </td>
     <td><%- regional_nombre %></td>
@@ -1969,7 +1965,7 @@
         <td><a href="#" class="a-click-modals-lotes-koi" data-id = "<%- id %>"><%- producto_serie %></a></td>
     <% }else{ %>
         <td><%- producto_serie %></td>
-    <% } %>  
+    <% } %>
     <td><%- producto_nombre %></td>
     <td><%- factura2_cantidad %></td>
     <td><%- window.Misc.currency(factura2_costo) %></td>
@@ -1978,7 +1974,7 @@
     <td><%- window.Misc.currency(factura2_subtotal) %></td>
 </script>
 <script type="text/template" id="add-afacturar-item-tpl">
-    <td><a href="#" class="click-render-item" data-id = "<%- id %>"><%- producto_serie %></a></td> 
+    <td><a href="#" class="click-render-item" data-id = "<%- id %>"><%- producto_serie %></a></td>
     <td><%- producto_nombre %></td>
     <td><%- factura2_cantidad %></td>
     <td><%- window.Misc.currency(factura2_costo) %></td>

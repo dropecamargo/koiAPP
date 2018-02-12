@@ -180,7 +180,7 @@
     </script>
 
     <script type="text/template" id="add-detailt-pedidosc-tpl">
-        <div class="box-body box box-solid">
+        <div class="box-body box box-primary">
             <form method="POST" accept-charset="UTF-8" id="form-detalle-pedidoc" data-toggle="validator">
                 <div class="row">
                     <label  class="control-label col-md-1 col-md-1">Producto</label>

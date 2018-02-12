@@ -14,7 +14,7 @@
     </section>
 
    	<section class="content">
-	    <div class="box box-success" id="empresa-create">
+	    <div class="box box-primary" id="empresa-create">
 	    	<form action="{{ route('rplancuentas.index') }}" method="GET" data-toggle="validator">
 			 	<input class="hidden" id="type-reporte-koi-component" name="type"></input>
 				<div class="box-body">

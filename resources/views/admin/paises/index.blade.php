@@ -15,12 +15,11 @@
 
 	<section class="content">
 		<div id="paises-main">
-			<div class="box box-success">
+			<div class="box box-primary">
 				<div class="box-body table-responsive">
 					<table id="paises-search-table" class="table table-bordered table-striped" cellspacing="0" width="100%">
 				        <thead>
 				            <tr>
-				                <th>Id</th>
 				                <th>Código</th>
 				                <th>País</th>
 				            </tr>
@@ -29,5 +28,5 @@
 				</div>
 			</div>
 		</div>
-    </section>    
+    </section>
 @stop

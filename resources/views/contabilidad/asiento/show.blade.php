@@ -11,9 +11,9 @@
 			<li class="active">{{ $asiento->id }}</li>
 		</ol>
 	</section>
-	
+
 	<section class="content">
-		<div class="box box-success" id="asientos-show">
+		<div class="box box-primary" id="asientos-show">
 			<div class="box-body">
 				<div class="row">
 					<div class="form-group col-md-1">

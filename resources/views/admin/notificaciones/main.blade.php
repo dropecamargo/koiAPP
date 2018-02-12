@@ -14,7 +14,7 @@
     </section>
 
    	<section class="content" id="notification-main">
-        <div class="box box-success">
+        <div class="box box-primary">
             <div class="box-body">
                 {!! Form::open(['id' => 'form-koi-search-tercero-component', 'class' => 'form-horizontal', 'data-toggle' => 'validator', 'role' => 'form']) !!}
 	            	<div class="row">

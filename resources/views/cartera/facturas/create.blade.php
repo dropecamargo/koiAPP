@@ -6,7 +6,7 @@
 @stop
 
 @section('module')
-	<div class="box box-success" id="factura-create">
+	<div class="box box-primary" id="factura-create">
 		<div id="render-form-factura">
 			{{-- Render form factura --}}
 		</div>

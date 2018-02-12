@@ -86,7 +86,7 @@ return [
             'AUT' => 'Autopista',
             'AV' => 'Avenida',
             'AK' => 'Avenida Carrera',
-            
+
             'BRR' => 'Barrio',
             'BL' => 'Bloque',
             'BG' => 'Bodega',
@@ -130,7 +130,7 @@ return [
             'MZ' => 'Manzana',
             'MN' => 'Mezzanine',
             'MD' => 'Modulo',
-            
+
             'MCP' => 'Municipio',
             'NORTE' => 'Norte',
             'OCC' => 'Occidente',
@@ -236,6 +236,6 @@ return [
         'R' => 'Reclacificación'
     ],
     'template' => [
-        'bg' => 'bg-green'
+        'bg' => 'bg-blue'
     ]
 ];

@@ -6,17 +6,15 @@
 @stop
 
 @section('module')
-    <div class="box box-success">
+    <div class="box box-primary">
         <div class="box-body">
             <div class="row">
-                <div class="col-md-4 col-md-offset-4 text-left">
+                <div class="col-md-6">
                     <label class="control-label">Nombre</label>
                     <div>{{ $tipoactividad->tipoactividad_nombre }}</div>
-                </div>
-            </div>
-            <br>
-            <div class="row">
-		    	<div class="col-md-1 col-md-offset-4 text-left">
+                </div><br>
+
+		    	<div class="form-group col-md-1">
 			    	<label class="checkbox-inline" for="tipoactividad_activo">
 						<input type="checkbox" id="tipoactividad_activo" name="tipoactividad_activo" value="tipoactividad_activo" disabled {{ $tipoactividad->tipoactividad_activo ? 'checked': '' }}> Activo
 					</label>

@@ -6,7 +6,7 @@
 @stop
 
 @section('module')
-	<div class="box box-success" id="pedidosc-create">
+	<div class="box box-primary" id="pedidosc-create">
 		<div id="render-form-pedidosc">
 			{{-- Render form pedidosc --}}
 		</div>

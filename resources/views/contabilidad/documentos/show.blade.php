@@ -6,7 +6,7 @@
 @stop
 
 @section('module')
-<div class="box box-success">
+<div class="box box-primary">
     <div class="box-body">
         <div class="row">
             <div class="form-group col-md-3">
@@ -18,14 +18,14 @@
                 <div>{{ $documento->documento_nombre }}</div>
             </div>
         </div>
-        
+
         <div class="row">
             <div class="form-group col-md-6">
                 <label class="control-label">Folder</label>
                 <div>{{ $documento->folder_nombre }}</div>
             </div>
         </div>
-        
+
         <div class="row">
             <div class="form-group col-md-4">
                 <label class="control-label">Tipo consecutivo</label>
@@ -45,11 +45,11 @@
                 </label>
                 <label class="checkbox-inline" for="documento_nif">
                     <input type="checkbox" id="documeto_nif" name="documeto_nif" value="documeto_nif" disabled {{ $documento->documento_nif ? 'checked': '' }}> Nif
-                </label>                
+                </label>
             </div>
         </div>
     </div>
-    
+
     <div class="box-footer with-border">
         <div class="row">
             <div class="col-md-2 col-md-offset-4 col-sm-6 col-xs-6 text-left">

@@ -14,7 +14,7 @@
     </section>
 
    	<section class="content">
-	    <div class="box box-success" id="empresa-create">
+	    <div class="box box-primary" id="empresa-create">
 		 	{!! Form::open(['id' => 'form-create-empresa', 'data-toggle' => 'validator']) !!}
 
 
@@ -24,7 +24,7 @@
 
 			<div class="box-header with-border">
 	        	<div class="row">
-					<div class="col-md-3 col-md-offset-4 col-sm-12 col-xs-6 text-right">
+					<div class="col-md-2 col-md-offset-5 col-sm-12 col-xs-6 text-right">
 						<button type="submit" class="btn btn-primary btn-sm btn-block">{{ trans('app.save') }}</button>
 					</div>
 				</div>
@@ -167,7 +167,7 @@
 
 	    <div class="row">
 	    	<div class="form-group col-md-12">
-				<div class="nav-tabs-custom">
+				<div class="nav-tabs-custom tab-primary">
 					<ul class="nav nav-tabs">
 						<li class="active"><a href="#tab_contabilidad" data-toggle="tab">Contabilidad</a></li>
 					</ul>
@@ -185,7 +185,7 @@
 										@endforeach
 									</select>
 						    	</div>
-						    	
+
 					    		<div class="form-group col-md-8">
 									<label for="tercero_actividad" class="control-label">Actividad Económica</label>
 									<select name="tercero_actividad" id="tercero_actividad" class="form-control choice-select-autocomplete" data-ajax-url="<%- window.Misc.urlFull(Route.route('actividades.index'))%>" data-placeholder="Seleccione" placeholder="Seleccione" data-initial-value="<%- tercero_actividad %>">

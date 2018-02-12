@@ -6,12 +6,12 @@
 @stop
 
 @section('module')
-	<div class="box box-success">
+	<div class="box box-primary">
 		<div class="box-body">
 			<div class="row">
 				<div class="form-group col-md-4">
 					<label class="control-label">Cliente</label>
-                    <div><a href="{{ route('terceros.show', ['terceros' =>  $gestioncomercial->gestioncomercial_tercero ]) }}" title="Ver tercero">{{ $gestioncomercial->cliente_nit }} </a> - {{ $gestioncomercial->tercero_nombre }} </div>
+                    <div>{{ $gestioncomercial->tercero_nombre }} <br><a href="{{ route('terceros.show', ['terceros' =>  $gestioncomercial->gestioncomercial_tercero ]) }}" title="Ver tercero">{{ $gestioncomercial->cliente_nit }} </a></div>
 				</div>
 				<div class="form-group col-md-4">
 					<label class="control-label">Concepto comercial</label>
@@ -19,7 +19,7 @@
 				</div>
 				<div class="form-group col-md-4">
 					<label class="control-label">Vendedor</label>
-                    <div><a href="{{ route('terceros.show', ['terceros' =>  $gestioncomercial->gestioncomercial_vendedor ]) }}" title="Ver vendedor">{{ $gestioncomercial->vendedor_nit }} </a> - {{ $gestioncomercial->vendedor_nombre }} </div>
+                    <div>{{ $gestioncomercial->vendedor_nombre }} <br><a href="{{ route('terceros.show', ['terceros' =>  $gestioncomercial->gestioncomercial_vendedor ]) }}" title="Ver vendedor">{{ $gestioncomercial->vendedor_nit }} </a></div>
 				</div>
 			</div>
 			<div class="row">

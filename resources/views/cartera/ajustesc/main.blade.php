@@ -19,8 +19,8 @@
 
     <script type="text/template" id="add-ajustec-tpl">
         <div class="box-body">
-            <form method="POST" accept-charset="UTF-8" id="form-ajustec" data-toggle="validator"> 
-                <div class="row"> 
+            <form method="POST" accept-charset="UTF-8" id="form-ajustec" data-toggle="validator">
+                <div class="row">
                     <label for="ajustec1_sucursal" class="col-md-1 control-label">Sucursal</label>
                     <div class="form-group col-md-3">
                         <select name="ajustec1_sucursal" id="ajustec1_sucursal" class="form-control select2-default change-sucursal-consecutive-koi-component" data-field="ajustec1_numero" data-document ="ajustec" data-wrapper="ajustec-create" required>
@@ -29,9 +29,9 @@
                         @endforeach
                         </select>
                     </div>
-                    
+
                     <label for="ajustec1_numero" class="col-md-1 control-label">Número</label>
-                    <div class="form-group col-md-1">     
+                    <div class="form-group col-md-1">
                         <input id="ajustec1_numero" name="ajustec1_numero" class="form-control input-sm" type="number" min="1" value="<%- ajustec1_numero %>" required readonly>
                     </div>
                     <label for="ajustec1_fecha" class="col-sm-1 control-label">Fecha</label>
@@ -78,7 +78,7 @@
                 </div>
             </form>
         </div>
-        
+
         <div class="box-footer with-border">
             <div class="row">
                 <div class="col-md-2 col-md-offset-4 col-sm-6 col-xs-6 text-left">
@@ -94,9 +94,9 @@
     </script>
 
     <script type="text/template" id="add-detail-tpl">
-        <div class="box box-success">
+        <div class="box box-primary">
             <div class="box-body">
-                <form method="POST" accept-charset="UTF-8" id="form-detail-ajustec" data-toggle="validator"> 
+                <form method="POST" accept-charset="UTF-8" id="form-detail-ajustec" data-toggle="validator">
                     <div class="row">
                         <label for="ajustec2_tercero" class="col-md-offset-1 col-md-1 control-label">Cliente</label>
                         <div class="form-group col-md-3">
@@ -188,7 +188,7 @@
                 </a>
             </td>
         <% } %>
-            
+
         <td><%- tercero_nombre %></td>
         <td><%- documentos_nombre %></td>
         <td><%- factura1_numero %></td>

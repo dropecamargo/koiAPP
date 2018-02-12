@@ -6,8 +6,8 @@
 @stop
 
 @section('module')
-	<div class="box box-success" id="cheque-show">
-		<div class="box-body"> 
+	<div class="box box-primary" id="cheque-show">
+		<div class="box-body">
 			<div class="row">
                 <div class="form-group col-md-3">
                     <label class="control-label">Sucursal</label>
@@ -33,7 +33,7 @@
                                     </a>
                                 </li>
                             </ul>
-                        </div>           
+                        </div>
                     </div>
                 @elseif( $chposfechado1->chposfechado1_devuelto )
                     <div class="form-group col-md-5">
@@ -41,7 +41,7 @@
                     </div>
                 @elseif( $chposfechado1->chposfechado1_anulado )
                     <div class="form-group col-md-5">
-                        <label class="label label-danger col-md-3 col-md-offset-9">CHEQUE ANULADO</label>          
+                        <label class="label label-danger col-md-3 col-md-offset-9">CHEQUE ANULADO</label>
                     </div>
                 @else
                     <div class="form-group col-md-5">
@@ -54,7 +54,7 @@
                                     </a>
                                 </li>
                             </ul>
-                        </div>           
+                        </div>
                     </div>
                 @endif
 			</div>
@@ -92,7 +92,7 @@
 							SI
 						@else
 							NO
-						@endif	
+						@endif
 					</div>
 				</div>
 			</div>
@@ -133,7 +133,7 @@
                     <a href=" {{ route('cheques.index') }}" class="btn btn-default btn-sm btn-block">{{ trans('app.comeback') }}</a>
                 </div>
             </div>
-        </div>	
+        </div>
 	</div>
     <script type="text/template" id="cheque-anular-confirm-tpl">
         <p>¿Está seguro que desea anular el cheque posfechado número <b> <%- id %> </b>?</p>
@@ -150,7 +150,7 @@
                         <option  value="{{ $key }}">{{ $value }}</option>
                     @endforeach
                 </select>
-            </div>  
+            </div>
         </div>
     </script>
 @stop

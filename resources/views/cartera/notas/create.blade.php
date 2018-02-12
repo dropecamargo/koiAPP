@@ -6,7 +6,7 @@
 @stop
 
 @section('module')
-	<div class="box box-success" id="nota-create">
+	<div class="box box-primary" id="nota-create">
 		<div id="render-form-nota">
 			{{-- Render form nota --}}
 		</div>

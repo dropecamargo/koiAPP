@@ -7,7 +7,7 @@
 @stop
 
 @section('module')
-	<div class="box box-success" id="subcategoria-create">
+	<div class="box box-primary" id="subcategoria-create">
 		{!! Form::open(['id' => 'form-subcategoria', 'data-toggle' => 'validator']) !!}
 			<div class="box-body" id="render-form-subcategoria">
 				{{-- Render form subcategoria --}}

@@ -6,7 +6,7 @@
 @stop
 
 @section('module')
-    <div class="box box-success" id="nota-show">
+    <div class="box box-primary" id="nota-show">
         <div class="box-body">
             <div class="row">
                 <div class="form-group col-md-3">
@@ -14,7 +14,7 @@
                     <div>{{ $nota->id }}</div>
                 </div>
             </div>
-            
+
             <div class="row">
                 <div class="form-group col-md-2">
                     <label class="control-label">Fecha</label>

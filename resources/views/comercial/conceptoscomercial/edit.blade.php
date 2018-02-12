@@ -7,7 +7,7 @@
 @stop
 
 @section('module')
-	<div class="box box-success" id="conceptocom-create">
+	<div class="box box-primary" id="conceptocom-create">
 		{!! Form::open(['id' => 'form-conceptocom', 'data-toggle' => 'validator']) !!}
 			<div class="box-body" id="render-form-conceptocom">
 				{{-- Render form conceptocom --}}

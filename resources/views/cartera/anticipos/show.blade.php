@@ -6,7 +6,7 @@
 @stop
 
 @section('module')
-	<div class="box box-success" id="anticipo-show">
+	<div class="box box-primary" id="anticipo-show">
 		<div class="box-body">
 			<div class="row">
                 <div class="form-group col-md-3">
@@ -25,7 +25,7 @@
     		<div class="row">
 		        <div class="form-group col-md-12">
                     <label class="control-label">Cliente</label>
-                    <div>{{ $anticipo1->tercero_nombre }} - <a href="{{ route('terceros.show', ['terceros' =>  $anticipo1->anticipo1_tercero ]) }}" title="Ver tercero">{{ $anticipo1->tercero_nit }} </a> </div>
+                    <div>{{ $anticipo1->tercero_nombre }} <br> Documento: <a href="{{ route('terceros.show', ['terceros' =>  $anticipo1->anticipo1_tercero ]) }}" title="Ver tercero">{{ $anticipo1->tercero_nit }} </a></div>
                 </div>
         	</div>
         	<div class="row">
@@ -45,7 +45,7 @@
     		<div class="row">
 		        <div class="form-group col-md-12">
                     <label class="control-label">Vendedor</label>
-                    <div>{{ $anticipo1->vendedor_nombre }} - <a href="{{ route('terceros.show', ['terceros' =>  $anticipo1->anticipo1_vendedor]) }}" title="Ver tercero">{{ $anticipo1->vendedor_nit }} </a> </div>
+                    <div>{{ $anticipo1->vendedor_nombre }} <br> Documento: <a href="{{ route('terceros.show', ['terceros' =>  $anticipo1->anticipo1_vendedor]) }}" title="Ver tercero">{{ $anticipo1->vendedor_nit }}</a></div>
                 </div>
         	</div>
         	<div class="row">
@@ -54,9 +54,18 @@
         			<div>{{ $anticipo1->anticipo1_observaciones }}</div>
         		</div>
         	</div>
-        	<div class="box box-success">
+
+            <div class="box-footer with-border">
+                <div class="row">
+                    <div class="col-md-2 col-md-offset-5 col-sm-6 col-xs-6 text-left">
+                        <a href=" {{ route('anticipos.index') }}" class="btn btn-default btn-sm btn-block">{{ trans('app.comeback') }}</a>
+                    </div>
+                </div>
+            </div>
+
+        	<div class="box box-primary">
         		<div class="table-responsive no-padding">
-                    <table table id="browse-anticipo2-list" class="table table-hover table-bordered" cellspacing="0">
+                    <table table id="browse-anticipo2-list" class="table table-bordered" cellspacing="0">
                         <thead>
                             <tr>
                                 <th>Medio de pago</th>
@@ -80,9 +89,9 @@
         		</div>
         	</div>
 
-        	<div class="box box-success">
+        	<div class="box box-primary">
         		<div class="table-responsive no-padding">
-                    <table table id="browse-anticipo3-list" class="table table-hover table-bordered" cellspacing="0">
+                    <table table id="browse-anticipo3-list" class="table table-bordered" cellspacing="0">
 	                    <thead>
 	                        <tr>
 	                            <th>Concepto</th>
@@ -104,12 +113,5 @@
         		</div>
         	</div>
 		</div>
-        <div class="box-footer with-border">
-            <div class="row">
-                <div class="col-md-2 col-md-offset-5 col-sm-6 col-xs-6 text-left">
-                    <a href=" {{ route('anticipos.index') }}" class="btn btn-default btn-sm btn-block">{{ trans('app.comeback') }}</a>
-                </div>
-            </div>
-        </div>
 	</div>
 @stop

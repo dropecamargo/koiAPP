@@ -6,7 +6,7 @@
 @stop
 
 @section('module')
-	<div class="box box-success" id="regional-create">
+	<div class="box box-primary" id="regional-create">
 		{!! Form::open(['id' => 'form-regional', 'data-toggle' => 'validator']) !!}
 			<div class="box-body" id="render-form-regional">
 				{{-- Render form regional --}}

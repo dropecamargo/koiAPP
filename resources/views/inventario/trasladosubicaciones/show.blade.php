@@ -6,7 +6,7 @@
 @stop
 
 @section('module')
-    <div class="box box-success" id="trasladosubicaciones-show">
+    <div class="box box-primary" id="trasladosubicaciones-show">
         <div class="box-body">
             <div class="row">
                 <div class="form-group col-md-3">
@@ -28,7 +28,7 @@
                                 </a>
                             </li>
                         </ul>
-                    </div>           
+                    </div>
                 </div>
             </div>
 
@@ -68,7 +68,7 @@
                 </div>
             </div>
 
-            <div class="box-body box box-success table-responsive">
+            <div class="box-body box box-primary table-responsive">
                 <table id="browse-detalle-trasladou-list" class="table table-hover table-bordered" cellspacing="0" width="100%">
                     <tr>
                         <th>Serie</th>

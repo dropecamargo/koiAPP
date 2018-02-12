@@ -5,7 +5,7 @@
     <li class="active">{{ $producto->id }}</li>
 @stop
 @section('module')
-    <div class="box box-success" id="producto-show">
+    <div class="box box-primary" id="producto-show">
         <div class="box-body">
             <div class="form-group col-md-6">
                 <div class="row">
@@ -69,7 +69,7 @@
                 </div>
                 <div class="row" id="wrapper-series">
                     <div class="form-group col-md-12">
-                        <div class="box box-success">
+                        <div class="box box-primary">
                             <div class="box-header with-border">
                                 <h3 class="box-title"><strong>Disponibilidad</strong></h3>
                             </div>

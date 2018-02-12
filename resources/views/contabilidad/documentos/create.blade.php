@@ -1,17 +1,17 @@
 @extends('contabilidad.documentos.main')
 
-@section('breadcrumb')	
+@section('breadcrumb')
     <li><a href="{{ route('documentos.index')}}">Documentos</a></li>
 	<li class="active">Nuevo</li>
 @stop
 
 @section('module')
-	<div class="box box-success" id="documento-create">
+	<div class="box box-primary" id="documento-create">
 		{!! Form::open(['id' => 'form-documento', 'data-toggle' => 'validator']) !!}
 			<div class="box-body" id="render-form-documento">
 				{{-- Render form documentos --}}
 			</div>
-			
+
 	        <div class="box-footer with-border">
 	        	<div class="row">
 					<div class="col-md-2 col-md-offset-4 col-sm-6 col-xs-6 text-left">

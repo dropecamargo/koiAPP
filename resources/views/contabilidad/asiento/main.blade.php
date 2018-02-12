@@ -24,7 +24,7 @@
 	    </section>
 
 	    <section class="content">
-		    <div class="box box-success" id="spinner-main">
+		    <div class="box box-primary" id="spinner-main">
 		    	<div class="box-body" id="render-form-asientos">
 					<form method="POST" accept-charset="UTF-8" id="form-asientos" data-toggle="validator">
 						<div class="row">
@@ -136,7 +136,7 @@
 					<% if(edit) { %> </form> <% } %>
 
 					<!-- Detalle -->
-					<div class="box box-success">
+					<div class="box box-primary">
 						<% if(edit) { %> <form method="POST" accept-charset="UTF-8" id="form-item-asiento" data-toggle="validator"> <% } %>
 							<div class="box-body">
 								<div class="row">
@@ -605,7 +605,7 @@
 
 	<!-- Facturas, Facturap, Inventario -> Padres -->
 	<script type="text/template" id="add-info-facturap-item">
-		<div class="box box-success">
+		<div class="box box-primary">
 			<div class="box-body">
 				<div class="box-header with-border">
 		            <h3 class="box-title">
@@ -657,7 +657,7 @@
 		    </div>
 		</div>
 		<% if ( !movimiento_nuevo ) { %>
-			<div class="box box-success">
+			<div class="box box-primary">
 				<div class="box-body">
 					<div class="box-header with-border">
 			            <h3 class="box-title"><b>Informacion adicional</b></h3>
@@ -681,14 +681,14 @@
 	</script>
 
 	<script type="text/template" id="add-info-factura-item">
-		<div class="box box-success">
+		<div class="box box-primary">
 			<div class="box-body">
 				<div class="box-header with-border">
 					<h3 class="box-title">
 						<b>Factura </b><small>(<%- naturaleza == 'D' ? 'Debito' : 'Credito' %>)</small>
 					</h3>
 					<div class="pull-right">
-						<% if ( !_.isNull(movimiento_factura) ) { %> 
+						<% if ( !_.isNull(movimiento_factura) ) { %>
 							<b>Numero </b><small># <%- factura1_id %></small>
 						<% } %>
 						<b>Prefijo </b><small><%- puntoventa_prefijo %></small>
@@ -730,10 +730,10 @@
 		    </div>
 		</div>
 
-		<div class="box box-success">
+		<div class="box box-primary">
 			<div class="box-body">
 				<div class="box-header with-border">
-		            <h3 class="box-title"><b>Informacion adicional</b></h3>
+		            <h3 class="box-title"><b>Información adicional</b></h3>
 		        </div>
 
 		        <div class="box-body table-responsive no-padding">
@@ -752,7 +752,7 @@
 	</script>
 
 	<script type="text/template" id="add-info-inventario-item">
-		<div class="box box-success">
+		<div class="box box-primary">
 			<div class="box-body">
 				<div class="box-header with-border">
 		            <h3 class="box-title">
@@ -786,7 +786,7 @@
 			</div>
 		</div>
 
-		<div class="box box-success">
+		<div class="box box-primary">
 			<div class="box-body">
 				<div class="box-header with-border">
 		              <h3 class="box-title"><b>Informacion adicional</b></h3>
@@ -810,7 +810,7 @@
 	<!-- Detalles de las Facturas, Facturap, Inventario -> Hijos -->
 	<script type="text/template" id="show-info-detalle-factura">
 		<td class="text-center"><%- factura4_cuota %></td>
-		<td class="text-center"><%- window.Misc.currency( movimiento_valor ) %></td>				
+		<td class="text-center"><%- window.Misc.currency( movimiento_valor ) %></td>
 	</script>
 
 	<script type="text/template" id="show-info-detalle-facturap">

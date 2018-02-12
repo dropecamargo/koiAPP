@@ -60,7 +60,7 @@
                             <option value="{{ $key }}" <%- trasladou1_tipotraslado == '{{ $key }}' ? 'selected': ''%>>{{ $value }}</option>
                         @endforeach
                     </select>
-                </div>  
+                </div>
             </div>
 
             <div class="row">
@@ -81,7 +81,7 @@
             </div>
         </div>
         <!-- Detalle -->
-        <div class="box box-solid">
+        <div class="box box-primary">
             <form method="POST" accept-charset="UTF-8" id="form-item-trasladoubicacion" data-toggle="validator">
                 <div class="box-body">
                     <div class="row">

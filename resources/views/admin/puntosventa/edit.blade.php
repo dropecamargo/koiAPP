@@ -2,12 +2,12 @@
 
 @section('breadcrumb')
     <li><a href="{{ route('puntosventa.index')}}">Punto de venta</a></li>
-	<li><a href="{{ route('puntosventa.show', ['puntosventa' => $puntoventa->id]) }}">{{ $puntoventa->id }}</a></li>
+	<li><a href="{{ route('puntosventa.show', ['puntosventa' => $puntoventa->id]) }}">{{ $puntoventa->puntoventa_prefijo }}</a></li>
 	<li class="active">Editar</li>
 @stop
 
 @section('module')
-	<div class="box box-success" id="puntosventa-create">
+	<div class="box box-primary" id="puntosventa-create">
 		{!! Form::open(['id' => 'form-puntosventa', 'data-toggle' => 'validator']) !!}
 			<div class="box-body" id="render-form-puntosventa">
 				{{-- Render form puntosventa --}}

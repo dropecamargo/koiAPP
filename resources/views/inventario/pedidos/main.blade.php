@@ -18,13 +18,13 @@
     </section>
 
     <script type="text/template" id="add-pedido-tpl">
-        <div class="nav-tabs-custom tab-success tab-whithout-box-shadow">
+        <div class="nav-tabs-custom tab-primary tab-whithout-box-shadow">
             <ul class="nav nav-tabs">
                 <li class="active"><a href="#tab_pedido" data-toggle="tab">Pedido</a></li>
-               
-                <%if(edit){ %> 
+
+                <%if(edit){ %>
                     <li><a href="#tab_bitacora" data-toggle="tab">Bitácora</a></li>
-                
+
                     <li class="dropdown pull-right">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                             Opciones <span class="caret"></span>
@@ -58,7 +58,7 @@
                                         </select>
                                     </div>
                                     <label for="pedido1_numero" class="col-sm-1 control-label">Número</label>
-                                    <div class="form-group col-sm-1">     
+                                    <div class="form-group col-sm-1">
                                         <input id="pedido1_numero" name="pedido1_numero" class="form-control input-sm" type="number" min="1" value="<%- pedido1_numero %>" required readonly>
                                     </div>
                                 </div>
@@ -71,7 +71,7 @@
                                             </div>
                                             <input type="text" id="pedido1_fecha" name="pedido1_fecha" class="form-control input-sm datepicker-back" value="{{date('Y-m-d')}}" required>
                                         </div>
-                                    </div> 
+                                    </div>
                                     <label for="pedido1_fecha_estimada" class="col-sm-2 control-label">Fecha Estimada De Llegada</label>
                                     <div class="form-group col-sm-2 ">
                                         <div class="input-group">
@@ -80,9 +80,9 @@
                                             </div>
                                             <input type="text" id="pedido1_fecha_estimada" name="pedido1_fecha_estimada" class="form-control input-sm datepicker" value="<%- pedido1_fecha_estimada %>" required>
                                         </div>
-                                    </div> 
+                                    </div>
                                 </div>
-                                     
+
                                 <div class="row">
                                     <label for="pedido1_fecha_anticipo" class="col-sm-1  control-label">Fecha Anticipo</label>
                                     <div class="form-group col-sm-2">
@@ -92,11 +92,11 @@
                                             </div>
                                             <input type="text" id="pedido1_fecha_anticipo" name="pedido1_fecha_anticipo" class="form-control input-sm datepicker" value="<%- pedido1_fecha_anticipo %>" required>
                                         </div>
-                                    </div> 
+                                    </div>
                                     <label for="pedido1_anticipo" class="col-sm-2 control-label">Valor Antcipo</label>
                                     <div class="form-group col-sm-2 ">
                                         <input type="text" id="pedido1_anticipo" name="pedido1_anticipo" class="form-control input-sm" value="<%- pedido1_anticipo %>" required data-currency-precise>
-                                    </div> 
+                                    </div>
                                 </div>
 
                                 <div class="row">
@@ -111,10 +111,10 @@
                                             <input id="pedido1_tercero" placeholder="Cliente" class="form-control tercero-koi-component" name="pedido1_tercero" type="text" maxlength="15" data-wrapper="pedido-create" data-name="pedido1_terecero_nombre" data-contacto="btn-add-contact" value="<%- tercero_nit %>" required <%- edit ? 'readonly': ''%>>
                                         </div>
                                     </div>
-                                    <div class="col-sm-4 col-xs-12">
+                                    <div class="col-sm-5 col-xs-12">
                                         <input id="pedido1_terecero_nombre" name="pedido1_terecero_nombre" placeholder="Nombre cliente" class="form-control input-sm" type="text" maxlength="15" value="<%- tercero_nombre %>" readonly required>
-                                    </div>               
-                                </div> 
+                                    </div>
+                                </div>
 
                                 <div class="row">
                                     <label for="pedido1_observaciones" class="col-sm-1 control-label">Observaciones</label>
@@ -123,9 +123,9 @@
                                     </div>
                                 </div>
                         <% if(edit){ %>
-                            </form> 
+                            </form>
                         <% } %>
-                                
+
                             <div class="row">
                                 <div class="col-md-2 col-md-offset-4 col-sm-6 col-xs-6 text-left">
                                     <a href="{{ route('pedidos.index') }}" class="btn btn-default btn-sm btn-block">{{ trans('app.cancel') }}</a>
@@ -136,8 +136,8 @@
                             </div>
                         <% } %>
                             </div><br>
-                            <div class="box box-success">
-                                <% if(edit){ %> 
+                            <div class="box box-primary">
+                                <% if(edit){ %>
                                     <form method="POST" accept-charset="UTF-8" id="form-detalle-pedido" data-toggle="validator">
                                 <% } %>
                                     <div class="box-body">
@@ -161,7 +161,7 @@
                                                 </button>
                                             </div>
                                         </div>
-             
+
                                         <div class="row">
                                             <label class="control-label col-sm-1 col-md-offset-3">Cantidad</label>
                                             <div class="col-sm-1">
@@ -202,7 +202,7 @@
                         <div class="box box-whithout-border" id="wrapper-bitacora">
                             <div class="box-body">
                                 <div class="table-responsive no-padding">
-                           
+
                                     <table id="browse-bitacora-list" class="table table-hover table-bordered" cellspacing="0">
                                         <thead>
                                             <tr>
@@ -222,9 +222,9 @@
                         </div>
                     </div>
                 <% } %>
-            </div>      
+            </div>
         </div>
-   
+
     </script>
 
     <script type="text/template" id="add-pedidodetalle-item-tpl">

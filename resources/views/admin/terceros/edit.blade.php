@@ -6,7 +6,7 @@
 @stop
 
 @section('module')
-	<div class="box box-success" id="tercero-create">
+	<div class="box box-primary" id="tercero-create">
 		<div class="box-body" id="render-form-tercero">
 			{{-- Render form empresa --}}
 		</div>

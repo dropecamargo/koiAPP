@@ -30,11 +30,11 @@
                         </select>
                     </div>
                     <label for="devolucion1_numero" class="col-sm-1 col-md-1 control-label">Número</label>
-                    <div class="form-group col-sm-1 col-md-1">     
+                    <div class="form-group col-sm-1 col-md-1">
                         <input id="devolucion1_numero" name="devolucion1_numero" class="form-control input-sm" type="number" min="1" value="<%- devolucion1_numero %>" required readonly>
                     </div>
                     <label for="devolucion1_fecha" class="col-sm-1 control-label">Fecha</label>
-                    <div class="form-group col-sm-2">     
+                    <div class="form-group col-sm-2">
                         <div class="input-group">
                             <div class="input-group-addon">
                                 <i class="fa fa-calendar"></i>
@@ -70,13 +70,13 @@
                     </div>
                 </div><br>
 
-                <div class="box box-body box-success">
+                <div class="box box-body box-primary">
                     <div class="table-responsive no-padding">
                         <table id="browse-detalle-devolucion-list" class="table table-hover table-bordered" cellspacing="0">
                             <thead>
                                 <tr>
                                     <th colspan="6" class="text-center">
-                                        <button type="button" class="btn btn-default btn-sm all-devoluciones">Devolver todas</button> 
+                                        <button type="button" class="btn btn-default btn-sm all-devoluciones">Devolver todas</button>
                                     </th>
                                 </tr>
                             </thead>
@@ -134,7 +134,7 @@
                 <input type="number" name="devolucion2_cantidad_<%- id %>" id="devolucion2_cantidad_<%- id %>" max="<%- factura2_cantidad %>" min="0" class="form-control input-sm change-cant-devo" value="<%-devolucion2_cantidad %>" step="1">
             </td>
         <% } %>
-        
+
         <td id="total_<%- id %>"><%- window.Misc.currency(devolucion2_total) %></td>
     </script>
 @stop

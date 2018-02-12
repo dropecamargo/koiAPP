@@ -2,11 +2,11 @@
 
 @section('breadcrumb')
     <li><a href="{{ route('puntosventa.index')}}">Punto de venta</a></li>
-    <li class="active">{{ $puntoventa->id }}</li>
+    <li class="active">{{ $puntoventa->puntoventa_prefijo }}</li>
 @stop
 
 @section('module')
-    <div class="box box-success">
+    <div class="box box-primary">
         <div class="box-body">
             <div class="row">
                 <div class="form-group col-md-4">

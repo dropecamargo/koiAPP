@@ -75,7 +75,7 @@
 		            </button>
 		        </div>
 		    </div>
-		    
+
 		    <!-- table table-bordered table-striped -->
 		    <div class="table-responsive no-padding">
 		        <table id="browse-legalizacions-list" class="table table-hover table-bordered" cellspacing="0">
@@ -104,7 +104,7 @@
 				<div class="row">
 					<label class="control-label col-md-1">Contacto</label>
 					<div class="form-group col-md-11">
-						<%- tcontacto_nombre %>	 
+						<%- tcontacto_nombre %>
 					</div>
 				</div>
 	            <div class="row">
@@ -117,7 +117,7 @@
 	                    </select>
 	                </div>
 	                <label for="factura1_numero" class="col-md-1 control-label">Número</label>
-	                <div class="form-group col-md-2">     
+	                <div class="form-group col-md-2">
 	                    <input id="factura1_numero" name="factura1_numero" class="form-control input-sm" type="number" min="1" required readonly>
 	                </div>
 	            </div>
@@ -140,7 +140,7 @@
 	                    </div>
 	                </div>
 	            </div>
-	            <div class="row"> 
+	            <div class="row">
 	                <label for="factura1_formapago" class="col-md-1 control-label">Pago</label>
 	                <div class="form-group col-md-2">
 	                    <select name="factura1_formapago" id="factura1_formapago" class="form-control" required>
@@ -148,14 +148,14 @@
 	                            <option value="{{ $key }}">{{ $value }}</option>
 	                        @endforeach
 	                    </select>
-	                </div>                                           
+	                </div>
 	                <label for="factura1_plazo" class="col-md-1 control-label">Plazo</label>
-	                <div class="form-group col-md-1">     
+	                <div class="form-group col-md-1">
 	                    <input id="factura1_plazo" name="factura1_plazo" class="form-control input-sm" type="number" min="0"  required>
 	                </div>
 
 	                <label for="factura1_cuotas" class="col-md-1 control-label">Cuotas</label>
-	                <div class="form-group col-md-1">     
+	                <div class="form-group col-md-1">
 	                    <input id="factura1_cuotas" name="factura1_cuotas" class="form-control input-sm" type="number" min="0" required>
 	                </div>
 
@@ -167,7 +167,7 @@
 	                        </div>
 							<input type="text" id="factura1_primerpago" name="factura1_primerpago" value="<%- moment().format('YYYY-MM-DD') %>" class="form-control input-sm datepicker" required>
 	                    </div>
-	                    
+
 	                </div>
 	            </div>
 	            <div class="row">
@@ -188,7 +188,7 @@
 	            </div>
             {!! Form::close() !!}
 
-            <div class="box-body box box-success">
+            <div class="box-body box box-primary">
             	{!! Form::open(['id' => 'form-factura-tecnico-detail', 'data-toggle' => 'validator']) !!}
 	                <div class="row">
 	                    <label  class="control-label col-md-1 col-md-1">Producto</label>

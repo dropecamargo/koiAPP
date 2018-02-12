@@ -19,8 +19,8 @@
 
     <script type="text/template" id="add-nota-tpl">
         <div class="box-body">
-            <form method="POST" accept-charset="UTF-8" id="form-nota" data-toggle="validator"> 
-                <div class="row"> 
+            <form method="POST" accept-charset="UTF-8" id="form-nota" data-toggle="validator">
+                <div class="row">
                     <label for="nota1_sucursal" class="col-md-1 control-label">Sucursal</label>
                     <div class="form-group col-md-3">
                         <select name="nota1_sucursal" id="nota1_sucursal" class="form-control select2-default change-sucursal-consecutive-koi-component" data-field="nota1_numero" data-document ="notas" data-concepto="nota1_conceptonota" data-wrap="wrapper-detalle" required>
@@ -29,12 +29,12 @@
                         @endforeach
                         </select>
                     </div>
-                    
+
                     <label for="nota1_numero" class="col-md-1 control-label">Número</label>
-                    <div class="form-group col-md-1">     
+                    <div class="form-group col-md-1">
                         <input id="nota1_numero" name="nota1_numero" class="form-control input-sm" type="number" min="1" value="<%- nota1_numero %>" required readonly>
                     </div>
-                    
+
                     <label for="nota1_fecha" class="col-md-1 control-label">Fecha</label>
                     <div class="form-group col-md-2">
                         <div class="input-group">
@@ -43,7 +43,7 @@
                             </div>
                             <input type="text" id="nota1_fecha" name="nota1_fecha" class="form-control input-sm datepicker-back" value="{{ date('Y-m-d') }}">
                         </div>
-                    </div> 
+                    </div>
                 </div>
                 <div class="row">
                     <label for="nota1_tercero" class="col-md-1 control-label">Cliente</label>
@@ -70,7 +70,7 @@
                             @endforeach
                         </select>
                     </div>
-                </div>  
+                </div>
                 <div class="row">
                     <label for="nota1_observaciones" class="col-md-1 control-label">Observaciones</label>
                     <div class="form-group col-md-8">
@@ -79,7 +79,7 @@
                 </div>
             </form>
         </div>
-        
+
         <div class="box-footer with-border">
             <div class="row">
                 <div class="col-md-2 col-md-offset-4 col-sm-6 col-xs-6 text-left">
@@ -91,7 +91,7 @@
             </div>
         </div>
 
-        <div class="box box-success" id="wrapper-detalle" hidden><br>
+        <div class="box box-primary" id="wrapper-detalle" hidden><br>
             <div class="box-body">
                 <div class="row">
                     <label for="nota2_documentos_doc" class="col-md-1 control-label">Documento</label>
@@ -140,7 +140,7 @@
                 </a>
             </td>
         <% } %>
-            
+
         <td><%- conceptonota_nombre %></td>
         <td><%- documentos_nombre %></td>
         <td><%- ( factura1_numero != "" ) ? factura1_numero : nota2_numero  %></td>

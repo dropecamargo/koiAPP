@@ -1,12 +1,12 @@
 @extends('inventario.tiposajuste.main')
 
-@section('breadcrumb')	
+@section('breadcrumb')
     <li><a href="{{ route('tiposajuste.index')}}">Tipo de ajuste</a></li>
 	<li class="active">Nuevo</li>
 @stop
 
 @section('module')
-	<div class="box box-success" id="tipoajuste-create">
+	<div class="box box-primary" id="tipoajuste-create">
 		{!! Form::open(['id' => 'form-tipoajuste', 'data-toggle' => 'validator']) !!}
 			<div class="box-body" id="render-form-tipoajuste">
 				{{-- Render form tiposajuste --}}

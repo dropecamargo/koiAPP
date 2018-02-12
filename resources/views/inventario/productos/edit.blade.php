@@ -7,7 +7,7 @@
 @stop
 
 @section('module')
-	<div class="box box-success" id="productos-create">
+	<div class="box box-primary" id="productos-create">
 		{!! Form::open(['id' => 'form-productos', 'data-toggle' => 'validator']) !!}
 			<div class="box-body" id="render-form-producto">
 				{{-- Render form producto --}}

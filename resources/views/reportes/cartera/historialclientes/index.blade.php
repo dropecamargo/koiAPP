@@ -14,7 +14,7 @@
     </section>
 
    	<section class="content">
-	    <div class="box box-success">
+	    <div class="box box-primary">
 	    	<form action="{{ route('rhistorialclientes.index') }}" method="GET" data-toggle="validator">
 			 	<input class="hidden" id="type-reporte-koi-component" name="type"></input>
 				<div class="box-body">
@@ -30,7 +30,7 @@
 					            <input id="filter_tercero" placeholder="Cliente" class="form-control tercero-koi-component" name="filter_tercero" type="text" maxlength="15" data-name="filter_terecero_nombre" required>
 					        </div>
 					    </div>
-					    <div class="col-md-4 col-xs-12">
+					    <div class="col-md-6 col-xs-12">
 					        <input id="filter_terecero_nombre" name="filter_terecero_nombre" placeholder="Nombre cliente" class="form-control input-sm" type="text" maxlength="15" readonly required>
 					    </div>
 					</div>
@@ -44,8 +44,7 @@
 	                            <input type="text" id="filter_fecha_inicio" name="filter_fecha_inicio" class="form-control input-sm datepicker" value="{{ date('Y-m-d') }}" required>
 	                        </div>
 	                    </div>
-					</div>
-					<div class="row">
+
 						<label for="filter_fecha_fin" class="col-sm-1 control-label">Fecha fin</label>
 	                    <div class="form-group col-md-2">
 	                        <div class="input-group">

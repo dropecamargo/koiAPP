@@ -7,7 +7,7 @@
 
 @section('module')
 <div class="box box-solid">
-    <div class="nav-tabs-custom tab-success tab-whithout-box-shadow">
+    <div class="nav-tabs-custom tab-primary tab-whithout-box-shadow">
         <ul class="nav nav-tabs">
             <li class="active"><a href="#tab_tercero" data-toggle="tab">Tercero</a></li>
             <li><a href="#tab_contabilidad" data-toggle="tab">Contabilidad</a></li>
@@ -20,7 +20,7 @@
         <div class="tab-pane active" id="tab_tercero">
         	<div class="box box-solid">
                 <div class="box-body">
-					<div class="row">	
+					<div class="row">
                     	<div class="form-group col-md-2">
 							<label class="control-label">Documento</label>
 							<div>{{ $tercero->tercero_nit }} - {{ $tercero->tercero_digito }}</div>
@@ -87,7 +87,18 @@
 						@endif
                     </div>
             	</div>
+				<div class="box-footer">
+					<div class="row">
+						<div class="col-md-offset-4 col-md-2 col-sm-6 col-xs-6">
+							<a href="{{ route('terceros.index') }}" class="btn btn-default btn-sm btn-block">{{ trans('app.comeback') }}</a>
+						</div>
+						<div class="col-md-2 col-sm-6 col-xs-6">
+							<a href="{{ route('terceros.edit', ['terceros' => $tercero->id]) }}" class="btn btn-primary btn-sm btn-block">{{ trans('app.edit') }}</a>
+						</div>
+					</div>
+				</div>
         	</div>
+
 
 			<div class="box box-solid collapsed-box">
                 <div class="box-header">
@@ -153,7 +164,7 @@
                 </div>
             </div>
 
-            <div class="nav-tabs-custom tab-success tab-whithout-box-shadow">
+            <div class="nav-tabs-custom tab-primary tab-whithout-box-shadow">
 	            <ul class="nav nav-tabs">
 					<li class="active"><a href="#tab_cartera" data-toggle="tab">Cartera</a></li>
 					<li><a href="#tab_proveedor" data-toggle="tab">Proveedor</a></li>
@@ -196,7 +207,7 @@
 					<div class="box-body table-responsive">
 						<table id="browse-facturap3-list" class="table table-hover table-bordered" cellspacing="0">
 						    <thead>
-					            <tr>	
+					            <tr>
 					            	<th>Tipo</th>
 	                                <th width="10%">Numero</th>
 	                                <th width="20%">Regional</th>
@@ -276,7 +287,7 @@
 				</div>
 			</div>
         </div>
-							
+
 		<div class="tab-pane" id="tab_contabilidad">
         	<div class="box-body">
 	        	<div class="row">
@@ -445,12 +456,12 @@
 				<br />
 				<div class="row">
 			    	<div class="form-group col-md-offset-2 col-md-8">
-						<div class="box box-success" id="wrapper-roles">
+						<div class="box box-primary" id="wrapper-roles">
 							<div class="box-header with-border">
 								<h3 class="box-title">Roles de usuario</h3>
 							</div>
 		                    <div class="box-body table-responsive no-padding">
-		                        <table id="browse-roles-list" class="table table-hover table-bordered" cellspacing="0">
+		                        <table id="browse-roles-list" class="table table-bordered" cellspacing="0">
 		                            <tbody>
 		                                {{-- Render content roles --}}
 		                            </tbody>
@@ -484,15 +495,5 @@
 		</div>
 	</div>
 
-	<div class="box-footer with-border">
-	    <div class="row">
-            <div class="col-md-offset-4 col-md-2 col-sm-6 col-xs-6">
-				<a href="{{ route('terceros.index') }}" class="btn btn-default btn-sm btn-block">{{ trans('app.comeback') }}</a>
-            </div>
-            <div class="col-md-2 col-sm-6 col-xs-6">
-				<a href="{{ route('terceros.edit', ['terceros' => $tercero->id]) }}" class="btn btn-primary btn-sm btn-block">{{ trans('app.edit') }}</a>
-            </div>
-        </div>
-    </div>
 </div>
 @stop

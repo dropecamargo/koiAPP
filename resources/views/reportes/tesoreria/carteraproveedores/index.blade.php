@@ -14,7 +14,7 @@
     </section>
 
    	<section class="content">
-	    <div class="box box-success">
+	    <div class="box box-primary">
 	    	<form action="{{ route('rcarteraedadesproveedores.index') }}" method="GET" data-toggle="validator">
 			 	<input class="hidden" id="type-reporte-koi-component" name="type"></input>
 				<div class="box-body">
@@ -33,7 +33,7 @@
 					    <div class="col-md-4 col-xs-12">
 					        <input id="filter_terecero_nombre" name="filter_terecero_nombre" placeholder="Nombre proveedor" class="form-control input-sm" type="text" maxlength="15" readonly required>
 					    </div>
-					</div>		
+					</div>
 					<div class="row">
 	                    <label for="filter_mes" class="col-sm-1 control-label">Cierre</label>
 						<div class="form-group col-sm-2">

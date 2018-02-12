@@ -7,7 +7,7 @@
 @stop
 
 @section('module')
-	<div class="box box-success" id="sitio-create">
+	<div class="box box-primary" id="sitio-create">
 		{!! Form::open(['id' => 'form-sitio', 'data-toggle' => 'validator']) !!}
 			<div class="box-body" id="render-form-sitio">
 				{{-- Render form sitio --}}

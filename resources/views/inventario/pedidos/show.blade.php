@@ -8,7 +8,7 @@
 @section('module')
 
 	<div class="box box-whithout-border" id="pedido-show">
-		<div class="nav-tabs-custom tab-success tab-whithout-box-shadow">
+		<div class="nav-tabs-custom tab-primary tab-whithout-box-shadow">
             <ul class="nav nav-tabs">
                 <li class="active"><a href="#tab_pedido" data-toggle="tab">Pedido</a></li>
 
@@ -48,7 +48,7 @@
                         <div class="box-body">
                             <div class="table-responsive no-padding">
 
-                                <table id="browse-bitacora-list" class="table table-hover table-bordered" cellspacing="0">
+                                <table id="browse-bitacora-list" class="table table-bordered" cellspacing="0">
                                     <thead>
                                         <tr>
                                             <th width="20%">Nombre</th>
@@ -70,7 +70,6 @@
         </div>
 	</div>
     <script type="text/template" id="show-pedido-tpl">
-
         <div class="row">
             <label for="pedido1_sucursal" class="col-sm-1 control-label">Sucursal</label>
             <div class="form-group col-sm-2">
@@ -118,10 +117,10 @@
                 <%- pedido1_observaciones %>
             </div>
         </div>
-        <div class="box box-success">
+        <div class="box box-primary">
             <div class="box-body">
                 <div class="table-responsive no-padding">
-                    <table id="browse-detalle-pedido-list" class="table table-hover table-bordered" cellspacing="0">
+                    <table id="browse-detalle-pedido-list" class="table table-bordered" cellspacing="0">
                         <thead>
                             <tr>
                                 <th width="20%">Referencia</th>

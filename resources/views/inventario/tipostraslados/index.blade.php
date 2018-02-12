@@ -6,12 +6,12 @@
 
 @section('module')
     <div id="tipostraslados-main">
-        <div class="box box-success">
+        <div class="box box-primary">
             <div class="box-body table-responsive">
                 <table id="tipostraslados-search-table" class="table table-bordered table-striped" cellspacing="0" width="100%">
                     <thead>
                         <tr>
-                            <th>Id</th>
+                            <th>Código</th>
                             <th>Sigla</th>
                             <th>Nombre</th>
                             <th>Activo</th>

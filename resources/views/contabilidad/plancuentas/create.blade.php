@@ -1,17 +1,17 @@
 @extends('contabilidad.plancuentas.main')
 
-@section('breadcrumb')	
+@section('breadcrumb')
 	<li><a href="{{ route('plancuentas.index') }}">Plan de cuentas</a></li>
 	<li class="active">Nuevo</li>
 @stop
 
 @section('module')
-	<div class="box box-success" id="plancuentas-create">
+	<div class="box box-primary" id="plancuentas-create">
 		{!! Form::open(['id' => 'form-plancuentas', 'data-toggle' => 'validator']) !!}
 			<div class="box-body" id="render-form-plancuentas">
 				{{-- Render form plancuentas --}}
 			</div>
-			
+
 	        <div class="box-footer with-border">
 	        	<div class="row">
 					<div class="col-md-2 col-md-offset-4 col-sm-6 col-xs-6 text-left">

@@ -14,7 +14,7 @@
     </section>
 
    	<section class="content">
-	    <div class="box box-success">
+	    <div class="box box-primary">
 	    	<form action="{{ route('rmovimientosproductos.index') }}" method="GET" data-toggle="validator">
 			 	<input class="hidden" id="type-reporte-koi-component" name="type"></input>
 				<div class="box-body" id="wrapper-body">
@@ -27,7 +27,7 @@
 	                                    <i class="fa fa-barcode"></i>
 	                                </button>
 	                            </span>
-	                            <input id="producto_serie" placeholder="Serie" class="form-control producto-koi-component" name="producto_serie" type="text" maxlength="15" data-wrapper="wrapper-body" data-name="producto_nombre" required> 
+	                            <input id="producto_serie" placeholder="Serie" class="form-control producto-koi-component" name="producto_serie" type="text" maxlength="15" data-wrapper="wrapper-body" data-name="producto_nombre" required>
 	                        </div>
 	                    </div>
 	                    <div class="col-sm-5 ">

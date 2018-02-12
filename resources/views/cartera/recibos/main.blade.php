@@ -19,8 +19,8 @@
 
     <script type="text/template" id="add-recibo-tpl">
         <div class="box-body">
-            <form method="POST" accept-charset="UTF-8" id="form-recibo1" data-toggle="validator"> 
-                <div class="row"> 
+            <form method="POST" accept-charset="UTF-8" id="form-recibo1" data-toggle="validator">
+                <div class="row">
                     <label for="recibo1_sucursal" class="col-md-1 control-label">Sucursal</label>
                     <div class="form-group col-md-3">
                         <select name="recibo1_sucursal" id="recibo1_sucursal" class="form-control select2-default change-sucursal-consecutive-koi-component" data-field="recibo1_numero" data-document ="recibos" data-wrapper="recibo1-create" required>
@@ -29,12 +29,12 @@
                         @endforeach
                         </select>
                     </div>
-                    
+
                     <label for="recibo1_numero" class="col-md-1 control-label">Número</label>
-                    <div class="form-group col-md-1">     
+                    <div class="form-group col-md-1">
                         <input id="recibo1_numero" name="recibo1_numero" class="form-control input-sm" type="number" min="1" value="<%- recibo1_numero %>" required readonly>
                     </div>
-                    
+
                     <label for="recibo1_fecha" class="col-md-1 control-label">Fecha</label>
                     <div class="form-group col-md-2">
                         <div class="input-group">
@@ -43,7 +43,7 @@
                             </div>
                             <input type="text" id="recibo1_fecha" name="recibo1_fecha" class="form-control input-sm datepicker-back" value="{{date('Y-m-d')}}">
                         </div>
-                    </div> 
+                    </div>
                 </div>
                 <div class="row">
                     <label for="recibo1_cuentas" class="col-md-1 control-label">Cuentas</label>
@@ -54,7 +54,7 @@
                             @endforeach
                         </select>
                     </div>
-                    
+
                     <label for="recibo1_fecha_pago" class="col-md-offset-2 col-md-1 control-label">Fecha pago</label>
                     <div class="form-group col-md-2">
                         <div class="input-group">
@@ -89,7 +89,7 @@
                 </div>
             </form>
         </div>
-        
+
         <div class="box-footer with-border">
             <div class="row">
                 <div class="col-md-2 col-md-offset-4 col-sm-6 col-xs-6 text-left">
@@ -101,10 +101,10 @@
             </div>
         </div>
 
-        <div class="box box-success" id="wrapper-recibo2" hidden>
+        <div class="box box-primary" id="wrapper-recibo2" hidden>
             <div class="box-body">
-                <form method="POST" accept-charset="UTF-8" id="form-recibo2" data-toggle="validator"> 
-                    <div class="row"> 
+                <form method="POST" accept-charset="UTF-8" id="form-recibo2" data-toggle="validator">
+                    <div class="row">
                         <label for="recibo2_conceptosrc" class="control-label col-md-1">Concepto</label>
                         <div class="form-group col-md-3">
                             <select name="recibo2_conceptosrc" id="recibo2_conceptosrc" class="form-control select2-default-clear change-concepto" required>
@@ -121,7 +121,7 @@
                                     <option  value="{{ $key }}">{{ $value }}</option>
                                 @endforeach
                             </select>
-                        </div> 
+                        </div>
                         <label for="recibo2_valor" class="control-label col-md-1">Valor</label>
                         <div class="form-group col-md-2">
                             <input type="text" id="recibo2_valor" name="recibo2_valor" class="form-control input-sm" placeholder="Valor" data-currency required>
@@ -146,7 +146,7 @@
                                 <th>Naturaleza</th>
                                 <th>Valor</th>
                             </tr>
-                        </thead>   
+                        </thead>
                         <tbody>
                             {{-- Render content recibo2 --}}
                         </tbody>
@@ -160,9 +160,9 @@
                     </table>
                 </div>
             </div>
-            <div class="box box-success">
+            <div class="box box-primary">
                 <div class="box-body">
-                    <form method="POST" accept-charset="UTF-8" id="form-recibo3" data-toggle="validator"> 
+                    <form method="POST" accept-charset="UTF-8" id="form-recibo3" data-toggle="validator">
                         <div class="row">
                             <div class="col-sm-2">
                                 <div class="form-group col-sm-12">
@@ -192,7 +192,7 @@
                                     <th width="15%">Fecha</th>
                                     <th width="15%">Valor</th>
                                 </tr>
-                            </thead>   
+                            </thead>
                             <tbody>
                                 {{-- Render content recibo3 --}}
                             </tbody>
@@ -219,7 +219,7 @@
                         <option value="{{ $key }}">{{ $value }}</option>
                     @endforeach
                 </select>
-            </div>    
+            </div>
             <div class="form-group col-sm-3">
                 <label class="control-label" for="recibo3_numero_medio">Numero</label>
                 <input type="text" name="recibo3_numero_medio" id="recibo3_numero_medio" maxlength="25" class="input-sm form-control" placeholder="Número de cuenta" required>
@@ -248,7 +248,7 @@
                 </a>
             </td>
         <% } %>
-            
+
         <td><%- conceptosrc_nombre %></td>
         <td><%- documentos_nombre %></td>
         <td><%- !_.isUndefined(factura1_numero) && !_.isNull(factura1_numero) && factura1_numero != '' ? factura1_numero : recibo2_numero %></td>
@@ -265,7 +265,7 @@
                 </a>
             </td>
         <% } %>
-            
+
         <td><%- mediopago %></td>
         <td><%- banco %></td>
         <td><%- recibo3_numero_medio %></td>

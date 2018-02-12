@@ -14,7 +14,7 @@
     </section>
 
    	<section class="content">
-	    <div class="box box-success">
+	    <div class="box box-primary">
 	    	<form action="{{ route('ractivosfijos.index') }}" method="GET" data-toggle="validator">
 			 	<input class="hidden" id="type-reporte-koi-component" name="type"></input>
 				<div class="box-body">

@@ -6,7 +6,7 @@
 @stop
 
 @section('module')
-	<div class="box box-success" id="marca-create">
+	<div class="box box-primary" id="marca-create">
 		{!! Form::open(['id' => 'form-marca', 'data-toggle' => 'validator']) !!}
 			<div class="box-body" id="render-form-marca">
 				{{-- Render form marca --}}

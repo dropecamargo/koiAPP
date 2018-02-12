@@ -15,7 +15,7 @@
 
    	<section class="content">
 
-	    <div class="box box-success">
+	    <div class="box box-primary">
 	    	<form action="{{ route('rordenesabiertas.index') }}" method="GET" data-toggle="validator">
 			 	<input class="hidden" id="type-reporte-koi-component" name="type"></input>
 				<div class="box-body">
@@ -51,7 +51,7 @@
 	                        <input id="filter_tercero_nombre" name="filter_tercero_nombre" placeholder="Nombre cliente" class="form-control input-sm" type="text" maxlength="15" readonly>
 	                    </div>
 	                </div>
-					<div class="row"> 
+					<div class="row">
                     	<label for="filter_technical" class="col-sm-1 control-label">Técnico</label>
 	                    <div class="form-group col-sm-3">
 	                        <select name="filter_technical" id="filter_technical" class="form-control select2-default">

@@ -14,7 +14,7 @@
 
     <section class="content">
         <div class="box box-solid" id="orden-show">
-            <div class="nav-tabs-custom tab-success tab-whithout-box-shadow">
+            <div class="nav-tabs-custom tab-primary tab-whithout-box-shadow">
                 <ul class="nav nav-tabs">
                     <li class="active"><a href="#tab_orden" data-toggle="tab">Orden</a></li>
                     <li><a href="#tab_visitas" data-toggle="tab">Visitas</a></li>
@@ -132,7 +132,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="box-footer">      
+                        <div class="box-footer">
                             <div class="col-md-2 col-md-offset-5 col-sm-6 col-xs-6">
                                 <a href=" {{ route('ordenes.index') }}" class="btn btn-default btn-sm btn-block">{{ trans('app.comeback') }}</a>
                             </div>
@@ -147,10 +147,10 @@
                                     <thead>
                                         <tr>
                                             <th width="10%">N. Visita</th>
-                                            <th width="25%">F. Llegada</th>                                                    
-                                            <th width="25%">F. Inicio</th>                                                    
-                                            <th width="30%">N. Tecnico</th>                                                    
-                                            <th width="5%">Info</th>                                                    
+                                            <th width="25%">F. Llegada</th>
+                                            <th width="25%">F. Inicio</th>
+                                            <th width="30%">N. Tecnico</th>
+                                            <th width="5%">Info</th>
                                         </tr>
                                     </thead>
                                     <tbody>

@@ -22,7 +22,7 @@
         </section>
 
         <section class="content">
-            <div class="box box-success" id="spinner-main">
+            <div class="box box-primary" id="spinner-main">
                 <div class="box-body">
                     <form method="POST" accept-charset="UTF-8" id="form-roles" data-toggle="validator">
                         <div class="row">
@@ -58,7 +58,7 @@
                     <% if( typeof(id) !== 'undefined' && !_.isUndefined(id) && !_.isNull(id) && id != '' && name != 'admin' ) { %>
                     <div class="row">
                         <div class="form-group col-md-12">
-                            <div class="nav-tabs-custom">
+                            <div class="nav-tabs-custom tab-primary">
                                 <ul class="nav nav-tabs">
                                     <li class="active"><a href="#tab_modulos" data-toggle="tab">Permisos</a></li>
                                 </ul>

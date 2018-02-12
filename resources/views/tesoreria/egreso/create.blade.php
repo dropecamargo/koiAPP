@@ -6,7 +6,7 @@
 @stop
 
 @section('module')
-	<div class="box box-success" id="egreso1-create">
+	<div class="box box-primary" id="egreso1-create">
 		<div id="render-form-egreso1">
 			{{-- Render form egreso1 --}}
 		</div>

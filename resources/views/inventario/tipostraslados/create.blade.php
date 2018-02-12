@@ -1,12 +1,12 @@
 @extends('inventario.tipostraslados.main')
 
-@section('breadcrumb')	
+@section('breadcrumb')
     <li><a href="{{ route('tipostraslados.index')}}">Tipo de traslado</a></li>
 	<li class="active">Nuevo</li>
 @stop
 
 @section('module')
-	<div class="box box-success" id="tipotraslado-create">
+	<div class="box box-primary" id="tipotraslado-create">
 		{!! Form::open(['id' => 'form-tipotraslado', 'data-toggle' => 'validator']) !!}
 			<div class="box-body" id="render-form-tipotraslado">
 				{{-- Render form tipostraslados --}}

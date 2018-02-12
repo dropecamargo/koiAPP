@@ -78,7 +78,7 @@
             </div>
         </div>
         <!-- Detalle -->
-        <div class="box box-success">
+        <div class="box box-primary">
             <form method="POST" accept-charset="UTF-8" id="form-item-traslado" data-toggle="validator">
                 <div class="box-body">
                     <div class="row">

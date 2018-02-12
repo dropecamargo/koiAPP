@@ -6,7 +6,7 @@
 @stop
 
 @section('module')
-    <div class="box box-success">
+    <div class="box box-primary">
         <div class="box-body">
             <div class="row">
                 <div class="form-group col-md-2">
@@ -28,7 +28,7 @@
             @if($tipopago->tipopago_documentos != null)
                 <div class="row">
                     <div class="form-group col-md-3">
-                        <label class="control-label">Documentos</label>  
+                        <label class="control-label">Documentos</label>
                         <div>{{ $tipopago->documentos_nombre }}</div>
                     </div>
                 </div>

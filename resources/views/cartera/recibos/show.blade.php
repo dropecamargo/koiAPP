@@ -6,7 +6,7 @@
 @stop
 
 @section('module')
-    <div class="box box-success" id="recibo-show">
+    <div class="box box-primary" id="recibo-show">
         <div class="box-body">
             <div class="row">
                 <div class="form-group col-md-3">
@@ -86,7 +86,7 @@
                             <th>Fecha</th>
                             <th>Valor</th>
                         </tr>
-                    </thead>   
+                    </thead>
                     <tbody>
                         {{-- Render content recibo3 --}}
                     </tbody>

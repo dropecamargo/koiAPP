@@ -2,11 +2,11 @@
 
 @section('breadcrumb')
     <li><a href="{{ route('sucursales.index')}}">Sucursal</a></li>
-    <li class="active">{{ $sucursal->id  }}</li>
+    <li class="active">{{ $sucursal->sucursal_nombre  }}</li>
 @stop
 
 @section('module')
-    <div class="box box-success">
+    <div class="box box-primary">
         <div class="box-body">
             <div class="row">
                 <div class="form-group col-md-4">

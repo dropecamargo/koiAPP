@@ -6,7 +6,7 @@
 @stop
 
 @section('module')
-	<div class="box box-success" id="cheque-create">
+	<div class="box box-primary" id="cheque-create">
 		<div id="render-form-cheque">
 			{{-- Render form cheque --}}
 		</div>

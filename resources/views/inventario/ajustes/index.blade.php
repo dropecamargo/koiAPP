@@ -6,7 +6,7 @@
 
 @section('module')
 	<div id="ajustes-main">
-        <div class="box box-success">
+        <div class="box box-primary">
             <div class="box-body">
                 {!! Form::open(['id' => 'form-koi-search-ajuste-component', 'class' => 'form-horizontal', 'data-toggle' => 'validator', 'role' => 'form']) !!}
                     <div class="form-group">
@@ -56,7 +56,7 @@
                 <table id="ajustes-search-table" class="table table-bordered table-striped" cellspacing="0" width="100%">
                     <thead>
                         <tr>
-                            <th>ID</th>
+                            <th>Código</th>
                             <th>Tipo Ajuste</th>
                             <th>Sucursal</th>
                             <th>Fecha</th>

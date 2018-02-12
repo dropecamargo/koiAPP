@@ -13,7 +13,7 @@
 
 	<section class="content">
 		<div id="asientos-main">
-			<div class="box box-success">
+			<div class="box box-primary">
 				<div class="box-body table-responsive">
 					<table id="asientos-search-table" class="table table-bordered table-striped" cellspacing="0" width="100%">
 				        <thead>

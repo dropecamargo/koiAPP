@@ -1,12 +1,12 @@
 @extends('inventario.pedidos.main')
 
-@section('breadcrumb')	
+@section('breadcrumb')
 	<li class="active">Pedidos</li>
 @stop
 
 @section('module')
 	<div id="pedido-main">
-		<div class="box box-success">
+		<div class="box box-primary">
 			<div class="box-body table-responsive">
 				<table id="pedido-search-table" class="table table-bordered table-striped" cellspacing="0" width="100%">
 			        <thead>
