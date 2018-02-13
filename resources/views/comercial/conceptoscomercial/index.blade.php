@@ -1,7 +1,7 @@
 @extends('comercial.conceptoscomercial.main')
 
 @section('breadcrumb')
-    <li class="active">Concepto Comercial</li>
+    <li class="active">Conceptos Comerciales</li>
 @stop
 
 @section('module')

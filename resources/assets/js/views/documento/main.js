@@ -32,7 +32,7 @@ app || (app = {});
                 ],
                 buttons: [
                     {
-                        text: '<i class="fa fa-user-plus"></i> Nuevo documento',
+                        text: '<i class="fa fa-plus"></i> Nuevo documento',
                         className: 'btn-sm',
                         action: function ( e, dt, node, config ) {
                                 window.Misc.redirect( window.Misc.urlFull( Route.route('documento.create') ) )

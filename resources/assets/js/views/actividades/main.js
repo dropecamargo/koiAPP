@@ -17,7 +17,7 @@ app || (app = {});
         * Constructor Method
         */
         initialize : function() {
-            
+
             this.$actividadesSearchTable = this.$('#actividades-search-table');
 
             this.$actividadesSearchTable.DataTable({
@@ -36,12 +36,12 @@ app || (app = {});
                 columns: [
                     { data: 'actividad_codigo', name: 'actividad_codigo' },
                     { data: 'actividad_nombre', name: 'actividad_nombre'},
-                    { data: 'actividad_categoria', name: 'actividad_categoria'}, 
+                    { data: 'actividad_categoria', name: 'actividad_categoria'},
                     { data: 'actividad_tarifa', name: 'actividad_tarifa' }
                 ],
                 buttons: [
-                    { 
-                        text: '<i class="fa fa-user-plus"></i> Nueva actividad', 
+                    {
+                        text: '<i class="fa fa-plus"></i> Nueva actividad', 
                         className: 'btn-sm',
                         action: function ( e, dt, node, config ) {
                                 window.Misc.redirect( window.Misc.urlFull( Route.route('actividades.create') ) )

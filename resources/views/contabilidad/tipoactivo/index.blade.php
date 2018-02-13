@@ -1,7 +1,7 @@
 @extends('contabilidad.tipoactivo.main')
 
 @section('breadcrumb')
-    <li class="active">Tipo activo</li>
+    <li class="active">Tipos activos</li>
 @stop
 
 @section('module')

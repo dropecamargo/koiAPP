@@ -37,7 +37,7 @@ app || (app = {});
                 ],
 				buttons: [
 					{
-						text: '<i class="fa fa-user-plus"></i> Nuevo tipo de actividad',
+						text: '<i class="fa fa-plus"></i> Nuevo tipo de actividad',
                         className: 'btn-sm',
 						action: function ( e, dt, node, config ) {
 							window.Misc.redirect( window.Misc.urlFull( Route.route('tiposactividad.create') ) )

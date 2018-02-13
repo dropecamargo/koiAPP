@@ -1,11 +1,11 @@
 @extends('layout.layout')
 
-@section('title') Concepto comercial @stop
+@section('title') Conceptos comerciales @stop
 
 @section('content')
     <section class="content-header">
         <h1>
-            Concepto comercial <small>Administración de concepto comercial</small>
+            Conceptos comerciales <small>Administración conceptos comerciales</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> {{trans('app.home')}}</a></li>

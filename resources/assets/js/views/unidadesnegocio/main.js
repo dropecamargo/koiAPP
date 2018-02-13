@@ -35,7 +35,7 @@ app || (app = {});
                 ],
 				buttons: [
 					{
-						text: '<i class="fa fa-user-plus"></i> Nuevo unidad negocio',
+						text: '<i class="fa fa-plus"></i> Nueva unidad negocio',
                         className: 'btn-sm',
 						action: function ( e, dt, node, config ) {
 							window.Misc.redirect( window.Misc.urlFull( Route.route('unidadesnegocio.create') ) )

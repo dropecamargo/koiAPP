@@ -1,11 +1,11 @@
 @extends('layout.layout')
 
-@section('title') Gestion comercial @stop
+@section('title') Gestiones comerciales @stop
 
 @section('content')
     <section class="content-header">
         <h1>
-            Gestion comercial <small>Administración de gestión comercial</small>
+            Gestiones comerciales <small>Administración de gestiones comerciales</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> {{trans('app.home')}}</a></li>
@@ -51,10 +51,10 @@
                     @endforeach
                 </select>
             </div>
-        </div>  
+        </div>
         <div class="row">
             <label for="gestioncomercial_inicio" class="col-sm-1 control-label">Fecha inicio</label>
-            <div class="form-group col-sm-2">     
+            <div class="form-group col-sm-2">
                 <input id="gestioncomercial_inicio" name="gestioncomercial_inicio" class="form-control input-sm datepicker" type="text" value="<%- gestioncomercial_inicio %>" required>
             </div>
             <label for="gestioncomercial_hinicio" class="col-md-1 control-label">Hora inicio</label>
@@ -67,9 +67,9 @@
                         </div>
                     </div>
                 </div>
-            </div> 
+            </div>
             <label for="gestioncomercial_finalizo" class="col-sm-1 control-label">Fecha finalización</label>
-            <div class="form-group col-sm-2">     
+            <div class="form-group col-sm-2">
                 <input id="gestioncomercial_finalizo" name="gestioncomercial_finalizo" class="form-control input-sm datepicker" type="text" value="<%- gestioncomercial_finalizo %>" required>
             </div>
             <label for="gestioncomercial_hfinalizo" class="col-md-1 control-label">Hora finalización</label>
@@ -82,14 +82,14 @@
                         </div>
                     </div>
                 </div>
-            </div> 
+            </div>
         </div>
         <div class="row">
             <label for="gestioncomercial_observaciones" class="col-sm-1 control-label">Observaciones</label>
             <div class="form-group col-sm-11">
                 <textarea id="gestioncomercial_observaciones" name="gestioncomercial_observaciones" class="form-control" rows="2" placeholder="Observaciones"></textarea>
             </div>
-        </div> 
+        </div>
     </script>
 
 @stop

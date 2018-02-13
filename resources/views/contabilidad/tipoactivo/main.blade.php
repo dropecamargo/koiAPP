@@ -1,11 +1,11 @@
 @extends('layout.layout')
 
-@section('title') Tipo activo @stop
+@section('title') Tipos activos @stop
 
 @section('content')
     <section class="content-header">
         <h1>
-            Tipo activo <small>Administración de tipo activo</small>
+            Tipos de activos <small>Administración de tipos activos</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> {{trans('app.home')}}</a></li>

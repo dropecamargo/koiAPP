@@ -1,7 +1,7 @@
 @extends('contabilidad.tipoactivo.main')
 
 @section('breadcrumb')
-    <li><a href="{{ route('tipoactivos.index')}}">Tipo activo</a></li>
+    <li><a href="{{ route('tipoactivos.index')}}">Tipos activos</a></li>
     <li class="active">{{ $tipoactivo->id }}</li>
 @stop
 

@@ -1,7 +1,7 @@
 @extends('tesoreria.tipoproveedor.main')
 
 @section('breadcrumb')
-    <li><a href="{{ route('tipoproveedores.index')}}">Tipo proveedor</a></li>
+    <li><a href="{{ route('tipoproveedores.index')}}">Tipo de proveedor</a></li>
     <li class="active">{{ $tipoproveedor->id }}</li>
 @stop
 

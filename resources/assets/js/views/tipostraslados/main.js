@@ -35,7 +35,7 @@ app || (app = {});
                 ],
 				buttons: [
 					{
-						text: '<i class="fa fa-user-plus"></i> Nuevo tipo de traslado',
+						text: '<i class="fa fa-plus"></i> Nuevo tipo de traslado',
                         className: 'btn-sm',
 						action: function ( e, dt, node, config ) {
 							window.Misc.redirect( window.Misc.urlFull( Route.route('tipostraslados.create') ) )

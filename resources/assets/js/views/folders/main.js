@@ -32,7 +32,7 @@ app || (app={});
                 ],
                 buttons: [
                     {
-                        text: '<i class="fa fa-user-plus"></i> Agregar Folder',
+                        text: '<i class="fa fa-plus"></i> Nuevo folder',
                         className: 'btn-sm',
                         action: function ( e, dt, node, config ) {
                                 window.Misc.redirect(window.Misc.urlFull( Route.route('folders.create') ) )

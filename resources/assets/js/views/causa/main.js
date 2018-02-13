@@ -35,7 +35,7 @@ app || (app = {});
                 ],
                 buttons: [
                     {
-                        text: '<i class="fa fa-plus"></i> Nuevo causa',
+                        text: '<i class="fa fa-plus"></i> Nueva causa',
                         className: 'btn-sm',
                         action: function ( e, dt, node, config ) {
                             window.Misc.redirect( window.Misc.urlFull( Route.route('causas.create') ) )

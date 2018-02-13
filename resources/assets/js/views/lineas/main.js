@@ -40,7 +40,7 @@ app || (app = {});
                 ],
 				buttons: [
 					{
-						text: '<i class="fa fa-user-plus"></i> Nueva linea',
+						text: '<i class="fa fa-plus"></i> Nueva linea',
                         className: 'btn-sm',
 						action: function ( e, dt, node, config ) {
 							window.Misc.redirect( window.Misc.urlFull( Route.route('lineas.create') ) )

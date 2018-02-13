@@ -1,7 +1,7 @@
 @extends('cartera.conceptosajustec.main')
 
 @section('breadcrumb')
-    <li class="active">Conceptos ajuste de cartera</li>
+    <li class="active">Conceptos ajustes de cartera</li>
 @stop
 
 @section('module')

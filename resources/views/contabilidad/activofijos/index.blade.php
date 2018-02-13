@@ -1,7 +1,7 @@
 @extends('contabilidad.activofijos.main')
 
 @section('breadcrumb')
-    <li class="active">Activo fijo</li>
+    <li class="active">Activos fijos</li>
 @stop
 
 @section('module')

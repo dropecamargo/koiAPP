@@ -45,13 +45,13 @@
                         <a href="{{ route('documento.index') }}"><i class="fa fa-circle-o"></i> Documentos</a>
                     </li>
                     <li class="{{ Request::segment(1) == 'modulos' ? 'active' : '' }}">
-                        <a href="{{ route('modulos.index') }}"><i class="fa fa-circle-o"></i> Modulos</a>
+                        <a href="{{ route('modulos.index') }}"><i class="fa fa-circle-o"></i> Módulos</a>
                     </li>
                     <li class="{{ Request::segment(1) == 'municipios' ? 'active' : '' }}">
                         <a href="{{ route('municipios.index') }}"><i class="fa fa-circle-o"></i> Municipios</a>
                     </li>
                     <li class="{{ Request::segment(1) == 'paises' ? 'active' : '' }}">
-                        <a href="{{ route('paises.index') }}"><i class="fa fa-circle-o"></i> Paises</a>
+                        <a href="{{ route('paises.index') }}"><i class="fa fa-circle-o"></i> Países</a>
                     </li>
                     <li class="{{ Request::segment(1) == 'permisos' ? 'active' : '' }}">
                         <a href="{{ route('permisos.index') }}"><i class="fa fa-circle-o"></i> Permisos</a>
@@ -66,7 +66,7 @@
                         <a href="{{ route('sucursales.index') }}"><i class="fa fa-circle-o"></i> Sucursales</a>
                     </li>
                     <li class="{{ Request::segment(1) == 'tiposactividad' ? 'active' : '' }}">
-                        <a href="{{ route('tiposactividad.index') }}"><i class="fa fa-circle-o"></i> Tipo actividad</a>
+                        <a href="{{ route('tiposactividad.index') }}"><i class="fa fa-circle-o"></i> Tipos de actividad</a>
                     </li>
                     <li class="{{ Request::segment(1) == 'ubicaciones' ? 'active' : '' }}">
                         <a href="{{ route('ubicaciones.index') }}"><i class="fa fa-circle-o"></i> Ubicaciones</a>
@@ -89,7 +89,7 @@
                 <ul class="treeview-menu">
 
                     <li class="{{ Request::segment(1) == 'ajustesc' ? 'active' : '' }}">
-                        <a href="{{ route('ajustesc.index') }}"><i class="fa fa-adjust"></i> Ajuste cartera</a>
+                        <a href="{{ route('ajustesc.index') }}"><i class="fa fa-adjust"></i> Ajustes de cartera</a>
                     </li>
                     <li class="{{ Request::segment(1) == 'anticipos' ? 'active' : '' }}">
                         <a href="{{ route('anticipos.index') }}"><i class="fa fa-caret-square-o-left"></i> Anticipos</a>
@@ -107,7 +107,7 @@
                         <a href="{{ route('facturas.index') }}"><i class="fa fa-pencil-square-o"></i> Facturas</a>
                     </li>
                     <li class="{{ Request::segment(1) == 'gestioncobros' ? 'active' : '' }}">
-                        <a href="{{ route('gestioncobros.index') }}"><i class="fa fa-volume-control-phone"></i> Gestion Cobros</a>
+                        <a href="{{ route('gestioncobros.index') }}"><i class="fa fa-volume-control-phone"></i> Gestión de cobros</a>
                     </li>
                     <li class="{{ Request::segment(1) == 'notas' ? 'active' : '' }}">
                         <a href="{{ route('notas.index') }}"><i class="fa fa-book"></i> Notas</a>
@@ -150,16 +150,16 @@
                         <a href="{{route('cuentabancos.index')}}"><i class="fa fa-circle-o"></i> Cuentas de banco</a>
                     </li>
                     <li class="{{ Request::segment(1) == 'conceptonotas' ? 'active' : '' }}">
-                        <a href="{{route('conceptonotas.index')}}"><i class="fa fa-circle-o"></i> Concepto de nota</a>
+                        <a href="{{route('conceptonotas.index')}}"><i class="fa fa-circle-o"></i> Conceptos de nota</a>
                     </li>
                     <li class="{{ Request::segment(1) == 'conceptocobros' ? 'active' : '' }}">
-                        <a href="{{route('conceptocobros.index')}}"><i class="fa fa-circle-o"></i> Concepto cobro</a>
+                        <a href="{{route('conceptocobros.index')}}"><i class="fa fa-circle-o"></i> Conceptos de cobro</a>
                     </li>
                     <li class="{{ Request::segment(1) == 'conceptosajustec' ? 'active' : '' }}">
-                        <a href="{{route('conceptosajustec.index')}}"><i class="fa fa-circle-o"></i> Concepto ajuste</a>
+                        <a href="{{route('conceptosajustec.index')}}"><i class="fa fa-circle-o"></i> Conceptos de ajuste</a>
                     </li>
                     <li class="{{ Request::segment(1) == 'conceptosrc' ? 'active' : '' }}">
-                        <a href="{{route('conceptosrc.index')}}"><i class="fa fa-circle-o"></i> Concepto recibo de caja</a>
+                        <a href="{{route('conceptosrc.index')}}"><i class="fa fa-circle-o"></i> Conceptos recibo de caja</a>
                     </li>
                     <li class="{{ Request::segment(1) == 'mediopagos' ? 'active' : '' }}">
                         <a href="{{route('mediopagos.index')}}"><i class="fa fa-circle-o"></i> Medios de pago</a>
@@ -285,7 +285,7 @@
                         <a href="{{ route('plancuentasnif.index') }}"><i class="fa fa-circle-o"></i> Plan de cuentas NIF</a>
                     </li>
                     <li class="{{ Request::segment(1) == 'tipoactivos' ? 'active' : '' }}">
-                        <a href="{{ route('tipoactivos.index') }}"><i class="fa fa-circle-o"></i> Tipo activo</a>
+                        <a href="{{ route('tipoactivos.index') }}"><i class="fa fa-circle-o"></i> Tipos de activos</a>
                     </li>
                 </ul>
             </li>
@@ -318,7 +318,7 @@
                         <a href="{{ route('traslados.index') }}"><i class="fa fa-arrows"></i> Traslados</a>
                     </li>
                     <li class="{{ Request::segment(1) == 'trasladosubicaciones' ? 'active' : '' }}">
-                        <a href="{{ route('trasladosubicaciones.index') }}"><i class="fa fa-compass "></i> Traslados ubicaciones</a>
+                        <a href="{{ route('trasladosubicaciones.index') }}"><i class="fa fa-compass "></i> Traslados de ubicaciones</a>
                     </li>
                 </ul>
             </li>
@@ -347,7 +347,7 @@
                 </a>
                 <ul class="treeview-menu">
                     <li class="{{Request::segment(1)== 'categorias' ? 'active' : ''}}">
-                        <a href="{{route('categorias.index')}}"><i class="fa fa-circle-o"></i> Categorias</a>
+                        <a href="{{route('categorias.index')}}"><i class="fa fa-circle-o"></i> Categorías</a>
                     </li>
                     <li class="{{Request::segment(1)== 'impuestos' ? 'active' : ''}}">
                         <a href="{{route('impuestos.index')}}"><i class="fa fa-circle-o"></i> Impuestos</a>
@@ -365,19 +365,19 @@
                         <a href="{{route('servicios.index')}}"><i class="fa fa-circle-o"></i> Servicios</a>
                     </li>
                     <li class="{{Request::segment(1)== 'subcategorias' ? 'active' : ''}}">
-                        <a href="{{route('subcategorias.index')}}"><i class="fa fa-circle-o"></i> Subcategorias</a>
+                        <a href="{{route('subcategorias.index')}}"><i class="fa fa-circle-o"></i> Subcategorías</a>
                     </li>
                     <li class="{{ Request::segment(1) == 'tiposajuste' ? 'active' : '' }}">
-                        <a href="{{ route('tiposajuste.index') }}"><i class="fa fa-circle-o"></i> Tipo ajuste</a>
+                        <a href="{{ route('tiposajuste.index') }}"><i class="fa fa-circle-o"></i> Tipos de ajuste</a>
                     </li>
                      <li class="{{ Request::segment(1) == 'tipostraslados' ? 'active' : '' }}">
-                        <a href="{{ route('tipostraslados.index') }}"><i class="fa fa-circle-o"></i> Tipo traslado</a>
+                        <a href="{{ route('tipostraslados.index') }}"><i class="fa fa-circle-o"></i> Tipos de traslado</a>
                     </li>
                     <li class="{{ Request::segment(1) == 'unidades' ? 'active' : '' }}">
                         <a href="{{ route('unidades.index') }}"><i class="fa fa-circle-o"></i> Unidades</a>
                     </li>
                     <li class="{{ Request::segment(1) == 'unidadesnegocio' ? 'active' : '' }}">
-                        <a href="{{ route('unidadesnegocio.index') }}"><i class="fa fa-circle-o"></i> Unidades Negocio</a>
+                        <a href="{{ route('unidadesnegocio.index') }}"><i class="fa fa-circle-o"></i> Unidades de negocio</a>
                     </li>
                 </ul>
             </li>
@@ -439,7 +439,7 @@
                         <a href="{{ route('solicitantes.index') }}"><i class="fa fa-circle-o"></i> Solicitantes</a>
                     </li>
                     <li class="{{ Request::segment(1) == 'tiposorden' ? 'active' : '' }}">
-                        <a href="{{ route('tiposorden.index') }}"><i class="fa fa-circle-o"></i> Tipo de Orden</a>
+                        <a href="{{ route('tiposorden.index') }}"><i class="fa fa-circle-o"></i> Tipos de orden</a>
                     </li>
                 </ul>
             </li>
@@ -489,19 +489,19 @@
                 </a>
                 <ul class="treeview-menu">
                     <li class="{{ Request::segment(1) == 'conceptosajustep' ? 'active' : '' }}">
-                        <a href="{{ route('conceptosajustep.index') }}"><i class="fa fa-circle-o"></i> Concepto ajuste</a>
+                        <a href="{{ route('conceptosajustep.index') }}"><i class="fa fa-circle-o"></i> Conceptos de ajuste</a>
                     </li>
                     <li class="{{ Request::segment(1) == 'retefuentes' ? 'active' : '' }}">
                         <a href="{{ route('retefuentes.index') }}"><i class="fa fa-circle-o"></i> Retefuente</a>
                     </li>
                     <li class="{{ Request::segment(1) == 'tipogastos' ? 'active' : '' }}">
-                        <a href="{{ route('tipogastos.index') }}"><i class="fa fa-circle-o"></i> Tipo de gasto</a>
+                        <a href="{{ route('tipogastos.index') }}"><i class="fa fa-circle-o"></i> Tipos de gasto</a>
                     </li>
                     <li class="{{ Request::segment(1) == 'tipopagos' ? 'active' : '' }}">
-                        <a href="{{ route('tipopagos.index') }}"><i class="fa fa-circle-o"></i> Tipo de pago</a>
+                        <a href="{{ route('tipopagos.index') }}"><i class="fa fa-circle-o"></i> Tipos de pago</a>
                     </li>
                     <li class="{{ Request::segment(1) == 'tipoproveedores' ? 'active' : '' }}">
-                        <a href="{{ route('tipoproveedores.index') }}"><i class="fa fa-circle-o"></i> Tipo de proveedor</a>
+                        <a href="{{ route('tipoproveedores.index') }}"><i class="fa fa-circle-o"></i> Tipos de proveedor</a>
                     </li>
                 </ul>
             </li>

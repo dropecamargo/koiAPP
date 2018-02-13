@@ -1,7 +1,7 @@
 @extends('tesoreria.tipopago.main')
 
 @section('breadcrumb')
-    <li class="active">Tipo de pago</li>
+    <li class="active">Tipos de pago</li>
 @stop
 
 @section('module')

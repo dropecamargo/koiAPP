@@ -17,7 +17,7 @@ app || (app = {});
         * Constructor Method
         */
         initialize : function() {
-            
+
             this.$centroscostoSearchTable = this.$('#centroscosto-search-table');
 
             this.$centroscostoSearchTable.DataTable({
@@ -36,8 +36,8 @@ app || (app = {});
                     { data: 'centrocosto_activo', name: 'centrocosto_activo' }
                 ],
 				buttons: [
-					{ 
-						text: '<i class="fa fa-user-plus"></i> Nuevo centro de costo',
+					{
+						text: '<i class="fa fa-plus"></i> Nuevo centro de costo',
                         className: 'btn-sm',
 						action: function ( e, dt, node, config ) {
 							window.Misc.redirect( window.Misc.urlFull( Route.route('centroscosto.create') ) )

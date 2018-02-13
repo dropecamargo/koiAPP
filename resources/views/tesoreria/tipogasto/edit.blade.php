@@ -1,7 +1,7 @@
 @extends('tesoreria.tipogasto.main')
 
 @section('breadcrumb')
-    <li><a href="{{ route('tipogastos.index')}}">Tipo gasto</a></li>
+    <li><a href="{{ route('tipogastos.index')}}">Tipo de gasto</a></li>
     <li><a href="{{ route('tipogastos.show', ['tipogasto' => $tipogasto->id]) }}">{{ $tipogasto->id }}</a></li>
 	<li class="active">Editar</li>
 @stop

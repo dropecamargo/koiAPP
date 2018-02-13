@@ -1,7 +1,7 @@
 @extends('comercial.gestionescomercial.main')
 
 @section('breadcrumb')
-    <li><a href="{{ route('gestionescomercial.index')}}">Gestion comercial</a></li>
+    <li><a href="{{ route('gestionescomercial.index')}}">Gestión comercial</a></li>
     <li class="active">{{ $gestioncomercial->id }}</li>
 @stop
 

@@ -17,7 +17,7 @@ app || (app = {});
         initialize: function () {
 
             this.$documentosSearchTable = this.$('#documentos-search-table');
-            
+
             this.$documentosSearchTable.DataTable({
                 dom: "<'row'<'col-sm-4'B><'col-sm-4 text-center'l><'col-sm-4'f>>" +
                         "<'row'<'col-sm-12'tr>>" +
@@ -33,8 +33,8 @@ app || (app = {});
                     { data: 'folder_id', name: 'folder_id' }
                 ],
                 buttons: [
-                    { 
-                        text: '<i class="fa fa-user-plus"></i> Nuevo documento', 
+                    {
+                        text: '<i class="fa fa-plus"></i> Nuevo documento', 
                         className: 'btn-sm',
                         action: function ( e, dt, node, config ) {
                                 window.Misc.redirect( window.Misc.urlFull( Route.route('documentos.create') ) )

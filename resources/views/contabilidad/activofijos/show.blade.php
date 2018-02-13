@@ -1,7 +1,7 @@
 @extends('contabilidad.activofijos.main')
 
 @section('breadcrumb')
-    <li><a href="{{ route('activosfijos.index')}}">Activo fijo</a></li>
+    <li><a href="{{ route('activosfijos.index')}}">Activos fijos</a></li>
     <li class="active">{{ $activofijos->id }}</li>
 @stop
 

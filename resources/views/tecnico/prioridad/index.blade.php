@@ -1,7 +1,7 @@
 @extends('tecnico.prioridad.main')
 
 @section('breadcrumb')
-    <li class="active">Prioridad</li>
+    <li class="active">Prioridades</li>
 @stop
 
 @section('module')
