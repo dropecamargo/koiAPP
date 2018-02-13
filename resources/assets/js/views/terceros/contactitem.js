@@ -13,14 +13,11 @@ app || (app = {});
 
         tagName: 'tr',
         template: _.template( ($('#contact-item-list-tpl').html() || '') ),
-
+        
         /**
         * Constructor Method
         */
         initialize: function(){
-
-            //Init Attributes
-
             // Events Listener
             this.listenTo( this.model, 'change', this.render );
         },
@@ -29,10 +26,8 @@ app || (app = {});
         * Render View Element
         */
         render: function(){
-
             var attributes = this.model.toJSON();
             this.$el.html( this.template(attributes) );
-
             return this;
         }
     });

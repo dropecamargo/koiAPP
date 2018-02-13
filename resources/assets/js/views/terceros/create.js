@@ -152,7 +152,7 @@ app || (app = {});
         changedTechnical: function(e) {
             var selected = $(e.target).is(':checked');
             this.$coordinador_por.trigger('change');
-            
+
             if( selected ) {
                 this.$wrapperCoordinador.removeClass('hide');
             }else{
@@ -177,7 +177,7 @@ app || (app = {});
         changedVendedor: function(e) {
             var selected = $(e.target).is(':checked');
             this.$coordinador_por.trigger('change');
-        
+
             if( selected ) {
                 this.$wrapperCoordinador.removeClass('hide');
             }else{
@@ -300,10 +300,9 @@ app || (app = {});
                 }
 
                 // Redirect to edit tercero
-                // Backbone.history.navigate(Route.route('terceros.edit', { terceros: resp.id}), { trigger:true });
-                window.Misc.redirect( window.Misc.urlFull( Route.route('terceros.index')) );
+                Backbone.history.navigate(Route.route('terceros.edit', { terceros: resp.id}), { trigger:true });
             }
-        }
+        },
     });
 
 })(jQuery, this, this.document);

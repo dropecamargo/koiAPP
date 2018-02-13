@@ -52,7 +52,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancelar</button>
-					<button type="submit" class="btn btn-primary btn-sm" id="">Continuar</button>
+					<button type="submit" class="btn btn-primary btn-sm">Continuar</button>
 				</div>
 			</form>
 		</div>
@@ -74,7 +74,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancelar</button>
-					<button type="submit" class="btn btn-primary btn-sm" id="">Continuar</button>
+					<button type="submit" class="btn btn-primary btn-sm">Continuar</button>
 				</div>
 			</form>
 		</div>
