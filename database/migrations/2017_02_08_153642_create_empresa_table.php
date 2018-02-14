@@ -24,6 +24,7 @@ class CreateEmpresaTable extends Migration
             $table->string('empresa_cc_revisor', 15)->nullable();
             $table->string('empresa_tj_revisor', 15)->nullable();
             $table->string('empresa_nm_revisor', 200)->nullable();
+            $table->date('empresa_fecha_cierre');
             $table->integer('empresa_iva')->unsigned();
 
             $table->foreign('empresa_tercero')->references('id')->on('tercero')->onDelete('restrict');
