@@ -22,8 +22,6 @@ class ConceptoNotaController extends Controller
     {
         if ($request->ajax()) {
             $query = ConceptoNota::query();
-            $query->select('conceptonota.*', 'plancuentas_nombre');
-            $query->join('plancuentas', 'conceptonota_plancuentas', '=', 'plancuentas.id');
             return Datatables::of($query)->make(true);
         }
         return view('cartera.conceptonotas.index');
@@ -53,22 +51,8 @@ class ConceptoNotaController extends Controller
             if ($conceptonota->isValid($data)) {
                 DB::beginTransaction();
                 try {
-                    $plancuentas = PlanCuenta::where('plancuentas_cuenta', $request->conceptonota_plancuentas)->first();
-                    if(!$plancuentas instanceof PlanCuenta){
-                        DB::rollback();
-                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar la cuenta, por favor verifique la informacion ó consulte al administrador.']);
-                    }
-
-                    // Valid correctly use the cuenta
-                    $result = $plancuentas->validarSubnivelesCuenta();
-                    if ($result != 'OK') {
-                        DB::rollback();
-                        return response()->json(['success' => false, 'errors' => $result ]);
-                    } 
-
                     $conceptonota->fill($data);
                     $conceptonota->fillBoolean($data);
-                    $conceptonota->conceptonota_plancuentas = $plancuentas->id;
                     $conceptonota->save();
 
                     //Forget cache
@@ -96,7 +80,7 @@ class ConceptoNotaController extends Controller
      */
     public function show(Request $request, $id)
     {
-        $conceptonota = ConceptoNota::getConceptoNota($id);
+        $conceptonota = ConceptoNota::find($id);
         if ($request->ajax()) {
             return response()->json($conceptonota);
         }
@@ -111,7 +95,7 @@ class ConceptoNotaController extends Controller
      */
     public function edit($id)
     {
-        $conceptonota = ConceptoNota::getConceptoNota($id);
+        $conceptonota = ConceptoNota::find($id);
         return view('cartera.conceptonotas.edit', ['conceptonota' => $conceptonota]);
     }
 
@@ -131,24 +115,9 @@ class ConceptoNotaController extends Controller
                 DB::beginTransaction();
                 try {
 
-                    // Recuperar cuenta
-                    $plancuentas = PlanCuenta::where('plancuentas_cuenta', $request->conceptonota_plancuentas)->first();
-                    if(!$plancuentas instanceof PlanCuenta){
-                        DB::rollback();
-                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar la cuenta, por favor verifique la informacion ó consulte al administrador.']);
-                    }
-
-                    // Valid correctly use the cuenta
-                    $result = $plancuentas->validarSubnivelesCuenta();
-                    if ($result != 'OK') {
-                        DB::rollback();
-                        return response()->json(['success' => false, 'errors' => $result ]);
-                    }
-
                     // Conceptonota
                     $conceptonota->fill($data);
                     $conceptonota->fillBoolean($data);
-                    $conceptonota->conceptonota_plancuentas = $plancuentas->id;
                     $conceptonota->save();
 
                     //Forget cache

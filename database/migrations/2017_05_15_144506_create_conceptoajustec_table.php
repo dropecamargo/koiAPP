@@ -16,12 +16,9 @@ class CreateConceptoajustecTable extends Migration
             $table->engine = 'InnoDB';
 
             $table->increments('id');
-            $table->string('conceptoajustec_nombre',25);
-            $table->integer('conceptoajustec_plancuentas')->unsigned();
+            $table->string('conceptoajustec_nombre',50);
             $table->boolean('conceptoajustec_sumas_iguales')->default(false);
             $table->boolean('conceptoajustec_activo')->default(false);
-
-            $table->foreign('conceptoajustec_plancuentas')->references('id')->on('plancuentas')->onDelete('restrict');
         });
     }
 

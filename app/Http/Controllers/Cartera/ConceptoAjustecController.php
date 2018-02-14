@@ -8,7 +8,6 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Models\Cartera\ConceptoAjustec;
-use App\Models\Contabilidad\PlanCuenta;
 use DB, Log, Cache, Datatables;
 
 class ConceptoAjustecController extends Controller
@@ -22,8 +21,6 @@ class ConceptoAjustecController extends Controller
     {
         if ($request->ajax()) {
             $query = ConceptoAjustec::query();
-            $query->select('conceptoajustec.*','plancuentas_nombre');
-            $query->join('plancuentas','conceptoajustec_plancuentas', '=','plancuentas.id');
             return Datatables::of($query)->make(true);
         }
         return view('cartera.conceptosajustec.index');
@@ -53,24 +50,9 @@ class ConceptoAjustecController extends Controller
             if ($conceptoajustec->isValid($data)) {
                 DB::beginTransaction();
                 try {
-                    // Recuperar cuenta
-                    $plancuentas = PlanCuenta::where('plancuentas_cuenta', $request->conceptoajustec_plancuentas)->first();
-                    if(!$plancuentas instanceof PlanCuenta){
-                        DB::rollback();
-                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar plan de cuenta, verifique información ó por favor consulte al administrador.']);
-                    }
-
-                    // Valid correctly use the cuenta
-                    $result = $plancuentas->validarSubnivelesCuenta();
-                    if ($result != 'OK') {
-                        DB::rollback();
-                        return response()->json(['success' => false, 'errors' => $result ]);
-                    }  
-
                     // ConceptoAjustec
                     $conceptoajustec->fill($data);
                     $conceptoajustec->fillBoolean($data);
-                    $conceptoajustec->conceptoajustec_plancuentas = $plancuentas->id;
                     $conceptoajustec->save();
 
                     //Forget cache
@@ -97,7 +79,7 @@ class ConceptoAjustecController extends Controller
      */
     public function show(Request $request, $id)
     {
-        $conceptoajustec = ConceptoAjustec::getConcepto($id);
+        $conceptoajustec = ConceptoAjustec::find($id);
         if ($request->ajax()) {
             return response()->json($conceptoajustec);
         }
@@ -112,7 +94,7 @@ class ConceptoAjustecController extends Controller
      */
     public function edit($id)
     {
-        $conceptoajustec = ConceptoAjustec::getConcepto($id);
+        $conceptoajustec = ConceptoAjustec::find($id);
         return view('cartera.conceptosajustec.edit', ['conceptoajustec' => $conceptoajustec]);
     }
 
@@ -131,20 +113,6 @@ class ConceptoAjustecController extends Controller
             if ($conceptoajustec->isValid($data)) {
                 DB::beginTransaction();
                 try {
-
-                    // Recuperar cuenta
-                    $plancuentas = PlanCuenta::where('plancuentas_cuenta', $request->conceptoajustec_plancuentas)->first();
-                    if(!$plancuentas instanceof PlanCuenta){
-                        DB::rollback();
-                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar plan de cuenta, verifique información ó por favor consulte al administrador.']);
-                    }
-
-                    // Valid correctly use the cuenta
-                    $result = $plancuentas->validarSubnivelesCuenta();
-                    if ($result != 'OK') {
-                        DB::rollback();
-                        return response()->json(['success' => false, 'errors' => $result ]);
-                    }  
                     // ConceptoAjustec
                     $conceptoajustec->fill($data);
                     $conceptoajustec->fillBoolean($data);

@@ -19,7 +19,6 @@ app || (app = {});
         	'cuentabanco_nombre': '',
         	'cuentabanco_banco': '',
         	'cuentabanco_numero': '',
-            'cuentabanco_plancuentas': '',
         	'plancuentas_cuenta': '',
             'plancuentas_nombre': '',
         	'cuentabanco_activa': 1

@@ -12,9 +12,8 @@
                     <thead>
                         <tr>
                             <th>Código</th>
-                            <th>Nombre</th>
-                            <th>Banco</th>
-                            <th>Plan de cuenta</th>
+                            <th width="40%">Nombre</th>
+                            <th width="40%">Banco</th>
                             <th>Activo</th>
                         </tr>
                     </thead>

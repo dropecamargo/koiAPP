@@ -16,12 +16,10 @@ class CreateConceptosrcTable extends Migration
             $table->engine = 'InnoDB';
 
             $table->increments('id');
-            $table->string('conceptosrc_nombre', 25);
-            $table->integer('conceptosrc_plancuentas')->unsigned()->nullable();
+            $table->string('conceptosrc_nombre', 50);
             $table->integer('conceptosrc_documentos')->unsigned()->nullable();
             $table->boolean('conceptosrc_activo')->default(false);
 
-            $table->foreign('conceptosrc_plancuentas')->references('id')->on('plancuentas')->onDelete('restrict');
             $table->foreign('conceptosrc_documentos')->references('id')->on('documentos')->onDelete('restrict');
         });
     }

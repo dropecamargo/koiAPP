@@ -37,10 +37,13 @@ class TipoPago extends BaseModel
     public function isValid($data)
     {
         $rules = [
-            'tipopago_nombre' => 'required|max:25|unique:tipopago',
-            'tipopago_plancuentas' => 'required'
+            'tipopago_nombre' => 'required|max:50|unique:tipopago',
         ];
-
+        if ($this->exists){
+            $rules['tipopago_nombre'] .= ',tipopago_nombre,' . $this->id;
+        }else{
+            $rules['tipopago_nombre'] .= '|required';
+        }
         $validator = Validator::make($data, $rules);
         if ($validator->passes()) {
             return true;
@@ -66,8 +69,7 @@ class TipoPago extends BaseModel
 
     public static function getTipoPago($id){
         $tipopago = TipoPago::query();
-        $tipopago->select('tipopago.*', 'documentos_nombre', 'documentos_codigo' ,'plancuentas_cuenta','plancuentas_nombre');
-        $tipopago->join('plancuentas', 'tipopago_plancuentas','=','plancuentas.id');
+        $tipopago->select('tipopago.*', 'documentos_nombre', 'documentos_codigo');
         $tipopago->leftJoin('documentos', 'tipopago_documentos','=','documentos.id');
         $tipopago->where('tipopago.id', $id);
         return $tipopago->first();

@@ -21,23 +21,7 @@
         <div class="row">
             <div class="form-group col-md-6">
             <label for="retefuente_nombre" class="control-label">Nombre</label>
-                <input type="text" id="retefuente_nombre" name="retefuente_nombre" value="<%- retefuente_nombre %>" placeholder="Retefuente" class="form-control input-sm input-toupper" maxlength="25" required>
-            </div>
-        </div>
-        <div class="row">
-            <div class="form-group col-sm-6 col-md-2">
-                <label for="retefuente_plancuentas" class="control-label text-right">Cuenta</label>
-                <div class="input-group input-group-sm">
-                    <span class="input-group-btn">
-                        <button type="button" class="btn btn-default btn-flat btn-koi-search-plancuenta-component" data-field="retefuente_plancuentas">
-                            <i class="fa fa-tasks"></i>
-                        </button>
-                    </span>
-                    <input id="retefuente_plancuentas" placeholder="Cuenta" class="form-control plancuenta-koi-component" name="retefuente_plancuentas" type="text" maxlength="15" data-name="retefuente_cuenta_nombre" value="<%- plancuentas_cuenta %>">
-                </div>
-            </div>
-            <div class="col-sm-6 col-md-4"><br>
-                <input id="retefuente_cuenta_nombre" name="retefuente_cuenta_nombre" placeholder="Nombre cuenta" class="form-control input-sm" type="text" value="<%- plancuentas_nombre %>" maxlength="15" disabled>
+                <input type="text" id="retefuente_nombre" name="retefuente_nombre" value="<%- retefuente_nombre %>" placeholder="Retefuente" class="form-control input-sm input-toupper" maxlength="50" required>
             </div>
         </div>
         <div class="row">

@@ -32,24 +32,9 @@
                     @endforeach
                 </select>
             </div>
-        </div>
-        <div class="row">
-            <div class="form-group col-sm-6 col-md-2">
-                <label for="tipopago_plancuentas" class="control-label text-right">Cuenta</label>
-                <div class="input-group input-group-sm">
-                    <span class="input-group-btn">
-                        <button type="button" class="btn btn-default btn-flat btn-koi-search-plancuenta-component" data-field="tipopago_plancuentas">
-                            <i class="fa fa-tasks"></i>
-                        </button>
-                    </span>
-                    <input id="tipopago_plancuentas" placeholder="Cuenta" class="form-control plancuenta-koi-component" name="tipopago_plancuentas" type="text" maxlength="15" data-name="tipopago_cuenta_nombre" value="<%- plancuentas_cuenta %>" required>
-                </div>
-            </div>
-            <div class="col-sm-6 col-md-4"><br>
-                <input id="tipopago_cuenta_nombre" name="tipopago_cuenta_nombre" placeholder="Nombre cuenta" class="form-control input-sm" type="text" value="<%- plancuentas_nombre %>" maxlength="15" required disabled>
-            </div>
+            </br>
             <div class="form-group col-md-2 col-xs-8 col-sm-3">
-                <label class="checkbox-inline" for="tipopago_activo    ">
+                <label class="checkbox-inline" for="tipopago_activo">
                     <input type="checkbox" id="tipopago_activo" name="tipopago_activo" value="tipopago_activo" <%- tipopago_activo ? 'checked': ''%>> Activo
                 </label>
             </div>

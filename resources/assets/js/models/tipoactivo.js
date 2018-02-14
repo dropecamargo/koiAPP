@@ -19,7 +19,6 @@ app || (app = {});
             'tipoactivo_nombre': '',
             'tipoactivo_activo': 1,
             'tipoactivo_vida_util': 1,
-            'plancuentas_cuenta': '',
             'plancuentas_nombre': ''
         }
     });

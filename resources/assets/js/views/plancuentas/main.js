@@ -46,7 +46,8 @@ app || (app = {});
                     { data: 'plancuentas_nivel', name: 'plancuentas_nivel' },
                     { data: 'plancuentas_nombre', name: 'plancuentas_nombre' },
                     { data: 'plancuentas_naturaleza', name: 'plancuentas_naturaleza' },
-                    { data: 'plancuentas_tercero', name: 'plancuentas_tercero' }
+                    { data: 'plancuentas_tercero', name: 'plancuentas_tercero' },
+                    { data: 'plancuentas_equivalente', name: 'plancuentas_equivalente' }
                 ],
                 columnDefs: [
                     {

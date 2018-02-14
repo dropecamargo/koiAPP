@@ -36,10 +36,13 @@ class TipoProveedor extends BaseModel
     public function isValid($data)
     {
         $rules = [
-            'tipoproveedor_nombre' => 'required|max:25|unique:tipoproveedor',
-            'tipoproveedor_plancuentas' => 'required'
+            'tipoproveedor_nombre' => 'required|max:50|unique:tipoproveedor',
         ];
-
+        if ($this->exists){
+            $rules['tipoproveedor_nombre'] .= ',tipoproveedor_nombre,' . $this->id;
+        }else{
+            $rules['tipoproveedor_nombre'] .= '|required';
+        }
         $validator = Validator::make($data, $rules);
         if ($validator->passes()) {
             return true;
@@ -61,13 +64,5 @@ class TipoProveedor extends BaseModel
             $collection->prepend('', '');
             return $collection;
         });
-    }
-
-    public static function getTipoProveedor($id){
-        $tipoproveedor = TipoProveedor::query();
-        $tipoproveedor->select('tipoproveedor.*', 'plancuentas_cuenta','plancuentas_nombre');
-        $tipoproveedor->join('plancuentas', 'tipoproveedor_plancuentas','=','plancuentas.id');
-        $tipoproveedor->where('tipoproveedor.id', $id);
-        return $tipoproveedor->first();
     }
 }

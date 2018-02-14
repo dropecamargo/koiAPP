@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Tesoreria\TipoPago;
-use App\Models\Contabilidad\PlanCuenta;
 use App\Models\Base\Documentos;
 use DB, Log, Datatables, Cache;
 
@@ -61,24 +60,9 @@ class TipoPagoController extends Controller
                         $tipopago->tipopago_documentos = $documentos->id;
                     }
 
-                    // Recuperar cuenta
-                    $plancuenta = PlanCuenta::where('plancuentas_cuenta',$request->tipopago_plancuentas)->first();
-                    if (!$plancuenta instanceof PlanCuenta) {
-                        DB::rollback();
-                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar plan de cuentas, por favor verifique información o consulte con el administrador']);
-                    }
-
-                    // Valid correctly use the cuenta
-                    $result = $plancuenta->validarSubnivelesCuenta();
-                    if ($result != 'OK') {
-                        DB::rollback();
-                        return response()->json(['success' => false, 'errors' => $result ]);
-                    }
-
                     // TipoPago
                     $tipopago->fill($data);
                     $tipopago->fillBoolean($data);
-                    $tipopago->tipopago_plancuentas = $plancuenta->id;
                     $tipopago->save();
 
                     // Forget cache
@@ -86,7 +70,7 @@ class TipoPagoController extends Controller
 
                     // Commit Transaction
                     DB::commit();
-                    return response()->json(['success' => true, 'id' =>$tipopago->id]); 
+                    return response()->json(['success' => true, 'id' =>$tipopago->id]);
                 } catch (\Exception $e) {
                     DB::rollback();
                     Log::error($e->getMessage());
@@ -140,7 +124,7 @@ class TipoPagoController extends Controller
             if ($tipopago->isValid($data)) {
                 DB::beginTransaction();
                 try {
-                    
+
                     // Recuperar documentos
                     if ($request->has('tipopago_documentos')) {
                         $documentos = Documentos::find($request->tipopago_documentos);
@@ -150,33 +134,17 @@ class TipoPagoController extends Controller
                         }
                         $tipopago->tipopago_documentos = $documentos->id;
                     }
-
-                    // Recuperar cuenta
-                    $plancuenta = PlanCuenta::where('plancuentas_cuenta',$request->tipopago_plancuentas)->first();
-                    if (!$plancuenta instanceof PlanCuenta) {
-                        DB::rollback();
-                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar plan de cuentas, por favor verifique información o consulte con el administrador']);
-                    }
-
-                    // Valid correctly use the cuenta
-                    $result = $plancuenta->validarSubnivelesCuenta();
-                    if ($result != 'OK') {
-                        DB::rollback();
-                        return response()->json(['success' => false, 'errors' => $result ]);
-                    }
-
                     // TipoPago
                     $tipopago->fill($data);
                     $tipopago->fillBoolean($data);
-                    $tipopago->tipopago_plancuentas = $plancuenta->id;
                     $tipopago->save();
 
                     // Forget cache
                     Cache::forget( TipoPago::$key_cache );
-                    
+
                     // Commit Transaction
                     DB::commit();
-                    return response()->json(['success' => true, 'id' =>$tipopago->id]); 
+                    return response()->json(['success' => true, 'id' =>$tipopago->id]);
                 } catch (\Exception $e) {
                     DB::rollback();
                     Log::error($e->getMessage());

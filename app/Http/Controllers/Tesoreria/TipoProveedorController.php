@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Tesoreria\TipoProveedor;
-use App\Models\Contabilidad\PlanCuenta;
 use DB, Log, Datatables, Cache;
 
 class TipoProveedorController extends Controller
@@ -50,32 +49,17 @@ class TipoProveedorController extends Controller
             if ($tipoproveedor->isValid($data)) {
                 DB::beginTransaction();
                 try {
-                    // Recuperar cuenta
-                    $plancuenta = PlanCuenta::where('plancuentas_cuenta',$request->tipoproveedor_plancuentas)->first();
-                    if (!$plancuenta instanceof PlanCuenta) {
-                        DB::rollback();
-                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar plan de cuentas, por favor verifique información o consulte con el administrador']);
-                    }
-
-                    // Valid correctly use the cuenta
-                    $result = $plancuenta->validarSubnivelesCuenta();
-                    if ($result != 'OK') {
-                        DB::rollback();
-                        return response()->json(['success' => false, 'errors' => $result ]);
-                    }
-
                     // TipoProveedor
                     $tipoproveedor->fill($data);
                     $tipoproveedor->fillBoolean($data);
-                    $tipoproveedor->tipoproveedor_plancuentas = $plancuenta->id;
                     $tipoproveedor->save();
 
                     // Forget cache
-                    Cache::forget( TipoProveedor::$key_cache ); 
+                    Cache::forget( TipoProveedor::$key_cache );
 
                     // Commit Transaction
                     DB::commit();
-                    return response()->json(['success' => true, 'id' =>$tipoproveedor->id]); 
+                    return response()->json(['success' => true, 'id' =>$tipoproveedor->id]);
                 } catch (\Exception $e) {
                     DB::rollback();
                     Log::error($e->getMessage());
@@ -95,7 +79,7 @@ class TipoProveedorController extends Controller
      */
     public function show(Request $request, $id)
     {
-        $tipoproveedor = TipoProveedor::getTipoProveedor($id);
+        $tipoproveedor = TipoProveedor::findOrFail($id);
         if ($request->ajax()) {
             return response()->json($tipoproveedor);
         }
@@ -129,33 +113,17 @@ class TipoProveedorController extends Controller
             if ($tipoproveedor->isValid($data)) {
                 DB::beginTransaction();
                 try {
-                    
-                    // Recuperar cuenta
-                    $plancuenta = PlanCuenta::where('plancuentas_cuenta',$request->tipoproveedor_plancuentas)->first();
-                    if (!$plancuenta instanceof PlanCuenta) {
-                        DB::rollback();
-                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar plan de cuentas, por favor verifique información o consulte con el administrador']);
-                    }
-    
-                    // Valid correctly use the cuenta
-                    $result = $plancuenta->validarSubnivelesCuenta();
-                    if ($result != 'OK') {
-                        DB::rollback();
-                        return response()->json(['success' => false, 'errors' => $result ]);
-                    }
-
                     // TipoProveedor
                     $tipoproveedor->fill($data);
                     $tipoproveedor->fillBoolean($data);
-                    $tipoproveedor->tipoproveedor_plancuentas = $plancuenta->id;
                     $tipoproveedor->save();
 
                     // Forget cache
-                    Cache::forget( TipoProveedor::$key_cache ); 
-                    
+                    Cache::forget( TipoProveedor::$key_cache );
+
                     // Commit Transaction
                     DB::commit();
-                    return response()->json(['success' => true, 'id' =>$tipoproveedor->id]); 
+                    return response()->json(['success' => true, 'id' =>$tipoproveedor->id]);
                 } catch (\Exception $e) {
                     DB::rollback();
                     Log::error($e->getMessage());

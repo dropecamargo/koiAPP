@@ -13,7 +13,6 @@
                         <tr>
                             <th>Código</th>
                             <th>Nombre</th>
-                            <th>Plan de cuenta</th>
                             <th>Documento</th>
                             <th>Activo</th>
                         </tr>

@@ -9,12 +9,6 @@
     <div class="box box-primary">
         <div class="box-body">
             <div class="row">
-                <div class="form-group col-md-2">
-                    <label class="control-label">Código</label>
-                    <div>{{ $retefuente->id }}</div>
-                </div>
-            </div>
-            <div class="row">
                 <div class="form-group col-md-5">
                     <label class="control-label">Nombre</label>
                     <div>{{ $retefuente->retefuente_nombre }}</div>
@@ -23,12 +17,6 @@
                     <label class="checkbox-inline" for="retefuentes_activo">
                         <input type="checkbox" id="retefuentes_activo" name="retefuentes_activo" value="retefuentes_activo" disabled {{ $retefuente->retefuente_activo ? 'checked': '' }}> Activo
                     </label>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-md-3">
-                    <label class="control-label">Plan Cuentas</label>
-                    <div>{{ $retefuente->plancuentas_cuenta }} - {{ $retefuente->plancuentas_nombre }}</div>
                 </div>
             </div>
         </div>

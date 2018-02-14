@@ -9,21 +9,17 @@
     <div class="box box-primary">
         <div class="box-body">
             <div class="row">
-                <div class="form-group col-md-4">
+                <div class="form-group col-md-12 col-xs-12 col-sm-12">
                     <label class="control-label">Nombre</label>
                     <div>{{ $conceptosrc->conceptosrc_nombre }}</div>
                 </div>
-                <div class="form-group col-md-4">
-                    <label class="control-label">Plan de cuentas</label>
-                    <div>{{ $conceptosrc->plancuentas_cuenta }} - {{ $conceptosrc->plancuentas_nombre }}</div>
-                </div>
             </div>
             <div class="row">
-                <div class="form-group col-md-4">
+                <div class="form-group col-md-4 col-xs-12 col-sm-6">
                     <label class="control-label">Documento</label>
                     <div>{{ $conceptosrc->documentos_nombre }}</div>
                 </div>
-                <div class="form-group col-md-2 col-xs-8 col-sm-3"><br>
+                <div class="form-group col-md-2 col-xs-6 col-sm-3"><br>
                     <label class="checkbox-inline" for="conceptosrc_activo">
                         <input type="checkbox" id="conceptosrc_activo" name="conceptosrc_activo" value="conceptosrc_activo" disabled {{ $conceptosrc->conceptosrc_activo ? 'checked': '' }}> Activo
                     </label>

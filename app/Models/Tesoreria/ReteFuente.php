@@ -36,12 +36,16 @@ class ReteFuente extends BaseModel
     public function isValid($data)
     {
         $rules = [
-            'retefuente_nombre' => 'required|max:100|unique:retefuente',
+            'retefuente_nombre' => 'required|max:50|unique:retefuente',
             'retefuente_tarifa_natural' => 'numeric',
             'retefuente_tarifa_juridico' => 'numeric',
             'retefuente_base' => 'required|numeric'
         ];
-
+        if ($this->exists){
+            $rules['retefuente_nombre'] .= ',retefuente_nombre,' . $this->id;
+        }else{
+            $rules['retefuente_nombre'] .= '|required';
+        }
         $validator = Validator::make($data, $rules);
         if ($validator->passes()) {
             return true;
@@ -62,14 +66,7 @@ class ReteFuente extends BaseModel
             $collection = $query->lists('retefuente_nombre', 'retefuente.id');
             $collection->prepend('', '');
             return $collection;
-           
+
         });
-    }
-    public static function getRetencionFuente($id){
-        $retefuente = ReteFuente::query();
-        $retefuente->select('retefuente.*', 'plancuentas_cuenta','plancuentas_nombre');
-        $retefuente->join('plancuentas', 'retefuente_plancuentas','=','plancuentas.id');
-        $retefuente->where('retefuente.id', $id);
-        return $retefuente->first();
     }
 }

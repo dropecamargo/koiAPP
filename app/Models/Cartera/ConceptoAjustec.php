@@ -37,8 +37,7 @@ class ConceptoAjustec extends BaseModel
 	public function isValid($data)
 	{
 		$rules = [
-			'conceptoajustec_nombre' => 'required|max:25',
-			'conceptoajustec_plancuentas' => 'required',
+			'conceptoajustec_nombre' => 'required|max:50',
 		];
 
 		$validator = Validator::make($data, $rules);
@@ -47,17 +46,6 @@ class ConceptoAjustec extends BaseModel
         }
 		$this->errors = $validator->errors();
 		return false;
-	}	
-
-	public static function getConcepto($id)
-	{
-		$query = ConceptoAjustec::query();
-		$query->select('conceptoajustec.*', 'plancuentas_nombre', 'plancuentas_cuenta');
-		$query->join('plancuentas', 'conceptoajustec_plancuentas', '=', 'plancuentas.id');
-		$query->where('conceptoajustec.id', $id);
-		$concepto = $query->first();
-
-		return $concepto;
 	}
 
 	public static function getConceptoAjustec()

@@ -16,11 +16,8 @@ class CreateConceptonotaTable extends Migration
             $table->engine = 'InnoDB';
 
             $table->increments('id');
-            $table->string('conceptonota_nombre', 25);
-            $table->integer('conceptonota_plancuentas')->unsigned();
+            $table->string('conceptonota_nombre', 50);
             $table->boolean('conceptonota_activo')->default(false);
-
-            $table->foreign('conceptonota_plancuentas')->references('id')->on('plancuentas')->onDelete('restrict');
         });
     }
 

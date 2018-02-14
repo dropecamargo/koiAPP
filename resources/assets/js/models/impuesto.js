@@ -19,7 +19,6 @@ app || (app = {});
             'impuesto_nombre': '',
             'impuesto_porcentaje': '',
             'impuesto_activo': 1,
-            'plancuentas_cuenta': '',
             'plancuentas_nombre': ''
         }
     });

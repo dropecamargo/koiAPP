@@ -16,11 +16,8 @@ class CreateTipogastoTable extends Migration
             $table->engine = 'InnoDB';
 
             $table->increments('id');
-            $table->string('tipogasto_nombre', 25);
-            $table->integer('tipogasto_plancuentas')->unsigned();
+            $table->string('tipogasto_nombre', 50);
             $table->boolean('tipogasto_activo')->default(0);
-
-            $table->foreign('tipogasto_plancuentas')->references('id')->on('plancuentas')->onDelete('restrict');
         });
     }
 

@@ -19,7 +19,6 @@ app || (app = {});
             'tipopago_nombre': '',
             'tipopago_activo': 1,
             'tipopago_documentos': '',
-            'plancuentas_cuenta': '',
             'plancuentas_nombre': ''
         }
     });

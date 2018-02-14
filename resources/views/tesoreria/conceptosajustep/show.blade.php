@@ -13,12 +13,6 @@
                     <label class="control-label">Nombre</label>
                     <div>{{ $conceptoajustep->conceptoajustep_nombre }}</div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-md-4">
-                    <label class="control-label">Plan de cuenta</label>
-                    <div>{{ $conceptoajustep->plancuentas_cuenta }} - {{ $conceptoajustep->plancuentas_nombre }}</div>
-                </div>
                 <div class="form-group col-md-2 col-xs-8 col-sm-3"><br>
                     <label class="checkbox-inline" for="conceptoajustep_activo">
                         <input type="checkbox" id="conceptoajustep_activo" name="conceptoajustep_activo" value="conceptoajustep_activo" disabled {{ $conceptoajustep->conceptoajustep_activo ? 'checked': '' }}> Activo

@@ -825,7 +825,6 @@
 			</div>
 		</div>
 	</div>
-
     <div class="row">
 		<div class="form-group col-md-3 col-sm-12 col-xs-12">
 			<label for="plancuentas_tercero">¿Requiere tercero?</label>
@@ -839,7 +838,6 @@
 			</div>
 		</div>
     </div>
-
     <div class="row">
 		<div class="form-group col-md-12 col-sm-12 col-xs-12">
 			<label class="control-label">Tipo</label>
@@ -852,11 +850,18 @@
 			</div>
 		</div>
     </div>
-
     <div class="row">
 		<div class="form-group col-md-2">
 			<label for="plancuentas_tasa" class="control-label">Tasa</label>
 			<input type="text" id="plancuentas_tasa" name="plancuentas_tasa" value="<%- plancuentas_tasa ? plancuentas_tasa : '0' %>" placeholder="Tasa" class="form-control input-sm" required>
+		</div>
+		<div class="form-group col-md-4">
+			<label for="plancuentas_equivalente" class="control-label">Equivalencia en NIF</label>
+			<select name="plancuentas_equivalente" id="plancuentas_equivalente" class="form-control select2-default-clear">
+				@foreach( App\Models\Contabilidad\PlanCuentaNif::getPlanCuentas() as $key => $value)
+					<option value="{{ $key }}" <%- plancuentas_equivalente == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
+				@endforeach
+			</select>
 		</div>
     </div>
 </script>
@@ -1341,33 +1346,14 @@
 			<input type="text" id="cuentabanco_nombre" name="cuentabanco_nombre" value="<%- cuentabanco_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="50" required>
 		</div>
 		<div class="form-group col-md-3">
-			<label for="cuentabanco_numero" class="control-label">Numero</label>
-			<input type="text" id="cuentabanco_numero" name="cuentabanco_numero" value="<%- cuentabanco_numero %>" placeholder="Numero" class="form-control input-sm input-toupper" maxlength="25" required>
+			<label for="cuentabanco_numero" class="control-label">Número</label>
+			<input type="text" id="cuentabanco_numero" name="cuentabanco_numero" value="<%- cuentabanco_numero %>" placeholder="Número" class="form-control input-sm input-toupper" maxlength="25" required>
 		</div>
 	</div>
-
-	<div class="row">
-		<div class="form-group col-sm-6 col-md-2">
-			<label for="cuentabanco_plancuentas" class="control-label text-right">Cuenta</label>
-      		<div class="input-group input-group-sm">
-				<span class="input-group-btn">
-					<button type="button" class="btn btn-default btn-flat btn-koi-search-plancuenta-component" data-field="cuentabanco_plancuentas">
-						<i class="fa fa-tasks"></i>
-					</button>
-				</span>
-				<input id="cuentabanco_plancuentas" placeholder="Cuenta" class="form-control plancuenta-koi-component" name="cuentabanco_plancuentas" type="text" maxlength="15" data-name="cuenta_nombre" value="<%- plancuentas_cuenta %>">
-			</div>
-		</div>
-		<div class="col-sm-6 col-md-6"><br>
-			<input id="cuenta_nombre" name="cuenta_nombre" placeholder="Nombre cuenta" class="form-control input-sm" type="text" value="<%- plancuentas_nombre %>" maxlength="15" disabled>
-		</div>
-	</div>
-
 	<div class="row">
 		<div class="form-group col-md-3">
 			<label for="cuentabanco_banco" class="control-label">Banco</label>
 			<select name="cuentabanco_banco" id="cuentabanco_banco" class="form-control select2-default" required>
-				<option value="" selected>Seleccione</option>
 				@foreach( App\Models\Cartera\Banco::getBancos() as $key => $value)
 					<option value="{{ $key }}" <%- cuentabanco_banco == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
 				@endforeach
@@ -1397,24 +1383,6 @@
 				@endforeach
 			</select>
 		</div>
-	</div>
-
-	<div class="row">
-		<div class="form-group col-sm-6 col-md-2">
-			<label for="conceptosrc_plancuentas" class="control-label text-right">Cuenta</label>
-      		<div class="input-group input-group-sm">
-				<span class="input-group-btn">
-					<button type="button" class="btn btn-default btn-flat btn-koi-search-plancuenta-component" data-field="conceptosrc_plancuentas">
-						<i class="fa fa-tasks"></i>
-					</button>
-				</span>
-				<input id="conceptosrc_plancuentas" placeholder="Cuenta" class="form-control plancuenta-koi-component" name="conceptosrc_plancuentas" type="text" maxlength="15" data-name="cuenta_nombre" value="<%- plancuentas_cuenta %>">
-			</div>
-		</div>
-		<div class="col-sm-6 col-md-4"><br>
-			<input id="cuenta_nombre" name="cuenta_nombre" placeholder="Nombre cuenta" class="form-control input-sm" type="text" value="<%- plancuentas_nombre %>" maxlength="15" disabled>
-		</div>
-
 		<div class="form-group col-md-2 col-xs-8 col-sm-3">
 			<br><label class="checkbox-inline" for="conceptosrc_activo">
 				<input type="checkbox" id="conceptosrc_activo" name="conceptosrc_activo" value="conceptosrc_activo" <%- parseInt(conceptosrc_activo) ? 'checked': ''%>> Activo
@@ -1521,23 +1489,6 @@
 			<label for="conceptonota_nombre" class="control-label">Nombre</label>
 			<input type="text" id="conceptonota_nombre" name="conceptonota_nombre" value="<%- conceptonota_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="25" required>
 		</div>
-    </div>
-    <div class="row">
-		<div class="form-group col-sm-6 col-md-2">
-			<label for="conceptonota_plancuentas" class="control-label text-right">Cuenta</label>
-      		<div class="input-group input-group-sm">
-				<span class="input-group-btn">
-					<button type="button" class="btn btn-default btn-flat btn-koi-search-plancuenta-component" data-field="conceptonota_plancuentas">
-						<i class="fa fa-tasks"></i>
-					</button>
-				</span>
-				<input id="conceptonota_plancuentas" placeholder="Cuenta" class="form-control plancuenta-koi-component" name="conceptonota_plancuentas" type="text" maxlength="15" data-wrapper="conceptonota-create" data-name="cuenta_nombre" value="<%- plancuentas_cuenta %>">
-			</div>
-		</div>
-		<div class="col-sm-6 col-md-4"><br>
-			<input id="cuenta_nombre" name="cuenta_nombre" placeholder="Nombre cuenta" class="form-control input-sm" type="text" value="<%- plancuentas_nombre %>" maxlength="15" disabled>
-		</div>
-
 		<div class="form-group col-md-2 col-xs-8 col-sm-3">
 			<br><label class="checkbox-inline" for="conceptonota_activo">
 				<input type="checkbox" id="conceptonota_activo" name="conceptonota_activo" value="conceptonota_activo" <%- parseInt(conceptonota_activo) ? 'checked': ''%>> Activo
@@ -1583,34 +1534,17 @@
 
 <script type="text/template" id="add-conceptoajustec-tpl">
 	<div class="row">
-		<div class="form-group col-md-8">
+		<div class="form-group col-md-6 col-xs-12 col-sm-12">
 			<label for="conceptoajustec_nombre" class="control-label">Nombre</label>
 			<input type="text" id="conceptoajustec_nombre" name="conceptoajustec_nombre" value="<%- conceptoajustec_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="25" required>
 		</div>
-    </div>
-    <div class="row">
-		<div class="form-group col-sm-6 col-md-2">
-			<label for="conceptoajustec_plancuentas" class="control-label text-right">Cuenta</label>
-      		<div class="input-group input-group-sm">
-				<span class="input-group-btn">
-					<button type="button" class="btn btn-default btn-flat btn-koi-search-plancuenta-component" data-field="conceptoajustec_plancuentas">
-						<i class="fa fa-tasks"></i>
-					</button>
-				</span>
-				<input id="conceptoajustec_plancuentas" placeholder="Cuenta" class="form-control plancuenta-koi-component" name="conceptoajustec_plancuentas" type="text" maxlength="15" data-wrapper="conceptoajustec-create" data-name="cuenta_nombre" value="<%- plancuentas_cuenta %>">
-			</div>
-		</div>
-		<div class="col-sm-6 col-md-4"><br>
-			<input id="cuenta_nombre" name="cuenta_nombre" placeholder="Nombre cuenta" class="form-control input-sm" type="text" value="<%- plancuentas_nombre %>" maxlength="15" disabled>
-		</div>
-
-		<div class="form-group col-md-2 col-xs-8 col-sm-3">
+		<div class="form-group col-md-2 col-xs-6 col-sm-6">
 			<br><label class="checkbox-inline" for="conceptoajustec_activo">
 				<input type="checkbox" id="conceptoajustec_activo" name="conceptoajustec_activo" value="conceptoajustec_activo" <%- parseInt(conceptoajustec_activo) ? 'checked': ''%>> Activo
 			</label>
 		</div>
 
-		<div class="form-group col-md-2 col-xs-8 col-sm-3">
+		<div class="form-group col-md-2 col-xs-6 col-sm-6">
 			<br><label class="checkbox-inline" for="conceptoajustec_sumas_iguales">
 				<input type="checkbox" id="conceptoajustec_sumas_iguales" name="conceptoajustec_sumas_iguales" value="conceptoajustec_sumas_iguales" <%- parseInt(conceptoajustec_sumas_iguales) ? 'checked': ''%>> Sumas igual
 			</label>
@@ -1622,25 +1556,8 @@
 	<div class="row">
 		<div class="form-group col-md-8">
 			<label for="conceptoajustep_nombre" class="control-label">Nombre</label>
-			<input type="text" id="conceptoajustep_nombre" name="conceptoajustep_nombre" value="<%- conceptoajustep_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="25" required>
+			<input type="text" id="conceptoajustep_nombre" name="conceptoajustep_nombre" value="<%- conceptoajustep_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="50" required>
 		</div>
-    </div>
-    <div class="row">
-		<div class="form-group col-sm-6 col-md-2">
-			<label for="conceptoajustep_plancuentas" class="control-label text-right">Cuenta</label>
-      		<div class="input-group input-group-sm">
-				<span class="input-group-btn">
-					<button type="button" class="btn btn-default btn-flat btn-koi-search-plancuenta-component" data-field="conceptoajustep_plancuentas">
-						<i class="fa fa-tasks"></i>
-					</button>
-				</span>
-				<input id="conceptoajustep_plancuentas" placeholder="Cuenta" class="form-control plancuenta-koi-component" name="conceptoajustep_plancuentas" type="text" maxlength="15" data-wrapper="conceptoajustep-create" data-name="cuenta_nombre" value="<%- plancuentas_cuenta %>">
-			</div>
-		</div>
-		<div class="col-sm-6 col-md-4"><br>
-			<input id="cuenta_nombre" name="cuenta_nombre" placeholder="Nombre cuenta" class="form-control input-sm" type="text" value="<%- plancuentas_nombre %>" maxlength="15" disabled>
-		</div>
-
 		<div class="form-group col-md-2 col-xs-8 col-sm-3">
 			<br><label class="checkbox-inline" for="conceptoajustep_activo">
 				<input type="checkbox" id="conceptoajustep_activo" name="conceptoajustep_activo" value="conceptoajustep_activo" <%- parseInt(conceptoajustep_activo) ? 'checked': ''%>> Activo
@@ -1669,7 +1586,7 @@
 	<div class="row">
 		<div class="form-group col-md-8">
 			<label for="conceptotec_nombre" class="control-label">Nombre</label>
-			<input type="text" id="conceptotec_nombre" name="conceptotec_nombre" value="<%- conceptotec_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="25" required>
+			<input type="text" id="conceptotec_nombre" name="conceptotec_nombre" value="<%- conceptotec_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="50" required>
 		</div>
 		<div class="form-group col-md-2 col-xs-8 col-sm-3">
 			<br><label class="checkbox-inline" for="conceptotec_activo">

@@ -31,7 +31,6 @@ app || (app = {});
                 columns: [
                     { data: 'id', name: 'id' },
                     { data: 'conceptoajustec_nombre', name: 'conceptoajustec_nombre' },
-                    { data: 'plancuentas_nombre', name: 'plancuentas_nombre' },
                     { data: 'conceptoajustec_activo', name: 'conceptoajustec_activo'}
                 ],
                 buttons: [
@@ -52,7 +51,7 @@ app || (app = {});
                         }
                     },
                     {
-                        targets: 3,
+                        targets: 2,
                         width: '10%',
                         render: function ( data, type, full, row ) {
                             return parseInt(data) ? 'Si' : 'No';
@@ -62,5 +61,4 @@ app || (app = {});
             });
         }
     });
-
 })(jQuery, this, this.document);

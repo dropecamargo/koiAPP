@@ -45,6 +45,7 @@
 				                <th>Nombre</th>
 				                <th>Naturaleza</th>
 				                <th>Tercero</th>
+				                <th>Cuenta NIF</th>
 				            </tr>
 				        </thead>
 				    </table>

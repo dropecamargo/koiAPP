@@ -60,15 +60,7 @@ class Impuesto extends BaseModel
             $collection = $query->lists('impuesto_nombre', 'impuesto.id');
             $collection->prepend('', '');
             return $collection;
-           
-        });
-    }
 
-    public static function getImpuesto($id){
-        $impuesto = Impuesto::query();
-        $impuesto->select('impuesto.*', 'plancuentas_nombre', 'plancuentas_cuenta');
-        $impuesto->leftJoin('plancuentas', 'impuesto_plancuentas', '=', 'plancuentas.id');
-        $impuesto->where('impuesto.id', $id);
-        return $impuesto->first();
+        });
     }
 }

@@ -37,27 +37,19 @@ class ConceptoAjustep extends BaseModel
 	public function isValid($data)
 	{
 		$rules = [
-			'conceptoajustep_nombre' => 'required|max:25|unique:conceptoajustep',
-			'conceptoajustep_plancuentas' => 'required',
+			'conceptoajustep_nombre' => 'required|max:50|unique:conceptoajustep',
 		];
-
+		if ($this->exists){
+			$rules['conceptoajustep_nombre'] .= ',conceptoajustep_nombre,' . $this->id;
+		}else{
+			$rules['conceptoajustep_nombre'] .= '|required';
+		}
 		$validator = Validator::make($data, $rules);
     	if ($validator->passes()) {
             return true;
         }
 		$this->errors = $validator->errors();
 		return false;
-	}	
-
-	public static function getConcepto($id)
-	{
-		$query = ConceptoAjustep::query();
-		$query->select('conceptoajustep.*', 'plancuentas_nombre', 'plancuentas_cuenta');
-		$query->join('plancuentas', 'conceptoajustep_plancuentas', '=', 'plancuentas.id');
-		$query->where('conceptoajustep.id', $id);
-		$concepto = $query->first();
-
-		return $concepto;
 	}
 
 	public static function getConceptoAjustep()

@@ -53,21 +53,14 @@ class TipoActivoController extends Controller
                     // TipoActivo
                     $tipoactivo->fill($data);
                     $tipoactivo->fillBoolean($data);
-                    
-                    $plancuenta = PlanCuenta::where('plancuentas_cuenta',$request->tipoactivo_plancuentas)->first();
-                    if (!$plancuenta instanceof PlanCuenta) {
-                        DB::rollback();
-                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar plan de cuentas, por favor verifique información o consulte con el administrador']);
-                    }
-                    $tipoactivo->tipoactivo_plancuentas = $plancuenta->id;
                     $tipoactivo->save();
 
                     // Commit Transaction
                     DB::commit();
-                    
+
                     // Forget cache
-                    Cache::forget( TipoActivo::$key_cache ); 
-                    return response()->json(['success' => true, 'id' =>$tipoactivo->id]); 
+                    Cache::forget( TipoActivo::$key_cache );
+                    return response()->json(['success' => true, 'id' =>$tipoactivo->id]);
                 } catch (\Exception $e) {
                     DB::rollback();
                     Log::error($e->getMessage());
@@ -87,7 +80,7 @@ class TipoActivoController extends Controller
      */
     public function show(Request $request, $id)
     {
-        $tipoactivo = TipoActivo::getTipoActivo($id);
+        $tipoactivo = TipoActivo::find($id);
         if ($request->ajax()) {
             return response()->json($tipoactivo);
         }
@@ -124,21 +117,14 @@ class TipoActivoController extends Controller
                     // TipoActivo
                     $tipoactivo->fill($data);
                     $tipoactivo->fillBoolean($data);
-                    
-                    $plancuenta = PlanCuenta::where('plancuentas_cuenta',$request->tipoactivo_plancuentas)->first();
-                    if (!$plancuenta instanceof PlanCuenta) {
-                        DB::rollback();
-                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar plan de cuentas, por favor verifique información o consulte con el administrador']);
-                    }
-                    $tipoactivo->tipoactivo_plancuentas = $plancuenta->id;
                     $tipoactivo->save();
 
                     // Commit Transaction
                     DB::commit();
-                    
+
                     // Forget cache
-                    Cache::forget( TipoActivo::$key_cache ); 
-                    return response()->json(['success' => true, 'id' =>$tipoactivo->id]); 
+                    Cache::forget( TipoActivo::$key_cache );
+                    return response()->json(['success' => true, 'id' =>$tipoactivo->id]);
                 } catch (\Exception $e) {
                     DB::rollback();
                     Log::error($e->getMessage());

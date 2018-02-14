@@ -16,13 +16,14 @@ app || (app = {});
         },
         idAttribute: 'id',
         defaults: {
-        	'plancuentas_cuenta': '',	
-        	'plancuentas_nivel': '',	
-        	'plancuentas_nombre': '',	
-        	'plancuentas_naturaleza': 'D',	
-        	'plancuentas_centro': '',	
-        	'plancuentas_tercero': 0,	
-        	'plancuentas_tipo': 'N',	
+        	'plancuentas_cuenta': '',
+        	'plancuentas_nivel': '',
+        	'plancuentas_nombre': '',
+        	'plancuentas_equivalente': '',	
+        	'plancuentas_naturaleza': 'D',
+        	'plancuentas_centro': '',
+        	'plancuentas_tercero': 0,
+        	'plancuentas_tipo': 'N',
         	'plancuentas_tasa': 0
         }
     });

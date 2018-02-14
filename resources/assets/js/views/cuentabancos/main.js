@@ -32,7 +32,6 @@ app || (app = {});
                     { data: 'id', name: 'id' },
                     { data: 'cuentabanco_nombre', name: 'cuentabanco_nombre' },
                     { data: 'banco_nombre', name: 'banco_nombre' },
-                    { data: 'plancuentas_nombre', name: 'plancuentas_nombre' },
                     { data: 'cuentabanco_activa', name: 'cuentabanco_activa'}
                 ],
                 buttons: [
@@ -53,7 +52,7 @@ app || (app = {});
                         }
                     },
                     {
-                        targets: 4,
+                        targets: 3,
                         width: '10%',
                         render: function ( data, type, full, row ) {
                             return parseInt(data) ? 'Si' : 'No';

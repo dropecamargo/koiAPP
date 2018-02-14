@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Tesoreria\TipoGasto;
-use App\Models\Contabilidad\PlanCuenta;
 use DB, Log, Datatables, Cache;
 
 class TipoGastoController extends Controller
@@ -50,24 +49,9 @@ class TipoGastoController extends Controller
             if ($tipogasto->isValid($data)) {
                 DB::beginTransaction();
                 try {
-                    // Recuperar cuenta
-                    $plancuenta = PlanCuenta::where('plancuentas_cuenta',$request->tipogasto_plancuentas)->first();
-                    if (!$plancuenta instanceof PlanCuenta) {
-                        DB::rollback();
-                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar plan de cuentas, por favor verifique información o consulte con el administrador']);
-                    }
-
-                    // Valid correctly use the cuenta
-                    $result = $plancuenta->validarSubnivelesCuenta();
-                    if ($result != 'OK') {
-                        DB::rollback();
-                        return response()->json(['success' => false, 'errors' => $result ]);
-                    }
-
                     // Tipo Gasto
                     $tipogasto->fill($data);
                     $tipogasto->fillBoolean($data);
-                    $tipogasto->tipogasto_plancuentas = $plancuenta->id;
                     $tipogasto->save();
 
                     // Forget cache
@@ -75,7 +59,7 @@ class TipoGastoController extends Controller
 
                     // Commit Transaction
                     DB::commit();
-                    return response()->json(['success' => true, 'id' =>$tipogasto->id]); 
+                    return response()->json(['success' => true, 'id' =>$tipogasto->id]);
                 } catch (\Exception $e) {
                     DB::rollback();
                     Log::error($e->getMessage());
@@ -95,7 +79,7 @@ class TipoGastoController extends Controller
      */
     public function show(Request $request, $id)
     {
-        $tipogasto = TipoGasto::getTipoGasto($id);
+        $tipogasto = TipoGasto::findOrFail($id);
         if ($request->ajax()) {
             return response()->json($tipogasto);
         }
@@ -129,33 +113,17 @@ class TipoGastoController extends Controller
             if ($tipogasto->isValid($data)) {
                 DB::beginTransaction();
                 try {
-
-                    // Recuperar cuenta
-                    $plancuenta = PlanCuenta::where('plancuentas_cuenta',$request->tipogasto_plancuentas)->first();
-                    if (!$plancuenta instanceof PlanCuenta) {
-                        DB::rollback();
-                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar plan de cuentas, por favor verifique información o consulte con el administrador']);
-                    }
-
-                    // Valid correctly use the cuenta
-                    $result = $plancuenta->validarSubnivelesCuenta();
-                    if ($result != 'OK') {
-                        DB::rollback();
-                        return response()->json(['success' => false, 'errors' => $result ]);
-                    }
-
                     // Tipo Gasto
                     $tipogasto->fill($data);
                     $tipogasto->fillBoolean($data);
-                    $tipogasto->tipogasto_plancuentas = $plancuenta->id;
                     $tipogasto->save();
 
                     // Forget cache
                     Cache::forget( TipoGasto::$key_cache );
-                    
+
                     // Commit Transaction
                     DB::commit();
-                    return response()->json(['success' => true, 'id' =>$tipogasto->id]); 
+                    return response()->json(['success' => true, 'id' =>$tipogasto->id]);
                 } catch (\Exception $e) {
                     DB::rollback();
                     Log::error($e->getMessage());

@@ -31,7 +31,6 @@ app || (app = {});
                 columns: [
                     { data: 'id', name: 'id' },
                     { data: 'conceptoajustep_nombre', name: 'conceptoajustep_nombre' },
-                    { data: 'plancuentas_nombre', name: 'plancuentas_nombre' },
                     { data: 'conceptoajustep_activo', name: 'conceptoajustep_activo'}
                 ],
                 buttons: [
@@ -52,7 +51,7 @@ app || (app = {});
                         }
                     },
                     {
-                        targets: 3,
+                        targets: 2,
                         width: '10%',
                         render: function ( data, type, full, row ) {
                             return parseInt(data) ? 'Si' : 'No';

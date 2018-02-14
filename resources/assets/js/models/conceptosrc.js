@@ -17,7 +17,6 @@ app || (app = {});
         idAttribute: 'id',
         defaults: {
         	'conceptosrc_nombre': '',
-        	'conceptosrc_plancuentas': '',
             'conceptosrc_documentos': '',
             'plancuentas_cuenta': '',
             'plancuentas_nombre': '',

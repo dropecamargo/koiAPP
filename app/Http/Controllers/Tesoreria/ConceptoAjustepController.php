@@ -8,7 +8,6 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Models\Tesoreria\ConceptoAjustep;
-use App\Models\Contabilidad\PlanCuenta;
 use DB, Log, Cache, Datatables;
 
 class ConceptoAjustepController extends Controller
@@ -22,8 +21,6 @@ class ConceptoAjustepController extends Controller
     {
         if ($request->ajax()) {
             $query = ConceptoAjustep::query();
-            $query->select('conceptoajustep.*','plancuentas_nombre');
-            $query->join('plancuentas','conceptoajustep_plancuentas', '=','plancuentas.id');
             return Datatables::of($query)->make(true);
         }
         return view('tesoreria.conceptosajustep.index');
@@ -53,24 +50,10 @@ class ConceptoAjustepController extends Controller
             if ($conceptoajustep->isValid($data)) {
                 DB::beginTransaction();
                 try {
-                    // Recuperar cuenta
-                    $plancuentas = PlanCuenta::where('plancuentas_cuenta', $request->conceptoajustep_plancuentas)->first();
-                    if(!$plancuentas instanceof PlanCuenta){
-                        DB::rollback();
-                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar plan de cuenta, verifique información ó por favor consulte al administrador.']);
-                    }
-
-                    // Valid correctly use the cuenta
-                    $result = $plancuentas->validarSubnivelesCuenta();
-                    if ($result != 'OK') {
-                        DB::rollback();
-                        return response()->json(['success' => false, 'errors' => $result ]);
-                    }
 
                     // ConceptoAjustep
                     $conceptoajustep->fill($data);
                     $conceptoajustep->fillBoolean($data);
-                    $conceptoajustep->conceptoajustep_plancuentas = $plancuentas->id;
                     $conceptoajustep->save();
 
                     //Forget cache
@@ -97,7 +80,7 @@ class ConceptoAjustepController extends Controller
      */
     public function show(Request $request, $id)
     {
-        $conceptoajustep = ConceptoAjustep::getConcepto($id);
+        $conceptoajustep = ConceptoAjustep::find($id);
         if ($request->ajax()) {
             return response()->json($conceptoajustep);
         }
@@ -112,7 +95,7 @@ class ConceptoAjustepController extends Controller
      */
     public function edit($id)
     {
-        $conceptoajustep = ConceptoAjustep::getConcepto($id);
+        $conceptoajustep = ConceptoAjustep::findOrFail($id);
         return view('tesoreria.conceptosajustep.edit', ['conceptoajustep' => $conceptoajustep]);
     }
 
@@ -131,24 +114,9 @@ class ConceptoAjustepController extends Controller
             if ($conceptoajustep->isValid($data)) {
                 DB::beginTransaction();
                 try {
-                    // Recuperar cuenta
-                    $plancuentas = PlanCuenta::where('plancuentas_cuenta', $request->conceptoajustep_plancuentas)->first();
-                    if(!$plancuentas instanceof PlanCuenta){
-                        DB::rollback();
-                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar plan de cuenta, verifique información ó por favor consulte al administrador.']);
-                    }
-                    
-                    // Valid correctly use the cuenta
-                    $result = $plancuentas->validarSubnivelesCuenta();
-                    if ($result != 'OK') {
-                        DB::rollback();
-                        return response()->json(['success' => false, 'errors' => $result ]);
-                    }
-
                     // ConceptoAjustep
                     $conceptoajustep->fill($data);
                     $conceptoajustep->fillBoolean($data);
-                    $conceptoajustep->conceptoajustep_plancuentas = $plancuentas->id;
                     $conceptoajustep->save();
 
                     //Forget cache
@@ -157,7 +125,7 @@ class ConceptoAjustepController extends Controller
                     // Commit Transaction
                     DB::commit();
                     return response()->json(['success' => true, 'id' => $conceptoajustep->id]);
-                    
+
                 }catch(\Exception $e){
                     DB::rollback();
                     Log::error($e->getMessage());

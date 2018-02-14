@@ -18,7 +18,6 @@ app || (app = {});
         defaults: {
             'tipogasto_nombre': '',
             'tipogasto_activo': 1,
-            'plancuentas_cuenta': '',
             'plancuentas_nombre': ''
         }
     });

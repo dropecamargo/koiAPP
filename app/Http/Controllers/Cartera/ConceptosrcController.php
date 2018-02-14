@@ -9,7 +9,6 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Cartera\Conceptosrc, App\Models\Cartera\ConceptoNota;
 use App\Models\Base\Documentos;
-use App\Models\Contabilidad\PlanCuenta;
 use DB, Log, Cache, Datatables;
 
 class ConceptosrcController extends Controller
@@ -23,8 +22,7 @@ class ConceptosrcController extends Controller
     {
         if ($request->ajax()) {
             $query = Conceptosrc::query();
-            $query->select('conceptosrc.*', 'plancuentas_nombre', 'documentos_nombre');
-            $query->join('plancuentas', 'conceptosrc_plancuentas', '=', 'plancuentas.id');
+            $query->select('conceptosrc.*', 'documentos_nombre');
             $query->leftJoin('documentos', 'conceptosrc_documentos', '=', 'documentos.id');
             return Datatables::of($query)->make(true);
         }
@@ -55,20 +53,6 @@ class ConceptosrcController extends Controller
             if ($conceptosrc->isValid($data)) {
                 DB::beginTransaction();
                 try {
-                    // Recuperar cuenta
-                    $plancuentas = PlanCuenta::where('plancuentas_cuenta', $request->conceptosrc_plancuentas)->first();
-                    if(!$plancuentas instanceof PlanCuenta){
-                        DB::rollback();
-                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar plan de cuenta, verifique información ó por favor consulte al administrador.']);
-                    }
-
-                    // Valid correctly use the cuenta
-                    $result = $plancuentas->validarSubnivelesCuenta();
-                    if ($result != 'OK') {
-                        DB::rollback();
-                        return response()->json(['success' => false, 'errors' => $result ]);
-                    }  
-
                     if ($request->has('conceptosrc_documentos')) {
                         $documentos = Documentos::find($request->conceptosrc_documentos);
                         if(!$documentos instanceof Documentos){
@@ -81,7 +65,6 @@ class ConceptosrcController extends Controller
                     // conceptosrc
                     $conceptosrc->fill($data);
                     $conceptosrc->fillBoolean($data);
-                    $conceptosrc->conceptosrc_plancuentas = $plancuentas->id;
                     $conceptosrc->save();
 
                     //Forget cache
@@ -142,20 +125,6 @@ class ConceptosrcController extends Controller
             if ($conceptosrc->isValid($data)) {
                 DB::beginTransaction();
                 try {
-                    // Recuperar cuenta
-                    $plancuentas = PlanCuenta::where('plancuentas_cuenta', $request->conceptosrc_plancuentas)->first();
-                    if(!$plancuentas instanceof PlanCuenta){
-                        DB::rollback();
-                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar plan de cuenta, verifique información ó por favor consulte al administrador.']);
-                    }
-
-                    // Valid correctly use the cuenta
-                    $result = $plancuentas->validarSubnivelesCuenta();
-                    if ($result != 'OK') {
-                        DB::rollback();
-                        return response()->json(['success' => false, 'errors' => $result ]);
-                    } 
-
                     if ($request->has('conceptosrc_documentos')) {
                         $documentos = Documentos::find($request->conceptosrc_documentos);
                         if(!$documentos instanceof Documentos){
@@ -168,7 +137,6 @@ class ConceptosrcController extends Controller
                     // conceptosrc
                     $conceptosrc->fill($data);
                     $conceptosrc->fillBoolean($data);
-                    $conceptosrc->conceptosrc_plancuentas = $plancuentas->id;
                     $conceptosrc->save();;
 
                     //Forget cache
@@ -215,15 +183,15 @@ class ConceptosrcController extends Controller
 
                 if($conceptosrc->documentos_codigo == 'FACT'){
                     $action = 'modalCartera';
-                    $response->action = $action;  
+                    $response->action = $action;
                     $response->success = true;
                 }else if ($conceptosrc->documentos_codigo == 'CHD'){
                     $action = 'modalChequesDevueltos';
-                    $response->action = $action;  
+                    $response->action = $action;
                     $response->success = true;
                 }else if($conceptosrc->documentos_codigo == 'ANTI'){
                     $action = 'modalAnticipos';
-                    $response->action = $action;  
+                    $response->action = $action;
                     $response->success = true;
                 }else{
                     $response->success = false;
@@ -237,7 +205,7 @@ class ConceptosrcController extends Controller
 
                 if($conceptosrc->documentos_codigo == 'FACT'){
                     $action = 'modalCartera';
-                    $response->action = $action;  
+                    $response->action = $action;
                     $response->success = true;
                 }else{
                     $response->success = false;
@@ -252,15 +220,15 @@ class ConceptosrcController extends Controller
 
                 if( $documentos->documentos_codigo == 'FACT' ){
                     $action = 'modalCartera';
-                    $response->action = $action;  
+                    $response->action = $action;
                     $response->success = true;
                 }else if ( $documentos->documentos_codigo == 'CHD' ){
                     $action = 'modalChequesDevueltos';
-                    $response->action = $action;  
+                    $response->action = $action;
                     $response->success = true;
                 }else if($documentos->documentos_codigo == 'ANTI'){
                    $action = 'modalAnticipos';
-                    $response->action = $action;  
+                    $response->action = $action;
                     $response->success = true;
                 }else{
                     $response->success = false;
@@ -274,15 +242,15 @@ class ConceptosrcController extends Controller
                 }
                 if ($documentos->documentos_codigo == 'FACT') {
                     $action = 'modalCartera';
-                    $response->action = $action;  
+                    $response->action = $action;
                     $response->success = true;
                 }else if( $documentos->documentos_codigo == 'CHD' ){
                     $action = 'modalChequesDevueltos';
-                    $response->action = $action;  
+                    $response->action = $action;
                     $response->success = true;
                 }else if($documentos->documentos_codigo == 'ANTI'){
                     $action = 'modalAnticipos';
-                    $response->action = $action;  
+                    $response->action = $action;
                     $response->success = true;
                 }else{
                     $response->success = false;

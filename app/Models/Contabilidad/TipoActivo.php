@@ -37,9 +37,8 @@ class TipoActivo extends BaseModel
     public function isValid($data)
     {
         $rules = [
-            'tipoactivo_nombre' => 'required|max:20',
+            'tipoactivo_nombre' => 'required|max:50',
             'tipoactivo_vida_util' => 'numeric|min:1',
-            'tipoactivo_plancuentas' => 'required'
         ];
 
         $validator = Validator::make($data, $rules);
@@ -63,13 +62,5 @@ class TipoActivo extends BaseModel
             $collection->prepend('', '');
             return $collection;
         });
-    }
-
-    public static function getTipoActivo($id){
-        $tipoactivo = TipoActivo::query();
-        $tipoactivo->select('tipoactivo.*', 'plancuentas_cuenta','plancuentas_nombre');
-        $tipoactivo->join('plancuentas', 'tipoactivo_plancuentas','=','plancuentas.id');
-        $tipoactivo->where('tipoactivo.id', $id);
-        return $tipoactivo->first();
     }
 }

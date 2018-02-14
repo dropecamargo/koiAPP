@@ -9,12 +9,6 @@
     <div class="box box-primary">
         <div class="box-body">
             <div class="row">
-                <div class="form-group col-md-2">
-                    <label class="control-label">Código</label>
-                    <div>{{ $tipoactivo->id }}</div>
-                </div>
-            </div>
-            <div class="row">
                 <div class="form-group col-md-4">
                     <label class="control-label">Nombre</label>
                     <div>{{ $tipoactivo->tipoactivo_nombre }}</div>
@@ -27,12 +21,6 @@
                     <label class="checkbox-inline" for="tipoactivos_activo">
                         <input type="checkbox" id="tipoactivos_activo" name="tipoactivos_activo" value="tipoactivos_activo" disabled {{ $tipoactivo->tipoactivo_activo ? 'checked': '' }}> Activo
                     </label>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-md-3">
-                    <label class="control-label">Plan Cuentas</label>
-                    <div>{{ $tipoactivo->plancuentas_cuenta }} - {{ $tipoactivo->plancuentas_nombre }}</div>
                 </div>
             </div>
         </div>

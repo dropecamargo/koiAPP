@@ -18,6 +18,7 @@ app || (app = {});
         */
         initialize : function() {
             this.$conceptonotaSearchTable = this.$('#conceptonota-search-table');
+            
             this.$conceptonotaSearchTable.DataTable({
                 dom: "<'row'<'col-sm-4'B><'col-sm-4 text-center'l><'col-sm-4'f>>" +
                     "<'row'<'col-sm-12'tr>>" +
@@ -29,12 +30,11 @@ app || (app = {});
                 columns: [
                     { data: 'id', name: 'id' },
                     { data: 'conceptonota_nombre', name: 'conceptonota_nombre' },
-                    { data: 'plancuentas_nombre', name: 'plancuentas_nombre' },
                     { data: 'conceptonota_activo', name: 'conceptonota_activo'}
                 ],
                 buttons: [
                     {
-                        text: '<i class="fa fa-plus"></i> Nuevo concepto',
+                        text: '<i class="fa fa-plus"></i> Nuevo concepto nota',
                         className: 'btn-sm',
                         action: function ( e, dt, node, config ) {
                             window.Misc.redirect( window.Misc.urlFull( Route.route('conceptonotas.create') ) )
@@ -50,7 +50,7 @@ app || (app = {});
                         }
                     },
                     {
-                        targets: 3,
+                        targets: 2,
                         width: '10%',
                         render: function ( data, type, full, row ) {
                             return parseInt(data) ? 'Si' : 'No';

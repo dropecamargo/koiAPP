@@ -36,10 +36,13 @@ class TipoGasto extends BaseModel
     public function isValid($data)
     {
         $rules = [
-            'tipogasto_nombre' => 'required|max:25|unique:tipogasto',
-            'tipogasto_plancuentas' => 'required'
+            'tipogasto_nombre' => 'required|max:50|unique:tipogasto'
         ];
-
+        if ($this->exists){
+            $rules['tipogasto_nombre'] .= ',tipogasto_nombre,' . $this->id;
+        }else{
+            $rules['tipogasto_nombre'] .= '|required';
+        }
         $validator = Validator::make($data, $rules);
         if ($validator->passes()) {
             return true;
@@ -61,13 +64,5 @@ class TipoGasto extends BaseModel
             $collection->prepend('', '');
             return $collection;
         });
-    }
-
-    public static function getTipoGasto($id){
-        $tipogasto = TipoGasto::query();
-        $tipogasto->select('tipogasto.*', 'plancuentas_cuenta','plancuentas_nombre');
-        $tipogasto->join('plancuentas', 'tipogasto_plancuentas','=','plancuentas.id');
-        $tipogasto->where('tipogasto.id', $id);
-        return $tipogasto->first();
     }
 }

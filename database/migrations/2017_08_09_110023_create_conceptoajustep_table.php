@@ -16,11 +16,8 @@ class CreateConceptoajustepTable extends Migration
             $table->engine = 'InnoDB';
 
             $table->increments('id');
-            $table->string('conceptoajustep_nombre',25);
-            $table->integer('conceptoajustep_plancuentas')->unsigned();
+            $table->string('conceptoajustep_nombre',50);
             $table->boolean('conceptoajustep_activo')->default(false);
-
-            $table->foreign('conceptoajustep_plancuentas')->references('id')->on('plancuentas')->onDelete('restrict');
         });
     }
 

@@ -17,7 +17,6 @@ app || (app = {});
         idAttribute: 'id',
         defaults: {
         	'conceptonota_nombre': '',
-        	'conceptonota_plancuentas': '',
             'plancuentas_cuenta': '',
             'plancuentas_nombre': '',
         	'conceptonota_activo': 1

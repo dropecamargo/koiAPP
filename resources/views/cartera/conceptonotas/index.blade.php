@@ -12,8 +12,7 @@
                     <thead>
                         <tr>
                             <th>Código</th>
-                            <th>Nombre</th>
-                            <th>Plan de cuenta</th>
+                            <th width="50%">Nombre</th>
                             <th>Activo</th>
                         </tr>
                     </thead>

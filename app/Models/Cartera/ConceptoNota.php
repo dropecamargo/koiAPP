@@ -31,14 +31,13 @@ class ConceptoNota extends BaseModel
 	* @var array
 	*/
     protected $fillable = ['conceptonota_nombre'];
-    
+
     protected $boolean = ['conceptonota_activo'];
 
 	public function isValid($data)
 	{
 		$rules = [
-		    'conceptonota_nombre' => 'required',
-		    'conceptonota_plancuentas' => 'required',
+		    'conceptonota_nombre' => 'required|max:50',
 		];
 
 		$validator = Validator::make($data, $rules);
@@ -47,16 +46,6 @@ class ConceptoNota extends BaseModel
         }
 		$this->errors = $validator->errors();
 		return false;
-	}
-
-	public static function getConceptoNota($id){
-		$query = ConceptoNota::query();
-		$query->select('conceptonota.*', 'plancuentas_nombre', 'plancuentas_cuenta');
-		$query->join('plancuentas', 'conceptonota_plancuentas', '=', 'plancuentas.id');
-		$query->where('conceptonota.id', $id);
-		$concepto = $query->first();
-
-		return $concepto;
 	}
 
 	public static function getConcepto()

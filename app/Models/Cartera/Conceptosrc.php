@@ -40,8 +40,7 @@ class Conceptosrc extends BaseModel
 	public function isValid($data)
 	{
 		$rules = [
-			'conceptosrc_nombre' => 'required|max:25',
-			'conceptosrc_plancuentas' => 'required',
+			'conceptosrc_nombre' => 'required|max:50',
 		];
 
 		$validator = Validator::make($data, $rules);
@@ -55,8 +54,7 @@ class Conceptosrc extends BaseModel
 	public static function getConceptosrc($id)
 	{
 		$query = Conceptosrc::query();
-		$query->select('conceptosrc.*', 'plancuentas_nombre', 'plancuentas_cuenta', 'documentos_nombre', 'documentos_codigo');
-		$query->join('plancuentas', 'conceptosrc_plancuentas', '=', 'plancuentas.id');
+		$query->select('conceptosrc.*', 'documentos_nombre', 'documentos_codigo');
 		$query->leftJoin('documentos', 'conceptosrc_documentos', '=', 'documentos.id');
 		$query->where('conceptosrc.id', $id);
 		return $query->first();

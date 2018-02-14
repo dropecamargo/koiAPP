@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Inventario\Impuesto;
-use App\Models\Contabilidad\PlanCuenta;
 use DB, Log, Datatables, Cache;
 
 class ImpuestoController extends Controller
@@ -54,22 +53,6 @@ class ImpuestoController extends Controller
                     // Impuestos
                     $impuesto->fill($data);
                     $impuesto->fillBoolean($data);
-
-                    if ($request->has('impuesto_plancuentas')) {
-                        $plancuenta = PlanCuenta::where('plancuentas_cuenta',$request->impuesto_plancuentas)->first();
-                        if (!$plancuenta instanceof PlanCuenta) {
-                            DB::rollback();
-                            return response()->json(['success' => false, 'errors' => 'No es posible recuperar plan de cuenta por favor verifique información o consulte con el administrador']);
-                        }
-
-                        // Valid correctly use the cuenta
-                        $result = $plancuenta->validarSubnivelesCuenta();
-                        if ($result != 'OK') {
-                            DB::rollback();
-                            return response()->json(['success' => false, 'errors' => $result ]);
-                        }   
-                        $impuesto->impuesto_plancuentas = $plancuenta->id;
-                    }
                     $impuesto->save();
 
                     //Forget cache
@@ -98,7 +81,7 @@ class ImpuestoController extends Controller
      */
     public function show(Request $request, $id)
     {
-        $impuesto = Impuesto::getImpuesto($id);
+        $impuesto = Impuesto::find($id);
         if ($request->ajax()) {
             return response()->json($impuesto);
         }
@@ -135,26 +118,11 @@ class ImpuestoController extends Controller
                     // Impuestos
                     $impuesto->fill($data);
                     $impuesto->fillBoolean($data);
-
-                    if ($request->has('impuesto_plancuentas')) {
-                        $plancuenta = PlanCuenta::where('plancuentas_cuenta',$request->impuesto_plancuentas)->first();
-                        if (!$plancuenta instanceof PlanCuenta) {
-                            DB::rollback();
-                            return response()->json(['success' => false, 'errors' => 'No es posible recuperar plan de cuenta por favor verifique información o consulte con el administrador']);
-                        }
-                        // Valid correctly use the cuenta
-                        $result = $plancuenta->validarSubnivelesCuenta();
-                        if ($result != 'OK') {
-                            DB::rollback();
-                            return response()->json(['success' => false, 'errors' => $result ]);
-                        } 
-                        $impuesto->impuesto_plancuentas = $plancuenta->id;
-                    }
                     $impuesto->save();
-                    
+
                     //Forget cache
                     Cache::forget( Impuesto::$key_cache );
-                    
+
                     // Commit Transaction
                     DB::commit();
                     return response()->json(['success' => true, 'id' => $impuesto->id]);

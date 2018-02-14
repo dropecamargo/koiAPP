@@ -8,7 +8,6 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Models\Cartera\CuentaBanco, App\Models\Cartera\Banco;
-use App\Models\Contabilidad\PlanCuenta;
 use DB, Log, Cache, Datatables;
 
 class CuentaBancoController extends Controller
@@ -22,9 +21,8 @@ class CuentaBancoController extends Controller
     {
         if ($request->ajax()) {
             $query = CuentaBanco::query();
-            $query->select('cuentabanco.*','banco_nombre','plancuentas_nombre');
+            $query->select('cuentabanco.*','banco_nombre');
             $query->join('banco','cuentabanco_banco', '=','banco.id');
-            $query->join('plancuentas','cuentabanco_plancuentas', '=','plancuentas.id');
             return Datatables::of($query)->make(true);
         }
         return view('cartera.cuentabancos.index');
@@ -54,32 +52,17 @@ class CuentaBancoController extends Controller
             if ($cuentabanco->isValid($data)) {
                 DB::beginTransaction();
                 try {
-                    //Recuperar Banco 
+                    //Recuperar Banco
                     $banco = Banco::find($request->cuentabanco_banco);
                     if(!$banco instanceof Banco) {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar banco, verifique información ó por favor consulte al administrador.']);
                     }
 
-                    // Recuperar cuenta 
-                    $plancuentas = PlanCuenta::where('plancuentas_cuenta', $request->cuentabanco_plancuentas)->first();
-                    if(!$plancuentas instanceof PlanCuenta) {
-                        DB::rollback();
-                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar plan de cuenta, verifique información ó por favor consulte al administrador.']);
-                    }  
-
-                    // Valid correctly use the cuenta
-                    $result = $plancuentas->validarSubnivelesCuenta();
-                    if ($result != 'OK') {
-                        DB::rollback();
-                        return response()->json(['success' => false, 'errors' => $result ]);
-                    }  
-
                     // Cuenta Banco
                     $cuentabanco->fill($data);
                     $cuentabanco->fillBoolean($data);
                     $cuentabanco->cuentabanco_banco = $banco->id;
-                    $cuentabanco->cuentabanco_plancuentas = $plancuentas->id;
                     $cuentabanco->save();
 
                     //Forget cache
@@ -146,25 +129,11 @@ class CuentaBancoController extends Controller
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar banco, verifique información ó por favor consulte al administrador.']);
                     }
-                    
-                    $plancuentas = PlanCuenta::where('plancuentas_cuenta', $request->cuentabanco_plancuentas)->first();
-                    if(!$plancuentas instanceof PlanCuenta) {
-                        DB::rollback();
-                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar plan de cuenta, verifique información ó por favor consulte al administrador.']);
-                    }
 
-                    // Valid correctly use the cuenta
-                    $result = $plancuentas->validarSubnivelesCuenta();
-                    if ($result != 'OK') {
-                        DB::rollback();
-                        return response()->json(['success' => false, 'errors' => $result ]);
-                    }  
-               
                     // Cuenta Banco
                     $cuentabanco->fill($data);
                     $cuentabanco->fillBoolean($data);
                     $cuentabanco->cuentabanco_banco = $banco->id;
-                    $cuentabanco->cuentabanco_plancuentas = $plancuentas->id;
                     $cuentabanco->save();
 
                     //Forget cache

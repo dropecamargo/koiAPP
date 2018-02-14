@@ -21,9 +21,6 @@ app || (app = {});
             'retefuente_tarifa_natural': 0,
             'retefuente_tarifa_juridico': 0,
             'retefuente_activo': 1,
-
-            'plancuentas_cuenta': '',
-            'plancuentas_nombre': ''
         }
     });
 

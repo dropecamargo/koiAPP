@@ -31,7 +31,6 @@ app || (app = {});
                 columns: [
                     { data: 'id', name: 'id' },
                     { data: 'conceptosrc_nombre', name: 'conceptosrc_nombre' },
-                    { data: 'plancuentas_nombre', name: 'plancuentas_nombre' },
                     { data: 'documentos_nombre', name: 'documentos_nombre' },
                     { data: 'conceptosrc_activo', name: 'conceptosrc_activo'}
                 ],
@@ -53,7 +52,7 @@ app || (app = {});
                         }
                     },
                     {
-                        targets: 4,
+                        targets: 3,
                         width: '10%',
                         render: function ( data, type, full, row ) {
                             return parseInt(data) ? 'Si' : 'No';
