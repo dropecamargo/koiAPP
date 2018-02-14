@@ -144,7 +144,7 @@ Route::group(['middleware' => 'auth'], function(){
 		});
 	});
 	Route::resource('asientos', 'Contabilidad\AsientoController', ['only' => ['index', 'create', 'store', 'edit', 'update', 'show']]);
-	
+
 	Route::group(['prefix' => 'asientosnif'], function()
 	{
 		Route::resource('detalle', 'Contabilidad\DetalleAsientoNifController', ['only' => ['index', 'store', 'destroy']]);
@@ -238,7 +238,7 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::resource('rexistencias', 'Reporte\ExistenciaController', ['only' => ['index']]);
 	Route::resource('rmovimientosproductos', 'Reporte\MovProductoController', ['only' => ['index']]);
 
-   	/*	
+   	/*
 	|-------------------------
 	| Cartera Routes
 	|-------------------------
@@ -327,7 +327,7 @@ Route::group(['middleware' => 'auth'], function(){
 		Route::resource('imagenes','Tecnico\OrdenImagenController',['only'=>['index', 'store', 'destroy']]);
 
 		Route::post('cerrar', ['as' => 'ordenes.cerrar', 'uses' => 'Tecnico\OrdenController@cerrar']);
-		
+
 		Route::get('mail/{ordenes}', ['as' => 'ordenes.mail', 'uses' => 'Tecnico\OrdenController@mail']);
 		Route::get('exportar/{ordenes}', ['as' => 'ordenes.exportar', 'uses' => 'Tecnico\OrdenController@exportar']);
 		Route::get('evaluate/{ordenes}', ['as' => 'ordenes.evaluate', 'uses' => 'Tecnico\OrdenController@evaluate']);
