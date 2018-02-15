@@ -16,7 +16,7 @@ class CreateUnidadnegocioTable extends Migration
             $table->engine = 'InnoDB';
 
             $table->increments('id');
-            $table->string('unidadnegocio_nombre', 25);
+            $table->string('unidadnegocio_nombre', 50);
             $table->boolean('unidadnegocio_activo')->default(false);
         });
     }
@@ -28,6 +28,6 @@ class CreateUnidadnegocioTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('unidadnegocio'); 
+        Schema::dropIfExists('unidadnegocio');
     }
 }

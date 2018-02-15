@@ -23,7 +23,7 @@ class CreateCierreactivoTable extends Migration
             $table->integer('cierreactivo_responsable')->unsigned();
             $table->double('cierreactivo_costo')->default(0);
             $table->double('cierreactivo_depreciacion')->default(0);
-            $table->dateTime('cierreactivo_fh_creacion');
+            $table->dateTime('cierreactivo_fh_elaboro');
 
             $table->foreign('cierreactivo_activotijo')->references('id')->on('activofijo')->onDelete('restrict');
             $table->foreign('cierreactivo_tipoactivo')->references('id')->on('tipoactivo')->onDelete('restrict');

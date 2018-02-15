@@ -41,9 +41,13 @@ class UnidadNegocio extends BaseModel
     public function isValid($data)
     {
         $rules = [
-            'unidadnegocio_nombre' => 'required|max:25|unique:unidadnegocio'
+            'unidadnegocio_nombre' => 'required|max:50|unique:unidadnegocio'
         ];
-
+        if ($this->exists){
+            $rules['unidadnegocio_nombre'] .= ',unidadnegocio_nombre,' . $this->id;
+        }else{
+            $rules['unidadnegocio_nombre'] .= '|required';
+        }
         $validator = Validator::make($data, $rules);
         if ($validator->passes()) {
             return true;

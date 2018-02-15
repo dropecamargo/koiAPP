@@ -26,7 +26,7 @@ class CreateCierrecarteraTable extends Migration
             $table->date('cierrecartera_corte');
             $table->double('cierrecartera_valor')->default(0);
             $table->double('cierrecartera_saldo')->default(0);
-            $table->dateTime('cierrecartera_fh_creacion');
+            $table->dateTime('cierrecartera_fh_elaboro');
 
             $table->foreign('cierrecartera_tercero')->references('id')->on('tercero')->onDelete('restrict');
             $table->foreign('cierrecartera_documentos')->references('id')->on('documentos')->onDelete('restrict');

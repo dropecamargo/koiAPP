@@ -26,7 +26,7 @@ class Modelo extends BaseModel
      */
     public static $key_cache = '_modelos';
 
-    
+
     /**
      * The attributes that are mass assignable.
      *
@@ -45,10 +45,14 @@ class Modelo extends BaseModel
     public function isValid($data)
     {
         $rules = [
-            'modelo_nombre' => 'required|max:200|unique:modelo',
-        
-        ];
+            'modelo_nombre' => 'required|max:100|unique:modelo',
 
+        ];
+        if ($this->exists){
+            $rules['modelo_nombre'] .= ',modelo_nombre,' . $this->id;
+        }else{
+            $rules['modelo_nombre'] .= '|required';
+        }
         $validator = Validator::make($data, $rules);
         if ($validator->passes()) {
             return true;

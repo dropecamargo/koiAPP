@@ -1017,7 +1017,7 @@
 	<div class="row">
 		<div class="form-group col-md-8">
 			<label for="categoria_nombre" class="control-label">Nombre</label>
-			<input type="text" id="categoria_nombre" name="categoria_nombre" value="<%- categoria_nombre %>" placeholder="Categoria" class="form-control input-sm input-toupper" maxlength="25" required>
+			<input type="text" id="categoria_nombre" name="categoria_nombre" value="<%- categoria_nombre %>" placeholder="Categoria" class="form-control input-sm input-toupper" maxlength="50" required>
 		</div>
 	</div>
 	<div class="row">
@@ -1041,7 +1041,7 @@
 	<div class="row">
 		<div class="form-group col-md-6">
 			<label for="subcategoria_nombre" class="control-label">Nombre</label>
-			<input type="text" id="subcategoria_nombre" name="subcategoria_nombre" value="<%- subcategoria_nombre %>" placeholder="Sub categoría" class="form-control input-sm input-toupper" maxlength="25" required>
+			<input type="text" id="subcategoria_nombre" name="subcategoria_nombre" value="<%- subcategoria_nombre %>" placeholder="Sub categoría" class="form-control input-sm input-toupper" maxlength="50" required>
 		</div>
     </div>
     <div class="row">
@@ -1082,7 +1082,7 @@
 	<div class="row">
 		<div class="form-group col-md-8">
 			<label for="marca_nombre" class="control-label">Nombre</label>
-			<input type="text" id="marca_nombre" name="marca_nombre" value="<%- marca_nombre %>" placeholder="Marca" class="form-control input-sm input-toupper" maxlength="25" required>
+			<input type="text" id="marca_nombre" name="marca_nombre" value="<%- marca_nombre %>" placeholder="Marca" class="form-control input-sm input-toupper" maxlength="100" required>
 		</div>
 
 		<div class="form-group col-md-2 col-xs-8 col-sm-3">
@@ -1172,7 +1172,7 @@
     <div class="row">
 		<div class="form-group col-md-6">
 		<label for="unidadnegocio_nombre" class="control-label">Nombre</label>
-			<input type="text" id="unidadnegocio_nombre" name="unidadnegocio_nombre" value="<%- unidadnegocio_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="25" required>
+			<input type="text" id="unidadnegocio_nombre" name="unidadnegocio_nombre" value="<%- unidadnegocio_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="50" required>
 		</div>
 		<br>
 		<div class="form-group col-md-1">

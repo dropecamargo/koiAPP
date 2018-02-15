@@ -16,7 +16,7 @@ class CreateCategoriaTable extends Migration
             $table->engine = 'InnoDB';
 
             $table->increments('id');
-            $table->string('categoria_nombre', 25);
+            $table->string('categoria_nombre', 50);
             $table->boolean('categoria_activo')->default(false);
             $table->integer('categoria_linea')->unsigned();
 
@@ -31,6 +31,6 @@ class CreateCategoriaTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('categoria'); 
+        Schema::dropIfExists('categoria');
     }
 }

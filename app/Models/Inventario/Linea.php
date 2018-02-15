@@ -42,7 +42,7 @@ class Linea extends BaseModel
     public function isValid($data)
     {
         $rules = [
-            'linea_nombre' => 'required|max: 25|unique:linea',
+            'linea_nombre' => 'required|max: 50|unique:linea',
             'linea_unidadnegocio' => 'required'
         ];
 
@@ -60,7 +60,7 @@ class Linea extends BaseModel
         $this->errors = $validator->errors();
         return false;
     }
-    
+
     public static function getLine ($id)
     {
         $query = Linea::query();

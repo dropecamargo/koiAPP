@@ -16,7 +16,7 @@ class CreateModeloTable extends Migration
             $table->engine = 'InnoDB';
 
             $table->increments('id');
-            $table->string('modelo_nombre', 200);
+            $table->string('modelo_nombre', 100);
             $table->boolean('modelo_activo')->default(false);
         });
     }
