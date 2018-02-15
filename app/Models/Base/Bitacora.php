@@ -23,6 +23,4 @@ class Bitacora extends Model
     protected $fillable = [];
 
     public function isValid($data){}
-        
-     
 }
