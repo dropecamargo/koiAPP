@@ -73,6 +73,4 @@ class TipoAjuste extends BaseModel
             return $collection;
         });
     }
-
-
 }

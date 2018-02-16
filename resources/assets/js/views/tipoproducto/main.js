@@ -1,5 +1,5 @@
 /**
-* Class MainModelosView
+* Class MainTiposProductoView
 * @author KOI || @dropecamargo
 * @link http://koi-ti.com
 */
@@ -9,37 +9,35 @@ app || (app = {});
 
 (function ($, window, document, undefined) {
 
-    app.MainModelosView = Backbone.View.extend({
+    app.MainTiposProductoView = Backbone.View.extend({
 
-        el: '#modelos-main',
+        el: '#tiposproducto-main',
 
         /**
         * Constructor Method
         */
         initialize : function() {
 
-            this.$modelosSearchTable = this.$('#modelos-search-table');
-
-            this.$modelosSearchTable.DataTable({
+            this.$tiposproductoSearchTable = this.$('#tiposproducto-search-table');
+            this.$tiposproductoSearchTable.DataTable({
                 dom:"<'row'<'col-sm-4'B><'col-sm-4 text-center'l><'col-sm-4'f>>" +
 					"<'row'<'col-sm-12'tr>>" +
 					"<'row'<'col-sm-5'i><'col-sm-7'p>>",
 				processing: true,
                 serverSide: true,
             	language: window.Misc.dataTableES(),
-                ajax: window.Misc.urlFull( Route.route('modelos.index') ),
+                ajax: window.Misc.urlFull( Route.route('tiposproducto.index') ),
                 columns: [
-                    { data: 'id', name: 'id' },
-                    { data: 'modelo_nombre', name: 'modelo_nombre' },
-                    { data: 'marca_nombre', name: 'marca.marca_nombre' },
-                    { data: 'modelo_activo', name: 'modelo_activo'}
+                    { data: 'tipoproducto_codigo', name: 'tipoproducto_codigo' },
+                    { data: 'tipoproducto_nombre', name: 'tipoproducto_nombre' },
+                    { data: 'tipoproducto_activo', name: 'tipoproducto_activo'}
                 ],
 				buttons: [
 					{
-						text: '<i class="fa fa-plus"></i> Nuevo Modelo',
+						text: '<i class="fa fa-plus"></i> Nuevo tipo de producto',
                         className: 'btn-sm',
 						action: function ( e, dt, node, config ) {
-							window.Misc.redirect( window.Misc.urlFull( Route.route('modelos.create') ) )
+							window.Misc.redirect( window.Misc.urlFull( Route.route('tiposproducto.create') ) )
 						}
 					}
 				],
@@ -48,11 +46,11 @@ app || (app = {});
                         targets: 0,
                         width: '10%',
                         render: function ( data, type, full, row ) {
-                            return '<a href="'+ window.Misc.urlFull( Route.route('modelos.show', {modelos: full.id }) )  +'">' + data + '</a>';
+                            return '<a href="'+ window.Misc.urlFull( Route.route('tiposproducto.show', {tiposproducto: full.id }) )  +'">' + data + '</a>';
                         }
                     },
                     {
-                        targets: 3,
+                        targets: 2,
                         width: '10%',
                         render: function ( data, type, full, row ) {
                             return parseInt(data) ? 'Si' : 'No';

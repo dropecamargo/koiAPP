@@ -293,7 +293,7 @@
     </li>
 
     {{-- Inventario --}}
-    <li class="treeview {{ in_array(Request::segment(1), ['unidades', 'productos','lineas','marcas','modelos','categorias','impuestos','pedidos','ajustes','tiposajuste','subcategorias','servicios','unidadesnegocio','traslados','trasladosubicaciones','tipostraslados','rexistencias', 'rmovimientosproductos','ractivosfijos']) ? 'active' : '' }}">
+    <li class="treeview {{ in_array(Request::segment(1), ['unidades', 'productos','lineas','marcas','modelos','categorias','impuestos','pedidos','ajustes','tiposajuste','subcategorias','servicios','unidadesnegocio','traslados','trasladosubicaciones','tiposproducto','tipostraslados','rexistencias', 'rmovimientosproductos','ractivosfijos']) ? 'active' : '' }}">
         <a href="#">
             <i class="fa fa-list"></i> <span>Inventario</span><i class="fa fa-angle-left pull-right"></i>
         </a>
@@ -341,7 +341,7 @@
             </li>
 
             {{-- Referencias inventario --}}
-            <li class="{{ in_array(Request::segment(1), ['unidades','lineas','marcas','modelos','categorias','impuestos','tiposajuste','tipostraslados','subcategorias','unidadesnegocio','servicios']) ? 'active' : '' }}">
+            <li class="{{ in_array(Request::segment(1), ['unidades','lineas','marcas','modelos','categorias','impuestos','tiposajuste','tipostraslados','tiposproducto','subcategorias','unidadesnegocio','servicios']) ? 'active' : '' }}">
                 <a href="#">
                     <i class="fa fa-circle-o"></i> Referencias <i class="fa fa-angle-left pull-right"></i>
                 </a>
@@ -372,6 +372,9 @@
                     </li>
                      <li class="{{ Request::segment(1) == 'tipostraslados' ? 'active' : '' }}">
                         <a href="{{ route('tipostraslados.index') }}"><i class="fa fa-circle-o"></i> Tipos de traslado</a>
+                    </li>
+                     <li class="{{ Request::segment(1) == 'tiposproducto' ? 'active' : '' }}">
+                        <a href="{{ route('tiposproducto.index') }}"><i class="fa fa-circle-o"></i> Tipos de producto</a>
                     </li>
                     <li class="{{ Request::segment(1) == 'unidades' ? 'active' : '' }}">
                         <a href="{{ route('unidades.index') }}"><i class="fa fa-circle-o"></i> Unidades</a>

@@ -16,6 +16,7 @@ app || (app = {});
             'click .btn-edit-tcontacto': 'editOne',
         },
         parameters: {
+            edit: false,
             dataFilter: {}
         },
 
@@ -52,7 +53,12 @@ app || (app = {});
         * @param Object contactModel Model instance
         */
         addOne: function (contactModel) {
-            var view = new app.ContactItemView( { model: contactModel } );
+            var view = new app.ContactItemView({
+                 model: contactModel,
+                 parameters: {
+                     edit: this.parameters.edit
+                 }
+             });
             this.$el.append( view.render().el );
         },
 
@@ -83,7 +89,7 @@ app || (app = {});
         },
 
         createOne: function(tercero, municipio, telefono, direccion, nomenclatura) {
-            var _this = this;  
+            var _this = this;
             if ( this.createTContactoView instanceof Backbone.View ){
                 this.createTContactoView.stopListening();
                 this.createTContactoView.undelegateEvents();

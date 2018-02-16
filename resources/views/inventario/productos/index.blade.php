@@ -12,12 +12,12 @@
                     <div class="form-group">
                         <label for="producto_serie" class="col-md-1 control-label">Serie</label>
                         <div class="col-md-2">
-                            {!! Form::text('producto_serie', session('search_producto_serie'), ['id' => 'producto_serie', 'class' => 'form-control input-sm']) !!}
+                            {!! Form::text('producto_serie', session('search_producto_serie'), ['id' => 'producto_serie', 'class' => 'form-control input-sm', 'placeholder' => 'Serie producto']) !!}
                         </div>
 
                         <label for="producto_nombre" class="col-md-1 control-label">Nombre</label>
                         <div class="col-md-8">
-                            {!! Form::text('producto_nombre', session('search_producto_nombre'), ['id' => 'producto_nombre', 'class' => 'form-control input-sm input-toupper']) !!}
+                            {!! Form::text('producto_nombre', session('search_producto_nombre'), ['id' => 'producto_nombre', 'class' => 'form-control input-sm input-toupper', 'placeholder' => 'Nombre del producto']) !!}
                         </div>
                     </div>
 

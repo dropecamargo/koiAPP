@@ -13,11 +13,17 @@ app || (app = {});
 
         tagName: 'tr',
         template: _.template( ($('#contact-item-list-tpl').html() || '') ),
-        
+        parameters: {
+            edit: false,
+        },
         /**
         * Constructor Method
         */
-        initialize: function(){
+        initialize: function(opts){
+            // Extends parameters
+            if( opts !== undefined && _.isObject(opts.parameters) )
+                this.parameters = $.extend({},this.parameters, opts.parameters);
+                
             // Events Listener
             this.listenTo( this.model, 'change', this.render );
         },
@@ -27,6 +33,7 @@ app || (app = {});
         */
         render: function(){
             var attributes = this.model.toJSON();
+                attributes.edit = this.parameters.edit;
             this.$el.html( this.template(attributes) );
             return this;
         }

@@ -6,10 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
+use App\Models\Inventario\Modelo, App\Models\Inventario\Marca;
 use DB, Log, Datatables, Cache;
-
-use App\Models\Inventario\Modelo;
 
 class ModeloController extends Controller
 {
@@ -22,7 +20,9 @@ class ModeloController extends Controller
     {
         if ($request->ajax()) {
             $query = Modelo::query();
-            return Datatables::of($query)->make(true);
+            $query->select('modelo.*', 'marca_nombre');
+            $query->join('marca', 'modelo_marca', '=', 'marca.id');
+            return Datatables::of( $query )->make(true);
         }
 
         return view('inventario.modelo.index');
@@ -48,14 +48,22 @@ class ModeloController extends Controller
     {
         if ($request->ajax()) {
             $data = $request->all();
-            
+
             $modelo = new Modelo;
             if ($modelo->isValid($data)) {
                 DB::beginTransaction();
                 try {
+                    // Recuperar marca
+                    $marca = Marca::find($request->modelo_marca);
+                    if( !$marca instanceof Marca ){
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar la marca, por favor verifique la información o consulte al administrador.']);
+                    }
+
                     // Modelo
                     $modelo->fill($data);
                     $modelo->fillBoolean($data);
+                    $modelo->modelo_marca = $marca->id;
                     $modelo->save();
 
                     //Forget cache
@@ -84,10 +92,10 @@ class ModeloController extends Controller
     public function show(Request $request ,$id)
     {
         $modelo = Modelo::findOrFail($id);
-        
+
         if ($request->ajax()) {
-            return response()->json($modelo);    
-        }        
+            return response()->json($modelo);
+        }
         return view('inventario.modelo.show', ['modelo' => $modelo]);
     }
 
@@ -119,9 +127,17 @@ class ModeloController extends Controller
             if ($modelo->isValid($data)) {
                 DB::beginTransaction();
                 try {
+                    // Recuperar marca
+                    $marca = Marca::find($request->modelo_marca);
+                    if( !$marca instanceof Marca ){
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar la marca, por favor verifique la información o consulte al administrador.']);
+                    }
+
                     // Modelo
                     $modelo->fill($data);
                     $modelo->fillBoolean($data);
+                    $modelo->modelo_marca = $marca->id;
                     $modelo->save();
 
                     //Forget cache

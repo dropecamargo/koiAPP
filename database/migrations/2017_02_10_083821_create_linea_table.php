@@ -16,7 +16,7 @@ class CreateLineaTable extends Migration
             $table->engine = 'InnoDB';
 
             $table->increments('id');
-            $table->string('linea_nombre', 25);
+            $table->string('linea_nombre', 50);
             $table->boolean('linea_activo')->default(false);
             $table->integer('linea_unidadnegocio')->unsigned();
 
@@ -31,6 +31,6 @@ class CreateLineaTable extends Migration
      */
     public function down()
     {
-         Schema::dropIfExists('linea'); 
+         Schema::dropIfExists('linea');
     }
 }

@@ -228,6 +228,7 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::resource('subcategorias', 'Inventario\SubCategoriaController', ['except' => ['destroy']]);
 	Route::resource('servicios', 'Inventario\ServicioController', ['except' => ['edit','destroy']]);
 	Route::resource('unidadesnegocio', 'Inventario\UnidadNegocioController', ['except' => ['destroy']]);
+	Route::resource('tiposproducto', 'Inventario\TipoProductoController', ['except' => ['destroy']]);
 
     /*
 	|-------------------------

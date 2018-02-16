@@ -176,7 +176,7 @@
 	<br/>
 	<div class="row">
     	<div class="form-group col-md-12">
-			<div class="nav-tabs-custom">
+			<div class="nav-tabs-custom tab-primary">
 				<ul class="nav nav-tabs">
 					<li class="active"><a href="#tab_contabilidad" data-toggle="tab">Contabilidad</a></li>
 					<% if( !_.isUndefined(tercero_nit) && !_.isNull(tercero_nit) && tercero_nit != ''){ %>
@@ -354,7 +354,7 @@
 							<br />
 							<div class="row">
 								<div class="form-group col-md-6">
-					            	<div class="box box-success" id="wrapper-password">
+					            	<div class="box box-primary" id="wrapper-password">
 										<div class="box-header with-border">
 											<h3 class="box-title">Datos de acceso</h3>
 										</div>
@@ -391,7 +391,7 @@
 									</div>
 								</div>
 						    	<div class="form-group col-md-6">
-									<div class="box box-success" id="wrapper-roles">
+									<div class="box box-primary" id="wrapper-roles">
 										<div class="box-header with-border">
 											<h3 class="box-title">Roles de usuario</h3>
 										</div>
@@ -436,7 +436,7 @@
 						{{-- Tab contactos --}}
 						<div class="tab-pane" id="tab_contactos">
 						    <div class="row">
-								<div class="col-md-offset-4 col-md-4 col-sm-offset-2 col-sm-8 col-xs-12">
+								<div class="col-md-offset-5 col-md-2 col-sm-offset-2 col-sm-8 col-xs-12">
 									<button type="button" class="btn btn-primary btn-block btn-sm btn-add-tcontacto" data-resource="contacto" data-tercero="<%- id %>">
 										<i class="fa fa-user-plus"></i>  Nuevo contacto
 									</button>
@@ -444,9 +444,9 @@
 							</div>
 							<br />
 
-							<div class="box box-success">
+							<div class="box box-primary">
 								<div class="box-body table-responsive no-padding">
-									<table id="browse-contact-list" class="table table-hover table-bordered" cellspacing="0" width="100%">
+									<table id="browse-contact-list" class="table table-bordered" cellspacing="0" width="100%">
 							            <thead>
 								            <tr>
 								                <th>Nombre</th>
@@ -688,11 +688,13 @@
 	<td><%- tcontacto_direccion %></td>
 	<td><%- tcontacto_telefono %></td>
 	<td><%- tcontacto_celular %></td>
-	<td class="text-center">
-		<a class="btn btn-default btn-xs btn-edit-tcontacto" data-resource="<%- id %>">
-			<span><i class="fa fa-pencil-square-o"></i></span>
-		</a>
-	</td>
+	<% if(edit) { %>
+		<td class="text-center">
+			<a class="btn btn-default btn-xs btn-edit-tcontacto" data-resource="<%- id %>">
+				<span><i class="fa fa-pencil-square-o"></i></span>
+			</a>
+		</td>
+	<% } %>
 </script>
 
 <script type="text/template" id="roles-item-list-tpl">
@@ -1017,7 +1019,7 @@
 	<div class="row">
 		<div class="form-group col-md-8">
 			<label for="categoria_nombre" class="control-label">Nombre</label>
-			<input type="text" id="categoria_nombre" name="categoria_nombre" value="<%- categoria_nombre %>" placeholder="Categoria" class="form-control input-sm input-toupper" maxlength="25" required>
+			<input type="text" id="categoria_nombre" name="categoria_nombre" value="<%- categoria_nombre %>" placeholder="Categoria" class="form-control input-sm input-toupper" maxlength="50" required>
 		</div>
 	</div>
 	<div class="row">
@@ -1041,7 +1043,7 @@
 	<div class="row">
 		<div class="form-group col-md-6">
 			<label for="subcategoria_nombre" class="control-label">Nombre</label>
-			<input type="text" id="subcategoria_nombre" name="subcategoria_nombre" value="<%- subcategoria_nombre %>" placeholder="Sub categoría" class="form-control input-sm input-toupper" maxlength="25" required>
+			<input type="text" id="subcategoria_nombre" name="subcategoria_nombre" value="<%- subcategoria_nombre %>" placeholder="Sub categoría" class="form-control input-sm input-toupper" maxlength="50" required>
 		</div>
     </div>
     <div class="row">
@@ -1082,7 +1084,7 @@
 	<div class="row">
 		<div class="form-group col-md-8">
 			<label for="marca_nombre" class="control-label">Nombre</label>
-			<input type="text" id="marca_nombre" name="marca_nombre" value="<%- marca_nombre %>" placeholder="Marca" class="form-control input-sm input-toupper" maxlength="25" required>
+			<input type="text" id="marca_nombre" name="marca_nombre" value="<%- marca_nombre %>" placeholder="Marca" class="form-control input-sm input-toupper" maxlength="100" required>
 		</div>
 
 		<div class="form-group col-md-2 col-xs-8 col-sm-3">
@@ -1110,13 +1112,43 @@
 
 <script type="text/template" id="add-modelo-tpl">
 	<div class="row">
-		<div class="form-group col-md-8">
+		<div class="form-group col-md-4">
+			<label for="modelo_marca" class="control-label">Marca</label>
+			<select name="modelo_marca" id="modelo_marca" class="form-control select2-default" required>
+				@foreach( App\Models\Inventario\Marca::getMarcas() as $key => $value)
+					<option value="{{ $key }}" <%- modelo_marca == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
+				@endforeach
+			</select>
+			<div class="help-block with-errors"></div>
+		</div>
+		<div class="form-group col-md-6">
 			<label for="modelo_nombre" class="control-label">Nombre</label>
 			<input type="text" id="modelo_nombre" name="modelo_nombre" value="<%- modelo_nombre %>" placeholder="Modelo" class="form-control input-sm input-toupper" maxlength="100" required>
+			<div class="help-block with-errors"></div>
 		</div>
-		<div class="form-group col-md-2 col-xs-8 col-sm-3">
-			<br><label class="checkbox-inline" for="modelo_activo">
+		<div class="form-group col-md-2"><br>
+			<label class="checkbox" for="modelo_activo">
 				<input type="checkbox" id="modelo_activo" name="modelo_activo" value="modelo_activo" <%- parseInt(modelo_activo) ? 'checked': ''%>> Activo
+			</label>
+		</div>
+	</div>
+</script>
+
+<script type="text/template" id="add-tipoproducto-tpl">
+	<div class="row">
+		<div class="form-group col-md-2">
+			<label for="tipoproducto_codigo" class="control-label">Código</label>
+			<input type="text" id="tipoproducto_codigo" name="tipoproducto_codigo" value="<%- tipoproducto_codigo %>" placeholder="Código" class="form-control input-sm input-toupper" maxlength="2" required>
+			<div class="help-block with-errors"></div>
+		</div>
+		<div class="form-group col-md-6">
+			<label for="tipoproducto_nombre" class="control-label">Nombre</label>
+			<input type="text" id="tipoproducto_nombre" name="tipoproducto_nombre" value="<%- tipoproducto_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="200" required>
+			<div class="help-block with-errors"></div>
+		</div>
+		<div class="form-group col-md-2"><br>
+			<label class="checkbox" for="tipoproducto_activo">
+				<input type="checkbox" id="tipoproducto_activo" name="tipoproducto_activo" value="tipoproducto_activo" <%- parseInt(tipoproducto_activo) ? 'checked': ''%>> Activo
 			</label>
 		</div>
 	</div>
@@ -1172,7 +1204,7 @@
     <div class="row">
 		<div class="form-group col-md-6">
 		<label for="unidadnegocio_nombre" class="control-label">Nombre</label>
-			<input type="text" id="unidadnegocio_nombre" name="unidadnegocio_nombre" value="<%- unidadnegocio_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="25" required>
+			<input type="text" id="unidadnegocio_nombre" name="unidadnegocio_nombre" value="<%- unidadnegocio_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="50" required>
 		</div>
 		<br>
 		<div class="form-group col-md-1">

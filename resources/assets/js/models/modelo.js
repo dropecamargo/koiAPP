@@ -17,6 +17,7 @@ app || (app = {});
        	idAttribute: 'id',
         defaults: {
             'modelo_nombre': '',
+            'modelo_marca': '',
             'modelo_activo': 1
         }
     });

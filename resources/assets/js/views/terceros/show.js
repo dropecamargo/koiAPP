@@ -26,7 +26,7 @@ app || (app = {});
                 this.gestionComercialList = new app.GestionComercialCollection();
                 this.gestionTecnicaList = new app.GestionTecnicaCollection();
                 this.detallecuotaProveedor = new app.DetalleFacturap3List();
-                
+
                 this.$templateTercero = _.template( ($('#add-tercero-cartera-tpl').html() || '') );
                 this.$templateProveedor = _.template( ($('#show-facturap3-tpl').html() || '') );
 
@@ -43,6 +43,7 @@ app || (app = {});
             this.contactsListView = new app.ContactsListView( {
                 collection: this.contactsList,
                 parameters: {
+                    edit: false,
                     dataFilter: {
                         'tercero_id': this.model.get('id')
                     }

@@ -36,9 +36,13 @@ class Marca extends BaseModel
     public function isValid($data)
     {
         $rules = [
-            'marca_nombre' => 'required|max:200|unique:marca'
+            'marca_nombre' => 'required|max:100|unique:marca'
         ];
-
+        if ($this->exists){
+			$rules['marca_nombre'] .= ',marca_nombre,' . $this->id;
+		}else{
+			$rules['marca_nombre'] .= '|required';
+		}
         $validator = Validator::make($data, $rules);
         if ($validator->passes()) {
             return true;
@@ -55,7 +59,9 @@ class Marca extends BaseModel
 
         return Cache::rememberForever( self::$key_cache , function() {
             $query = Marca::query();
+            $query->where('marca_activo', true);
             $query->orderBy('marca_nombre', 'asc');
+            
             $collection = $query->lists('marca_nombre', 'marca.id');
             $collection->prepend('', '');
             return $collection;

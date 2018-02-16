@@ -54,7 +54,7 @@ return [
     |
     */
 
-    'from' => ['address' => 'machadokoiti@gmail.com', 'name' => 'Signsupply orden'],
+    'from' => ['address' => null, 'name' => null],
 
     /*
     |--------------------------------------------------------------------------

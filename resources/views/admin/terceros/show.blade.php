@@ -205,7 +205,7 @@
 				</div>
 				<div class="tab-pane" id="tab_proveedor">
 					<div class="box-body table-responsive">
-						<table id="browse-facturap3-list" class="table table-hover table-bordered" cellspacing="0">
+						<table id="browse-facturap3-list" class="table table-bordered" cellspacing="0">
 						    <thead>
 					            <tr>
 					            	<th>Tipo</th>
@@ -233,7 +233,7 @@
 				</div>
 				<div class="tab-pane" id="tab_gestioncobro">
 					<div class="box-body table-responsive">
-						<table id="browse-gestioncobro-list" class="table table-hover table-bordered" cellspacing="0">
+						<table id="browse-gestioncobro-list" class="table table-bordered" cellspacing="0">
 							<thead>
 								<tr>
 									<th width="15%">Concepto</th>
@@ -251,7 +251,7 @@
 				</div>
 				<div class="tab-pane" id="tab_gestioncomercial">
 					<div class="box-body table-responsive">
-						<table id="browse-gestioncomercial-list" class="table table-hover table-bordered" cellspacing="0">
+						<table id="browse-gestioncomercial-list" class="table table-bordered" cellspacing="0">
 							<thead>
 								<tr>
 									<th width="15%">Concepto</th>
@@ -269,7 +269,7 @@
 				</div>
 				<div class="tab-pane" id="tab_gestiontecnica">
 					<div class="box-body table-responsive">
-						<table id="browse-gestiontecnica-list" class="table table-hover table-bordered" cellspacing="0">
+						<table id="browse-gestiontecnica-list" class="table table-bordered" cellspacing="0">
 							<thead>
 								<tr>
 									<th width="15%">Concepto</th>
@@ -477,7 +477,7 @@
 		<div class="tab-pane" id="tab_contactos">
 			<div class="box-body">
 				<div class="box-body table-responsive no-padding">
-					<table id="browse-contact-list" class="table table-hover table-bordered" cellspacing="0" width="100%">
+					<table id="browse-contact-list" class="table table-bordered" cellspacing="0" width="100%">
 			            <thead>
 				            <tr>
 				                <th>Nombre</th>
@@ -494,6 +494,5 @@
 			</div>
 		</div>
 	</div>
-
 </div>
 @stop

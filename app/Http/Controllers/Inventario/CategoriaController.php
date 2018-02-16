@@ -21,7 +21,7 @@ class CategoriaController extends Controller
     {
         if ($request->ajax()) {
             $query = Categoria::query();
-            
+
             // Return Datatable
             if ($request->has('datatables')) {
                 return Datatables::of($query)->make(true);
@@ -136,7 +136,6 @@ class CategoriaController extends Controller
             if ($categoria->isValid($data)) {
                 DB::beginTransaction();
                 try {
-
                     // Recuperar linea
                     $linea = Linea::find($request->categoria_linea);
                     if (! $linea instanceof Linea) {
@@ -152,7 +151,7 @@ class CategoriaController extends Controller
 
                     //Forget cache
                     Cache::forget( Categoria::$key_cache );
-                    
+
                     // Commit Transaction
                     DB::commit();
                     return response()->json(['success' => true, 'id' => $categoria->id]);

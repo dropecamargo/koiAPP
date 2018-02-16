@@ -1,5 +1,5 @@
 /**
-* Class CreateModeloView  of Backbone Router
+* Class CreateTipoProductoView  of Backbone Router
 * @author KOI || @dropecamargo
 * @link http://koi-ti.com
 */
@@ -9,12 +9,12 @@ app || (app = {});
 
 (function ($, window, document, undefined) {
 
-    app.CreateModeloView = Backbone.View.extend({
+    app.CreateTipoProductoView = Backbone.View.extend({
 
-        el: '#modelo-create',
-        template: _.template( ($('#add-modelo-tpl').html() || '') ),
+        el: '#tipoproducto-create',
+        template: _.template( ($('#add-tipoproducto-tpl').html() || '') ),
         events: {
-            'submit #form-modelo': 'onStore'
+            'submit #form-tipoproducto': 'onStore'
         },
 
         /**
@@ -22,7 +22,7 @@ app || (app = {});
         */
         initialize : function() {
             // Attributes
-            this.$wraperForm = this.$('#render-form-modelo');
+            this.$wraperForm = this.$('#render-form-tipoproducto');
 
             // Events
             this.listenTo( this.model, 'change', this.render );
@@ -62,9 +62,6 @@ app || (app = {});
 
             if( typeof window.initComponent.initToUpper == 'function' )
                 window.initComponent.initToUpper();
-
-            if( typeof window.initComponent.initSelect2 == 'function' )
-                window.initComponent.initSelect2();
         },
 
         /**
@@ -92,7 +89,7 @@ app || (app = {});
                     return;
                 }
 
-                window.Misc.redirect( window.Misc.urlFull( Route.route('modelos.index')) );
+                window.Misc.redirect( window.Misc.urlFull( Route.route('tiposproducto.index')) );
             }
         }
     });

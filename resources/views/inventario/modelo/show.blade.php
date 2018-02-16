@@ -9,6 +9,12 @@
     <div class="box box-primary">
         <div class="box-body">
             <div class="row">
+                <div class="form-group col-md-4">
+                    <label class="control-label">Marca</label>
+                    <div>{{ $modelo->marca->marca_nombre }}</div>
+                </div>
+            </div>
+            <div class="row">
                 <div class="form-group col-md-6">
                     <label class="control-label">Nombre</label>
                     <div>{{ $modelo->modelo_nombre }}</div>

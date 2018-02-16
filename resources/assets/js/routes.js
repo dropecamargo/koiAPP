@@ -183,6 +183,10 @@ app || (app = {});
             'modelos/create(/)': 'getModelosCreate',
             'modelos/:modelo/edit(/)': 'getModelosEdit',
 
+            'tiposproducto(/)': 'getTiposProductoMain',
+            'tiposproducto/create(/)': 'getTiposProductoCreate',
+            'tiposproducto/:tiposproducto/edit(/)': 'getTiposProductoEdit',
+
             'lineas(/)': 'getLineasMain',
             'lineas/create(/)': 'getLineaCreate',
             'lineas/:lineas/edit(/)': 'getLineasEdit',
@@ -1457,6 +1461,41 @@ app || (app = {});
 
             this.createModeloView = new app.CreateModeloView({ model: this.modeloModel });
             this.modeloModel.fetch();
+        },
+
+        getTiposProductoMain: function () {
+
+            if ( this.mainTiposProductoView instanceof Backbone.View ){
+                this.mainTiposProductoView.stopListening();
+                this.mainTiposProductoView.undelegateEvents();
+            }
+
+            this.mainTiposProductoView = new app.MainTiposProductoView( );
+        },
+
+        getTiposProductoCreate: function () {
+            this.tipoproductoModel = new app.TipoProductoModel();
+
+            if ( this.createTipoProductoView instanceof Backbone.View ){
+                this.createTipoProductoView.stopListening();
+                this.createTipoProductoView.undelegateEvents();
+            }
+
+            this.createTipoProductoView = new app.CreateTipoProductoView({ model: this.tipoproductoModel });
+            this.createTipoProductoView.render();
+        },
+
+        getTiposProductoEdit: function ( tiposproducto ) {
+            this.tipoproductoModel = new app.TipoProductoModel();
+            this.tipoproductoModel.set({'id': tiposproducto}, {'silent':true});
+
+            if ( this.createTipoProductoView instanceof Backbone.View ){
+                this.createTipoProductoView.stopListening();
+                this.createTipoProductoView.undelegateEvents();
+            }
+
+            this.createTipoProductoView = new app.CreateTipoProductoView({ model: this.tipoproductoModel });
+            this.tipoproductoModel.fetch();
         },
 
         getLineasMain: function () {

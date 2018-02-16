@@ -16,7 +16,7 @@ class CreateSubcategoriaTable extends Migration
             $table->engine = 'InnoDB';
 
             $table->increments('id');
-            $table->string('subcategoria_nombre', 25);
+            $table->string('subcategoria_nombre', 50);
             $table->double('subcategoria_margen_nivel1');
             $table->double('subcategoria_margen_nivel2');
             $table->double('subcategoria_margen_nivel3');
@@ -34,6 +34,6 @@ class CreateSubcategoriaTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('subcategoria'); 
+        Schema::dropIfExists('subcategoria');
     }
 }
