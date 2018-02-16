@@ -65,7 +65,12 @@ class Pedidoc1 extends BaseModel
 	public static function getPedidoc($id)
 	{
 		$query = Pedidoc1::query();
-		$query->select('pedidoc1.*','sucursal_nombre','t.tercero_nit',DB::raw("CONCAT(t.tercero_nombre1, ' ', t.tercero_nombre2, ' ', t.tercero_apellido1, ' ', t.tercero_apellido2) as tercero_nombre"), DB::raw("CONCAT(elab.tercero_nombre1, ' ', elab.tercero_nombre2, ' ', elab.tercero_apellido1, ' ', elab.tercero_apellido2) as elaboro_nombre"));
+		$query->select('pedidoc1.*','sucursal_nombre','t.tercero_nit',DB::raw("(CASE WHEN t.tercero_persona = 'N'
+                    THEN CONCAT(t.tercero_nombre1,' ',t.tercero_nombre2,' ',t.tercero_apellido1,' ',t.tercero_apellido2,
+                            (CASE WHEN (t.tercero_razonsocial IS NOT NULL AND t.tercero_razonsocial != '') THEN CONCAT(' - ', t.tercero_razonsocial) ELSE '' END)
+                        )
+                    ELSE t.tercero_razonsocial END)
+                AS tercero_nombre"), DB::raw("CONCAT(elab.tercero_nombre1, ' ', elab.tercero_nombre2, ' ', elab.tercero_apellido1, ' ', elab.tercero_apellido2) as elaboro_nombre"));
 		$query->join('sucursal','pedidoc1.pedidoc1_sucursal','=', 'sucursal.id');
 		$query->join('tercero as t','pedidoc1.pedidoc1_tercero','=', 't.id');
 		$query->join('tercero as elab','pedidoc1.pedidoc1_tercero','=', 'elab.id');

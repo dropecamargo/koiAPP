@@ -108,12 +108,12 @@
 		                <table id="browse-detalle-pedidoc-list" class="table table-bordered" cellspacing="0">
 		                    <thead>
 		                        <tr>
-		                            <th width="10%">Referencia</th>
-		                            <th width="35%">Nombre</th>
-		                            <th width="3%">Cant</th>
-		                            <th width="15%">Precio</th>
-		                            <th width="15%">Descuento</th>
-		                            <th width="9%">Iva</th>
+		                            <th width="15%">Referencia</th>
+		                            <th width="40%">Nombre</th>
+		                            <th width="5%">Cant</th>
+		                            <th width="10%">Precio</th>
+		                            <th width="10%">Descuento</th>
+		                            <th width="10%">Iva</th>
 		                            <th  width="10%">Total</th>
 		                        </tr>
 		                    </thead>
@@ -138,7 +138,7 @@
                         <table id="browse-detalle-authorizations-list" class="table table-bordered" cellspacing="0">
                             <thead>
                                 <tr>
-                                    <th width="5%">Item</th>
+                                    <th width="5%">Ítem</th>
                                     <th width="60%">Observación</th>
                                     <th width="20%">Usuario</th>
                                     <th width="15%">Fecha</th>

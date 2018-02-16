@@ -34,7 +34,7 @@ app || (app = {});
             this.$consecutive = $("#"+$(e.currentTarget).attr("data-field"));
         	this.$wrapperContent = $("#"+$(e.currentTarget).attr("data-wrapper"));
 
-            if (sucursal != '') {
+            if (!_.isEmpty(sucursal)) {
 
                 $.ajax({
                     url: window.Misc.urlFull(Route.route('sucursales.show', {sucursales: sucursal})),
@@ -45,7 +45,7 @@ app || (app = {});
                 })
                 .done(function(resp) {
                     window.Misc.removeSpinner( _this.$wrapperContent );
-                    
+
                     // Eval consecutive
                     var consecutive = 0;
                     if(documents == 'pedido') consecutive = resp.sucursal_pedn;
@@ -69,6 +69,9 @@ app || (app = {});
                     window.Misc.removeSpinner( _this.$wrapperContent );
                     alertify.error(thrownError);
                 });
+            }else{
+                // Set consecutive
+                _this.$consecutive.val('');
             }
         },
         puntoVentaChange: function(e){
@@ -93,7 +96,7 @@ app || (app = {});
                     // Eval consecutive
                     var consecutive = 0;
                     consecutive = resp.puntoventa_numero;
-                    
+
                     // Set consecutive
                     _this.$consecutive.val( parseInt(consecutive) + 1);
                 })

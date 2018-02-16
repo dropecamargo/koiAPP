@@ -27,7 +27,7 @@ app || (app = {});
         * Constructor Method
         */
         initialize : function() {
-           
+
             // Attributes
             this.$wraperForm = this.$('#render-form-factura');
 
@@ -36,9 +36,9 @@ app || (app = {});
             // Events
             this.listenTo( this.model, 'change', this.render );
             this.listenTo( this.model, 'sync', this.responseServer );
-            this.listenTo( this.model, 'request', this.loadSpinner );            
-            
-            this.ready(); 
+            this.listenTo( this.model, 'request', this.loadSpinner );
+
+            this.ready();
         },
         /*
         * Render View Element
@@ -70,7 +70,7 @@ app || (app = {});
                         'id_pedido': data
                     }
                }
-            }); 
+            });
         },
         /**
         * Event Create facturas
@@ -78,20 +78,23 @@ app || (app = {});
         onStore: function (e) {
             if (!e.isDefaultPrevented()) {
                 e.preventDefault();
-                if (!this.detalleFactura.valid().success) {
-                    return alertify.error('Por favor seleccionar LOTES en el vinculo de la serie del producto');
-                }
-                var data = $.extend({}, window.Misc.formToJson( e.target ) , this.detalleFactura.totalize());
-                    data.factura2 = this.detalleFactura.toJSON();
-                this.model.save( data, {patch: true, silent: true} );
-            }   
-        },  
+
+                this.detalleFactura.valid()
+
+                // if (!this.detalleFactura.valid().success) {
+                //     return alertify.error('Por favor seleccionar LOTES en el vinculo de la serie del producto');
+                // }
+                // var data = $.extend({}, window.Misc.formToJson( e.target ) , this.detalleFactura.totalize());
+                //     data.factura2 = this.detalleFactura.toJSON();
+                // this.model.save( data, {patch: true, silent: true} );
+            }
+        },
         renderModals:function(e){
             e.preventDefault();
             var model = _.find(this.detalleFactura.models, function(item) {
                 return item.get('id') == this.$(e.currentTarget).attr('data-id');
             });
-            var data = {}; 
+            var data = {};
                 data.producto_serie = model.get('producto_serie');
                 data.producto_nombre = model.get('producto_nombre');
                 data.tipo = 'S';
@@ -102,7 +105,7 @@ app || (app = {});
                 'wrap': this.$el,
                 'callback': (function (_this) {
                     return function ( action , tipo)
-                    {      
+                    {
                         // Open InventarioActionView
                         if ( _this.inventarioActionView instanceof Backbone.View ){
                             _this.inventarioActionView.stopListening();
@@ -121,20 +124,20 @@ app || (app = {});
                         _this.inventarioActionView.render();
                     }
                 })(this)
-            });  
+            });
         },
         /**
         * fires libraries js
         */
         ready: function () {
             // to fire plugins
-            
+
             if( typeof window.initComponent.initToUpper == 'function' )
                 window.initComponent.initToUpper();
-            
+
             if( typeof window.initComponent.initSelect2 == 'function' )
                 window.initComponent.initSelect2();
-            
+
             if( typeof window.initComponent.initValidator == 'function' )
                 window.initComponent.initValidator();
 
@@ -147,7 +150,7 @@ app || (app = {});
         */
         loadSpinner: function (model, xhr, opts) {
             window.Misc.setSpinner( this.el );
-            
+
         },
 
         /**
@@ -165,7 +168,7 @@ app || (app = {});
 
                 if( !resp.success ) {
                     alertify.error(text);
-                    return; 
+                    return;
                 }
             }
             window.Misc.redirect( window.Misc.urlFull( Route.route('facturas.show', { facturas: resp.id})) );

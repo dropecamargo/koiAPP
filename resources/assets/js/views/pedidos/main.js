@@ -23,7 +23,7 @@ app || (app = {});
 
             // Rerefences
             this.$productosSearchTable = this.$('#pedido-search-table');
-            
+
             this.$productosSearchTable.DataTable({
                 dom:"<'row'<'col-sm-4'B><'col-sm-4 text-center'l><'col-sm-4'f>>" +
                 "<'row'<'col-sm-12'tr>>" +
@@ -32,7 +32,7 @@ app || (app = {});
                 serverSide: true,
                 language: window.Misc.dataTableES(),
                 ajax: window.Misc.urlFull( Route.route('pedidos.index') ),
-                columns: [ 
+                columns: [
                     { data: 'pedido1_numero', name: 'pedido1_numero' },
                     { data: 'sucursal_nombre', name: 'sucursal_nombre' },
                     { data: 'tercero_nombre', name: 'tercero_nombre' },
@@ -45,7 +45,7 @@ app || (app = {});
                 ],
                 buttons: [
                     {
-                        text: '<i class="fa fa-user-plus"></i> Nuevo Pedido',
+                        text: '<i class="fa fa-plus"></i> Nuevo Pedido',
                         className: 'btn-sm',
                         action: function ( e, dt, node, config ) {
                             window.Misc.redirect( window.Misc.urlFull( Route.route('pedidos.create') ) )
@@ -63,7 +63,7 @@ app || (app = {});
                                 return '<a href="'+ window.Misc.urlFull( Route.route('pedidos.edit', {pedidos: full.id }) )  +'">' + data +' <span class="label label-success"> Abierto</span></a>';
                             }
                         },
-                       
+
                     },
                     {
                         targets:2,
