@@ -35,10 +35,10 @@ class CreateTerceroTable extends Migration
             $table->string('tercero_familia',10)->nullable();
             $table->string('tercero_email', 200)->nullable();
 
-            $table->string('tercero_telefono1', 15)->nullable();
-            $table->string('tercero_telefono2', 15)->nullable();
-            $table->string('tercero_fax', 15)->nullable();
-            $table->string('tercero_celular', 15)->nullable();
+            $table->string('tercero_telefono1', 30)->nullable();
+            $table->string('tercero_telefono2', 30)->nullable();
+            $table->string('tercero_fax', 30)->nullable();
+            $table->string('tercero_celular', 30)->nullable();
 
             $table->integer('tercero_actividad')->unsigned()->nullable();
             $table->string('tercero_cc_representante', 15)->nullable();

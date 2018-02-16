@@ -20,37 +20,23 @@
         <div class="box-body">
             <form method="POST" accept-charset="UTF-8" id="form-ajustes" data-toggle="validator">
                 <div class="row">
-                    <label for="ajuste1_sucursal" class="col-sm-1 control-label">Sucursal</label>
-                    <div class="form-group col-sm-4">
-                        <select name="ajuste1_sucursal" id="ajuste1_sucursal" class="form-control select2-default change-sucursal-consecutive-koi-component" data-field="ajuste1_numero" data-document ="ajuste" data-wrapper="ajuste-create">
+
+                    <div class="form-group col-md-4 col-sm-7 col-xs-12">
+                        <label for="ajuste1_sucursal" class="control-label">Sucursal</label>
+                        <select name="ajuste1_sucursal" id="ajuste1_sucursal" class="form-control select2-default-clear change-sucursal-consecutive-koi-component" data-field="ajuste1_numero" data-document ="ajuste" data-wrapper="ajuste-create" required>
                         @foreach( App\Models\Base\Sucursal::getSucursales() as $key => $value)
                             <option  value="{{ $key }}" <%- ajuste1_sucursal == '{{ $key }}' ? 'selected': ''%>>{{ $value }}</option>
                         @endforeach
                         </select>
                     </div>
-                    <label for="ajuste1_numero" class="col-sm-1 control-label">Número</label>
-                    <div class="form-group col-sm-1">
+
+                    <div class="form-group col-md-1 col-sm-2 col-xs-6">
+                        <label for="ajuste1_numero" class="control-label">Número</label>
                         <input id="ajuste1_numero" name="ajuste1_numero" class="form-control input-sm" type="number" min="1" value="<%- ajuste1_numero %>" required readonly>
                     </div>
-                </div>
-                <div class="row">
-                    <label for="ajuste1_tipoajuste" class="col-sm-1 control-label">Tipo</label>
-                    <div class="form-group col-sm-4">
-                        <select name="ajuste1_tipoajuste" id="ajuste1_tipoajuste" class="form-control select2-default change-in-or-exit-koi-component">
-                        @foreach( App\Models\Inventario\TipoAjuste::getTiposAjustes() as $key => $value)
-                        <option  value="{{ $key }}" <%- ajuste1_tipoajuste == '{{ $key }}' ? 'selected': ''%>>{{ $value }}</option>
-                        @endforeach
-                        </select>
-                    </div>
-                    <div id="ajuste1_lotes">
-                        <label for="ajuste1_lote" class="col-sm-1 control-label">Lote</label>
-                        <div class="form-group col-sm-2">
-                            <input type="text" id="ajuste1_lote" name="ajuste1_lote" placeholder="Lote" class="input-toupper form-control" value="" required>
-                        </div>
 
-                    </div>
-                    <label for="ajuste1_fecha" class="col-sm-1 control-label">Fecha</label>
-                    <div class="form-group col-sm-2">
+                    <div class="form-group col-md-3 col-sm-3 col-xs-6">
+                        <label for="ajuste1_fecha" class="control-label">Fecha</label>
                         <div class="input-group">
                             <div class="input-group-addon">
                                 <i class="fa fa-calendar"></i>
@@ -59,36 +45,59 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="row">
-                    <label for="ajuste1_observaciones" class="col-sm-1 control-label">Observaciones</label>
-                    <div class="form-group col-md-11">
+                    <div class="form-group col-md-4 col-sm-6">
+                        <label for="ajuste1_tipoajuste" class="control-label">Tipo</label>
+                        <select name="ajuste1_tipoajuste" id="ajuste1_tipoajuste" class="form-control select2-default-clear change-in-or-exit-koi-component" required>
+                        @foreach( App\Models\Inventario\TipoAjuste::getTiposAjustes() as $key => $value)
+                            <option  value="{{ $key }}" <%- ajuste1_tipoajuste == '{{ $key }}' ? 'selected': ''%>>{{ $value }}</option>
+                        @endforeach
+                        </select>
+                    </div>
+
+                    <div id="ajuste1_lotes">
+                        <div class="form-group col-md-4 col-sm-6">
+                            <label for="ajuste1_lote" class="control-label">Lote</label>
+                            <input type="text" id="ajuste1_lote" name="ajuste1_lote" placeholder="Lote" class="input-toupper form-control" maxlength="50" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <label for="ajuste1_observaciones" class="control-label">Observaciones</label>
                         <textarea id="ajuste1_observaciones" name="ajuste1_observaciones" class="form-control" rows="2" placeholder="Observaciones Ajustes"><%- ajuste1_observaciones %></textarea>
                     </div>
                 </div>
 
             </form>
-            <div class="row">
+
+            <div class="box-footer">
                 <div class="col-md-2 col-md-offset-4 col-sm-6 col-xs-6 text-left">
                     <a href="{{ route('ajustes.index') }}" class="btn btn-default btn-sm btn-block">{{ trans('app.cancel') }}</a>
                 </div>
-                <div class="col-md-2  col-sm-5 col-xs-6 text-right">
+
+                <div class="col-md-2  col-sm-6 col-xs-6 text-right">
                     <button type="button" class="btn btn-primary btn-sm btn-block submit-ajuste">{{ trans('app.save') }}</button>
                 </div>
+
             </div>
-            <br>
+
             <div id="detalle-ajuste">
                 <!-- Render detailt -->
             </div>
+
             <div class="table-responsive no-padding">
                 <table id="browse-detalle-ajuste-list" class="table table-hover table-bordered" cellspacing="0">
                     <thead>
                         <tr>
                             <th width="5%"></th>
-                            <th width="10%">Referencia</th>
-                            <th width="30%" align="left">Nombre</th>
-                            <th width="15%">Cant. Entrada</th>
-                            <th width="15%">Cant. Salida</th>
-                            <th width="15%">Costo</th>
+                            <th width="25%">Referencia</th>
+                            <th width="40%">Nombre</th>
+                            <th width="10%">Entrada</th>
+                            <th width="10%">Salida</th>
+                            <th width="10%">Costo</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -96,6 +105,7 @@
                     </tbody>
                 </table>
             </div>
+
         </div>
     </script>
 
@@ -119,7 +129,7 @@
         <div class="box-body box-primary">
             <form method="POST" accept-charset="UTF-8" id="form-detalle-ajuste" data-toggle="validator">
                 <div class="row">
-                    <div class="form-group col-sm-2 col-md-offset-2">
+                    <div class="form-group col-md-2 col-md-offset-2">
                         <div class="input-group input-group-sm">
                             <span class="input-group-btn">
                                 <button type="button" class="btn btn-default btn-flat btn-koi-search-producto-component"  data-field="producto_serie">

@@ -324,7 +324,7 @@ class TrasladoController extends Controller
             abort(404);
         }
         $detalle = Traslado2::getTraslado2($traslado->id);
-        $title = sprintf('Traslado %s', $traslado->traslado1_numero);
+        $title = sprintf('Traslado N° %s', $traslado->traslado1_numero);
 
         // Export pdf
         $pdf = App::make('dompdf.wrapper');

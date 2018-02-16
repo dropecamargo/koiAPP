@@ -36,7 +36,7 @@ app || (app = {});
                 ],
 				buttons: [
 					{
-						text: '<i class="fa fa-user-plus"></i> Nuevo traslado',
+						text: '<i class="fa fa-plus"></i> Nuevo traslado',
                         className: 'btn-sm',
 						action: function ( e, dt, node, config ) {
 							window.Misc.redirect( window.Misc.urlFull( Route.route('traslados.create') ) )

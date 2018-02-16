@@ -401,7 +401,7 @@ class AjusteController extends Controller
             abort(404);
         }
         $detalle = Ajuste2::getAjuste2($ajuste->id);
-        $title = sprintf('Ajuste %s', $ajuste->ajuste1_numero);
+        $title = sprintf('Ajuste N° %s', $ajuste->ajuste1_numero);
 
         // // Export pdf
         $pdf = App::make('dompdf.wrapper');

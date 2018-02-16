@@ -12,8 +12,8 @@
                     <thead>
                         <tr>
                             <th>Número</th>
-                            <th>Ubicación de origen</th>
-                            <th>Ubicación de destino</th>
+                            <th>Origen</th>
+                            <th>Destino</th>
                             <th>Fecha</th>
                         </tr>
                     </thead>
