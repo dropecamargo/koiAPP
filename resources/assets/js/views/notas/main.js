@@ -23,7 +23,7 @@ app || (app = {});
 
             // Rerefences
             this.$notasSearchTable = this.$('#notas-search-table');
-            
+
             this.$notasSearchTable.DataTable({
                 dom:"<'row'<'col-sm-4'B><'col-sm-4 text-center'l><'col-sm-4'f>>" +
                 "<'row'<'col-sm-12'tr>>" +
@@ -32,7 +32,7 @@ app || (app = {});
                 serverSide: true,
                 language: window.Misc.dataTableES(),
                 ajax: window.Misc.urlFull( Route.route('notas.index') ),
-                columns: [ 
+                columns: [
                     { data: 'id', name: 'id' },
                     { data: 'sucursal_nombre', name: 'sucursal_nombre' },
                     { data: 'tercero_nombre', name: 'tercero_nombre' },
@@ -40,7 +40,7 @@ app || (app = {});
                 ],
                 buttons: [
                     {
-                        text: '<i class="fa fa-user-plus"></i> Nueva Nota',
+                        text: '<i class="fa fa-plus"></i> Nueva Nota',
                         className: 'btn-sm',
                         action: function ( e, dt, node, config ) {
                             window.Misc.redirect( window.Misc.urlFull( Route.route('notas.create') ) )

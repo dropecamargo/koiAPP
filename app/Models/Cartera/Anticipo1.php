@@ -54,7 +54,12 @@ class Anticipo1 extends Model
 	public static function getAnticipo($id)
 	{
 		$query = Anticipo1::query();
-		$query->select('anticipo1.*','sucursal_nombre','cuentabanco_nombre','t.tercero_nit','v.tercero_nit as vendedor_nit',DB::raw("CONCAT(t.tercero_nombre1, ' ', t.tercero_nombre2, ' ', t.tercero_apellido1, ' ', t.tercero_apellido2) as tercero_nombre") ,DB::raw("CONCAT(v.tercero_nombre1, ' ', v.tercero_nombre2, ' ', v.tercero_apellido1, ' ', v.tercero_apellido2) as vendedor_nombre"));
+		$query->select('anticipo1.*','sucursal_nombre','cuentabanco_nombre','t.tercero_nit','v.tercero_nit as vendedor_nit',DB::raw("(CASE WHEN t.tercero_persona = 'N'
+                    THEN CONCAT(t.tercero_nombre1,' ',t.tercero_nombre2,' ',t.tercero_apellido1,' ',t.tercero_apellido2,
+                            (CASE WHEN (t.tercero_razonsocial IS NOT NULL AND t.tercero_razonsocial != '') THEN CONCAT(' - ', t.tercero_razonsocial) ELSE '' END)
+                        )
+                    ELSE t.tercero_razonsocial END)
+                AS tercero_nombre") ,DB::raw("CONCAT(v.tercero_nombre1, ' ', v.tercero_nombre2, ' ', v.tercero_apellido1, ' ', v.tercero_apellido2) as vendedor_nombre"));
 		$query->join('sucursal','anticipo1.anticipo1_sucursal','=', 'sucursal.id');
 		$query->join('tercero as t','anticipo1.anticipo1_tercero','=', 't.id');
 		$query->join('tercero as v','anticipo1.anticipo1_vendedor','=', 'v.id');

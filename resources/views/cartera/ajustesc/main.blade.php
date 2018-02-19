@@ -88,13 +88,13 @@
                     <button type="button" class="btn btn-primary btn-sm btn-block submit-ajustec">{{ trans('app.save') }}</button>
                 </div>
             </div>
-        </div><br>
+        </div>
 
         <div id="render-form-detail"></div>
     </script>
 
     <script type="text/template" id="add-detail-tpl">
-        <div class="box box-primary">
+        <div class="box box-solid">
             <div class="box-body">
                 <form method="POST" accept-charset="UTF-8" id="form-detail-ajustec" data-toggle="validator">
                     <div class="row">

@@ -48,7 +48,7 @@
                         </li>
                         <li class="footer"><a class="view-all-notification">{{ trans('notification.view') }}</a></li>
                     </ul>
-                  </li>
+                </li>
                 <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                          {{-- The user image in the navbar --}}

@@ -46,8 +46,8 @@
             <form method="POST" accept-charset="UTF-8" id="form-cheque1" data-toggle="validator">
                 <div class="row">
                     <label for="chposfechado1_sucursal" class="col-sm-1 col-md-1 control-label">Sucursal</label>
-                    <div class="form-group col-sm-2">
-                        <select name="chposfechado1_sucursal" id="chposfechado1_sucursal" class="form-control select2-default change-sucursal-consecutive-koi-component" data-wrapper="cheque-create" data-field="chposfechado1_numero" data-document ="chequepos">
+                    <div class="form-group col-sm-4">
+                        <select name="chposfechado1_sucursal" id="chposfechado1_sucursal" class="form-control select2-default-clear change-sucursal-consecutive-koi-component" data-wrapper="cheque-create" data-field="chposfechado1_numero" data-document ="chequepos">
                             @foreach( App\Models\Base\Sucursal::getSucursales() as $key => $value)
                             <option  value="{{ $key }}" <%- chposfechado1_sucursal == '{{ $key }}' ? 'selected': ''%>>{{ $value }}</option>
                             @endforeach
@@ -55,7 +55,7 @@
                     </div>
                     <label for="chposfechado1_numero" class="col-sm-1 col-md-1 control-label">Número</label>
                     <div class="form-group col-sm-1 col-md-1">
-                        <input id="chposfechado1_numero" name="chposfechado1_numero" class="form-control input-sm" type="number" min="1" value="<%- chposfechado1_numero %>" required readonly>
+                        <input id="chposfechado1_numero" name="chposfechado1_numero" class="form-control input-sm" type="number" min="1" value="<%- chposfechado1_numero %>" readonly>
                     </div>
 
                     <label for="chposfechado1_fecha" class="col-sm-1 control-label">Fecha</label>
@@ -94,7 +94,7 @@
                 <div class="row">
                     <label for="chposfechado1_ch_numero" class="control-label col-sm-1">N° cheque</label>
                     <div class="form-group col-sm-2">
-                        <input type="text" name="chposfechado1_ch_numero" id="chposfechado1_ch_numero" class="form-control input-sm input-toupper" placeholder="Número cheque" required>
+                        <input type="text" name="chposfechado1_ch_numero" id="chposfechado1_ch_numero" class="form-control input-sm input-toupper" placeholder="Número de cheque" maxlength="25" required>
                     </div>
                     <label for="chposfechado1_valor" class="control-label col-sm-1">Valor</label>
                     <div class="form-group col-sm-2">
@@ -113,14 +113,14 @@
                 <div class="row">
                     <label for="chposfechado1_banco" class="control-label col-sm-1">Banco</label>
                     <div class="form-group col-sm-3">
-                        <select name="chposfechado1_banco" id="chposfechado1_banco" class="form-control select2-default" required>
+                        <select name="chposfechado1_banco" id="chposfechado1_banco" class="form-control select2-default-clear">
                             @foreach( App\Models\Cartera\Banco::getBancos() as $key => $value)
                                 <option value="{{ $key }}">{{ $value }}</option>
                             @endforeach
                         </select>
                     </div>
                     <label for="chposfechado1_girador" class="control-label col-sm-1">Girador</label>
-                    <div class="form-group col-sm-4">
+                    <div class="form-group col-sm-5">
                         <input type="text" name="chposfechado1_girador" id="chposfechado1_girador" class=" form-control input-sm input-toupper" placeholder="Nombre" maxlength="100">
                     </div>
                 </div>

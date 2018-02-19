@@ -21,7 +21,7 @@
             <form method="POST" accept-charset="UTF-8" id="form-anticipo1" data-toggle="validator">
                 <div class="row">
                     <label for="anticipo1_sucursal" class="col-sm-1 col-md-1 control-label">Sucursal</label>
-                    <div class="form-group col-sm-2">
+                    <div class="form-group col-sm-4">
                         <select name="anticipo1_sucursal" id="anticipo1_sucursal" class="form-control select2-default change-sucursal-consecutive-koi-component" data-wrapper="anticipo-create" data-field="anticipo1_numero" data-document ="anticipo">
                             @foreach( App\Models\Base\Sucursal::getSucursales() as $key => $value)
                             <option  value="{{ $key }}" <%- anticipo1_sucursal == '{{ $key }}' ? 'selected': ''%>>{{ $value }}</option>
@@ -61,7 +61,7 @@
                 </div>
                 <div class="row">
                     <label for="anticipo1_cuentas" class="col-md-1 control-label">Cuenta Banco</label>
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-md-4">
                         <select name="anticipo1_cuentas" id="anticipo1_cuentas" class="form-control select2-default" required>
                            @foreach( App\Models\Cartera\CuentaBanco::getCuenta() as $key => $value)
                                 <option  value="{{ $key }}" <%- anticipo1_cuentas == '{{ $key }}' ? 'selected': ''%>>{{ $value }}</option>
@@ -105,7 +105,7 @@
                             <div class="col-sm-2">
                                 <div class="form-group col-sm-12">
                                 <label for="anticipo2_mediopago" class="control-label">Medio de pago</label>
-                                    <select name="anticipo2_mediopago" id="anticipo2_mediopago" class="form-control select2-default change-medio-pago" required>
+                                    <select name="anticipo2_mediopago" id="anticipo2_mediopago" class="form-control select2-default-clear change-medio-pago" required>
                                         @foreach( App\Models\Cartera\MedioPago::getMedioPago() as $key => $value)
                                             <option  value="{{ $key }}">{{ $value }}</option>
                                         @endforeach
@@ -126,7 +126,7 @@
                                     <th width="5%"></th>
                                     <th width="15%">Medio de pago</th>
                                     <th width="25%">Banco</th>
-                                    <th width="25%">Numero</th>
+                                    <th width="25%">Número</th>
                                     <th width="15%">Fecha</th>
                                     <th width="15%">Valor</th>
                                 </tr>
@@ -216,7 +216,7 @@
                 </select>
             </div>
             <div class="form-group col-sm-3">
-                <label class="control-label" for="anticipo2_numero_medio">Numero</label>
+                <label class="control-label" for="anticipo2_numero_medio">Número</label>
                 <input type="text" name="anticipo2_numero_medio" id="anticipo2_numero_medio" maxlength="25" class="input-sm form-control" placeholder="Número de cuenta" required>
             </div>
             <div class="form-group col-sm-2">

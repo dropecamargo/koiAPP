@@ -158,7 +158,7 @@ class AnticipoController extends Controller
                         $anticipo2->anticipo2_valor = $value['anticipo2_valor'];
                         $anticipo2->anticipo2_banco_medio = ($value['anticipo2_banco_medio'] == "") ? null : $value['anticipo2_banco_medio'] ;
                         $anticipo2->anticipo2_numero_medio = $value['anticipo2_numero_medio'];
-                        $anticipo2->anticipo2_vence_medio = $value['anticipo2_vence_medio'];
+                        $anticipo2->anticipo2_vence_medio = empty($value['anticipo2_vence_medio']) ? date('Y-m-d H:m:s') : $value['anticipo2_vence_medio'];
                         $anticipo2->save();
                     }
 

@@ -25,7 +25,7 @@
                     <div>{{ $nota->sucursal_nombre }}</div>
                 </div>
                 <div class="form-group col-md-2">
-                    <label class="control-label">Numero</label>
+                    <label class="control-label">Número</label>
                     <div>{{ $nota->nota1_numero }}</div>
                 </div>
             </div>
@@ -45,15 +45,21 @@
                     <div>{{ $nota->nota1_observaciones }}</div>
                 </div>
             </div>
-
-            <!-- table table-bordered table-striped --><br>
+            <div class="box-footer with-border">
+                <div class="row">
+                    <div class="col-md-offset-5 col-md-2 col-sm-6 col-xs-6 text-left">
+                        <a href=" {{ route('notas.index') }}" class="btn btn-default btn-sm btn-block">{{ trans('app.comeback') }}</a>
+                    </div>
+                </div>
+            </div>
+            <!-- table table-bordered table-striped -->
             <div class="box-body table-responsive no-padding">
                 <table id="browse-detalle-list" class="table table-hover table-bordered" cellspacing="0">
                     <thead>
                         <tr>
                             <th width="95px">Concepto</th>
                             <th width="95px">Documento</th>
-                            <th width="95px">Numero</th>
+                            <th width="95px">Número</th>
                             <th width="95px">Cuota</th>
                             <th width="95px">Valor</th>
                         </tr>
@@ -69,14 +75,6 @@
                         </tr>
                     </tfoot>
                 </table>
-            </div>
-        </div>
-
-        <div class="box-header with-border">
-            <div class="row">
-                <div class="col-md-offset-5 col-md-2 col-sm-6 col-xs-6 text-left">
-                    <a href=" {{ route('notas.index') }}" class="btn btn-default btn-sm btn-block">{{ trans('app.comeback') }}</a>
-                </div>
             </div>
         </div>
     </div>

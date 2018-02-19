@@ -36,6 +36,10 @@ class ChposFechado1 extends BaseModel
 			'chposfechado1_valor' => 'required|numeric',
 			'chposfechado1_fecha' => 'required',
 			'chposfechado1_ch_fecha' => 'required',
+			'chposfechado1_ch_numero' => 'required|max:25',
+			'chposfechado1_sucursal' => 'required|numeric',
+			'chposfechado1_banco' => 'required|numeric',
+			'chposfechado1_numero' => 'required|numeric'
 		];
 
 		$validator = Validator::make($data, $rules);
@@ -77,15 +81,15 @@ class ChposFechado1 extends BaseModel
 		$query->where('factura3_chposfechado1', $this->id);
 		$factura3 = $query->get();
 		foreach ($factura3 as $item) {
-			$item->factura3_chposfechado1 = null;	
-			$item->save();		
+			$item->factura3_chposfechado1 = null;
+			$item->save();
 		}
 		return true;
 	}
     /**
     * Function for reportes history client in cartera
     */
-	public static function historyClientReport(Tercero $tercero, Array $historyClient, $i ) 
+	public static function historyClientReport(Tercero $tercero, Array $historyClient, $i )
 	{
         $response = new \stdClass();
         $response->success = false;

@@ -11,7 +11,7 @@
                 <table id="facturas-search-table" class="table table-bordered table-striped" cellspacing="0" width="100%">
                     <thead>
                         <tr>
-                            <th>Numero</th>
+                            <th>Número</th>
                             <th>Prefijo</th>
                             <th>Sucursal</th>
                             <th>Nit</th>

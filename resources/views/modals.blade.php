@@ -497,9 +497,9 @@
 					<input id="searchfactura_tercero_nombre" name="searchfactura_tercero_nombre" placeholder="Tercero beneficiario" class="form-control input-sm" type="text" maxlength="15" readonly>
 				</div>
 
-				<label for="searchfactura_numero" class="col-sm-1 control-label">Numero</label>
+				<label for="searchfactura_numero" class="col-sm-1 control-label">Número</label>
 				<div class="col-md-2">
-					<input id="searchfactura_numero" placeholder="Numero" class="form-control input-sm" name="searchfactura_numero" type="text" maxlength="15">
+					<input id="searchfactura_numero" placeholder="Número" class="form-control input-sm" name="searchfactura_numero" type="text" maxlength="15">
 				</div>
 			</div>
 
@@ -519,7 +519,7 @@
 					<table id="koi-search-factura-component-table" class="table table-bordered table-striped" cellspacing="0" width="100%">
 		                <thead>
 				            <tr>
-				                <th width="10%">Numero</th>
+				                <th width="10%">Número</th>
 			                	<th width="50%">Tercero</th>
 			                	<th width="30%">Sucursal</th>
 			                	<th width="10%">Prefijo</th>
@@ -535,7 +535,7 @@
 	{!! Form::open(['id' => 'form-koi-search-pedidoc-component', 'class' => 'form-horizontal', 'data-toggle' => 'validator', 'role' => 'form']) !!}
 		<div class="modal-body">
 			<div class="form-group">
-				<label for="koi_search_pedidoc_numero" class=" col-md-offset-1 col-md-1 control-label">Numero</label>
+				<label for="koi_search_pedidoc_numero" class=" col-md-offset-1 col-md-1 control-label">Número</label>
 				<div class="col-md-3 ">
 					{!! Form::text('koi_search_pedidoc_numero', null, ['id' => 'koi_search_pedidoc_numero', 'class' => 'form-control input-sm', 'placeholder' => 'Número']) !!}
 				</div>
@@ -559,7 +559,7 @@
 					<table id="koi-search-pedidoc-component-table" class="table table-bordered table-striped" cellspacing="0" width="100%">
 		                <thead>
 				            <tr>
-				                <th>Numero</th>
+				                <th>Número</th>
 				                <th>Sucursal</th>
 			                	<th>Fecha</th>
 			                	<th>Vendedor</th>
@@ -826,7 +826,7 @@
 							<th></th>
 						  	<th>Fecha</th>
 		                	<th>Vencimiento</th>
-		                	<th>Numero</th>
+		                	<th>Número</th>
 		                	<th>Cuota</th>
 		                	<th>Saldo</th>
 		                	<th>A pagar</th>
@@ -851,7 +851,7 @@
 							<th></th>
 						  	<th>Fecha</th>
 		                	<th>Vencimiento</th>
-		                	<th>Numero</th>
+		                	<th>Número</th>
 		                	<th>Cuota</th>
 		                	<th>Saldo</th>
 		                	<th>A pagar</th>

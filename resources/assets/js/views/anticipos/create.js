@@ -33,7 +33,7 @@ app || (app = {});
             // Initialize
             if( opts !== undefined && _.isObject(opts.parameters) )
                 this.parameters = $.extend({}, this.parameters, opts.parameters);
-           
+
             // Attributes
             this.$wraperForm = this.$('#render-form-anticipo');
 
@@ -43,9 +43,9 @@ app || (app = {});
             // Events
             this.listenTo( this.model, 'change', this.render );
             this.listenTo( this.model, 'sync', this.responseServer );
-            this.listenTo( this.model, 'request', this.loadSpinner );            
-            
-            this.ready(); 
+            this.listenTo( this.model, 'request', this.loadSpinner );
+
+            this.ready();
         },
 
         /*
@@ -57,10 +57,10 @@ app || (app = {});
 
             this.$form = this.$('#form-anticipo1');
 
-            // References fields          
+            // References fields
             this.$concepto = this.$('#anticipo3_conceptosrc');
             this.$naturaleza = this.$('#anticipo3_naturaleza');
-            this.$valorConcepto = this.$('#anticipo3_valor'); 
+            this.$valorConcepto = this.$('#anticipo3_valor');
             this.$medio = this.$('#anticipo2_mediopago');
 
             this.referenceView();
@@ -83,8 +83,8 @@ app || (app = {});
                     data.anticipo2 = this.detalleAnticipoMedioPagoList.toJSON();
                     data.anticipo3 = this.detalleAnticipoConceptoList.toJSON();
                 this.model.save( data, {patch: true, silent: true} );
-            }   
-        },  
+            }
+        },
         /**
         * Reference view collection
         */
@@ -100,7 +100,7 @@ app || (app = {});
                     }
                 }
             });
-            
+
             //detalleAnticipoConceptoList
             this.detalleAnticiposView = new app.DetalleAnticiposView( {
                 collection: this.detalleAnticipoConceptoList,
@@ -114,47 +114,52 @@ app || (app = {});
         },
 
         /**
-        * Event change medio de pago 
+        * Event change medio de pago
         */
         changeMedio: function(e){
             e.preventDefault();
             // References
-            this.$detailMedio = this.$('#detail-medio-pago');
             var _this = this;
-                medio = _this.$(e.currentTarget).val();
-                attributes = this.model.toJSON();
-            $.ajax({
-                type: 'GET',
-                url: window.Misc.urlFull(Route.route('mediopagos.show',{ mediopagos: medio })),
-                beforeSend: function() {
-                    window.Misc.setSpinner( _this.el );
-                }
-            })
-            .done(function(resp) {
+            this.$detailMedio = this.$('#detail-medio-pago');
+            medio = _this.$(e.currentTarget).val();
+            attributes = this.model.toJSON();
 
-                window.Misc.removeSpinner( _this.el );
-                
-                attributes.resp = resp;
+            if (!_.isEmpty(medio)) {
+                $.ajax({
+                    type: 'GET',
+                    url: window.Misc.urlFull(Route.route('mediopagos.show',{ mediopagos: medio })),
+                    beforeSend: function() {
+                        window.Misc.setSpinner( _this.el );
+                    }
+                })
+                .done(function(resp) {
 
-                //Render form detalle medioPago
-                _this.$detailMedio.empty().html( _this.templateDetalleAnticipo2( attributes, resp ) );
-                _this.$banco = _this.$('#anticipo2_banco_medio');
-                _this.$numeroMedio = _this.$('#anticipo2_numero_medio');
-                _this.$fecha = _this.$('#anticipo2_vence_medio');
-                _this.$valorMedio = _this.$('#anticipo2_valor');
+                    window.Misc.removeSpinner( _this.el );
 
-                _this.ready();
-            })       
-            .fail(function(jqXHR, ajaxOptions, thrownError) {
-                window.Misc.removeSpinner( _this.el );
-                alertify.error(thrownError);
-            });
+                    attributes.resp = resp;
+
+                    //Render form detalle medioPago
+                    _this.$detailMedio.empty().html( _this.templateDetalleAnticipo2( attributes, resp ) );
+                    _this.$banco = _this.$('#anticipo2_banco_medio');
+                    _this.$numeroMedio = _this.$('#anticipo2_numero_medio');
+                    _this.$fecha = _this.$('#anticipo2_vence_medio');
+                    _this.$valorMedio = _this.$('#anticipo2_valor');
+
+                    _this.ready();
+                })
+                .fail(function(jqXHR, ajaxOptions, thrownError) {
+                    window.Misc.removeSpinner( _this.el );
+                    alertify.error(thrownError);
+                });
+            }else{
+                _this.$detailMedio.empty().html();
+            }
         },
         /**
         *
         */
         onStoreItem2: function(e){
-            
+
             if (!e.isDefaultPrevented()) {
                 e.preventDefault();
 
@@ -208,13 +213,13 @@ app || (app = {});
         */
         ready: function () {
             // to fire plugins
-            
+
             if( typeof window.initComponent.initToUpper == 'function' )
                 window.initComponent.initToUpper();
-            
+
             if( typeof window.initComponent.initSelect2 == 'function' )
                 window.initComponent.initSelect2();
-            
+
             if( typeof window.initComponent.initValidator == 'function' )
                 window.initComponent.initValidator();
 
@@ -230,7 +235,7 @@ app || (app = {});
         */
         loadSpinner: function (model, xhr, opts) {
             window.Misc.setSpinner( this.el );
-            
+
         },
 
         /**
@@ -248,7 +253,7 @@ app || (app = {});
 
                 if( !resp.success ) {
                     alertify.error(text);
-                    return; 
+                    return;
                 }
             }
             // window.Misc.redirect( window.Misc.urlFull( Route.route('anticipos.show', { anticipos: resp.id})) );

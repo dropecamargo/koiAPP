@@ -22,7 +22,7 @@
             <form method="POST" accept-charset="UTF-8" id="form-devolucion1" data-toggle="validator">
                 <div class="row">
                     <label for="devolucion1_sucursal" class="col-sm-1 col-md-1 control-label">Sucursal</label>
-                    <div class="form-group col-sm-3">
+                    <div class="form-group col-sm-4">
                         <select name="devolucion1_sucursal" id="devolucion1_sucursal" class="form-control select2-default change-sucursal-consecutive-koi-component" data-wrapper="devolucion-create" data-field="devolucion1_numero" data-document ="devolucion">
                             @foreach( App\Models\Base\Sucursal::getSucursales() as $key => $value)
                             <option  value="{{ $key }}" <%- devolucion1_sucursal == '{{ $key }}' ? 'selected': ''%>>{{ $value }}</option>
@@ -55,7 +55,6 @@
                              <input id="devolucion1_factura1" placeholder="Número factura" class="form-control factura-koi-component" name="devolucion1_factura1" type="text" maxlength="15" required data-sucursal="devolucion1_sucursal" data-name="devolucion1_nombre_tercero" data-nit="devolucion1_tercero" data-devueltas="false" data-wrapper="factura-create">
                         </div>
                     </div>
-                    <label for="devolucion1_tercero" class="col-sm-1 control-label">Cliente</label>
                     <div class="form-group col-sm-2">
                         <input type="text" name="devolucion1_tercero" id="devolucion1_tercero" class="input-sm form-control" required placeholder="Cliente" readonly>
                     </div>
@@ -66,10 +65,17 @@
                 <div class="row">
                     <label for="devolucion1_observacion" class="col-sm-1 control-label">Observaciones</label>
                     <div class="form-group col-sm-11">
-                    <textarea id="devolucion1_observacion" name="devolucion1_observacion" class="form-control" rows="2" placeholder="Observaciones"></textarea>
+                        <textarea id="devolucion1_observacion" name="devolucion1_observacion" class="form-control" rows="2" placeholder="Observaciones"></textarea>
                     </div>
-                </div><br>
-
+                </div>
+                <div class="box-footer">
+                    <div class="col-md-2 col-md-offset-4 col-sm-6 col-xs-6 text-left">
+                        <a href="{{ route('devoluciones.index') }}" class="btn btn-default btn-sm btn-block">{{ trans('app.cancel') }}</a>
+                    </div>
+                    <div class="col-md-2  col-sm-5 col-xs-6 text-right">
+                        <button type="button" class="btn btn-primary btn-sm btn-block submit-devolucion">{{ trans('app.save') }}</button>
+                    </div>
+                </div>
                 <div class="box box-body box-primary">
                     <div class="table-responsive no-padding">
                         <table id="browse-detalle-devolucion-list" class="table table-hover table-bordered" cellspacing="0">
@@ -105,14 +111,7 @@
                     </div>
                 </div>
             </form>
-            <div class="row">
-                <div class="col-md-2 col-md-offset-4 col-sm-6 col-xs-6 text-left">
-                    <a href="{{ route('devoluciones.index') }}" class="btn btn-default btn-sm btn-block">{{ trans('app.cancel') }}</a>
-                </div>
-                <div class="col-md-2  col-sm-5 col-xs-6 text-right">
-                    <button type="button" class="btn btn-primary btn-sm btn-block submit-devolucion">{{ trans('app.save') }}</button>
-                </div>
-            </div>
+
         </div>
     </script>
 

@@ -22,15 +22,15 @@ app || (app = {});
         initialize : function(){
         },
         valid: function(){
-            // var error = { success: false };
+            var error = { success: false };
 
             // Validate exist
             _.each(this.models, function(item) {
-                console.log(item);
-                // (item.has('items')) ? error.success = true: error.success = false;
-                // (item.get('maneja_serie') == 1) ? error.success = true: '';
+                if (!item.get('maneja_serie')) {
+                    (item.has('items')) ? error.success = true: error.success = false;
+                }
             });
-            // return error;
+            return error;
         },
         iva: function(){
             return this.reduce(function(sum, model) {

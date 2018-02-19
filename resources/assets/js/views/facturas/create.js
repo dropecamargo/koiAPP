@@ -79,14 +79,12 @@ app || (app = {});
             if (!e.isDefaultPrevented()) {
                 e.preventDefault();
 
-                this.detalleFactura.valid()
-
-                // if (!this.detalleFactura.valid().success) {
-                //     return alertify.error('Por favor seleccionar LOTES en el vinculo de la serie del producto');
-                // }
-                // var data = $.extend({}, window.Misc.formToJson( e.target ) , this.detalleFactura.totalize());
-                //     data.factura2 = this.detalleFactura.toJSON();
-                // this.model.save( data, {patch: true, silent: true} );
+                if (!this.detalleFactura.valid().success) {
+                    return alertify.error('Por favor seleccionar LOTES en el vinculo de la serie del producto');
+                }
+                var data = $.extend({}, window.Misc.formToJson( e.target ) , this.detalleFactura.totalize());
+                    data.factura2 = this.detalleFactura.toJSON();
+                this.model.save( data, {patch: true, silent: true} );
             }
         },
         renderModals:function(e){
