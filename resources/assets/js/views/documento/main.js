@@ -10,6 +10,7 @@ app || (app = {});
 (function ($, window, document, undefined) {
 
     app.MainDocumentoView = Backbone.View.extend({
+        
         el: '#documento-main',
         /**
          * Constructor Method
@@ -17,7 +18,6 @@ app || (app = {});
         initialize: function () {
 
             this.$documentoSearchTable = this.$('#documento-search-table');
-
             this.$documentoSearchTable.DataTable({
                 dom: "<'row'<'col-sm-4'B><'col-sm-4 text-center'l><'col-sm-4'f>>" +
                         "<'row'<'col-sm-12'tr>>" +

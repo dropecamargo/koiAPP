@@ -3,7 +3,6 @@
 namespace App\Models\Tesoreria;
 
 use Illuminate\Database\Eloquent\Model;
-
 use App\Models\Base\Tercero;
 use Validator, DB;
 
@@ -107,7 +106,7 @@ class Facturap1 extends Model
     /**
     * Function for reportes history proveedor
     */
-    public static function historyProveiderReport(Tercero $tercero, Array $historyClient, $i ) 
+    public static function historyProveiderReport(Tercero $tercero, Array $historyClient, $i )
     {
         $response = new \stdClass();
         $response->success = false;

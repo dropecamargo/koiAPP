@@ -15,13 +15,13 @@ app || (app = {});
         events: {
             'click .export-traslado': 'exportTraslado',
         },
+
         /**
         * Constructor Method
         */
         initialize : function() {
             // Model exist
             if( this.model.id != undefined ) {
-
             	this.trasladoProductosList = new app.TrasladoProductosList();
 
                 // Reference views
@@ -44,13 +44,13 @@ app || (app = {});
                     }
                 }
             });
-        }, 
+        },
 
         /*
         * Redirect export pdf
         */
         exportTraslado:function(e){
-            e.preventDefault(); 
+            e.preventDefault();
 
             // Redirect to pdf
             window.open( window.Misc.urlFull( Route.route('traslados.exportar', { traslados: this.model.get('id') })) );

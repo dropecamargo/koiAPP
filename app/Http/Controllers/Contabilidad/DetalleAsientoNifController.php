@@ -6,10 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
-use Log, DB;
-
 use App\Models\Contabilidad\AsientoNif, App\Models\Contabilidad\AsientoNif2, App\Models\Tesoreria\Facturap1, App\Models\Tesoreria\Facturap2, App\Models\Contabilidad\AsientoMovimiento, App\Models\Contabilidad\PlanCuentaNif, App\Models\Contabilidad\CentroCosto, App\Models\Base\Tercero, App\Models\Production\Ordenp;
+use Log, DB;
 
 class DetalleAsientoNifController extends Controller
 {
@@ -279,7 +277,7 @@ class DetalleAsientoNifController extends Controller
         }
 
         if($request->has('action'))
-        {   
+        {
             switch ($request->action) {
                 case 'ordenp':
                     // Valido movimiento ordenp

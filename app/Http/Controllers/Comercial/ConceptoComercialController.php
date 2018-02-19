@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
 use App\Models\Comercial\ConceptoComercial;
 use DB, Log, Datatables, Cache;
 
@@ -54,16 +53,16 @@ class ConceptoComercialController extends Controller
                     $conceptocomercial->fillBoolean($data);
                     $conceptocomercial->save();
 
-                    //Forget cache
-                    Cache::forget( ConceptoComercial::$key_cache );
-
                     // Commit Transaction
                     DB::commit();
+
+                    //Forget cache
+                    Cache::forget( ConceptoComercial::$key_cache );
                     return response()->json(['success' => true, 'id' => $conceptocomercial->id]);
                 } catch (\Exception $e) {
                     DB::rollback();
                     Log::error($e->getMessage());
-                    return response()->json(['success' => false, 'errors' => trans('app.exception')]); 
+                    return response()->json(['success' => false, 'errors' => trans('app.exception')]);
                 }
             }
             return response()->json(['success' => false, 'errors' => $conceptocomercial->errors]);
@@ -118,10 +117,11 @@ class ConceptoComercialController extends Controller
                     $conceptocomercial->fillBoolean($data);
                     $conceptocomercial->save();
 
-                    //Forget cache
-                    Cache::forget( ConceptoComercial::$key_cache );
                     // Commit Transaction
                     DB::commit();
+
+                    //Forget cache
+                    Cache::forget( ConceptoComercial::$key_cache );
                     return response()->json(['success' => true, 'id' => $conceptocomercial->id]);
                 }catch(\Exception $e){
                     DB::rollback();

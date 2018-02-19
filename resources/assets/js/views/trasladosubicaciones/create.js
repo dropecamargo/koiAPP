@@ -19,17 +19,13 @@ app || (app = {});
             'submit #form-trasladoubicacion': 'onStore',
             'click .submit-trasladoubicacion': 'submitTraslado',
         },
-        parameters: {
-        },
 
         /**
         * Constructor Method
         */
         initialize : function() {
-
             // Attributes
             this.$wraperForm = this.$('#render-form-trasladoubicacion');
-
             this.trasladoUbicacionesList = new app.TrasladoUbicacionesList();
 
             // Events
@@ -42,7 +38,6 @@ app || (app = {});
         * Render View Element
         */
         render: function() {
-
             var attributes = this.model.toJSON();
             this.$wraperForm.html( this.template(attributes) );
 
@@ -84,10 +79,9 @@ app || (app = {});
         * Event Create Folder
         */
         onStore: function (e) {
-
             if (!e.isDefaultPrevented()) {
-
                 e.preventDefault();
+
                 var data = window.Misc.formToJson( e.target );
                     data.detalle = this.trasladoUbicacionesList.toJSON();
 
@@ -107,13 +101,13 @@ app || (app = {});
                     data.sucursal = this.$('#trasladou1_sucursal').val();
                     data.destino = this.$('#trasladou1_destino').val();
                     data.origen = this.$('#trasladou1_origen').val();
-                    
+
                 window.Misc.evaluateActionsInventory({
                     'data': data,
                     'wrap': this.$el,
                     'callback': (function (_this) {
                         return function ( action, tipo )
-                        {      
+                        {
                             // Open InventarioActionView
                             if ( _this.inventarioActionView instanceof Backbone.View ){
                                 _this.inventarioActionView.stopListening();
@@ -126,13 +120,13 @@ app || (app = {});
                                     data: data,
                                     action: action,
                                     tipo: tipo,
-                                    form:_this.$formItem 
+                                    form:_this.$formItem
                                 }
                             });
                             _this.inventarioActionView.render();
                         }
                     })(this)
-                }); 
+                });
             }
         },
         /**
@@ -140,8 +134,10 @@ app || (app = {});
         */
         changedSucursalUbicacion: function(e){
             e.preventDefault();
+
             var _this = this;
                 id = this.$(e.currentTarget).val();
+
             // Data select2 origen and destino
             _this.$origen.empty().val(0);
             _this.$destino.empty().val(0);
@@ -155,7 +151,7 @@ app || (app = {});
                 })
                 .done(function(resp) {
                     window.Misc.removeSpinner( _this.spinner );
-                    
+
                     _this.$origen.append("<option value=></option>");
                     _this.$destino.append("<option value=></option>");
                     _.each(resp, function(item){
@@ -176,18 +172,17 @@ app || (app = {});
         */
         ready: function () {
             // to fire plugins
+            if( typeof window.initComponent.initValidator == 'function' )
+                window.initComponent.initValidator();
 
             if( typeof window.initComponent.initInputMask == 'function' )
                 window.initComponent.initInputMask();
-            
+
             if( typeof window.initComponent.initToUpper == 'function' )
                 window.initComponent.initToUpper();
-            
+
             if( typeof window.initComponent.initSelect2 == 'function' )
                 window.initComponent.initSelect2();
-            
-            if( typeof window.initComponent.initValidator == 'function' )
-                window.initComponent.initValidator();
         },
 
         /**

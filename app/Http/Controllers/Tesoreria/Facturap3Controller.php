@@ -6,9 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
-use App\Models\Tesoreria\Facturap3,App\Models\Tesoreria\Facturap1;
-use App\Models\Base\Tercero;
+use App\Models\Tesoreria\Facturap3,App\Models\Tesoreria\Facturap1, App\Models\Base\Tercero;
 use DB;
 
 class Facturap3Controller extends Controller
@@ -45,7 +43,7 @@ class Facturap3Controller extends Controller
                 }
                 $query->where('facturap3_facturap1', $facturap1->id);
             }
-            
+
             $query->orderBy('facturap3_vencimiento', 'desc');
             $factura = $query->get();
         }

@@ -17,8 +17,8 @@ app || (app = {});
         * Constructor Method
         */
         initialize : function() {
-            this.$activofijosSearchTable = this.$('#activofijos-search-table');
 
+            this.$activofijosSearchTable = this.$('#activofijos-search-table');
             this.$activofijosSearchTable.DataTable({
                 processing: true,
                 serverSide: true,

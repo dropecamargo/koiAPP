@@ -6,9 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use DB, Log, Datatables, Cache;
-
 use App\Models\Inventario\UnidadNegocio;
+use DB, Log, Datatables, Cache;
 
 class UnidadNegocioController extends Controller
 {
@@ -55,11 +54,11 @@ class UnidadNegocioController extends Controller
                     $unidadnegocio->fillBoolean($data);
                     $unidadnegocio->save();
 
-                    // Forget cache
-                    Cache::forget( UnidadNegocio::$key_cache );
-
                     // Commit Transaction
                     DB::commit();
+
+                    // Forget cache
+                    Cache::forget( UnidadNegocio::$key_cache );
                     return response()->json(['success' => true, 'id' => $unidadnegocio->id]);
                 }catch(\Exception $e){
                     DB::rollback();
@@ -120,11 +119,11 @@ class UnidadNegocioController extends Controller
                     $unidadnegocio->fillBoolean($data);
                     $unidadnegocio->save();
 
-                    // Forget cache
-                    Cache::forget( UnidadNegocio::$key_cache );
-
                     // Commit Transaction
                     DB::commit();
+
+                    // Forget cache
+                    Cache::forget( UnidadNegocio::$key_cache );
                     return response()->json(['success' => true, 'id' => $unidadnegocio->id]);
                 }catch(\Exception $e){
                     DB::rollback();

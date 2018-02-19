@@ -6,8 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\Tesoreria\Egreso2,App\Models\Tesoreria\TipoPago;
-use App\Models\Base\Documentos, App\Models\Base\Tercero;
+use App\Models\Tesoreria\Egreso2,App\Models\Tesoreria\TipoPago, App\Models\Base\Documentos, App\Models\Base\Tercero;
 use Log, DB;
 
 class EgresoDetalleController extends Controller

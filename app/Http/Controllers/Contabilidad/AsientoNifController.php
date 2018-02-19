@@ -6,12 +6,9 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
-use DB, Log, Datatables, Auth, View, App;
-
 use App\Classes\AsientoNifContableDocumento;
-
 use App\Models\Contabilidad\AsientoNif, App\Models\Contabilidad\AsientoNif2, App\Models\Contabilidad\PlanCuentaNif, App\Models\Base\Tercero, App\Models\Contabilidad\Documento, App\Models\Contabilidad\CentroCosto;
+use DB, Log, Datatables, Auth, View, App;
 
 class AsientoNifController extends Controller
 {
@@ -80,7 +77,7 @@ class AsientoNifController extends Controller
      */
     public function edit($id)
     {
-        
+
         $asientoNif = AsientoNif::findOrFail($id);
         if($asientoNif->asienton1_preguardado == false) {
             return redirect()->route('asientosnif.show', ['asientoNif' => $asientoNif]);

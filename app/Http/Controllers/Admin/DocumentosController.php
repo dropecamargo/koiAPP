@@ -6,10 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\Base\Documentos;
-use App\Models\Tesoreria\TipoPago;
-use DB, Log, Datatables;
-
+use App\Models\Base\Documentos, App\Models\Tesoreria\TipoPago;
+use DB, Log, Cache, Datatables;
 
 class DocumentosController extends Controller
 {
@@ -58,6 +56,8 @@ class DocumentosController extends Controller
                     // Commit Transaction
                     DB::commit();
 
+                    //Forget cache
+                    Cache::forget( Documentos::$key_cache );
                     return response()->json(['success' => true, 'id' => $documentos->id]);
                 }catch(\Exception $e){
                     DB::rollback();
@@ -81,7 +81,7 @@ class DocumentosController extends Controller
         $documentos = Documentos::findOrFail($id);
         if ($request->ajax()) {
             return response()->json($documentos);
-        } 
+        }
         return view('admin.documento.show', ['documentos' => $documentos]);
 
     }
@@ -120,6 +120,8 @@ class DocumentosController extends Controller
                     // Commit Transaction
                     DB::commit();
 
+                    //Forget cache
+                    Cache::forget( Documentos::$key_cache );
                     return response()->json(['success' => true, 'id' => $documentos->id]);
                 }catch(\Exception $e){
                     DB::rollback();
@@ -164,7 +166,7 @@ class DocumentosController extends Controller
                 }
                 if ($documentos->documentos_codigo == 'FPRO') {
                     $action = 'modalFacturaProveedor';
-                    $response->action = $action;  
+                    $response->action = $action;
                     $response->success = true;
                 }
             }
@@ -175,7 +177,7 @@ class DocumentosController extends Controller
                 }
                 if ($tipopago->documentos_codigo == 'FPRO') {
                     $action = 'modalFacturaProveedor';
-                    $response->action = $action;  
+                    $response->action = $action;
                     $response->success = true;
                 }
             }

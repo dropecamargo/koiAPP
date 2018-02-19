@@ -6,8 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\Inventario\Lote, App\Models\Inventario\Producto;
-use App\Models\Base\Sucursal, App\Models\Base\Ubicacion;
+use App\Models\Inventario\Lote, App\Models\Inventario\Producto, App\Models\Base\Sucursal, App\Models\Base\Ubicacion;
 
 class LoteController extends Controller
 {

@@ -3,9 +3,7 @@
 namespace App\Models\Contabilidad;
 
 use Illuminate\Database\Eloquent\Model;
-
 use App\Models\BaseModel;
-
 use Cache, Validator, DB;
 
 class PlanCuentaNif extends BaseModel

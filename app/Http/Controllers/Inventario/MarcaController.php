@@ -6,10 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
-use DB, Log, Datatables, Cache;
-
 use App\Models\Inventario\Marca;
+use DB, Log, Datatables, Cache;
 
 class MarcaController extends Controller
 {
@@ -57,11 +55,11 @@ class MarcaController extends Controller
                     $marca->fillBoolean($data);
                     $marca->save();
 
-                    //Forget cache
-                    Cache::forget( Marca::$key_cache );
-
                     // Commit Transaction
                     DB::commit();
+
+                    //Forget cache
+                    Cache::forget( Marca::$key_cache );
                     return response()->json(['success' => true, 'id' => $marca->id]);
                 }catch(\Exception $e){
                     DB::rollback();
@@ -121,11 +119,11 @@ class MarcaController extends Controller
                     $marca->fillBoolean($data);
                     $marca->save();
 
-                    //Forget cache
-                    Cache::forget( Marca::$key_cache );
-                    
                     // Commit Transaction
                     DB::commit();
+
+                    //Forget cache
+                    Cache::forget( Marca::$key_cache );
                     return response()->json(['success' => true, 'id' => $marca->id]);
                 }catch(\Exception $e){
                     DB::rollback();

@@ -3,7 +3,7 @@
 namespace App\Models\Tesoreria;
 
 use Illuminate\Database\Eloquent\Model;
-use Validator, DB;
+use Validator;
 
 class Facturap2 extends Model
 {
@@ -54,7 +54,7 @@ class Facturap2 extends Model
     }
 
     public function calculateBase (Facturap1 $facturap1 , $porcentaje) {
-        $porcentage = ( $porcentaje / 100 ); 
+        $porcentage = ( $porcentaje / 100 );
         return $facturap1->facturap1_base * $porcentage;
     }
 }

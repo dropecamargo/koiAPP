@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
 use App\Models\Tecnico\Sitio;
 use DB, Log, Cache, Datatables;
 
@@ -57,11 +56,11 @@ class SitioController extends Controller
                     $sitio->fillBoolean($data);
                     $sitio->save();
 
-                    //Forget Cache
-                    Cache::forget( Sitio::$key_cache );
-
                     // Commit Transaction
                     DB::commit();
+
+                    //Forget Cache
+                    Cache::forget( Sitio::$key_cache );
                     return response()->json(['success' => true, 'id' => $sitio->id]);
                 }catch(\Exception $e){
                     DB::rollback();
@@ -121,11 +120,11 @@ class SitioController extends Controller
                     $sitio->fillBoolean($data);
                     $sitio->save();
 
-                    //Forget Cache
-                    Cache::forget( Sitio::$key_cache );
-                    
                     // Commit Transaction
                     DB::commit();
+
+                    //Forget Cache
+                    Cache::forget( Sitio::$key_cache );
                     return response()->json(['success' => true, 'id' => $sitio->id]);
                 }catch(\Exception $e){
                     DB::rollback();

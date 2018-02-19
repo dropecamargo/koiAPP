@@ -31,6 +31,16 @@ app || (app = {});
             // Initialize
             this.$modalComponent = this.$('#modal-address-component');
             this.$modalComponentValidacion = this.$('#modal-address-component-validacion');
+
+            // Initialize arrays para direccion y direccion_nm
+            this.addressData = new Array();
+            this.addressDataNm = new Array();
+            this.num = new Array();
+
+            // Validate nomenclaturas
+            this.validas = ['Agencia','Agrupación','Almacen','Autopista','Avenida','Avenida Carrera','Barrio','Boulevar','Calle','Camino','Carrera','Carretera','Casa','Celula','Centro Comercial','Ciudadela','Conjunto','Conjunto Residencial','Corregimiento','Departamento','Deposito','Edificio','Entrada','Etapa','Finca','Hacienda','Lote','Modulo','Municipio','Parcela','Parque','Parqueadero','Pasaje','Paseo','Predio','Puente','Puesto','Salón','Salón Comunal','Sector','Suite','Terminal','Terraza','Torre','Unidad','Unidad Residencial','Urbanización','Variante','Vereda','Zona','Zona Franca', 'Via'];
+
+            this.$modalComponent.find('.content-modal').html( this.template({ }) );
         },
 
         focusComponent: function(e) {
@@ -42,32 +52,14 @@ app || (app = {});
             this.inputContentNm = this.$("#"+this.inputContent.attr("data-nm-name"));
             this.inputContentNmValue = this.$("#"+this.inputContent.attr("data-nm-value"));
 
-            this.$modalComponent.find('.content-modal').html( this.template({ }) );
-
             // References
             this.$addressField = this.$modalComponent.find('#koi_direccion');
             this.$addressNomenclaturaField = this.$modalComponent.find('#koi_direccion_nm');
             this.$formComponent = this.$modalComponent.find('#form-address-component');
 
-            // Initialize
-            this.addressData = new Array();
-            this.addressDataNm = new Array();
-            this.num = new Array();
-
-            // Validate nomenclaturas
-            this.validaciones = ['Agencia','Agrupación','Almacen','Autopista','Avenida','Avenida Carrera','Barrio','Boulevar','Calle','Camino','Carrera','Carretera','Casa','Celula','Centro Comercial','Ciudadela','Conjunto','Conjunto Residencial','Corregimiento','Departamento','Deposito','Edificio','Entrada','Etapa','Finca','Hacienda','Lote','Modulo','Municipio','Parcela','Parque','Parqueadero','Pasaje','Paseo','Predio','Puente','Puesto','Salón','Salón Comunal','Sector','Suite','Terminal','Terraza','Torre','Unidad','Unidad Residencial','Urbanización','Variante','Vereda','Zona','Zona Franca', 'Via'];
-
-            // to fire plugins
-            if( typeof window.initComponent.initToUpper == 'function' )
-                window.initComponent.initToUpper();
-
-            if( typeof window.initComponent.initAlertify == 'function' )
-                window.initComponent.initAlertify();
-
-            this.$formComponent.validator();
-
             // Modal show
             this.$modalComponent.modal('show');
+            this.ready();
         },
 
         addAddress: function(e) {
@@ -82,8 +74,9 @@ app || (app = {});
             }
         },
 
-        listeningAddress: function(e){  
+        listeningAddress: function(e){
             if( parseInt($(e.target).text().trim()) > 0 || parseInt($(e.target).text().trim()) < 9 ){
+
                 this.num = $(e.target).text().trim();
                 if( parseInt(this.addressData[this.addressData.length-1]) > 0 || parseInt(this.addressData[this.addressData.length-1]) < 9){
                     this.addressData[this.addressData.length-1] += this.num;
@@ -92,17 +85,19 @@ app || (app = {});
                     this.addressData.push( this.num );
                     this.addressDataNm.push( this.num );
                 }
+
             }else{
                 this.num = [];
                 if( this.addressData[this.addressData.length-1] != $(e.target).text().trim() ){
-                    for (var i = 0; i < this.validaciones.length; i++) {
-                        if($(e.target).text().trim() == this.validaciones[i]){
+
+                    for (var i = 0; i < this.validas.length; i++) {
+                        if($(e.target).text().trim() == this.validas[i]){
                             this.$modalComponentValidacion.find('.modal-content').html( this.templateSelect( { } ));
                             this.$modalComponentValidacion.find('.modal-title').text( $(e.target).text().trim() );
                             this.$modalComponentValidacion.modal('show');
                         }
                     }
-                    
+
                     if($(e.target).text().trim() == '#' || $(e.target).text().trim() == '-'){
                         this.addressData.push( $(e.target).text().trim() );
                         this.addressDataNm.push( ' ' );
@@ -119,10 +114,11 @@ app || (app = {});
 
         ChangeSelect: function(e){
             var _this = this;
-            this.$component = this.$('#component-input').hide();
-            var valor = '';
+                valor = '';
 
-            if($(e.target).val() == 'si'){
+            this.$component = this.$('#component-input').hide();
+
+            if( $(e.target).val() == 'si'){
                 _this.$component.show();
                 $('input#component-input-text').change(function(){
                     var dato = $(this).val( $(this).val().toUpperCase() );
@@ -152,6 +148,7 @@ app || (app = {});
         removeLastItem: function(e) {
             if (!e.isDefaultPrevented()) {
                 e.preventDefault();
+
                 this.addressData.pop();
                 this.addressDataNm.pop();
                 this.buildAddress();
@@ -164,11 +161,21 @@ app || (app = {});
         removeItem: function(e) {
             if (!e.isDefaultPrevented()) {
                 e.preventDefault();
+
                 this.addressData.length = 0;
                 this.addressDataNm.length = 0;
                 this.num.length = 0;
                 this.buildAddress();
             }
+        },
+
+        ready: function() {
+            // to fire plugins
+            if( typeof window.initComponent.initToUpper == 'function' )
+                window.initComponent.initToUpper();
+
+            if( typeof window.initComponent.initAlertify == 'function' )
+                window.initComponent.initAlertify();
         },
 
      	/**

@@ -3,7 +3,6 @@
 namespace App\Models\Contabilidad;
 
 use Illuminate\Database\Eloquent\Model;
-
 use App\Models\Inventario\Producto, App\Models\Tesoreria\Facturap1;
 
 class AsientoMovimiento extends Model
@@ -26,7 +25,7 @@ class AsientoMovimiento extends Model
         if(!isset($data['Tipo']) || trim($data['Tipo']) == '') {
             $response->error = "Tipo es obligatorio para generar movimiento, por favor verifique la información del asiento o consulte al administrador.";
             return $response;
-        }   
+        }
 
         // Movimientos factura proveedor FP
         if( $data['Tipo'] == 'FP')
@@ -92,7 +91,7 @@ class AsientoMovimiento extends Model
         // if(!isset($data['Cuotas']) || !is_numeric($data['Cuotas']) || $data['Cuotas'] <= 0) {
         //     return "Cuotas no pueden ser menor o igual a 0.";
         // }
-        
+
         if($data['Nuevo'] == true)
         {
             // // Validar sucursal

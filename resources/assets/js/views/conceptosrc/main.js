@@ -36,7 +36,7 @@ app || (app = {});
                 ],
                 buttons: [
                     {
-                        text: '<i class="fa fa-plus"></i> Nuevo concepto',
+                        text: '<i class="fa fa-plus"></i> Nuevo concepto recibo de caja',
                         className: 'btn-sm',
                         action: function ( e, dt, node, config ) {
                             window.Misc.redirect( window.Misc.urlFull( Route.route('conceptosrc.create') ) )

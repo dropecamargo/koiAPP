@@ -86,7 +86,7 @@ var app = app || {};
                             page: params.page
                         };
                     },
-                    processResults: function (data, params) 
+                    processResults: function (data, params)
                     {
                         params.page = params.page || 1;
                         return {
@@ -228,7 +228,7 @@ var app = app || {};
                 removeMaskOnSubmit: true,
                 unmaskAsNumber: true,
             });
-            
+
 
             $("[data-currency-precise]").inputmask({
                 radixPoint: ",",
@@ -284,7 +284,6 @@ var app = app || {};
         * Init Timepicker
         */
         initTimePicker: function () {
-
             $(".timepicker").timepicker({
                 showInputs: false,
                 showMeridian: false

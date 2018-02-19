@@ -6,9 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
 use App\Models\Base\Tercero, App\Models\Base\Contacto;
-
 use DB, Log, Datatables;
 
 class ContactoController extends Controller

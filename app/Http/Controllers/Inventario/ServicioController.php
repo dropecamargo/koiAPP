@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
 use App\Models\Inventario\Servicio;
 use DB, Log, Datatables, Cache;
 
@@ -56,11 +55,11 @@ class ServicioController extends Controller
                     $servicio->fillBoolean($data);
                     $servicio->save();
 
-                    //Forget cache
-                    Cache::forget( Servicio::$key_cache );
-                    
                     // Commit Transaction
                     DB::commit();
+                    
+                    //Forget cache
+                    Cache::forget( Servicio::$key_cache );
                     return response()->json(['success' => true, 'id' => $servicio->id]);
                 }catch(\Exception $e){
                     DB::rollback();

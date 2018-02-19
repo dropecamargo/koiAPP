@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
 use App\Models\Base\Ubicacion, App\Models\Base\Sucursal;
 use Datatables,Cache,Log,DB;
 
@@ -20,7 +19,7 @@ class UbicacionController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            
+
             $query = Ubicacion::query();
 
             if ($request->has('datatables')) {
@@ -35,7 +34,6 @@ class UbicacionController extends Controller
                 $query->orderby('ubicacion_nombre','asc');
                 return response()->json($query->get());
             }
-
         }
         return view('admin.ubicaciones.index');
     }
@@ -76,11 +74,11 @@ class UbicacionController extends Controller
                     $ubicacion->ubicacion_sucursal = $sucursal->id;
                     $ubicacion->save();
 
-                    // Forget cache
-                    Cache::forget( Ubicacion::$key_cache );
-
                     // Commit Transaction
                     DB::commit();
+
+                    // Forget cache
+                    Cache::forget( Ubicacion::$key_cache );
                     return response()->json(['success' => true, 'id' => $ubicacion->id]);
                 }catch(\Exception $e){
                     DB::rollback();
@@ -148,11 +146,11 @@ class UbicacionController extends Controller
                     $ubicacion->ubicacion_sucursal = $sucursal->id;
                     $ubicacion->save();
 
-                    // Forget cache
-                    Cache::forget( Ubicacion::$key_cache );
-                    
                     // Commit Transaction
                     DB::commit();
+
+                    // Forget cache
+                    Cache::forget( Ubicacion::$key_cache );
                     return response()->json(['success' => true, 'id' => $ubicacion->id]);
                 }catch(\Exception $e){
                     DB::rollback();

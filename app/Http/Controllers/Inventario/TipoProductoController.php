@@ -54,11 +54,11 @@ class TipoProductoController extends Controller
                     $tipoproducto->fillBoolean($data);
                     $tipoproducto->save();
 
-                    //Forget cache
-                    Cache::forget( TipoProducto::$key_cache );
-
                     // Commit Transaction
                     DB::commit();
+
+                    //Forget cache
+                    Cache::forget( TipoProducto::$key_cache );
                     return response()->json(['success' => true, 'id' => $tipoproducto->id]);
                 }catch(\Exception $e){
                     DB::rollback();
@@ -119,11 +119,11 @@ class TipoProductoController extends Controller
                     $tipoproducto->fillBoolean($data);
                     $tipoproducto->save();
 
-                    //Forget cache
-                    Cache::forget( TipoProducto::$key_cache );
-
                     // Commit Transaction
                     DB::commit();
+
+                    //Forget cache
+                    Cache::forget( TipoProducto::$key_cache );
                     return response()->json(['success' => true, 'id' => $tipoproducto->id]);
                 }catch(\Exception $e){
                     DB::rollback();

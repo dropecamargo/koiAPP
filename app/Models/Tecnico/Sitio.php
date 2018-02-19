@@ -3,9 +3,8 @@
 namespace App\Models\Tecnico;
 
 use Illuminate\Database\Eloquent\Model;
-
 use App\Models\BaseModel;
-use Validator, Cache, DB;
+use Validator, Cache;
 
 class Sitio extends BaseModel
 {

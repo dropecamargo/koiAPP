@@ -6,10 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
-use DB, Log, Datatables, Cache;
-
 use App\Models\Base\PuntoVenta;
+use DB, Log, Datatables, Cache;
 
 class PuntoVentaController extends Controller
 {
@@ -58,11 +56,11 @@ class PuntoVentaController extends Controller
                     $puntoventa->fillBoolean($data);
                     $puntoventa->save();
 
-                    // Forget cache
-                    Cache::forget( PuntoVenta::$key_cache );
-
                     // Commit Transaction
                     DB::commit();
+
+                    // Forget cache
+                    Cache::forget( PuntoVenta::$key_cache );
                     return response()->json(['success' => true, 'id' => $puntoventa->id]);
                 }catch(\Exception $e){
                     DB::rollback();
@@ -123,11 +121,11 @@ class PuntoVentaController extends Controller
                     $puntoventa->fillBoolean($data);
                     $puntoventa->save();
 
-                    // Forget cache
-                    Cache::forget( PuntoVenta::$key_cache );
-                    
                     // Commit Transaction
                     DB::commit();
+                    
+                    // Forget cache
+                    Cache::forget( PuntoVenta::$key_cache );
                     return response()->json(['success' => true, 'id' => $puntoventa->id]);
                 }catch(\Exception $e){
                     DB::rollback();

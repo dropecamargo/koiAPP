@@ -4,7 +4,7 @@ namespace App\Models\Tesoreria;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\BaseModel;
-use Validator,DB;
+use Validator, DB;
 
 class Egreso1 extends BaseModel
 {
@@ -60,7 +60,7 @@ class Egreso1 extends BaseModel
                             (CASE WHEN (t.tercero_razonsocial IS NOT NULL AND t.tercero_razonsocial != '') THEN CONCAT(' - ', t.tercero_razonsocial) ELSE '' END)
                         )
                     ELSE t.tercero_razonsocial END)
-                AS tercero_nombre"), 
+                AS tercero_nombre"),
                 DB::raw("CONCAT(elab.tercero_nombre1, ' ', elab.tercero_nombre2, ' ', elab.tercero_apellido1, ' ', elab.tercero_apellido2) as elaboro_nombre")
             );
         $query->join('tercero as t', 'egreso1_tercero', '=', 't.id');

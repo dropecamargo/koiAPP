@@ -6,9 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
-use DB, Log, Datatables, Cache;
 use App\Models\Base\Rol, App\Models\Base\Permiso;
+use DB, Log, Datatables, Cache;
 
 class RolController extends Controller
 {
@@ -54,11 +53,11 @@ class RolController extends Controller
                     $rol->fill($data);
                     $rol->save();
 
-                    // Forget cache
-                    Cache::forget( Rol::$key_cache );
-
                     // Commit Transaction
                     DB::commit();
+
+                    // Forget cache
+                    Cache::forget( Rol::$key_cache );
                     return response()->json(['success' => true, 'id' => $rol->id]);
                 }catch(\Exception $e){
                     DB::rollback();
@@ -117,6 +116,7 @@ class RolController extends Controller
             if ($rol->isValid($data)) {
                 DB::beginTransaction();
                 try {
+                    // Validar keey
                     $valRol = Rol::where('name', $request->name)->first();
                     if(!$valRol instanceof Rol) {
                         DB::rollback();
@@ -126,12 +126,12 @@ class RolController extends Controller
                     // rol
                     $rol->fill($data);
                     $rol->save();
-                    
-                    // Forget cache
-                    Cache::forget( Rol::$key_cache );
 
                     // Commit Transaction
                     DB::commit();
+
+                    // Forget cache
+                    Cache::forget( Rol::$key_cache );
                     return response()->json(['success' => true, 'id' => $rol->id]);
                 }catch(\Exception $e){
                     DB::rollback();

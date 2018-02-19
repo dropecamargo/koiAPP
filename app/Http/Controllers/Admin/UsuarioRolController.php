@@ -6,9 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
-use DB, Log, Datatables,Cache;
 use App\Models\Base\UsuarioRol, App\Models\Base\Tercero, App\Models\Base\Rol;
+use DB, Log, Datatables,Cache;
 
 class UsuarioRolController extends Controller
 {
@@ -156,7 +155,6 @@ class UsuarioRolController extends Controller
 
                 DB::commit();
                 return response()->json(['success' => true]);
-
             }catch(\Exception $e){
                 DB::rollback();
                 Log::error(sprintf('%s -> %s: %s', 'UsuarioRolController', 'destroy', $e->getMessage()));

@@ -88,6 +88,7 @@ class Prodbode extends Model
 
         return $prodbode;
     }
+    
     public static function reportExist( $sucursal, $producto)
     {
         $query = Prodbode::query();

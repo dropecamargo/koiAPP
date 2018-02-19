@@ -6,10 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
-use DB, Log, Datatables, Cache;
-
 use App\Models\Base\Tercero, App\Models\Base\Actividad;
+use DB, Log, Datatables, Cache;
 
 class TerceroController extends Controller
 {
@@ -104,14 +102,14 @@ class TerceroController extends Controller
                     $tercero->fillBoolean($data);
                     $tercero->save();
 
+                    // Commit Transaction
+                    DB::commit();
+
                     // Forget cache
                     Cache::forget( Tercero::$key_cache_tadministrators );
                     Cache::forget( Tercero::$key_cache_badvisors );
                     Cache::forget( Tercero::$key_cache_sellers );
                     Cache::forget( Tercero::$key_cache_technicals );
-
-                    // Commit Transaction
-                    DB::commit();
                     return response()->json(['success' => true, 'id' => $tercero->id]);
                 }catch(\Exception $e){
                     DB::rollback();
@@ -171,14 +169,14 @@ class TerceroController extends Controller
                     $tercero->fillBoolean($data);
                     $tercero->save();
 
+                    // Commit Transaction
+                    DB::commit();
+
                     // Forget cache
                     Cache::forget( Tercero::$key_cache_tadministrators );
                     Cache::forget( Tercero::$key_cache_badvisors );
                     Cache::forget( Tercero::$key_cache_sellers );
                     Cache::forget( Tercero::$key_cache_technicals );
-                    
-                    // Commit Transaction
-                    DB::commit();
                     return response()->json(['success' => true, 'id' => $tercero->id]);
                 }catch(\Exception $e){
                     DB::rollback();
@@ -211,7 +209,7 @@ class TerceroController extends Controller
     {
         if ($request->has('tercero_nit')) {
 
-            // Valid nit 
+            // Valid nit
             if (! Tercero::isValidNit($request->all())) {
                 return response()->json(['success' => false, 'errors' => "El nit $request->tercero_nit ya se encuentra registrado"]);
             }

@@ -6,12 +6,9 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
-use DB, Log, Datatables, Auth, View, App;
-
 use App\Classes\AsientoContableDocumento;
-
 use App\Models\Contabilidad\Asiento, App\Models\Contabilidad\Asiento2,App\Models\Contabilidad\AsientoNif, App\Models\Contabilidad\AsientoNif2, App\Models\Contabilidad\PlanCuenta, App\Models\Base\Tercero, App\Models\Contabilidad\Documento, App\Models\Contabilidad\CentroCosto;
+use DB, Log, Datatables, Auth, View, App;
 
 class AsientoController extends Controller
 {
@@ -149,7 +146,7 @@ class AsientoController extends Controller
                             $asientoNif->asienton1_beneficiario = $tercero->id;
                             $asientoNif->asienton1_usuario_elaboro = Auth::user()->id;
                             $asientoNif->asienton1_fecha_elaboro = date('Y-m-d H:m:s');
-                        
+
                             // Consecutivo
                             if($documento->documento_tipo_consecutivo == 'A'){
                                 $asientoNif->asienton1_numero = $documento->documento_consecutivo + 1;

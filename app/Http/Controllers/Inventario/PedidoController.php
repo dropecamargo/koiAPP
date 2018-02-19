@@ -6,9 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\Inventario\Pedido1, App\Models\Inventario\Pedido2, App\Models\Inventario\Producto;
-use App\Models\Base\Documentos, App\Models\Base\Tercero,App\Models\Base\Sucursal,App\Models\Base\Bitacora;
-
+use App\Models\Inventario\Pedido1, App\Models\Inventario\Pedido2, App\Models\Inventario\Producto, App\Models\Base\Documentos, App\Models\Base\Tercero,App\Models\Base\Sucursal,App\Models\Base\Bitacora;
 use DB, Log, Datatables, Cache, Auth;
 
 
@@ -120,7 +118,6 @@ class PedidoController extends Controller
 
                     // Commit Transaction
                     DB::commit();
-
                     return response()->json(['success' => true, 'pedido_id' => $pedido->id]);
                 }catch(\Exception $e){
                     DB::rollback();
@@ -206,10 +203,8 @@ class PedidoController extends Controller
                     $pedido->pedido1_fh_elaboro = date('Y-m-d H:m:s');
                     $pedido->save();
 
-
                     // Commit Transaction
                     DB::commit();
-
                     return response()->json(['success' => true, 'id' => $pedido->id]);
                 }catch(\Exception $e){
                     DB::rollback();

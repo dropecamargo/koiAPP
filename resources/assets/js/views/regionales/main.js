@@ -19,7 +19,6 @@ app || (app = {});
         initialize : function() {
 
             this.$regionalesSearchTable = this.$('#regionales-search-table');
-
             this.$regionalesSearchTable.DataTable({
                 dom: "<'row'<'col-sm-4'B><'col-sm-4 text-center'l><'col-sm-4'f>>" +
                     "<'row'<'col-sm-12'tr>>" +

@@ -3,7 +3,6 @@
 namespace App\Models\Cartera;
 
 use Illuminate\Database\Eloquent\Model;
-
 use App\Models\BaseModel;
 use Validator, Cache;
 
@@ -64,5 +63,5 @@ class ConceptoCob extends BaseModel
 			$collection->prepend('', '');
         	return $collection;
         });
-    }	
+    }
 }

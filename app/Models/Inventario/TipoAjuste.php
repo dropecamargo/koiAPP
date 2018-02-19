@@ -59,6 +59,7 @@ class TipoAjuste extends BaseModel
 		$this->errors = $validator->errors();
 		return false;
 	}
+	
  	public static function getTiposAjustes()
     {
         if (Cache::has( self::$key_cache )) {

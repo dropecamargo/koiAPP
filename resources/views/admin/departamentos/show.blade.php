@@ -19,6 +19,7 @@
                 </div>
             </div>
         </div>
+        
         <div class="box-header with-border">
             <div class="row">
                 <div class="col-md-2 col-md-offset-5">

@@ -6,9 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
-use DB, Log, Datatables, Cache;
 use App\Models\Inventario\Linea, App\Models\Inventario\UnidadNegocio;
+use DB, Log, Datatables, Cache;
 
 class LineaController extends Controller
 {
@@ -64,7 +63,7 @@ class LineaController extends Controller
             if ($linea->isValid($data)) {
                 DB::beginTransaction();
                 try {
-                    
+
                     // Recuperar unidad de negocio
                     $unidadNegocio = UnidadNegocio::find($request->linea_unidadnegocio);
                     if (! $unidadNegocio instanceof UnidadNegocio) {
@@ -78,11 +77,11 @@ class LineaController extends Controller
                     $linea->linea_unidadnegocio = $unidadNegocio->id;
                     $linea->save();
 
-                    //Forget cache
-                    Cache::forget( Linea::$key_cache );
-
                     // Commit Transaction
                     DB::commit();
+
+                    //Forget cache
+                    Cache::forget( Linea::$key_cache );
                     return response()->json(['success' => true, 'id' => $linea->id]);
                 }catch(\Exception $e){
                     DB::rollback();
@@ -151,11 +150,11 @@ class LineaController extends Controller
                     $linea->linea_unidadnegocio = $unidadNegocio->id;
                     $linea->save();
 
-                    //Forget cache
-                    Cache::forget( Linea::$key_cache );
-
                     // Commit Transaction
                     DB::commit();
+
+                    //Forget cache
+                    Cache::forget( Linea::$key_cache );
                     return response()->json(['success' => true, 'id' => $linea->id]);
                 }catch(\Exception $e){
                     DB::rollback();

@@ -6,9 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
-use App\Models\Tesoreria\Facturap4;
-use App\Models\Contabilidad\CentroCosto;
+use App\Models\Tesoreria\Facturap4, App\Models\Contabilidad\CentroCosto;
 use Log;
 
 class Facturap4Controller extends Controller
@@ -57,7 +55,7 @@ class Facturap4Controller extends Controller
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar centro costo, por favor verifique la información del asiento o consulte al administrador.']);
                     }
 
-                    return response()->json([ 'success' => true, 'id' => uniqid(), 'centrocosto_nombre' => $centroCosto->centrocosto_nombre]); 
+                    return response()->json([ 'success' => true, 'id' => uniqid(), 'centrocosto_nombre' => $centroCosto->centrocosto_nombre]);
                 } catch (\Exception $e) {
                     Log::error($e->getMessage());
                     return response()->json(['success' => false, 'errors' => trans('app.exception')]);

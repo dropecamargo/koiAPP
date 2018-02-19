@@ -6,10 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
-use DB, Log, Datatables;
-
 use App\Models\Base\TipoActividad;
+use DB, Log, Datatables;
 
 class TipoActividadController extends Controller
 {
@@ -58,7 +56,6 @@ class TipoActividadController extends Controller
 
                     // Commit Transaction
                     DB::commit();
-
                     return response()->json(['success' => true, 'id' => $tipoactividad->id]);
                 }catch(\Exception $e){
                     DB::rollback();
@@ -82,7 +79,7 @@ class TipoActividadController extends Controller
         $tipoactividad = TipoActividad::findOrFail($id);
         if ($request->ajax()) {
             return response()->json($tipoactividad);
-        } 
+        }
         return view('admin.tiposactividad.show', ['tipoactividad' => $tipoactividad]);
     }
 
@@ -120,7 +117,6 @@ class TipoActividadController extends Controller
 
                     // Commit Transaction
                     DB::commit();
-
                     return response()->json(['success' => true, 'id' => $tipoactividad->id]);
                 }catch(\Exception $e){
                     DB::rollback();

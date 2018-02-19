@@ -3,9 +3,8 @@
 namespace App\Models\Cartera;
 
 use Illuminate\Database\Eloquent\Model;
-
 use App\Models\BaseModel;
-use Validator, DB, Cache;
+use Validator, Cache;
 
 class ConceptoNota extends BaseModel
 {

@@ -3,7 +3,7 @@
 namespace App\Models\Tesoreria;
 
 use Illuminate\Database\Eloquent\Model;
-use Validator, DB;
+use Validator;
 
 class Facturap4 extends Model
 {

@@ -6,10 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\Tesoreria\Facturap2, App\Models\Tesoreria\Facturap1, App\Models\Tesoreria\ReteFuente;
-use App\Models\Inventario\Impuesto;
-use App\Models\Base\Tercero;
-use DB, Log, Datatables, Cache;
+use App\Models\Tesoreria\Facturap2, App\Models\Tesoreria\Facturap1, App\Models\Tesoreria\ReteFuente, App\Models\Inventario\Impuesto, App\Models\Base\Tercero;
+use Log;
 
 class Facturap2Controller extends Controller
 {
@@ -74,7 +72,7 @@ class Facturap2Controller extends Controller
                         $facturapDetalle->facturap2_base = $request->facturap2_base_retefuente;
                         $facturapDetalle->facturap2_porcentaje = ($tercero->tercero_persona == 'N') ? $retefuente->retefuente_tarifa_natural : $retefuente->retefuente_tarifa_juridico;
                     }
-                    return response()->json([ 'success' => true, 'id' => uniqid(),'impuesto_nombre' => (empty($impuesto)) ? null : $impuesto->impuesto_nombre , 'retefuente_nombre' => empty($retefuente) ? null : $retefuente->retefuente_nombre, 'facturap2_base' => $facturapDetalle->facturap2_base , 'facturap2_porcentaje' => $facturapDetalle->facturap2_porcentaje ]);           
+                    return response()->json([ 'success' => true, 'id' => uniqid(),'impuesto_nombre' => (empty($impuesto)) ? null : $impuesto->impuesto_nombre , 'retefuente_nombre' => empty($retefuente) ? null : $retefuente->retefuente_nombre, 'facturap2_base' => $facturapDetalle->facturap2_base , 'facturap2_porcentaje' => $facturapDetalle->facturap2_porcentaje ]);
                 } catch (\Exception $e) {
                     Log::error($e->getMessage());
                     return response()->json(['success' => false, 'errors' => trans('app.exception')]);

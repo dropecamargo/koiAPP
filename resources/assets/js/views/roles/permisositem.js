@@ -36,9 +36,9 @@ app || (app = {});
         */
         render: function(){
             var attributes = this.model.toJSON();
-            attributes.edit = this.parameters.edit;
-            attributes.father = this.parameters.father;
-            attributes.permissions = this.parameters.permissions;
+                attributes.edit = this.parameters.edit;
+                attributes.father = this.parameters.father;
+                attributes.permissions = this.parameters.permissions;
 
             this.$el.html( this.template(attributes) );
             return this;

@@ -6,10 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
-use App\Models\Tecnico\Visita, App\Models\Tecnico\Visitap, App\Models\Tecnico\Contadoresp, App\Models\Tecnico\Orden;
-use App\Models\Inventario\Producto;
-use App\Models\Base\Tercero;
+use App\Models\Tecnico\Visita, App\Models\Tecnico\Visitap, App\Models\Tecnico\Contadoresp, App\Models\Tecnico\Orden, App\Models\Inventario\Producto, App\Models\Base\Tercero;
 use DB, Log, Cache,Auth;
 
 class VisitaController extends Controller
@@ -21,11 +18,11 @@ class VisitaController extends Controller
      */
     public function index(Request $request)
     {
-         
+
        if ($request->ajax())
         {
             $query = Visita::getVisita($request->orden_id);
-            return response()->json( $query );          
+            return response()->json( $query );
         }
         abort(404);
      }
@@ -152,7 +149,7 @@ class VisitaController extends Controller
                 if(!$visita instanceof Visita){
                     return response()->json(['success' => false, 'errors' => 'No es posible recuperar visita, por favor verifique la información o consulte al administrador.']);
                 }
-                
+
                 // Eliminar item visita
                 $visita->delete();
 
@@ -164,6 +161,6 @@ class VisitaController extends Controller
                 return response()->json(['success' => false, 'errors' => trans('app.exception')]);
             }
         }
-        abort(403);   
+        abort(403);
     }
 }

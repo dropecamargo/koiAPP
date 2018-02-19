@@ -6,9 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
-use Datatables, DB;
 use App\Models\Base\Permiso;
+use Datatables, DB;
 
 class PermisoController extends Controller
 {

@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
 use App\Models\Tecnico\OrdenImagen, App\Models\Tecnico\Orden;
 use DB, Log, Auth, Storage;
 
@@ -23,11 +22,11 @@ class OrdenImagenController extends Controller
             $query = OrdenImagen::query();
             $query->where('visitai_orden', $request->orden_id);
             $images = $query->get();
-            
+
             $data = [];
             foreach ($images as $image) {
                 if(Storage::has("ordenes/orden_$image->visitai_orden/$image->visitai_archivo")) {
-                    
+
                     $object = new \stdClass();
                     $object->uuid = $image->id;
                     $object->name = $image->visitai_archivo;
@@ -62,12 +61,12 @@ class OrdenImagenController extends Controller
         if ($request->ajax()) {
             $data = $request->all();
             $imagen = new OrdenImagen;
-            
+
             // Recuperar orden
             $orden = Orden::find($request->orden_id);
             if(!$orden instanceof Orden || !$request->hasFile('file')){
                 abort(404);
-            }        
+            }
 
             DB::beginTransaction();
             try {
@@ -75,7 +74,7 @@ class OrdenImagenController extends Controller
                 $file = $request->file('file');
                 $name = sprintf('%s_%s', str_random(4), $file->getClientOriginalName());
 
-                Storage::put("ordenes/orden_{$orden->id}/$name", 
+                Storage::put("ordenes/orden_{$orden->id}/$name",
                     file_get_contents($file->getRealPath())
                 );
 
@@ -90,7 +89,7 @@ class OrdenImagenController extends Controller
                 $imagen->save();
 
                 // Commit Transaction
-                DB::commit();                
+                DB::commit();
                 return response()->json(['success' => true, 'id' => $imagen->id, 'name' => $imagen->visitai_archivo, 'url' => $url]);
             }catch(\Exception $e){
                 DB::rollback();
@@ -157,7 +156,7 @@ class OrdenImagenController extends Controller
                     DB::rollback();
                     return response()->json(['success' => false, 'errors' => 'No es posible recuperar imagen, por favor verifique la información del pedido o consulte al administrador.']);
                 }
-                
+
                 // Eliminar item detallepedido
                 if(Storage::has("ordenes/orden_$orden->id/$image->visitai_archivo")) {
                     Storage::delete("ordenes/orden_$orden->id/$image->visitai_archivo");

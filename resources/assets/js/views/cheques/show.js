@@ -24,12 +24,10 @@ app || (app = {});
         initialize : function() {
             // Model exist
             if( this.model.id != undefined ) {
-                
                 this.detalleChposFechado = new app.DetalleChposFechadoList();
 
                 // Prepare modal causa
                 this.$modal = this.$('#modal-causa');
-
 
                 // Reference views
                 this.referenceViews();

@@ -5,8 +5,7 @@ namespace App\Http\Controllers\Tesoreria;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-use App\Http\Controllers\Controller;
-use App\Models\Tesoreria\ReteFuente;
+use App\Http\Controllers\Controller, App\Models\Tesoreria\ReteFuente;
 use DB, Log, Datatables, Cache;
 
 class ReteFuenteController extends Controller
@@ -54,11 +53,11 @@ class ReteFuenteController extends Controller
                     $retefuente->fillBoolean($data);
                     $retefuente->save();
 
-                    // Forget cache
-                    Cache::forget( ReteFuente::$key_cache );
-
                     // Commit Transaction
                     DB::commit();
+
+                    // Forget cache
+                    Cache::forget( ReteFuente::$key_cache );
                     return response()->json(['success' => true, 'id' =>$retefuente->id]);
                 } catch (\Exception $e) {
                     DB::rollback();
@@ -118,11 +117,11 @@ class ReteFuenteController extends Controller
                     $retefuente->fillBoolean($data);
                     $retefuente->save();
 
-                    // Forget cache
-                    Cache::forget( ReteFuente::$key_cache );
-
                     // Commit Transaction
                     DB::commit();
+
+                    // Forget cache
+                    Cache::forget( ReteFuente::$key_cache );
                     return response()->json(['success' => true, 'id' =>$retefuente->id]);
                 } catch (\Exception $e) {
                     DB::rollback();

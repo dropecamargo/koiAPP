@@ -7,9 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\Models\Base\Sucursal, App\Models\Base\Ubicacion;
-use App\Models\Inventario\Prodbode, App\Models\Inventario\Producto, App\Models\Inventario\TrasladoUbicacion2;
-
+use App\Models\Base\Sucursal, App\Models\Base\Ubicacion, App\Models\Inventario\Prodbode, App\Models\Inventario\Producto, App\Models\Inventario\TrasladoUbicacion2;
 use Log, DB;
 
 class DetalleTrasladoUbicacionController extends Controller

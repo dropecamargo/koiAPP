@@ -22,7 +22,6 @@ app || (app = {});
         initialize : function() {
             // Model exist
             if( this.model.id != undefined ) {
-
                 this.trasladoUbicacionesList = new app.TrasladoUbicacionesList();
 
                 // Reference views
@@ -50,7 +49,7 @@ app || (app = {});
         * Redirect export pdf
         */
         exportTrasladoUbicacion:function(e){
-            e.preventDefault(); 
+            e.preventDefault();
 
             // Redirect to pdf
             window.open( window.Misc.urlFull( Route.route('trasladosubicaciones.exportar', { trasladosubicaciones: this.model.get('id') })) );

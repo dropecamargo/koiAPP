@@ -3,7 +3,6 @@
 namespace App\Models\Inventario;
 
 use Illuminate\Database\Eloquent\Model;
-
 use Validator;
 
 class TrasladoUbicacion2 extends Model
@@ -16,14 +15,14 @@ class TrasladoUbicacion2 extends Model
 	protected $table = 'trasladou2';
 
 	public $timestamps = false;
-	
+
 	 /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = ['trasladou2_cantidad'];
-    
+
  	public function isValid($data)
     {
         $rules = [
@@ -46,5 +45,4 @@ class TrasladoUbicacion2 extends Model
         $trasladou2 = $query->get();
         return $trasladou2;
     }
-
 }

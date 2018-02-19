@@ -3,7 +3,6 @@
 namespace App\Models\Contabilidad;
 
 use Illuminate\Database\Eloquent\Model;
-
 use Validator, Cache;
 
 class Folder extends Model
@@ -55,14 +54,14 @@ class Folder extends Model
     public static function getFolders()
     {
         if (Cache::has( self::$key_cache )) {
-            return Cache::get( self::$key_cache );    
+            return Cache::get( self::$key_cache );
         }
 
         return Cache::rememberForever( self::$key_cache, function() {
             $query = Folder::query();
             $query->orderby('folder_nombre', 'asc');
             $collection = $query->lists('folder_nombre', 'id');
-            
+
             $collection->prepend('', '');
             return $collection;
         });

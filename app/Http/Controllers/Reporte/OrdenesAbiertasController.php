@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Tecnico\Orden;
-
 use View, App, DB, Validator;
 
 class OrdenesAbiertasController extends Controller

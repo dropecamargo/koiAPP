@@ -221,7 +221,6 @@ app || (app = {});
             |-----------------------
             */
             'autorizacionesca(/)': 'getAutorizacionesCaMain',
-            'autorizacionesca/:autorizacionesca(/)': 'getAutorizacionesCaShow',
 
             'bancos(/)': 'getBancosMain',
             'bancos/create(/)': 'getBancosCreate',

@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
 use App\Models\Tecnico\GestionTecnico,App\Models\Tecnico\ConceptoTecnico;
 use App\Models\Base\Tercero;
 use DB, Log, Auth, Datatables;

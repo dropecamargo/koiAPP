@@ -6,11 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\Tesoreria\Facturap1,App\Models\Tesoreria\Facturap2,App\Models\Tesoreria\Facturap3,App\Models\Tesoreria\TipoProveedor,App\Models\Tesoreria\TipoGasto,App\Models\Tesoreria\ReteFuente;
-use App\Models\Inventario\Entrada1, App\Models\Inventario\Entrada2, App\Models\Inventario\Impuesto;
-use App\Models\Contabilidad\ActivoFijo;
-use App\Models\Base\Tercero,App\Models\Base\Documentos,App\Models\Base\Regional;
-use App, View, DB, Log, Datatables, Cache;
+use App\Models\Tesoreria\Facturap1,App\Models\Tesoreria\Facturap2,App\Models\Tesoreria\Facturap3,App\Models\Tesoreria\TipoProveedor,App\Models\Tesoreria\TipoGasto,App\Models\Tesoreria\ReteFuente, App\Models\Inventario\Entrada1, App\Models\Inventario\Entrada2, App\Models\Inventario\Impuesto, App\Models\Contabilidad\ActivoFijo, App\Models\Base\Tercero, App\Models\Base\Documentos, App\Models\Base\Regional;
+use App, View, DB, Log, Datatables;
 
 class Facturap1Controller extends Controller
 {

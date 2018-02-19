@@ -6,9 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
 use App\Models\Tecnico\TipoOrden;
-
 use DB, Log, Cache,Datatables;
 
 class TipoOrdenController extends Controller
@@ -57,11 +55,11 @@ class TipoOrdenController extends Controller
                     $tipoorden->fillBoolean($data);
                     $tipoorden->save();
 
-                    //Forget Cache
-                    Cache::forget( TipoOrden::$key_cache );
-
                     // Commit Transaction
                     DB::commit();
+
+                    //Forget Cache
+                    Cache::forget( TipoOrden::$key_cache );
                     return response()->json(['success' => true, 'id' => $tipoorden->id]);
                 }catch(\Exception $e){
                     DB::rollback();
@@ -121,11 +119,11 @@ class TipoOrdenController extends Controller
                     $tipoorden->fillBoolean($data);
                     $tipoorden->save();
 
-                    //Forget Cache
-                    Cache::forget( TipoOrden::$key_cache );
-                    
                     // Commit Transaction
                     DB::commit();
+
+                    //Forget Cache
+                    Cache::forget( TipoOrden::$key_cache );
                     return response()->json(['success' => true, 'id' => $tipoorden->id]);
                 }catch(\Exception $e){
                     DB::rollback();

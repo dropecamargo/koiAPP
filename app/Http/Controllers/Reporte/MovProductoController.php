@@ -6,9 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
-use App\Models\Base\Sucursal;
-use App\Models\Inventario\Producto, App\Models\Inventario\Inventario;
+use App\Models\Base\Sucursal, App\Models\Inventario\Producto, App\Models\Inventario\Inventario;
 use Excel, View, App, DB;
 
 class MovProductoController extends Controller
@@ -21,7 +19,7 @@ class MovProductoController extends Controller
     public function index(Request $request)
     {
         if ($request->has('type')) {
-            
+
             $query = Inventario::select('inventario.*', 'documentos_nombre', 'sucursal_nombre', 'username', DB::raw("SUBSTRING_INDEX(inventario_fh_elaboro, ' ', 1) as inventario_fecha"), DB::raw("SUBSTRING_INDEX(inventario_fh_elaboro, ' ', -1) as inventario_hora"));
 
             /* Begin filters */
@@ -40,7 +38,7 @@ class MovProductoController extends Controller
                 $query->where('inventario_fh_elaboro', '<=', $request->filter_fecha_fin);
             }
             /* End filters */
-            
+
             $query->join('documentos', 'inventario_documentos', '=', 'documentos.id');
             $query->join('sucursal', 'inventario_sucursal', '=', 'sucursal.id');
             $query->join('tercero', 'inventario_usuario_elaboro', '=', 'tercero.id');

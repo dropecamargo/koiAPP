@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Inventario\Pedido2, App\Models\Inventario\Producto;
 use DB,Log;
+
 class DetallePedidoController extends Controller
 {
     /**
@@ -16,7 +17,7 @@ class DetallePedidoController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
-    {  
+    {
         if ($request->ajax()){
          $pedidoDetalle = pedido2::getPedido2($request->pedido_id);
          return response()->json($pedidoDetalle);
@@ -54,7 +55,7 @@ class DetallePedidoController extends Controller
                     $detalle['Pedido'] = $request->pedido2_pedido1;
                     $detalle['Cantidad'] =  $request->pedido2_cantidad;
                     $detalle['Precio'] =  $request->pedido2_precio;
-                   
+
                     $result = $detallePedido->storePedido2($detalle);
                     if(!$result->success) {
                         DB::rollback();
@@ -125,7 +126,7 @@ class DetallePedidoController extends Controller
                 if(!$pedido2 instanceof Pedido2){
                     return response()->json(['success' => false, 'errors' => 'No es posible definir pedido, por favor verifique la información del pedido o consulte al administrador.']);
                 }
-                
+
                 // Eliminar item detallepedido
                 $pedido2->delete();
 

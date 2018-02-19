@@ -6,10 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
-use App\Models\Inventario\Traslado1,App\Models\Inventario\Traslado2,App\Models\Inventario\TipoTraslado,App\Models\Inventario\Producto,App\Models\Inventario\Lote,App\Models\Inventario\Prodbode,App\Models\Inventario\Inventario,App\Models\Inventario\Rollo;
-use App\Models\Base\Documentos, App\Models\Base\Sucursal;
-use DB,Log,Datatables,Auth, App, View;
+use App\Models\Inventario\Traslado1,App\Models\Inventario\Traslado2,App\Models\Inventario\TipoTraslado,App\Models\Inventario\Producto,App\Models\Inventario\Lote,App\Models\Inventario\Prodbode,App\Models\Inventario\Inventario,App\Models\Inventario\Rollo, App\Models\Base\Documentos, App\Models\Base\Sucursal;
+use DB, Log, Datatables, Auth, App, View;
 
 class TrasladoController extends Controller
 {

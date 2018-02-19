@@ -20,7 +20,7 @@ class SubCategoriaController extends Controller
     {
         if ($request->ajax()) {
             $query = SubCategoria::query();
-        
+
             // Return Datatable
             if ($request->has('datatables')) {
                 return Datatables::of($query)->make(true);
@@ -62,7 +62,7 @@ class SubCategoriaController extends Controller
             if ($subcategoria->isValid($data)) {
                 DB::beginTransaction();
                 try {
-                    
+
                     // Recuperar categoria
                     $categoria = Categoria::find($request->subcategoria_categoria);
                     if (! $categoria instanceof Categoria) {
@@ -76,11 +76,11 @@ class SubCategoriaController extends Controller
                     $subcategoria->subcategoria_categoria = $categoria->id;
                     $subcategoria->save();
 
-                    //Forget cache
-                    Cache::forget( SubCategoria::$key_cache );
-
                     // Commit Transaction
                     DB::commit();
+
+                    //Forget cache
+                    Cache::forget( SubCategoria::$key_cache );
                     return response()->json(['success' => true, 'id' => $subcategoria->id]);
                 }catch(\Exception $e){
                     DB::rollback();
@@ -105,7 +105,7 @@ class SubCategoriaController extends Controller
         if ($request->ajax()) {
             return response()->json($subcategoria);
         }
-        return view('inventario.subcategoria.show', ['subcategoria' => $subcategoria]);   
+        return view('inventario.subcategoria.show', ['subcategoria' => $subcategoria]);
     }
 
     /**
@@ -142,18 +142,18 @@ class SubCategoriaController extends Controller
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar LINEA por favor verifique información o consulte con el administrador']);
                     }
-                    
+
                     //SubCategoria
                     $subcategoria->fill($data);
                     $subcategoria->fillBoolean($data);
                     $subcategoria->subcategoria_categoria = $categoria->id;
                     $subcategoria->save();
 
-                    //Forget cache
-                    Cache::forget( SubCategoria::$key_cache );
-                    
                     // Commit Transaction
                     DB::commit();
+
+                    //Forget cache
+                    Cache::forget( SubCategoria::$key_cache );
                     return response()->json(['success' => true, 'id' => $subcategoria->id]);
                 }catch(\Exception $e){
                     DB::rollback();

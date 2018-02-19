@@ -66,11 +66,11 @@ class ModeloController extends Controller
                     $modelo->modelo_marca = $marca->id;
                     $modelo->save();
 
-                    //Forget cache
-                    Cache::forget( Modelo::$key_cache );
-
                     // Commit Transaction
                     DB::commit();
+
+                    //Forget cache
+                    Cache::forget( Modelo::$key_cache );
                     return response()->json(['success' => true, 'id' => $modelo->id]);
                 }catch(\Exception $e){
                     DB::rollback();
@@ -140,11 +140,11 @@ class ModeloController extends Controller
                     $modelo->modelo_marca = $marca->id;
                     $modelo->save();
 
-                    //Forget cache
-                    Cache::forget( Modelo::$key_cache );
-
                     // Commit Transaction
                     DB::commit();
+
+                    //Forget cache
+                    Cache::forget( Modelo::$key_cache );
                     return response()->json(['success' => true, 'id' => $modelo->id]);
                 }catch(\Exception $e){
                     DB::rollback();

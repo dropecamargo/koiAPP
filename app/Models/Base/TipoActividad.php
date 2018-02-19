@@ -3,10 +3,8 @@
 namespace App\Models\Base;
 
 use Illuminate\Database\Eloquent\Model;
-
-use Validator;
-
 use App\Models\BaseModel;
+use Validator;
 
 class TipoActividad extends BaseModel
 {

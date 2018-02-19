@@ -474,11 +474,13 @@
 		<div class="form-group col-md-6">
 			<label for="tcontacto_nombres" class="control-label">Nombres</label>
 			<input type="text" id="tcontacto_nombres" name="tcontacto_nombres" value="<%- tcontacto_nombres %>" placeholder="Nombres" class="form-control input-sm input-toupper" maxlength="200" required>
+			<div class="help-block with-errors"></div>
 		</div>
 
 		<div class="form-group col-md-6">
 			<label for="tcontacto_apellidos" class="control-label">Apellidos</label>
 			<input type="text" id="tcontacto_apellidos" name="tcontacto_apellidos" value="<%- tcontacto_apellidos %>" placeholder="Apellidos" class="form-control input-sm input-toupper" maxlength="200" required>
+			<div class="help-block with-errors"></div>
 		</div>
     </div>
 
@@ -493,6 +495,7 @@
 						<i class="fa fa-map-signs"></i>
 					</button>
 				</span>
+				<div class="help-block with-errors"></div>
 			</div>
 		</div>
 
@@ -513,6 +516,7 @@
 		<div class="form-group col-md-4">
 			<label for="tcontacto_cargo" class="control-label">Cargo</label>
 			<input type="text" id="tcontacto_cargo" name="tcontacto_cargo" value="<%- tcontacto_cargo %>" placeholder="Cargos" class="form-control input-sm input-toupper" maxlength="200">
+			<div class="help-block with-errors"></div>
 		</div>
 
 		<div class="form-group col-md-4">
@@ -523,6 +527,7 @@
 				</div>
 				<input id="tcontacto_telefono" value="<%- tcontacto_telefono %>" class="form-control input-sm" name="tcontacto_telefono" type="text" data-inputmask="'mask': '(999) 999-99-99  EXT 999'" data-mask required>
 			</div>
+			<div class="help-block with-errors"></div>
 		</div>
 
 		<div class="form-group col-md-4">
@@ -542,20 +547,24 @@
 		<div class="form-group col-md-2">
 			<label for="actividad_codigo" class="control-label">Código</label>
 			<input type="text" id="actividad_codigo" name="actividad_codigo" value="<%- actividad_codigo %>" placeholder="Código" class="form-control input-sm input-toupper" maxlength="11" required>
+			<div class="help-block with-errors"></div>
 		</div>
 		<div class="form-group col-md-8">
 			<label for="actividad_nombre" class="control-label">Nombre</label>
 			<input type="text" id="actividad_nombre" name="actividad_nombre" value="<%- actividad_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" required>
+			<div class="help-block with-errors"></div>
 		</div>
     </div>
     <div class="row">
     	<div class="form-group col-md-2">
 			<label for="actividad_categoria" class="control-label">Categoria</label>
 			<input type="text" id="actividad_categoria" name="actividad_categoria" value="<%- actividad_categoria %>" placeholder="Categoria" class="form-control input-sm input-toupper" maxlength="3">
+			<div class="help-block with-errors"></div>
 		</div>
 		<div class="form-group col-md-2">
 			<label for="actividad_tarifa" class="control-label">% Cree</label><br>
 			<input type="text" id="actividad_tarifa" name="actividad_tarifa" value="<%- actividad_tarifa %>" placeholder="% Cree" class="form-control input-sm spinner-percentage" maxlength="4" required>
+			<div class="help-block with-errors"></div>
 		</div>
 	</div>
 </script>
@@ -565,11 +574,62 @@
 		<div class="form-group col-md-2">
 			<label for="documentos_codigo" class="control-label">Código</label>
 			<input type="text" id="documentos_codigo" name="documentos_codigo" value="<%- documentos_codigo %>" placeholder="Código" class="form-control input-sm input-toupper" maxlength="4" required>
+			<div class="help-block with-errors"></div>
 		</div>
 		<div class="form-group col-md-4">
 			<label for="documentos_nombre" class="control-label">Nombre</label>
 			<input type="text" id="documentos_nombre" name="documentos_nombre" value="<%- documentos_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="25" required>
+			<div class="help-block with-errors"></div>
 		</div>
+    </div>
+</script>
+
+<script type="text/template" id="add-puntoventa-tpl">
+    <div class="row">
+		<div class="form-group col-md-6">
+			<label for="puntoventa_nombre" class="control-label">Nombre</label>
+			<input type="text" id="puntoventa_nombre" name="puntoventa_nombre" value="<%- puntoventa_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="200" required>
+			<div class="help-block with-errors"></div>
+		</div>
+		<div class="form-group col-md-2">
+			<label for="puntoventa_numero" class="control-label">Consecutivo</label>
+			<input type="number" id="puntoventa_numero" name="puntoventa_numero" value="<%- puntoventa_numero %>" class="form-control input-sm" min="0">
+			<div class="help-block with-errors"></div>
+		</div>
+    </div>
+
+    <div class="row">
+		<div class="form-group col-md-2">
+			<label for="puntoventa_prefijo" class="control-label">Prefijo</label>
+			<input type="text" id="puntoventa_prefijo" name="puntoventa_prefijo" value="<%- puntoventa_prefijo %>" placeholder="Prefijo" class="form-control input-sm input-toupper" maxlength="4">
+			<div class="help-block with-errors"></div>
+		</div>
+
+		<div class="form-group col-md-4">
+			<label for="puntoventa_resolucion_dian" class="control-label">Resolución de facturación DIAN</label>
+			<input type="text" id="puntoventa_resolucion_dian" name="puntoventa_resolucion_dian" value="<%- puntoventa_resolucion_dian %>" placeholder="Resolución de facturación DIAN" class="form-control input-sm input-toupper" maxlength="200">
+			<div class="help-block with-errors"></div>
+		</div>
+		<div class="col-md-3"><br>
+	    	<label class="checkbox-inline" for="puntoventa_activo">
+				<input type="checkbox" id="puntoventa_activo" name="puntoventa_activo" value="puntoventa_activo" <%- parseInt(puntoventa_activo) ? 'checked': ''%>> Activo
+			</label>
+		</div>
+    </div>
+</script>
+
+<script type="text/template" id="add-regional-tpl">
+    <div class="row">
+        <div class="form-group col-md-8">
+            <label for="regional_nombre" class="control-label">Nombre</label>
+            <input type="text" id="regional_nombre" name="regional_nombre" value="<%- regional_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="50" required>
+            <div class="help-block with-errors"></div>
+        </div>
+        <div class="form-group col-md-2"><br>
+            <label class="checkbox-inline" for="regional_activo">
+                <input type="checkbox" id="regional_activo" name="regional_activo" value="regional_activo" <%- parseInt(regional_activo) ? 'checked': ''%>> Activo
+            </label>
+        </div>
     </div>
 </script>
 
@@ -578,6 +638,7 @@
 		<div class="form-group col-md-6">
 			<label for="tipoactividad_nombre" class="control-label">Nombre</label>
 			<input type="text" id="tipoactividad_nombre" name="tipoactividad_nombre" value="<%- tipoactividad_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="25" required>
+			<div class="help-block with-errors"></div>
 		</div><br>
 
     	<div class="form-group col-md-1 text-left">
@@ -605,82 +666,33 @@
 		</div>
 	</div>
 </script>
-<script type="text/template" id="add-tipoajuste-tpl">
-    <div class="row">
-		<div class="col-md-2">
-			<label for="tipoajuste_sigla" class="control-label">Sigla</label>
-			<input type="text" id="tipoajuste_sigla" name="tipoajuste_sigla" value="<%- tipoajuste_sigla %>" placeholder="Sigla" class="form-control input-sm input-toupper" maxlength="3" required>
-		</div>
-		<div class="col-md-6">
-			<label for="tipoajuste_nombre" class="control-label">Nombre</label>
-			<input type="text" id="tipoajuste_nombre" name="tipoajuste_nombre" value="<%- tipoajuste_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="25" required>
-		</div>
 
-	</div>
-	<div class="row">
-		<div class="col-md-2">
-			<label for="tipoajuste_tipo" class="control-label">Tipo</label>
-		 	<select name="tipoajuste_tipo" id="tipoajuste_tipo" class="form-control select2-default" required>
-                    @foreach(config('koi.tipoInventario') as $key => $value)
-                        <option value="{{ $key }}" <%- tipoajuste_tipo == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
-                    @endforeach
-            </select>
-		</div><br>
-    	<div class="col-md-3">
-	    	<label class="checkbox-inline" for="tipoajuste_activo">
-				<input type="checkbox" id="tipoajuste_activo" name="tipoajuste_activo" value="tipoajuste_activo" <%- parseInt(tipoajuste_activo) ? 'checked': ''%>> Activo
-			</label>
-		</div>
-	</div>
-</script>
-<script type="text/template" id="add-tipotraslado-tpl">
+<script type="text/template" id="add-ubicacion-tpl">
     <div class="row">
-		<div class="col-md-2">
-			<label for="tipotraslado_sigla" class="control-label">Sigla</label>
-			<input type="text" id="tipotraslado_sigla" name="tipotraslado_sigla" value="<%- tipotraslado_sigla %>" placeholder="Sigla" class="form-control input-sm input-toupper" maxlength="3" required>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-md-6">
-			<label for="tipotraslado_nombre" class="control-label">Nombre</label>
-			<input type="text" id="tipotraslado_nombre" name="tipotraslado_nombre" value="<%- tipotraslado_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="25" required>
-		</div><br>
-    	<div class="col-md-3">
-	    	<label class="checkbox-inline" for="tipotraslado_activo">
-				<input type="checkbox" id="tipotraslado_activo" name="tipotraslado_activo" value="tipotraslado_activo" <%- parseInt(tipotraslado_activo) ? 'checked': ''%>> Activo
-			</label>
-		</div>
-	</div>
-</script>
-
-<script type="text/template" id="add-puntoventa-tpl">
-    <div class="row">
-		<div class="form-group col-md-6">
-			<label for="puntoventa_nombre" class="control-label">Nombre</label>
-			<input type="text" id="puntoventa_nombre" name="puntoventa_nombre" value="<%- puntoventa_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="200" required>
-		</div>
-		<div class="form-group col-md-2">
-			<label for="puntoventa_numero" class="control-label">Consecutivo</label>
-			<input type="number" id="puntoventa_numero" name="puntoventa_numero" value="<%- puntoventa_numero %>" class="form-control input-sm" min="0">
-		</div>
+        <div class="form-group col-md-6">
+            <label for="ubicacion_nombre" class="control-label">Nombre</label>
+            <input type="text" id="ubicacion_nombre" name="ubicacion_nombre" value="<%- ubicacion_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="25" required>
+			<div class="help-block with-errors"></div>
+        </div>
+        <div class="form-group col-md-2"><br>
+            <label class="checkbox-inline" for="ubicacion_activo">
+                <input type="checkbox" id="ubicacion_activo" name="ubicacion_activo" value="ubicacion_activo" <%- parseInt(ubicacion_activo) ? 'checked': ''%>> Activo
+            </label>
+        </div>
     </div>
-
-    <div class="row">
-		<div class="form-group col-md-2">
-			<label for="puntoventa_prefijo" class="control-label">Prefijo</label>
-			<input type="text" id="puntoventa_prefijo" name="puntoventa_prefijo" value="<%- puntoventa_prefijo %>" placeholder="Prefijo" class="form-control input-sm input-toupper" maxlength="4">
-		</div>
-
-		<div class="form-group col-md-4">
-			<label for="puntoventa_resolucion_dian" class="control-label">Resolución de facturación DIAN</label>
-			<input type="text" id="puntoventa_resolucion_dian" name="puntoventa_resolucion_dian" value="<%- puntoventa_resolucion_dian %>" placeholder="Resolución de facturación DIAN" class="form-control input-sm input-toupper" maxlength="200">
-		</div>
-		<div class="col-md-3"><br>
-	    	<label class="checkbox-inline" for="puntoventa_activo">
-				<input type="checkbox" id="puntoventa_activo" name="puntoventa_activo" value="puntoventa_activo" <%- parseInt(puntoventa_activo) ? 'checked': ''%>> Activo
-			</label>
-		</div>
-    </div>
+    <% if( ubicacion_select != "false" ){ %>
+	    <div class="row">
+	        <div class="form-group col-md-4">
+	            <label for="ubicacion_sucursal" class="control-label">Sucursal</label>
+	            <select name="ubicacion_sucursal" id="ubicacion_sucursal" class="form-control select2-default-clear" required>
+	                @foreach( App\Models\Base\Sucursal::getSucursales() as $key => $value)
+	                    <option value="{{ $key }}" <%- ubicacion_sucursal == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
+	                @endforeach
+	            </select>
+				<div class="help-block with-errors"></div>
+	        </div>
+	    </div>
+    <% } %>
 </script>
 
 <script type="text/template" id="contact-item-list-tpl">
@@ -1014,6 +1026,55 @@
     </div>
 </script>
 
+<script type="text/template" id="add-tipoajuste-tpl">
+	<div class="row">
+		<div class="col-md-2">
+			<label for="tipoajuste_sigla" class="control-label">Sigla</label>
+			<input type="text" id="tipoajuste_sigla" name="tipoajuste_sigla" value="<%- tipoajuste_sigla %>" placeholder="Sigla" class="form-control input-sm input-toupper" maxlength="3" required>
+		</div>
+		<div class="col-md-6">
+			<label for="tipoajuste_nombre" class="control-label">Nombre</label>
+			<input type="text" id="tipoajuste_nombre" name="tipoajuste_nombre" value="<%- tipoajuste_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="25" required>
+		</div>
+
+	</div>
+	<div class="row">
+		<div class="col-md-2">
+			<label for="tipoajuste_tipo" class="control-label">Tipo</label>
+			<select name="tipoajuste_tipo" id="tipoajuste_tipo" class="form-control select2-default" required>
+				@foreach(config('koi.tipoInventario') as $key => $value)
+				<option value="{{ $key }}" <%- tipoajuste_tipo == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
+				@endforeach
+			</select>
+		</div><br>
+		<div class="col-md-3">
+			<label class="checkbox-inline" for="tipoajuste_activo">
+				<input type="checkbox" id="tipoajuste_activo" name="tipoajuste_activo" value="tipoajuste_activo" <%- parseInt(tipoajuste_activo) ? 'checked': ''%>> Activo
+			</label>
+		</div>
+	</div>
+</script>
+
+<script type="text/template" id="add-tipotraslado-tpl">
+	<div class="row">
+		<div class="col-md-2">
+			<label for="tipotraslado_sigla" class="control-label">Sigla</label>
+			<input type="text" id="tipotraslado_sigla" name="tipotraslado_sigla" value="<%- tipotraslado_sigla %>" placeholder="Sigla" class="form-control input-sm input-toupper" maxlength="3" required>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-6">
+			<label for="tipotraslado_nombre" class="control-label">Nombre</label>
+			<input type="text" id="tipotraslado_nombre" name="tipotraslado_nombre" value="<%- tipotraslado_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="25" required>
+		</div><br>
+		<div class="col-md-3">
+			<label class="checkbox-inline" for="tipotraslado_activo">
+				<input type="checkbox" id="tipotraslado_activo" name="tipotraslado_activo" value="tipotraslado_activo" <%- parseInt(tipotraslado_activo) ? 'checked': ''%>> Activo
+			</label>
+		</div>
+	</div>
+</script>
+
 {{-- Inventarios--}}
 <script type="text/template" id="add-categoria-tpl">
 	<div class="row">
@@ -1039,6 +1100,7 @@
 		</div>
     </div>
 </script>
+
 <script type="text/template" id="add-subcategoria-tpl">
 	<div class="row">
 		<div class="form-group col-md-6">
@@ -1200,6 +1262,7 @@
 		</div>
     </div>
 </script>
+
 <script type="text/template" id="add-unidadnegocio-tpl">
     <div class="row">
 		<div class="form-group col-md-6">
@@ -1291,6 +1354,7 @@
     	</div>
     </td>
 </script>
+
 {{-- Comercial --}}
 <script type="text/template" id="add-conceptocom-tpl">
 	<div class="row">
@@ -1305,12 +1369,14 @@
 		</div>
     </div>
 </script>
+
 {{-- Cartera --}}
 <script type="text/template" id="add-banco-tpl">
 	<div class="row">
 		<div class="form-group col-md-8">
 			<label for="banco_nombre" class="control-label">Nombre</label>
 			<input type="text" id="banco_nombre" name="banco_nombre" value="<%- banco_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="25" required>
+			<div class="help-block with-errors"></div>
 		</div>
 		<div class="form-group col-md-2 col-xs-8 col-sm-3">
 			<br><label class="checkbox-inline" for="banco_activo">
@@ -1319,53 +1385,17 @@
 		</div>
     </div>
 </script>
+
 <script type="text/template" id="add-causa-tpl">
 	<div class="row">
 		<div class="form-group col-md-8">
 			<label for="causal_nombre" class="control-label">Nombre</label>
 			<input type="text" id="causal_nombre" name="causal_nombre" value="<%- causal_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="25" required>
+			<div class="help-block with-errors"></div>
 		</div>
 		<div class="form-group col-md-2 col-xs-8 col-sm-3">
 			<br><label class="checkbox-inline" for="causal_activo">
 				<input type="checkbox" id="causal_activo" name="causal_activo" value="causal_activo" <%- parseInt(causal_activo) ? 'checked': ''%>> Activo
-			</label>
-		</div>
-    </div>
-</script>
-<script type="text/template" id="add-conceptocob-tpl">
-	<div class="row">
-		<div class="form-group col-md-8">
-			<label for="conceptocob_nombre" class="control-label">Nombre</label>
-			<input type="text" id="conceptocob_nombre" name="conceptocob_nombre" value="<%- conceptocob_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="25" required>
-		</div>
-		<div class="form-group col-md-2 col-xs-8 col-sm-3">
-			<br><label class="checkbox-inline" for="conceptocob_activo">
-				<input type="checkbox" id="conceptocob_activo" name="conceptocob_activo" value="conceptocob_activo" <%- parseInt(conceptocob_activo) ? 'checked': ''%>> Activo
-			</label>
-		</div>
-    </div>
-</script>
-
-<script type="text/template" id="add-mediopago-tpl">
-	<div class="row">
-		<div class="form-group col-md-5">
-			<label for="mediopago_nombre" class="control-label">Nombre</label>
-			<input type="text" id="mediopago_nombre" name="mediopago_nombre" value="<%- mediopago_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="25" required>
-		</div>
-
-		<div class="form-group col-md-1 col-xs-8 col-sm-2">
-			<br><label class="checkbox-inline" for="mediopago_activo">
-				<input type="checkbox" id="mediopago_activo" name="mediopago_activo" value="mediopago_activo" <%- parseInt(mediopago_activo) ? 'checked': ''%>> Activo
-			</label>
-		</div>
-		<div class="form-group col-md-1 col-xs-8 col-sm-2">
-			<br><label class="checkbox-inline" for="mediopago_ef">
-				<input type="checkbox" id="mediopago_ef" name="mediopago_ef" value="mediopago_ef" <%- parseInt(mediopago_ef) ? 'checked': ''%>> Efectivo
-			</label>
-		</div>
-		<div class="form-group col-md-1 col-xs-8 col-sm-2">
-			<br><label class="checkbox-inline" for="mediopago_ch">
-				<input type="checkbox" id="mediopago_ch" name="mediopago_ch" value="mediopago_ch" <%- parseInt(mediopago_ch) ? 'checked': ''%>> Cheque
 			</label>
 		</div>
     </div>
@@ -1376,10 +1406,12 @@
 		<div class="form-group col-md-5">
 			<label for="cuentabanco_nombre" class="control-label">Nombre</label>
 			<input type="text" id="cuentabanco_nombre" name="cuentabanco_nombre" value="<%- cuentabanco_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="50" required>
+			<div class="help-block with-errors"></div>
 		</div>
 		<div class="form-group col-md-3">
 			<label for="cuentabanco_numero" class="control-label">Número</label>
 			<input type="text" id="cuentabanco_numero" name="cuentabanco_numero" value="<%- cuentabanco_numero %>" placeholder="Número" class="form-control input-sm input-toupper" maxlength="25" required>
+			<div class="help-block with-errors"></div>
 		</div>
 	</div>
 	<div class="row">
@@ -1390,11 +1422,62 @@
 					<option value="{{ $key }}" <%- cuentabanco_banco == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
 				@endforeach
 			</select>
+			<div class="help-block with-errors"></div>
 		</div>
-
 		<div class="form-group col-md-2 col-xs-8 col-sm-3">
 			<br><label class="checkbox-inline" for="cuentabanco_activa">
 				<input type="checkbox" id="cuentabanco_activa" name="cuentabanco_activa" value="cuentabanco_activa" <%- parseInt(cuentabanco_activa) ? 'checked': ''%>> Activo
+			</label>
+		</div>
+	</div>
+</script>
+
+<script type="text/template" id="add-conceptonota-tpl">
+	<div class="row">
+		<div class="form-group col-md-8">
+			<label for="conceptonota_nombre" class="control-label">Nombre</label>
+			<input type="text" id="conceptonota_nombre" name="conceptonota_nombre" value="<%- conceptonota_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="25" required>
+			<div class="help-block with-errors"></div>
+		</div>
+		<div class="form-group col-md-2 col-xs-8 col-sm-3">
+			<br><label class="checkbox-inline" for="conceptonota_activo">
+				<input type="checkbox" id="conceptonota_activo" name="conceptonota_activo" value="conceptonota_activo" <%- parseInt(conceptonota_activo) ? 'checked': ''%>> Activo
+			</label>
+		</div>
+	</div>
+</script>
+
+<script type="text/template" id="add-conceptocob-tpl">
+	<div class="row">
+		<div class="form-group col-md-8">
+			<label for="conceptocob_nombre" class="control-label">Nombre</label>
+			<input type="text" id="conceptocob_nombre" name="conceptocob_nombre" value="<%- conceptocob_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="25" required>
+			<div class="help-block with-errors"></div>
+		</div>
+		<div class="form-group col-md-2 col-xs-8 col-sm-3">
+			<br><label class="checkbox-inline" for="conceptocob_activo">
+				<input type="checkbox" id="conceptocob_activo" name="conceptocob_activo" value="conceptocob_activo" <%- parseInt(conceptocob_activo) ? 'checked': ''%>> Activo
+			</label>
+		</div>
+    </div>
+</script>
+
+<script type="text/template" id="add-conceptoajustec-tpl">
+	<div class="row">
+		<div class="form-group col-md-6 col-xs-12 col-sm-12">
+			<label for="conceptoajustec_nombre" class="control-label">Nombre</label>
+			<input type="text" id="conceptoajustec_nombre" name="conceptoajustec_nombre" value="<%- conceptoajustec_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="25" required>
+			<div class="help-block with-errors"></div>
+		</div>
+		<div class="form-group col-md-2 col-xs-6 col-sm-6">
+			<br><label class="checkbox-inline" for="conceptoajustec_activo">
+				<input type="checkbox" id="conceptoajustec_activo" name="conceptoajustec_activo" value="conceptoajustec_activo" <%- parseInt(conceptoajustec_activo) ? 'checked': ''%>> Activo
+			</label>
+		</div>
+
+		<div class="form-group col-md-2 col-xs-6 col-sm-6">
+			<br><label class="checkbox-inline" for="conceptoajustec_sumas_iguales">
+				<input type="checkbox" id="conceptoajustec_sumas_iguales" name="conceptoajustec_sumas_iguales" value="conceptoajustec_sumas_iguales" <%- parseInt(conceptoajustec_sumas_iguales) ? 'checked': ''%>> Sumas igual
 			</label>
 		</div>
 	</div>
@@ -1405,6 +1488,7 @@
 		<div class="form-group col-md-4">
 			<label for="conceptosrc_nombre" class="control-label">Nombre</label>
 			<input type="text" id="conceptosrc_nombre" name="conceptosrc_nombre" value="<%- conceptosrc_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="25" required>
+			<div class="help-block with-errors"></div>
 		</div>
 		<div class="form-group col-md-4">
 			<label for="conceptosrc_documentos" class="control-label">Documento</label>
@@ -1418,6 +1502,32 @@
 		<div class="form-group col-md-2 col-xs-8 col-sm-3">
 			<br><label class="checkbox-inline" for="conceptosrc_activo">
 				<input type="checkbox" id="conceptosrc_activo" name="conceptosrc_activo" value="conceptosrc_activo" <%- parseInt(conceptosrc_activo) ? 'checked': ''%>> Activo
+			</label>
+		</div>
+	</div>
+</script>
+
+<script type="text/template" id="add-mediopago-tpl">
+	<div class="row">
+		<div class="form-group col-md-5">
+			<label for="mediopago_nombre" class="control-label">Nombre</label>
+			<input type="text" id="mediopago_nombre" name="mediopago_nombre" value="<%- mediopago_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="25" required>
+			<div class="help-block with-errors"></div>
+		</div>
+
+		<div class="form-group col-md-1 col-xs-8 col-sm-2">
+			<br><label class="checkbox-inline" for="mediopago_activo">
+				<input type="checkbox" id="mediopago_activo" name="mediopago_activo" value="mediopago_activo" <%- parseInt(mediopago_activo) ? 'checked': ''%>> Activo
+			</label>
+		</div>
+		<div class="form-group col-md-1 col-xs-8 col-sm-2">
+			<br><label class="checkbox-inline" for="mediopago_ef">
+				<input type="checkbox" id="mediopago_ef" name="mediopago_ef" class="change-check" value="mediopago_ef" <%- parseInt(mediopago_ef) ? 'checked': ''%>> Efectivo
+			</label>
+		</div>
+		<div class="form-group col-md-1 col-xs-8 col-sm-2">
+			<br><label class="checkbox-inline" for="mediopago_ch">
+				<input type="checkbox" id="mediopago_ch" name="mediopago_ch" class="change-check" value="mediopago_ch" <%- parseInt(mediopago_ch) ? 'checked': ''%>> Cheque
 			</label>
 		</div>
 	</div>
@@ -1515,20 +1625,6 @@
     <td><%- window.Misc.currency(factura3_saldo) %></td>
 </script>
 
-<script type="text/template" id="add-conceptonota-tpl">
-	<div class="row">
-		<div class="form-group col-md-8">
-			<label for="conceptonota_nombre" class="control-label">Nombre</label>
-			<input type="text" id="conceptonota_nombre" name="conceptonota_nombre" value="<%- conceptonota_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="25" required>
-		</div>
-		<div class="form-group col-md-2 col-xs-8 col-sm-3">
-			<br><label class="checkbox-inline" for="conceptonota_activo">
-				<input type="checkbox" id="conceptonota_activo" name="conceptonota_activo" value="conceptonota_activo" <%- parseInt(conceptonota_activo) ? 'checked': ''%>> Activo
-			</label>
-		</div>
-	</div>
-</script>
-
 <script type="text/template" id="add-seriesprodbode-tpl">
     <table id="prodbod-search-table" class="table table-striped">
         <tbody>
@@ -1564,25 +1660,6 @@
         </tbody>
 </script>
 
-<script type="text/template" id="add-conceptoajustec-tpl">
-	<div class="row">
-		<div class="form-group col-md-6 col-xs-12 col-sm-12">
-			<label for="conceptoajustec_nombre" class="control-label">Nombre</label>
-			<input type="text" id="conceptoajustec_nombre" name="conceptoajustec_nombre" value="<%- conceptoajustec_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="25" required>
-		</div>
-		<div class="form-group col-md-2 col-xs-6 col-sm-6">
-			<br><label class="checkbox-inline" for="conceptoajustec_activo">
-				<input type="checkbox" id="conceptoajustec_activo" name="conceptoajustec_activo" value="conceptoajustec_activo" <%- parseInt(conceptoajustec_activo) ? 'checked': ''%>> Activo
-			</label>
-		</div>
-
-		<div class="form-group col-md-2 col-xs-6 col-sm-6">
-			<br><label class="checkbox-inline" for="conceptoajustec_sumas_iguales">
-				<input type="checkbox" id="conceptoajustec_sumas_iguales" name="conceptoajustec_sumas_iguales" value="conceptoajustec_sumas_iguales" <%- parseInt(conceptoajustec_sumas_iguales) ? 'checked': ''%>> Sumas igual
-			</label>
-		</div>
-	</div>
-</script>
 
 <script type="text/template" id="add-conceptoajustep-tpl">
 	<div class="row">
@@ -1687,6 +1764,7 @@
 		</div>
     </div>
 </script>
+
 <script type="text/template" id="add-tercero-cartera-tpl">
 	<td>
 		<% if(documentos_codigo == 'FACT'){ %>
@@ -1711,6 +1789,7 @@
     	<% } %>
     </td>
 </script>
+
 <script type="text/template" id="show-facturap3-tpl">
 	<td>
 		<a href="<%- window.Misc.urlFull( Route.route('facturasp.show', {facturasp: facturap3_facturap1} ))%>" title="Ver documento" target="_blank"><%- tipoproveedor_nombre %></a>
@@ -1723,6 +1802,7 @@
     <td><%- window.Misc.currency(facturap3_valor) %></td>
     <td><%- window.Misc.currency(facturap3_saldo) %></td>
 </script>
+
 <script type="text/template" id="tfoot-tercero-deuda">
     <tr>
         <td colspan="6"></td>
@@ -1876,32 +1956,6 @@
 </script>
 
 {{--template Ubicacion--}}
-<script type="text/template" id="add-ubicacion-tpl">
-    <div class="row">
-        <div class="form-group col-md-6">
-            <label for="ubicacion_nombre" class="control-label">Nombre</label>
-            <input type="text" id="ubicacion_nombre" name="ubicacion_nombre" value="<%- ubicacion_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="25" required>
-        </div><br>
-        <div class="form-group col-md-2">
-            <label class="checkbox-inline" for="ubicacion_activo">
-                <input type="checkbox" id="ubicacion_activo" name="ubicacion_activo" value="ubicacion_activo" <%- parseInt(ubicacion_activo) ? 'checked': ''%>> Activo
-            </label>
-        </div>
-    </div>
-    <% if( ubicacion_select != "false" ){ %>
-	    <div class="row">
-	        <div class="form-group col-md-4">
-	            <label for="ubicacion_sucursal" class="control-label">Sucursal</label>
-	            <select name="ubicacion_sucursal" id="ubicacion_sucursal" class="form-control select2-default-clear" required >
-	                @foreach( App\Models\Base\Sucursal::getSucursales() as $key => $value)
-	                    <option value="{{ $key }}" <%- ubicacion_sucursal == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
-	                @endforeach
-	            </select>
-	        </div>
-	    </div>
-    <% } %>
-</script>
-
 <script type="text/template" id="add-factura-item-tpl">
     <%if(edit){ %>
         <td class="text-center">
@@ -1922,6 +1976,7 @@
     <td><%- factura2_iva_porcentaje %></td>
     <td><%- window.Misc.currency(factura2_subtotal) %></td>
 </script>
+
 <script type="text/template" id="add-afacturar-item-tpl">
     <td><a href="#" class="click-render-item" data-id = "<%- id %>"><%- producto_serie %></a></td>
     <td><%- producto_nombre %></td>

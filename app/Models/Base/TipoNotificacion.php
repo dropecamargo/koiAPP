@@ -16,6 +16,11 @@ class TipoNotificacion extends Model
 
     public $timestamps = false;
 
+    /**
+     * The key used by cache.
+     *
+     * @var static string
+     */
     public static $key_cache = '_typenotification';
 
     public static function getTypes(){

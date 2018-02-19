@@ -6,10 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
-use DB, Log, Datatables, Cache;
-
 use App\Models\Inventario\Unidad;
+use DB, Log, Datatables, Cache;
 
 class UnidadesMedidaController extends Controller
 {
@@ -56,11 +54,11 @@ class UnidadesMedidaController extends Controller
                     $unidad->fillBoolean($data);
                     $unidad->save();
 
-                    // Forget cache
-                    Cache::forget( Unidad::$key_cache );
-
                     // Commit Transaction
                     DB::commit();
+
+                    // Forget cache
+                    Cache::forget( Unidad::$key_cache );
                     return response()->json(['success' => true, 'id' => $unidad->id]);
                 }catch(\Exception $e){
                     DB::rollback();
@@ -121,11 +119,11 @@ class UnidadesMedidaController extends Controller
                     $unidad->fillBoolean($data);
                     $unidad->save();
 
-                    // Forget cache
-                    Cache::forget( Unidad::$key_cache );
-                    
                     // Commit Transaction
                     DB::commit();
+
+                    // Forget cache
+                    Cache::forget( Unidad::$key_cache );
                     return response()->json(['success' => true, 'id' => $unidad->id]);
                 }catch(\Exception $e){
                     DB::rollback();

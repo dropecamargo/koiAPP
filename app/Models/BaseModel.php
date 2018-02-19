@@ -5,13 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Base\Bitacora;
 use Auth;
+
 class BaseModel extends Model
 {
 
 	protected $nullable = [];
 
 	protected $boolean = [];
-	
+
 	protected $bitacora = [];
 
 	/**
@@ -51,7 +52,7 @@ class BaseModel extends Model
 	}
 
 	/**
-	* Set bitacora fields 
+	* Set bitacora fields
 	* @param object $model
 	*/
 	public function bitacora($model, array $attributes,$documento_id)

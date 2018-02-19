@@ -6,9 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
-use App\Models\Comercial\AutorizaComercial;
-use App\Models\Comercial\Pedidoc1, App\Models\Comercial\Pedidoc2;
+use App\Models\Comercial\AutorizaComercial, App\Models\Comercial\Pedidoc1, App\Models\Comercial\Pedidoc2;
 use DB, Log, Auth;
 
 class AutorizaComercialController extends Controller

@@ -3,7 +3,6 @@
 namespace App\Models\Contabilidad;
 
 use Illuminate\Database\Eloquent\Model;
-
 use Validator, DB;
 
 class Asiento extends Model

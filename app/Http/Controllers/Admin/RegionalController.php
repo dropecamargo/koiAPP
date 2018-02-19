@@ -7,9 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Base\Regional;
-
 use DB, Log, Datatables, Cache;
-
 
 class RegionalController extends Controller
 {
@@ -57,11 +55,11 @@ class RegionalController extends Controller
                     $regional->fillBoolean($data);
                     $regional->save();
 
-                    // Forget cache
-                    Cache::forget( Regional::$key_cache );
-
                     // Commit Transaction
                     DB::commit();
+
+                    // Forget cache
+                    Cache::forget( Regional::$key_cache );
                     return response()->json(['success' => true, 'id' =>$regional->id]);
                 }catch(\Exception $e){
                     DB::rollback();
@@ -122,11 +120,11 @@ class RegionalController extends Controller
                     $regional->fillBoolean($data);
                     $regional->save();
 
-                    // Forget cache
-                    Cache::forget( Regional::$key_cache );
-
                     // Commit Transaction
                     DB::commit();
+                    
+                    // Forget cache
+                    Cache::forget( Regional::$key_cache );
                     return response()->json(['success' => true, 'id' => $regional->id]);
                 }catch(\Exception $e){
                     DB::rollback();

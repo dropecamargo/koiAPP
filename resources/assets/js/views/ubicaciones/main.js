@@ -19,7 +19,6 @@ app || (app = {});
         initialize : function() {
 
             this.$ubicacionesSearchTable = this.$('#ubicaciones-search-table');
-
             this.$ubicacionesSearchTable.DataTable({
                 dom: "<'row'<'col-sm-4'B><'col-sm-4 text-center'l><'col-sm-4'f>>" +
                     "<'row'<'col-sm-12'tr>>" +
@@ -35,9 +34,9 @@ app || (app = {});
                 },
                 columns: [
                     { data: 'id', name: 'id' },
-                    { data: 'ubicacion_nombre', name: 'ubicacion_nombre' },
-                    { data: 'sucursal_nombre', name: 'sucursal_nombre'},
-                    { data: 'ubicacion_activo', name: 'ubicacion_activo'}
+                    { data: 'ubicacion_nombre', name: 'ubicacion.ubicacion_nombre' },
+                    { data: 'sucursal_nombre', name: 'sucursal.sucursal_nombre'},
+                    { data: 'ubicacion_activo', name: 'ubicacion.ubicacion_activo'}
                 ],
                 buttons: [
                     {
@@ -68,5 +67,4 @@ app || (app = {});
             });
         }
     });
-
 })(jQuery, this, this.document);

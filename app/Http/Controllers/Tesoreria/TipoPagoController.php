@@ -6,8 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\Tesoreria\TipoPago;
-use App\Models\Base\Documentos;
+use App\Models\Tesoreria\TipoPago, App\Models\Base\Documentos;
 use DB, Log, Datatables, Cache;
 
 class TipoPagoController extends Controller
@@ -65,11 +64,11 @@ class TipoPagoController extends Controller
                     $tipopago->fillBoolean($data);
                     $tipopago->save();
 
-                    // Forget cache
-                    Cache::forget( TipoPago::$key_cache );
-
                     // Commit Transaction
                     DB::commit();
+
+                    // Forget cache
+                    Cache::forget( TipoPago::$key_cache );
                     return response()->json(['success' => true, 'id' =>$tipopago->id]);
                 } catch (\Exception $e) {
                     DB::rollback();
@@ -139,11 +138,11 @@ class TipoPagoController extends Controller
                     $tipopago->fillBoolean($data);
                     $tipopago->save();
 
-                    // Forget cache
-                    Cache::forget( TipoPago::$key_cache );
-
                     // Commit Transaction
                     DB::commit();
+
+                    // Forget cache
+                    Cache::forget( TipoPago::$key_cache );
                     return response()->json(['success' => true, 'id' =>$tipopago->id]);
                 } catch (\Exception $e) {
                     DB::rollback();

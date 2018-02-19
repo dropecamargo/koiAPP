@@ -6,9 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
-use App\Models\Base\Tercero;
-use App\Models\Cartera\Ajustec2, App\Models\Cartera\Factura1, App\Models\Cartera\Anticipo1, App\Models\Cartera\Recibo1, App\Models\Cartera\Nota1, App\Models\Cartera\ChposFechado1, App\Models\Cartera\ChDevuelto;
+use App\Models\Base\Tercero, App\Models\Cartera\Ajustec2, App\Models\Cartera\Factura1, App\Models\Cartera\Anticipo1, App\Models\Cartera\Recibo1, App\Models\Cartera\Nota1, App\Models\Cartera\ChposFechado1, App\Models\Cartera\ChDevuelto;
 use Excel, View, App, DB;
 
 class HistorialClienteController extends Controller
@@ -34,7 +32,7 @@ class HistorialClienteController extends Controller
                 $ajusteCartera = Ajustec2::historyClientReport($tercero, $historyClient, $i);
                 $historyClient = $ajusteCartera->ajusteCartera;
                 $i = $ajusteCartera->position;
-                
+
                 // querie factura
                 $factura = Factura1::historyClientReport($tercero, $historyClient, $i);
                 $historyClient = $factura->factura;
@@ -60,14 +58,10 @@ class HistorialClienteController extends Controller
                 $historyClient = $cheque->cheque;
                 $i = $cheque->position;
 
-                // querie cheques devueltos 
+                // querie cheques devueltos
                 $chequeDevuelto = ChDevuelto::historyClientReport($tercero, $historyClient, $i);
                 $historyClient = $chequeDevuelto->chequeDevuelto;
                 $i = $chequeDevuelto->position;
-
-                // $historyClient = $query->get();
-                // if ($request->has('filter_fecha_inicio') && $request->has('filter_fecha_fin')) {
-                // }
             }
             /* End filters */
 

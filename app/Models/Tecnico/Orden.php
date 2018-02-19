@@ -3,7 +3,6 @@
 namespace App\Models\Tecnico;
 
 use Illuminate\Database\Eloquent\Model;
-
 use App\Models\BaseModel;
 use App\Models\Inventario\Prodbode, App\Models\Inventario\Producto, App\Models\Inventario\Lote, App\Models\Inventario\Inventario, App\Models\Base\Sucursal, App\Models\Base\Documentos;
 use Validator, DB;
@@ -31,7 +30,7 @@ class Orden extends BaseModel
 
     public function isValid($data)
     {
-        $rules = [  
+        $rules = [
         	'orden_tipoorden'=>'required',
         	'orden_solicitante'=>'required',
         	'orden_tercero'=>'required',
@@ -65,7 +64,7 @@ class Orden extends BaseModel
         $query->join('prioridad', 'orden_prioridad', '=', 'prioridad.id');
         $query->join('sitio', 'orden_sitio', '=', 'sitio.id');
         $query->leftJoin('producto', 'orden_serie', '=', 'producto.id');
-     
+
         $query->where('orden.id', $id);
         return $query->first();
     }
@@ -76,7 +75,7 @@ class Orden extends BaseModel
         $response = new \stdClass();
         $response->success = true;
         $response->numFacturado = 0;
-        
+
         // Validar remrepu
         $remrepu = RemRepu::where('remrepu1_orden', $id)->where('remrepu1_tipo', 'R')->get();
         if( count($remrepu) <= 0){
@@ -92,7 +91,7 @@ class Orden extends BaseModel
                 $response->errors = 'La legalizacion no esta completa, por favor verifique la información para poder cerrar la orden.';
                 return $response;
             }
-            $response->numFacturado +=  $remrepu2->remrepu2_facturado; 
+            $response->numFacturado +=  $remrepu2->remrepu2_facturado;
         }
 
         // Validar vistia minima

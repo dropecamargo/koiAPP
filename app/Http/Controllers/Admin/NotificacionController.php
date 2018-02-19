@@ -132,10 +132,11 @@ class NotificacionController extends Controller
                 $notification->notificacion_fh_visto = date('Y-m-d H:m:s');
                 $notification->save();
 
+                // Commit
+                DB::commit();
+                
                 // Forget cache
                 Cache::forget( Notificacion::cache() );
-
-                DB::commit();
                 return response()->json(['success' => true, 'id' => $notification->id, 'url' => $notification->notificacion_url]);
             }catch(\Exception $e){
                 DB::rollback();

@@ -6,10 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
-use DB, Log, Datatables, Cache;
-
 use App\Models\Base\Actividad;
+use DB, Log, Datatables, Cache;
 
 class ActividadController extends Controller
 {
@@ -29,7 +27,7 @@ class ActividadController extends Controller
 
             $query->select('actividad.id', DB::raw("UPPER(CONCAT(actividad_codigo, ' - ', actividad_nombre)) as text"));
             $query->orderby('actividad_codigo', 'asc');
-            
+
             if($request->has('id')){
                 $query->where('actividad.id', $request->id);
             }
@@ -44,7 +42,7 @@ class ActividadController extends Controller
             if(empty($request->q) && empty($request->id)) {
                 $query->take(50);
             }
-            
+
             $query->orderby('actividad_nombre','asc');
             return response()->json($query->get());
         }
@@ -80,11 +78,11 @@ class ActividadController extends Controller
                     $actividad->fill($data);
                     $actividad->save();
 
-                    //Forget cache
-                    Cache::forget( Actividad::$key_cache );
-
                     // Commit Transaction
                     DB::commit();
+
+                    //Forget cache
+                    Cache::forget( Actividad::$key_cache );
                     return response()->json(['success' => true, 'id' => $actividad->id]);
                 }catch(\Exception $e){
                     DB::rollback();
@@ -144,11 +142,11 @@ class ActividadController extends Controller
                     $actividad->fill($data);
                     $actividad->save();
 
-                    //Forget cache
-                    Cache::forget( Actividad::$key_cache );
-
                     // Commit Transaction
                     DB::commit();
+
+                    //Forget cache
+                    Cache::forget( Actividad::$key_cache );
                     return response()->json(['success' => true, 'id' => $actividad->id]);
                 }catch(\Exception $e){
                     DB::rollback();

@@ -3,7 +3,6 @@
 namespace App\Models\Comercial;
 
 use Illuminate\Database\Eloquent\Model;
-
 use Validator, DB;
 
 class Pedidoc2 extends Model
@@ -23,7 +22,7 @@ class Pedidoc2 extends Model
 	* @var array
 	*/
     protected $fillable = ['pedidoc2_cantidad', 'pedidoc2_precio_venta','pedidoc2_descuento_porcentaje','pedidoc2_descuento_valor','pedidoc2_costo','pedidoc2_iva_porcentaje','pedidoc2_iva_valor'];
-    
+
 	public function isValid($data)
 	{
 		$rules = [
