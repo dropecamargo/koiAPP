@@ -6,9 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
 use App\Models\Contabilidad\ActivoFijo;
-use Excel, View, App, DB;
+use Excel, View, App;
 
 class ActivoFijoController extends Controller
 {
@@ -20,7 +19,7 @@ class ActivoFijoController extends Controller
     public function index(Request $request)
     {
         if ($request->has('type')) {
-            
+
             $activoFijo = ActivoFijo::getActivosFijos();
 
             // Prepare data

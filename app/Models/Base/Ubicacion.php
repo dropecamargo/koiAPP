@@ -3,7 +3,6 @@
 namespace App\Models\Base;
 
 use Illuminate\Database\Eloquent\Model;
-
 use App\Models\BaseModel;
 use Validator, Cache;
 
@@ -71,7 +70,7 @@ class Ubicacion extends BaseModel
     }
 
     public static function getUbicaciones()
-    {   
+    {
         if (Cache::has( self::$key_cache )) {
             return Cache::get( self::$key_cache );
         }
@@ -80,7 +79,7 @@ class Ubicacion extends BaseModel
             $query = Ubicacion::query();
             $query->orderby('ubicacion_nombre', 'asc');
             $query->where('ubicacion_activo', true);
-            $collection = $query->lists('ubicacion_nombre', 'id'); 
+            $collection = $query->lists('ubicacion_nombre', 'id');
             $collection->prepend('', '');
             return $collection;
         });

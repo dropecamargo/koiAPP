@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
 use App\Models\Base\Sucursal,App\Models\Base\Ubicacion,App\Models\Base\Regional;
 use DB, Log, Datatables, Cache;
 
@@ -66,11 +65,11 @@ class SucursalController extends Controller
                         $sucursal->save();
                     }
 
-                    // Forget cache
-                    Cache::forget( Sucursal::$key_cache );
-
                     // Commit Transaction
                     DB::commit();
+
+                    // Forget cache
+                    Cache::forget( Sucursal::$key_cache );
                     return response()->json(['success' => true, 'id' => $sucursal->id]);
                 }catch(\Exception $e){
                     DB::rollback();
@@ -137,20 +136,20 @@ class SucursalController extends Controller
 
                     if ( $request->has('sucursal_defecto') ) {
                         $ubicacion = Ubicacion::find($request->sucursal_defecto);
-                        if (!$ubicacion instanceof Ubicacion) {
-                        DB::rollback();
-                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar ubicacion,por favor verifique la información ó por favor consulte al administrador.']);
+                        if ( !$ubicacion instanceof Ubicacion ){
+                            DB::rollback();
+                            return response()->json(['success' => false, 'errors' => 'No es posible recuperar ubicacion,por favor verifique la información o por favor consulte al administrador.']);
                         }
                         $sucursal->sucursal_defecto = $ubicacion->id;
                         $sucursal->sucursal_ubicaciones = true;
                     }
                     $sucursal->save();
 
-                    // Forget cache
-                    Cache::forget( Sucursal::$key_cache );
-                    
                     // Commit Transaction
                     DB::commit();
+
+                    // Forget cache
+                    Cache::forget( Sucursal::$key_cache );
                     return response()->json(['success' => true, 'id' => $sucursal->id]);
                 }catch(\Exception $e){
                     DB::rollback();

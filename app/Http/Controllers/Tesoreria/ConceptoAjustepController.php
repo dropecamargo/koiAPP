@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
 use App\Models\Tesoreria\ConceptoAjustep;
 use DB, Log, Cache, Datatables;
 
@@ -56,10 +55,11 @@ class ConceptoAjustepController extends Controller
                     $conceptoajustep->fillBoolean($data);
                     $conceptoajustep->save();
 
-                    //Forget cache
-                    Cache::forget( ConceptoAjustep::$key_cache );
                     // Commit Transaction
                     DB::commit();
+
+                    //Forget cache
+                    Cache::forget( ConceptoAjustep::$key_cache );
                     return response()->json(['success' => true, 'id' => $conceptoajustep->id]);
                 }catch(\Exception $e){
                     DB::rollback();
@@ -119,13 +119,12 @@ class ConceptoAjustepController extends Controller
                     $conceptoajustep->fillBoolean($data);
                     $conceptoajustep->save();
 
-                    //Forget cache
-                    Cache::forget( ConceptoAjustep::$key_cache );
-
                     // Commit Transaction
                     DB::commit();
-                    return response()->json(['success' => true, 'id' => $conceptoajustep->id]);
 
+                    //Forget cache
+                    Cache::forget( ConceptoAjustep::$key_cache );
+                    return response()->json(['success' => true, 'id' => $conceptoajustep->id]);
                 }catch(\Exception $e){
                     DB::rollback();
                     Log::error($e->getMessage());

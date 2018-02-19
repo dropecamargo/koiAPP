@@ -6,9 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\Tesoreria\Egreso1, App\Models\Tesoreria\Egreso2, App\Models\Tesoreria\Facturap1, App\Models\Tesoreria\Facturap3, App\Models\Tesoreria\TipoPago;
-use App\Models\Base\Tercero,App\Models\Base\Documentos, App\Models\Base\Regional;
-use App\Models\Cartera\CuentaBanco;
+use App\Models\Tesoreria\Egreso1, App\Models\Tesoreria\Egreso2, App\Models\Tesoreria\Facturap1, App\Models\Tesoreria\Facturap3, App\Models\Tesoreria\TipoPago, App\Models\Base\Tercero,App\Models\Base\Documentos, App\Models\Base\Regional, App\Models\Cartera\CuentaBanco;
 use DB, Log, Datatables, Auth, App, View;
 
 class EgresoController extends Controller

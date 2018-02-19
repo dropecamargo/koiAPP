@@ -6,9 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
-use App\Models\Cartera\Conceptosrc, App\Models\Cartera\ConceptoNota;
-use App\Models\Base\Documentos;
+use App\Models\Cartera\Conceptosrc, App\Models\Cartera\ConceptoNota, App\Models\Base\Documentos;
 use DB, Log, Cache, Datatables;
 
 class ConceptosrcController extends Controller
@@ -67,10 +65,11 @@ class ConceptosrcController extends Controller
                     $conceptosrc->fillBoolean($data);
                     $conceptosrc->save();
 
-                    //Forget cache
-                    Cache::forget( Conceptosrc::$key_cache );
                     // Commit Transaction
                     DB::commit();
+
+                    //Forget cache
+                    Cache::forget( Conceptosrc::$key_cache );
                     return response()->json(['success' => true, 'id' => $conceptosrc->id]);
                 }catch(\Exception $e){
                     DB::rollback();
@@ -139,10 +138,11 @@ class ConceptosrcController extends Controller
                     $conceptosrc->fillBoolean($data);
                     $conceptosrc->save();;
 
-                    //Forget cache
-                    Cache::forget( Conceptosrc::$key_cache );
                     // Commit Transaction
                     DB::commit();
+                    
+                    //Forget cache
+                    Cache::forget( Conceptosrc::$key_cache );
                     return response()->json(['success' => true, 'id' => $conceptosrc->id]);
                 }catch(\Exception $e){
                     DB::rollback();

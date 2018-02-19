@@ -54,11 +54,11 @@ class TipoProveedorController extends Controller
                     $tipoproveedor->fillBoolean($data);
                     $tipoproveedor->save();
 
-                    // Forget cache
-                    Cache::forget( TipoProveedor::$key_cache );
-
                     // Commit Transaction
                     DB::commit();
+
+                    // Forget cache
+                    Cache::forget( TipoProveedor::$key_cache );
                     return response()->json(['success' => true, 'id' =>$tipoproveedor->id]);
                 } catch (\Exception $e) {
                     DB::rollback();
@@ -118,11 +118,11 @@ class TipoProveedorController extends Controller
                     $tipoproveedor->fillBoolean($data);
                     $tipoproveedor->save();
 
-                    // Forget cache
-                    Cache::forget( TipoProveedor::$key_cache );
-
                     // Commit Transaction
                     DB::commit();
+
+                    // Forget cache
+                    Cache::forget( TipoProveedor::$key_cache );
                     return response()->json(['success' => true, 'id' =>$tipoproveedor->id]);
                 } catch (\Exception $e) {
                     DB::rollback();

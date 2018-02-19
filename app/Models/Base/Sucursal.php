@@ -4,7 +4,6 @@ namespace App\Models\Base;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\BaseModel;
-
 use Validator, Cache;
 
 class Sucursal extends BaseModel

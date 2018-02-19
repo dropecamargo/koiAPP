@@ -3,7 +3,6 @@
 namespace App\Models\Cartera;
 
 use Illuminate\Database\Eloquent\Model;
-
 use App\Models\BaseModel;
 use App\Models\Base\Tercero;
 use DB, Validator;
@@ -74,7 +73,7 @@ class Recibo1 extends BaseModel
     /**
     * Function for reportes history client in cartera
     */
-	public static function historyClientReport(Tercero $tercero, Array $historyClient, $i ) 
+	public static function historyClientReport(Tercero $tercero, Array $historyClient, $i )
 	{
         $response = new \stdClass();
         $response->success = false;

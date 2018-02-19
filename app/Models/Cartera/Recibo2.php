@@ -3,7 +3,6 @@
 namespace App\Models\Cartera;
 
 use Illuminate\Database\Eloquent\Model;
-
 use App\Models\BaseModel;
 use Validator;
 
@@ -31,7 +30,7 @@ class Recibo2 extends BaseModel
      * @var array
      */
     protected $nullable = ['recibo2_documentos_doc','recibo2_id_doc'];
-	
+
 	public function isValid($data)
 	{
 		$rules = [];

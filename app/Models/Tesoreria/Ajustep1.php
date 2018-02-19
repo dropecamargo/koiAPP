@@ -3,7 +3,6 @@
 namespace App\Models\Tesoreria;
 
 use Illuminate\Database\Eloquent\Model;
-
 use Validator, DB;
 
 class Ajustep1 extends Model

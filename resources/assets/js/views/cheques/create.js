@@ -19,39 +19,31 @@ app || (app = {});
             'submit #form-cheque1' : 'onStore',
             'change .change-concepto' : 'changeConcepto',
         },
-        parameters: {
-        },
 
         /**
         * Constructor Method
         */
-        initialize : function(opts) {
-
-            // Initialize
-            if( opts !== undefined && _.isObject(opts.parameters) )
-                this.parameters = $.extend({}, this.parameters, opts.parameters);
-           
+        initialize : function() {
             // Attributes
             this.$wraperForm = this.$('#render-form-cheque');
 
+            // Detalle
             this.detalleChposFechado = new app.DetalleChposFechadoList();
 
             // Events
             this.listenTo( this.model, 'change', this.render );
             this.listenTo( this.model, 'sync', this.responseServer );
-            this.listenTo( this.model, 'request', this.loadSpinner );            
-            
-            this.ready(); 
+            this.listenTo( this.model, 'request', this.loadSpinner );
+
+            this.ready();
         },
 
         /*
         * Render View Element
         */
         render: function() {
-            
             var attributes = this.model.toJSON();
             this.$wraperForm.html( this.template(attributes) );
-
             this.$form = this.$('#form-cheque1');
 
             this.referenceView();
@@ -73,13 +65,12 @@ app || (app = {});
                 var data = window.Misc.formToJson( e.target );
                     data.detalle = this.detalleChposFechado.toJSON();
                 this.model.save( data, {patch: true, silent: true} );
-            }   
-        },  
+            }
+        },
         /**
         * Reference view collection
         */
         referenceView:function(){
-
           //DetalleChequesList
             this.detalleChequesView = new app.DetalleChequesView( {
                 collection: this.detalleChposFechado,
@@ -104,7 +95,7 @@ app || (app = {});
                     'wrap': this.$el,
                     'callback': (function (_this) {
                         return function ( action )
-                        {      
+                        {
                             // Open CarteraActionView
                             if ( _this.carteraActionView instanceof Backbone.View ){
                                 _this.carteraActionView.stopListening();
@@ -130,15 +121,14 @@ app || (app = {});
         */
         ready: function () {
             // to fire plugins
-            
-            if( typeof window.initComponent.initToUpper == 'function' )
-                window.initComponent.initToUpper();
-            
-            if( typeof window.initComponent.initSelect2 == 'function' )
-                window.initComponent.initSelect2();
-            
             if( typeof window.initComponent.initValidator == 'function' )
                 window.initComponent.initValidator();
+
+            if( typeof window.initComponent.initToUpper == 'function' )
+                window.initComponent.initToUpper();
+
+            if( typeof window.initComponent.initSelect2 == 'function' )
+                window.initComponent.initSelect2();
 
             if( typeof window.initComponent.initInputMask == 'function' )
                 window.initComponent.initInputMask();
@@ -152,7 +142,7 @@ app || (app = {});
         */
         loadSpinner: function (model, xhr, opts) {
             window.Misc.setSpinner( this.el );
-            
+
         },
 
         /**
@@ -170,7 +160,7 @@ app || (app = {});
 
                 if( !resp.success ) {
                     alertify.error(text);
-                    return; 
+                    return;
                 }
             }
             window.Misc.redirect( window.Misc.urlFull( Route.route('cheques.show', { cheques: resp.id})) );

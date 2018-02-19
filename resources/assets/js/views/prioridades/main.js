@@ -19,7 +19,6 @@ app || (app = {});
         initialize : function() {
 
             this.$prioridadesSearchTable = this.$('#prioridades-search-table');
-
             this.$prioridadesSearchTable.DataTable({
                 dom: "<'row'<'col-sm-4'B><'col-sm-4 text-center'l><'col-sm-4'f>>" +
                     "<'row'<'col-sm-12'tr>>" +

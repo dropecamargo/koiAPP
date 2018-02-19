@@ -3,7 +3,6 @@
 namespace App\Models\Tecnico;
 
 use Illuminate\Database\Eloquent\Model;
-
 use App\Models\Inventario\Prodbode, App\Models\Tecnico\RemRepu, App\Models\Inventario\Producto, App\Models\Inventario\Lote, App\Models\Inventario\Inventario, App\Models\Base\Sucursal, App\Models\Base\Documentos;
 use Validator, Auth, DB;
 
@@ -40,7 +39,7 @@ class RemRepu2 extends Model
         return false;
     }
 
-    public static function getRemRepu2 () 
+    public static function getRemRepu2 ()
     {
         $remrepu2 = RemRepu2::query();
         $remrepu2->select('remrepu2.*', 'producto_precio1 AS remrepu2_costo', 'impuesto_porcentaje AS remrepu2_iva_porcentaje' ,'producto_nombre AS remrepu2_nombre', 'producto_serie AS remrepu2_serie', 'remrepu1_numero', 'sucursal_nombre', 'remrepu1_tipo');

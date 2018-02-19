@@ -12,18 +12,14 @@ app || (app = {});
     app.MainChequesDevueltosView = Backbone.View.extend({
 
         el: '#chequesdevueltos-main',
-        events: {
-        },
 
         /**
         * Constructor Method
         */
         initialize : function() {
-            var _this = this;
 
             // Rerefences
             this.$chequesdevueltosSearchTable = this.$('#chequesdevueltos-search-table');
-            
             this.$chequesdevueltosSearchTable.DataTable({
                 processing: true,
                 serverSide: true,
@@ -34,7 +30,7 @@ app || (app = {});
                         data.datatables = true;
                     }
                 },
-                columns: [ 
+                columns: [
                     { data: 'id', name: 'id' },
                     { data: 'sucursal_nombre', name: 'sucursal_nombre' },
                     { data: 'banco_nombre', name: 'chposfechado1_banco' },

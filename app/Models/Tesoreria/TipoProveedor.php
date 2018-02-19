@@ -4,7 +4,7 @@ namespace App\Models\Tesoreria;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\BaseModel;
-use Validator,Cache;
+use Validator, Cache;
 
 class TipoProveedor extends BaseModel
 {

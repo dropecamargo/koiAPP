@@ -20,11 +20,7 @@ app || (app = {});
         /**
         * Constructor Method
         */
-        initialize : function(opts) {
-            // Initialize
-            if( opts !== undefined && _.isObject(opts.parameters) )
-                this.parameters = $.extend({}, this.parameters, opts.parameters);
-
+        initialize : function() {
             // Attributes
             this.$wraperForm = this.$('#render-form-servicio');
 
@@ -61,9 +57,12 @@ app || (app = {});
         */
         ready: function () {
             // to fire plugins
+            if( typeof window.initComponent.initValidator == 'function' )
+                window.initComponent.initValidator();
+
             if( typeof window.initComponent.initICheck == 'function' )
                 window.initComponent.initICheck();
-            
+
             if( typeof window.initComponent.initToUpper == 'function' )
                 window.initComponent.initToUpper();
         },

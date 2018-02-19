@@ -6,9 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
-use App\Models\Tesoreria\Ajustep1, App\Models\Tesoreria\Ajustep2, App\Models\Tesoreria\ConceptoAjustep, App\Models\Tesoreria\Facturap3;
-use App\Models\Base\Tercero, App\Models\Base\Regional, App\Models\Base\Documentos;
+use App\Models\Tesoreria\Ajustep1, App\Models\Tesoreria\Ajustep2, App\Models\Tesoreria\ConceptoAjustep, App\Models\Tesoreria\Facturap3, App\Models\Base\Tercero, App\Models\Base\Regional, App\Models\Base\Documentos;
 use DB, Log, Datatables, Auth, App, View;
 
 class AjustepController extends Controller

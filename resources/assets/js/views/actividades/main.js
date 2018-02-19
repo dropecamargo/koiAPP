@@ -19,7 +19,6 @@ app || (app = {});
         initialize : function() {
 
             this.$actividadesSearchTable = this.$('#actividades-search-table');
-
             this.$actividadesSearchTable.DataTable({
 				dom: "<'row'<'col-sm-4'B><'col-sm-4 text-center'l><'col-sm-4'f>>" +
                         "<'row'<'col-sm-12'tr>>" +
@@ -41,7 +40,7 @@ app || (app = {});
                 ],
                 buttons: [
                     {
-                        text: '<i class="fa fa-plus"></i> Nueva actividad', 
+                        text: '<i class="fa fa-plus"></i> Nueva actividad',
                         className: 'btn-sm',
                         action: function ( e, dt, node, config ) {
                                 window.Misc.redirect( window.Misc.urlFull( Route.route('actividades.create') ) )

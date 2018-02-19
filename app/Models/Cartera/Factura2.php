@@ -3,7 +3,6 @@
 namespace App\Models\Cartera;
 
 use Illuminate\Database\Eloquent\Model;
-
 use App\Models\BaseModel;
 use Validator;
 
@@ -24,7 +23,7 @@ class Factura2 extends BaseModel
 	* @var array
 	*/
     protected $fillable = ['factura2_cantidad', 'factura2_precio_venta','factura2_descuento_porcentaje','factura2_descuento_valor','factura2_costo','factura2_iva_porcentaje','factura2_iva_valor'];
-    
+
 	public function isValid($data)
 	{
 		$rules = [
@@ -55,7 +54,7 @@ class Factura2 extends BaseModel
 		return $query->get();
 	}
 
-	public static function modelCreate ($data) 
+	public static function modelCreate ($data)
 	{
 		$factura2 = new Factura2;
 	    $factura2->id = uniqid();
@@ -74,7 +73,7 @@ class Factura2 extends BaseModel
 	    $factura2->maneja_serie = $data->producto_maneja_serie;
 	    return $factura2;
 	}
-	public static function remRmpuModelCreate ($data) 
+	public static function remRmpuModelCreate ($data)
 	{
 		$factura2 = new Factura2;
 	    $factura2->id = uniqid();

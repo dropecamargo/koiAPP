@@ -3,8 +3,7 @@ namespace App\Models\Inventario;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Inventario\Pedido1;
-
-use Validator,Cache,DB;
+use Validator;
 
 class Pedido2 extends Model
 {
@@ -14,6 +13,7 @@ class Pedido2 extends Model
      * @var string
      */
     protected $table = 'pedido2';
+
     public $timestamps = false;
      /**
      * The attributes that are mass assignable.
@@ -21,6 +21,7 @@ class Pedido2 extends Model
      * @var array
      */
     protected $fillable = ['pedido2_cantidad','pedido2_saldo','pedido2_precio'];
+
     public function isValid($data)
     {
         $rules = [
@@ -37,6 +38,7 @@ class Pedido2 extends Model
         $this->errors = $validator->errors();
         return false;
     }
+
    public function storePedido2(Array $data){
         $response = new \stdClass();
         $response->success = false;
@@ -59,14 +61,15 @@ class Pedido2 extends Model
             $this->save();
         }
         //Response items
-        $response->success = true;  
-        $response->producto_serie = $producto->producto_serie;  
-        $response->producto_nombre = $producto->producto_nombre;  
-        $response->pedido2_cantidad = $this->pedido2_cantidad;  
-        $response->pedido2_precio = $this->pedido2_precio;  
-        $response->id = $this->id;  
+        $response->success = true;
+        $response->producto_serie = $producto->producto_serie;
+        $response->producto_nombre = $producto->producto_nombre;
+        $response->pedido2_cantidad = $this->pedido2_cantidad;
+        $response->pedido2_precio = $this->pedido2_precio;
+        $response->id = $this->id;
         return $response;
     }
+
     public static function getPedido2($id)
     {
         $query = Pedido2::query();

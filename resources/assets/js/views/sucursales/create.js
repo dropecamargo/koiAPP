@@ -17,17 +17,11 @@ app || (app = {});
             'submit #form-sucursales': 'onStore',
             'ifChanged .changed-location': 'checkLocation',
         },
-        parameters: {
-        },
 
         /**
         * Constructor Method
         */
-        initialize : function(opts) {
-            // Initialize
-            if( opts !== undefined && _.isObject(opts.parameters) )
-                this.parameters = $.extend({}, this.parameters, opts.parameters);
-
+        initialize : function() {
             // Attributes
             this.$wraperForm = this.$('#render-form-sucursal');
 
@@ -41,7 +35,6 @@ app || (app = {});
         * Render View Element
         */
         render: function() {
-
             var attributes = this.model.toJSON();
             this.$wraperForm.html( this.template(attributes) );
 
@@ -60,15 +53,15 @@ app || (app = {});
         * Event Create Folder
         */
         onStore: function (e) {
-
             if (!e.isDefaultPrevented()) {
                 e.preventDefault();
+
                 var data = window.Misc.formToJson( e.target );
                 this.model.save( data, {patch: true, silent: true} );
             }
         },
         /**
-        * Change check edit 
+        * Change check edit
         */
         checkLocation: function(e){
             var selected = $(e.target).is(':checked');
@@ -80,7 +73,7 @@ app || (app = {});
             }
         },
         /**
-        * Loader data of select locations 
+        * Loader data of select locations
         */
         loadDataSelect: function(){
             var _this = this;
@@ -106,24 +99,27 @@ app || (app = {});
                         }
                     });
                 });
-            }   
+            }
         },
         /**
         * fires libraries js
         */
         ready: function () {
             // to fire plugins
+            if( typeof window.initComponent.initValidator == 'function' )
+                window.initComponent.initValidator();
+
             if( typeof window.initComponent.initToUpper == 'function' )
                 window.initComponent.initToUpper();
-            
+
             if( typeof window.initComponent.initInputMask == 'function' )
                 window.initComponent.initInputMask();
-            
+
             if( typeof window.initComponent.initICheck == 'function' )
                 window.initComponent.initICheck();
 
             if( typeof window.initComponent.initSelect2 == 'function' )
-                window.initComponent.initSelect2();  
+                window.initComponent.initSelect2();
         },
 
         /**

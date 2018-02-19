@@ -6,10 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
-use App\Models\Base\Sucursal;
-use App\Models\Report\AuxReport;
-use App\Models\Inventario\Producto, App\Models\Inventario\Prodbode, App\Models\Inventario\SubCategoria;
+use App\Models\Base\Sucursal, App\Models\Report\AuxReport, App\Models\Inventario\Producto, App\Models\Inventario\Prodbode, App\Models\Inventario\SubCategoria;
 use Excel, View, App, DB, Log, Validator, Auth;
 
 class ExistenciaController extends Controller
@@ -59,7 +56,6 @@ class ExistenciaController extends Controller
                 !$validation ? $query->whereIn('prodbode_sucursal', $request->filter_sucursal) : '';
                 !$validationSub ? $query->whereIn('producto_subcategoria', $request->filter_subcategoria) : '';
                 $prodbode =  $query->get();
-
             } catch ( \Exception $e) {
                 DB::rollback();
                 Log::error($e->getMessage());

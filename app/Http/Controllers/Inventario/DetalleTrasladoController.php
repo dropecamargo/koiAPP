@@ -6,10 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
-use App\Models\Base\Sucursal;
-use App\Models\Inventario\Producto, App\Models\Inventario\Traslado2;
-
+use App\Models\Base\Sucursal, App\Models\Inventario\Producto, App\Models\Inventario\Traslado2;
 use Log, DB;
 
 class DetalleTrasladoController extends Controller
@@ -92,7 +89,7 @@ class DetalleTrasladoController extends Controller
                             return response()->json(['success' => false,'errors' => "Cantidad de items de  {$request->producto_nombre} no coincide con el valor de SALIDA, por favor verifique información."]);
                         }
                     }
-                    
+
                     return response()->json(['success' => true, 'id' => uniqid(), 'id_producto'=>$producto->id,'producto_serie'=> $producto->producto_serie,'producto_nombre'=> $producto->producto_nombre]);
                 }catch(\Exception $e){
                     Log::error($e->getMessage());

@@ -16,7 +16,7 @@ class TipoTraslado extends BaseModel
 	protected $table = 'tipotraslado';
 
 	public $timestamps = false;
-	
+
 	/**
  	* the key used by cache store.
  	*
@@ -52,6 +52,7 @@ class TipoTraslado extends BaseModel
 		$this->errors = $validator->errors();
 		return false;
 	}
+
  	public static function getTiposTraslados()
     {
         if (Cache::has( self::$key_cache )) {
@@ -62,6 +63,7 @@ class TipoTraslado extends BaseModel
             $query = TipoTraslado::query();
             $query->orderby('tipotraslado_nombre', 'asc');
             $collection = $query->lists('tipotraslado_nombre', 'id');
+			
             $collection->prepend('', '');
             return $collection;
         });

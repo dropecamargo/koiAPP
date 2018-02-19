@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Inventario\Ajuste2, App\Models\Inventario\Producto, App\Models\Inventario\Ajuste1,App\Models\Inventario\TipoAjuste;
-use DB,Log;
+use DB, Log;
 
 class DetalleAjusteController extends Controller
 {
@@ -42,29 +42,29 @@ class DetalleAjusteController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {   
+    {
         if($request->ajax()){
             $data = $request->all();
             $ajusteDetalle = new Ajuste2;
             if ($ajusteDetalle->isValid($data)) {
-            
-                try {                      
+
+                try {
                     $producto = Producto::where('producto_serie', $request->producto_serie)->first();
                     if(!$producto instanceof Producto){
                         return response()->json(['success'=> false, 'errors'=>'No es posible recuperar producto, por favor consulte al administrador.']);
-                    } 
+                    }
 
                     //Validar Tipo Ajuste
                     $tipoAjuste = TipoAjuste::where('id', $request->tipoajuste)->first();
                     if (!$tipoAjuste instanceof TipoAjuste) {
                         return response()->json(['success' => false,'errors'=>'No es posible recuperar el tipo ajuste,por favor verifique la información ó por favor consulte al administrador']);
-                    } 
-                    
+                    }
+
                     // Validar maneja unidades
                     if(!$producto->producto_unidad) {
                         return response()->json(['success' => false,'errors' => "No es posible realizar movimientos para productos que no manejan unidades"]);
                     }
-                    
+
                     switch ($tipoAjuste->tipoajuste_tipo) {
                         case 'S':
                             if ($request->get('ajuste2_cantidad_salida') <= 0 && $request->get('ajuste2_costo') == 0) {
@@ -86,7 +86,7 @@ class DetalleAjusteController extends Controller
                             }
                             break;
 
-                        case 'E':                            
+                        case 'E':
                             if ($request->get('ajuste2_cantidad_entrada') == 0 && $request->get('ajuste2_costo') == 0 ) {
                                return response()->json(['success' => false,'errors' => "No es posible realizar $tipoAjuste->tipoajuste_nombre, por favor verifique la información ó consulte al administrador"]);
                             }
@@ -100,7 +100,7 @@ class DetalleAjusteController extends Controller
 
                                     // Validar series ingresadas repetidas
                                     if(in_array($request->get("producto_serie_$item"), $series)){
-                                        return response()->json(['success' => false,'errors' => "No es posible registrar dos números de serie iguales"]);  
+                                        return response()->json(['success' => false,'errors' => "No es posible registrar dos números de serie iguales"]);
                                     }
 
                                     // Validar serie
@@ -122,11 +122,11 @@ class DetalleAjusteController extends Controller
                                 foreach ($items as $key => $item) {
                                     $metradoItem += $item['rollo_metros'] * $item['rollo_cantidad'];
                                 }
-                                
+
                                 if ($metradoItem != $request->ajuste2_cantidad_entrada) {
                                     return response()->json(['success' => false,'errors' => "Metraje debe ser igual a la cantidad de ({$request->ajuste2_cantidad_entrada}) METROS ingresada anteriormente, por favor verifique información."]);
                                 }
-   
+
                             }else if($producto->producto_vence == true){
                                 $items = isset($data['items']) ? $data['items'] : null;
                                 $numUnidades = 0;
@@ -138,15 +138,15 @@ class DetalleAjusteController extends Controller
                                 if ($numUnidades != $request->ajuste2_cantidad_entrada) {
                                     return response()->json(['success' => false,'errors' => "Unidades debe ser igual a la cantidad ({$request->ajuste2_cantidad_entrada}) ingresada anteriormente, por favor verifique información."]);
                                 }
-                            } 
+                            }
                             break;
                         case 'R':
                             if(($request->has('ajuste2_cantidad_salida')) && ($request->has('ajuste2_cantidad_entrada')) || ((int)($request->ajuste2_costo == 0))) {
                                 return response()->json(['success' => false,'errors' => "No es posible realizar $tipoAjuste->tipoajuste_nombre, por favor verifique la información ó consulte al administrador"]);
                             }
-                            break;                      
-                    }   
-                   
+                            break;
+                    }
+
                     return response()->json(['success' => true, 'id' => uniqid(), 'id_producto'=>$producto->id,'producto_serie'=> $producto->producto_serie,'producto_nombre'=> $producto->producto_nombre]);
                 } catch (\Exception $e) {
                     Log::error($e->getMessage());

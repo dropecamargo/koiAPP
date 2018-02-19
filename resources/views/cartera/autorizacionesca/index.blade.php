@@ -1,12 +1,20 @@
-@extends('cartera.autorizacionesca.main')
+@extends('layout.layout')
 
-@section('breadcrumb')
-    <li class="active">Autorizaciones</li>
-@stop
+@section('title') Autorizaciones @stop
 
-@section('module')
-	<div id="autorizacionesca-main">
-        <div class="box box-primary">
+@section('content')
+    <section class="content-header">
+        <h1>
+            Autorizaciones de cartera <small>Administración autorizaciones de cartera</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> {{trans('app.home')}}</a></li>
+            <li class="active">Autorizaciones</li>
+        </ol>
+    </section>
+
+    <section class="content">
+        <div class="box box-primary" id="autorizacionesca-main">
             <div class="box-body table-responsive">
                 <table id="autorizacionesca-search-table" class="table table-bordered table-striped" cellspacing="0" width="100%">
                     <thead>
@@ -20,5 +28,5 @@
                 </table>
             </div>
         </div>
-    </div>
+    </section>
 @stop

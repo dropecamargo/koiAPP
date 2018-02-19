@@ -6,9 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\Base\Tercero, App\Models\Base\Sucursal;
-use App\Models\Cartera\Factura1;
-
+use App\Models\Base\Tercero, App\Models\Base\Sucursal, App\Models\Cartera\Factura1;
 use Excel, View, App, DB;
 
 class CarteraEdadController extends Controller
@@ -27,7 +25,7 @@ class CarteraEdadController extends Controller
                 DB::raw("(CASE WHEN t.tercero_persona = 'N' THEN CONCAT(t.tercero_nombre1,' ',t.tercero_nombre2,' ',t.tercero_apellido1,' ',t.tercero_apellido2,
                             (CASE WHEN (t.tercero_razonsocial IS NOT NULL AND t.tercero_razonsocial != '') THEN CONCAT(' - ', t.tercero_razonsocial) ELSE '' END)
                         ) ELSE t.tercero_razonsocial END) AS tercero_nombre"), DB::raw("(CASE WHEN tv.tercero_persona = 'N' THEN CONCAT(tv.tercero_nombre1,' ',tv.tercero_nombre2,' ',tv.tercero_apellido1,' ',tv.tercero_apellido2, (CASE WHEN (tv.tercero_razonsocial IS NOT NULL AND tv.tercero_razonsocial != '') THEN CONCAT(' - ', tv.tercero_razonsocial) ELSE '' END)
-                        ) ELSE tv.tercero_razonsocial END) AS vendedor_nombre"), 
+                        ) ELSE tv.tercero_razonsocial END) AS vendedor_nombre"),
                     DB::raw("
                         (CASE WHEN ((factura3_vencimiento - NOW()) > 360) THEN (factura3_saldo) ELSE 0 END) AS valor_m360,
                         (CASE WHEN ((factura3_vencimiento - NOW()) > 180 AND (factura3_vencimiento - NOW()) <= 360) THEN (factura3_saldo) else 0 END) AS valor_m180,
@@ -43,7 +41,7 @@ class CarteraEdadController extends Controller
                         (CASE WHEN ((factura3_vencimiento - NOW()) < -180 AND (factura3_vencimiento - NOW()) >= -360) THEN (factura3_saldo) else 0 END) AS valor_pv_m180,
                         (CASE WHEN ((factura3_vencimiento - NOW()) < -360) THEN (factura3_saldo) else 0 END) AS valor_pv_m360
                     ")
-  
+
             );
 
             $query->join('tercero as t', 'factura1_tercero', '=', 't.id');
@@ -61,12 +59,6 @@ class CarteraEdadController extends Controller
             if ($request->has('filter_sucursal')) {
                 $query->whereIn('factura1_sucursal', $request->filter_sucursal);
             }
-            // if ($request->has('filter_mes') && $request->has('filter_ano')) {
-            // }
-            // if ($request->has('filter_tipo')) {
-            // }
-            /* End filters */
-
             $carteraEdades = $query->get();
 
             // Prepare data

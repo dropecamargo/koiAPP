@@ -3,7 +3,7 @@
 namespace App\Models\Tecnico;
 
 use Illuminate\Database\Eloquent\Model;
-use Validator, Cache,DB;
+use Validator, Cache, DB;
 
 class Visita extends Model
 {
@@ -54,7 +54,7 @@ class Visita extends Model
     public static function getVisita($id)
     {
         $query = Visita::query();
-        $query->select('visita.*',   
+        $query->select('visita.*',
             DB::raw("
                 CONCAT(
                     (CASE WHEN tercero_persona = 'N'
@@ -63,7 +63,7 @@ class Visita extends Model
                         )
                         ELSE tercero_razonsocial
                     END)
-                
+
                 ) AS tercero_nombre"
             ));
         $query->join('orden', 'visita_orden', '=', 'orden.id');
@@ -71,7 +71,7 @@ class Visita extends Model
         $query->where('visita_orden', $id);
         $query->orderBy('id', 'asc');
         $visita = $query->get();
-        return $visita; 
+        return $visita;
     }
 
 }

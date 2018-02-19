@@ -16,17 +16,11 @@ app || (app = {});
         events: {
             'submit #form-actividad': 'onStore'
         },
-        parameters: {
-        },
 
         /**
         * Constructor Method
         */
-        initialize : function(opts) {
-            // Initialize
-            if( opts !== undefined && _.isObject(opts.parameters) )
-                this.parameters = $.extend({}, this.parameters, opts.parameters);
-
+        initialize : function() {
             // Attributes
             this.$wraperForm = this.$('#render-form-actividad');
 
@@ -40,10 +34,9 @@ app || (app = {});
         * Event Create Folder
         */
         onStore: function (e) {
-
             if (!e.isDefaultPrevented()) {
-
                 e.preventDefault();
+
                 var data = window.Misc.formToJson( e.target );
                 this.model.save( data, {patch: true, silent: true} );
             }
@@ -53,7 +46,6 @@ app || (app = {});
         * Render View Element
         */
         render: function() {
-
             var attributes = this.model.toJSON();
             this.$wraperForm.html( this.template(attributes) );
 
@@ -65,6 +57,9 @@ app || (app = {});
         */
         ready: function () {
             // to fire plugins
+            if( typeof window.initComponent.initValidator == 'function' )
+                window.initComponent.initValidator();
+
             if( typeof window.initComponent.initToUpper == 'function' )
                 window.initComponent.initToUpper();
 
@@ -97,9 +92,8 @@ app || (app = {});
                     return;
                 }
 
-                window.Misc.redirect( window.Misc.urlFull( Route.route('actividades.show', { actividades: resp.id})) );
+                window.Misc.redirect( window.Misc.urlFull( Route.route('actividades.index') ) );
             }
         }
     });
-
 })(jQuery, this, this.document);

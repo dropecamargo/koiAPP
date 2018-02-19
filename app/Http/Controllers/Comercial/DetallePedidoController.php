@@ -6,12 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
-use App\Models\Comercial\Pedidoc2;
-use App\Models\Base\Sucursal;
-use App\Models\Inventario\Producto;
-
-use DB,Log;
+use App\Models\Comercial\Pedidoc2, App\Models\Base\Sucursal, App\Models\Inventario\Producto;
+use DB, Log;
 
 class DetallePedidoController extends Controller
 {

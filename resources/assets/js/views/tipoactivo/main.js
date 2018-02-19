@@ -19,7 +19,6 @@ app || (app = {});
         initialize : function() {
 
             this.$tipoactivosSearchTable = this.$('#tipoactivos-search-table');
-
             this.$tipoactivosSearchTable.DataTable({
                 dom: "<'row'<'col-sm-4'B><'col-sm-4 text-center'l><'col-sm-4'f>>" +
                     "<'row'<'col-sm-12'tr>>" +

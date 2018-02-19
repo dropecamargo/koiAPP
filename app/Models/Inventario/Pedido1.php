@@ -4,8 +4,7 @@ namespace App\Models\Inventario;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\BaseModel;
-
-use Validator,DB;
+use Validator, DB;
 
 class Pedido1 extends BaseModel
 {
@@ -46,7 +45,7 @@ class Pedido1 extends BaseModel
      *
      * @var static string
      */
-    
+
     public static $default_document = 'PEDN';
 
 
@@ -57,7 +56,7 @@ class Pedido1 extends BaseModel
             'pedido1_tercero' => 'required|numeric',
             'pedido1_fecha' => 'required|date',
             'pedido1_fecha_estimada' => 'required|date'
-        
+
         ];
 
         $validator = Validator::make($data, $rules);

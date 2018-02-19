@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
 use App\Models\Cartera\Banco;
 use DB, Log, Cache, Datatables;
 
@@ -55,11 +54,11 @@ class BancoController extends Controller
                     $banco->fillBoolean($data);
                     $banco->save();
 
-                    //Forget cache
-                    Cache::forget( Banco::$key_cache );
-
                     // Commit Transaction
                     DB::commit();
+
+                    //Forget cache
+                    Cache::forget( Banco::$key_cache );
                     return response()->json(['success' => true, 'id' => $banco->id]);
                 }catch(\Exception $e){
                     DB::rollback();
@@ -119,11 +118,11 @@ class BancoController extends Controller
                     $banco->fillBoolean($data);
                     $banco->save();
 
-                    //Forget cache
-                    Cache::forget( Banco::$key_cache );
-                    
                     // Commit Transaction
                     DB::commit();
+
+                    //Forget cache
+                    Cache::forget( Banco::$key_cache );
                     return response()->json(['success' => true, 'id' => $banco->id]);
                 }catch(\Exception $e){
                     DB::rollback();

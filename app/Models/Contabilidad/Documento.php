@@ -4,7 +4,6 @@ namespace App\Models\Contabilidad;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\BaseModel;
-
 use Validator, Cache;
 
 class Documento extends BaseModel
@@ -74,14 +73,14 @@ class Documento extends BaseModel
     public static function getDocuments()
     {
         if (Cache::has( self::$key_cache )) {
-            return Cache::get( self::$key_cache );    
+            return Cache::get( self::$key_cache );
         }
 
         return Cache::rememberForever( self::$key_cache, function() {
             $query = Documento::query();
             $query->orderby('documento_nombre', 'asc');
             $collection = $query->lists('documento_nombre', 'id');
-            
+
             $collection->prepend('', '');
             return $collection;
         });

@@ -19,7 +19,6 @@ app || (app = {});
         initialize : function() {
 
             this.$paisesSearchTable = this.$('#paises-search-table');
-
             this.$paisesSearchTable.DataTable({
 				processing: true,
                 serverSide: true,

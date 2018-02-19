@@ -3,7 +3,6 @@
 namespace App\Models\Inventario;
 
 use Illuminate\Database\Eloquent\Model;
-
 use App\Models\BaseModel;
 use Validator,Cache;
 

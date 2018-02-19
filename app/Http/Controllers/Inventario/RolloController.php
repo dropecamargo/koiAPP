@@ -6,8 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\Inventario\Rollo, App\Models\Inventario\Producto;
-use App\Models\Base\Sucursal;
+use App\Models\Inventario\Rollo, App\Models\Inventario\Producto, App\Models\Base\Sucursal;
 use DB;
 
 class RolloController extends Controller

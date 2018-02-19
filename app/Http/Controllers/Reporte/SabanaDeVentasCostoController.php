@@ -7,10 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\Models\Cartera\Factura1, App\Models\Cartera\Devolucion1;
-use App\Models\Comercial\PresupuestoAsesor;
-use App\Models\Base\Regional;
-use App\Models\Report\AuxReport;
+use App\Models\Cartera\Factura1, App\Models\Cartera\Devolucion1, App\Models\Comercial\PresupuestoAsesor, App\Models\Base\Regional, App\Models\Report\AuxReport;
 use Excel, View, App, DB, Validator;
 
 class SabanaDeVentasCostoController extends Controller

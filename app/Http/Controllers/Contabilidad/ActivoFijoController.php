@@ -6,8 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\Contabilidad\ActivoFijo,App\Models\Contabilidad\TipoActivo;
-use App\Models\Base\Tercero;
+use App\Models\Contabilidad\ActivoFijo,App\Models\Contabilidad\TipoActivo, App\Models\Base\Tercero;
 use Log, Datatables;
 
 class ActivoFijoController extends Controller
@@ -58,14 +57,14 @@ class ActivoFijoController extends Controller
                     // Recupero responsable
                     $responsable = Tercero::where('tercero_nit', $request->activofijo_responsable)->first();
                     if (!$responsable instanceof Tercero) {
-                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar responsable, por favor verifique la información o consulte al administrador']); 
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar responsable, por favor verifique la información o consulte al administrador']);
                     }
-                    // Recupero tipo activo 
+                    // Recupero tipo activo
                     $tipoactivo = TipoActivo::find($request->activofijo_tipoactivo);
                     if (!$tipoactivo instanceof TipoActivo) {
-                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar el tipo de activo, por favor verifique la información o consulte al administrador']); 
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar el tipo de activo, por favor verifique la información o consulte al administrador']);
                     }
-                    return response()->json([ 'success' => true, 'id' => uniqid(), 'tercero_nombre' => $responsable->getName(), 'tipoactivo_nombre' => $tipoactivo->tipoactivo_nombre ]);           
+                    return response()->json([ 'success' => true, 'id' => uniqid(), 'tercero_nombre' => $responsable->getName(), 'tipoactivo_nombre' => $tipoactivo->tipoactivo_nombre ]);
                 } catch (\Exception $e) {
                     Log::error($e->getMessage());
                     return response()->json(['success' => false, 'errors' => trans('app.exception')]);
@@ -83,7 +82,7 @@ class ActivoFijoController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show(Request $request, $id)
-    {   
+    {
         $activofijo = ActivoFijo::getActivoFijo($id);
         return view('contabilidad.activofijos.show', ['activofijos' => $activofijo]);
     }

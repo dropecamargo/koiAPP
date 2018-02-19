@@ -6,10 +6,9 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
 use App\Models\Cartera\MedioPago;
 use Cache, DB, Log, Datatables;
-    
+
 class MedioPagoController extends Controller
 {
     /**
@@ -55,11 +54,11 @@ class MedioPagoController extends Controller
                     $mediopago->fillBoolean($data);
                     $mediopago->save();
 
-                    //Forget cache
-                    Cache::forget( MedioPago::$key_cache );
-
                     // Commit Transaction
                     DB::commit();
+
+                    //Forget cache
+                    Cache::forget( MedioPago::$key_cache );
                     return response()->json(['success' => true, 'id' => $mediopago->id]);
                 }catch(\Exception $e){
                     DB::rollback();
@@ -79,7 +78,7 @@ class MedioPagoController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show(Request $request, $id)
-    {   
+    {
         $mediopago = MedioPago::findOrFail($id);
         if ($request->ajax()) {
             return response()->json($mediopago);
@@ -119,11 +118,11 @@ class MedioPagoController extends Controller
                     $mediopago->fillBoolean($data);
                     $mediopago->save();
 
-                    //Forget cache
-                    Cache::forget( MedioPago::$key_cache );
-                    
                     // Commit Transaction
                     DB::commit();
+
+                    //Forget cache
+                    Cache::forget( MedioPago::$key_cache );
                     return response()->json(['success' => true, 'id' => $mediopago->id]);
                 }catch(\Exception $e){
                     DB::rollback();

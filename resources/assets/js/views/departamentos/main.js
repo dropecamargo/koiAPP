@@ -10,14 +10,15 @@ app || (app = {});
 (function ($, window, document, undefined) {
 
     app.MainDepartamentoView = Backbone.View.extend({
+        
         el: '#departamentos-main',
+
         /**
         * Constructor Method
         */
         initialize : function() {
 
             this.$departamentosSearchTable = this.$('#departamentos-search-table');
-
             this.$departamentosSearchTable.DataTable({
                 dom: "<'row'<'col-sm-4'l><'col-sm-4 text-center'><'col-sm-4'f>>" +
                     "<'row'<'col-sm-12'tr>>" +
@@ -42,5 +43,4 @@ app || (app = {});
 			});
         }
     });
-
 })(jQuery, this, this.document);

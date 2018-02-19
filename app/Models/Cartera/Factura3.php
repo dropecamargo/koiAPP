@@ -3,7 +3,6 @@
 namespace App\Models\Cartera;
 
 use Illuminate\Database\Eloquent\Model;
-
 use App\Models\BaseModel;
 use Validator;
 
@@ -19,10 +18,10 @@ class Factura3 extends BaseModel
 	public $timestamps = false;
 
 	public static function storeFactura3 (Factura1 $factura1){
-		
+
 		if ($factura1->factura1_cuotas > 0) {
 			$valor = $factura1->factura1_total / $factura1->factura1_cuotas;
-			$fecha = $factura1->factura1_primerpago; 
+			$fecha = $factura1->factura1_primerpago;
 			for ($i=1; $i <= $factura1->factura1_cuotas; $i++) {
 				$factura3 = new Factura3;
 				$factura3->factura3_factura1 = $factura1->id;

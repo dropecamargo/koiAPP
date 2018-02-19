@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
 use App\Models\Tecnico\ConceptoTecnico;
 use DB, Log, Datatables, Cache;
 
@@ -54,17 +53,16 @@ class ConceptoTecController extends Controller
                     $conceptotecnico->fillBoolean($data);
                     $conceptotecnico->save();
 
-                    //Forget cache
-                    Cache::forget( ConceptoTecnico::$key_cache );
-
                     // Commit Transaction
                     DB::commit();
-                    return response()->json(['success' => true, 'id' => $conceptotecnico->id]);
 
+                    //Forget cache
+                    Cache::forget( ConceptoTecnico::$key_cache );
+                    return response()->json(['success' => true, 'id' => $conceptotecnico->id]);
                 } catch (\Exception $e) {
                     DB::rollback();
                     Log::error($e->getMessage());
-                    return response()->json(['success' => false, 'errors' => trans('app.exception')]); 
+                    return response()->json(['success' => false, 'errors' => trans('app.exception')]);
                 }
             }
             return response()->json(['success' => false, 'errors' => $conceptotecnico->errors]);
@@ -119,11 +117,11 @@ class ConceptoTecController extends Controller
                     $conceptotecnico->fillBoolean($data);
                     $conceptotecnico->save();
 
-                    //Forget cache
-                    Cache::forget( ConceptoTecnico::$key_cache );
-                    
                     // Commit Transaction
                     DB::commit();
+
+                    //Forget cache
+                    Cache::forget( ConceptoTecnico::$key_cache );
                     return response()->json(['success' => true, 'id' => $conceptotecnico->id]);
                 }catch(\Exception $e){
                     DB::rollback();

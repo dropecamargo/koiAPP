@@ -33,7 +33,7 @@
 
                             <label for="name" class="col-sm-1 control-label">Key</label>
                             <div class="form-group col-sm-4">
-                                <input id="name" value="<%- name %>" placeholder="Nombre" class="form-control input-sm" name="name" <%- typeof(id) !== 'undefined' ? 'readonly' : ''%> >
+                                <input id="name" value="<%- name %>" placeholder="Nombre" class="form-control input-sm input-lower" name="name" <%- typeof(id) !== 'undefined' ? 'readonly' : ''%> >
                             </div>
                         </div>
                         <div class="row">

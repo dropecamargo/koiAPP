@@ -42,7 +42,7 @@ class SubCategoria extends BaseModel
             'subcategoria_margen_nivel2' => 'required|numeric',
             'subcategoria_margen_nivel3' => 'required|numeric'
         ];
-        
+
         if ($this->exists){
             $rules['subcategoria_nombre'] .= ',subcategoria_nombre,' . $this->id;
         }else{
@@ -51,7 +51,7 @@ class SubCategoria extends BaseModel
 
         $validator = Validator::make($data, $rules);
         if ($validator->passes()) {
-            
+
             // Valid valor de margenes
             if ($data['subcategoria_margen_nivel1'] > 0) {
                 if ($data['subcategoria_margen_nivel1'] <= $data['subcategoria_margen_nivel2'] || $data['subcategoria_margen_nivel1'] <= $data['subcategoria_margen_nivel3']) {
@@ -68,6 +68,7 @@ class SubCategoria extends BaseModel
         $this->errors = $validator->errors();
         return false;
     }
+
     public static function getSubCategoria ($id)
     {
         $query = SubCategoria::query();
@@ -76,6 +77,7 @@ class SubCategoria extends BaseModel
         $subcategoria = $query->where('subcategoria.id', $id)->first();
         return $subcategoria;
     }
+    
     public static function getSubCategorias()
     {
         if ( Cache::has(self::$key_cache)) {

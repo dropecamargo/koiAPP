@@ -19,14 +19,11 @@ app || (app = {});
             'submit #form-traslado': 'onStore',
             'change .changed-koi-sucursal-repeat': 'changedRepeatSucursal',
         },
-        parameters: {
-        },
 
         /**
         * Constructor Method
         */
         initialize : function() {
-
             // Attributes
             this.$wraperForm = this.$('#render-form-traslado');
 
@@ -42,7 +39,6 @@ app || (app = {});
         * Render View Element
         */
         render: function() {
-
             var attributes = this.model.toJSON();
             this.$wraperForm.html( this.template(attributes) );
 
@@ -52,7 +48,6 @@ app || (app = {});
 
             // Reference views
             this.referenceViews();
-
             this.ready();
         },
 
@@ -84,10 +79,9 @@ app || (app = {});
         * Event Create Folder
         */
         onStore: function (e) {
-
             if (!e.isDefaultPrevented()) {
-
                 e.preventDefault();
+
                 var data = window.Misc.formToJson( e.target );
                     data.detalle = this.trasladoProductosList.toJSON();
 
@@ -105,13 +99,13 @@ app || (app = {});
                     data.tipo = 'S';
                     data.sucursal = this.$('#traslado1_sucursal').val();
                     data.destino = this.$('#traslado1_destino').val();
-                    
+
                 window.Misc.evaluateActionsInventory({
                     'data': data,
                     'wrap': this.$el,
                     'callback': (function (_this) {
                         return function ( action, tipo )
-                        {      
+                        {
                             // Open InventarioActionView
                             if ( _this.inventarioActionView instanceof Backbone.View ){
                                 _this.inventarioActionView.stopListening();
@@ -124,13 +118,13 @@ app || (app = {});
                                     data: data,
                                     action: action,
                                     tipo: tipo,
-                                    form:_this.$formItem 
+                                    form:_this.$formItem
                                 }
                             });
                             _this.inventarioActionView.render();
                         }
                     })(this)
-                }); 
+                });
             }
         },
         /**
@@ -157,18 +151,17 @@ app || (app = {});
         */
         ready: function () {
             // to fire plugins
+            if( typeof window.initComponent.initValidator == 'function' )
+            window.initComponent.initValidator();
 
             if( typeof window.initComponent.initInputMask == 'function' )
                 window.initComponent.initInputMask();
-            
+
             if( typeof window.initComponent.initToUpper == 'function' )
                 window.initComponent.initToUpper();
-            
+
             if( typeof window.initComponent.initSelect2 == 'function' )
                 window.initComponent.initSelect2();
-            
-            if( typeof window.initComponent.initValidator == 'function' )
-                window.initComponent.initValidator();
         },
 
         /**
@@ -176,7 +169,6 @@ app || (app = {});
         */
         responseServer: function ( model, resp, opts ) {
             window.Misc.removeSpinner( this.el );
-
             if(!_.isUndefined(resp.success)) {
                 // response success or error
                 var text = resp.success ? '' : resp.errors;

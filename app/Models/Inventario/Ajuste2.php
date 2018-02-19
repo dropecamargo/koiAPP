@@ -3,7 +3,8 @@
 namespace App\Models\Inventario;
 
 use Illuminate\Database\Eloquent\Model;
-use Validator,DB;
+use Validator, DB;
+
 class Ajuste2 extends Model
 {
 	/**
@@ -20,7 +21,7 @@ class Ajuste2 extends Model
 	*
 	* @var array
 	*/
-	protected $fillable = ['ajuste2_cantidad_entrada','ajuste2_cantidad_salida','ajuste2_costo'];	
+	protected $fillable = ['ajuste2_cantidad_entrada','ajuste2_cantidad_salida','ajuste2_costo'];
 
 	public function isValid($data)
 	{

@@ -6,10 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
-use App\Models\Tesoreria\Ajustep2;
-use App\Models\Base\Documentos, App\Models\Base\Tercero;
-use Log, DB;
+use App\Models\Tesoreria\Ajustep2, App\Models\Base\Documentos, App\Models\Base\Tercero;
+use Log;
 
 class AjustepDetalleController extends Controller
 {
@@ -53,7 +51,7 @@ class AjustepDetalleController extends Controller
             $ajustep2 = new Ajustep2;
             if ($ajustep2->isValid($data)) {
                 try {
-                    
+
                     $documentos = Documentos::find($request->ajustep2_documentos_doc);
                     if(!$documentos instanceof Documentos) {
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar documento, verifique información ó por favor consulte al administrador.']);

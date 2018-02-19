@@ -3,7 +3,6 @@
 namespace App\Models\Base;
 
 use Illuminate\Database\Eloquent\Model;
-
 use Validator;
 
 class Contacto extends Model

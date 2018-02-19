@@ -3,9 +3,7 @@
 namespace App\Models\Inventario;
 
 use Illuminate\Database\Eloquent\Model;
-
 use App\Models\BaseModel;
-
 use DB, Validator;
 
 class Producto extends BaseModel

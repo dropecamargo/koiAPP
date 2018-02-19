@@ -6,9 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
-use App\Models\Base\Tercero;
-use App\Models\Tesoreria\Ajustep2, App\Models\Tesoreria\Facturap1, App\Models\Tesoreria\Egreso2;
+use App\Models\Base\Tercero, App\Models\Tesoreria\Ajustep2, App\Models\Tesoreria\Facturap1, App\Models\Tesoreria\Egreso2;
 use Excel, View, App, DB;
 
 class HistorialProveedorController extends Controller
@@ -23,7 +21,7 @@ class HistorialProveedorController extends Controller
         if ($request->has('type')) {
             $query = null;
             $historyProveider = [];
-            
+
             /* Begin filters */
             if ($request->has('filter_tercero')) {
                 $tercero =  Tercero::select('id', DB::raw("(CASE WHEN tercero_persona = 'N' THEN CONCAT(tercero_nombre1,'',tercero_nombre2,' ',tercero_apellido1,' ',tercero_apellido2, (CASE WHEN (tercero_razonsocial IS NOT NULL AND tercero_razonsocial != '') THEN CONCAT(' - ', tercero_razonsocial) ELSE '' END)) ELSE tercero_razonsocial END) AS tercero_nombre"))->where('tercero_nit', $request->filter_tercero)->first();
@@ -45,13 +43,7 @@ class HistorialProveedorController extends Controller
                 $egreso = Egreso2::historyProveiderReport($tercero, $historyProveider, $i);
                 $historyProveider = $egreso->egreso;
                 $i = $egreso->position;
-
-
-                // dd($historyProveider, $i);
             }
-            
-            // if ($request->has('filter_fecha_inicio') && $request->has('filter_fecha_fin')) {
-            // }
             /* End filters */
 
             // Prepare data

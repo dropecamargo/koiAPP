@@ -39,7 +39,6 @@ app || (app = {});
         * Render View Element
         */
         render: function(){
-
             var attributes = this.model.toJSON();
             this.$wraperForm.html( this.template(attributes) );
 

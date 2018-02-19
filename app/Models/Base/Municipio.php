@@ -3,7 +3,6 @@
 namespace App\Models\Base;
 
 use Illuminate\Database\Eloquent\Model;
-
 use DB, Cache;
 
 class Municipio extends Model
@@ -17,19 +16,26 @@ class Municipio extends Model
 
     public $timestamps = false;
 
+    /**
+     * The key used by cache store.
+     *
+     * @var static string
+     */
+    public static $key_cache = '_municipios';
+
     public static function getMunicipios()
     {
-        if (Cache::has('_municipios')) {
-            return Cache::get('_municipios');    
+        if (Cache::has( self::$key_cache )) {
+            return Cache::get( self::$key_cache );
         }
 
-        return Cache::rememberForever('_municipios', function() {
+        return Cache::rememberForever( self::$key_cache, function() {
             $query = Municipio::query();
             $query->select('municipio.id', DB::raw("CONCAT(municipio_nombre, ' - ', departamento_nombre) as municipio_nombre"));
             $query->join('departamento', 'municipio.departamento_codigo', '=', 'departamento.departamento_codigo');
             $query->orderby('municipio_nombre', 'asc');
             $collection = $query->lists('municipio_nombre', 'municipio.id');
-            
+
             $collection->prepend('', '');
             return $collection;
         });

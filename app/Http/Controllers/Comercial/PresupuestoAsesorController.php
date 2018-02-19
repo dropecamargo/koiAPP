@@ -6,13 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
+use App\Models\Comercial\PresupuestoAsesor, App\Models\Base\Regional, App\Models\Inventario\SubCategoria, App\Models\Base\Tercero;
 use Log, DB;
-
-use App\Models\Comercial\PresupuestoAsesor;
-use App\Models\Base\Regional;
-use App\Models\Inventario\SubCategoria;
-use App\Models\Base\Tercero;
 
 class PresupuestoAsesorController extends Controller
 {
@@ -42,7 +37,7 @@ class PresupuestoAsesorController extends Controller
                 $query->where('presupuestoasesor_ano', $request->presupuestoasesor_ano);
                 $query->where('presupuestoasesor_regional', $item->id);
                 $regional->presupuesto = $query->lists('presupuestoasesor_valor', 'presupuestoasesor_mes');
-           
+
                 $object->regionales[] = $regional;
             }
 
@@ -105,7 +100,7 @@ class PresupuestoAsesorController extends Controller
                                     ELSE tercero_razonsocial
                                 END)
                             ) AS tercero_nombre"
-                        ))     
+                        ))
                         ->find($request->presupuestoasesor_asesor);
                     if(!$asesor instanceof Tercero) {
                         DB::rollback();
@@ -122,7 +117,7 @@ class PresupuestoAsesorController extends Controller
 
                     $query = Regional::query()->where('regional_activo', true);
                     $regionales = $query->get();
-                    
+
                     foreach ($regionales as $regional) {
                         foreach ( config('koi.meses') as $key => $name ) {
                             if($request->has("presupuestoasesor_valor_{$key}_{$regional->id}")){
@@ -148,7 +143,7 @@ class PresupuestoAsesorController extends Controller
                                 $presupuestoasesor->save();
                             }
                         }
-                    }                   
+                    }
 
                     // Commit Transaction
                     DB::commit();

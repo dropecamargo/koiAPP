@@ -3,7 +3,6 @@
 namespace App\Models\Cartera;
 
 use Illuminate\Database\Eloquent\Model;
-
 use App\Models\BaseModel;
 use App\Models\Base\Tercero;
 use Validator,DB;
@@ -67,7 +66,7 @@ class Factura1 extends BaseModel
 		return false;
 	}
 	public static function getFactura($id)
-	{	
+	{
 		$query = Factura1::query();
 		$query->select('factura1.*','sucursal_nombre','puntoventa_numero','puntoventa_nombre','puntoventa_prefijo','tercero_direccion','tercero_fax', 'tercero_municipio' , DB::raw("CONCAT(municipio_nombre, ' - ', departamento_nombre) as municipio_nombre"), 'tercero_telefono1','tercero_telefono2','tercero_nit', DB::raw("(CASE WHEN tercero_persona = 'N'
                     THEN CONCAT(tercero_nombre1,' ',tercero_nombre2,' ',tercero_apellido1,' ',tercero_apellido2,
@@ -112,7 +111,7 @@ class Factura1 extends BaseModel
 	/**
 	* Function for reportes history client in cartera
 	*/
-	public static function historyClientReport(Tercero $tercero, Array $historyClient, $i ) 
+	public static function historyClientReport(Tercero $tercero, Array $historyClient, $i )
 	{
      	$response = new \stdClass();
         $response->success = false;

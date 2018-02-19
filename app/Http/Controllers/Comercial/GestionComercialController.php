@@ -6,9 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
-use App\Models\Comercial\GestionComercial,App\Models\Comercial\ConceptoComercial;
-use App\Models\Base\Tercero;
+use App\Models\Comercial\GestionComercial, App\Models\Comercial\ConceptoComercial, App\Models\Base\Tercero;
 use DB, Log, Auth, Datatables;
 
 class GestionComercialController extends Controller
@@ -21,7 +19,7 @@ class GestionComercialController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            
+
             $query = GestionComercial::query();
               // Filter show collection in tercero
             if ($request->has('tercero')) {
@@ -79,7 +77,7 @@ class GestionComercialController extends Controller
             if ($gestioncomercial->isValid($data)) {
                 DB::beginTransaction();
                 try {
-                    // Recupero instancia de Tercero(cliente)  
+                    // Recupero instancia de Tercero(cliente)
                     $tercero = Tercero::where('tercero_nit', $request->gestioncomercial_tercero)->first();
                     if(!$tercero instanceof Tercero) {
                         DB::rollback();
@@ -91,7 +89,7 @@ class GestionComercialController extends Controller
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar concepto comercial, verifique información ó por consulte al administrador']);
                     }
-                    // Recupero instancia de Tercero(vendedor)  
+                    // Recupero instancia de Tercero(vendedor)
                     $vendedor = Tercero::find($request->gestioncomercial_vendedor);
                     if (!$vendedor instanceof Tercero) {
                         DB::rollback();
@@ -101,13 +99,13 @@ class GestionComercialController extends Controller
                     $gestioncomercial->gestioncomercial_tercero = $tercero->id;
                     $gestioncomercial->gestioncomercial_conceptocom = $conceptocom->id;
                     $gestioncomercial->gestioncomercial_vendedor = $vendedor->id;
-                    $gestioncomercial->gestioncomercial_fh = date('Y-m-d H:m:s'); 
-                    $gestioncomercial->gestioncomercial_inicio = "$request->gestioncomercial_inicio $request->gestioncomercial_hinicio"; 
-                    $gestioncomercial->gestioncomercial_finalizo = "$request->gestioncomercial_finalizo $request->gestioncomercial_hfinalizo"; 
+                    $gestioncomercial->gestioncomercial_fh = date('Y-m-d H:m:s');
+                    $gestioncomercial->gestioncomercial_inicio = "$request->gestioncomercial_inicio $request->gestioncomercial_hinicio";
+                    $gestioncomercial->gestioncomercial_finalizo = "$request->gestioncomercial_finalizo $request->gestioncomercial_hfinalizo";
                     $gestioncomercial->gestioncomercial_usuario_elaboro = Auth::user()->id;
-                    $gestioncomercial->gestioncomercial_fh_elaboro = date('Y-m-d H:m:s'); 
+                    $gestioncomercial->gestioncomercial_fh_elaboro = date('Y-m-d H:m:s');
                     $gestioncomercial->save();
-                    
+
                     // Commit Transaction
                     DB::commit();
                     return response()->json(['success' => true, 'id' => $gestioncomercial->id]);

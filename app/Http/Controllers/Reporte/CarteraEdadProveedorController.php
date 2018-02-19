@@ -6,9 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
-use App\Models\Base\Tercero, App\Models\Base\Regional;
-use App\Models\Tesoreria\Facturap1;
+use App\Models\Base\Tercero, App\Models\Base\Regional, App\Models\Tesoreria\Facturap1;
 use Excel, View, App, DB;
 
 class CarteraEdadProveedorController extends Controller
@@ -23,7 +21,7 @@ class CarteraEdadProveedorController extends Controller
         if ($request->has('type')) {
             $query = Facturap1::query();
             $query->select('documentos_nombre as documento', 'facturap1_numero as numero', 'regional_nombre as regional', 'facturap3_cuota as cuota', 't.tercero_nit', 'facturap3_valor as valor', 'facturap3_saldo as saldo',
-                DB::raw("(CASE WHEN t.tercero_persona = 'N' THEN CONCAT(t.tercero_nombre1,' ',t.tercero_nombre2,' ',t.tercero_apellido1,' ',t.tercero_apellido2,(CASE WHEN (t.tercero_razonsocial IS NOT NULL AND t.tercero_razonsocial != '') THEN CONCAT(' - ', t.tercero_razonsocial) ELSE '' END)) ELSE t.tercero_razonsocial END) AS tercero_nombre"), 
+                DB::raw("(CASE WHEN t.tercero_persona = 'N' THEN CONCAT(t.tercero_nombre1,' ',t.tercero_nombre2,' ',t.tercero_apellido1,' ',t.tercero_apellido2,(CASE WHEN (t.tercero_razonsocial IS NOT NULL AND t.tercero_razonsocial != '') THEN CONCAT(' - ', t.tercero_razonsocial) ELSE '' END)) ELSE t.tercero_razonsocial END) AS tercero_nombre"),
                 DB::raw("
                     (CASE WHEN ((facturap3_vencimiento - NOW()) > 360) THEN (facturap3_saldo) ELSE 0 END) AS valor_m360,
                     (CASE WHEN ((facturap3_vencimiento - NOW()) > 180 AND (facturap3_vencimiento - NOW()) <= 360) THEN (facturap3_saldo) else 0 END) AS valor_m180,
@@ -54,14 +52,8 @@ class CarteraEdadProveedorController extends Controller
             if ($request->has('filter_regional')) {
                 $query->where('facturap1_regional', $request->filter_regional);
             }
-            // if ($request->has('filter_mes') && $request->has('filter_ano')) {
-            // }
-            // if ($request->has('filter_tipo')) {
-            // }
-            /* End filters */
-
             $carteraProveedor = $query->get();
-            // dd($carteraProveedor);
+
             // Prepare data
             $title = "Reporte de cartera proveedores";
             $type = $request->type;

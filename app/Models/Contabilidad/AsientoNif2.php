@@ -4,10 +4,8 @@ namespace App\Models\Contabilidad;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
-
-use Validator, Auth, DB;
-
 use App\Models\Base\Tercero, App\Models\Contabilidad\Producto, App\Models\Inventario\Inventario, App\Models\Base\PuntoVenta, App\Models\Cartera\Factura1, App\Models\Cartera\Factura2, App\Models\Tesoreria\Facturap1, App\Models\Tesoreria\Facturap2;
+use Validator, Auth, DB;
 
 class AsientoNif2 extends Model
 {
@@ -263,7 +261,7 @@ class AsientoNif2 extends Model
         }
         return 'OK';
     }
-    
+
     public static function validarFactura(Request $request)
     {
         // Validate factura
@@ -442,7 +440,7 @@ class AsientoNif2 extends Model
     {
         $response = new \stdClass();
         $response->success = false;
-        $cuenta = $request->has('plancuentasn_cuenta') ? $request->plancuentasn_cuenta : $request->plancuentas_cuenta; 
+        $cuenta = $request->has('plancuentasn_cuenta') ? $request->plancuentasn_cuenta : $request->plancuentas_cuenta;
 
         // Recuperar cuenta
         $objCuenta = PlanCuentaNif::where('plancuentasn_cuenta', $cuenta)->first();
@@ -468,7 +466,7 @@ class AsientoNif2 extends Model
             //     }
             // }
 
-            if($facturap instanceof Facturap1) {    
+            if($facturap instanceof Facturap1) {
                 // En caso de existir factura se afectan cuotas
                 $cuotas = Facturap2::where('facturap2_factura', $facturap->id)->get();
                 if($cuotas->count() <= 0) {
@@ -624,7 +622,7 @@ class AsientoNif2 extends Model
             $datamov['Nuevo'] = false;
             $datamov['Factura'] = $request->factura1_orden;
             $datamov['Valor'] = $request->factura1_pagar;
-            
+
             // $movimiento = new AsientoMovimiento;
             // $result = $movimiento->store($this, $datamov);
             // if(!$result->success) {
@@ -652,7 +650,7 @@ class AsientoNif2 extends Model
             //         if($request->get("factura4_pagar_{$item->id}") != 0){
             //             $datamov['FacturaChild'] = $item->id;
             //             $datamov['Valor'] = $request->get("factura4_pagar_{$item->id}");
-                     
+
             //             $movimiento = new AsientoMovimiento;
             //             $result = $movimiento->store($this, $datamov);
             //             if(!$result->success) {
@@ -662,7 +660,7 @@ class AsientoNif2 extends Model
             //         }
             //     }
             // }
-        }  
+        }
 
         $response->success = true;
         return $response;
@@ -819,7 +817,7 @@ class AsientoNif2 extends Model
         //         return "No es posible recuperar la factura, por favor verifique la informacion o consulte con el administrador.";
         //     }
 
-        //     // Actualizar factura4 
+        //     // Actualizar factura4
         //     $result = $factura->actualizarFactura4($movchildren, $this->asienton2_naturaleza);
         //     if(!$result->success){
         //         return $result->error;

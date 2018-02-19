@@ -14,18 +14,16 @@
     </section>
 
 	<section class="content">
-		<div id="paises-main">
-			<div class="box box-primary">
-				<div class="box-body table-responsive">
-					<table id="paises-search-table" class="table table-bordered table-striped" cellspacing="0" width="100%">
-				        <thead>
-				            <tr>
-				                <th>Código</th>
-				                <th>País</th>
-				            </tr>
-				        </thead>
-				    </table>
-				</div>
+		<div class="box box-primary" id="paises-main">
+			<div class="box-body table-responsive">
+				<table id="paises-search-table" class="table table-bordered table-striped" cellspacing="0" width="100%">
+			        <thead>
+			            <tr>
+			                <th>Código</th>
+			                <th>País</th>
+			            </tr>
+			        </thead>
+			    </table>
 			</div>
 		</div>
     </section>

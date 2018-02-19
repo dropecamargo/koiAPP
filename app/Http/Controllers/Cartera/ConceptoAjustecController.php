@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
 use App\Models\Cartera\ConceptoAjustec;
 use DB, Log, Cache, Datatables;
 
@@ -55,10 +54,11 @@ class ConceptoAjustecController extends Controller
                     $conceptoajustec->fillBoolean($data);
                     $conceptoajustec->save();
 
-                    //Forget cache
-                    Cache::forget( ConceptoAjustec::$key_cache );
                     // Commit Transaction
                     DB::commit();
+
+                    //Forget cache
+                    Cache::forget( ConceptoAjustec::$key_cache );
                     return response()->json(['success' => true, 'id' => $conceptoajustec->id]);
                 }catch(\Exception $e){
                     DB::rollback();
@@ -118,10 +118,11 @@ class ConceptoAjustecController extends Controller
                     $conceptoajustec->fillBoolean($data);
                     $conceptoajustec->save();
 
-                    //Forget cache
-                    Cache::forget( ConceptoAjustec::$key_cache );
                     // Commit Transaction
                     DB::commit();
+                    
+                    //Forget cache
+                    Cache::forget( ConceptoAjustec::$key_cache );
                     return response()->json(['success' => true, 'id' => $conceptoajustec->id]);
                 }catch(\Exception $e){
                     DB::rollback();

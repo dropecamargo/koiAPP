@@ -19,7 +19,6 @@ app || (app = {});
         initialize : function() {
 
             this.$tipoproveedoresSearchTable = this.$('#tipoproveedores-search-table');
-
             this.$tipoproveedoresSearchTable.DataTable({
                 dom: "<'row'<'col-sm-4'B><'col-sm-4 text-center'l><'col-sm-4'f>>" +
                     "<'row'<'col-sm-12'tr>>" +

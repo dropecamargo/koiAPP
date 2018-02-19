@@ -35,21 +35,11 @@ app || (app = {});
         * Render View Element
         */
         render: function() {
-
             var attributes = this.model.toJSON();
             this.$wraperForm.html( this.template(attributes) );
-
             this.$nivel = this.$('#plancuentas_nivel');
 
-            // to fire plugins
-            if( typeof window.initComponent.initToUpper == 'function' )
-                window.initComponent.initToUpper();
-
-            if( typeof window.initComponent.initICheck == 'function' )
-                window.initComponent.initICheck();
-
-            if( typeof window.initComponent.initSelect2 == 'function' )
-                window.initComponent.initSelect2();
+            this.ready();
 		},
 
         cuentaChanged: function(e) {
@@ -83,13 +73,27 @@ app || (app = {});
         * Event Create Cuenta
         */
         onStore: function (e) {
-
             if (!e.isDefaultPrevented()) {
-
                 e.preventDefault();
+
                 var data = window.Misc.formToJson( e.target );
                 this.model.save( data, {patch: true, silent: true} );
             }
+        },
+
+        ready: function() {
+            // to fire plugins
+            if( typeof window.initComponent.initValidator == 'function' )
+                window.initComponent.initValidator();
+
+            if( typeof window.initComponent.initToUpper == 'function' )
+                window.initComponent.initToUpper();
+
+            if( typeof window.initComponent.initICheck == 'function' )
+                window.initComponent.initICheck();
+
+            if( typeof window.initComponent.initSelect2 == 'function' )
+                window.initComponent.initSelect2();
         },
 
         /**

@@ -4,7 +4,6 @@ namespace App\Models\Base;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\BaseModel;
-
 use Validator, Cache;
 
 class Regional extends BaseModel
@@ -64,7 +63,7 @@ class Regional extends BaseModel
         return Cache::rememberForever( self::$key_cache , function() {
             $query = Regional::query();
             $query->orderby('regional_nombre', 'asc');
-            $collection = $query->lists('regional_nombre', 'id'); 
+            $collection = $query->lists('regional_nombre', 'id');
             $collection->prepend('', '');
             return $collection;
         });

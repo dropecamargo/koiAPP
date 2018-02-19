@@ -3,7 +3,8 @@
 namespace App\Models\Inventario;
 
 use Illuminate\Database\Eloquent\Model;
-use Validator,DB;
+use Validator, DB;
+
 class Ajuste1 extends Model
 {
    /**
@@ -20,8 +21,8 @@ class Ajuste1 extends Model
      *
      * @var array
      */
-    protected $fillable = ['ajuste1_fecha','ajuste1_observaciones'];	  
-	
+    protected $fillable = ['ajuste1_fecha','ajuste1_observaciones'];
+
 	/**
 	* The default ajuste if documentos.
 	*
@@ -62,5 +63,5 @@ class Ajuste1 extends Model
 		$query->join('tercero','ajuste1_usuario_elaboro','=', 'tercero.id');
 		$query->where('ajuste1.id',$id);
 		return $query->first();
-	}	
+	}
 }

@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
 use App\Models\Inventario\Categoria, App\Models\Inventario\Linea;
 use DB, Log, Datatables, Cache;
 
@@ -77,11 +76,11 @@ class CategoriaController extends Controller
                     $categoria->categoria_linea =  $linea->id;
                     $categoria->save();
 
-                    //Forget cache
-                    Cache::forget( Categoria::$key_cache );
-
                     // Commit Transaction
                     DB::commit();
+
+                    //Forget cache
+                    Cache::forget( Categoria::$key_cache );
                     return response()->json(['success' => true, 'id' => $categoria->id]);
                 }catch(\Exception $e){
                     DB::rollback();
@@ -149,11 +148,11 @@ class CategoriaController extends Controller
                     $categoria->categoria_linea =  $linea->id;
                     $categoria->save();
 
-                    //Forget cache
-                    Cache::forget( Categoria::$key_cache );
-
                     // Commit Transaction
                     DB::commit();
+
+                    //Forget cache
+                    Cache::forget( Categoria::$key_cache );
                     return response()->json(['success' => true, 'id' => $categoria->id]);
                 }catch(\Exception $e){
                     DB::rollback();

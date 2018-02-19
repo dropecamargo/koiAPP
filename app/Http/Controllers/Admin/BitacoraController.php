@@ -6,10 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\Base\Bitacora;
-use App\Models\Inventario\Pedido1;
+use App\Models\Base\Bitacora, App\Models\Inventario\Pedido1;
 use DB;
-
 
 class BitacoraController extends Controller
 {
@@ -22,11 +20,11 @@ class BitacoraController extends Controller
     {
         if ($request->ajax()) {
             $query = Bitacora::query();
-            $query->select('bitacora.*', DB::raw("(CASE WHEN tercero_persona = 'N' THEN CONCAT(tercero_nombre1,' ',tercero_nombre2,' ',tercero_apellido1,' ',tercero_apellido2) ELSE tercero_razonsocial END) as tercero_nombre"));    
+            $query->select('bitacora.*', DB::raw("(CASE WHEN tercero_persona = 'N' THEN CONCAT(tercero_nombre1,' ',tercero_nombre2,' ',tercero_apellido1,' ',tercero_apellido2) ELSE tercero_razonsocial END) as tercero_nombre"));
             $query->where('bitacora_documento',$request->document_id);
             $query->where('bitacora_documentos', $request->document_type);
             $query->join('tercero', 'bitacora_usuario_elaboro', '=', 'tercero.id');
-            return response()->json( $query->get() );  
+            return response()->json( $query->get() );
         }
         abort(404);
     }

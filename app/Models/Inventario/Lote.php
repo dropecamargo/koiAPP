@@ -1,7 +1,10 @@
 <?php
+
 namespace App\Models\Inventario;
+
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Base\Sucursal;
+
 class Lote extends Model
 {
     /**
@@ -10,7 +13,9 @@ class Lote extends Model
     * @var string
     */
     protected $table = 'lote';
+
     public $timestamps = false;
+    
     public static function actualizar(Producto $producto, $sucursal, $loteNumero, $tipo, $cantidad, $ubicacion, $fecha = null, $fechaVencimiento = null)
     {
         // Validar sucursal
@@ -38,13 +43,13 @@ class Lote extends Model
                 $lote->lote_saldo = ($lote->lote_saldo + $cantidad);
             break;
             case 'S':
-            
+
                 if ($producto->producto_maneja_serie == true) {
                     $lote = Lote::where('lote_serie',$producto->id)->where('lote_sucursal', $sucursal->id)->where('lote_saldo', 1)->first();
                 }else{
                     $lote = Lote::find($loteNumero);
                 }
-                
+
                 if(!$lote instanceof Lote){
                     return "No es posible recuperar lote del producto $producto->producto_nombre en la sucursal $sucursal->sucursal_nombre";
                 }

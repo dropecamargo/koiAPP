@@ -10,14 +10,15 @@ app || (app={});
 (function ($, window, document, undefined) {
 
     app.MainFoldersView = Backbone.View.extend({
+
         el: '#folders-main',
+        
         /*
          * Constructor method
          */
         initialize: function () {
 
             this.$foldersSearchTable = this.$('#folders-search-table');
-
             this.$foldersSearchTable.DataTable({
                 dom: "<'row'<'col-sm-4'B><'col-sm-4 text-center'l><'col-sm-4'f>>" +
                         "<'row'<'col-sm-12'tr>>" +

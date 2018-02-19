@@ -7,9 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Inventario\TipoAjuste;
-
 use DB, Log, Datatables, Cache;
-
 
 class TipoAjusteController extends Controller
 {
@@ -55,17 +53,17 @@ class TipoAjusteController extends Controller
                     $tipoajuste->fillBoolean($data);
                     $tipoajuste->save();
 
-                    // Forget cache
-                    Cache::forget( TipoAjuste::$key_cache );
-
                     // Commit Transaction
                     DB::commit();
+
+                    // Forget cache
+                    Cache::forget( TipoAjuste::$key_cache );
                     return response()->json(['success' => true, 'id' => $tipoajuste->id]);
                 } catch (\Exception $e) {
 
                     DB::rollback();
                     Log::error($e->getMessage());
-                    return response()->json(['success' => false, 'errors' => trans('app.exception')]); 
+                    return response()->json(['success' => false, 'errors' => trans('app.exception')]);
                 }
             }
             return response()->json(['success' => false, 'errors' => $tipoajuste->errors]);
@@ -118,17 +116,17 @@ class TipoAjusteController extends Controller
                     $tipoajuste->fill($data);
                     $tipoajuste->fillBoolean($data);
                     $tipoajuste->save();
-                    
-                    // Forget cache
-                    Cache::forget( TipoAjuste::$key_cache );
 
                     // Commit Transaction
                     DB::commit();
+
+                    // Forget cache
+                    Cache::forget( TipoAjuste::$key_cache );
                     return response()->json(['success' => true, 'id' => $tipoajuste->id]);
                 } catch (\Exception $e) {
                     DB::rollback();
                     Log::error($e->getMessage());
-                    return response()->json(['success' => false, 'errors' => trans('app.exception')]); 
+                    return response()->json(['success' => false, 'errors' => trans('app.exception')]);
                 }
             }
             return response()->json(['success' => false, 'errors' => $tipoajuste->errors]);

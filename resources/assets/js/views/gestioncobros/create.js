@@ -17,17 +17,11 @@ app || (app = {});
             'submit #form-gestioncobro': 'onStore',
             'change .gestioncobro-koi-tercero': 'changeListDeuda'
         },
-        parameters: {
-        },
 
         /**
         * Constructor Method
         */
-        initialize : function(opts) {
-            // Initialize
-            if( opts !== undefined && _.isObject(opts.parameters) )
-                this.parameters = $.extend({}, this.parameters, opts.parameters);
-
+        initialize : function() {
             // Attributes
             this.$wraperForm = this.$('#render-form-gestioncobro');
 
@@ -42,8 +36,8 @@ app || (app = {});
         */
         onStore: function (e) {
             if (!e.isDefaultPrevented()) {
-
                 e.preventDefault();
+
                 var data = window.Misc.formToJson( e.target );
                 this.model.save( data, {patch: true, silent: true} );
             }
@@ -64,7 +58,7 @@ app || (app = {});
         changeListDeuda: function(e){
             e.preventDefault();
             var tercero = this.$(e.target).attr('data-tercero');
-            
+
             // List deuda
             this.$templateTercero = _.template( ($('#add-tercero-cartera-tpl').html() || '') );
             this.detalleCarteraTercero = new app.DetalleCarteraTercero();
@@ -88,12 +82,15 @@ app || (app = {});
         */
         ready: function () {
             // to fire plugins
+            if( typeof window.initComponent.initValidator == 'function' )
+                window.initComponent.initValidator();
+
             if( typeof window.initComponent.initICheck == 'function' )
                 window.initComponent.initICheck();
-            
+
             if( typeof window.initComponent.initToUpper == 'function' )
                 window.initComponent.initToUpper();
-            
+
             if( typeof window.initComponent.initTimePicker == 'function' )
                 window.initComponent.initTimePicker();
         },

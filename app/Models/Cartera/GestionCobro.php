@@ -3,7 +3,6 @@
 namespace App\Models\Cartera;
 
 use Illuminate\Database\Eloquent\Model;
-
 use Validator, DB;
 
 class GestionCobro extends Model
@@ -47,6 +46,5 @@ class GestionCobro extends Model
 		$query->join('conceptocob', 'gestioncobro_conceptocob','=', 'conceptocob.id');
 		$query->where('gestioncobro.id', $id);
 		return $query->first();
-
 	}
 }

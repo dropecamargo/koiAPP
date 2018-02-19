@@ -6,11 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
-use App\Models\Cartera\AutorizaCa;
-use App\Models\Base\Tercero;
-
-use DB,Log,Datatables,Auth;
+use App\Models\Cartera\AutorizaCa, App\Models\Base\Tercero;
+use Datatables;
 
 class AutorizaCaController extends Controller
 {

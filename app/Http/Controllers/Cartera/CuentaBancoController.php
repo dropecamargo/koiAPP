@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
 use App\Models\Cartera\CuentaBanco, App\Models\Cartera\Banco;
 use DB, Log, Cache, Datatables;
 
@@ -65,10 +64,11 @@ class CuentaBancoController extends Controller
                     $cuentabanco->cuentabanco_banco = $banco->id;
                     $cuentabanco->save();
 
-                    //Forget cache
-                    Cache::forget( CuentaBanco::$key_cache );
                     // Commit Transaction
                     DB::commit();
+
+                    //Forget cache
+                    Cache::forget( CuentaBanco::$key_cache );
                     return response()->json(['success' => true, 'id' => $cuentabanco->id]);
                 }catch(\Exception $e){
                     DB::rollback();
@@ -136,10 +136,11 @@ class CuentaBancoController extends Controller
                     $cuentabanco->cuentabanco_banco = $banco->id;
                     $cuentabanco->save();
 
-                    //Forget cache
-                    Cache::forget( CuentaBanco::$key_cache );
                     // Commit Transaction
                     DB::commit();
+                    
+                    //Forget cache
+                    Cache::forget( CuentaBanco::$key_cache );
                     return response()->json(['success' => true, 'id' => $cuentabanco->id]);
                 }catch(\Exception $e){
                     DB::rollback();

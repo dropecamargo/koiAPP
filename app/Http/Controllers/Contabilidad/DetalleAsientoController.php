@@ -6,10 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
-use Log, DB;
-
 use App\Models\Contabilidad\Asiento, App\Models\Contabilidad\Asiento2, App\Models\Tesoreria\Facturap1, App\Models\Tesoreria\Facturap2, App\Models\Contabilidad\AsientoMovimiento, App\Models\Contabilidad\PlanCuenta, App\Models\Contabilidad\CentroCosto, App\Models\Base\Tercero, App\Models\Production\Ordenp;
+use Log, DB;
 
 class DetalleAsientoController extends Controller
 {
@@ -279,7 +277,7 @@ class DetalleAsientoController extends Controller
         }
 
         if($request->has('action'))
-        {   
+        {
             switch ($request->action) {
                 case 'ordenp':
                     // Valido movimiento ordenp

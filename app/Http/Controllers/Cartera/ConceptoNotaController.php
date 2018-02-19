@@ -6,9 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
-use App\Models\Contabilidad\PlanCuenta;
-use App\Models\Cartera\ConceptoNota;
+use App\Models\Contabilidad\PlanCuenta, App\Models\Cartera\ConceptoNota;
 use DB, Log, Datatables, Cache;
 
 class ConceptoNotaController extends Controller
@@ -55,11 +53,11 @@ class ConceptoNotaController extends Controller
                     $conceptonota->fillBoolean($data);
                     $conceptonota->save();
 
-                    //Forget cache
-                    Cache::forget( ConceptoNota::$key_cache );
-
                     // Commit Transaction
                     DB::commit();
+
+                    //Forget cache
+                    Cache::forget( ConceptoNota::$key_cache );
                     return response()->json(['success' => true, 'id' => $conceptonota->id]);
                 }catch(\Exception $e){
                     DB::rollback();
@@ -120,11 +118,11 @@ class ConceptoNotaController extends Controller
                     $conceptonota->fillBoolean($data);
                     $conceptonota->save();
 
-                    //Forget cache
-                    Cache::forget( ConceptoNota::$key_cache );
-
                     // Commit Transaction
                     DB::commit();
+
+                    //Forget cache
+                    Cache::forget( ConceptoNota::$key_cache );
                     return response()->json(['success' => true, 'id' => $conceptonota->id]);
                 }catch(\Exception $e){
                     DB::rollback();

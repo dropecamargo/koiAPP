@@ -6,9 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
 use App\Models\Base\Pais;
-
 use DB, Datatables;
 
 class PaisController extends Controller
@@ -22,9 +20,11 @@ class PaisController extends Controller
     {
         if ($request->ajax()) {
             $query = Pais::query();
+
             if( $request->has('datatables') ) {
                 return Datatables::of($query)->make(true);
             }
+
             $query->select('pais.id as id', DB::raw("CONCAT(pais_nombre, ' - ', pais_codigo) as text"));
             if($request->has('id')){
                 $query->where('pais.id', $request->id);

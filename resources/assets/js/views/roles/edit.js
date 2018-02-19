@@ -18,17 +18,11 @@ app || (app = {});
             'click .toggle-children': 'toggleChildren',
             'click .btn-set-permission': 'changePermissions'
         },
-        parameters: {
-        },
 
         /**
         * Constructor Method
         */
-        initialize : function(opts) {
-            // Initialize
-            if( opts !== undefined && _.isObject(opts.parameters) )
-                this.parameters = $.extend({}, this.parameters, opts.parameters);
-
+        initialize : function() {
             // Attributes
             this.stuffToDo = { };
             this.stuffToVw = { };
@@ -55,8 +49,8 @@ app || (app = {});
         */
         onStore: function (e) {
             if (!e.isDefaultPrevented()) {
-
                 e.preventDefault();
+                
                 var data = window.Misc.formToJson( e.target );
                 this.model.save( data, {patch: true, silent: true} );
             }

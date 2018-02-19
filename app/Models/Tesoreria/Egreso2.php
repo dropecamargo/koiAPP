@@ -3,7 +3,6 @@
 namespace App\Models\Tesoreria;
 
 use Illuminate\Database\Eloquent\Model;
-
 use App\Models\BaseModel;
 use App\Models\Base\Tercero;
 use Validator, DB;
@@ -72,7 +71,7 @@ class Egreso2 extends BaseModel
     /**
     * Function for reportes history client in cartera
     */
-    public static function historyProveiderReport(Tercero $tercero, Array $historyProveider, $i ) 
+    public static function historyProveiderReport(Tercero $tercero, Array $historyProveider, $i )
     {
         $response = new \stdClass();
         $response->success = false;

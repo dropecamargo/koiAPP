@@ -6,11 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
+use App\Models\Contabilidad\PlanCuentaNif, App\Models\Contabilidad\CentroCosto;
 use DB, Log, Cache, Datatables;
-
-use App\Models\Contabilidad\PlanCuentaNif;
-use App\Models\Contabilidad\CentroCosto;
 
 class PlanCuentasNifController extends Controller
 {
@@ -78,10 +75,11 @@ class PlanCuentasNifController extends Controller
                     $plancuentanif->setNivelesCuenta();
                     $plancuentanif->save();
 
-                    //Forget cache
-                    Cache::forget( PlanCuentaNif::$key_cache );
                     // Commit Transaction
                     DB::commit();
+
+                    //Forget cache
+                    Cache::forget( PlanCuentaNif::$key_cache );
                     return response()->json(['success' => true, 'id' => $plancuentanif->id]);
                 }catch(\Exception $e){
                     DB::rollback();
@@ -146,10 +144,11 @@ class PlanCuentasNifController extends Controller
                     $plancuentanif->setNivelesCuenta();
                     $plancuentanif->save();
 
-                    //Forget cache
-                    Cache::forget( PlanCuentaNif::$key_cache );
                     // Commit Transaction
                     DB::commit();
+                    
+                    //Forget cache
+                    Cache::forget( PlanCuentaNif::$key_cache );
                     return response()->json(['success' => true, 'id' => $plancuentanif->id]);
                 }catch(\Exception $e){
                     DB::rollback();

@@ -6,10 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
-use DB, Log, Datatables;
-
 use App\Models\Contabilidad\CentroCosto;
+use DB, Log, Datatables;
 
 class CentroCostoController extends Controller
 {
@@ -47,7 +45,7 @@ class CentroCostoController extends Controller
     {
         if ($request->ajax()) {
             $data = $request->all();
-            
+
             $centrocosto = new CentroCosto;
             if ($centrocosto->isValid($data)) {
                 DB::beginTransaction();
@@ -81,8 +79,8 @@ class CentroCostoController extends Controller
     {
         $centrocosto = CentroCosto::findOrFail($id);
         if ($request->ajax()) {
-            return response()->json($centrocosto);    
-        }        
+            return response()->json($centrocosto);
+        }
         return view('contabilidad.centroscosto.show', ['centrocosto' => $centrocosto]);
     }
 

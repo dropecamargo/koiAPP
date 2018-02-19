@@ -11,7 +11,6 @@ use App\Models\Base\Tercero, App\Models\Base\Documentos, App\Models\Base\Sucursa
 use App\Models\Tecnico\Orden, App\Models\Tecnico\Sitio, App\Models\Tecnico\Visita, App\Models\Tecnico\RemRepu, App\Models\Tecnico\RemRepu2;
 use App\Models\Inventario\Producto, App\Models\Inventario\SubCategoria, App\Models\Inventario\Lote, App\Models\Inventario\Prodbode, App\Models\Inventario\Inventario, App\Models\Inventario\Rollo;
 use App\Models\Cartera\Factura1, App\Models\Cartera\Factura2, App\Models\Cartera\Factura3;
-
 use DB, Log, Datatables, Auth, Mail, App, View;
 
 class OrdenController extends Controller
@@ -40,7 +39,7 @@ class OrdenController extends Controller
             $query->join('tercero', 'orden_tercero', '=', 'tercero.id');
             $query->join('sucursal', 'orden_sucursal', '=', 'sucursal.id');
             $query->orderBy('orden.id', 'desc');
-            
+
            // Persistent data filter
             if($request->has('persistent') && $request->persistent) {
                 session(['searchorden_orden_id' => $request->has('id') ? $request->id : '']);
@@ -68,9 +67,6 @@ class OrdenController extends Controller
                         if($request->orden_abierta == 'C') {
                             $query->where('orden_abierta', false);
                         }
-                        /*if($request->orden_abierta == 'N') {
-                            $query->where('orden_anulada', true);
-                        }*/
                     }
                 })
                 ->make(true);

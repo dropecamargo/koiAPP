@@ -6,9 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
 use App\Models\Tecnico\Prioridad;
-
 use DB, Log, Datatables,Cache;
 
 class PrioridadController extends Controller
@@ -19,7 +17,7 @@ class PrioridadController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
-    {   
+    {
         if($request->ajax()){
             $query = Prioridad::query();
             return Datatables::of($query)->make(true);
@@ -57,11 +55,11 @@ class PrioridadController extends Controller
                     $prioridad->fillBoolean($data);
                     $prioridad->save();
 
-                    //Forget Cache
-                    Cache::forget( Prioridad::$key_cache );
-
                     // Commit Transaction
                     DB::commit();
+
+                    //Forget Cache
+                    Cache::forget( Prioridad::$key_cache );
                     return response()->json(['success' => true, 'id' => $prioridad->id]);
                 }catch(\Exception $e){
                     DB::rollback();
@@ -121,11 +119,11 @@ class PrioridadController extends Controller
                     $prioridad->fillBoolean($data);
                     $prioridad->save();
 
-                    //Forget Cache
-                    Cache::forget( Prioridad::$key_cache );
-                    
                     // Commit Transaction
                     DB::commit();
+
+                    //Forget Cache
+                    Cache::forget( Prioridad::$key_cache );
                     return response()->json(['success' => true, 'id' => $prioridad->id]);
                 }catch(\Exception $e){
                     DB::rollback();

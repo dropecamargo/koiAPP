@@ -3,7 +3,6 @@
 namespace App\Models\Cartera;
 
 use Illuminate\Database\Eloquent\Model;
-
 use App\Models\BaseModel;
 use Validator;
 
@@ -17,7 +16,7 @@ class Recibo3 extends BaseModel
 	protected $table = 'recibo3';
 
 	public $timestamps = false;
-	
+
 	public function isValid($data)
 	{
 		$rules = [];
@@ -35,7 +34,7 @@ class Recibo3 extends BaseModel
 		return false;
 	}
 	/*
-	* Valido que exista cuota cuando es cheque  
+	* Valido que exista cuota cuando es cheque
 	*/
 	public function validarCheque($data){
 		$result = 'OK';

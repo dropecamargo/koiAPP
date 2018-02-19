@@ -15,20 +15,13 @@ app || (app = {});
         template: _.template( ($('#add-mediopago-tpl').html() || '') ),
         events: {
             'submit #form-mediopago': 'onStore',
-            'ifChecked #mediopago_ef': 'checkedEfectvo',
-            'ifChecked #mediopago_ch': 'checkedCheque'
-        },
-        parameters: {
+            'ifChanged .change-check': 'changedCheck',
         },
 
         /**
         * Constructor Method
         */
-        initialize : function(opts) {
-            // Initialize
-            if( opts !== undefined && _.isObject(opts.parameters) )
-                this.parameters = $.extend({}, this.parameters, opts.parameters);
-
+        initialize : function() {
             // Attributes
             this.$wraperForm = this.$('#render-form-mediopago');
 
@@ -43,8 +36,8 @@ app || (app = {});
         */
         onStore: function (e) {
             if (!e.isDefaultPrevented()) {
-
                 e.preventDefault();
+
                 var data = window.Misc.formToJson( e.target );
                 this.model.save( data, {patch: true, silent: true} );
             }
@@ -58,41 +51,37 @@ app || (app = {});
             this.$wraperForm.html( this.template(attributes) );
 
             // References check
-
             this.$checkch = this.$('#mediopago_ch');
             this.$checkef = this.$('#mediopago_ef');
+
             this.ready();
         },
+
         /**
-        *
+        * Event change Icheck
         */
-        checkedCheque:function(e){
-            e.preventDefault();
-            var selected = $(e.target).is(':checked');
-            
-            if ( selected ) {
+        changedCheck:function(e){
+            selected = this.$(e.currentTarget).is(':checked');
+            filter = this.$(e.currentTarget).attr('id').split('_')[1];
+
+            if ( selected && filter == 'ch' ) {
                 this.$checkef.iCheck('uncheck');
-            }
-        },
-        /**
-        *
-        */
-        checkedEfectvo: function(e){
-            e.preventDefault();
-            var selected = $(e.target).is(':checked');
-            
-            if ( selected ) {
+            }else if( selected && filter == 'ef' ){
                 this.$checkch.iCheck('uncheck');
             }
         },
+
         /**
         * fires libraries js
         */
         ready: function () {
             // to fire plugins
+            if( typeof window.initComponent.initValidator == 'function' )
+                window.initComponent.initValidator();
+
             if( typeof window.initComponent.initICheck == 'function' )
                 window.initComponent.initICheck();
-            
+
             if( typeof window.initComponent.initToUpper == 'function' )
                 window.initComponent.initToUpper();
         },
@@ -125,5 +114,4 @@ app || (app = {});
             }
         }
     });
-
 })(jQuery, this, this.document);

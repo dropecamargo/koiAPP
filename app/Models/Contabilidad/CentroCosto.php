@@ -3,9 +3,7 @@
 namespace App\Models\Contabilidad;
 
 use Illuminate\Database\Eloquent\Model;
-
 use App\Models\BaseModel;
-
 use Validator, DB;
 
 class CentroCosto extends BaseModel
@@ -78,7 +76,7 @@ class CentroCosto extends BaseModel
         $query = CentroCosto::query();
         $query->select('id', DB::raw("CONCAT(centrocosto_codigo, centrocosto_centro, ' - ', centrocosto_nombre) as centrocosto_nombre"));
         $query->orderby('centrocosto_nombre', 'asc');
-        
+
         if($centrocosto_estructura != null){
             $query->where('centrocosto_estructura', $centrocosto_estructura);
         }

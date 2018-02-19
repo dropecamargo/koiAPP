@@ -54,11 +54,11 @@ class TipoGastoController extends Controller
                     $tipogasto->fillBoolean($data);
                     $tipogasto->save();
 
-                    // Forget cache
-                    Cache::forget( TipoGasto::$key_cache );
-
                     // Commit Transaction
                     DB::commit();
+
+                    // Forget cache
+                    Cache::forget( TipoGasto::$key_cache );
                     return response()->json(['success' => true, 'id' =>$tipogasto->id]);
                 } catch (\Exception $e) {
                     DB::rollback();
@@ -118,11 +118,11 @@ class TipoGastoController extends Controller
                     $tipogasto->fillBoolean($data);
                     $tipogasto->save();
 
-                    // Forget cache
-                    Cache::forget( TipoGasto::$key_cache );
-
                     // Commit Transaction
                     DB::commit();
+
+                    // Forget cache
+                    Cache::forget( TipoGasto::$key_cache );
                     return response()->json(['success' => true, 'id' =>$tipogasto->id]);
                 } catch (\Exception $e) {
                     DB::rollback();

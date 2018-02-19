@@ -55,11 +55,11 @@ class ImpuestoController extends Controller
                     $impuesto->fillBoolean($data);
                     $impuesto->save();
 
-                    //Forget cache
-                    Cache::forget( Impuesto::$key_cache );
-
                     // Commit Transaction
                     DB::commit();
+
+                    //Forget cache
+                    Cache::forget( Impuesto::$key_cache );
                     return response()->json(['success' => true, 'id' => $impuesto->id]);
                 }catch(\Exception $e){
                     DB::rollback();
@@ -120,11 +120,11 @@ class ImpuestoController extends Controller
                     $impuesto->fillBoolean($data);
                     $impuesto->save();
 
-                    //Forget cache
-                    Cache::forget( Impuesto::$key_cache );
-
                     // Commit Transaction
                     DB::commit();
+                    
+                    //Forget cache
+                    Cache::forget( Impuesto::$key_cache );
                     return response()->json(['success' => true, 'id' => $impuesto->id]);
                 }catch(\Exception $e){
                     DB::rollback();

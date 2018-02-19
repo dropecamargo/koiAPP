@@ -3,7 +3,6 @@
 namespace App\Models\Cartera;
 
 use Illuminate\Database\Eloquent\Model;
-
 use Validator;
 
 class AutorizaCa extends Model
@@ -38,5 +37,5 @@ class AutorizaCa extends Model
         }
 		$this->errors = $validator->errors();
 		return false;
-	}	
+	}
 }

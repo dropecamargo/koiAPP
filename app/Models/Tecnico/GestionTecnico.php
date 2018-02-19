@@ -3,7 +3,6 @@
 namespace App\Models\Tecnico;
 
 use Illuminate\Database\Eloquent\Model;
-
 use Validator, DB;
 
 class GestionTecnico extends Model
