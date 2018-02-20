@@ -19,7 +19,7 @@ class CreateNota2Table extends Migration
             $table->integer('nota2_nota1')->unsigned();
             $table->integer('nota2_documentos_doc')->unsigned();
             $table->integer('nota2_id_doc')->unsigned();
-            $table->double('nota2_valor');
+            $table->double('nota2_valor')->default(0);
 
             $table->foreign('nota2_nota1')->references('id')->on('nota1')->onDelete('restrict');
             $table->foreign('nota2_documentos_doc')->references('id')->on('documentos')->onDelete('restrict');

@@ -16,7 +16,7 @@ class CreatePaisTable extends Migration
             $table->engine = 'InnoDB';
 
             $table->increments('id');
-            $table->string('pais_codigo',2);
+            $table->string('pais_codigo',2)->unique();
             $table->string('pais_nombre',30);
         });
     }

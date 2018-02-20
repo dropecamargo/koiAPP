@@ -17,7 +17,7 @@ class CreateConceptocomTable extends Migration
 
             $table->increments('id');
             $table->string('conceptocom_nombre',25);
-            $table->boolean('conceptocom_activo')->default(0);
+            $table->boolean('conceptocom_activo')->default(false);
         });
     }
 

@@ -21,7 +21,7 @@ class CreateRecibo2Table extends Migration
             $table->integer('recibo2_documentos_doc')->unsigned()->nullable();
             $table->integer('recibo2_id_doc')->unsigned()->nullable();
             $table->string('recibo2_naturaleza', 1);
-            $table->double('recibo2_valor');
+            $table->double('recibo2_valor')->default(0);
 
             $table->foreign('recibo2_recibo1')->references('id')->on('recibo1')->onDelete('restrict');
             $table->foreign('recibo2_conceptosrc')->references('id')->on('conceptosrc')->onDelete('restrict');

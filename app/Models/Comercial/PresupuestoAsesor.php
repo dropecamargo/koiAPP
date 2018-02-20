@@ -27,7 +27,7 @@ class PresupuestoAsesor extends Model
     {
         $rules = [
             'presupuestoasesor_asesor' => 'required',
-            'presupuestoasesor_subcategoria' => 'required',
+            'presupuestoasesor_linea' => 'required',
             'presupuestoasesor_ano' => 'required'
         ];
 

@@ -13,14 +13,13 @@ class CreateTipoajusteTable extends Migration
     public function up()
     {
         Schema::create('tipoajuste', function (Blueprint $table){
-            
             $table->engine = 'InnoDB';
+
             $table->increments('id');
             $table->string('tipoajuste_nombre',25);
             $table->string('tipoajuste_sigla',3);
             $table->string('tipoajuste_tipo',1);
-            $table->boolean('tipoajuste_activo')->default(true);
-           
+            $table->boolean('tipoajuste_activo')->default(false);
         });
     }
 
@@ -31,6 +30,6 @@ class CreateTipoajusteTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tipoajuste');   
+        Schema::dropIfExists('tipoajuste');
     }
 }

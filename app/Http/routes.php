@@ -214,7 +214,7 @@ Route::group(['middleware' => 'auth'], function(){
 	});
 	Route::resource('modelos','Inventario\ModeloController', ['except' => ['destroy']]);
 	Route::resource('marcas', 'Inventario\MarcaController', ['except' => ['destroy']]);
-	Route::resource('categorias', 'Inventario\CategoriaController', ['except' => ['destroy']]);
+	Route::resource('grupos', 'Inventario\GrupoController', ['except' => ['destroy']]);
 	Route::resource('impuestos', 'Inventario\ImpuestoController', ['except' => ['destroy']]);
 	Route::resource('pedidos', 'Inventario\PedidoController', ['except' => ['destroy']]);
 	Route::resource('productos', 'Inventario\ProductoController', ['except' => ['destroy']]);
@@ -225,9 +225,8 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::resource('trasladosubicaciones', 'Inventario\TrasladoUbicacionController', ['except' => ['edit','destroy']]);
 	Route::resource('tiposajuste', 'Inventario\TipoAjusteController', ['except' => ['destroy']]);
 	Route::resource('tipostraslados', 'Inventario\TipoTrasladoController', ['except' => ['destroy']]);
-	Route::resource('subcategorias', 'Inventario\SubCategoriaController', ['except' => ['destroy']]);
+	Route::resource('subgrupos', 'Inventario\SubGrupoController', ['except' => ['destroy']]);
 	Route::resource('servicios', 'Inventario\ServicioController', ['except' => ['edit','destroy']]);
-	Route::resource('unidadesnegocio', 'Inventario\UnidadNegocioController', ['except' => ['destroy']]);
 	Route::resource('tiposproducto', 'Inventario\TipoProductoController', ['except' => ['destroy']]);
 
     /*

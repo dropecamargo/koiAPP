@@ -21,7 +21,6 @@ app || (app = {});
         * Constructor Method
         */
         initialize : function() {
-
             // Attributes
             this.$wraperForm = this.$('#render-pedido-show');
 
@@ -40,13 +39,11 @@ app || (app = {});
         * Render View Element
         */
         render: function() {
-                        
             var attributes = this.model.toJSON();
             this.$wraperForm.html( this.template(attributes) );
 
             // Reference views
             this.referenceViews();
-            
             this.ready();
         },
 
@@ -54,7 +51,6 @@ app || (app = {});
         * reference to views
         */
         referenceViews: function () {
-            
             //Detalle Pedido view Collection
             this.detallePedidosView = new app.DetallePedidosView( {
                 collection: this.detallePedido,
@@ -65,8 +61,8 @@ app || (app = {});
                         'pedido_id': this.model.get('id')
                     }
                }
-            }); 
-            
+            });
+
             //Bitacora view Collection
             this.bitacoraView = new app.BitacoraView( {
                 collection: this.bitacora,
@@ -85,20 +81,20 @@ app || (app = {});
         */
         ready: function () {
             // to fire plugins
+            if( typeof window.initComponent.initValidator == 'function' )
+                window.initComponent.initValidator();
+
             if( typeof window.initComponent.initICheck == 'function' )
-                window.initComponent.initICheck(); 
+                window.initComponent.initICheck();
 
             if( typeof window.initComponent.initInputMask == 'function' )
                 window.initComponent.initInputMask();
-            
+
             if( typeof window.initComponent.initToUpper == 'function' )
                 window.initComponent.initToUpper();
 
             if( typeof window.initComponent.initSelect2 == 'function' )
                 window.initComponent.initSelect2();
-            
-            if( typeof window.initComponent.initValidator == 'function' )
-                window.initComponent.initValidator();
 
             if( typeof window.initComponent.initDatePicker == 'function' )
                 window.initComponent.initDatePicker();
@@ -157,7 +153,7 @@ app || (app = {});
         */
         loadSpinner: function (model, xhr, opts) {
             window.Misc.setSpinner( this.el );
-            
+
         },
 
         /**
@@ -174,9 +170,9 @@ app || (app = {});
 
                 if( !resp.success ) {
                     alertify.error(text);
-                    return; 
+                    return;
                 }
-               
+
             }
         }
     });

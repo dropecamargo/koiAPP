@@ -17,20 +17,14 @@ app || (app = {});
             'ifChecked #producto_maneja_serie': 'serieChange',
             'ifChecked #producto_metrado': 'metradoChange',
             'ifChecked #producto_vence': 'venceChange',
+            'change #producto_marca': 'changeMarca',
             'submit #form-productos': 'onStore',
-            'change .change-complete-options': 'completeOptions',
-        },
-        parameters: {
         },
 
         /**
         * Constructor Method
         */
-        initialize : function(opts) {
-            // Initialize
-            if( opts !== undefined && _.isObject(opts.parameters) )
-                this.parameters = $.extend({}, this.parameters, opts.parameters);
-
+        initialize : function() {
             // Attributes
             this.$wraperForm = this.$('#render-form-producto');
 
@@ -44,10 +38,9 @@ app || (app = {});
         * Event Create Folder
         */
         onStore: function (e) {
-
             if (!e.isDefaultPrevented()) {
-
                 e.preventDefault();
+
                 var data = window.Misc.formToJson( e.target );
                 this.model.save( data, {patch: true, silent: true} );
             }
@@ -57,7 +50,6 @@ app || (app = {});
         * Render View Element
         */
         render: function() {
-
             var attributes = this.model.toJSON();
             this.$wraperForm.html( this.template(attributes) );
 
@@ -65,6 +57,7 @@ app || (app = {});
             this.$inputSerie = this.$("#producto_maneja_serie");
             this.$inputMetrado = this.$("#producto_metrado");
             this.$inputVence = this.$("#producto_vence");
+            this.$modelo = this.$("#producto_modelo");
 
             this.ready();
         },
@@ -73,19 +66,17 @@ app || (app = {});
         *Function change check Product handles serie
         */
         serieChange: function (e) {
-
             var selected = $(e.target).is(':checked');
             if( selected ) {
                 this.$inputMetrado.iCheck('uncheck');
                 this.$inputVence.iCheck('uncheck');
             }
         },
-        
+
         /*
         *Function change check Product vence
         */
         venceChange: function (e) {
-
             var selected = $(e.target).is(':checked');
             if( selected ) {
                 this.$inputMetrado.iCheck('uncheck');
@@ -104,6 +95,37 @@ app || (app = {});
             }
         },
 
+        changeMarca: function(e) {
+            var _this = this;
+                marca = this.$(e.currentTarget).val();
+
+            if( typeof(marca) !== 'undefined' && !_.isUndefined(marca) && !_.isNull(marca) && marca != '' ){
+                $.ajax({
+                    url: window.Misc.urlFull( Route.route('modelos.index', {marca: marca}) ),
+                    type: 'GET',
+                    beforeSend: function() {
+                        window.Misc.setSpinner( _this.el );
+                    }
+                })
+                .done(function(resp) {
+                    window.Misc.removeSpinner( _this.el );
+                    _this.$modelo.empty().val(0).removeAttr('disabled');
+
+                    _this.$modelo.append("<option value=></option>");
+                    _.each(resp, function( modelo ){
+                        _this.$modelo.append("<option value="+modelo.id+">"+modelo.modelo_nombre+"</option>");
+                    });
+
+                })
+                .fail(function(jqXHR, ajaxOptions, thrownError) {
+                    window.Misc.removeSpinner( _this.el );
+                    alertify.error(thrownError);
+                });
+            }else{
+                this.$modelo.empty().val(0).attr('disabled', 'disabled');
+            }
+        },
+
         /**
         * fires libraries js
         */
@@ -116,67 +138,12 @@ app || (app = {});
                 window.initComponent.initSelect2();
 
             if( typeof window.initComponent.initICheck == 'function' )
-                window.initComponent.initICheck();   
+                window.initComponent.initICheck();
 
             if( typeof window.initComponent.initInputMask == 'function' )
-                window.initComponent.initInputMask();  
+                window.initComponent.initInputMask();
         },
 
-        /**
-        * complete options in selects
-        */
-        completeOptions: function (e)
-        {
-            // Prepare data
-            var _this = this;
-                id = $(e.target).val();
-                field = $(e.target).attr('data-field');
-                complete = $(e.target).attr('data-complete')
-                route = '';
-
-            switch (complete)
-            {
-                case 'line': 
-                    route = 'lineas.index';
-                break;
-                case 'category':
-                    route = 'categorias.index';
-                break;
-                case 'subcategory':
-                    route = 'subcategorias.index';
-                break;
-            }
-
-            // Prepare field to complete
-            _this.$field = _this.$('#' + field);    
-
-            // Begin request
-            if( typeof(complete) !== 'undefined' && !_.isUndefined(complete) && !_.isNull(complete) && complete != '' ){
-                $.ajax({
-                    url: window.Misc.urlFull( Route.route(route) ),
-                    data: {
-                        id: id,
-                        product: true
-                    },
-                    type: 'GET',
-                    beforeSend: function() {
-                        window.Misc.setSpinner( _this.el );
-                    }
-                })
-                .done(function(resp) {
-                    window.Misc.removeSpinner( _this.el );
-                    _this.$field.empty().val(0).removeAttr('disabled');
-                    _this.$field.append("<option value=></option>");
-                    _.each(resp, function(item){
-                        _this.$field.append("<option value="+item.id+">"+item.name+"</option>");
-                    });
-                })
-                .fail(function(jqXHR, ajaxOptions, thrownError) {
-                    window.Misc.removeSpinner( _this.el );
-                    alertify.error(thrownError);
-                });
-            }
-        },
         /**
         * Load spinner on the request
         */

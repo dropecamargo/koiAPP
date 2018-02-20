@@ -17,7 +17,7 @@ class CreateTipogastoTable extends Migration
 
             $table->increments('id');
             $table->string('tipogasto_nombre', 50);
-            $table->boolean('tipogasto_activo')->default(0);
+            $table->boolean('tipogasto_activo')->default(false);
         });
     }
 

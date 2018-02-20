@@ -13,9 +13,8 @@ class RegionalesTableSeeder extends Seeder
     public function run()
     {
         Regional::create([
-        		'regional_nombre' => 'CUNDINAMARCA',
-        		'regional_activo' => 1
-        	]);
-
+    		'regional_nombre' => 'CUNDINAMARCA',
+    		'regional_activo' => 1
+    	]);
     }
 }

@@ -31,7 +31,6 @@ class CreateEntrada1Table extends Migration
 
             $table->foreign('entrada1_sucursal')->references('id')->on('sucursal')->onDelete('restrict');
             $table->foreign('entrada1_documentos')->references('id')->on('documentos')->onDelete('restrict');
-            // $table->foreign('entrada1_pedido1')->references('id')->on('pedido1')->onDelete('restrict');
             $table->foreign('entrada1_tercero')->references('id')->on('tercero')->onDelete('restrict');
             $table->foreign('entrada1_usuario_elaboro')->references('id')->on('tercero')->onDelete('restrict');
         });

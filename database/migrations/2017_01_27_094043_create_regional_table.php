@@ -17,7 +17,7 @@ class CreateRegionalTable extends Migration
 
             $table->increments('id');
             $table->string('regional_nombre', 200);
-            $table->boolean('regional_activo')->default(0);
+            $table->boolean('regional_activo')->default(false);
             $table->integer('regional_reci')->unsigned();
             $table->integer('regional_nota')->unsigned();
             $table->integer('regional_ord')->unsigned();

@@ -25,10 +25,10 @@
                             <div class="help-block with-errors"></div>
                         </div>
                         <div class="form-group col-md-5 text-left">
-                           <label for="presupuestoasesor_subcategoria" class="control-label">Sub categoría</label>
-                            <select name="presupuestoasesor_subcategoria" id="presupuestoasesor_subcategoria" class="form-control select2-default" required>
-                                @foreach( App\Models\Inventario\SubCategoria::getSubCategorias() as $key => $value)
-                                    <option value="{{ $key }}" <%- presupuestoasesor_subcategoria == '{{ $key }}' ? 'selected': ''%>{{ $value }}</option>
+                           <label for="presupuestoasesor_linea" class="control-label">Linea</label>
+                           <select name="presupuestoasesor_linea" id="presupuestoasesor_linea" class="form-control select2-default" required>
+                                @foreach( App\Models\Inventario\Linea::getLineas() as $key => $value)
+                                    <option value="{{ $key }}" <%- presupuestoasesor_linea == '{{ $key }}' ? 'selected': ''%>{{ $value }}</option>
                                 @endforeach
                             </select>
                             <div class="help-block with-errors"></div>

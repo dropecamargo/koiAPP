@@ -17,7 +17,7 @@ class CreateConceptotecTable extends Migration
 
             $table->increments('id');
             $table->string('conceptotec_nombre',50);
-            $table->boolean('conceptotec_activo')->default(0);
+            $table->boolean('conceptotec_activo')->default(false);
         });
     }
 

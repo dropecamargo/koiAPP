@@ -17,7 +17,7 @@ class CreateCausalTable extends Migration
 
             $table->increments('id');
             $table->string('causal_nombre',100);
-            $table->boolean('causal_activo')->default(0);
+            $table->boolean('causal_activo')->default(false);
         });
     }
 

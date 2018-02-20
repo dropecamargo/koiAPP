@@ -21,7 +21,7 @@ class CreateRecibo1Table extends Migration
             $table->integer('recibo1_tercero')->unsigned();
             $table->date('recibo1_fecha');
             $table->date('recibo1_fecha_pago');
-            $table->double('recibo1_valor');
+            $table->double('recibo1_valor')->default(0);
             $table->integer('recibo1_cuentas')->unsigned();
             $table->integer('recibo1_documentos')->unsigned();
             $table->text('recibo1_observaciones');

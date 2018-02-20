@@ -18,8 +18,8 @@ class CreateFactura3Table extends Migration
             $table->increments('id');
             $table->integer('factura3_factura1')->unsigned();
             $table->integer('factura3_cuota');
-            $table->double('factura3_valor');
-            $table->double('factura3_saldo');
+            $table->double('factura3_valor')->default(0);
+            $table->double('factura3_saldo')->default(0);
             $table->date('factura3_vencimiento');
             $table->date('factura3_fecha_pago');
             $table->integer('factura3_chposfechado1')->unsigned()->nullable();

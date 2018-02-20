@@ -24,7 +24,6 @@ app || (app = {});
         * Constructor Method
         */
         initialize : function(opts){
-
             // extends parameters
             if( opts !== undefined && _.isObject(opts.parameters) )
                 this.parameters = $.extend({},this.parameters, opts.parameters);
@@ -38,11 +37,6 @@ app || (app = {});
             this.collection.fetch({ data: {producto_id: this.parameters.dataFilter.producto_id }, reset: true });
         },
 
-        /*
-        * Render View Element
-        */
-        render: function() {
-        },
         /**
         * Render view contact by model
         * @param Object prodbodeModel Model instance

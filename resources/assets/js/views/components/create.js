@@ -79,21 +79,6 @@ app || (app = {});
                         var template = _.template($('#add-linea-tpl').html());
                         _this.$modalComponent.find('.content-modal').html( template(_this.model.toJSON()) );
                     },
-
-                    'categoria' : function() {
-                        _this.$modalComponent.find('.inner-title-modal').html('Categoria');
-
-                        _this.model = new app.CategoriaModel();
-                        var template = _.template($('#add-categoria-tpl').html());
-                        _this.$modalComponent.find('.content-modal').html( template(_this.model.toJSON()) );
-                    },
-                    'subcategoria' : function() {
-                        _this.$modalComponent.find('.inner-title-modal').html('SubCategoria');
-
-                        _this.model = new app.SubCategoriaModel();
-                        var template = _.template($('#add-subcategoria-tpl').html());
-                        _this.$modalComponent.find('.content-modal').html( template(_this.model.toJSON()) );
-                    },
                     'tipo' : function() {
                         _this.$modalComponent.find('.inner-title-modal').html('Tipo');
 
@@ -122,7 +107,6 @@ app || (app = {});
                         var template = _.template($('#add-dano-tpl').html());
                         _this.$modalComponent.find('.content-modal').html( template(_this.model.toJSON()) );
                     },
-
 	                'tercero' : function() {
                         _this.$modalComponent.find('.inner-title-modal').html('Tercero');
 
@@ -160,18 +144,18 @@ app || (app = {});
                         var template = _.template($('#add-subgrupo-tpl').html());
                         _this.$modalComponent.find('.content-modal').html( template(_this.model.toJSON()) );
                     },
+                    'tipoproducto' : function() {
+                        _this.$modalComponent.find('.inner-title-modal').html('Tipo de producto inventario');
+
+                        _this.model = new app.TipoProductoModel();
+                        var template = _.template($('#add-tipoproducto-tpl').html());
+                        _this.$modalComponent.find('.content-modal').html( template(_this.model.toJSON()) );
+                    },
                     'unidadmedida' : function() {
                         _this.$modalComponent.find('.inner-title-modal').html('Unidad de medida');
 
                         _this.model = new app.UnidadModel();
                         var template = _.template($('#add-unidad-tpl').html());
-                        _this.$modalComponent.find('.content-modal').html( template(_this.model.toJSON()) );
-                    },
-                    'unidadnegocio' : function() {
-                        _this.$modalComponent.find('.inner-title-modal').html('Unidad de negocio');
-
-                        _this.model = new app.UnidadNegocioModel();
-                        var template = _.template($('#add-unidadnegocio-tpl').html());
                         _this.$modalComponent.find('.content-modal').html( template(_this.model.toJSON()) );
                     },
                     'folder' : function() {
@@ -339,15 +323,6 @@ app || (app = {});
                         _this.$resourceField.append("<option value="+ _this.model.get('id') +">"+ _this.model.get('linea_nombre') +"</option>");
                         _this.$resourceField.val(_this.model.get('id')).trigger('change');
                     },
-
-                    'categoria' : function() {
-                        _this.$resourceField.append("<option value="+ _this.model.get('id') +">"+ _this.model.get('categoria_nombre') +"</option>");
-                        _this.$resourceField.val(_this.model.get('id')).trigger('change');
-                    },
-                    'subcategoria' : function() {
-                        _this.$resourceField.append("<option value="+ _this.model.get('id') +">"+ _this.model.get('subcategoria_nombre') +"</option>");
-                        _this.$resourceField.val(_this.model.get('id')).trigger('change');
-                    },
                     'modelo' : function() {
                         _this.$resourceField.append("<option value="+ _this.model.get('id') +">"+ _this.model.get('modelo_nombre') +"</option>");
                         _this.$resourceField.val(_this.model.get('id')).trigger('change');
@@ -378,12 +353,12 @@ app || (app = {});
                         _this.$resourceField.append("<option value="+ _this.model.get('id') +">"+ _this.model.get('subgrupo_nombre') +"</option>");
                         _this.$resourceField.val(_this.model.get('id')).trigger('change');
                     },
-                    'unidadmedida' : function() {
-                        _this.$resourceField.append("<option value="+ _this.model.get('id') +">"+ _this.model.get('unidadmedida_nombre') +"</option>");
+                    'tipoproducto' : function() {
+                        _this.$resourceField.append("<option value="+ _this.model.get('id') +">"+ _this.model.get('tipoproducto_nombre') +"</option>");
                         _this.$resourceField.val(_this.model.get('id')).trigger('change');
                     },
-                    'unidadnegocio' : function() {
-                        _this.$resourceField.append("<option value="+ _this.model.get('id') +">"+ _this.model.get('unidadnegocio_nombre') +"</option>");
+                    'unidadmedida' : function() {
+                        _this.$resourceField.append("<option value="+ _this.model.get('id') +">"+ _this.model.get('unidadmedida_nombre') +"</option>");
                         _this.$resourceField.val(_this.model.get('id')).trigger('change');
                     },
                     'folder' : function() {

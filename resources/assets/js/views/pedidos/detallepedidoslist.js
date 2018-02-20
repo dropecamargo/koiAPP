@@ -25,7 +25,6 @@ app || (app = {});
         * Constructor Method
         */
         initialize : function(opts){
-
             // extends parameters
             if( opts !== undefined && _.isObject(opts.parameters) )
                 this.parameters = $.extend({},this.parameters, opts.parameters);
@@ -44,13 +43,6 @@ app || (app = {});
                 this.confCollection.data.pedido_id = this.parameters.dataFilter.pedido_id;
                 this.collection.fetch( this.confCollection );
             }
-            
-        },
-
-        /*
-        * Render View Element
-        */
-        render: function() {
 
         },
 
@@ -84,11 +76,11 @@ app || (app = {});
             var _this = this
             // Set Spinner
             window.Misc.setSpinner( this.parameters.wrapper );
-            
+
             // Prepare data
             data.pedido2_pedido1 = this.parameters.dataFilter.pedido_id;
-            
-            
+
+
             // Add model in collection
             var detallepedidoModel = new app.PedidoDetalleModel();
             detallepedidoModel.save(data, {

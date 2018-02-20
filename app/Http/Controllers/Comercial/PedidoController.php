@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\Comercial\Pedidoc1, App\Models\Comercial\Pedidoc2, App\Models\Inventario\Producto,App\Models\Inventario\SubCategoria, App\Models\Base\Tercero,App\Models\Base\Sucursal,App\Models\Base\Documentos,App\Models\Base\Contacto;
+use App\Models\Comercial\Pedidoc1, App\Models\Comercial\Pedidoc2, App\Models\Inventario\Producto, App\Models\Inventario\Linea, App\Models\Base\Tercero, App\Models\Base\Sucursal, App\Models\Base\Documentos, App\Models\Base\Contacto;
 use DB, Log, Datatables, Auth, App, View;
 
 class PedidoController extends Controller
@@ -77,7 +77,6 @@ class PedidoController extends Controller
             if ($pedidoComercial->isValid($data)) {
                 DB::beginTransaction();
                 try {
-
                     //Validar Documentos
                     $documento = Documentos::where('documentos_codigo', Pedidoc1::$default_document)->first();
                     if(!$documento instanceof Documentos) {
@@ -137,28 +136,30 @@ class PedidoController extends Controller
                     {
                         // Validate Producto
                         $producto = Producto::where('producto_serie', $item['producto_serie'])->first();
-                        if (!$producto instanceof Producto) {
+                        if ( !$producto instanceof Producto ) {
                             DB::rollback();
-                            return response()->json(['success' => false, 'errors' => 'No es posible recuperar producto, por favor verifique información o consulte al administrador']);
+                            return response()->json(['success' => false, 'errors' => 'No es posible recuperar PRODUCTO, por favor verifique información o consulte al administrador']);
                         }
-                        //SubCategoria validate
-                        $subcategoria = SubCategoria::find($producto->producto_subcategoria);
-                        if (!$subcategoria instanceof SubCategoria) {
+                        // Linea validate
+                        $linea = Linea::find( $producto->producto_linea );
+                        if ( !$linea instanceof Linea ) {
                             DB::rollback();
-                            return response()->json(['success' => false, 'errors' => 'No es posible recuperar subcategoria, por favor verifique información o consulte al administrador']);
+                            return response()->json(['success' => false, 'errors' => 'No es posible recuperar LINEA, por favor verifique información o consulte al administrador']);
                         }
+
                         $pedidoComercial2 = new Pedidoc2;
                         $pedidoComercial2->fill($item);
                         $pedidoComercial2->pedidoc2_precio_venta = $item['pedidoc2_precio_venta'] > 0 ? $item['pedidoc2_precio_venta'] : $item['pedidoc2_costo'];
                         $pedidoComercial2->pedidoc2_pedidoc1 = $pedidoComercial->id;
                         $pedidoComercial2->pedidoc2_producto = $producto->id;
-                        $pedidoComercial2->pedidoc2_subcategoria = $subcategoria->id;
-                        $pedidoComercial2->pedidoc2_margen = $subcategoria->subcategoria_margen_nivel1;
+                        $pedidoComercial2->pedidoc2_linea = $linea->id;
+                        $pedidoComercial2->pedidoc2_margen = $linea->linea_margen_nivel1;
                         $pedidoComercial2->save();
                     }
                     // Update consecutive sucursal_pedidoc in Sucursal
                     $sucursal->sucursal_pedidoc = $consecutive;
                     $sucursal->save();
+
                     //Commit transaction
                     DB::commit();
                     return response()->json(['success' => true , 'id' => $pedidoComercial->id]);

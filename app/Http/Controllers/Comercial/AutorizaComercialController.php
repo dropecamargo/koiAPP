@@ -56,7 +56,6 @@ class AutorizaComercialController extends Controller
             if ($authComercial->isValid($data)) {
                 DB::beginTransaction();
                 try {
-
                     // Pedido
                     $pedidoc1 = Pedidoc1::findOrFail($request->id);
                     if (!$pedidoc1 instanceof Pedidoc1) {
@@ -66,8 +65,8 @@ class AutorizaComercialController extends Controller
 
                     // Pedido Detalle
                     $query = Pedidoc2::query();
-                    $query->select('pedidoc2.*', 'subcategoria_margen_nivel1', 'subcategoria_margen_nivel2', 'subcategoria_margen_nivel3');
-                    $query->join('subcategoria', 'pedidoc2_subcategoria', '=', 'subcategoria.id');
+                    $query->select('pedidoc2.*', 'linea_margen_nivel1', 'linea_margen_nivel2', 'linea_margen_nivel3');
+                    $query->join('linea', 'pedidoc2_linea', '=', 'linea.id');
                     $query->where('pedidoc2_pedidoc1', $pedidoc1->id);
                     $pedidoc2 = $query->get();
 
@@ -81,10 +80,10 @@ class AutorizaComercialController extends Controller
                         $authorization->autorizaco_numero = $number;
                         $authorization->autorizaco_pedidoc2 = $value->id;
                         $authorization->autorizaco_producto = $value->pedidoc2_producto;
-                        $authorization->auorizaco_subcategoria = $value->pedidoc2_subcategoria;
-                        $authorization->autorizaco_margen1 = $value->subcategoria_margen_nivel1;
-                        $authorization->autorizaco_margen2 = $value->subcategoria_margen_nivel2;
-                        $authorization->autorizaco_margen3 = $value->subcategoria_margen_nivel2;
+                        $authorization->autorizaco_linea = $value->pedidoc2_linea;
+                        $authorization->autorizaco_margen1 = $value->linea_margen_nivel1;
+                        $authorization->autorizaco_margen2 = $value->linea_margen_nivel2;
+                        $authorization->autorizaco_margen3 = $value->linea_margen_nivel2;
                         $authorization->autorizaco_usuario_aprobo =  Auth::user()->id;
                         $authorization->autorizaco_fh_aprobo =  date('Y-m-d H:m:s');
                         $authorization->save();

@@ -18,7 +18,7 @@ class CreateImpuestoTable extends Migration
             $table->increments('id');
             $table->string('impuesto_nombre', 100);
             $table->double('impuesto_porcentaje');
-            $table->boolean('impuesto_activo')->default(0);
+            $table->boolean('impuesto_activo')->default(false);
         });
     }
 

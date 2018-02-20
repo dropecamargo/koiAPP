@@ -21,7 +21,7 @@ class CreateAjustec2Table extends Migration
             $table->integer('ajustec2_documentos_doc')->unsigned();
             $table->integer('ajustec2_id_doc')->unsigned()->nullable();
             $table->string('ajustec2_naturaleza',1);
-            $table->double('ajustec2_valor');
+            $table->double('ajustec2_valor')->default(0);
 
             $table->foreign('ajustec2_ajustec1')->references('id')->on('ajustec1')->onDelete('restrict');
             $table->foreign('ajustec2_tercero')->references('id')->on('tercero')->onDelete('restrict');

@@ -14,44 +14,35 @@ app || (app = {});
         el: '#pedidosc-create',
         template: _.template(($('#add-pedidosc-tpl').html() || '') ),
         templateDetailt: _.template(($('#add-detailt-pedidosc-tpl').html() || '') ),
-
         events: {
-            
             'click .submit-pedidosc' : 'submitForm',
             'submit #form-pedidoc1' :'onStore',
             'submit #form-detalle-pedidoc' :'onStoreItem',
-            
             'change .desc-porcentage': 'changePorcentage',
             'change .desc-value': 'changeValue',
             'change .desc-finally': 'changeFinally',
             'ifChecked .desc': 'changeRadioBtn',
-        },
-        parameters: {
         },
 
         /**
         * Constructor Method
         */
         initialize : function() {
-           
             // Attributes
             this.$wraperForm = this.$('#render-form-pedidosc');
 
             this.detallePedidoc = new app.PedidocDetalleCollection();
+
             // Events
             this.listenTo( this.model, 'change', this.render );
             this.listenTo( this.model, 'sync', this.responseServer );
-            this.listenTo( this.model, 'request', this.loadSpinner );            
-            
-            this.ready(); 
+            this.listenTo( this.model, 'request', this.loadSpinner );
         },
-
 
         /*
         * Render View Element
         */
         render: function() {
-                        
             var attributes = this.model.toJSON();
             this.$wraperForm.html( this.template(attributes) );
 
@@ -60,16 +51,16 @@ app || (app = {});
 
             //Render form detalle pedidoc
             this.$divDetalle.empty().html( this.templateDetailt( ) );
-            
             this.$formDetalle = this.$('#form-detalle-pedidoc');
-            
+
             //Reference views
             this.referenceViews();
+            this.ready();
         },
         /*
         * References the collection
         */
-        referenceViews:function(){ 
+        referenceViews:function(){
             this.detallePedidocView = new app.PedidocDetalleView( {
                 collection: this.detallePedidoc,
                 parameters: {
@@ -81,6 +72,7 @@ app || (app = {});
                }
             });
         },
+
         /**
         * Event submit pedidoc1
         */
@@ -92,13 +84,13 @@ app || (app = {});
         * Event Create Ajuste
         */
         onStore: function (e) {
-            
             if (!e.isDefaultPrevented()) {
                 e.preventDefault();
+
                 var data = $.extend({}, window.Misc.formToJson( e.target ) , this.detallePedidoc.totalize());
                     data.detalle = this.detallePedidoc.toJSON();
                 this.model.save( data, {patch: true, silent: true} );
-            }   
+            }
         },
         /**
         *Event store item the collection
@@ -106,39 +98,43 @@ app || (app = {});
         onStoreItem: function(e){
             if (!e.isDefaultPrevented()) {
                 e.preventDefault();
+
                 var data = $.extend({}, window.Misc.formToJson( e.target ) );
                     data.sucursal = this.$('#pedidoc1_sucursal').val();
                 this.detallePedidoc.trigger( 'store', data);
             }
         },
         /**
-        *Event change input porcentage 
+        *Event change input porcentage
         */
         changePorcentage: function(e){
             e.preventDefault();
+
             $('#desc_porcentage').iCheck('check');
             $('#desc_value').iCheck('uncheck');
             $('#desc_finally').iCheck('uncheck');
 
-            // Make discount 
+            // Make discount
             this.doDiscount('porcentaje');
-        },       
+        },
         /**
         *Event change  input value
         */
         changeValue: function(e){
             e.preventDefault();
+
             $('#desc_value').iCheck('check');
             $('#desc_porcentage').iCheck('uncheck');
             $('#desc_finally').iCheck('uncheck');
 
             this.doDiscount('value');
-        },       
+        },
         /**
         *Event change  input finally
         */
         changeFinally: function(e){
             e.preventDefault();
+
             $('#desc_finally').iCheck('check');
             $('#desc_porcentage').iCheck('uncheck');
             $('#desc_value').iCheck('uncheck');
@@ -146,7 +142,7 @@ app || (app = {});
             this.doDiscount('finally');
         },
         /**
-        *Event change radio btn 
+        *Event change radio btn
         */
         changeRadioBtn: function(e){
             e.preventDefault();
@@ -175,14 +171,14 @@ app || (app = {});
             switch(caseDiscount){
                 case 'porcentaje':
                     var descuento = (this.$('#pedidoc2_descuento_porcentaje').val())/100;
-                        valor = this.$('#pedidoc2_costo').inputmask('unmaskedvalue');    
+                        valor = this.$('#pedidoc2_costo').inputmask('unmaskedvalue');
                         descuento = descuento * valor;
                     this.$('#pedidoc2_descuento_valor').val(descuento);
                     this.$('#pedidoc2_precio_venta').val(valor-descuento);
                     break;
                 case 'value':
                     var valor = this.$('#pedidoc2_descuento_valor').inputmask('unmaskedvalue');
-                        costo = this.$('#pedidoc2_costo').inputmask('unmaskedvalue');    
+                        costo = this.$('#pedidoc2_costo').inputmask('unmaskedvalue');
                         venta = (costo-valor)*100;
                         descuento = 100 - (venta / costo);
                     this.$('#pedidoc2_precio_venta').val(costo-valor);
@@ -202,13 +198,13 @@ app || (app = {});
         */
         ready: function () {
             // to fire plugins
-            
+
             if( typeof window.initComponent.initToUpper == 'function' )
                 window.initComponent.initToUpper();
-            
+
             if( typeof window.initComponent.initSelect2 == 'function' )
                 window.initComponent.initSelect2();
-            
+
             if( typeof window.initComponent.initValidator == 'function' )
                 window.initComponent.initValidator();
 
@@ -221,7 +217,7 @@ app || (app = {});
         */
         loadSpinner: function (model, xhr, opts) {
             window.Misc.setSpinner( this.el );
-            
+
         },
 
         /**
@@ -229,7 +225,6 @@ app || (app = {});
         */
         responseServer: function ( model, resp, opts ) {
             window.Misc.removeSpinner( this.el );
-
             if(!_.isUndefined(resp.success)) {
                 // response success or error
                 var text = resp.success ? '' : resp.errors;
@@ -239,7 +234,7 @@ app || (app = {});
 
                 if( !resp.success ) {
                     alertify.error(text);
-                    return; 
+                    return;
                 }
             }
             window.Misc.redirect( window.Misc.urlFull( Route.route('pedidosc.index')) );

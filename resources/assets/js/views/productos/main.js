@@ -43,7 +43,6 @@ app || (app = {});
                     }
                 },
                 columns: [
-              
                     { data: 'producto_serie', name: 'producto_serie' },
                     { data: 'producto_referencia', name: 'producto_referencia' },
                     { data: 'producto_nombre', name: 'producto_nombre' }
@@ -64,7 +63,6 @@ app || (app = {});
                         render: function ( data, type, full, row ) {
                             return '<a href="'+ window.Misc.urlFull( Route.route('productos.show', {productos: full.id }) )  +'">' + data + '</a>';
                         },
-                       
                     }
                 ]
 			});

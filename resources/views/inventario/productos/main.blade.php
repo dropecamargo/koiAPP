@@ -30,6 +30,7 @@
                 <div class="help-block with-errors"></div>
             </div>
         </div>
+
         <div class="row">
             <label for="producto_nombre" class="control-label col-md-1 col-sm-2">Nombre</label>
             <div class="form-group col-md-8 col-sm-10">
@@ -37,22 +38,43 @@
                 <div class="help-block with-errors"></div>
             </div>
         </div>
+
         <div class="row">
-            <label for="producto_unidadnegocio" class="control-labe col-md-1 col-sm-2">Und Negocio</label>
+            <label for="producto_grupo" class="control-label col-md-1 col-sm-2">Grupo</label>
             <div class="form-group col-md-4 col-sm-8 col-xs-10">
-                <select name="producto_unidadnegocio" id="producto_unidadnegocio" class="form-control select2-default-clear change-complete-options" data-field="producto_linea" data-complete="line"  required>
-                    @foreach( App\Models\Inventario\UnidadNegocio::getUnidadesNegocio() as $key => $value)
-                        <option value="{{ $key }}" <%- producto_unidadnegocio == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
+                <select name="producto_grupo" id="producto_grupo" class="form-control select2-default-clear" data-field="producto_grupo" required>
+                    @foreach( App\Models\Inventario\Grupo::getGrupos() as $key => $value)
+                        <option value="{{ $key }}" <%- producto_grupo == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
                     @endforeach
                 </select>
                 <div class="help-block with-errors"></div>
             </div>
             <div class="form-group col-md-1 col-sm-1">
-                <button type="button" class="btn btn-default btn-flat btn-sm btn-add-resource-koi-component" data-resource="unidadnegocio" data-field="producto_unidadnegocio" > <i class="fa fa-plus"></i></button>
+                <button type="button" class="btn btn-default btn-flat btn-sm btn-add-resource-koi-component" data-resource="grupo" data-field="producto_grupo">
+                    <i class="fa fa-plus"></i>
+                </button>
             </div>
+
+            <label for="producto_subgrupo" class="control-label col-md-1 col-sm-2">Subgrupo</label>
+            <div class="form-group col-md-4 col-sm-8 col-xs-10">
+                <select name="producto_subgrupo" id="producto_subgrupo" class="form-control select2-default-clear" required>
+                    @foreach( App\Models\Inventario\SubGrupo::getSubGrupos() as $key => $value)
+                        <option value="{{ $key }}" <%- producto_subgrupo == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
+                    @endforeach
+                </select>
+                <div class="help-block with-errors"></div>
+            </div>
+            <div class="form-group col-md-1 col-sm-1">
+                <button type="button" class="btn btn-default btn-flat btn-sm btn-add-resource-koi-component" data-resource="subgrupo" data-field="producto_subgrupo">
+                    <i class="fa fa-plus"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="row">
             <label for="producto_linea" class="control-label col-md-1 col-sm-2">Línea</label>
-             <div class="form-group col-md-4 col-sm-8 col-xs-10">
-                <select name="producto_linea" id="producto_linea" class="form-control select2-default-clear change-complete-options" data-field="producto_categoria" data-complete="category" <%- producto_linea == '' ? "disabled" : ''%> required>
+            <div class="form-group col-md-4 col-sm-8 col-xs-10">
+                <select name="producto_linea" id="producto_linea" class="form-control select2-default-clear" required>
                     @foreach( App\Models\Inventario\Linea::getLineas() as $key => $value)
                         <option value="{{ $key }}" <%- producto_linea == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
                     @endforeach
@@ -60,33 +82,24 @@
                 <div class="help-block with-errors"></div>
             </div>
             <div class="form-group col-md-1 col-sm-1">
-                <button type="button" class="btn btn-default btn-flat btn-sm btn-add-resource-koi-component" data-resource="linea" data-field="producto_linea" > <i class="fa fa-plus"></i></button>
+                <button type="button" class="btn btn-default btn-flat btn-sm btn-add-resource-koi-component" data-resource="linea" data-field="producto_linea" >
+                    <i class="fa fa-plus"></i>
+                </button>
             </div>
-        </div>
-        <div class="row">
-            <label for="producto_categoria" class="control-label col-md-1 col-sm-2">Categoría</label>
+
+            <label for="producto_tipoproducto" class="control-label col-md-1 col-sm-2">Tipo de producto</label>
             <div class="form-group col-md-4 col-sm-8 col-xs-10">
-                <select name="producto_categoria" id="producto_categoria" class="form-control select2-default-clear change-complete-options" data-field="producto_subcategoria" data-complete="subcategory" <%- producto_categoria == '' ? "disabled" : ''%> required>
-                    @foreach( App\Models\Inventario\Categoria::getCategorias() as $key => $value)
-                        <option value="{{ $key }}" <%- producto_categoria == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
+                <select name="producto_tipoproducto" id="producto_tipoproducto" class="form-control select2-default-clear" required>
+                    @foreach( App\Models\Inventario\TipoProducto::getTiposProducto() as $key => $value)
+                        <option value="{{ $key }}" <%- producto_tipoproducto == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
                     @endforeach
                 </select>
                 <div class="help-block with-errors"></div>
             </div>
             <div class="form-group col-md-1 col-sm-1">
-                <button type="button" class="btn btn-default btn-flat btn-sm btn-add-resource-koi-component" data-resource="categoria" data-field="producto_categoria" > <i class="fa fa-plus"></i></button>
-            </div>
-            <label for="producto_subcategoria" class="control-label col-md-1 col-sm-2">Subcategoría</label>
-            <div class="form-group col-md-4 col-sm-8 col-xs-10">
-                <select name="producto_subcategoria" id="producto_subcategoria" class="form-control select2-default-clear change-complete-options" <%- producto_subcategoria == '' ? "disabled" : ''%> required>
-                    @foreach( App\Models\Inventario\SubCategoria::getSubCategorias() as $key => $value)
-                        <option value="{{ $key }}" <%- producto_subcategoria == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
-                    @endforeach
-                </select>
-                <div class="help-block with-errors"></div>
-            </div>
-            <div class="form-group col-md-1 col-sm-1">
-                <button type="button" class="btn btn-default btn-flat btn-sm btn-add-resource-koi-component" data-resource="subcategoria" data-field="producto_subcategoria" > <i class="fa fa-plus"></i></button>
+                <button type="button" class="btn btn-default btn-flat btn-sm btn-add-resource-koi-component" data-resource="tipoproducto" data-field="producto_tipoproducto">
+                    <i class="fa fa-plus"></i>
+                </button>
             </div>
         </div>
         <div class="row">
@@ -123,27 +136,20 @@
                 <div class="help-block with-errors"></div>
             </div>
             <div class="form-group col-md-1 col-sm-1">
-                <button type="button" class="btn btn-default btn-flat btn-sm btn-add-resource-koi-component" data-resource="marca" data-field="producto_marca" > <i class="fa fa-plus"></i></button>
+                <button type="button" class="btn btn-default btn-flat btn-sm btn-add-resource-koi-component" data-resource="marca" data-field="producto_marca">
+                    <i class="fa fa-plus"></i>
+                </button>
             </div>
+
             <label for="producto_modelo" class="control-label col-md-1 col-sm-2">Modelo</label>
             <div class="form-group col-md-4 col-sm-8 col-xs-10">
-                <select name="producto_modelo" id="producto_modelo" class="form-control select2-default-clear" required>
-                    @foreach( App\Models\Inventario\Modelo::getModelos() as $key => $value)
-                        <option value="{{ $key }}" <%- producto_modelo == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
-                    @endforeach
+                <select name="producto_modelo" id="producto_modelo" class="form-control select2-default-clear" required <%- producto_modelo ? '' : 'disabled'%>>
+                    <option value="<%- producto_modelo %>"><%- typeof(id) !== 'undefined' && !_.isUndefined(id) && !_.isNull(id) && id != '' ? modelo_nombre : '' %></option>
                 </select>
                 <div class="help-block with-errors"></div>
             </div>
-            <div class="form-group col-md-1 col-sm-1">
-                <button type="button" class="btn btn-default btn-flat btn-sm btn-add-resource-koi-component" data-resource="modelo" data-field="producto_modelo" > <i class="fa fa-plus"></i></button>
-            </div>
         </div>
         <div class="row">
-        <!--     <label for="producto_barras" class="control-label col-md-1 col-sm-2">Código</label>
-            <div class="form-group col-md-3 col-sm-10">
-                <input type="text" id="producto_barras" name="producto_barras" value="<%- producto_barras %>" placeholder="Código de barras" class="form-control input-sm input-toupper" maxlength="100">
-                <div class="help-block with-errors"></div>
-            </div> -->
             <div class="form-group col-md-3 col-sm-6 col-xs-12">
                 <label for="producto_maneja_serie" class="control-label">¿Maneja serie?
                     <input type="checkbox" id="producto_maneja_serie" name="producto_maneja_serie" value="producto_maneja_serie" <%- parseInt(producto_maneja_serie) ? 'checked': ''%>>
@@ -151,7 +157,7 @@
                 <div class="help-block with-errors"></div>
             </div>
             <div class="form-group col-md-3 col-sm-6 col-xs-12">
-                <label for="producto_metrado" class="control-label">¿Producto metrado? 
+                <label for="producto_metrado" class="control-label">¿Producto metrado?
                     <input type="checkbox" id="producto_metrado" name="producto_metrado" value="producto_metrado" <%- parseInt(producto_metrado) ? 'checked': ''%>>
                 </label>
                 <div class="help-block with-errors"></div>
@@ -164,7 +170,7 @@
             </div>
             <div class="form-group col-md-3 col-sm-6 col-xs-12">
                 <label class="control-label" for="producto_unidad">¿En inventario?
-                    <input type="checkbox" id="producto_unidad" name="producto_unidad" value="producto_unidad" <%- parseInt(producto_unidad) ? 'checked': ''%>> 
+                    <input type="checkbox" id="producto_unidad" name="producto_unidad" value="producto_unidad" <%- parseInt(producto_unidad) ? 'checked': ''%>>
                 </label>
                 <div class="help-block with-errors"></div>
             </div>

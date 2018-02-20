@@ -23,8 +23,8 @@ class CreateChdevueltoTable extends Migration
             $table->integer('chdevuelto_causal')->unsigned();
             $table->integer('chdevuelto_documentos')->unsigned();
             $table->date('chdevuelto_fecha');
-            $table->double('chdevuelto_valor');
-            $table->double('chdevuelto_saldo');
+            $table->double('chdevuelto_valor')->default(0);
+            $table->double('chdevuelto_saldo')->default(0);
             $table->integer('chdevuelto_usuario_elaboro')->unsigned();
             $table->dateTime('chdevuelto_fh_elaboro');
 

@@ -86,7 +86,7 @@ class ModulosTableSeeder extends Seeder
     	//Referencias
     	Modulo::create([
         	'name' => 'actividades',
-        	'display_name' => 'Acitividades',
+        	'display_name' => 'Actividades',
         	'nivel1' => 1,
         	'nivel2' => 2,
         	'nivel3' => 1
@@ -561,8 +561,8 @@ class ModulosTableSeeder extends Seeder
         ]);
         //Referencia
         Modulo::create([
-            'name' => 'categorias',
-            'display_name' => 'Categorias',
+            'name' => 'grupos',
+            'display_name' => 'Grupos',
             'nivel1' => 5,
             'nivel2' => 3,
             'nivel3' => 1
@@ -603,36 +603,36 @@ class ModulosTableSeeder extends Seeder
             'nivel3' => 6
         ]);
         Modulo::create([
-            'name' => 'subcategorias',
-            'display_name' => 'Subcategorias',
+            'name' => 'subgrupos',
+            'display_name' => 'Subgrupos',
             'nivel1' => 5,
             'nivel2' => 3,
             'nivel3' => 7
         ]);
         Modulo::create([
             'name' => 'tiposajuste',
-            'display_name' => 'Tipo ajuste',
+            'display_name' => 'Tipos de ajuste',
             'nivel1' => 5,
             'nivel2' => 3,
             'nivel3' => 8
         ]);
         Modulo::create([
             'name' => 'tipostraslados',
-            'display_name' => 'Tipo de traslado',
+            'display_name' => 'Tipos de traslado',
             'nivel1' => 5,
             'nivel2' => 3,
             'nivel3' => 9
         ]);
         Modulo::create([
-            'name' => 'unidades',
-            'display_name' => 'Unidades',
+            'name' => 'tiposproducto',
+            'display_name' => 'Tipos de producto',
             'nivel1' => 5,
             'nivel2' => 3,
             'nivel3' => 10
         ]);
         Modulo::create([
-            'name' => 'unidadesnegocio',
-            'display_name' => 'Unidades de negocio',
+            'name' => 'unidades',
+            'display_name' => 'Unidades',
             'nivel1' => 5,
             'nivel2' => 3,
             'nivel3' => 11

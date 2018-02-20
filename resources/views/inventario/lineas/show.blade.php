@@ -15,9 +15,17 @@
                 </div>
             </div>
             <div class="row">
-                <div class="form-group col-md-4">
-                    <label class="control-label">Unidad de negocio</label>
-                    <div>{{ $lineas->unidadnegocio_nombre }}</div>
+                <div class="form-group col-md-3">
+                    <label class="control-label">Nivel 1</label>
+                    <div>{{ $lineas->linea_margen_nivel1 }}</div>
+                </div>
+                <div class="form-group col-md-3">
+                    <label class="control-label">Nivel 2</label>
+                    <div>{{ $lineas->linea_margen_nivel2 }}</div>
+                </div>
+                <div class="form-group col-md-3">
+                    <label class="control-label">Nivel 3</label>
+                    <div>{{ $lineas->linea_margen_nivel3 }}</div>
                 </div>
                 <div class="form-group col-md-1 col-xs-8"><br>
                     <label class="checkbox-inline" for="linea_activo">

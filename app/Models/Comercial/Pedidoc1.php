@@ -22,7 +22,7 @@ class Pedidoc1 extends BaseModel
 	*
 	* @var array
 	*/
-    protected $fillable = ['pedidoc1_fecha','pedidoc1_cuotas','pedidoc1_primerpago','pedidoc1_plazo','pedidoc1_observaciones', 'pedidoc1_bruto', 'pedidoc1_descuento','pedidoc1_iva','pedidoc1_retencion','pedidoc1_total'];
+    protected $fillable = ['pedidoc1_fecha', 'pedidoc1_cuotas', 'pedidoc1_primerpago', 'pedidoc1_plazo', 'pedidoc1_observaciones', 'pedidoc1_bruto', 'pedidoc1_descuento', 'pedidoc1_iva', 'pedidoc1_retencion', 'pedidoc1_total'];
 
 
     protected $boolean = ['pedidoc1_anular'];

@@ -20,11 +20,22 @@ class ModeloController extends Controller
     {
         if ($request->ajax()) {
             $query = Modelo::query();
-            $query->select('modelo.*', 'marca_nombre');
-            $query->join('marca', 'modelo_marca', '=', 'marca.id');
-            return Datatables::of( $query )->make(true);
-        }
 
+            if( $request->has('datatables') ) {
+                $query->select('modelo.*', 'marca_nombre');
+                $query->join('marca', 'modelo_marca', '=', 'marca.id');
+                return Datatables::of( $query )->make(true);
+            }
+
+            // Select ajax
+            if( $request->has('marca') ){
+                $query->where('modelo_marca', $request->marca);
+                $query->where('modelo_activo', true);
+                $query->orderby('modelo_nombre','asc');
+            }
+
+            return response()->json($query->get());
+        }
         return view('inventario.modelo.index');
     }
 

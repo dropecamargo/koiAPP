@@ -18,7 +18,7 @@ class CreateTipoactivoTable extends Migration
             $table->increments('id');
             $table->string('tipoactivo_nombre', 50);
             $table->integer('tipoactivo_vida_util')->unsigned();
-            $table->boolean('tipoactivo_activo')->default(0);
+            $table->boolean('tipoactivo_activo')->default(false);
         });
     }
 

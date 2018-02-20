@@ -25,10 +25,10 @@ class CreateInventarioTable extends Migration
             $table->integer('inventario_salida')->unsigned();
             $table->integer('inventario_lote')->unsigned();
             $table->integer('inventario_rollo')->unsigned();
-            $table->double('inventario_metros_entrada');
-            $table->double('inventario_metros_salida');
-            $table->double('inventario_costo');
-            $table->double('inventario_costo_promedio');
+            $table->double('inventario_metros_entrada')->default(0);
+            $table->double('inventario_metros_salida')->default(0);
+            $table->double('inventario_costo')->default(0);
+            $table->double('inventario_costo_promedio')->default(0);
             $table->integer('inventario_usuario_elaboro')->unsigned();
             $table->dateTime('inventario_fh_elaboro');
 

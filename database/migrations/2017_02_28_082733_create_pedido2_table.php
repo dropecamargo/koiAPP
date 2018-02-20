@@ -14,11 +14,12 @@ class CreatePedido2Table extends Migration
     {
         Schema::create('pedido2', function (Blueprint $table){
             $table->engine = 'InnoDB';
+
             $table->increments('id');
             $table->integer('pedido2_pedido1')->unsigned();
             $table->integer('pedido2_serie')->unsigned();
             $table->integer('pedido2_cantidad')->unsigned();
-            $table->integer('pedido2_saldo')->unsigned();
+            $table->double('pedido2_saldo')->default(0);
             $table->double('pedido2_precio');
 
             $table->foreign('pedido2_pedido1')->references('id')->on('pedido1')->onDelete('restrict');

@@ -19,8 +19,8 @@ class CreateRolloTable extends Migration
             $table->integer('rollo_serie')->unsigned();
             $table->integer('rollo_sucursal')->unsigned();
             $table->integer('rollo_ubicacion')->unsigned()->nullable();
-            $table->double('rollo_metros');
-            $table->double('rollo_saldo');
+            $table->double('rollo_metros')->default(0);
+            $table->double('rollo_saldo')->default(0);
             $table->string('rollo_lote',50);
             $table->date('rollo_fecha');
 

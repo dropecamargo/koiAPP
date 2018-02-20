@@ -12,7 +12,7 @@ class CreatePedidoc1Table extends Migration
      */
     public function up()
     {
-        Schema::create('pedidoc1', function(Blueprint $table){ 
+        Schema::create('pedidoc1', function(Blueprint $table){
             $table->engine = 'InnoDB';
 
             $table->increments('id');
@@ -27,11 +27,11 @@ class CreatePedidoc1Table extends Migration
             $table->integer('pedidoc1_plazo')->unsigned();
             $table->date('pedidoc1_primerpago');
             $table->integer('pedidoc1_vendedor')->unsigned();
-            $table->double('pedidoc1_bruto');
-            $table->double('pedidoc1_descuento');
-            $table->double('pedidoc1_iva');
-            $table->double('pedidoc1_retencion');
-            $table->double('pedidoc1_total');
+            $table->double('pedidoc1_bruto')->default(0);
+            $table->double('pedidoc1_descuento')->default(0);
+            $table->double('pedidoc1_iva')->default(0);
+            $table->double('pedidoc1_retencion')->default(0);
+            $table->double('pedidoc1_total')->default(0);
             $table->text('pedidoc1_observaciones');
             $table->string('pedidoc1_autorizacion_ca', 40)->nullable();
             $table->string('pedidoc1_autorizacion_co', 40)->nullable();
@@ -48,12 +48,8 @@ class CreatePedidoc1Table extends Migration
             $table->foreign('pedidoc1_vendedor')->references('id')->on('tercero')->onDelete('restrict');
             $table->foreign('pedidoc1_usuario_elaboro')->references('id')->on('tercero')->onDelete('restrict');
             $table->foreign('pedidoc1_usuario_anulo')->references('id')->on('tercero')->onDelete('restrict');
-            // $table->foreign('pedidoc1_autorizacion_ca')->references('id')->on('autorizaca')->onDelete('restrict');
-            // $table->foreign('pedidoc1_autorizacion_co')->references('id')->on('autorizaco')->onDelete('restrict');
-
 
             $table->unique(['pedidoc1_sucursal', 'pedidoc1_numero'], 'pedidoc1_sucursal_numero_unique');
-
         });
     }
 

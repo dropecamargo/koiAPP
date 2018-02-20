@@ -23,11 +23,11 @@ class CreateDevolucion1Table extends Migration
             $table->integer('devolucion1_tercero')->unsigned();
             $table->integer('devolucion1_factura')->unsigned();
             $table->date('devolucion1_fecha');
-            $table->double('devolucion1_bruto');
-            $table->double('devolucion1_descuento');
-            $table->double('devolucion1_iva');
-            $table->double('devolucion1_retencion');
-            $table->double('devolucion1_total');
+            $table->double('devolucion1_bruto')->default(0);
+            $table->double('devolucion1_descuento')->default(0);
+            $table->double('devolucion1_iva')->default(0);
+            $table->double('devolucion1_retencion')->default(0);
+            $table->double('devolucion1_total')->default(0);
             $table->text('devolucion1_observaciones');
             $table->integer('devolucion1_usuario_elaboro')->unsigned();
             $table->dateTime('devolucion1_fh_elaboro');

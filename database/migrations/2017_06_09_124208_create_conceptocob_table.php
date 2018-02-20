@@ -17,7 +17,7 @@ class CreateConceptocobTable extends Migration
 
             $table->increments('id');
             $table->string('conceptocob_nombre');
-            $table->boolean('conceptocob_activo')->default(0);
+            $table->boolean('conceptocob_activo')->default(false);
         });
     }
 

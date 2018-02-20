@@ -255,18 +255,18 @@
                         </div>
                         <div class="form-group col-md-12">
                             <div class="col-md-4">
-                                <label class="control-label">Modelo</label>
-                            </div>
-                            <div class="col-md-7">
-                                {{ $producto->modelo_nombre}}
-                            </div>
-                        </div>
-                        <div class="form-group col-md-12">
-                            <div class="col-md-4">
                                 <label class="control-label">Marca</label>
                             </div>
                             <div class="col-md-7">
                                 {{ $producto->marca_nombre}}
+                            </div>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <div class="col-md-4">
+                                <label class="control-label">Modelo</label>
+                            </div>
+                            <div class="col-md-7">
+                                {{ $producto->modelo_nombre}}
                             </div>
                         </div>
                         <div class="form-group col-md-12">
@@ -354,10 +354,18 @@
                     <div class="box-body">
                         <div class="form-group col-md-12">
                             <div class="col-md-4">
-                                <label class="control-label">Unidad De Negocio</label>
+                                <label class="control-label">Grupo</label>
                             </div>
                             <div class="col-md-7">
-                                {{ $producto->unidadnegocio_nombre }}
+                                {{ $producto->grupo_nombre }}
+                            </div>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <div class="col-md-4">
+                                <label class="control-label">Subgrupo</label>
+                            </div>
+                            <div class="col-md-7">
+                                {{ $producto->subgrupo_nombre }}
                             </div>
                         </div>
                         <div class="form-group col-md-12">
@@ -370,18 +378,10 @@
                         </div>
                         <div class="form-group col-md-12">
                             <div class="col-md-4">
-                                <label class="control-label">Categoría</label>
+                                <label class="control-label">Tipo de producto</label>
                             </div>
                             <div class="col-md-7">
-                                {{ $producto->categoria_nombre}}
-                            </div>
-                        </div>
-                        <div class="form-group col-md-12">
-                            <div class="col-md-4">
-                                <label class="control-label">SubCategoría</label>
-                            </div>
-                            <div class="col-md-7">
-                                {{ $producto->subcategoria_nombre}}
+                                {{ $producto->tipoproducto_nombre }}
                             </div>
                         </div>
                     </div>

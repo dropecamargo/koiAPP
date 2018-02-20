@@ -16,45 +16,42 @@ app || (app = {});
         events: {
             'submit #form-pedido' :'onStore'
         },
-        parameters: {
-        },
 
         /**
         * Constructor Method
         */
         initialize : function() {
-           
             // Attributes
             this.$wraperForm = this.$('#render-form-pedido');
-            
+
             this.detallePedido = new app.DetallePedidoCollection();
-            
+
             // Events
             this.listenTo( this.model, 'change', this.render );
             this.listenTo( this.model, 'sync', this.responseServer );
             this.listenTo( this.model, 'request', this.loadSpinner );
         },
 
-
         /*
         * Render View Element
         */
         render: function() {
-                        
             var attributes = this.model.toJSON();
-            attributes.edit = false;
+                attributes.edit = false;
+
             this.$wraperForm.html( this.template(attributes) );
             this.$form = this.$('#form-pedido');
             this.$formItem = this.$('#form-detalle-pedido');
 
             // Reference views
             this.referenceViews();
-            
             this.ready();
         },
 
-        referenceViews:function(){ 
-
+        /*
+        * References views
+        */
+        referenceViews:function(){
             this.detallePedidosView = new app.DetallePedidosView( {
                 collection: this.detallePedido,
                 parameters: {
@@ -71,11 +68,11 @@ app || (app = {});
         * Event Create Pedido
         */
         onStore: function (e) {
-
             if (!e.isDefaultPrevented()) {
                 e.preventDefault();
+
                 var data = window.Misc.formToJson( e.target );
-                data.pedido_id = this.model.get('id');  
+                    data.pedido_id = this.model.get('id');
                 this.model.save( data, {patch: true, silent: true} );
             }
         },
@@ -85,20 +82,20 @@ app || (app = {});
         */
         ready: function () {
             // to fire plugins
+            if( typeof window.initComponent.initValidator == 'function' )
+                window.initComponent.initValidator();
+
             if( typeof window.initComponent.initICheck == 'function' )
-                window.initComponent.initICheck(); 
+                window.initComponent.initICheck();
 
             if( typeof window.initComponent.initInputMask == 'function' )
                 window.initComponent.initInputMask();
-            
+
             if( typeof window.initComponent.initToUpper == 'function' )
                 window.initComponent.initToUpper();
-            
+
             if( typeof window.initComponent.initSelect2 == 'function' )
                 window.initComponent.initSelect2();
-            
-            if( typeof window.initComponent.initValidator == 'function' )
-                window.initComponent.initValidator();
 
             if( typeof window.initComponent.initDatePicker == 'function' )
                 window.initComponent.initDatePicker();
@@ -109,7 +106,6 @@ app || (app = {});
         */
         loadSpinner: function (model, xhr, opts) {
             window.Misc.setSpinner( this.el );
-            
         },
 
         /**
@@ -117,7 +113,6 @@ app || (app = {});
         */
         responseServer: function ( model, resp, opts ) {
             window.Misc.removeSpinner( this.el );
-
             if(!_.isUndefined(resp.success)) {
                 // response success or error
                 var text = resp.success ? '' : resp.errors;
@@ -127,7 +122,7 @@ app || (app = {});
 
                 if( !resp.success ) {
                     alertify.error(text);
-                    return; 
+                    return;
                 }
 
                 // EditPedidoView undelegateEvents

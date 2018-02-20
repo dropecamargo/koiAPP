@@ -22,14 +22,14 @@ class CreatePedido1Table extends Migration
             $table->integer('pedido1_documentos')->unsigned();
             $table->date('pedido1_fecha');
             $table->date('pedido1_fecha_estimada');
-            $table->double('pedido1_anticipo');
             $table->date('pedido1_fecha_anticipo');
+            $table->double('pedido1_anticipo');
             $table->text('pedido1_observaciones');
             $table->boolean('pedido1_anulado');
             $table->boolean('pedido1_cerrado');
             $table->integer('pedido1_usuario_elaboro')->unsigned();
             $table->date('pedido1_fh_elaboro');
-            
+
              $table->foreign('pedido1_sucursal')->references('id')->on('sucursal')->onDelete('restrict');
              $table->foreign('pedido1_tercero')->references('id')->on('tercero')->onDelete('restrict');
              $table->foreign('pedido1_documentos')->references('id')->on('documentos')->onDelete('restrict');

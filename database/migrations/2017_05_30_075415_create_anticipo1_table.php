@@ -25,8 +25,8 @@ class CreateAnticipo1Table extends Migration
             $table->integer('anticipo1_documentos')->unsigned();
             $table->integer('anticipo1_cuentas')->unsigned();
             $table->text('anticipo1_observaciones');
-            $table->double('anticipo1_valor');
-            $table->double('anticipo1_saldo');
+            $table->double('anticipo1_valor')->default(0);
+            $table->double('anticipo1_saldo')->default(0);
             $table->integer('anticipo1_usuario_elaboro')->unsigned();
             $table->dateTime('anticipo1_fh_elaboro');
 

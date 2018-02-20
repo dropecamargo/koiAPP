@@ -21,7 +21,7 @@ class CreateChposfechado2Table extends Migration
             $table->integer('chposfechado2_documentos_doc')->unsigned();
             $table->integer('chposfechado2_id_doc')->unsigned()->nullable();
             $table->string('chposfechado2_naturaleza',1);
-            $table->double('chposfechado2_valor');
+            $table->double('chposfechado2_valor')->default(0);
 
             $table->foreign('chposfechado2_chposfechado1')->references('id')->on('chposfechado1')->onDelete('restrict');
             $table->foreign('chposfechado2_conceptosrc')->references('id')->on('conceptosrc')->onDelete('restrict');

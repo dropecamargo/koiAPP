@@ -17,9 +17,9 @@ class CreateRetefuenteTable extends Migration
 
             $table->increments('id');
             $table->string('retefuente_nombre',50);
-            $table->double('retefuente_base');
-            $table->double('retefuente_tarifa_natural');
-            $table->double('retefuente_tarifa_juridico');
+            $table->double('retefuente_base')->default(0);
+            $table->double('retefuente_tarifa_natural')->default(0);
+            $table->double('retefuente_tarifa_juridico')->default(0);
             $table->boolean('retefuente_activo')->default(0);
         });
     }

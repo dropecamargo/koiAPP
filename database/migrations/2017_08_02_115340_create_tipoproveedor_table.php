@@ -17,7 +17,7 @@ class CreateTipoproveedorTable extends Migration
 
             $table->increments('id');
             $table->string('tipoproveedor_nombre', 50);
-            $table->boolean('tipoproveedor_activo')->default(0);
+            $table->boolean('tipoproveedor_activo')->default(false);
         });
     }
 

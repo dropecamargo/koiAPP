@@ -31,7 +31,7 @@ class CreateOrdenTable extends Migration
             $table->integer('orden_dano')->unsigned();
             $table->integer('orden_prioridad')->unsigned();
             $table->text('orden_problema');
-            $table->boolean('orden_abierta')->default(true);
+            $table->boolean('orden_abierta')->default(false);
             $table->integer('orden_usuario_elaboro')->unsigned();
             $table->datetime('orden_fh_elaboro');
             $table->integer('orden_usuario_cerro')->unsigned()->nullable();

@@ -28,11 +28,11 @@ class CreateFactura1Table extends Migration
             $table->date('factura1_fecha');
             $table->date('factura1_primerpago');
             $table->integer('factura1_vendedor')->unsigned();
-            $table->double('factura1_bruto');
-            $table->double('factura1_descuento');
-            $table->double('factura1_iva');
-            $table->double('factura1_retencion');
-            $table->double('factura1_total');
+            $table->double('factura1_bruto')->default(0);
+            $table->double('factura1_descuento')->default(0);
+            $table->double('factura1_iva')->default(0);
+            $table->double('factura1_retencion')->default(0);
+            $table->double('factura1_total')->default(0);
             $table->text('factura1_observaciones');
             $table->integer('factura1_pedidoc1')->unsigned()->nullable();
             $table->boolean('factura1_anulada')->default(false);

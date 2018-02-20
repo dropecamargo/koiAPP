@@ -14,17 +14,17 @@ class CreateAjuste2Table extends Migration
     {
         Schema::create('ajuste2', function (Blueprint $table){
             $table->engine = 'InnoDB';
+            
             $table->increments('id');
             $table->integer('ajuste2_ajuste1')->unsigned();
             $table->integer('ajuste2_producto')->unsigned();
             $table->integer('ajuste2_cantidad_entrada')->unsigned();
             $table->integer('ajuste2_cantidad_salida')->unsigned();
-            $table->double('ajuste2_costo');      
-            $table->double('ajuste2_costo_promedio');
+            $table->double('ajuste2_costo')->default(0);
+            $table->double('ajuste2_costo_promedio')->default(0);
 
             $table->foreign('ajuste2_ajuste1')->references('id')->on('ajuste1')->onDelete('restrict');
             $table->foreign('ajuste2_producto')->references('id')->on('producto')->onDelete('restrict');
-
         });
     }
 

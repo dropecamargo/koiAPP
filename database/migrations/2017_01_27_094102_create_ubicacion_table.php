@@ -18,12 +18,12 @@ class CreateUbicacionTable extends Migration
             $table->increments('id');
             $table->string('ubicacion_nombre',25);
             $table->integer('ubicacion_sucursal')->unsigned();
-            $table->boolean('ubicacion_activo')->default(0);
+            $table->boolean('ubicacion_activo')->default(false);
 
             $table->foreign('ubicacion_sucursal')->references('id')->on('sucursal')->onDelete('restrict');
         });
 
-        
+
     }
 
     /**

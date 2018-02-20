@@ -14,9 +14,14 @@ class ImpuestoTableSeeder extends Seeder
     {
         Impuesto::create([
         	'impuesto_nombre' => 'IVA',
-        	'impuesto_porcentaje' => '19',
+        	'impuesto_porcentaje' => '15',
         	'impuesto_activo' => true
     	]);
 
+        Impuesto::create([
+        	'impuesto_nombre' => 'IVA',
+        	'impuesto_porcentaje' => '19',
+        	'impuesto_activo' => true
+    	]);
     }
 }

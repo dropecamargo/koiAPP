@@ -19,8 +19,8 @@ class CreateFacturap2Table extends Migration
             $table->integer('facturap2_facturap1')->unsigned();
             $table->integer('facturap2_impuesto')->unsigned()->nullable();
             $table->integer('facturap2_retefuente')->unsigned()->nullable();
-            $table->double('facturap2_base');
-            $table->double('facturap2_porcentaje');
+            $table->double('facturap2_base')->default(0);
+            $table->double('facturap2_porcentaje')->default(0);
 
             $table->foreign('facturap2_facturap1')->references('id')->on('facturap1')->onDelete('restrict');
             $table->foreign('facturap2_impuesto')->references('id')->on('impuesto')->onDelete('restrict');

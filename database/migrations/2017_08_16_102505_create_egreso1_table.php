@@ -24,7 +24,7 @@ class CreateEgreso1Table extends Migration
             $table->date('egreso1_fecha');
             $table->string('egreso1_numero_cheque',15);
             $table->date('egreso1_fecha_cheque');
-            $table->double('egreso1_valor_cheque');
+            $table->double('egreso1_valor_cheque')->default(0);
             $table->text('egreso1_observaciones');
             $table->integer('egreso1_usuario_elaboro')->unsigned();
             $table->dateTime('egreso1_fh_elaboro');

@@ -9,7 +9,7 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Base\Tercero, App\Models\Base\Documentos, App\Models\Base\Sucursal, App\Models\Base\Regional, App\Models\Base\Contacto,App\Models\Base\PuntoVenta;
 use App\Models\Tecnico\Orden, App\Models\Tecnico\Sitio, App\Models\Tecnico\Visita, App\Models\Tecnico\RemRepu, App\Models\Tecnico\RemRepu2;
-use App\Models\Inventario\Producto, App\Models\Inventario\SubCategoria, App\Models\Inventario\Lote, App\Models\Inventario\Prodbode, App\Models\Inventario\Inventario, App\Models\Inventario\Rollo;
+use App\Models\Inventario\Producto, App\Models\Inventario\Linea, App\Models\Inventario\Lote, App\Models\Inventario\Prodbode, App\Models\Inventario\Inventario, App\Models\Inventario\Rollo;
 use App\Models\Cartera\Factura1, App\Models\Cartera\Factura2, App\Models\Cartera\Factura3;
 use DB, Log, Datatables, Auth, Mail, App, View;
 
@@ -424,11 +424,11 @@ class OrdenController extends Controller
                             DB::rollback();
                             return response()->json(['success' => false , 'errors' => 'No es posible recuperar producto, por favor verifique la información ó por favor consulte al administrador.']);
                         }
-                        //SubCategoria validate
-                        $subcategoria = SubCategoria::find($producto->producto_subcategoria);
-                        if (!$subcategoria instanceof SubCategoria) {
+                        // Linea validate
+                        $linea = Linea::find($producto->producto_linea);
+                        if (!$linea instanceof Linea) {
                             DB::rollback();
-                            return response()->json(['success' => false, 'errors' => 'No es posible recuperar subcategoria, por favor verifique información o consulte al administrador']);
+                            return response()->json(['success' => false, 'errors' => 'No es posible recuperar linea, por favor verifique información o consulte al administrador']);
                         }
 
                         //Detalle factura
@@ -436,8 +436,8 @@ class OrdenController extends Controller
                         $factura2->fill($item);
                         $factura2->factura2_factura1 = $factura1->id;
                         $factura2->factura2_producto = $producto->id;
-                        $factura2->factura2_subcategoria = $subcategoria->id;
-                        $factura2->factura2_margen = $subcategoria->subcategoria_margen_nivel1;
+                        $factura2->factura2_linea = $linea->id;
+                        $factura2->factura2_margen = $linea->linea_margen_nivel1;
                         $factura2->factura2_costo = $producto->producto_precio1;
                         $factura2->save();
 

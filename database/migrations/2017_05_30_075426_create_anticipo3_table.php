@@ -19,7 +19,7 @@ class CreateAnticipo3Table extends Migration
             $table->integer('anticipo3_anticipo1')->unsigned();
             $table->integer('anticipo3_conceptosrc')->unsigned();
             $table->string('anticipo3_naturaleza',1);
-            $table->double('anticipo3_valor');
+            $table->double('anticipo3_valor')->default(0);
 
             $table->foreign('anticipo3_anticipo1')->references('id')->on('anticipo1')->onDelete('restrict');
             $table->foreign('anticipo3_conceptosrc')->references('id')->on('conceptosrc')->onDelete('restrict');

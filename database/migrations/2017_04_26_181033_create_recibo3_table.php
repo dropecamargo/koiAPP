@@ -21,7 +21,7 @@ class CreateRecibo3Table extends Migration
             $table->string('recibo3_numero_medio', 25);
             $table->dateTime('recibo3_vence_medio')->nullable();
             $table->integer('recibo3_banco_medio')->unsigned()->nullable();
-            $table->double('recibo3_valor');
+            $table->double('recibo3_valor')->default(0);
 
             $table->foreign('recibo3_recibo1')->references('id')->on('recibo1')->onDelete('restrict');
             $table->foreign('recibo3_mediopago')->references('id')->on('mediopago')->onDelete('restrict');

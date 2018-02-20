@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\Inventario\Linea, App\Models\Inventario\UnidadNegocio;
+use App\Models\Inventario\Linea;
 use DB, Log, Datatables, Cache;
 
 class LineaController extends Controller
@@ -19,22 +19,8 @@ class LineaController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-
             $query = Linea::query();
-
-            // Return a Datatable
-            if ($request->has('datatables')) {
-                return Datatables::of($query)->make(true);
-            }
-
-            // Return Json in select2 product
-            if ($request->has('product')) {
-                $lines = [];
-                $query->select('linea.id' , 'linea_nombre AS name');
-                $query->where('linea_unidadnegocio', $request->id);
-                $lines = $query->get();
-                return response()->json($lines);
-            }
+            return Datatables::of($query)->make(true);
         }
         return view('inventario.lineas.index');
     }
@@ -63,18 +49,9 @@ class LineaController extends Controller
             if ($linea->isValid($data)) {
                 DB::beginTransaction();
                 try {
-
-                    // Recuperar unidad de negocio
-                    $unidadNegocio = UnidadNegocio::find($request->linea_unidadnegocio);
-                    if (! $unidadNegocio instanceof UnidadNegocio) {
-                        DB::rollback();
-                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar UNIDAD DE NEGOCIO por favor verifique información o consulte con el administrador']);
-                    }
-
                     // Linea
                     $linea->fill($data);
                     $linea->fillBoolean($data);
-                    $linea->linea_unidadnegocio = $unidadNegocio->id;
                     $linea->save();
 
                     // Commit Transaction
@@ -102,7 +79,7 @@ class LineaController extends Controller
      */
     public function show(Request $request, $id)
     {
-        $linea = Linea::getLine($id);
+        $linea = Linea::findOrFail($id);
         if ($request->ajax()) {
             return response()->json($linea);
         }
@@ -133,21 +110,13 @@ class LineaController extends Controller
         if ($request->ajax()) {
             $data = $request->all();
             $linea = Linea::findOrFail($id);
+
             if ($linea->isValid($data)) {
                 DB::beginTransaction();
                 try {
-
-                    // Recuperar unidad de negocio
-                    $unidadNegocio = UnidadNegocio::find($request->linea_unidadnegocio);
-                    if (! $unidadNegocio instanceof UnidadNegocio) {
-                        DB::rollback();
-                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar UNIDAD DE NEGOCIO por favor verifique información o consulte con el administrador']);
-                    }
-
                     // Linea
                     $linea->fill($data);
                     $linea->fillBoolean($data);
-                    $linea->linea_unidadnegocio = $unidadNegocio->id;
                     $linea->save();
 
                     // Commit Transaction

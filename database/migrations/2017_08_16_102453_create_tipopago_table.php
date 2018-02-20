@@ -18,7 +18,7 @@ class CreateTipopagoTable extends Migration
             $table->increments('id');
             $table->string('tipopago_nombre',25);
             $table->integer('tipopago_documentos')->unsigned()->nullable();
-            $table->boolean('tipopago_activo')->default(0);
+            $table->boolean('tipopago_activo')->default(false);
 
             $table->foreign('tipopago_documentos')->references('id')->on('documentos')->onDelete('restrict');
         });

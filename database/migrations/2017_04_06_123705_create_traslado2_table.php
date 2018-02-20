@@ -14,12 +14,13 @@ class CreateTraslado2Table extends Migration
     {
         Schema::create('traslado2', function (Blueprint $table){
             $table->engine = 'InnoDB';
+            
             $table->increments('id');
             $table->integer('traslado2_traslado1')->unsigned();
             $table->integer('traslado2_producto')->unsigned();
             $table->integer('traslado2_item')->unsigned();
             $table->integer('traslado2_cantidad')->unsigned();
-            $table->double('traslado2_costo');
+            $table->double('traslado2_costo')->default(0);
 
             $table->foreign('traslado2_traslado1')->references('id')->on('traslado1')->onDelete('restrict');
             $table->foreign('traslado2_producto')->references('id')->on('producto')->onDelete('restrict');

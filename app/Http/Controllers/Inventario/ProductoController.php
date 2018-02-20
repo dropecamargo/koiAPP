@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\Base\Sucursal, App\Models\Inventario\Producto, App\Models\Inventario\Prodbode, App\Models\Inventario\Impuesto, App\Models\Inventario\TipoAjuste, App\Models\Base\Tercero, App\Models\Base\Contacto, App\Models\Inventario\Servicio;
+use App\Models\Base\Sucursal, App\Models\Inventario\Producto, App\Models\Inventario\Prodbode, App\Models\Inventario\Impuesto, App\Models\Inventario\TipoAjuste, App\Models\Base\Tercero, App\Models\Base\Contacto, App\Models\Inventario\Servicio, App\Models\Inventario\Linea, App\Models\Inventario\Marca, App\Models\Inventario\Modelo, App\Models\Inventario\TipoProducto, App\Models\Inventario\Grupo, App\Models\Inventario\SubGrupo, App\Models\Inventario\Unidad;
 use DB, Log, Datatables;
 
 class ProductoController extends Controller
@@ -115,19 +115,81 @@ class ProductoController extends Controller
             $data = $request->all();
             $producto = new Producto;
             if ($producto->isValid($data)) {
-
                 DB::beginTransaction();
                 try {
-                    $impuesto = Impuesto::where('id', $request->producto_impuesto)->first();
-                    if (!$impuesto instanceof Impuesto) {
+                    // Recuperar Impusto
+                    $impuesto = Impuesto::find($request->producto_impuesto);
+                    if ( !$impuesto instanceof Impuesto ) {
                         DB::rollback();
-                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar IMPUESTO,verifique información ó por favor consulte al administrador.']);
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar IMPUESTO, verifique información o consulte al administrador.']);
                     }
+
+                    // Recuperar Linea
+                    $linea = Linea::find($request->producto_linea);
+                    if ( !$linea instanceof Linea ) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar LINEA, verifique la información o consulte al administrador.']);
+                    }
+
+                    // Recuperar Grupo
+                    $grupo = Grupo::find($request->producto_grupo);
+                    if ( !$grupo instanceof Grupo ) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar GRUPO, verifique la información o consulte al administrador.']);
+                    }
+
+                    // Recuperar SubGrupo
+                    $subgrupo = SubGrupo::find($request->producto_subgrupo);
+                    if ( !$subgrupo instanceof SubGrupo ) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar SUBGRUPO, verifique la información o consulte al administrador.']);
+                    }
+
+                    // Recuperar TipoProducto
+                    $tipoproducto = TipoProducto::find($request->producto_tipoproducto);
+                    if ( !$tipoproducto instanceof TipoProducto ) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar TIPO DE PRODUCTO, verifique la información o consulte al administrador.']);
+                    }
+
+                    // Recuperar Unidad
+                    $unidad = Unidad::find($request->producto_unidadmedida);
+                    if ( !$unidad instanceof Unidad ) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar UNIDAD DE MEDIDA, verifique la información o consulte al administrador.']);
+                    }
+
+                    // Recuperar Marca
+                    $marca = Marca::find($request->producto_marca);
+                    if ( !$marca instanceof Marca ) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar MARCA, verifique la información o consulte al administrador.']);
+                    }
+
+                    // Recuperar Modelo
+                    $modelo = Modelo::find($request->producto_modelo);
+                    if ( !$modelo instanceof Modelo ) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar MODELO, verifique la información o consulte al administrador.']);
+                    }
+
+                    if ( $marca->id != $modelo->modelo_marca ){
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'El modelo no corresponde a esa marca, verifique la información o consulte al administrador.']);
+                    }
+
                     // Producto
-                    $producto->producto_serie = $request->producto_referencia;
                     $producto->fill($data);
-                    $producto->producto_impuesto = $impuesto->id;
                     $producto->fillBoolean($data);
+                    $producto->producto_serie = $request->producto_referencia;
+                    $producto->producto_impuesto = $impuesto->id;
+                    $producto->producto_linea = $linea->id;
+                    $producto->producto_grupo = $grupo->id;
+                    $producto->producto_subgrupo = $subgrupo->id;
+                    $producto->producto_tipoproducto = $tipoproducto->id;
+                    $producto->producto_unidadmedida = $unidad->id;
+                    $producto->producto_marca = $marca->id;
+                    $producto->producto_modelo = $modelo->id;
                     $producto->save();
 
                     // Commit Transaction
@@ -193,9 +255,71 @@ class ProductoController extends Controller
                 }
                 DB::beginTransaction();
                 try {
+                    // Recuperar Impusto
+                    $impuesto = Impuesto::find($request->producto_impuesto);
+                    if ( !$impuesto instanceof Impuesto ) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar IMPUESTO, verifique información o consulte al administrador.']);
+                    }
+
+                    // Recuperar Linea
+                    $linea = Linea::find($request->producto_linea);
+                    if ( !$linea instanceof Linea ) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar LINEA, verifique la información o consulte al administrador.']);
+                    }
+
+                    // Recuperar Grupo
+                    $grupo = Grupo::find($request->producto_grupo);
+                    if ( !$grupo instanceof Grupo ) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar GRUPO, verifique la información o consulte al administrador.']);
+                    }
+
+                    // Recuperar SubGrupo
+                    $subgrupo = SubGrupo::find($request->producto_subgrupo);
+                    if ( !$subgrupo instanceof SubGrupo ) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar SUBGRUPO, verifique la información o consulte al administrador.']);
+                    }
+
+                    // Recuperar TipoProducto
+                    $tipoproducto = TipoProducto::find($request->producto_tipoproducto);
+                    if ( !$tipoproducto instanceof TipoProducto ) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar TIPO DE PRODUCTO, verifique la información o consulte al administrador.']);
+                    }
+
+                    // Recuperar Marca
+                    $marca = Marca::find($request->producto_marca);
+                    if ( !$marca instanceof Marca ) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar MARCA, verifique la información o consulte al administrador.']);
+                    }
+
+                    // Recuperar Modelo
+                    $modelo = Modelo::find($request->producto_modelo);
+                    if ( !$modelo instanceof Modelo ) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar MODELO, verifique la información o consulte al administrador.']);
+                    }
+
+                    if ( $marca->id != $modelo->modelo_marca ){
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'El modelo no corresponde a esa marca, verifique la información o consulte al administrador.']);
+                    }
+
                     // Producto
                     $producto->fill($data);
                     $producto->fillBoolean($data);
+                    $producto->producto_serie = $request->producto_referencia;
+                    $producto->producto_impuesto = $impuesto->id;
+                    $producto->producto_linea = $linea->id;
+                    $producto->producto_grupo = $grupo->id;
+                    $producto->producto_subgrupo = $subgrupo->id;
+                    $producto->producto_tipoproducto = $tipoproducto->id;
+                    $producto->producto_marca = $marca->id;
+                    $producto->producto_modelo = $modelo->id;
                     $producto->save();
 
                     // Commit Transaction
@@ -238,7 +362,7 @@ class ProductoController extends Controller
         if ($request->has('tipoajuste')) {
             $tipoajuste = TipoAjuste::find($request->tipoajuste);
             if (!$tipoajuste instanceof TipoAjuste) {
-                $response->errors = "No es posible recuperar TIPO AJUSTE,verifique información ó por favor consulte al administrador.";
+                $response->errors = "No es posible recuperar TIPO AJUSTE, verifique la información o consulte al administrador.";
             }
             $tipoMovimiento = $tipoajuste->tipoajuste_tipo;
         }else{
@@ -247,7 +371,7 @@ class ProductoController extends Controller
 
         $producto = Producto::where('producto_serie', $request->producto_serie)->first();
         if (!$producto instanceof Producto) {
-            $response->errors = "No es posible recuperar PRODUCTO,verifique información ó por favor consulte al administrador.";
+            $response->errors = "No es posible recuperar PRODUCTO, verifique la información o consulte al administrador.";
         }
         if ($producto->producto_unidad == true) {
             if($tipoMovimiento == 'E' || $request->has('ajuste2_cantidad_entrada')){
@@ -299,11 +423,11 @@ class ProductoController extends Controller
                             $response->success = true;
                         }
                     }else{
-                        $response->errors = "No hay unidades en BODEGA de esta SUCURSAL,verifique información ó por favor consulte al administrador.";
+                        $response->errors = "No hay unidades en BODEGA de esta SUCURSAL, verifique la información o consulte al administrador.";
                         $response->success = false;
                     }
                 }else{
-                    $response->errors = "No es posible recuperar PRODUCTO en PRODBODE,verifique información ó por favor consulte al administrador.";
+                    $response->errors = "No es posible recuperar PRODUCTO en PRODBODE, verifique la información o consulte al administrador.";
                     $response->success = false;
                 }
             }

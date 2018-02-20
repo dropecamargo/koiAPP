@@ -12,18 +12,14 @@ app || (app = {});
     app.MainPedidosView = Backbone.View.extend({
 
         el: '#pedido-main',
-        events: {
-        },
 
         /**
         * Constructor Method
         */
         initialize : function() {
-            var _this = this;
 
             // Rerefences
             this.$productosSearchTable = this.$('#pedido-search-table');
-
             this.$productosSearchTable.DataTable({
                 dom:"<'row'<'col-sm-4'B><'col-sm-4 text-center'l><'col-sm-4'f>>" +
                 "<'row'<'col-sm-12'tr>>" +

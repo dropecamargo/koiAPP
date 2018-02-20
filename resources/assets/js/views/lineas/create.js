@@ -66,6 +66,9 @@ app || (app = {});
             if( typeof window.initComponent.initICheck == 'function' )
                 window.initComponent.initICheck();
 
+            if( typeof window.initComponent.initSpinner == 'function' )
+                window.initComponent.initSpinner();
+
             if( typeof window.initComponent.initSelect2 == 'function' )
                 window.initComponent.initSelect2();
         },

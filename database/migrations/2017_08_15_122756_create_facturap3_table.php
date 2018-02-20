@@ -19,9 +19,9 @@ class CreateFacturap3Table extends Migration
             $table->integer('facturap3_facturap1')->unsigned();
             $table->integer('facturap3_cuota')->unsigned();
             $table->date('facturap3_vencimiento');
-            $table->double('facturap3_valor');
-            $table->double('facturap3_saldo');
-            
+            $table->double('facturap3_valor')->default(0);
+            $table->double('facturap3_saldo')->default(0);
+
             $table->foreign('facturap3_facturap1')->references('id')->on('facturap1')->onDelete('restrict');
         });
     }

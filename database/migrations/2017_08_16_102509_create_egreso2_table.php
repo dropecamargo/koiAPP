@@ -21,7 +21,7 @@ class CreateEgreso2Table extends Migration
             $table->integer('egreso2_tipopago')->unsigned();
             $table->integer('egreso2_documentos_doc')->unsigned()->nullable();
             $table->integer('egreso2_id_doc')->unsigned();
-            $table->double('egreso2_valor');
+            $table->double('egreso2_valor')->default(0);
 
             $table->foreign('egreso2_egreso1')->references('id')->on('egreso1')->onDelete('restrict');
             $table->foreign('egreso2_tercero')->references('id')->on('tercero')->onDelete('restrict');

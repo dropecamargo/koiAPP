@@ -28,12 +28,12 @@ class CreateFacturap1Table extends Migration
             $table->date('facturap1_vencimiento');
             $table->string('facturap1_factura', 20);
             $table->date('facturap1_primerpago');
-            $table->double('facturap1_subtotal');
-            $table->double('facturap1_descuento');
-            $table->double('facturap1_base');
-            $table->double('facturap1_impuestos');
-            $table->double('facturap1_retenciones');
-            $table->double('facturap1_apagar');
+            $table->double('facturap1_subtotal')->default(0);
+            $table->double('facturap1_descuento')->default(0);
+            $table->double('facturap1_base')->default(0);
+            $table->double('facturap1_impuestos')->default(0);
+            $table->double('facturap1_retenciones')->default(0);
+            $table->double('facturap1_apagar')->default(0);
             $table->text('facturap1_observaciones');
 
             $table->foreign('facturap1_entrada1')->references('id')->on('entrada1')->onDelete('restrict');

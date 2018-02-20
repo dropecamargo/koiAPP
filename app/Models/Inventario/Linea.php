@@ -29,7 +29,7 @@ class Linea extends BaseModel
      *
      * @var array
      */
-    protected $fillable = ['linea_nombre'];
+    protected $fillable = ['linea_nombre', 'linea_margen_nivel1', 'linea_margen_nivel2', 'linea_margen_nivel3'];
 
     /**
      * The attributes that are mass boolean assignable.
@@ -41,8 +41,10 @@ class Linea extends BaseModel
     public function isValid($data)
     {
         $rules = [
-            'linea_nombre' => 'required|max: 50|unique:linea',
-            'linea_unidadnegocio' => 'required'
+            'linea_nombre' => 'required|max:50|unique:linea',
+            'linea_margen_nivel1' => 'max:4',
+            'linea_margen_nivel2' => 'max:4',
+            'linea_margen_nivel3' => 'max:4',
         ];
 
         if ($this->exists){
@@ -60,15 +62,6 @@ class Linea extends BaseModel
         return false;
     }
 
-    public static function getLine ($id)
-    {
-        $query = Linea::query();
-        $query->select('linea.*', 'unidadnegocio_nombre');
-        $query->leftJoin('unidadnegocio', 'linea_unidadnegocio', '=', 'unidadnegocio.id');
-        $line = $query->where('linea.id', $id)->first();
-        return $line;
-    }
-
     public static function getlineas()
     {
         if ( Cache::has(self::$key_cache)) {
@@ -79,6 +72,7 @@ class Linea extends BaseModel
             $query = Linea::query();
             $query->orderBy('linea_nombre', 'asc');
             $collection = $query->lists('linea_nombre', 'linea.id');
+
             $collection->prepend('', '');
             return $collection;
         });

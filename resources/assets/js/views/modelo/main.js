@@ -26,7 +26,12 @@ app || (app = {});
 				processing: true,
                 serverSide: true,
             	language: window.Misc.dataTableES(),
-                ajax: window.Misc.urlFull( Route.route('modelos.index') ),
+                ajax: {
+                    url: window.Misc.urlFull( Route.route('modelos.index') ),
+                    data: function( data ) {
+                        data.datatables = true;
+                    }
+                },
                 columns: [
                     { data: 'id', name: 'id' },
                     { data: 'modelo_nombre', name: 'modelo_nombre' },

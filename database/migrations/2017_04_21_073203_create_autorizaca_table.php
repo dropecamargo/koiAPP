@@ -14,25 +14,25 @@ class CreateAutorizacaTable extends Migration
     {
         Schema::create('autorizaca', function(Blueprint $table){
             $table->engine = 'InnoDB';
+
             $table->increments('id');
             $table->integer('autorizaca_tercero')->unsigned();
             $table->date('autorizaca_vencimiento');
             $table->integer('autorizaca_plazo')->unsigned();
             $table->integer('autorizaca_cupo')->unsigned();
-            $table->double('autorizaca_por_vencer');
-            $table->double('autorizaca_30');
-            $table->double('autorizaca_60');
-            $table->double('autorizaca_90');
-            $table->double('autorizaca_180');
-            $table->double('autorizaca_360');
-            $table->double('autorizaca_mas_360');
+            $table->double('autorizaca_por_vencer')->default(0);
+            $table->double('autorizaca_30')->default(0);
+            $table->double('autorizaca_60')->default(0);
+            $table->double('autorizaca_90')->default(0);
+            $table->double('autorizaca_180')->default(0);
+            $table->double('autorizaca_360')->default(0);
+            $table->double('autorizaca_mas_360')->default(0);
             $table->text('autorizaca_observaciones');
             $table->integer('autorizaca_usuario_aprobo')->unsigned();
             $table->datetime('autorizaca_fh_aprobo');
-            
+
             $table->foreign('autorizaca_tercero')->references('id')->on('tercero')->onDelete('restrict');
             $table->foreign('autorizaca_usuario_aprobo')->references('id')->on('tercero')->onDelete('restrict');
-
         });
     }
 

@@ -22,8 +22,8 @@ class CreateActivofijoTable extends Migration
             $table->text('activofijo_descripcion');
             $table->date('activofijo_compra');
             $table->date('activofijo_activacion');
-            $table->double('activofijo_costo');
-            $table->double('activofijo_depreciacion');
+            $table->double('activofijo_costo')->default(0);
+            $table->double('activofijo_depreciacion')->default(0);
             $table->integer('activofijo_responsable')->unsigned();
             $table->integer('activofijo_vida_util')->unsigned();
             $table->integer('activofijo_facturap1')->unsigned();

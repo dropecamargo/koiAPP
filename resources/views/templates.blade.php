@@ -1076,67 +1076,41 @@
 </script>
 
 {{-- Inventarios--}}
-<script type="text/template" id="add-categoria-tpl">
+<script type="text/template" id="add-grupo-tpl">
 	<div class="row">
-		<div class="form-group col-md-8">
-			<label for="categoria_nombre" class="control-label">Nombre</label>
-			<input type="text" id="categoria_nombre" name="categoria_nombre" value="<%- categoria_nombre %>" placeholder="Categoria" class="form-control input-sm input-toupper" maxlength="50" required>
+		<div class="form-group col-md-3">
+			<label for="grupo_codigo" class="control-label">Código</label>
+			<input type="text" id="grupo_codigo" name="grupo_codigo" value="<%- grupo_codigo %>" placeholder="Código" class="form-control input-sm input-toupper" maxlength="4" required>
+			<div class="help-block with-errors"></div>
 		</div>
-	</div>
-	<div class="row">
-		<div class="form-group col-md-6">
-			<label for="categoria_linea" class="control-label">Linea</label>
-			<select name="categoria_linea" id="categoria_linea" class="form-control select2-default-clear">
-				<option value="" selected>Seleccione</option>
-				@foreach( App\Models\Inventario\Linea::getLineas() as $key => $value)
-					<option value="{{ $key }}" <%- categoria_linea == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
-				@endforeach
-			</select>
+		<div class="form-group col-md-7">
+			<label for="grupo_nombre" class="control-label">Nombre</label>
+			<input type="text" id="grupo_nombre" name="grupo_nombre" value="<%- grupo_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="100" required>
+			<div class="help-block with-errors"></div>
 		</div>
 		<div class="form-group col-md-2 col-xs-8 col-sm-3">
-			<br><label class="checkbox-inline" for="categoria_activo">
-				<input type="checkbox" id="categoria_activo" name="categoria_activo" value="categoria_activo" <%- parseInt(categoria_activo) ? 'checked': ''%>> Activo
+			<br><label class="checkbox-inline" for="grupo_activo">
+				<input type="checkbox" id="grupo_activo" name="grupo_activo" value="grupo_activo" <%- parseInt(grupo_activo) ? 'checked': ''%>> Activo
 			</label>
 		</div>
     </div>
 </script>
 
-<script type="text/template" id="add-subcategoria-tpl">
+<script type="text/template" id="add-subgrupo-tpl">
 	<div class="row">
-		<div class="form-group col-md-6">
-			<label for="subcategoria_nombre" class="control-label">Nombre</label>
-			<input type="text" id="subcategoria_nombre" name="subcategoria_nombre" value="<%- subcategoria_nombre %>" placeholder="Sub categoría" class="form-control input-sm input-toupper" maxlength="50" required>
+		<div class="form-group col-md-3">
+			<label for="subgrupo_codigo" class="control-label">Código</label>
+			<input type="text" id="subgrupo_codigo" name="subgrupo_codigo" value="<%- subgrupo_codigo %>" placeholder="Código" class="form-control input-sm input-toupper" maxlength="4" required>
+			<div class="help-block with-errors"></div>
 		</div>
-    </div>
-    <div class="row">
-		<div class="form-group col-md-6">
-			<label for="subcategoria_categoria" class="control-label">Categoría</label>
-			<select name="subcategoria_categoria" id="subcategoria_categoria" class="form-control select2-default-clear">
-				<option value="" selected>Seleccione</option>
-				@foreach( App\Models\Inventario\Categoria::getCategorias() as $key => $value)
-					<option value="{{ $key }}" <%- subcategoria_categoria == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
-				@endforeach
-			</select>
-		</div>
-    </div>
-    <div class="row">
-		<div class="form-group col-md-2">
-			<label for="subcategoria_margen_nivel1" class="control-label">Margen Nivel 1</label>
-			<input type="text" id="subcategoria_margen_nivel1" name="subcategoria_margen_nivel1" value="<%- subcategoria_margen_nivel1 %>" placeholder="Margen" class="form-control input-sm spinner-percentage" maxlength="4" required>
-		</div>
-
-		<div class="form-group col-md-2">
-			<label for="subcategoria_margen_nivel2" class="control-label">Margen Nivel 2</label>
-			<input type="text" id="subcategoria_margen_nivel2" name="subcategoria_margen_nivel2" value="<%- subcategoria_margen_nivel2 %>" placeholder="Margen" class="form-control input-sm spinner-percentage" maxlength="4" required>
-		</div>
-
-		<div class="form-group col-md-2">
-			<label for="subcategoria_margen_nivel3" class="control-label">Margen Nivel 3</label>
-			<input type="text" id="subcategoria_margen_nivel3" name="subcategoria_margen_nivel3" value="<%- subcategoria_margen_nivel3 %>" placeholder="Margen" class="form-control input-sm spinner-percentage" maxlength="4" required>
+		<div class="form-group col-md-7">
+			<label for="subgrupo_nombre" class="control-label">Nombre</label>
+			<input type="text" id="subgrupo_nombre" name="subgrupo_nombre" value="<%- subgrupo_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="100" required>
+			<div class="help-block with-errors"></div>
 		</div>
 		<div class="form-group col-md-2 col-xs-8 col-sm-3">
-			<br><label class="checkbox-inline" for="subcategoria_activo">
-				<input type="checkbox" id="subcategoria_activo" name="subcategoria_activo" value="subcategoria_activo" <%- parseInt(subcategoria_activo) ? 'checked': ''%>> Activo
+			<br><label class="checkbox-inline" for="subgrupo_activo">
+				<input type="checkbox" id="subgrupo_activo" name="subgrupo_activo" value="subgrupo_activo" <%- parseInt(subgrupo_activo) ? 'checked': ''%>> Activo
 			</label>
 		</div>
     </div>
@@ -1224,17 +1198,21 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="form-group col-md-6">
-			<label for="linea_unidadnegocio" class="control-label">Unidad de negocio</label>
-			<select name="linea_unidadnegocio" id="linea_unidadnegocio" class="form-control select2-default-clear">
-				<option value="" selected>Seleccione</option>
-				@foreach( App\Models\Inventario\UnidadNegocio::getUnidadesNegocio() as $key => $value)
-					<option value="{{ $key }}" <%- linea_unidadnegocio == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
-				@endforeach
-			</select>
+		<div class="form-group col-md-2">
+			<label for="linea_margen_nivel1" class="control-label">Margen Nivel 1</label>
+			<input type="text" id="linea_margen_nivel1" name="linea_margen_nivel1" value="<%- linea_margen_nivel1 %>" placeholder="Margen" class="form-control input-sm spinner-percentage" maxlength="4" required>
 		</div>
-		<div class="form-group col-md-2 col-xs-8 col-sm-2">
-			<br>
+
+		<div class="form-group col-md-2">
+			<label for="linea_margen_nivel2" class="control-label">Margen Nivel 2</label>
+			<input type="text" id="linea_margen_nivel2" name="linea_margen_nivel2" value="<%- linea_margen_nivel2 %>" placeholder="Margen" class="form-control input-sm spinner-percentage" maxlength="4" required>
+		</div>
+
+		<div class="form-group col-md-2">
+			<label for="linea_margen_nivel3" class="control-label">Margen Nivel 3</label>
+			<input type="text" id="linea_margen_nivel3" name="linea_margen_nivel3" value="<%- linea_margen_nivel3 %>" placeholder="Margen" class="form-control input-sm spinner-percentage" maxlength="4" required>
+		</div>
+		<div class="form-group col-md-2 col-xs-8 col-sm-2"><br>
 			<label class="checkbox-inline" for="linea_activo">
 				<input type="checkbox" id="linea_activo" name="linea_activo" value="linea_activo" <%- parseInt(linea_activo) ? 'checked': ''%>> Activo
 			</label>
@@ -1258,21 +1236,6 @@
 		<div class="form-group col-md-1">
 			<label class="checkbox-inline" for="unidad_medida_activo">
 				<input type="checkbox" id="unidad_medida_activo" name="unidad_medida_activo" value="unidad_medida_activo" <%- parseInt(unidad_medida_activo) ? 'checked': ''%>> Activo
-			</label>
-		</div>
-    </div>
-</script>
-
-<script type="text/template" id="add-unidadnegocio-tpl">
-    <div class="row">
-		<div class="form-group col-md-6">
-		<label for="unidadnegocio_nombre" class="control-label">Nombre</label>
-			<input type="text" id="unidadnegocio_nombre" name="unidadnegocio_nombre" value="<%- unidadnegocio_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="50" required>
-		</div>
-		<br>
-		<div class="form-group col-md-1">
-			<label class="checkbox-inline" for="unidadnegocio_activo">
-				<input type="checkbox" id="unidadnegocio_activo" name="unidadnegocio_activo" value="unidadnegocio_activo" <%- parseInt(unidadnegocio_activo) ? 'checked': ''%>> Activo
 			</label>
 		</div>
     </div>
