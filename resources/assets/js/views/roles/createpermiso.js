@@ -43,15 +43,13 @@ app || (app = {});
         render: function(){
             // Attributes
             var attributes = this.model.toJSON();
-            attributes.permissions = this.parameters.permissions;
+                attributes.permissions = this.parameters.permissions;
 
             this.$el.find('.content-modal').empty().html( this.template( attributes ) );
 
             // to fire plugins
-            this.ready();
-
             this.$el.modal('show');
-
+            this.ready();
             return this;
         },
 
@@ -71,8 +69,7 @@ app || (app = {});
                 e.preventDefault();
 
                 var data = window.Misc.formToJson( e.target );
-                data.role_id = this.parameters.dataFilter.role_id;
-
+                    data.role_id = this.parameters.dataFilter.role_id;
                 this.model.save( data, {patch: true} );
             }
         },
@@ -103,7 +100,6 @@ app || (app = {});
                 }
 
                 this.collection.fetch({ data: this.parameters.dataFilter, reset: true });
-
             	this.$el.modal('hide');
             }
         }
