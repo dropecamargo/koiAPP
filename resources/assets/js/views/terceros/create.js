@@ -12,7 +12,7 @@ app || (app = {});
     app.CreateTerceroView = Backbone.View.extend({
 
         el: '#tercero-create',
-        // template: _.template( ($('#add-tercero-tpl').html() || '') ),
+        template: _.template( ($('#add-tercero-tpl').html() || '') ),
         events: {
             'submit #form-tercero': 'onStore',
             'submit #form-item-roles': 'onStoreRol',
