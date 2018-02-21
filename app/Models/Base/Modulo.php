@@ -18,7 +18,7 @@ class Modulo extends Model
     public static function getModules()
     {
     	$query = Modulo::query();
-        $query->select('modulo.id', 'display_name');
+        $query->select('modulo.id', 'display_name', 'nivel1');
         $query->where('nivel1', '!=', '0');
         $query->where('nivel2', '=', '0');
         $query->where('nivel3', '=', '0');
