@@ -20,10 +20,10 @@
 				<div class="box-body">
 					<div class="row">
 						<div class="form-group col-md-4 col-md-offset-4">
-							<label for="filter_subcategoria" class="control-label">Sub categoria</label>
-							<select name="filter_subcategoria[]" id="filter_subcategoria" class="form-control select2-default" multiple="multiple">
+							<label for="filter_line" class="control-label">Linea</label>
+							<select name="filter_line[]" id="filter_line" class="form-control select2-default" multiple="multiple">
                                 <option value="0">TODAS</option>
-								@foreach( App\Models\Inventario\SubCategoria::getSubCategorias() as $key => $value)
+								@foreach( App\Models\Inventario\Linea::getlineas() as $key => $value)
 								    <option value="{{ $key }}">{{ $value }}</option>
 								@endforeach
 							</select>

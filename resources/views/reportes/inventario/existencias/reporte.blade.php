@@ -6,7 +6,7 @@
 			<tr>
 				<th width="10%">REFERENCIA</th>
 				<th colspan="{{ $sucursales->count() }}">NOMBRE PRODUCTO</th>
-				<th colspan="3">SUBCATEGORIA</th>
+				<th colspan="3">LINEA</th>
 			</tr>
 
 			<tr>
@@ -31,7 +31,7 @@
 					<tr class="brtable">
 						<th class="size-6 ">{{$item->producto_serie}}</th>
 						<th class="size-6" colspan="{{ $sucursales->count() }}">{{$item->producto_nombre}}</th>
-						<th class="size-6" colspan="3">{{$item->subcategoria_nombre}}</th>
+						<th class="size-6" colspan="3">{{$item->linea_nombre}}</th>
 					</tr>
 					<tr class="brtable">
 						<td></td>

@@ -19,51 +19,45 @@ class ExistenciaController extends Controller
     public function index(Request $request)
     {
         if ($request->has('type')) {
-            try {
-                /* Begin validator form*/
-                $validator = Validator::make($request->all(), [
-                    'filter_sucursal' => 'required',
-                    'filter_subcategoria' => 'required'
-                ]);
+            /* Begin validator form*/
+            $validator = Validator::make($request->all(), [
+                'filter_sucursal' => 'required',
+                'filter_line' => 'required'
+            ]);
 
-                if ($validator->fails()) {
-                    return redirect('/rexistencias')
-                    ->withErrors($validator)
-                    ->withInput();
-                }
-                /* End validator */
-
-                // Validation filters
-                $validation = in_array("0", $request->filter_sucursal);
-                $validationSub = in_array("0", $request->filter_subcategoria);
-
-                // Sucursales
-                $query = Sucursal::query();
-                $query->select('sucursal.id', 'sucursal_nombre');
-                $query->orderBy('sucursal.id', 'asc');
-                !$validation ? $query->whereIn('id', $request->filter_sucursal) : '';
-                $sucursales = $query->get();
-
-                // Prodbode
-                $query = Prodbode::query();
-                $query->select('prodbode_serie as id_producto','prodbode_sucursal','producto_serie','producto_nombre','producto_costo','producto_precio1 as venta', 'subcategoria_nombre');
-                $query->join('producto', 'prodbode.prodbode_serie','=','producto.id');
-                $query->join('subcategoria', 'producto_subcategoria', '=', 'subcategoria.id');
-                $query->groupBy('prodbode_sucursal','prodbode_serie', 'producto_subcategoria');
-                $query->orderBy('prodbode_serie', 'asc');
-
-                // Use filters
-                !$validation ? $query->whereIn('prodbode_sucursal', $request->filter_sucursal) : '';
-                !$validationSub ? $query->whereIn('producto_subcategoria', $request->filter_subcategoria) : '';
-                $prodbode =  $query->get();
-            } catch ( \Exception $e) {
-                DB::rollback();
-                Log::error($e->getMessage());
-                abort(500);
+            if ($validator->fails()) {
+                return redirect('/rexistencias')
+                ->withErrors($validator)
+                ->withInput();
             }
+            /* End validator */
+
+            // Validation filters
+            $validation = in_array("0", $request->filter_sucursal);
+            $validationSub = in_array("0", $request->filter_line);
+
+            // Sucursales
+            $query = Sucursal::query();
+            $query->select('sucursal.id', 'sucursal_nombre');
+            $query->orderBy('sucursal.id', 'asc');
+            !$validation ? $query->whereIn('id', $request->filter_sucursal) : '';
+            $sucursales = $query->get();
+
+            // Prodbode
+            $query = Prodbode::query();
+            $query->select('prodbode_serie as id_producto','prodbode_sucursal','producto_serie','producto_nombre','producto_costo','producto_precio1 as venta', 'linea_nombre');
+            $query->join('producto', 'prodbode.prodbode_serie','=','producto.id');
+            $query->join('linea', 'producto_linea', '=', 'linea.id');
+            $query->groupBy('prodbode_sucursal','prodbode_serie', 'producto_linea');
+            $query->orderBy('prodbode_serie', 'asc');
+
+            // Use filters
+            !$validation ? $query->whereIn('prodbode_sucursal', $request->filter_sucursal) : '';
+            !$validationSub ? $query->whereIn('producto_linea', $request->filter_line) : '';
+            $prodbode =  $query->get();
 
             // Prepare data
-            $title = 'Listado de producto en inventario según la subcategoria';
+            $title = 'Listado de producto en inventario según la linea';
             $type = $request->type;
             $user = Auth::user()->username;
 
@@ -80,7 +74,7 @@ class ExistenciaController extends Controller
                     $pdf = App::make('dompdf.wrapper');
                     $pdf->loadHTML(View::make('reportes.inventario.existencias.reporte',  compact('prodbode', 'sucursales','user','title', 'type'))->render());
                     $pdf->setPaper('letter', 'landscape')->setWarnings(false);
-                    return $pdf->stream(sprintf('%s_%s_%s.pdf', 'producto', date('Y_m_d'), date('H_m_s')));
+                    return $pdf->download(sprintf('%s_%s_%s.pdf', 'producto', date('Y_m_d'), date('H_m_s')));
                 break;
             }
         }

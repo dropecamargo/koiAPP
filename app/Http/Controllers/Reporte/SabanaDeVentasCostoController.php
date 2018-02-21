@@ -44,21 +44,21 @@ class SabanaDeVentasCostoController extends Controller
             $regionales = $regionales->get();
 
             // Presupuesto
-            $query = PresupuestoAsesor::query();
-            $query->select(DB::raw('SUM(presupuestoasesor_valor) AS valor'), 'presupuestoasesor_regional AS regional', 'presupuestoasesor_subcategoria AS subcategoria', 'categoria.id as categoria', 'linea.id as linea', 'unidadnegocio.id as unidadnegocio');
-            $query->join('subcategoria','presupuestoasesor_subcategoria', '=', 'subcategoria.id' );
-            $query->join('categoria','subcategoria_categoria', '=', 'categoria.id' );
-            $query->join('linea','categoria_linea', '=', 'linea.id' );
-            $query->join('unidadnegocio','linea_unidadnegocio', '=', 'unidadnegocio.id' );
-            $query->groupBy('regional', 'unidadnegocio', 'linea', 'categoria', 'subcategoria');
-            !$validation ? $query->whereIn('presupuestoasesor_regional', $request->filter_regional) : '';
-            $presupuestoAux = $query->get();
-            $presupuesto = [];
-
-            // Prepare array
-            foreach ($presupuestoAux as $item) {
-                $presupuesto = array_merge(array("$item->regional-$item->unidadnegocio-$item->linea-$item->categoria-$item->subcategoria" => $item->valor), $presupuesto);
-            }
+            // $query = PresupuestoAsesor::query();
+            // $query->select(DB::raw('SUM(presupuestoasesor_valor) AS valor'), 'presupuestoasesor_regional AS regional', 'presupuestoasesor_linea AS linea', 'grupo.id as grupo',  'subgrupo.id as subgrupo');
+            // $query->join('linea','presupuestoasesor_linea', '=', 'linea.id' );
+            // $query->join('categoria','subcategoria_categoria', '=', 'categoria.id' );
+            // $query->join('linea','categoria_linea', '=', 'linea.id' );
+            // $query->join('unidadnegocio','linea_unidadnegocio', '=', 'unidadnegocio.id' );
+            // $query->groupBy('regional', 'unidadnegocio', 'linea', 'categoria', 'subcategoria');
+            // !$validation ? $query->whereIn('presupuestoasesor_regional', $request->filter_regional) : '';
+            // $presupuestoAux = $query->get();
+            // $presupuesto = [];
+            //
+            // // Prepare array
+            // foreach ($presupuestoAux as $item) {
+            //     $presupuesto = array_merge(array("$item->regional-$item->unidadnegocio-$item->linea-$item->categoria-$item->subcategoria" => $item->valor), $presupuesto);
+            // }
             // Factura
             $query = Factura1::query();
             $query->select('regional.id AS regional', 'regional_nombre', 'unidadnegocio.id AS unidadnegocio','unidadnegocio_nombre', 'linea.id AS linea','linea_nombre', 'categoria.id AS categoria','categoria_nombre','subcategoria.id AS subcategoria','subcategoria_nombre',

@@ -12,54 +12,54 @@
                     <div class="form-group col-md-12">
                         <div class="box box-solid">
                             <div class="box-header with-border">
-                                <h3 class="box-title"><strong>Información Básica</strong></h3>
+                                <h3 class="box-title">Información Básica</h3>
                             </div>
                             <div class="box-body">
-                                <div class="form-group col-md-12">
-                                    <div class="col-md-4">
+                                <div class="row">
+                                    <div class="col-md-3">
                                         <label class="control-label">Referencia:</label>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-9">
                                         {{ $producto->producto_referencia }}
                                     </div>
                                 </div>
-                                <div class="form-group col-md-12">
-                                    <div class="col-md-4">
+                                <div class="row">
+                                    <div class="col-md-3">
                                         <label class="control-label">Serie:</label>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-9">
                                         {{ $producto->producto_serie }}
                                     </div>
                                 </div>
-                                <div class="form-group col-md-12">
-                                    <div class="col-md-4">
+                                <div class="row">
+                                    <div class="col-md-3">
                                         <label class="control-label">Nombre:</label>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-9">
                                         {{ $producto->producto_nombre }}
                                     </div>
                                 </div>
-                                <div class="form-group col-md-12">
-                                    <div class="col-md-4">
+                                <div class="row">
+                                    <div class="col-md-3">
                                         <label class="control-label">Precio Mínimo:</label>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-9">
                                         {{ number_format($producto->producto_precio1, 2, '.', ',') }}
                                     </div>
                                 </div>
-                                <div class="form-group col-md-12">
-                                    <div class="col-md-4">
+                                <div class="row">
+                                    <div class="col-md-3">
                                         <label class="control-label">Precio Sugerido:</label>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-9">
                                         {{ number_format($producto->producto_precio2, 2, '.', ',') }}
                                     </div>
                                 </div>
-                                <div class="form-group col-md-12">
-                                    <div class="col-md-4">
+                                <div class="row">
+                                    <div class="col-md-3">
                                         <label class="control-label">Precio Crédito:</label>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-9">
                                         {{ number_format($producto->producto_precio3, 2, '.', ',') }}
                                     </div>
                                 </div>
@@ -71,7 +71,7 @@
                     <div class="form-group col-md-12">
                         <div class="box box-primary">
                             <div class="box-header with-border">
-                                <h3 class="box-title"><strong>Disponibilidad</strong></h3>
+                                <h3 class="box-title">Disponibilidad</h3>
                             </div>
                             <div class="box-body table-responsive no-padding">
                                 <table id="prodbode-search-table" class="table table-striped table-condensed" cellspacing="0">
@@ -245,99 +245,99 @@
                         </div>
                     </div>
                     <div class="box-body">
-                        <div class="form-group col-md-12">
-                            <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-3">
                                 <label class="control-label">Unidad de medida</label>
                             </div>
-                            <div class="col-md-7">
+                            <div class="col-md-9">
                                 {{ $producto->unidadmedida_nombre }} ({{ $producto->unidadmedida_sigla }})
                             </div>
                         </div>
-                        <div class="form-group col-md-12">
-                            <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-3">
                                 <label class="control-label">Marca</label>
                             </div>
-                            <div class="col-md-7">
+                            <div class="col-md-9">
                                 {{ $producto->marca_nombre}}
                             </div>
                         </div>
-                        <div class="form-group col-md-12">
-                            <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-3">
                                 <label class="control-label">Modelo</label>
                             </div>
-                            <div class="col-md-7">
+                            <div class="col-md-9">
                                 {{ $producto->modelo_nombre}}
                             </div>
                         </div>
-                        <div class="form-group col-md-12">
-                            <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-3">
                                 <label class="control-label">Impuesto</label>
                             </div>
-                            <div class="col-md-7">
+                            <div class="col-md-9">
                                 {{ $producto->impuesto_nombre}} - {{$producto->impuesto_porcentaje}}%
                             </div>
                         </div>
-                        <div class="form-group col-md-12">
-                            <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-3">
                                 <label class="control-label">Peso</label>
                             </div>
-                            <div class="col-md-7">
+                            <div class="col-md-9">
                                 {{ $producto->producto_peso}} kg
                             </div>
                         </div>
-                        <div class="form-group col-md-12">
-                            <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-3">
                                 <label class="control-label">Largo</label>
                             </div>
-                            <div class="col-md-7">
+                            <div class="col-md-9">
                                 {{ $producto->producto_largo}} cm
                             </div>
                         </div>
-                        <div class="form-group col-md-12">
-                            <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-3">
                                 <label class="control-label">Ancho</label>
                             </div>
-                            <div class="col-md-7">
+                            <div class="col-md-9">
                                 {{ $producto->producto_ancho}} cm
                             </div>
                         </div>
-                        <div class="form-group col-md-12">
-                            <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-3">
                                 <label class="control-label">Alto</label>
                             </div>
-                            <div class="col-md-7">
+                            <div class="col-md-9">
                                 {{ $producto->producto_alto}} cm
                             </div>
                         </div>
-                        <div class="form-group col-md-12">
-                            <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-3">
                                 <label class="control-label">¿Maneja serie?</label>
                             </div>
-                            <div class="col-md-7">
+                            <div class="col-md-9">
                                 <input type="checkbox" id="producto_maneja_serie" name="producto_maneja_serie" value="producto_maneja_serie" disabled {{ $producto->producto_maneja_serie ? 'checked': '' }}>
                             </div>
                         </div>
-                        <div class="form-group col-md-12">
-                            <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-3">
                                 <label class="control-label">¿Producto metrado?</label>
                             </div>
-                            <div class="col-md-7">
+                            <div class="col-md-9">
                                 <input type="checkbox" id="producto_metrado" name="producto_metrado" value="producto_metrado" disabled {{ $producto->producto_metrado ? 'checked': '' }}>
                             </div>
                         </div>
-                        <div class="form-group col-md-12">
-                            <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-3">
                                 <label class="control-label">¿Producto vence?</label>
                             </div>
-                            <div class="col-md-7">
+                            <div class="col-md-9">
                                 <input type="checkbox" id="producto_vence" name="producto_vence" value="producto_vence" disabled {{ $producto->producto_vence ? 'checked': '' }}>
                             </div>
                         </div>
-                        <div class="form-group col-md-12">
-                            <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-3">
                                 <label class="control-label">¿Maneja Unidades?</label>
                             </div>
-                            <div class="col-md-7">
+                            <div class="col-md-9">
                                 <input type="checkbox" id="producto_unidad" name="producto_unidad" value="producto_unidad" disabled {{ $producto->producto_unidad ? 'checked': '' }}>
                             </div>
                         </div>
@@ -352,35 +352,35 @@
                         </div>
                     </div>
                     <div class="box-body">
-                        <div class="form-group col-md-12">
-                            <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-3">
                                 <label class="control-label">Grupo</label>
                             </div>
-                            <div class="col-md-7">
+                            <div class="col-md-9">
                                 {{ $producto->grupo_nombre }}
                             </div>
                         </div>
-                        <div class="form-group col-md-12">
-                            <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-3">
                                 <label class="control-label">Subgrupo</label>
                             </div>
-                            <div class="col-md-7">
+                            <div class="col-md-9">
                                 {{ $producto->subgrupo_nombre }}
                             </div>
                         </div>
-                        <div class="form-group col-md-12">
-                            <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-3">
                                 <label class="control-label">Línea</label>
                             </div>
-                            <div class="col-md-7">
+                            <div class="col-md-9">
                                 {{ $producto->linea_nombre}}
                             </div>
                         </div>
-                        <div class="form-group col-md-12">
-                            <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-3">
                                 <label class="control-label">Tipo de producto</label>
                             </div>
-                            <div class="col-md-7">
+                            <div class="col-md-9">
                                 {{ $producto->tipoproducto_nombre }}
                             </div>
                         </div>
@@ -395,11 +395,11 @@
                         </div>
                     </div>
                     <div class="box-body">
-                        <div class="form-group col-md-12">
-                            <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-3">
                                 <label class="control-label">Costo promedio</label>
                             </div>
-                            <div class="col-md-7">
+                            <div class="col-md-9">
                                 $ {{ number_format($producto->producto_costo, 2, '.', ',') }}
                             </div>
                         </div>
@@ -413,11 +413,11 @@
                         </div>
                     </div>
                     <div class="box-body">
-                        <div class="form-group col-md-12">
-                            <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-3">
                                 <label class="control-label">Referecia proveedor</label>
                             </div>
-                            <div class="col-md-7">
+                            <div class="col-md-9">
                                 {{ $producto->producto_ref_proveedor }}
                             </div>
                         </div>
@@ -433,34 +433,34 @@
                       </div>
                       <div class="box-body">
                         <div class="row">
-                          <div class="col-md-4">
+                          <div class="col-md-3">
                               <label class="control-label">Tercero</label>
                           </div>
-                          <div class="col-md-7">
+                          <div class="col-md-9">
                               {{ $producto->tercero_nit }} - {{ $producto->tercero_nombre }}
                           </div>
                         </div>
                         <div class="row">
-                          <div class="col-md-4">
+                          <div class="col-md-3">
                               <label class="control-label">Contacto</label>
                           </div>
-                          <div class="col-md-7">
+                          <div class="col-md-9">
                               {{ $producto->tcontacto_nombre }}
                           </div>
                         </div>
                         <div class="row">
-                          <div class="col-md-4">
+                          <div class="col-md-3">
                               <label class="control-label">Servicio</label>
                           </div>
-                          <div class="col-md-7">
+                          <div class="col-md-9">
                               {{ $producto->servicio_nombre }}
                           </div>
                         </div>
                         <div class="row">
-                          <div class="col-md-4">
+                          <div class="col-md-3">
                               <label class="control-label">Vencimiento</label>
                           </div>
-                          <div class="col-md-7">
+                          <div class="col-md-9">
                               {{ $producto->producto_vencimiento }}
                           </div>
                         </div>

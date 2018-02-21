@@ -43,12 +43,12 @@ class PlanCuentasController extends Controller
                     })->download('xls');
                 break;
 
-                case 'pdf':
-                    $pdf = App::make('dompdf.wrapper');
-                    $pdf->loadHTML(View::make('reportes.contabilidad.plancuentas.reporte',  compact('plancuentas', 'title', 'type'))->render());
-                    $pdf->setPaper('A4', 'letter')->setWarnings(false);
-                    return $pdf->download(sprintf('%s_%s_%s.pdf', 'plancuentas', date('Y_m_d'), date('H_m_s')));
-                break;
+                // case 'pdf':
+                //     $pdf = App::make('dompdf.wrapper');
+                //     $pdf->loadHTML(View::make('reportes.contabilidad.plancuentas.reporte',  compact('plancuentas', 'title', 'type'))->render());
+                //     $pdf->setPaper('A4', 'letter')->setWarnings(false);
+                //     return $pdf->download(sprintf('%s_%s_%s.pdf', 'plancuentas', date('Y_m_d'), date('H_m_s')));
+                // break;
             }
         }
 

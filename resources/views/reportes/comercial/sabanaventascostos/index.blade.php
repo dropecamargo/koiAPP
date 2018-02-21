@@ -18,17 +18,28 @@
 	    	<form action="{{ route('rsabanaventascostos.index') }}" method="GET" data-toggle="validator">
 			 	<input class="hidden" id="type-reporte-koi-component" name="type"></input>
 				<div class="box-body">
+                    <div class="row">
+                        <div class="form-group col-sm-6 col-md-offset-3">
+                            <label for="filter_regional" class="control-label">Regionales</label>
+                            <select name="filter_regional[ ]" class="form-control select2-default" multiple="multiple">
+                                <option value="0">TODAS</option>
+                                @foreach( App\Models\Base\Regional::getRegionales() as $key => $value)
+                                    <option value="{{ $key }}"> {{ $value }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
 					<div class="row">
-						<label for="filter_year_begin" class="col-sm-1 control-label">Año inicial</label>
-						<div class="form-group col-md-2">
+						<div class="form-group col-md-2 col-md-offset-4">
+                            <label for="filter_year_begin" class="control-label">Año inicial</label>
 							<select name="filter_year_begin" class="form-control">
 								@for( $i=config('koi.app.ano'); $i <= date('Y'); $i++)
 									<option value="{{ $i }}">{{ $i }}</option>
 								@endfor
 							</select>
 						</div>
-						<label for="filter_month_begin" class="col-sm-1 control-label">Mes inicial</label>
 						<div class="form-group col-md-2">
+                            <label for="filter_month_begin" class="control-label">Mes inicial</label>
 							<select name="filter_month_begin" class="form-control">
 								@foreach( config('koi.meses') as $key => $value)
 									<option value="{{ $key }}">{{ $value }}</option>
@@ -37,30 +48,19 @@
 						</div>
 					</div>
 					<div class="row">
-						<label for="filter_year_end" class="col-sm-1 control-label">Año final</label>
-						<div class="form-group col-md-2">
+						<div class="form-group col-md-2 col-md-offset-4">
+                            <label for="filter_year_end" class="control-label">Año final</label>
 							<select name="filter_year_end" class="form-control">
 								@for( $i=config('koi.app.ano'); $i <= date('Y'); $i++)
 									<option value="{{ $i }}">{{ $i }}</option>
 								@endfor
 							</select>
 						</div>
-						<label for="filter_month_end" class="col-sm-1 control-label">Mes final</label>
 						<div class="form-group col-md-2">
+                            <label for="filter_month_end" class="control-label">Mes final</label>
 							<select name="filter_month_end" class="form-control">
 								@foreach( config('koi.meses') as $key => $value)
 									<option value="{{ $key }}">{{ $value }}</option>
-								@endforeach
-							</select>
-						</div>
-					</div>
-					<div class="row">
-						<label for="filter_regional" class="col-sm-1 control-label">Regionales</label>
-	                    <div class="form-group col-sm-5">
-							<select name="filter_regional[ ]" class="form-control select2-default" multiple="multiple">
-	                        	<option value="0">TODAS</option>
-								@foreach( App\Models\Base\Regional::getRegionales() as $key => $value)
-		                        	<option value="{{ $key }}"> {{ $value }}</option>
 								@endforeach
 							</select>
 						</div>

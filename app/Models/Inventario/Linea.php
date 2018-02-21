@@ -56,6 +56,17 @@ class Linea extends BaseModel
         $validator = Validator::make($data, $rules);
         if ($validator->passes())
         {
+            // Valid valor de margenes
+            if ($data['linea_margen_nivel1'] > 0) {
+                if ($data['linea_margen_nivel1'] <= $data['linea_margen_nivel2'] || $data['linea_margen_nivel1'] <= $data['linea_margen_nivel3']) {
+                    $this->errors = 'MARGEN NIVEL 1 debe ser mayor a los demás niveles de margenes.';
+                    return false;
+                }
+                if ($data['linea_margen_nivel2'] <= $data['linea_margen_nivel3']) {
+                    $this->errors = 'MARGEN NIVEL 2 debe ser mayor al MARGEN NIVEL 3.';
+                    return false;
+                }
+            }
             return true;
         }
         $this->errors = $validator->errors();
