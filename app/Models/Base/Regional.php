@@ -42,7 +42,7 @@ class Regional extends BaseModel
     public function isValid($data)
     {
         $rules = [
-            'regional_nombre' => 'required|max:50'
+            'regional_nombre' => 'required|max:50|unique:regional'
         ];
 
         $validator = Validator::make($data, $rules);

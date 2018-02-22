@@ -16,7 +16,7 @@ class CreatePrioridadTable extends Migration
             $table->engine = "InnoDB";
 
             $table->increments('id');
-            $table->string('prioridad_nombre', 200);
+            $table->string('prioridad_nombre', 200)->unique();
             $table->boolean('prioridad_activo')->default(false);
         });
     }

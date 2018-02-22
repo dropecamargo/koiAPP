@@ -16,7 +16,7 @@ class CreateMediopagoTable extends Migration
             $table->engine = 'InnoDB';
 
             $table->increments('id');
-            $table->string('mediopago_nombre', 25);
+            $table->string('mediopago_nombre', 25)->unique();
             $table->boolean('mediopago_activo')->default(false);
             $table->boolean('mediopago_ch')->default(false);
             $table->boolean('mediopago_ef')->default(false);

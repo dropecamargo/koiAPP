@@ -36,7 +36,7 @@ class Banco extends BaseModel
 	public function isValid($data)
 	{
 		$rules = [
-			'banco_nombre' => 'required|max:25',
+			'banco_nombre' => 'required|max:25|unique:banco',
 		];
 
 		$validator = Validator::make($data, $rules);

@@ -16,8 +16,7 @@ class CreateRegionalTable extends Migration
             $table->engine = 'InnoDB';
 
             $table->increments('id');
-            $table->string('regional_nombre', 200);
-            $table->boolean('regional_activo')->default(false);
+            $table->string('regional_nombre', 200)->unique();
             $table->integer('regional_reci')->unsigned();
             $table->integer('regional_nota')->unsigned();
             $table->integer('regional_ord')->unsigned();
@@ -28,6 +27,7 @@ class CreateRegionalTable extends Migration
             $table->integer('regional_fpro')->unsigned();
             $table->integer('regional_ajup')->unsigned();
             $table->integer('regional_egre')->unsigned();
+            $table->boolean('regional_activo')->default(false);
         });
     }
 

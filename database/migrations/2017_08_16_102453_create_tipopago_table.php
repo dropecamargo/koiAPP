@@ -16,7 +16,7 @@ class CreateTipopagoTable extends Migration
             $table->engine = 'InnoDB';
 
             $table->increments('id');
-            $table->string('tipopago_nombre',25);
+            $table->string('tipopago_nombre', 25)->unique();
             $table->integer('tipopago_documentos')->unsigned()->nullable();
             $table->boolean('tipopago_activo')->default(false);
 

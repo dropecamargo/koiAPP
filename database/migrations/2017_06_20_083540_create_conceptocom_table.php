@@ -16,7 +16,7 @@ class CreateConceptocomTable extends Migration
             $table->engine = 'InnoDB';
 
             $table->increments('id');
-            $table->string('conceptocom_nombre',25);
+            $table->string('conceptocom_nombre', 25)->unique();
             $table->boolean('conceptocom_activo')->default(false);
         });
     }

@@ -36,7 +36,7 @@ class TipoOrden extends BaseModel
     public function isValid($data)
     {
         $rules = [
-            'tipoorden_nombre' => 'required|max:200'
+            'tipoorden_nombre' => 'required|max:200|unique:tipoorden'
         ];
 
         $validator = Validator::make($data, $rules);

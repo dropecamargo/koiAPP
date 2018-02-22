@@ -42,7 +42,7 @@ class Ubicacion extends BaseModel
     public function isValid($data)
     {
         $rules = [
-            'ubicacion_nombre' => 'required|max:25'
+            'ubicacion_nombre' => 'required|max:25|unique:ubicacion'
         ];
 
         $validator = Validator::make($data, $rules);

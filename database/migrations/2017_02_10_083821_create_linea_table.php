@@ -16,10 +16,10 @@ class CreateLineaTable extends Migration
             $table->engine = 'InnoDB';
 
             $table->increments('id');
-            $table->string('linea_nombre', 50);
-            $table->double('linea_margen_nivel1');
-            $table->double('linea_margen_nivel2');
-            $table->double('linea_margen_nivel3');
+            $table->string('linea_nombre', 50)->unique();
+            $table->double('linea_margen_nivel1')->default(0);
+            $table->double('linea_margen_nivel2')->default(0);
+            $table->double('linea_margen_nivel3')->default(0);
             $table->boolean('linea_activo')->default(false);
         });
     }

@@ -16,7 +16,7 @@ class CreateCuentabancoTable extends Migration
             $table->engine = 'InnoDB';
 
             $table->increments('id');
-            $table->string('cuentabanco_nombre', 50);
+            $table->string('cuentabanco_nombre', 50)->unique();
             $table->string('cuentabanco_numero', 25);
             $table->integer('cuentabanco_banco')->unsigned();
             $table->boolean('cuentabanco_activa')->default(false);

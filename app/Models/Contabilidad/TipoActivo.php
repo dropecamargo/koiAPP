@@ -36,7 +36,7 @@ class TipoActivo extends BaseModel
     public function isValid($data)
     {
         $rules = [
-            'tipoactivo_nombre' => 'required|max:50',
+            'tipoactivo_nombre' => 'required|max:50|unique:tipoactivo',
             'tipoactivo_vida_util' => 'numeric|min:1',
         ];
 

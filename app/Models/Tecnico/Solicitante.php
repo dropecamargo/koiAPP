@@ -36,7 +36,7 @@ class Solicitante extends BaseModel
     public function isValid($data)
     {
         $rules = [
-            'solicitante_nombre' => 'required|max:200'
+            'solicitante_nombre' => 'required|max:200|unique:solicitante'
         ];
 
         $validator = Validator::make($data, $rules);

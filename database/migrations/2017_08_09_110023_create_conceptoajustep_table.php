@@ -16,7 +16,7 @@ class CreateConceptoajustepTable extends Migration
             $table->engine = 'InnoDB';
 
             $table->increments('id');
-            $table->string('conceptoajustep_nombre',50);
+            $table->string('conceptoajustep_nombre', 50)->unique();
             $table->boolean('conceptoajustep_activo')->default(false);
         });
     }

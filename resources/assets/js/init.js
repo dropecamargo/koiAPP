@@ -123,7 +123,7 @@ var app = app || {};
                                 $option = $('<option selected>Cargando...</option>').val(initialId);
                                 $el.append($option).trigger('change');
 
-                                $.get( ajaxOptions.url, {id:initialId}, function(data) {
+                                $.get( ajaxOptions.url, {id:initialId}, function(data){
                                     $option.text(data[0].text).val(data[0].id);
                                     $option.removeData();
                                     $el.trigger('change');

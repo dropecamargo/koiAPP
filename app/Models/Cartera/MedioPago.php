@@ -36,7 +36,7 @@ class MedioPago extends BaseModel
 	public function isValid($data)
 	{
 		$rules = [
-			'mediopago_nombre' => 'required|max:25',
+			'mediopago_nombre' => 'required|max:25|unique:mediopago',
 		];
 
 		$validator = Validator::make($data, $rules);

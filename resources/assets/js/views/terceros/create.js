@@ -85,7 +85,6 @@ app || (app = {});
 
             // Model exist
             if( this.model.id != undefined ) {
-
                 // Reference views
                 this.referenceViews();
             }
@@ -107,6 +106,7 @@ app || (app = {});
                     }
                }
             });
+
             // Rol list
             this.rolesListView = new app.RolesListView( {
                 collection: this.rolList,
@@ -125,8 +125,8 @@ app || (app = {});
         */
         onStore: function (e) {
             if (!e.isDefaultPrevented()) {
-
                 e.preventDefault();
+                
                 var data = $.extend({}, window.Misc.formToJson( e.target ), window.Misc.formToJson( this.$formAccounting ), window.Misc.formToJson( this.$formEmployee ));
                 this.model.save( data, {patch: true, silent: true} );
             }

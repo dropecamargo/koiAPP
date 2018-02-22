@@ -16,8 +16,8 @@ class CreateImpuestoTable extends Migration
             $table->engine = 'InnoDB';
 
             $table->increments('id');
-            $table->string('impuesto_nombre', 100);
-            $table->double('impuesto_porcentaje');
+            $table->string('impuesto_nombre', 100)->unique();
+            $table->double('impuesto_porcentaje')->default(0);
             $table->boolean('impuesto_activo')->default(false);
         });
     }

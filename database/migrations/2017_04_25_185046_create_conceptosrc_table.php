@@ -16,7 +16,7 @@ class CreateConceptosrcTable extends Migration
             $table->engine = 'InnoDB';
 
             $table->increments('id');
-            $table->string('conceptosrc_nombre', 50);
+            $table->string('conceptosrc_nombre', 50)->unique();
             $table->integer('conceptosrc_documentos')->unsigned()->nullable();
             $table->boolean('conceptosrc_activo')->default(false);
 

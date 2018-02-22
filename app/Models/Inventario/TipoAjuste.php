@@ -43,7 +43,6 @@ class TipoAjuste extends BaseModel
 			'tipoajuste_nombre' => 'required|max:25|unique:tipoajuste',
 			'tipoajuste_sigla' => 'required|max:3',
 			'tipoajuste_tipo' => 'required|max:1',
-
 		];
 
         if ($this->exists){
@@ -59,7 +58,7 @@ class TipoAjuste extends BaseModel
 		$this->errors = $validator->errors();
 		return false;
 	}
-	
+
  	public static function getTiposAjustes()
     {
         if (Cache::has( self::$key_cache )) {

@@ -16,7 +16,7 @@ class CreateServicioTable extends Migration
             $table->engine = 'InnoDB';
 
             $table->increments('id');
-            $table->string('servicio_nombre', 25);
+            $table->string('servicio_nombre', 25)->unique();
             $table->boolean('servicio_activo')->default(false);
         });
     }

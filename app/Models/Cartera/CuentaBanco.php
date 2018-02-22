@@ -36,7 +36,7 @@ class CuentaBanco extends BaseModel
 	public function isValid($data)
 	{
 		$rules = [
-			'cuentabanco_nombre' => 'required|max:50',
+			'cuentabanco_nombre' => 'required|max:50|unique:cuentabanco',
 			'cuentabanco_banco' => 'required',
 			'cuentabanco_numero' => 'required|max:25',
 		];

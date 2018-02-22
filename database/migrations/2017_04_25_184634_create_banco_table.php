@@ -16,7 +16,7 @@ class CreateBancoTable extends Migration
             $table->engine = 'InnoDB';
 
             $table->increments('id');
-            $table->string('banco_nombre', 25);
+            $table->string('banco_nombre', 25)->unique();
             $table->boolean('banco_activo')->default(false);
         });
     }

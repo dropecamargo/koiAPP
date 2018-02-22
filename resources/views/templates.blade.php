@@ -90,9 +90,10 @@
 
 			<div class="form-group col-md-3">
 				<label for="tercero_municipio" class="control-label">Municipio</label>
-				<select name="tercero_municipio" id="tercero_municipio" class="form-control choice-select-autocomplete" data-ajax-url="<%- window.Misc.urlFull(Route.route('municipios.index'))%>" data-placeholder="Seleccione" data-initial-value="<%- typeof(id) !== 'undefined' && !_.isUndefined(id) && !_.isNull(id) && id != '' ? tercero_municipio : {{session('empresa')->tercero_municipio}} %>">
+				<select name="tercero_municipio" id="tercero_municipio" class="form-control choice-select-autocomplete" data-ajax-url="<%- window.Misc.urlFull(Route.route('municipios.index'))%>" data-placeholder="Seleccione" data-initial-value="<%- typeof(id) !== 'undefined' && !_.isUndefined(id) && !_.isNull(id) && id != '' ? tercero_municipio : '{{ isset( session('empresa')->tercero_municipio ) ? session('empresa')->tercero_municipio : '' }}' %>">
 				</select>
 			</div>
+
 			<div class="form-group col-md-3">
 				<label for="tercero_pais" class="control-label">Pais</label>
 				<select name="tercero_pais" id="tercero_pais" class="form-control choice-select-autocomplete" data-ajax-url="<%- window.Misc.urlFull(Route.route('paises.index'))%>" data-placeholder="Seleccione" data-initial-value="<%- tercero_pais %>">

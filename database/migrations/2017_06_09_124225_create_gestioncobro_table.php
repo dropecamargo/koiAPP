@@ -27,7 +27,6 @@ class CreateGestioncobroTable extends Migration
             $table->foreign('gestioncobro_tercero')->references('id')->on('tercero')->onDelete('restrict');
             $table->foreign('gestioncobro_conceptocob')->references('id')->on('conceptocob')->onDelete('restrict');
             $table->foreign('gestioncobro_usuario_elaboro')->references('id')->on('tercero')->onDelete('restrict');
-
         });
     }
 

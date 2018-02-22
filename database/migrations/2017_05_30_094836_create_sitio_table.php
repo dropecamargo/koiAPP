@@ -16,7 +16,7 @@ class CreateSitioTable extends Migration
             $table->engine = "InnoDB";
 
             $table->increments('id');
-            $table->string('sitio_nombre', 25);
+            $table->string('sitio_nombre', 25)->unique();
             $table->boolean('sitio_activo')->default(false);
         });
     }

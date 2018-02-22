@@ -36,7 +36,7 @@ class ConceptoTecnico extends BaseModel
 	public function isValid($data)
 	{
 		$rules = [
-			'conceptotec_nombre' => 'required|max:50',
+			'conceptotec_nombre' => 'required|max:50|unique:conceptotec',
 		];
 
 		$validator = Validator::make($data, $rules);

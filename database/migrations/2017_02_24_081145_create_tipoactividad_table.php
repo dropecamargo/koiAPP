@@ -16,7 +16,7 @@ class CreateTipoactividadTable extends Migration
             $table->engine = 'InnoDB';
 
             $table->increments('id');
-            $table->string('tipoactividad_nombre', 25);
+            $table->string('tipoactividad_nombre', 25)->unique();
             $table->boolean('tipoactividad_activo')->default(false);
             $table->boolean('tipoactividad_comercial')->default(false);
             $table->boolean('tipoactividad_tecnico')->default(false);

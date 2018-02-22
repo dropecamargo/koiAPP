@@ -36,7 +36,7 @@ class ConceptoNota extends BaseModel
 	public function isValid($data)
 	{
 		$rules = [
-		    'conceptonota_nombre' => 'required|max:50',
+		    'conceptonota_nombre' => 'required|max:50|unique:conceptonota',
 		];
 
 		$validator = Validator::make($data, $rules);

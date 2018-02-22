@@ -16,7 +16,7 @@ class CreateTipoproveedorTable extends Migration
             $table->engine = 'InnoDB';
 
             $table->increments('id');
-            $table->string('tipoproveedor_nombre', 50);
+            $table->string('tipoproveedor_nombre', 50)->unique();
             $table->boolean('tipoproveedor_activo')->default(false);
         });
     }

@@ -36,7 +36,7 @@ class ConceptoAjustec extends BaseModel
 	public function isValid($data)
 	{
 		$rules = [
-			'conceptoajustec_nombre' => 'required|max:50',
+			'conceptoajustec_nombre' => 'required|max:50|unique:conceptoajustec',
 		];
 
 		$validator = Validator::make($data, $rules);

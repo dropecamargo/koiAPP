@@ -16,7 +16,7 @@ class CreateMarcaTable extends Migration
             $table->engine = 'InnoDB';
 
             $table->increments('id');
-            $table->string('marca_nombre',100)->comment = "Es el nombre de la MARCA";
+            $table->string('marca_nombre',100)->unique();
             $table->boolean('marca_activo')->default(false);
         });
     }

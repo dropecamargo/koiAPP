@@ -36,7 +36,7 @@ class ConceptoComercial extends BaseModel
 	public function isValid($data)
 	{
 		$rules = [
-			'conceptocom_nombre' => 'required|max:25',
+			'conceptocom_nombre' => 'required|max:25|unique:conceptocom',
 		];
 
 		$validator = Validator::make($data, $rules);
