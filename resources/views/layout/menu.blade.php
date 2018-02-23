@@ -173,18 +173,21 @@
     </li>
 
     {{-- Comercial --}}
-    <li class="treeview {{ in_array(Request::segment(1), ['presupuestoasesor', 'pedidosc', 'gestionescomercial' ,'conceptoscomercial', 'rsabanaventascostos']) ? 'active' : '' }}">
+    <li class="treeview {{ in_array(Request::segment(1), ['presupuestoasesor', 'pedidosc', 'gestionescomercial' ,'conceptoscomercial', 'rsabanaventascostos', 'configsabana']) ? 'active' : '' }}">
         <a href="#">
             <i class="fa fa-globe"></i> <span>Comercial</span><i class="fa fa-angle-left pull-right"></i>
         </a>
 
         <ul class="treeview-menu">
             {{-- Modulos comercial --}}
-            <li class="{{ in_array(Request::segment(1), ['presupuestoasesor', 'pedidosc','gestionescomercial']) ? 'active' : '' }}">
+            <li class="{{ in_array(Request::segment(1), ['presupuestoasesor', 'pedidosc','gestionescomercial', 'configsabana']) ? 'active' : '' }}">
                 <a href="#">
                     <i class="fa fa-wpforms"></i> Módulos <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
+                    <li class="{{ Request::segment(1) == 'configsabana' ? 'active' : '' }}">
+                        <a href="{{route('configsabana.index')}}"><i class="glyphicon glyphicon-wrench"></i> Config sabana de venta</a>
+                    </li>
                     <li class="{{ Request::segment(1) == 'gestionescomercial' ? 'active' : '' }}">
                         <a href="{{route('gestionescomercial.index')}}"><i class="fa fa-volume-control-phone"></i> Gestión comercial</a>
                     </li>

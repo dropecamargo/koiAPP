@@ -97,6 +97,8 @@ app || (app = {});
             */
             'presupuestoasesor(/)': 'getPresupuestoAsesorMain',
 
+            'configsabana(/)': 'getConfigSabanaVentaMain',
+
             'pedidosc(/)': 'getPedidoscMain',
             'pedidosc/create(/)': 'getPedidoscCreate',
             'pedidosc/:pedidosc(/)': 'getPedidoscShow',
@@ -904,6 +906,15 @@ app || (app = {});
             }
 
             this.mainPresupuestoAsesorView = new app.MainPresupuestoAsesorView( );
+        },
+
+        getConfigSabanaVentaMain: function () {
+            if ( this.mainConfigSabanaVentaView instanceof Backbone.View ){
+                this.mainConfigSabanaVentaView.stopListening();
+                this.mainConfigSabanaVentaView.undelegateEvents();
+            }
+
+            this.mainConfigSabanaVentaView = new app.MainConfigSabanaVentaView( );
         },
 
         getConceptosComMain: function () {
