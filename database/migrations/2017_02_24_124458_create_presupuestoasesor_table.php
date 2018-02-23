@@ -21,7 +21,7 @@ class CreatePresupuestoasesorTable extends Migration
             $table->integer('presupuestoasesor_linea')->unsigned();
             $table->integer('presupuestoasesor_ano');
             $table->integer('presupuestoasesor_mes');
-            $table->double('presupuestoasesor_valor');
+            $table->double('presupuestoasesor_valor')->default(0);
 
             $table->foreign('presupuestoasesor_asesor')->references('id')->on('tercero')->onDelete('restrict');
             $table->foreign('presupuestoasesor_regional')->references('id')->on('regional')->onDelete('restrict');

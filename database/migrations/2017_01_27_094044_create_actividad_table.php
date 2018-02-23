@@ -16,12 +16,10 @@ class CreateActividadTable extends Migration
             $table->engine = 'InnoDB';
 
             $table->increments('id');
-            $table->string('actividad_codigo', 11);
-            $table->text('actividad_nombre');
-            $table->double('actividad_tarifa')->default(0); 
+            $table->string('actividad_codigo', 11)->unique();
             $table->string('actividad_categoria', 3);
-
-            $table->unique('actividad_codigo');
+            $table->text('actividad_nombre');
+            $table->double('actividad_tarifa')->default(0);
         });
     }
 

@@ -16,7 +16,7 @@ class CreateTipogastoTable extends Migration
             $table->engine = 'InnoDB';
 
             $table->increments('id');
-            $table->string('tipogasto_nombre', 50);
+            $table->string('tipogasto_nombre', 50)->unique();
             $table->boolean('tipogasto_activo')->default(false);
         });
     }

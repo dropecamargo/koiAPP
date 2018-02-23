@@ -16,10 +16,8 @@ class CreateDepartamentoTable extends Migration
             $table->engine = 'InnoDB';
 
             $table->increments('id');
-            $table->string('departamento_codigo', 2); 
-            $table->string('departamento_nombre', 200); 
-
-            $table->unique('departamento_codigo');
+            $table->string('departamento_codigo', 2)->unique();
+            $table->string('departamento_nombre', 200);
         });
     }
 

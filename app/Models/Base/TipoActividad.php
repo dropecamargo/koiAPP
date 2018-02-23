@@ -34,7 +34,7 @@ class TipoActividad extends BaseModel
     public function isValid($data)
     {
         $rules = [
-            'tipoactividad_nombre' => 'required|max:25'
+            'tipoactividad_nombre' => 'required|max:25|unique:tipoactividad'
         ];
 
         $validator = Validator::make($data, $rules);

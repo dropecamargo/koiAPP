@@ -16,8 +16,11 @@ class CreateTipoordenTable extends Migration
             $table->engine = "InnoDB";
 
             $table->increments('id');
-            $table->string('tipoorden_nombre',200);
+            $table->string('tipoorden_nombre',200)->unique();
+            $table->integer('tipoorden_tipoajuste')->unsigned();
             $table->boolean('tipoorden_activo')->default(false);
+
+            $table->foreign('tipoorden_tipoajuste')->references('id')->on('tipoajuste')->onDelete('restrict');
         });
     }
 

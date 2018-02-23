@@ -20,6 +20,7 @@ class CreateModeloTable extends Migration
             $table->integer('modelo_marca')->unsigned();
             $table->boolean('modelo_activo')->default(false);
 
+            $table->unique(['modelo_nombre', 'modelo_marca']);
             $table->foreign('modelo_marca')->references('id')->on('marca')->onDelete('restrict');
         });
     }

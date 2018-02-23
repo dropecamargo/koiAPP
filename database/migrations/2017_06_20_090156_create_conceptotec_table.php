@@ -16,7 +16,7 @@ class CreateConceptotecTable extends Migration
             $table->engine = 'InnoDB';
 
             $table->increments('id');
-            $table->string('conceptotec_nombre',50);
+            $table->string('conceptotec_nombre', 50)->unique();
             $table->boolean('conceptotec_activo')->default(false);
         });
     }

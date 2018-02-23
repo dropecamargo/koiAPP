@@ -16,7 +16,7 @@ class CreateConceptonotaTable extends Migration
             $table->engine = 'InnoDB';
 
             $table->increments('id');
-            $table->string('conceptonota_nombre', 50);
+            $table->string('conceptonota_nombre', 50)->unique();
             $table->boolean('conceptonota_activo')->default(false);
         });
     }

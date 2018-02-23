@@ -24,7 +24,6 @@ app || (app = {});
         * Constructor Method
         */
         initialize : function(opts){
-
             // extends parameters
             if( opts !== undefined && _.isObject(opts.parameters) )
                 this.parameters = $.extend({},this.parameters, opts.parameters);
@@ -37,7 +36,6 @@ app || (app = {});
 
             // Trigger
             this.on('createOne', this.createOne, this);
-
             this.collection.fetch({ data: {tercero_id: this.parameters.dataFilter.tercero_id}, reset: true });
         },
 
@@ -45,7 +43,6 @@ app || (app = {});
         * Render View Element
         */
         render: function() {
-
         },
 
         /**

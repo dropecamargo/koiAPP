@@ -36,7 +36,7 @@ class Causal extends BaseModel
 	public function isValid($data)
 	{
 		$rules = [
-			'causal_nombre' => 'required|max:100',
+			'causal_nombre' => 'required|max:100|unique:causal',
 		];
 
 		$validator = Validator::make($data, $rules);

@@ -16,7 +16,7 @@ class CreateConceptoajustecTable extends Migration
             $table->engine = 'InnoDB';
 
             $table->increments('id');
-            $table->string('conceptoajustec_nombre',50);
+            $table->string('conceptoajustec_nombre', 50)->unique();
             $table->boolean('conceptoajustec_sumas_iguales')->default(false);
             $table->boolean('conceptoajustec_activo')->default(false);
         });

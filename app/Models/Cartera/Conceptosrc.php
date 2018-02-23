@@ -39,7 +39,7 @@ class Conceptosrc extends BaseModel
 	public function isValid($data)
 	{
 		$rules = [
-			'conceptosrc_nombre' => 'required|max:50',
+			'conceptosrc_nombre' => 'required|max:50|unique:conceptosrc',
 		];
 
 		$validator = Validator::make($data, $rules);

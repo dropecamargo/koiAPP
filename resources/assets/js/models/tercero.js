@@ -29,7 +29,7 @@ app || (app = {});
             'tercero_direccion' : '',
             'tercero_dir_nomenclatura' : '',
             'tercero_municipio': '',
-            'tercero_pais' : 52,
+            'tercero_pais' : '',
             'tercero_familia' : '',
             'tercero_email' : '',
             'tercero_telefono1' : '',

@@ -16,7 +16,7 @@ class CreateDanoTable extends Migration
             $table->engine = "InnoDB";
 
             $table->increments('id');
-            $table->string('dano_nombre', 200);
+            $table->string('dano_nombre', 200)->unique();
             $table->boolean('dano_activo')->default(false);
         });
     }

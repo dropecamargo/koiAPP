@@ -36,7 +36,7 @@ class ConceptoCob extends BaseModel
 	public function isValid($data)
 	{
 		$rules = [
-			'conceptocob_nombre' => 'required|max:25',
+			'conceptocob_nombre' => 'required|max:25|unique:conceptocob',
 		];
 
 		$validator = Validator::make($data, $rules);

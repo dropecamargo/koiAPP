@@ -16,7 +16,7 @@ class CreateCausalTable extends Migration
             $table->engine = 'InnoDB';
 
             $table->increments('id');
-            $table->string('causal_nombre',100);
+            $table->string('causal_nombre', 100)->unique();
             $table->boolean('causal_activo')->default(false);
         });
     }

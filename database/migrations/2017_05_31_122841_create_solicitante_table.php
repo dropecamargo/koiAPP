@@ -16,7 +16,7 @@ class CreateSolicitanteTable extends Migration
             $table->engine = "InnoDB";
 
             $table->increments('id');
-            $table->string('solicitante_nombre', 200);
+            $table->string('solicitante_nombre', 200)->unique();
             $table->boolean('solicitante_activo')->default(false);
         });
     }

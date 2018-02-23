@@ -16,7 +16,7 @@ class CreateConceptocobTable extends Migration
             $table->engine = 'InnoDB';
 
             $table->increments('id');
-            $table->string('conceptocob_nombre');
+            $table->string('conceptocob_nombre', 25)->unique();
             $table->boolean('conceptocob_activo')->default(false);
         });
     }

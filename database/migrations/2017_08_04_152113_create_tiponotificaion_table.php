@@ -16,7 +16,7 @@ class CreateTiponotificaionTable extends Migration
             $table->engine = 'InnoDB';
 
             $table->increments('id');
-            $table->string('tiponotificacion_nombre', 50);
+            $table->string('tiponotificacion_nombre', 50)->unique();
         });
     }
 

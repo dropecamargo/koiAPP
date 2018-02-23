@@ -16,7 +16,7 @@ class CreateTipoactivoTable extends Migration
             $table->engine = 'InnoDB';
 
             $table->increments('id');
-            $table->string('tipoactivo_nombre', 50);
+            $table->string('tipoactivo_nombre', 50)->unique();
             $table->integer('tipoactivo_vida_util')->unsigned();
             $table->boolean('tipoactivo_activo')->default(false);
         });
