@@ -12,47 +12,45 @@
     </section>
     <section class="content">
         <div class="box box-primary" id="configsabanaventa-create">
-            <div class="box-body table-responsive table-condensed">
-                <table id="configsabanaventa-search-table" class="table table-bordered table-striped" cellspacing="0" width="100%">
+            <div class="box-body table-responsive">
+                <table id="configsabanaventa-search-table" class="table table-condensed" cellspacing="0" width="100%">
                     <thead>
                         <tr>
-                            <td colspan="5">
+                            <td colspan="2">
                                 La configuración de la sabana de ventas se basa en cuatro niveles: Agrupación ->>> Grupo ->> Unificación -> Linea de Negocio. Los grupo contienen las unificaciones que reunen una o mas lineas de negocio bajo un solo nombre y el cual es totalizado en conjunto incluyendo las lineas de negocio escogidas; la agrupación reune uno o mas grupos bajo un solo nombre que reune una o mas unificaciones bajo un solo nombre totalizando la agrupacion en conjunto incluyendo los grupos y las unificaciones escogidas.
                             </td>
                         </tr>
                         <tr>
                             <th class="text-center">
-                                <a class="btn btn-success btn-xs">
+                                <a class="btn btn-success btn-xs add-item" data-call="add-agrupation">
                                     <span><i class="fa fa-plus"></i></span>
                                 </a>
                             </th>
                             <th>Agrupación</th>
-                            <th>Unificación</th>
-                            <th>Grupo</th>
-                            <th>Línea</th>
                         </tr>
                     </thead>
                 </table>
             </div>
         </div>
     </section>
+
     <script type="text/template" id="browse-detailconfigsabanaventa-tpl">
-        <table class="table table-condensed" width="100%">
+        <table class="table table-condensed" id="table-detailconfigsabanaventa" width="100%">
             <thead>
                 <tr>
                     <th width="10%"></th>
                     <th width="25%">&nbsp; &nbsp; Grupo
-                        <a class="btn btn-success btn-xs pull-left">
+                        <a class="btn btn-success btn-xs pull-left add-item" data-call="add-group" data-resource= "<%- agrupacion %>" >
                             <span><i class="fa fa-plus"></i></span>
                         </a>
                     </th>
                     <th width="25%">&nbsp; &nbsp; Unificación
-                        <a class="btn btn-success btn-xs pull-left">
+                        <a class="btn btn-success btn-xs pull-left add-item" data-call="add-unification" data-resource= "<%- agrupacion %>" >
                             <span><i class="fa fa-plus"></i></span>
                         </a>
                     </th>
                     <th width="40%">&nbsp; &nbsp; Línea
-                        <a class="btn btn-success btn-xs pull-left">
+                        <a class="btn btn-success btn-xs pull-left add-item" data-call="add-line" data-resource= "<%- agrupacion %>>"
                             <span><i class="fa fa-plus"></i></span>
                         </a>
                     </th>
@@ -60,7 +58,7 @@
             </thead>
             <tbody>
                 <% var unificacion = grupo = '' %>
-                <% _.each(resp, function( item ){ %>
+                <% _.each( data, function( item ){ %>
                     <% if (grupo != item.configsabanaventa_grupo){ %>
                         <tr>
                             <td></td>
@@ -73,12 +71,12 @@
                             <td colspan="2"><%- item.configsabanaventa_unificacion_nombre %></td>
                         </tr>
                     <% } %>
-                    <tr>
+                    <tr id=remove-line<%- item.id %>>
                         <td colspan="3"></td>
                         <td>
-                            <a class="btn btn-default btn-xs">
+                            <a class="btn btn-default btn-xs pull-left remove-item" data-call="remove-line" data-name="<%- item.linea_nombre %>" data-resource="<%- item.id %>">
                                 <span><i class="fa fa-times"></i></span>
-                            </a>   <%- item.linea_nombre %>
+                            </a> &nbsp; &nbsp; <%- item.linea_nombre %>
                         </td>
                     </tr>
                     <%
@@ -89,6 +87,41 @@
             </tbody>
         </table>
     </script>
-
-
+    <script type="text/template" id="configsabana-remove-confirm-tpl">
+        <p>¿Está seguro que desea eliminar la línea de nombre <b><%- line %> </b> de la configuración de sabana de ventas?</p>
+    </script>
+    <script type="text/template" id="configsabana-modal-store-tpl">
+        <div class="row">
+            <label for="configsabanaventa_agrupacion_nombre" class="col-md-2 control-label">Agrupación</label>
+            <div class="form-group col-md-10">
+                <input id="configsabanaventa_agrupacion_nombre" name="configsabanaventa_agrupacion_nombre" placeholder="Nombre agrupación"class="form-control input-sm input-toupper" type="text" maxlength="50" required>
+                <div class="help-block with-errors"></div>
+            </div>
+        </div>
+        <div class="row">
+            <label for="configsabanaventa_grupo_nombre" class="col-md-2 control-label">Grupo</label>
+            <div class="form-group col-md-10">
+                <input id="configsabanaventa_grupo_nombre" name="configsabanaventa_grupo_nombre" placeholder="Nombre grupo"class="form-control input-sm input-toupper" type="text" maxlength="50" required>
+                <div class="help-block with-errors"></div>
+            </div>
+        </div>
+        <div class="row">
+            <label for="configsabanaventa_unificacion_nombre" class="col-md-2 control-label">Unificación</label>
+            <div class="form-group col-md-10">
+                <input id="configsabanaventa_unificacion_nombre" name="configsabanaventa_unificacion_nombre" placeholder="Nombre unificación"class="form-control input-sm input-toupper" type="text" maxlength="50" required>
+                <div class="help-block with-errors"></div>
+            </div>
+        </div>
+        <div class="row">
+            <label for="configsabanaventa_linea" class="col-md-2 control-label">Línea</label>
+            <div class="form-group col-md-10">
+                <select name="configsabanaventa_linea" id="configsabanaventa_linea" class="form-control select2-default" required>
+                    @foreach( App\Models\Inventario\Linea::getLineas() as $key => $value)
+                        <option value="{{ $key }}">{{ $value }}</option>
+                    @endforeach
+                </select>
+                <div class="help-block with-errors"></div>
+            </div>
+        </div>
+    </script>
 @stop

@@ -21,8 +21,11 @@ class ConfigSabanaController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
+            // $data = [];
+
             $query = ConfigSabanaVenta::query();
             if( $request->has('datatables') ) {
+                $query->select('configsabanaventa_orden_impresion', 'configsabanaventa_agrupacion_nombre', 'configsabanaventa_agrupacion');
                 $query->groupBy('configsabanaventa_orden_impresion');
                 return Datatables::of($query)->make(true);
             }else if($request->has('agrupacion')){
@@ -34,9 +37,9 @@ class ConfigSabanaController extends Controller
                 $query->orderBy('configsabanaventa_unificacion', 'asc');
                 $query->orderBy('linea_nombre', 'asc');
                 $query->where('configsabanaventa_agrupacion',$request->agrupacion);
-                return response()->json(['success' => true, 'data' => $query->get()]);
+                return response()->json(['data' => $query->get()]);
             }
-            return response()->json(['success' => false, 'errors' => "Consulte con su administrador a ocurrido un error en la configuración"]);
+            return response()->json("Consulte con su administrador a ocurrido un error en la configuración", 500);
         }
         // dd($config);
         return view('comercial.configsabana.main');
@@ -60,7 +63,7 @@ class ConfigSabanaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        dd($request->all(), 'store');
     }
 
     /**
@@ -71,7 +74,7 @@ class ConfigSabanaController extends Controller
      */
     public function show($id)
     {
-        //
+
     }
 
     /**
@@ -105,6 +108,11 @@ class ConfigSabanaController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $itemConfig = ConfigSabanaVenta::find($id);
+        if (!$itemConfig instanceof ConfigSabanaVenta) {
+            return response()->json("Consulte con su administrador a ocurrido un error al querer eliminar este registro", 500);
+        }
+        $itemConfig->delete();
+        return response()->json("Ítem eliminado correctamente", 200);
     }
 }
