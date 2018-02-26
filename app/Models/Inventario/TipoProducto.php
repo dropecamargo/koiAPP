@@ -70,7 +70,6 @@ class TipoProducto extends BaseModel
             $query->orderby('tipoproducto_nombre', 'asc');
 
             $collection = $query->lists('tipoproducto_nombre', 'id');
-            $collection->prepend('', '');
             return $collection;
         });
     }

@@ -22,7 +22,7 @@ class Documento extends BaseModel
      *
      * @var array
      */
-    protected $fillable = ['documento_codigo', 'documento_nombre', 'documento_folder', 'documento_tipo_consecutivo'];
+    protected $fillable = ['documento_codigo', 'documento_nombre', 'documento_tipo_consecutivo'];
 
     /**
      * The attributes that are mass boolean assignable.
@@ -43,7 +43,6 @@ class Documento extends BaseModel
         $rules = [
             'documento_codigo' => 'required|max:20|min:1|unique:documento',
             'documento_nombre' => 'required|max:200',
-            'documento_folder' => 'required',
             'documento_tipo_consecutivo' => 'required|max:1'
         ];
 

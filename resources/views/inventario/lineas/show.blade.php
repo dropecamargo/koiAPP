@@ -9,25 +9,25 @@
     <div class="box box-primary">
         <div class="box-body">
             <div class="row">
-                <div class="form-group col-md-4">
+                <div class="col-sm-4">
                     <label class="control-label">Nombre</label>
                     <div>{{ $lineas->linea_nombre }}</div>
                 </div>
             </div>
             <div class="row">
-                <div class="form-group col-md-3">
+                <div class="col-sm-3">
                     <label class="control-label">Nivel 1</label>
                     <div>{{ $lineas->linea_margen_nivel1 }}</div>
                 </div>
-                <div class="form-group col-md-3">
+                <div class="col-sm-3">
                     <label class="control-label">Nivel 2</label>
                     <div>{{ $lineas->linea_margen_nivel2 }}</div>
                 </div>
-                <div class="form-group col-md-3">
+                <div class="col-sm-3">
                     <label class="control-label">Nivel 3</label>
                     <div>{{ $lineas->linea_margen_nivel3 }}</div>
                 </div>
-                <div class="form-group col-md-1 col-xs-8"><br>
+                <div class="col-sm-1 col-xs-8"><br>
                     <label class="checkbox-inline" for="linea_activo">
                         <input type="checkbox" id="linea_activo" name="linea_activo" value="linea_activo" disabled {{ $lineas->linea_activo ? 'checked': '' }}> Activo
                     </label>
@@ -35,10 +35,10 @@
             </div>
             <div class="box-footer with-border">
                 <div class="row">
-                    <div class="col-md-2 col-md-offset-4 col-sm-6 col-xs-6 text-left">
+                    <div class="col-sm-2 col-sm-offset-4 col-xs-6 text-left">
                         <a href=" {{ route('lineas.index') }}" class="btn btn-default btn-sm btn-block">{{ trans('app.comeback') }}</a>
                     </div>
-                    <div class="col-md-2 col-sm-6 col-xs-6 text-right">
+                    <div class="col-sm-2 col-xs-6 text-right">
                         <a href=" {{ route('lineas.edit', ['lineas' => $lineas->id])}}" class="btn btn-primary btn-sm btn-block"> {{trans('app.edit')}}</a>
                     </div>
                 </div>

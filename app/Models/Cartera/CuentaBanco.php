@@ -41,6 +41,12 @@ class CuentaBanco extends BaseModel
 			'cuentabanco_numero' => 'required|max:25',
 		];
 
+		if ($this->exists){
+			$rules['cuentabanco_nombre'] .= ',cuentabanco_nombre,'.$this->id;
+		}else{
+			$rules['cuentabanco_nombre'] .= '|required';
+		}
+
 		$validator = Validator::make($data, $rules);
     	if ($validator->passes()) {
             return true;

@@ -39,6 +39,12 @@ class MedioPago extends BaseModel
 			'mediopago_nombre' => 'required|max:25|unique:mediopago',
 		];
 
+		if ($this->exists){
+			$rules['mediopago_nombre'] .= ',mediopago_nombre,'.$this->id;
+		}else{
+			$rules['mediopago_nombre'] .= '|required';
+		}
+
 		$validator = Validator::make($data, $rules);
     	if ($validator->passes()) {
             return true;

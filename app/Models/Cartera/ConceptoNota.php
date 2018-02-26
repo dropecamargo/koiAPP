@@ -39,6 +39,12 @@ class ConceptoNota extends BaseModel
 		    'conceptonota_nombre' => 'required|max:50|unique:conceptonota',
 		];
 
+		if ($this->exists){
+			$rules['conceptonota_nombre'] .= ',conceptonota_nombre,'.$this->id;
+		}else{
+			$rules['conceptonota_nombre'] .= '|required';
+		}
+
 		$validator = Validator::make($data, $rules);
     	if ($validator->passes()) {
             return true;

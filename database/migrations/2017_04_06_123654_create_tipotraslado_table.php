@@ -17,10 +17,8 @@ class CreateTipotrasladoTable extends Migration
 
             $table->increments('id');
             $table->string('tipotraslado_nombre', 25);
-            $table->string('tipotraslado_sigla', 3);
+            $table->string('tipotraslado_sigla', 3)->unique();
             $table->boolean('tipotraslado_activo')->default(true);
-
-            $table->unique(['tipotraslado_nombre', 'tipotraslado_sigla']);
         });
     }
 

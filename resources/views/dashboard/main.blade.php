@@ -16,13 +16,13 @@
 		<div class="box box-primary">
 			<div class="box-body">
                 <div class="row">
-					<div class="col-md-1">
+					<div class="col-sm-1">
     					<a class="btn btn-app btn-koi-search-tercero-component-table" data-render="show" title="Ver Terceros">
     						<i class="fa fa-users"></i> Terceros
     					</a>
                     </div>
 
-                    <div class="col-md-1">
+                    <div class="col-sm-1">
 						<a class="btn btn-app btn-koi-search-producto-component" data-render="show" title="Ver Productos">
 							<i class="fa fa-barcode"></i> Productos
 						</a>

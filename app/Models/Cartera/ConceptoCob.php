@@ -39,6 +39,12 @@ class ConceptoCob extends BaseModel
 			'conceptocob_nombre' => 'required|max:25|unique:conceptocob',
 		];
 
+		if ($this->exists){
+			$rules['conceptocob_nombre'] .= ',conceptocob_nombre,'.$this->id;
+		}else{
+			$rules['conceptocob_nombre'] .= '|required';
+		}
+
 		$validator = Validator::make($data, $rules);
     	if ($validator->passes()) {
             return true;

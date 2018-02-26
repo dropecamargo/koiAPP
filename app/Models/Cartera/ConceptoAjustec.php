@@ -39,6 +39,12 @@ class ConceptoAjustec extends BaseModel
 			'conceptoajustec_nombre' => 'required|max:50|unique:conceptoajustec',
 		];
 
+		if ($this->exists){
+			$rules['conceptoajustec_nombre'] .= ',conceptoajustec_nombre,'.$this->id;
+		}else{
+			$rules['conceptoajustec_nombre'] .= '|required';
+		}
+
 		$validator = Validator::make($data, $rules);
     	if ($validator->passes()) {
             return true;

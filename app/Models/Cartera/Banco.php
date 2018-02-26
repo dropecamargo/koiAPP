@@ -39,6 +39,12 @@ class Banco extends BaseModel
 			'banco_nombre' => 'required|max:25|unique:banco',
 		];
 
+		if ($this->exists){
+            $rules['banco_nombre'] .= ',banco_nombre,'.$this->id;
+        }else{
+            $rules['banco_nombre'] .= '|required';
+        }
+
 		$validator = Validator::make($data, $rules);
     	if ($validator->passes()) {
             return true;

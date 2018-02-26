@@ -40,6 +40,12 @@ class TipoActivo extends BaseModel
             'tipoactivo_vida_util' => 'numeric|min:1',
         ];
 
+        if ($this->exists){
+            $rules['tipoactivo_nombre'] .= ',tipoactivo_nombre,' . $this->id;
+        }else{
+            $rules['tipoactivo_nombre'] .= '|required';
+        }
+
         $validator = Validator::make($data, $rules);
         if ($validator->passes()) {
             return true;

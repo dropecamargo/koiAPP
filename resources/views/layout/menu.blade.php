@@ -352,11 +352,14 @@
                     <li class="{{Request::segment(1)== 'grupos' ? 'active' : ''}}">
                         <a href="{{route('grupos.index')}}"><i class="fa fa-circle-o"></i> Grupos</a>
                     </li>
-                    <li class="{{Request::segment(1)== 'impuestos' ? 'active' : ''}}">
-                        <a href="{{route('impuestos.index')}}"><i class="fa fa-circle-o"></i> Impuestos</a>
+                    <li class="{{Request::segment(1)== 'subgrupos' ? 'active' : ''}}">
+                        <a href="{{route('subgrupos.index')}}"><i class="fa fa-circle-o"></i> Subgrupos</a>
                     </li>
                     <li class="{{Request::segment(1)== 'lineas' ? 'active' : ''}}">
                         <a href="{{route('lineas.index')}}"><i class="fa fa-circle-o"></i> Lineas</a>
+                    </li>
+                    <li class="{{Request::segment(1)== 'impuestos' ? 'active' : ''}}">
+                        <a href="{{route('impuestos.index')}}"><i class="fa fa-circle-o"></i> Impuestos</a>
                     </li>
                     <li class="{{Request::segment(1)== 'marcas' ? 'active' : ''}}">
                         <a href="{{route('marcas.index')}}"><i class="fa fa-circle-o"></i> Marcas</a>
@@ -366,9 +369,6 @@
                     </li>
                     <li class="{{Request::segment(1)== 'servicios' ? 'active' : ''}}">
                         <a href="{{route('servicios.index')}}"><i class="fa fa-circle-o"></i> Servicios</a>
-                    </li>
-                    <li class="{{Request::segment(1)== 'subgrupos' ? 'active' : ''}}">
-                        <a href="{{route('subgrupos.index')}}"><i class="fa fa-circle-o"></i> Subgrupos</a>
                     </li>
                     <li class="{{ Request::segment(1) == 'tiposajuste' ? 'active' : '' }}">
                         <a href="{{ route('tiposajuste.index') }}"><i class="fa fa-circle-o"></i> Tipos de ajuste</a>

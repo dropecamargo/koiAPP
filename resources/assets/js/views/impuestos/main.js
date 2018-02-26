@@ -34,7 +34,7 @@ app || (app = {});
                 ],
                 buttons: [
                     {
-                        text: '<i class="fa fa-plus"></i> Nueva impuesto',
+                        text: '<i class="fa fa-plus"></i> Nuevo impuesto',
                         className: 'btn-sm',
                         action: function ( e, dt, node, config ) {
                             window.Misc.redirect( window.Misc.urlFull( Route.route('impuestos.create') ) )
