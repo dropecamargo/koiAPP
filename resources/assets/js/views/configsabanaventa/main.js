@@ -12,13 +12,12 @@ app || (app = {});
     app.MainConfigSabanaVentaView = Backbone.View.extend({
         el: '#configsabanaventa-create',
         template: _.template( ($('#browse-detailconfigsabanaventa-tpl').html() || '') ),
-        templateModal: _.template( ($('#configsabana-modal-store-tpl').html() || '') ),
+        templateModal:  _.template( ($('#configsabana-modal-store-tpl').html() || '') ),
         templateOnConfirm:_.template( ($('#configsabana-remove-confirm-tpl').html() || '') ),
         events: {
             'click td.click-tree': 'captureDetail',
             'click .remove-item': 'removeOne',
-            'click .add-item' : 'addItem',
-            // 'submit #form-configsabana-component' : 'onStore'
+            'click .add-item' : 'addItem'
         },
         /**
         * Constructor Method
@@ -61,6 +60,11 @@ app || (app = {});
                     },
                 ]
 			});
+            // Add event listener for opening and closing details
+            var _this = this;
+            this.$formModal.on('click', '.submit-configsabana', function () {
+                _this.onStore();
+            } );
         },
         /**
         * Add event listener for opening and closing details
@@ -68,6 +72,7 @@ app || (app = {});
         captureDetail: function(e){
             // `data` is the original data object for the row
             e.preventDefault();
+            this.$detalle = $( e.currentTarget );
             var tr = $(e.currentTarget).closest('tr');
             var row = this.configSabanaSearchTable.row( tr );
 
@@ -86,17 +91,17 @@ app || (app = {});
         * Render template
         * @param id de agrupacion
         */
-        renderDetail: function (attributes){
+        renderDetail: function (agrupacion){
             var _this = this;
             var div = $('<div/>').addClass( 'loading' ).text( 'Cargando...' );
             $.ajax( {
                 url: window.Misc.urlFull( Route.route('configsabana.index') ),
                 data: {
-                    agrupacion: attributes
+                    agrupacion: agrupacion
                 },
                 dataType: 'json',
                 success: function ( resp ) {
-                    resp.agrupacion = attributes.configsabanaventa_agrupacion
+                    resp.agrupacion = agrupacion;
                     div.html( _this.template( resp ) ).removeClass( 'loading' );
                 },
                 error: function (resp){
@@ -107,13 +112,15 @@ app || (app = {});
             return div;
         },
         /*
-        *
+        * Change modal title
+        * Render template in Modal
+        * Show modal
         */
         addItem: function(e){
             e.preventDefault();
 
             var title = 'Creando ';
-            this.$modal.find('.content-modal').html( this.templateModal() );
+            this.agrupacion = this.$(e.currentTarget).attr('data-resource');
             this.call = this.$(e.currentTarget).attr('data-call');
             // Define tittulo del modal
             if (this.call === 'add-agrupation') {
@@ -125,23 +132,35 @@ app || (app = {});
             }else if (this.call === 'add-line') {
                 title += 'linea' ;
             }
-            // Change modal title
             this.$modal.find('.inner-title-modal').html( title );
-
+            this.$modal.find('.content-modal').html( this.templateModal({call: this.call, agrupacion: this.agrupacion}) );
             this.$modal.modal('show');
             this.ready();
-            // Add event listener for opening and closing details
-            _this = this;
-            this.$formModal.on('click', '.submit-configsabana', function () {
-                _this.onStore();
-            } );
         },
         /*
         * On store item
         */
-        onStore: function(){
-            var data = window.Misc.formToJson( this.$formModal )
-            console.log(data);
+        onStore: function(e){
+            var _this = this;
+            var data = window.Misc.formToJson( this.$formModal );
+                data.call = this.call;
+                data.agrupacion = this.agrupacion;
+            $.ajax( {
+                url: window.Misc.urlFull( Route.route('configsabana.store') ),
+                type: 'POST',
+                data: data,
+                dataType: 'json',
+                success: function ( resp ) {
+                    if (!resp.success) {
+                        alertify.error(resp.errors);
+                        return;
+                    }
+                    _this.$modal.modal('hide');
+                    alertify.success(resp.msg);
+                    // Redirect to Content Course
+                    window.Misc.redirect( window.Misc.urlFull( Route.route('configsabana.index'), { trigger:true }));
+                },
+            });
         },
         /*
         * Remove view and item the config
@@ -149,8 +168,8 @@ app || (app = {});
         removeOne: function (e){
             e.preventDefault();
             var _this = this;
-            _this.$tableDetail = _this.$('#table-detailconfigsabanaventa');
-            _this.$tr = _this.$tableDetail.find( '#'+ $(e.currentTarget).attr('data-call') + $(e.currentTarget).attr('data-resource') );
+            this.$tableDetail = this.$('#table-detailconfigsabanaventa');
+            this.$item = this.$tableDetail.find( '#'+ $(e.currentTarget).attr('data-call') + $(e.currentTarget).attr('data-resource') );
             var cancelConfirm = new window.app.ConfirmWindow({
                 parameters: {
                     dataFilter: { line: $(e.currentTarget).attr('data-name') },
@@ -162,9 +181,10 @@ app || (app = {});
                             type: 'DELETE',
                             dataType: 'json',
                             success: function ( resp ) {
-                                _this.$tr.empty();
-
+                                _this.$item.empty();
                                 alertify.success(resp);
+                                // _this.$detalle.trigger("click");
+                                window.Misc.redirect( window.Misc.urlFull( Route.route('configsabana.index'), { trigger:true }));
                                 return;
                             },
                             error: function (resp){
