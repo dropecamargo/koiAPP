@@ -98,10 +98,10 @@
         </div>
         <div class="box-footer with-border">
             <div class="row">
-                <div class="col-md-2 col-md-offset-4 col-sm-6 col-xs-6 text-left">
+                <div class="col-sm-2 col-sm-offset-4 col-xs-6 text-left">
                     <a href="{{ route('egresos.index') }}" class="btn btn-default btn-sm btn-block">{{ trans('app.cancel') }}</a>
                 </div>
-                <div class="col-md-2  col-sm-5 col-xs-6 text-right">
+                <div class="col-sm-2 col-xs-6 text-right">
                     <button type="button" class="btn btn-primary btn-sm btn-block submit-egreso">{{ trans('app.save') }}</button>
                 </div>
             </div>
@@ -139,7 +139,7 @@
                         <div class="form-group col-md-2">
                             <input type="text" id="egreso2_valor" name="egreso2_valor" class="form-control input-sm" data-currency>
                         </div>
-                        <div class="form-group col-md-1 col-md-offset-1">
+                        <div class="form-group col-sm-1 col-sm-offset-1">
                             <button type="submit" class="btn btn-success btn-sm btn-block">
                                 <i class="fa fa-plus"></i>
                             </button>

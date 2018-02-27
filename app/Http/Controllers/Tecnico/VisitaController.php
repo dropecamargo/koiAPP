@@ -18,9 +18,7 @@ class VisitaController extends Controller
      */
     public function index(Request $request)
     {
-
-       if ($request->ajax())
-        {
+       if( $request->ajax() ){
             $query = Visita::getVisita($request->orden_id);
             return response()->json( $query );
         }

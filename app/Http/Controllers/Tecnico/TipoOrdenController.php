@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\Tecnico\TipoOrden;
-use DB, Log, Cache,Datatables;
+use App\Models\Tecnico\TipoOrden, App\Models\Inventario\TipoAjuste;
+use DB, Log, Cache, Datatables;
 
 class TipoOrdenController extends Controller
 {
@@ -50,9 +50,16 @@ class TipoOrdenController extends Controller
             if ($tipoorden->isValid($data)) {
                 DB::beginTransaction();
                 try {
+                    $tipoajuste = TipoAjuste::find($request->tipoorden_tipoajuste);
+                    if( !$tipoajuste instanceof TipoAjuste ){
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar el tipo de ajuste, por favor verifique la información o consulte al administrador.']);
+                    }
+
                     // tipoorden
                     $tipoorden->fill($data);
                     $tipoorden->fillBoolean($data);
+                    $tipoorden->tipoorden_tipoajuste = $tipoajuste->id;
                     $tipoorden->save();
 
                     // Commit Transaction
@@ -114,9 +121,16 @@ class TipoOrdenController extends Controller
             if ($tipoorden->isValid($data)) {
                 DB::beginTransaction();
                 try {
+                    $tipoajuste = TipoAjuste::find($request->tipoorden_tipoajuste);
+                    if( !$tipoajuste instanceof TipoAjuste ){
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar el tipo de ajuste, por favor verifique la información o consulte al administrador.']);
+                    }
+
                     // tipoorden
                     $tipoorden->fill($data);
                     $tipoorden->fillBoolean($data);
+                    $tipoorden->tipoorden_tipoajuste = $tipoajuste->id;
                     $tipoorden->save();
 
                     // Commit Transaction

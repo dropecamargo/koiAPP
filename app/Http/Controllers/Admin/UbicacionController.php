@@ -19,9 +19,7 @@ class UbicacionController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-
             $query = Ubicacion::query();
-
             if ($request->has('datatables')) {
                 $query->select('ubicacion.*', 'sucursal_nombre');
                 $query->join('sucursal', 'ubicacion_sucursal', '=', 'sucursal.id');

@@ -230,7 +230,7 @@ return [
         ]
     ],
 
-    'tipoInventario'=> [
+    'tipoinventario'=> [
         'E' => 'Entrada',
         'S' => 'Salida',
         'R' => 'Reclacificación'

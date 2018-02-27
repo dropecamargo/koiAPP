@@ -23,12 +23,6 @@ class AsientoNifContableDocumento {
 		}
 		$this->asiento = $asiento;
 
-        // if (!$this->asiento->isValid($data)) {
-        // 	$this->asiento_error = $this->asiento->errors;
-        // 	return;
-        // }
-        // $this->asiento->fill($data);
-
         // Recuperar tercero
         $this->beneficiario = Tercero::where('tercero_nit', $data['asienton1_beneficiario'])->first();
         if(!$this->beneficiario instanceof Tercero) {
@@ -68,11 +62,6 @@ class AsientoNifContableDocumento {
         	$this->asiento_error = "No es posible recuperar información empresa, por favor consulte al administrador.";
 			return;
 		}
-
-        // Validar cierre contable
-		// if( $this->asienton1_fecha <= $empresa->empresa_fecha_contabilidad){
-		// 	$this->asiento_error = 'La fecha que intenta realizar el asiento: '.$this->asienton1_fecha.' no esta PERMITIDA. Es menor a la del cierre contable :'.$empresa->empresa_fecha_contabilidad;
-		// }
 	}
 
 	function asientoCuentas($cuentas = null)
@@ -212,7 +201,7 @@ class AsientoNifContableDocumento {
 			}
 		}
 		return 'OK';
-	}	
+	}
 
 	public function saldosTerceros(PlanCuentaNif $cuenta, Tercero $tercero, $naturaleza, $debito = 0, $credito = 0, $xmes, $xano)
 	{
@@ -558,4 +547,3 @@ class AsientoNifContableDocumento {
         return 'OK';
 	}
 }
-

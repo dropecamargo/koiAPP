@@ -38,11 +38,13 @@ class TipoGasto extends BaseModel
         $rules = [
             'tipogasto_nombre' => 'required|max:50|unique:tipogasto'
         ];
+
         if ($this->exists){
             $rules['tipogasto_nombre'] .= ',tipogasto_nombre,' . $this->id;
         }else{
             $rules['tipogasto_nombre'] .= '|required';
         }
+        
         $validator = Validator::make($data, $rules);
         if ($validator->passes()) {
             return true;

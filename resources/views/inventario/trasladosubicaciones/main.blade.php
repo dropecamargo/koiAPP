@@ -27,14 +27,16 @@
                             <option value="{{ $key }}" <%- trasladou1_sucursal == '{{ $key }}' ? 'selected': ''%>>{{ $value }}</option>
                         @endforeach
                     </select>
+                    <div class="help-block with-errors"></div>
                 </div>
 
                 <div class="form-group col-md-1 col-sm-2 col-xs-6">
                     <label for="trasladou1_numero" class="control-label">Número</label>
                     <input id="trasladou1_numero" name="trasladou1_numero" class="form-control input-sm input-toupper" type="number" required readonly>
+                    <div class="help-block with-errors"></div>
                 </div>
 
-                <div class="form-group form-group col-md-2 col-sm-3 col-xs-6">
+                <div class="form-group col-md-2 col-sm-3 col-xs-6">
                     <label for="trasladou1_fecha" class="control-label">Fecha</label>
                      <div class="input-group">
                         <div class="input-group-addon">
@@ -42,6 +44,7 @@
                         </div>
                         <input type="text" id="trasladou1_fecha" name="trasladou1_fecha" placeholder="Fecha" value="{{ date('Y-m-d') }}" class="form-control input-sm datepicker-back" required>
                     </div>
+                    <div class="help-block with-errors"></div>
                 </div>
             </div>
 
@@ -54,6 +57,7 @@
                 <div class="form-group col-md-4 col-sm-7 col-xs-12">
                     <label for="trasladou1_destino" class="control-label">Ubicación destino</label>
                     <select name="trasladou1_destino" id="trasladou1_destino" class="form-control select2-default-clear" required></select>
+                    <div class="help-block with-errors"></div>
                 </div>
 
                 <div class="form-group col-md-4 col-sm-7 col-xs-12">
@@ -63,6 +67,7 @@
                             <option value="{{ $key }}" <%- trasladou1_tipotraslado == '{{ $key }}' ? 'selected': ''%>>{{ $value }}</option>
                         @endforeach
                     </select>
+                    <div class="help-block with-errors"></div>
                 </div>
             </div>
 
@@ -107,7 +112,7 @@
                     <div class="form-group col-md-1 col-sm-2 col-xs-3">
                         <input id="trasladou2_cantidad" name="trasladou2_cantidad" class="form-control" min="1" type="number" required>
                     </div>
-                    
+
                     <div class="form-group col-md-1 col-sm-12 col-xs-12">
                         <button type="submit" class="btn btn-success btn-sm btn-block">
                             <i class="fa fa-plus"></i>

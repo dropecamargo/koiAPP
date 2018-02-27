@@ -19,11 +19,12 @@
 
     <script type="text/template" id="add-tipopago-tpl">
         <div class="row">
-            <div class="form-group col-md-3">
+            <div class="form-group col-sm-3">
             <label for="tipopago_nombre" class="control-label">Nombre</label>
                 <input type="text" id="tipopago_nombre" name="tipopago_nombre" value="<%- tipopago_nombre %>" placeholder="Tipo pago" class="form-control input-sm input-toupper" maxlength="25" required>
+                <div class="help-block with-errors"></div>
             </div>
-            <div class="form-group col-md-3">
+            <div class="form-group col-sm-3">
                 <label for="tipopago_documentos" class="control-label">Documento</label>
                 <select name="tipopago_documentos" id="tipopago_documentos" class="form-control select2-default">
                     <option value="" selected>Seleccione</option>
@@ -33,7 +34,7 @@
                 </select>
             </div>
             </br>
-            <div class="form-group col-md-2 col-xs-8 col-sm-3">
+            <div class="form-group col-sm-2 col-xs-8">
                 <label class="checkbox-inline" for="tipopago_activo">
                     <input type="checkbox" id="tipopago_activo" name="tipopago_activo" value="tipopago_activo" <%- tipopago_activo ? 'checked': ''%>> Activo
                 </label>

@@ -38,11 +38,13 @@ class TipoProveedor extends BaseModel
         $rules = [
             'tipoproveedor_nombre' => 'required|max:50|unique:tipoproveedor',
         ];
+
         if ($this->exists){
             $rules['tipoproveedor_nombre'] .= ',tipoproveedor_nombre,' . $this->id;
         }else{
             $rules['tipoproveedor_nombre'] .= '|required';
         }
+        
         $validator = Validator::make($data, $rules);
         if ($validator->passes()) {
             return true;

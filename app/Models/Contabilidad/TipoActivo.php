@@ -64,6 +64,7 @@ class TipoActivo extends BaseModel
             $query = TipoActivo::query();
             $query->orderBy('tipoactivo_nombre', 'asc');
             $collection = $query->lists('tipoactivo_nombre', 'tipoactivo.id');
+            
             $collection->prepend('', '');
             return $collection;
         });

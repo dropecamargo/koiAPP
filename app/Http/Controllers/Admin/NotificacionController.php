@@ -22,7 +22,6 @@ class NotificacionController extends Controller
         $query = Notificacion::getAllNotifications( Auth::user()->id );
 
         if($request->ajax()){
-
             if($request->has('searchDate')){
                 if(!empty($request->searchDate)){
                     $query->whereRaw("notificacion_fecha LIKE '%{$request->searchDate}%'");
@@ -134,7 +133,7 @@ class NotificacionController extends Controller
 
                 // Commit
                 DB::commit();
-                
+
                 // Forget cache
                 Cache::forget( Notificacion::cache() );
                 return response()->json(['success' => true, 'id' => $notification->id, 'url' => $notification->notificacion_url]);

@@ -45,7 +45,6 @@ class SolicitanteController extends Controller
     {
         if ($request->ajax()) {
             $data = $request->all();
-
             $solicitante = new Solicitante;
             if ($solicitante->isValid($data)) {
                 DB::beginTransaction();

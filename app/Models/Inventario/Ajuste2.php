@@ -48,5 +48,4 @@ class Ajuste2 extends Model
         $query->orderBy('ajuste2.id', 'asc');
 		return  $query->get();
 	}
-
 }

@@ -44,7 +44,10 @@ class Grupo extends BaseModel
             $rules['grupo_codigo'] .= ',grupo_codigo,' . $this->id;
         }else{
             $rules['grupo_codigo'] .= '|required';
-        }{
+        }
+
+        $validator = Validator::make($data, $rules);
+        if ($validator->passes()) {
             return true;
         }
         $this->errors = $validator->errors();

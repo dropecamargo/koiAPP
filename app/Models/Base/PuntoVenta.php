@@ -38,8 +38,8 @@ class PuntoVenta extends BaseModel
     public function isValid($data)
     {
         $rules = [
-            'puntoventa_nombre' => 'required|max:200|unique:puntoventa',
-            'puntoventa_prefijo' => 'max:4|unique:puntoventa',
+            'puntoventa_nombre' => 'required|max:200|unique_with:puntoventa,puntoventa_prefijo',
+            'puntoventa_prefijo' => 'max:4',
             'puntoventa_numero' => 'min:0'
         ];
 
@@ -48,6 +48,7 @@ class PuntoVenta extends BaseModel
             $rules['puntoventa_prefijo'] .= ',puntoventa_prefijo,' . $this->id;
         }else{
             $rules['puntoventa_nombre'] .= '|required';
+            $rules['puntoventa_prefijo'] .= '|required';
         }
 
         $validator = Validator::make($data, $rules);

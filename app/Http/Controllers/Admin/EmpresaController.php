@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 
-use Event;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Base\Empresa, App\Models\Base\Tercero;

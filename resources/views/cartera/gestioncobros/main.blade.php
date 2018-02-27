@@ -29,9 +29,11 @@
                     </span>
                     <input id="gestioncobro_tercero" placeholder="Cliente" class="form-control tercero-koi-component gestioncobro-koi-tercero" name="gestioncobro_tercero" type="text" maxlength="15" data-wrapper="gestioncobro-create" data-name="tercero_nombre" value="<%- tercero_nit %>"  data-change="true" data-tercero="" required>
                 </div>
+                <div class="help-block with-errors"></div>
             </div>
             <div class="col-md-6 col-xs-10">
                 <input id="tercero_nombre" name="tercero_nombre" placeholder="Nombre cliente" class="form-control input-sm" type="text" maxlength="15" value="<%- tercero_nombre %>" readonly required>
+                <div class="help-block with-errors"></div>
             </div>
         </div>
         <div class="row">
@@ -42,10 +44,12 @@
                         <option  value="{{ $key }}">{{ $value }}</option>
                     @endforeach
                 </select>
+                <div class="help-block with-errors"></div>
             </div>
             <label for="gestioncobro_proxima" class="col-sm-1 control-label">Fecha proxima</label>
             <div class="form-group col-sm-2">
                 <input id="gestioncobro_proxima" name="gestioncobro_proxima" class="form-control input-sm datepicker" type="text" value="<%- gestioncobro_proxima %>" required>
+                <div class="help-block with-errors"></div>
             </div>
             <label for="gestioncobro_hproxima" class="col-md-1 control-label">Hora proxima</label>
             <div class="form-group col-md-2">
@@ -57,6 +61,7 @@
                         </div>
                     </div>
                 </div>
+                <div class="help-block with-errors"></div>
             </div>
         </div>
         <div class="row">

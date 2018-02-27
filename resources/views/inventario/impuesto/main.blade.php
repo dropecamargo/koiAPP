@@ -22,10 +22,12 @@
             <div class="form-group col-sm-6">
                 <label for="impuesto_nombre" class="control-label">Nombre</label>
                 <input type="text" id="impuesto_nombre" name="impuesto_nombre" value="<%- impuesto_nombre %>" placeholder="Impuesto" class="form-control input-sm input-toupper" maxlength="100" required>
+                <div class="help-block with-errors"></div>
             </div>
             <div class="form-group col-sm-2">
                 <label for="impuesto_porcentaje" class="control-label">Porcentaje %</label>
                 <input type="text" id="impuesto_porcentaje" name="impuesto_porcentaje" value="<%- impuesto_porcentaje %>" class="form-control input-sm spinner-percentage" min="0" required>
+                <div class="help-block with-errors"></div>
             </div>
             <div class="form-group col-sm-2"><br>
                 <label class="checkbox-inline" for="impuesto_activo">

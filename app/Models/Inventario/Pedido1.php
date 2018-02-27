@@ -56,7 +56,6 @@ class Pedido1 extends BaseModel
             'pedido1_tercero' => 'required|numeric',
             'pedido1_fecha' => 'required|date',
             'pedido1_fecha_estimada' => 'required|date'
-
         ];
 
         $validator = Validator::make($data, $rules);

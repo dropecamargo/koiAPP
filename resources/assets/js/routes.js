@@ -29,7 +29,7 @@ app || (app = {});
             //Empresa
             'empresa(/)': 'getEmpresaEdit',
 
-            //Empresa
+            // Notificaciones
             'notificaciones(/)': 'getNotificationsMain',
 
             //Actividades
@@ -72,10 +72,6 @@ app || (app = {});
             'tiposactividad(/)': 'getTiposActividadMain',
             'tiposactividad/create(/)': 'getTiposActividadCreate',
             'tiposactividad/:tipoactividad/edit(/)': 'getTiposActividadEdit',
-
-            'tiposajuste(/)': 'getTiposAjusteMain',
-            'tiposajuste/create(/)': 'getTipoAjusteCreate',
-            'tiposajuste/:tipoajuste/edit(/)': 'getTipoAjusteEdit',
 
             //Tipos Traslados
             'tipostraslados(/)': 'getTiposTrasladosMain',
@@ -200,6 +196,11 @@ app || (app = {});
             'servicios(/)': 'getServiciosMain',
             'servicios/create(/)': 'getServiciosCreate',
             'servicios/:servicios/edit(/)': 'getServiciosEdit',
+
+            'tiposajuste(/)': 'getTiposAjusteMain',
+            'tiposajuste/create(/)': 'getTipoAjusteCreate',
+            'tiposajuste/:tipoajuste/edit(/)': 'getTipoAjusteEdit',
+            'tiposajuste/:tipoajuste(/)': 'getTipoAjusteShow',
 
             'ajustes(/)': 'getAjustesMain',
             'ajustes/create(/)': 'getAjustesCreate',
@@ -850,6 +851,21 @@ app || (app = {});
 
             this.createTipoAjusteView = new app.CreateTipoAjusteView({ model: this.tipoAjusteModel });
             this.tipoAjusteModel.fetch();
+        },
+
+        /**
+        * show view show tipoajuste
+        */
+        getTipoAjusteShow: function (tipoajuste) {
+            this.tipoajusteModel = new app.TipoAjusteModel();
+            this.tipoajusteModel.set({'id': tipoajuste}, {'silent':true});
+
+            if ( this.showTipoAjusteView instanceof Backbone.View ){
+                this.showTipoAjusteView.stopListening();
+                this.showTipoAjusteView.undelegateEvents();
+            }
+
+            this.showTipoAjusteView = new app.ShowTipoAjusteView({ model: this.tipoajusteModel });
         },
 
         //Tipos Traslados

@@ -42,8 +42,14 @@ class Ubicacion extends BaseModel
     public function isValid($data)
     {
         $rules = [
-            'ubicacion_nombre' => 'required|max:25|unique:ubicacion'
+            'ubicacion_nombre' => 'required|max:25|unique_with:ubicacion,ubicacion_sucursal'
         ];
+
+        if ($this->exists){
+            $rules['ubicacion_nombre'] .= ',ubicacion_nombre,' . $this->id;
+        }else{
+            $rules['ubicacion_nombre'] .= '|required';
+        }
 
         $validator = Validator::make($data, $rules);
         if ($validator->passes()) {

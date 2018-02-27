@@ -39,6 +39,12 @@ class Sitio extends BaseModel
             'sitio_nombre' => 'required|max:25|unique:sitio'
         ];
 
+        if ($this->exists){
+            $rules['sitio_nombre'] .= ',sitio_nombre,' . $this->id;
+        }else{
+            $rules['sitio_nombre'] .= '|required';
+        }
+
         $validator = Validator::make($data, $rules);
         if ($validator->passes()) {
             return true;

@@ -19,7 +19,8 @@ class TipoTrasladoController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            return Datatables::of(TipoTraslado::query())->make(true);
+            $query = TipoTraslado::query();
+            return Datatables::of($query)->make(true);
         }
         return view('inventario.tipostraslados.index');
     }
@@ -60,7 +61,6 @@ class TipoTrasladoController extends Controller
                     Cache::forget( TipoTraslado::$key_cache );
                     return response()->json(['success' => true, 'id' => $tipotraslado->id]);
                 } catch (\Exception $e) {
-
                     DB::rollback();
                     Log::error($e->getMessage());
                     return response()->json(['success' => false, 'errors' => trans('app.exception')]);

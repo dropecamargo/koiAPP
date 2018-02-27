@@ -37,6 +37,12 @@ class TipoActividad extends BaseModel
             'tipoactividad_nombre' => 'required|max:25|unique:tipoactividad'
         ];
 
+        if ($this->exists){
+            $rules['tipoactividad_nombre'] .= ',tipoactividad_nombre,' . $this->id;
+        }else{
+            $rules['tipoactividad_nombre'] .= '|required';
+        }
+
         $validator = Validator::make($data, $rules);
         if ($validator->passes()) {
             return true;

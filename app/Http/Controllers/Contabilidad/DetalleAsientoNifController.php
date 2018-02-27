@@ -74,17 +74,6 @@ class DetalleAsientoNifController extends Controller
                             DB::rollback();
                             return response()->json(['success' => false, 'errors' => 'No es posible recuperar centro costo, por favor verifique la información del asiento o consulte al administrador.']);
                         }
-
-                        // if($centrocosto->centrocosto_codigo == 'OP') {
-                            // Validate orden
-                            // if($request->has('asienton2_orden')) {
-                            //     $ordenp = Ordenp::whereRaw("CONCAT(orden_numero,'-',SUBSTRING(orden_ano, -2)) = '{$request->asienton2_orden}'")->first();
-                            // }
-                            // if(!$ordenp instanceof Ordenp) {
-                            //     DB::rollback();
-                            //     return response()->json(['success' => false, 'errors' => "No es posible recuperar orden de producción para centro de costo OP, por favor verifique la información del asiento o consulte al administrador."]);
-                            // }
-                        // }
                     }
 
                     // Recuperar tercero
