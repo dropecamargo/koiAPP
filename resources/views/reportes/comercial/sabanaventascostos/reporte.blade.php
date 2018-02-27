@@ -18,7 +18,7 @@
 				</tr>
 			@endif
 			<tr><td colspan="{{ $regionales->count() + 2 }}"></td></tr>
-			{{--*/ $auxUndNegocio = $auxLinea = $auxCategoria = $auxSubCategoria = 0; /*--}}
+			{{--*/ $auxAgrupacion = $auxGrupo = $auxUnificacion = 0; /*--}}
 			@foreach($sabanaVentas as $item)
 				{{--*/ $totalLineV = $totalLineD  = $totalLineDev = $lineTotal = $totalLinePresu = $totalPorcentaje = $totalCosto = $totalMargen = $tMargen = 0; /*--}}
 
@@ -30,15 +30,12 @@
 					<td colspan="{{ $regionales->count() + 2 }}" class="bold">{{ $item->auxreporte_varchar2 }}</td>
 				</tr>
 
-				<tr>
-					<td colspan="{{ $regionales->count() + 2 }}" class="bold">{{ $item->auxreporte_varchar3 }}</td>
-				</tr>
-
-				@if ($item->auxreporte_integer4 != $auxSubCategoria)
-					{{--*/ $auxUndNegocio = $item->auxreporte_integer1; $auxLinea = $item->auxreporte_integer2; $auxCategoria = $item->auxreporte_integer3; $auxSubCategoria = $item->auxreporte_integer4;  /*--}}
+				@if ($item->auxreporte_integer3 != $auxUnificacion)
+					{{--*/ $auxAgrupacion = $item->auxreporte_integer1; $auxGrupo = $item->auxreporte_integer2; $auxUnificacion = $item->auxreporte_integer3; /*--}}
 					<tr>
-						<td colspan="{{ $regionales->count() + 2 }}" class="bold">{{ $item->auxreporte_varchar4 }}</td>
+						<td colspan="{{ $regionales->count() + 2 }}" class="bold">{{ $item->auxreporte_varchar3 }}</td>
 					</tr>
+
 					<tr>
 						<td class="center">VENTAS</td>
 						@foreach ($regionales as $key => $regional)
@@ -75,7 +72,7 @@
 					<tr>
 						<td class="center">PRESUPUESTO</td>
 						@foreach ($regionales as $key => $regional)
-							{{--*/$referencePresupuesto = "$regional->id-$auxUndNegocio-$auxLinea-$auxCategoria-$auxSubCategoria";  (isset($presupuesto[$referencePresupuesto])) ? $totalLinePresu += $presupuesto[$referencePresupuesto] : '' /*--}}
+							{{--*/$referencePresupuesto = "$regional->id-$auxAgrupacion-$auxGrupo-$auxUnificacion";  (isset($presupuesto[$referencePresupuesto])) ? $totalLinePresu += $presupuesto[$referencePresupuesto] : '' /*--}}
 							<td>{{(isset($presupuesto[$referencePresupuesto])) ? number_format($presupuesto[$referencePresupuesto],2,'.',',') : number_format(0,2,'.',',') }}</td>
 						@endforeach
 						<td>{{ number_format($totalLinePresu,2,'.',',') }}</td>
@@ -86,7 +83,7 @@
 							{{--*/
 								$referenceVenta = $regional->id."V"; $referenceDescuento = $regional->id."D";
 								$referenceDevolucion = $regional->id."d";
-					 			$referencePresupuesto = "$regional->id-$auxUndNegocio-$auxLinea-$auxCategoria-$auxSubCategoria";
+					 			$referencePresupuesto = "$regional->id-$auxAgrupacion-$auxGrupo-$auxUnificacion";
 				 			/*--}}
 
 							@if (isset($presupuesto[$referencePresupuesto]) && $presupuesto[$referencePresupuesto] != 0)
@@ -106,7 +103,7 @@
 					<tr>
 						<td class="center">COSTOS</td>
 						@foreach($regionales as $key => $regional)
-						{{--*/ $referenceCosto = "$regional->id-$auxUndNegocio-$auxLinea-$auxCategoria-$auxSubCategoria";  (isset($arrayCostos[$referenceCosto])) ? $totalCosto += $arrayCostos[$referenceCosto] : '' /*--}}
+						{{--*/ $referenceCosto = "$regional->id-$auxAgrupacion-$auxGrupo-$auxUnificacion";  (isset($arrayCostos[$referenceCosto])) ? $totalCosto += $arrayCostos[$referenceCosto] : '' /*--}}
 							<td>{{(isset($arrayCostos[$referenceCosto])) ? number_format($arrayCostos[$referenceCosto],2,'.',',') : number_format(0,2,'.',',') }}</td>
 						@endforeach
 						<td>{{ number_format($totalCosto, 2, '.',',') }}</td>
@@ -117,7 +114,7 @@
 						{{--*/ 	$data = 0;
 								$referenceVenta = $regional->id."V"; $referenceDescuento = $regional->id."D"; $referenceDevolucion = $regional->id."d";
 								$dataVenta = $item->$referenceVenta - ($item->$referenceDescuento + $item->$referenceDevolucion);
-								$referenceCosto = "$regional->id-$auxUndNegocio-$auxLinea-$auxCategoria-$auxSubCategoria";
+								$referenceCosto = "$regional->id-$auxAgrupacion-$auxGrupo-$auxUnificacion";
 								(isset($arrayCostos[$referenceCosto])) ? $data = $dataVenta - $arrayCostos[$referenceCosto] : '';
 								$totalMargen += $data;
 						/*--}}
@@ -132,7 +129,7 @@
 								$referenceVenta = $regional->id."V"; $referenceDescuento = $regional->id."D"; $referenceDevolucion = $regional->id."d";
 								$dataVenta = ($item->$referenceVenta - ($item->$referenceDescuento + $item->$referenceDevolucion));
 								$factor = $dataVenta > 0  ? 100 / $dataVenta : 0;
-								$referenceCosto = "$regional->id-$auxUndNegocio-$auxLinea-$auxCategoria-$auxSubCategoria";
+								$referenceCosto = "$regional->id-$auxAgrupacion-$auxGrupo-$auxUnificacion";
 								(isset($arrayCostos[$referenceCosto])) ? $data = $dataVenta - $arrayCostos[$referenceCosto] : '';
 								$margenP =  $data * $factor;
 								$tMargen += $margenP;
