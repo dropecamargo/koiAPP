@@ -50,7 +50,7 @@
                         </a>
                     </th>
                     <th width="40%">&nbsp; &nbsp; Línea
-                        <a class="btn btn-success btn-xs pull-left add-item" data-call="add-line" data-resource= "<%- agrupacion %>>"
+                        <a class="btn btn-success btn-xs pull-left add-item" data-call="add-line" data-resource="<%- agrupacion %>" >
                             <span><i class="fa fa-plus"></i></span>
                         </a>
                     </th>
@@ -91,33 +91,52 @@
         <p>¿Está seguro que desea eliminar la línea de nombre <b><%- line %> </b> de la configuración de sabana de ventas?</p>
     </script>
     <script type="text/template" id="configsabana-modal-store-tpl">
-        <div class="row">
-            <label for="configsabanaventa_agrupacion_nombre" class="col-md-2 control-label">Agrupación</label>
-            <div class="form-group col-md-10">
-                <input id="configsabanaventa_agrupacion_nombre" name="configsabanaventa_agrupacion_nombre" placeholder="Nombre agrupación"class="form-control input-sm input-toupper" type="text" maxlength="50" required>
-                <div class="help-block with-errors"></div>
+            <div class="row">
+                <label for="configsabanaventa_agrupacion_nombre" class="col-md-2 control-label">Agrupación</label>
+                <div class="form-group col-md-10">
+                    <% if(call === 'add-agrupation'){%>
+                        <input id="configsabanaventa_agrupacion_nombre" name="configsabanaventa_agrupacion_nombre" placeholder="Nombre agrupación"class="form-control input-sm input-toupper" type="text" maxlength="50" required>
+                    <% }else{ %>
+                        <select name="configsabanaventa_agrupacion" id="configsabanaventa_agrupacion" class="form-control select2-default-clear" required disabled>
+                            @foreach( App\Models\Comercial\ConfigSabanaVenta::getAgrupaciones() as $key => $value)
+                                <option value="{{ $key }}" <%- agrupacion == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
+                            @endforeach
+                        </select>
+                    <% } %>
+                    <div class="help-block with-errors"></div>
+                </div>
             </div>
-        </div>
         <div class="row">
             <label for="configsabanaventa_grupo_nombre" class="col-md-2 control-label">Grupo</label>
             <div class="form-group col-md-10">
-                <input id="configsabanaventa_grupo_nombre" name="configsabanaventa_grupo_nombre" placeholder="Nombre grupo"class="form-control input-sm input-toupper" type="text" maxlength="50" required>
+                <% if(call === 'add-group' || call === 'add-agrupation'){ %>
+                    <input id="configsabanaventa_grupo_nombre" name="configsabanaventa_grupo_nombre" placeholder="Nombre grupo"class="form-control input-sm input-toupper" type="text" maxlength="50" required>
+                <% }else{ %>
+                    <select name="configsabanaventa_grupo" id="configsabanaventa_grupo" class="form-control choice-select-autocomplete" data-ajax-url="<%- window.Misc.urlFull(Route.route('configsabana.grupos', {configsabana: agrupacion }))%>" data-placeholder="Seleccione">
+    				</select>
+                <% } %>
                 <div class="help-block with-errors"></div>
             </div>
         </div>
         <div class="row">
             <label for="configsabanaventa_unificacion_nombre" class="col-md-2 control-label">Unificación</label>
             <div class="form-group col-md-10">
-                <input id="configsabanaventa_unificacion_nombre" name="configsabanaventa_unificacion_nombre" placeholder="Nombre unificación"class="form-control input-sm input-toupper" type="text" maxlength="50" required>
+                <% if(call === 'add-line'){ %>
+                    <select name="configsabanaventa_unificacion" id="configsabanaventa_unificacion" class="form-control choice-select-autocomplete" data-ajax-url="<%- window.Misc.urlFull(Route.route('configsabana.unificaciones', {configsabana: agrupacion }))%>" data-placeholder="Seleccione">
+    				</select>
+                <% }else { %>
+                    <input id="configsabanaventa_unificacion_nombre" name="configsabanaventa_unificacion_nombre" placeholder="Nombre unificación"class="form-control input-sm input-toupper" type="text" maxlength="50" required>
+                <% }%>
                 <div class="help-block with-errors"></div>
             </div>
         </div>
         <div class="row">
             <label for="configsabanaventa_linea" class="col-md-2 control-label">Línea</label>
             <div class="form-group col-md-10">
-                <select name="configsabanaventa_linea" id="configsabanaventa_linea" class="form-control select2-default" required>
-                    @foreach( App\Models\Inventario\Linea::getLineas() as $key => $value)
-                        <option value="{{ $key }}">{{ $value }}</option>
+                <select name="configsabanaventa_linea" id="configsabanaventa_linea" class="form-control select2-default-clear" required>
+                    <option value=""></option>
+                    @foreach( App\Models\Comercial\ConfigSabanaVenta::getLines() as $key => $value)
+                        <option value="{{ $value->id }}">{{ $value->linea_nombre }}</option>
                     @endforeach
                 </select>
                 <div class="help-block with-errors"></div>

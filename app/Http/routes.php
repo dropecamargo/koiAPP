@@ -96,9 +96,15 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::resource('autorizacionesco', 'Comercial\AutorizaComercialController', ['only' => ['index', 'store']]);
 	Route::resource('presupuestoasesor', 'Comercial\PresupuestoAsesorController', ['only' => ['index', 'store']]);
 	Route::resource('pedidosc', 'Comercial\PedidoController',['except' => ['destroy']]);
-	Route::resource('configsabana', 'Comercial\ConfigSabanaController');
 	Route::resource('conceptoscomercial', 'Comercial\ConceptoComercialController',['except' => ['destroy']]);
 	Route::resource('gestionescomercial', 'Comercial\GestionComercialController',['except' => ['destroy']]);
+	Route::resource('configsabana', 'Comercial\ConfigSabanaController');
+
+	Route::group(['prefix' => 'selects'], function()
+	{
+		Route::get('grupos', ['as' => 'configsabana.grupos', 'uses' => 'Comercial\ConfigSabanaController@grupos']);
+		Route::get('unificaciones', ['as' => 'configsabana.unificaciones', 'uses' => 'Comercial\ConfigSabanaController@unificaciones']);
+	});
 
     /*
 	|-------------------------
