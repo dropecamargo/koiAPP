@@ -724,33 +724,34 @@
 {{-- Contabilidad --}}
 <script type="text/template" id="add-documento-tpl">
     <div class="row">
-		<div class="form-group col-md-2">
+		<div class="form-group col-sm-2 col-xs-6">
 			<label for="documento_codigo" class="control-label">Código</label>
 			<input type="text" id="documento_codigo" name="documento_codigo" value="<%- documento_codigo %>" placeholder="Código" class="form-control input-sm input-toupper" maxlength="20" required>
+			<div class="help-block with-errors"></div>
 		</div>
-		<div class="form-group col-md-8">
+		<div class="form-group col-sm-8 col-xs-12">
 			<label for="documento_nombre" class="control-label">Nombre</label>
 			<input type="text" id="documento_nombre" name="documento_nombre" value="<%- documento_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="200" required>
+			<div class="help-block with-errors"></div>
 		</div>
     </div>
 	<div class="row">
-		<div class="form-group col-md-6 col-xs-10">
+		<div class="form-group col-sm-6 col-xs-10">
 			<label for="documento_folder" class="control-label">Folder</label>
-			<select name="documento_folder" id="documento_folder" class="form-control select2-default" required>
+			<select name="documento_folder" id="documento_folder" class="form-control select2-default-clear">
 				@foreach( App\Models\Contabilidad\Folder::getFolders() as $key => $value)
 					<option value="{{ $key }}" <%- documento_folder == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
 				@endforeach
 			</select>
 		</div>
-		<div class="form-group col-md-1 col-xs-2 text-right">
-			<div>&nbsp;</div>
+		<div class="form-group col-sm-1 col-xs-2 text-right"><br>
 			<button type="button" class="btn btn-default btn-flat btn-sm btn-add-resource-koi-component" data-resource="folder" data-field="documento_folder">
 				<i class="fa fa-plus"></i>
 			</button>
 		</div>
 	</div>
     <div class="row">
-		<div class="form-group col-md-4 col-sm-12 col-xs-12">
+		<div class="form-group col-sm-6">
 			<label class="control-label">Consecutivo</label>
 			<div class="row">
 				@foreach(config('koi.contabilidad.documento.consecutivo') as $key => $value)
@@ -759,16 +760,16 @@
 					</label>
 				@endforeach
 			</div>
-
 		</div>
-		<div class="form-group col-md-4">
+
+		<div class="form-group col-sm-4">
 			<label>Tipo contabilidad </label>
 			<div class="row">
 				<label class="checkbox-inline" for="documento_actual">
-					<input type="checkbox" id="documento_actual" name="documento_actual" value="documento_actual" <%- parseInt(documento_actual) ? 'checked': ''%>> Normal ?
+					<input type="checkbox" id="documento_actual" name="documento_actual" value="documento_actual" <%- parseInt(documento_actual) ? 'checked': ''%>> Actual
 				</label>
 				<label class="checkbox-inline" for="documento_nif">
-					<input type="checkbox" id="documento_nif" name="documento_nif" value="documento_nif" <%- parseInt(documento_nif) ? 'checked': ''%>> Nif ?
+					<input type="checkbox" id="documento_nif" name="documento_nif" value="documento_nif" <%- parseInt(documento_nif) ? 'checked': ''%>> Nif
 				</label>
 			</div>
 		</div>
@@ -777,40 +778,43 @@
 
 <script type="text/template" id="add-folder-tpl">
     <div class="row">
-		<div class="form-group col-md-2">
+		<div class="form-group col-sm-2">
 			<label for="folder_codigo" class="control-label">Código</label>
 			<input type="text" id="folder_codigo" name="folder_codigo" value="<%- folder_codigo %>" placeholder="Código" class="form-control input-sm input-toupper" maxlength="4" required>
+			<div class="help-block with-errors"></div>
 		</div>
 
-		<div class="form-group col-md-8">
+		<div class="form-group col-sm-8">
 			<label for="folder_nombre" class="control-label">Nombre</label>
 			<input type="text" id="folder_nombre" name="folder_nombre" value="<%- folder_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="50" required>
+			<div class="help-block with-errors"></div>
 		</div>
     </div>
 </script>
 
 <script type="text/template" id="add-plancuentas-tpl">
     <div class="row">
-		<div class="form-group col-md-3">
+		<div class="col-sm-5">
 			<label for="plancuentas_cuenta" class="control-label">Cuenta</label>
 			<div class="row">
-				<div class="col-md-9">
+				<div class="form-group col-sm-9">
 					<input type="text" id="plancuentas_cuenta" name="plancuentas_cuenta" value="<%- plancuentas_cuenta %>" placeholder="Cuenta" class="form-control input-sm" maxlength="15" required>
+					<div class="help-block with-errors"></div>
 				</div>
-				<div class="col-md-3">
+				<div class="col-sm-3">
 					<input type="text" id="plancuentas_nivel" name="plancuentas_nivel" value="<%- plancuentas_nivel %>" class="form-control input-sm" maxlength="1" required readonly>
 				</div>
 			</div>
 		</div>
-
-		<div class="form-group col-md-7">
+		<div class="form-group col-sm-7">
 			<label for="plancuentas_nombre" class="control-label">Nombre</label>
 			<input type="text" id="plancuentas_nombre" name="plancuentas_nombre" value="<%- plancuentas_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="200" required>
+			<div class="help-block with-errors"></div>
 		</div>
 	</div>
 
 	<div class="row">
-		<div class="form-group col-md-6 col-xs-10">
+		<div class="form-group col-sm-6">
 			<label for="plancuentas_centro" class="control-label">Centro de costo</label>
 			<select name="plancuentas_centro" id="plancuentas_centro" class="form-control select2-default-clear">
 				@foreach( App\Models\Contabilidad\CentroCosto::getCentrosCosto('S') as $key => $value)
@@ -818,16 +822,26 @@
 				@endforeach
 			</select>
 		</div>
-		<div class="form-group col-md-1 col-xs-2 text-right">
-			<div>&nbsp;</div>
+		<div class="form-group col-sm-1 text-right"><br>
 			<button type="button" class="btn btn-default btn-flat btn-sm btn-add-resource-koi-component" data-resource="centrocosto" data-field="plancuentas_centro">
 				<i class="fa fa-plus"></i>
 			</button>
 		</div>
 	</div>
-
 	<div class="row">
-		<div class="form-group col-md-6 col-sm-12 col-xs-12">
+		<div class="form-group col-sm-12">
+			<label class="control-label">Tipo</label>
+			<div class="row">
+				@foreach(config('koi.contabilidad.plancuentas.tipo') as $key => $value)
+				<label class="radio-inline" for="plancuentas_naturaleza_{{ $key }}">
+					<input type="radio" id="plancuentas_naturaleza_{{ $key }}" name="plancuentas_tipo" value="{{ $key }}" <%- plancuentas_tipo == '{{ $key }}' ? 'checked': ''%>> {{ $value }}
+				</label>
+				@endforeach
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="form-group col-sm-6">
 			<label class="control-label">Naturaleza</label>
 			<div class="row">
 				<label class="radio-inline" for="plancuentas_naturaleza_debito">
@@ -840,8 +854,8 @@
 			</div>
 		</div>
 	</div>
-    <div class="row">
-		<div class="form-group col-md-3 col-sm-12 col-xs-12">
+	<div class="row">
+		<div class="form-group col-sm-3">
 			<label for="plancuentas_tercero">¿Requiere tercero?</label>
 			<div class="row">
 				<label class="radio-inline" for="plancuentas_tercero_no">
@@ -854,23 +868,11 @@
 		</div>
     </div>
     <div class="row">
-		<div class="form-group col-md-12 col-sm-12 col-xs-12">
-			<label class="control-label">Tipo</label>
-			<div class="row">
-				@foreach(config('koi.contabilidad.plancuentas.tipo') as $key => $value)
-					<label class="radio-inline" for="plancuentas_naturaleza_{{ $key }}">
-						<input type="radio" id="plancuentas_naturaleza_{{ $key }}" name="plancuentas_tipo" value="{{ $key }}" <%- plancuentas_tipo == '{{ $key }}' ? 'checked': ''%>> {{ $value }}
-					</label>
-				@endforeach
-			</div>
-		</div>
-    </div>
-    <div class="row">
-		<div class="form-group col-md-2">
+		<div class="form-group col-sm-2">
 			<label for="plancuentas_tasa" class="control-label">Tasa</label>
 			<input type="text" id="plancuentas_tasa" name="plancuentas_tasa" value="<%- plancuentas_tasa ? plancuentas_tasa : '0' %>" placeholder="Tasa" class="form-control input-sm" required>
 		</div>
-		<div class="form-group col-md-4">
+		<div class="form-group col-sm-6">
 			<label for="plancuentas_equivalente" class="control-label">Equivalencia en NIF</label>
 			<select name="plancuentas_equivalente" id="plancuentas_equivalente" class="form-control select2-default-clear">
 				@foreach( App\Models\Contabilidad\PlanCuentaNif::getPlanCuentas() as $key => $value)
@@ -883,26 +885,27 @@
 
 <script type="text/template" id="add-plancuentasnif-tpl">
     <div class="row">
-		<div class="form-group col-md-3">
+		<div class="col-sm-4">
 			<label for="plancuentasn_cuenta" class="control-label">Cuenta</label>
 			<div class="row">
-				<div class="col-md-9">
+				<div class="form-group col-sm-9">
 					<input type="text" id="plancuentasn_cuenta" name="plancuentasn_cuenta" value="<%- plancuentasn_cuenta %>" placeholder="Cuenta" class="form-control input-sm" maxlength="15" required>
+					<div class="help-block with-errors"></div>
 				</div>
-				<div class="col-md-3">
+				<div class="col-sm-3">
 					<input type="text" id="plancuentasn_nivel" name="plancuentasn_nivel" value="<%- plancuentasn_nivel %>" class="form-control input-sm" maxlength="1" required readonly>
 				</div>
 			</div>
 		</div>
 
-		<div class="form-group col-md-7">
+		<div class="form-group col-sm-8">
 			<label for="plancuentasn_nombre" class="control-label">Nombre</label>
 			<input type="text" id="plancuentasn_nombre" name="plancuentasn_nombre" value="<%- plancuentasn_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="200" required>
 		</div>
 	</div>
 
 	<div class="row">
-		<div class="form-group col-md-6 col-xs-10">
+		<div class="form-group col-sm-6">
 			<label for="plancuentasn_centro" class="control-label">Centro de costo</label>
 			<select name="plancuentasn_centro" id="plancuentasn_centro" class="form-control select2-default-clear">
 				@foreach( App\Models\Contabilidad\CentroCosto::getCentrosCosto('S') as $key => $value)
@@ -910,7 +913,7 @@
 				@endforeach
 			</select>
 		</div>
-		<div class="form-group col-md-1 col-xs-2 text-right">
+		<div class="form-group col-sm-1 col-xs-2 text-right">
 			<div>&nbsp;</div>
 			<button type="button" class="btn btn-default btn-flat btn-sm btn-add-resource-koi-component" data-resource="centrocosto" data-field="plancuentasn_centro">
 				<i class="fa fa-plus"></i>
@@ -918,8 +921,21 @@
 		</div>
 	</div>
 
+    <div class="row">
+		<div class="form-group col-sm-12 col-xs-12">
+			<label class="control-label">Tipo</label>
+			<div class="row">
+				@foreach(config('koi.contabilidad.plancuentas.tipo') as $key => $value)
+					<label class="radio-inline" for="plancuentasn_naturaleza_{{ $key }}">
+						<input type="radio" id="plancuentasn_naturaleza_{{ $key }}" name="plancuentasn_tipo" value="{{ $key }}" <%- plancuentasn_tipo == '{{ $key }}' ? 'checked': ''%>> {{ $value }}
+					</label>
+				@endforeach
+			</div>
+		</div>
+    </div>
+
 	<div class="row">
-		<div class="form-group col-md-6 col-sm-12 col-xs-12">
+		<div class="form-group col-sm-6 col-xs-12">
 			<label class="control-label">Naturaleza</label>
 			<div class="row">
 				<label class="radio-inline" for="plancuentasn_naturaleza_debito">
@@ -934,7 +950,7 @@
 	</div>
 
     <div class="row">
-		<div class="form-group col-md-3 col-sm-12 col-xs-12">
+		<div class="form-group col-sm-3 col-xs-12">
 			<label for="plancuentasn_tercero">¿Requiere tercero?</label>
 			<div class="row">
 				<label class="radio-inline" for="plancuentasn_tercero_no">
@@ -948,20 +964,7 @@
     </div>
 
     <div class="row">
-		<div class="form-group col-md-12 col-sm-12 col-xs-12">
-			<label class="control-label">Tipo</label>
-			<div class="row">
-				@foreach(config('koi.contabilidad.plancuentas.tipo') as $key => $value)
-					<label class="radio-inline" for="plancuentasn_naturaleza_{{ $key }}">
-						<input type="radio" id="plancuentasn_naturaleza_{{ $key }}" name="plancuentasn_tipo" value="{{ $key }}" <%- plancuentasn_tipo == '{{ $key }}' ? 'checked': ''%>> {{ $value }}
-					</label>
-				@endforeach
-			</div>
-		</div>
-    </div>
-
-    <div class="row">
-		<div class="form-group col-md-2">
+		<div class="form-group col-sm-2">
 			<label for="plancuentasn_tasa" class="control-label">Tasa</label>
 			<input type="text" id="plancuentasn_tasa" name="plancuentasn_tasa" value="<%- plancuentasn_tasa ? plancuentasn_tasa : '0' %>" placeholder="Tasa" class="form-control input-sm" required>
 		</div>
@@ -1029,26 +1032,38 @@
 
 <script type="text/template" id="add-tipoajuste-tpl">
 	<div class="row">
-		<div class="col-md-2">
+		<div class="col-sm-2">
 			<label for="tipoajuste_sigla" class="control-label">Sigla</label>
 			<input type="text" id="tipoajuste_sigla" name="tipoajuste_sigla" value="<%- tipoajuste_sigla %>" placeholder="Sigla" class="form-control input-sm input-toupper" maxlength="3" required>
+			<div class="help-block with-errors"></div>
 		</div>
-		<div class="col-md-6">
+		<div class="col-sm-6">
 			<label for="tipoajuste_nombre" class="control-label">Nombre</label>
 			<input type="text" id="tipoajuste_nombre" name="tipoajuste_nombre" value="<%- tipoajuste_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="25" required>
+			<div class="help-block with-errors"></div>
 		</div>
-
 	</div>
 	<div class="row">
-		<div class="col-md-2">
+		<div class="col-sm-2">
 			<label for="tipoajuste_tipo" class="control-label">Tipo</label>
 			<select name="tipoajuste_tipo" id="tipoajuste_tipo" class="form-control select2-default" required>
 				@foreach(config('koi.tipoInventario') as $key => $value)
-				<option value="{{ $key }}" <%- tipoajuste_tipo == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
+					<option value="{{ $key }}" <%- tipoajuste_tipo == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
 				@endforeach
 			</select>
-		</div><br>
-		<div class="col-md-3">
+			<div class="help-block with-errors"></div>
+		</div>
+		<div class="col-sm-6">
+			<label for="tipoajuste_tipoproducto" class="control-label">Tipo de producto</label>
+			<select name="tipoajuste_tipoproducto[]" id="tipoajuste_tipoproducto" class="form-control select2-default" multiple="multiple" required>
+				<option value="0">TODAS</option>
+				@foreach( App\Models\Inventario\TipoProducto::getTiposproducto() as $key => $value)
+					<option value="{{ $key }}" <%- tipoajuste_tipoproducto == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
+				@endforeach
+			</select>
+			<div class="help-block with-errors"></div>
+		</div>
+		<div class="col-sm-3"><br>
 			<label class="checkbox-inline" for="tipoajuste_activo">
 				<input type="checkbox" id="tipoajuste_activo" name="tipoajuste_activo" value="tipoajuste_activo" <%- parseInt(tipoajuste_activo) ? 'checked': ''%>> Activo
 			</label>
@@ -1193,27 +1208,27 @@
 
 <script type="text/template" id="add-linea-tpl">
     <div class="row">
-		<div class="form-group col-md-7">
+		<div class="form-group col-sm-7">
 			<label for="linea_nombre" class="control-label">Nombre</label>
 			<input type="text" id="linea_nombre" name="linea_nombre" value="<%- linea_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="50" required>
 		</div>
 	</div>
 	<div class="row">
-		<div class="form-group col-md-2">
+		<div class="form-group col-sm-2">
 			<label for="linea_margen_nivel1" class="control-label">Margen Nivel 1</label>
 			<input type="text" id="linea_margen_nivel1" name="linea_margen_nivel1" value="<%- linea_margen_nivel1 %>" placeholder="Margen" class="form-control input-sm spinner-percentage" maxlength="4" required>
 		</div>
 
-		<div class="form-group col-md-2">
+		<div class="form-group col-sm-2">
 			<label for="linea_margen_nivel2" class="control-label">Margen Nivel 2</label>
 			<input type="text" id="linea_margen_nivel2" name="linea_margen_nivel2" value="<%- linea_margen_nivel2 %>" placeholder="Margen" class="form-control input-sm spinner-percentage" maxlength="4" required>
 		</div>
 
-		<div class="form-group col-md-2">
+		<div class="form-group col-sm-2">
 			<label for="linea_margen_nivel3" class="control-label">Margen Nivel 3</label>
 			<input type="text" id="linea_margen_nivel3" name="linea_margen_nivel3" value="<%- linea_margen_nivel3 %>" placeholder="Margen" class="form-control input-sm spinner-percentage" maxlength="4" required>
 		</div>
-		<div class="form-group col-md-2 col-xs-8 col-sm-2"><br>
+		<div class="form-group col-sm-2 col-xs-8"><br>
 			<label class="checkbox-inline" for="linea_activo">
 				<input type="checkbox" id="linea_activo" name="linea_activo" value="linea_activo" <%- parseInt(linea_activo) ? 'checked': ''%>> Activo
 			</label>

@@ -19,6 +19,7 @@ app || (app = {});
             'tipoajuste_nombre':'',
             'tipoajuste_sigla':'',
             'tipoajuste_tipo':'',
+            'tipoajuste_tipoproducto':'',
         	'tipoajuste_activo': 1
         }
     });

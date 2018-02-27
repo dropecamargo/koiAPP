@@ -64,7 +64,7 @@ app || (app = {});
                         targets: 3,
                         width: '10%',
                         render: function ( data, type, full, row ) {
-                            return parseInt(data) == 'D' ? 'Débito' : 'Crédito';
+                            return data == 'D' ? 'Débito' : 'Crédito';
                         }
                     },
                     {

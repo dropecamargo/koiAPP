@@ -120,7 +120,7 @@ app || (app = {});
                     return;
                 }
 
-                window.Misc.redirect( window.Misc.urlFull( Route.route('plancuentasnif.show', { plancuentasnif: resp.id})) );
+                window.Misc.redirect( window.Misc.urlFull( Route.route('plancuentasnif.index')) );
             }
         }
     });

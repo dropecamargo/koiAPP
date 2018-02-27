@@ -40,6 +40,12 @@ class Impuesto extends BaseModel
             'impuesto_porcentaje' => 'required|numeric'
         ];
 
+        if ($this->exists){
+            $rules['impuesto_nombre'] .= ',impuesto_nombre,' . $this->id;
+        }else{
+            $rules['impuesto_nombre'] .= '|required';
+        }
+
         $validator = Validator::make($data, $rules);
         if ($validator->passes()) {
             return true;

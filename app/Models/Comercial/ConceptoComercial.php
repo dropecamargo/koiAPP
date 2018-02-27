@@ -39,6 +39,13 @@ class ConceptoComercial extends BaseModel
 			'conceptocom_nombre' => 'required|max:25|unique:conceptocom',
 		];
 
+		if ($this->exists){
+			$rules['conceptocom_nombre'] .= ',conceptocom_nombre,'.$this->id;
+		}else{
+			$rules['conceptocom_nombre'] .= '|required';
+		}
+
+
 		$validator = Validator::make($data, $rules);
     	if ($validator->passes()) {
             return true;

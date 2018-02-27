@@ -44,6 +44,9 @@ app || (app = {});
 						}
 					}
 				],
+                order: [
+                	[ 0, 'asc' ], [ 1, 'asc' ]
+                ],
                 columnDefs: [
                     {
                         targets: 0,
@@ -56,11 +59,11 @@ app || (app = {});
                         targets: 3,
                         width: '10%',
                         render: function ( data, type, full, row ) {
-                            return parseInt(data) == 'S' ? 'Si' : 'No';
+                            return data == 'S' ? 'Si' : 'No';
                         }
                     },
                     {
-                        targets: [4],
+                        targets: 4,
                         width: '10%',
                         render: function ( data, type, full, row ) {
                             return parseInt(data) ? 'Si' : 'No';

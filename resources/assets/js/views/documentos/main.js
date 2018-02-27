@@ -27,14 +27,14 @@ app || (app = {});
             	language: window.Misc.dataTableES(),
                 ajax: window.Misc.urlFull( Route.route('documentos.index') ),
                 columns: [
-                    { data: 'documento_codigo', name: 'documento_codigo' },
-                    { data: 'documento_nombre', name: 'documento_nombre' },
-                    { data: 'folder_codigo', name: 'folder_codigo' },
-                    { data: 'folder_id', name: 'folder_id' }
+                    { data: 'documento_codigo', name: 'documento.documento_codigo' },
+                    { data: 'documento_nombre', name: 'documento.documento_nombre' },
+                    { data: 'folder_codigo', name: 'folder.folder_codigo' },
+                    { data: 'folder_id', name: 'folder.folder_id' }
                 ],
                 buttons: [
                     {
-                        text: '<i class="fa fa-plus"></i> Nuevo documento', 
+                        text: '<i class="fa fa-plus"></i> Nuevo documento',
                         className: 'btn-sm',
                         action: function ( e, dt, node, config ) {
                                 window.Misc.redirect( window.Misc.urlFull( Route.route('documentos.create') ) )

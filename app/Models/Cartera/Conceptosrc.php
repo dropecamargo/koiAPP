@@ -42,6 +42,12 @@ class Conceptosrc extends BaseModel
 			'conceptosrc_nombre' => 'required|max:50|unique:conceptosrc',
 		];
 
+		if ($this->exists){
+			$rules['conceptosrc_nombre'] .= ',conceptosrc_nombre,'.$this->id;
+		}else{
+			$rules['conceptosrc_nombre'] .= '|required';
+		}
+
 		$validator = Validator::make($data, $rules);
     	if ($validator->passes()) {
             return true;

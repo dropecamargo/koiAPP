@@ -121,7 +121,7 @@ app || (app = {});
                     return;
                 }
 
-                window.Misc.redirect( window.Misc.urlFull( Route.route('plancuentas.show', { plancuentas: resp.id})) );
+                window.Misc.redirect( window.Misc.urlFull( Route.route('plancuentas.index')) );
             }
         }
     });
