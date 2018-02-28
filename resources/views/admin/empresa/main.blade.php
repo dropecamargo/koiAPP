@@ -40,9 +40,11 @@
 				<div class="row">
 					<div class="col-md-9">
 						<input id="tercero_nit" value="<%- tercero_nit %>" placeholder="Nit" class="form-control input-sm" name="tercero_nit" type="text" required>
+                        <div class="help-block with-errors"></div>
 					</div>
 					<div class="col-md-3">
 						<input id="tercero_digito" value="<%- tercero_digito %>" class="form-control input-sm" name="tercero_digito" type="text" readonly required>
+                        <div class="help-block with-errors"></div>
 					</div>
 				</div>
 			</div>
@@ -55,6 +57,7 @@
 						<option value="{{ $key }}" <%- tercero_tipo == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
 					@endforeach
 				</select>
+                <div class="help-block with-errors"></div>
 			</div>
 
 			<div class="form-group col-md-3">
@@ -65,6 +68,7 @@
 						<option value="{{ $key }}" <%- tercero_persona == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
 					@endforeach
 				</select>
+                <div class="help-block with-errors"></div>
 			</div>
 
 			<div class="form-group col-md-3">
@@ -75,6 +79,7 @@
 						<option value="{{ $key }}" <%- tercero_regimen == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
 					@endforeach
 				</select>
+                <div class="help-block with-errors"></div>
 			</div>
 		</div>
 
@@ -97,6 +102,7 @@
 						</button>
 					</span>
 				</div>
+                <div class="help-block with-errors"></div>
 			</div>
 
 			<div class="form-group col-md-3">

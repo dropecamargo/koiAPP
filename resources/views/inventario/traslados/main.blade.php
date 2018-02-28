@@ -27,10 +27,12 @@
                             <option value="{{ $key }}" <%- traslado1_sucursal == '{{ $key }}' ? 'selected': ''%>>{{ $value }}</option>
                         @endforeach
                     </select>
+                    <div class="help-block with-errors"></div>
                 </div>
                 <div class="form-group col-md-1 col-sm-2 col-xs-6">
                     <label for="traslado1_numero" class="control-label">Número</label>
                     <input id="traslado1_numero" name="traslado1_numero" class="form-control input-sm input-toupper" type="number" readonly required>
+                    <div class="help-block with-errors"></div>
                 </div>
                 <div class="form-group col-md-3 col-sm-3 col-xs-6">
                     <label for="traslado1_fecha" class="control-label">Fecha</label>
@@ -40,6 +42,7 @@
                         </div>
                         <input type="text" id="traslado1_fecha" name="traslado1_fecha" placeholder="Fecha" value="{{ date('Y-m-d') }}" class="form-control input-sm datepicker-back" required>
                     </div>
+                    <div class="help-block with-errors"></div>
                 </div>
             </div>
 
@@ -51,6 +54,7 @@
                             <option value="{{ $key }}" <%- traslado1_destino == '{{ $key }}' ? 'selected': ''%>>{{ $value }}</option>
                         @endforeach
                     </select>
+                    <div class="help-block with-errors"></div>
                 </div>
                 <div class="form-group col-md-4 col-sm-7 col-xs-12">
                     <label for="traslado1_tipotraslado" class="control-label">Tipo</label>
@@ -59,6 +63,7 @@
                             <option value="{{ $key }}" <%- traslado1_tipotraslado == '{{ $key }}' ? 'selected': ''%>>{{ $value }}</option>
                         @endforeach
                     </select>
+                    <div class="help-block with-errors"></div>
                 </div>
             </div>
 

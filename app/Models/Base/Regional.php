@@ -45,6 +45,12 @@ class Regional extends BaseModel
             'regional_nombre' => 'required|max:50|unique:regional'
         ];
 
+        if ($this->exists){
+            $rules['regional_nombre'] .= ',regional_nombre,' . $this->id;
+        }else{
+            $rules['regional_nombre'] .= '|required';
+        }
+
         $validator = Validator::make($data, $rules);
         if ($validator->passes()) {
             return true;

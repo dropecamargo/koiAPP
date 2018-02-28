@@ -9,7 +9,6 @@ class UserEventListener
      * Handle user login events.
      */
     public function onUserLogin($event) {
-
         // Get empresa
         $empresa = Empresa::getEmpresa();
         session([ 'empresa' => $empresa ]);
@@ -19,7 +18,6 @@ class UserEventListener
      * Handle user logout events.
      */
     public function onUserLogout($event) {
-
         // Clean session
         session()->flush();
     }

@@ -19,7 +19,8 @@ class DepartamentoController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            return Datatables::of(Departamento::query())->make(true);
+            $query = Departamento::query();
+            return Datatables::of($query)->make(true);
         }
         return view('admin.departamentos.index');
     }

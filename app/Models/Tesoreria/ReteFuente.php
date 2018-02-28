@@ -41,11 +41,13 @@ class ReteFuente extends BaseModel
             'retefuente_tarifa_juridico' => 'numeric',
             'retefuente_base' => 'required|numeric'
         ];
+
         if ($this->exists){
             $rules['retefuente_nombre'] .= ',retefuente_nombre,' . $this->id;
         }else{
             $rules['retefuente_nombre'] .= '|required';
         }
+        
         $validator = Validator::make($data, $rules);
         if ($validator->passes()) {
             return true;

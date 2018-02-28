@@ -53,6 +53,12 @@ class TipoAjuste extends BaseModel
 
 		$validator = Validator::make($data, $rules);
 		if ($validator->passes()) {
+			// Validar carrito
+            $detalle = isset($data['detalle']) ? $data['detalle'] : null;
+            if(!isset($detalle) || $detalle == null || !is_array($detalle) || count($detalle) == 0) {
+                $this->errors = 'Por favor ingrese al menos un tipo de producto.';
+                return false;
+            }
 			return true;
 		}
 		$this->errors = $validator->errors();
@@ -68,7 +74,9 @@ class TipoAjuste extends BaseModel
         return Cache::rememberForever( self::$key_cache , function() {
             $query = TipoAjuste::query();
             $query->orderby('tipoajuste_nombre', 'asc');
+            $query->where('tipoajuste_activo', true);
             $collection = $query->lists('tipoajuste_nombre', 'id');
+
             $collection->prepend('', '');
             return $collection;
         });

@@ -42,14 +42,15 @@ class Modelo extends BaseModel
     public function isValid($data)
     {
         $rules = [
-            'modelo_nombre' => 'required|max:100|unique:modelo',
-
+            'modelo_nombre' => 'required|max:100|unique_with:modelo,modelo_marca',
         ];
+
         if ($this->exists){
             $rules['modelo_nombre'] .= ',modelo_nombre,' . $this->id;
         }else{
             $rules['modelo_nombre'] .= '|required';
         }
+
         $validator = Validator::make($data, $rules);
         if ($validator->passes()) {
             return true;

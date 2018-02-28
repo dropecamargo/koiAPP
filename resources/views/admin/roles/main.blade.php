@@ -29,11 +29,13 @@
                             <label for="display_name" class="col-sm-1 control-label">Nombre</label>
                             <div class="form-group col-sm-3">
                                 <input id="display_name" value="<%- display_name %>" placeholder="Mostrar nombre" class="form-control input-sm" name="display_name" required>
+                                <div class="help-block with-errors"></div>
                             </div>
 
                             <label for="name" class="col-sm-1 control-label">Key</label>
                             <div class="form-group col-sm-4">
                                 <input id="name" value="<%- name %>" placeholder="Nombre" class="form-control input-sm input-lower" name="name" <%- typeof(id) !== 'undefined' ? 'readonly' : ''%> >
+                                <div class="help-block with-errors"></div>
                             </div>
                         </div>
                         <div class="row">
@@ -45,10 +47,10 @@
 
                         <div class="box-header with-border">
                             <div class="row">
-                                <div class="col-md-2 col-md-offset-4 col-sm-6 col-xs-6">
+                                <div class="col-sm-2 col-sm-offset-4 col-xs-6">
                                     <a href="<%- window.Misc.urlFull( (typeof(id) !== 'undefined' && !_.isUndefined(id) && !_.isNull(id) && id != '') ? Route.route('roles.show', { roles: id}) : Route.route('roles.index') ) %>" class="btn btn-default btn-sm btn-block">{{ trans('app.cancel') }}</a>
                                 </div>
-                                <div class="col-md-2 col-sm-6 col-xs-6">
+                                <div class="col-sm-2 col-xs-6">
                                     <button type="submit" class="btn btn-primary btn-sm btn-block">{{ trans('app.save') }}</button>
                                 </div>
                             </div>
@@ -57,7 +59,7 @@
 
                     <% if( typeof(id) !== 'undefined' && !_.isUndefined(id) && !_.isNull(id) && id != '' && name != 'admin' ) { %>
                     <div class="row">
-                        <div class="form-group col-md-12">
+                        <div class="form-group col-sm-12">
                             <div class="nav-tabs-custom tab-primary">
                                 <ul class="nav nav-tabs">
                                     <li class="active"><a href="#tab_modulos" data-toggle="tab">Permisos</a></li>

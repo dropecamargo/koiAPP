@@ -9,25 +9,25 @@
 		<div class="box-body">
 			{!! Form::open(['id' => 'form-koi-search-tercero-component', 'class' => 'form-horizontal', 'data-toggle' => 'validator', 'role' => 'form']) !!}
 				<div class="form-group">
-					<label for="tercero_nit" class="col-md-1 control-label">Documento</label>
-					<div class="col-md-2">
+					<label for="tercero_nit" class="col-sm-1 control-label">Documento</label>
+					<div class="col-sm-2">
 						{!! Form::text('tercero_nit', session('search_tercero_nit'), ['id' => 'tercero_nit', 'class' => 'form-control input-sm']) !!}
 					</div>
 
-					<label for="tercero_nombre" class="col-md-1 control-label">Nombre</label>
-					<div class="col-md-8">
+					<label for="tercero_nombre" class="col-sm-1 control-label">Nombre</label>
+					<div class="col-sm-8">
 						{!! Form::text('tercero_nombre', session('search_tercero_nombre'), ['id' => 'tercero_nombre', 'class' => 'form-control input-sm input-toupper']) !!}
 					</div>
 				</div>
 
 				<div class="form-group">
-					<div class="col-md-offset-3 col-md-2 col-xs-4">
+					<div class="col-sm-offset-3 col-sm-2 col-xs-4">
 						<button type="button" class="btn btn-default btn-block btn-sm btn-clear">Limpiar</button>
 					</div>
-					<div class="col-md-2 col-xs-4">
+					<div class="col-sm-2 col-xs-4">
 						<button type="button" class="btn btn-primary btn-block btn-sm btn-search">Buscar</button>
 					</div>
-					<div class="col-md-2 col-xs-4">
+					<div class="col-sm-2 col-xs-4">
 						<a href="{{ route('terceros.create') }}" class="btn btn-default btn-block btn-sm">
 							<i class="fa fa-user-plus"></i> Nuevo
 						</a>

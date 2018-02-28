@@ -45,6 +45,12 @@ class TipoTraslado extends BaseModel
 			'tipotraslado_sigla' => 'required|max:3',
 		];
 
+		if ($this->exists){
+            $rules['tipotraslado_nombre'] .= ',tipotraslado_nombre,' . $this->id;
+        }else{
+            $rules['tipotraslado_nombre'] .= '|required';
+        }
+
 		$validator = Validator::make($data, $rules);
 		if ($validator->passes()) {
 			return true;
@@ -63,7 +69,7 @@ class TipoTraslado extends BaseModel
             $query = TipoTraslado::query();
             $query->orderby('tipotraslado_nombre', 'asc');
             $collection = $query->lists('tipotraslado_nombre', 'id');
-			
+
             $collection->prepend('', '');
             return $collection;
         });

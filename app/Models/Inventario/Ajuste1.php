@@ -46,7 +46,6 @@ class Ajuste1 extends Model
                 $this->errors = 'Por favor ingrese el detalle para realizar el ajuste.';
                 return false;
             }
-
             return true;
         }
 

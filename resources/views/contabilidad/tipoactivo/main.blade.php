@@ -22,10 +22,12 @@
             <div class="form-group col-sm-6">
             <label for="tipoactivo_nombre" class="control-label">Nombre</label>
                 <input type="text" id="tipoactivo_nombre" name="tipoactivo_nombre" value="<%- tipoactivo_nombre %>" placeholder="Tipo activo" class="form-control input-sm input-toupper" maxlength="50" required>
+                <div class="help-block with-errors"></div>
             </div>
             <div class="form-group col-sm-2">
             <label for="tipoactivo_vida_util" class="control-label">Vidad útil</label>
                 <input type="number" id="tipoactivo_vida_util" name="tipoactivo_vida_util" value="<%- tipoactivo_vida_util %>" class="form-control input-sm" min="1" required>
+                <div class="help-block with-errors"></div>
             </div>
             <div class="form-group col-sm-2"></br>
                 <label class="checkbox-inline" for="tipoactivo_activo">

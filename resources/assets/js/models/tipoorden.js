@@ -17,6 +17,7 @@ app || (app = {});
         idAttribute: 'id',
         defaults: {
             'tipoorden_nombre': '',
+            'tipoorden_tipoajuste': '',
             'tipoorden_activo': true
         }
     });

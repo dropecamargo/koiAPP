@@ -42,7 +42,7 @@ class Sucursal extends BaseModel
     public function isValid($data)
     {
         $rules = [
-            'sucursal_nombre' => 'required|max:200|unique:sucursal',
+            'sucursal_nombre' => 'required|max:200|unique_with:sucursal,sucursal_regional',
             'sucursal_direccion'=>'required|max:200',
             'sucursal_regional' => 'required'
         ];

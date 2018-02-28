@@ -39,6 +39,12 @@ class ConceptoTecnico extends BaseModel
 			'conceptotec_nombre' => 'required|max:50|unique:conceptotec',
 		];
 
+		if ($this->exists){
+            $rules['conceptotec_nombre'] .= ',conceptotec_nombre,' . $this->id;
+        }else{
+            $rules['conceptotec_nombre'] .= '|required';
+        }
+
 		$validator = Validator::make($data, $rules);
     	if ($validator->passes()) {
             return true;

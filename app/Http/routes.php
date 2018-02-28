@@ -219,6 +219,11 @@ Route::group(['middleware' => 'auth'], function(){
 	{
 		Route::resource('detalle', 'Inventario\EntradaDetalleController');
 	});
+
+	Route::group(['prefix' => 'tiposajuste'], function()
+	{
+		Route::resource('detalle', 'Inventario\DetalleTipoAjusteController');
+	});
 	Route::resource('modelos','Inventario\ModeloController', ['except' => ['destroy']]);
 	Route::resource('marcas', 'Inventario\MarcaController', ['except' => ['destroy']]);
 	Route::resource('grupos', 'Inventario\GrupoController', ['except' => ['destroy']]);

@@ -69,49 +69,9 @@ class AsientoMovimiento extends Model
             return "Valor no puede ser menor o igual a 0.";
         }
 
-        // // Validar factura
-        // if(!isset($data['Factura']) || trim($data['Factura']) == '') {
-        //     return "Factura es obligatoria.";
-        // }
-
         // Validar factura
         if(!isset($data['Naturaleza']) || trim($data['Naturaleza']) == '') {
             return "Naturaleza es obligatoria.";
-        }
-
-        // Validar naturaleza
-        // if($data['Naturaleza'] == 'D') {
-        //     $facturap = Facturap1::where('facturap1_factura', $data['Factura'])->where('facturap1_tercero', $asiento2->asiento2_beneficiario)->first();
-        //     if(!$facturap instanceof Facturap1) {
-        //         return "Para realizar movimientos de naturaleza débito de ingresar un numero de factura existente.";
-        //     }
-        // }
-
-        // Validar cuotas
-        // if(!isset($data['Cuotas']) || !is_numeric($data['Cuotas']) || $data['Cuotas'] <= 0) {
-        //     return "Cuotas no pueden ser menor o igual a 0.";
-        // }
-
-        if($data['Nuevo'] == true)
-        {
-            // // Validar sucursal
-            // if(!isset($data['Sucursal']) || !is_numeric($data['Sucursal']) || $data['Sucursal'] <= 0) {
-            //     return "Sucursal es obligatoria.";
-            // }
-
-            // // Validar fecha
-            // if(!isset($data['Fecha']) || trim($data['Fecha']) == '') {
-            //     return "Fecha es obligatoria.";
-            // }
-
-            // // Validar periodo
-            // if(!isset($data['Periodicidad']) || !is_numeric($data['Periodicidad']) || $data['Periodicidad'] <= 0) {
-            //     return "Periodicidad (días) para cuotas no puede ser menor o igual a 0.";
-            // }
-
-            // $this->movimiento_sucursal = $data['Sucursal'];
-            // $this->movimiento_fecha = $data['Fecha'];
-            // $this->movimiento_periodicidad = $data['Periodicidad'];
         }
 
         $this->movimiento_facturap = $data['Factura'];
@@ -179,10 +139,6 @@ class AsientoMovimiento extends Model
         switch ($data['Tipo']) {
             // Factura padre
             case 'F':
-                // Validar factura
-                // if(!isset($data['Factura']) || trim($data['Factura']) == '') {
-                //     return "Factura es obligatoria.";
-                // }
                 $this->movimiento_factura = $data['Factura'];
             break;
 

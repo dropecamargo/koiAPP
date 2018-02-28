@@ -27,7 +27,6 @@ class ContactoController extends Controller
                 $query->where('tcontacto_tercero', $request->tercero_id);
                 $contacts = $query->get();
                 return response()->json($contacts);
-
             }else{
                 // Search datatables
                 $query = Contacto::query();

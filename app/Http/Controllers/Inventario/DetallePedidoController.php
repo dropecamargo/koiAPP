@@ -132,7 +132,6 @@ class DetallePedidoController extends Controller
 
                 DB::commit();
                 return response()->json(['success' => true]);
-
             }catch(\Exception $e){
                 DB::rollback();
                 Log::error(sprintf('%s -> %s: %s', 'DetallePedidoController', 'destroy', $e->getMessage()));

@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\Inventario\TipoAjuste;
+use App\Models\Inventario\TipoAjuste, App\Models\Inventario\TipoAjuste2, App\Models\Inventario\TipoProducto;
 use DB, Log, Datatables, Cache;
 
 class TipoAjusteController extends Controller
@@ -53,6 +53,15 @@ class TipoAjusteController extends Controller
                     $tipoajuste->fillBoolean($data);
                     $tipoajuste->save();
 
+                    // Select multiple && Guardar referencia select multiple
+                    $detalle = isset($data['detalle']) ? $data['detalle'] : null;
+                    foreach ( $detalle as $tipoproducto) {
+                        $tipoajuste2 = new TipoAjuste2;
+                        $tipoajuste2->tipoajuste2_tipoajuste = $tipoajuste->id;
+                        $tipoajuste2->tipoajuste2_tipoproducto = $tipoproducto['tipoproducto'];
+                        $tipoajuste2->save();
+                    }
+
                     // Commit Transaction
                     DB::commit();
 
@@ -60,7 +69,6 @@ class TipoAjusteController extends Controller
                     Cache::forget( TipoAjuste::$key_cache );
                     return response()->json(['success' => true, 'id' => $tipoajuste->id]);
                 } catch (\Exception $e) {
-
                     DB::rollback();
                     Log::error($e->getMessage());
                     return response()->json(['success' => false, 'errors' => trans('app.exception')]);
@@ -82,7 +90,7 @@ class TipoAjusteController extends Controller
         if ($request->ajax()) {
             return response()->json($tipoajuste);
         }
-        return view('inventario.tiposajuste.show',['tipoajuste'=>$tipoajuste]);
+        return view('inventario.tiposajuste.show', ['tipoajuste'=>$tipoajuste]);
     }
 
     /**
@@ -94,7 +102,7 @@ class TipoAjusteController extends Controller
     public function edit($id)
     {
         $tipoajuste = TipoAjuste::findOrFail($id);
-        return view('inventario.tiposajuste.edit',['tipoajuste'=>$tipoajuste]);
+        return view('inventario.tiposajuste.create', ['tipoajuste'=>$tipoajuste]);
     }
 
     /**
@@ -116,6 +124,19 @@ class TipoAjusteController extends Controller
                     $tipoajuste->fill($data);
                     $tipoajuste->fillBoolean($data);
                     $tipoajuste->save();
+
+                    // Select multiple && Guardar referencia select multiple
+                    $detalle = isset($data['detalle']) ? $data['detalle'] : null;
+                    foreach ( $detalle as $tipoproducto) {
+                        // Validar Tipodeporudcto
+                        $validar = TipoAjuste2::where('tipoajuste2_tipoproducto', $tipoproducto['tipoproducto'])->where('tipoajuste2_tipoajuste', $tipoajuste->id)->first();
+                        if( !$validar instanceof TipoAjuste2 ){
+                            $tipoajuste2 = new TipoAjuste2;
+                            $tipoajuste2->tipoajuste2_tipoajuste = $tipoajuste->id;
+                            $tipoajuste2->tipoajuste2_tipoproducto = $tipoproducto['tipoproducto'];
+                            $tipoajuste2->save();
+                        }
+                    }
 
                     // Commit Transaction
                     DB::commit();

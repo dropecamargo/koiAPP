@@ -29,9 +29,11 @@
                     </span>
                     <input id="gestioncomercial_tercero" placeholder="Cliente" class="form-control tercero-koi-component" name="gestioncomercial_tercero" type="text" maxlength="15" data-name="tercero_nombre" value="<%- tercero_nit %>" required>
                 </div>
+                <div class="help-block with-errors"></div>
             </div>
             <div class="col-md-6 col-xs-10">
                 <input id="tercero_nombre" name="tercero_nombre" placeholder="Nombre cliente" class="form-control input-sm" type="text" maxlength="15" value="<%- tercero_nombre %>" readonly required>
+                <div class="help-block with-errors"></div>
             </div>
         </div>
         <div class="row">
@@ -42,6 +44,7 @@
                         <option  value="{{ $key }}">{{ $value }}</option>
                     @endforeach
                 </select>
+                <div class="help-block with-errors"></div>
             </div>
             <label for="gestioncomercial_vendedor" class="col-sm-1 col-md-1 control-label">Vendedor</label>
             <div class="form-group col-sm-5">
@@ -56,6 +59,7 @@
             <label for="gestioncomercial_inicio" class="col-sm-1 control-label">Fecha inicio</label>
             <div class="form-group col-sm-2">
                 <input id="gestioncomercial_inicio" name="gestioncomercial_inicio" class="form-control input-sm datepicker" type="text" value="<%- gestioncomercial_inicio %>" required>
+                <div class="help-block with-errors"></div>
             </div>
             <label for="gestioncomercial_hinicio" class="col-md-1 control-label">Hora inicio</label>
             <div class="form-group col-md-2">
@@ -67,10 +71,12 @@
                         </div>
                     </div>
                 </div>
+                <div class="help-block with-errors"></div>
             </div>
             <label for="gestioncomercial_finalizo" class="col-sm-1 control-label">Fecha finalización</label>
             <div class="form-group col-sm-2">
                 <input id="gestioncomercial_finalizo" name="gestioncomercial_finalizo" class="form-control input-sm datepicker" type="text" value="<%- gestioncomercial_finalizo %>" required>
+                <div class="help-block with-errors"></div>
             </div>
             <label for="gestioncomercial_hfinalizo" class="col-md-1 control-label">Hora finalización</label>
             <div class="form-group col-md-2">
@@ -82,6 +88,7 @@
                         </div>
                     </div>
                 </div>
+                <div class="help-block with-errors"></div>
             </div>
         </div>
         <div class="row">

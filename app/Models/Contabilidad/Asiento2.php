@@ -44,22 +44,10 @@ class Asiento2 extends Model
                 ELSE t.tercero_razonsocial END)
                 AS tercero_nombre"),
             DB::raw("(CASE WHEN asiento2_credito != 0 THEN 'C' ELSE 'D' END) as asiento2_naturaleza")
-            // DB::raw("CONCAT(COALESCE(orden_numero, ''),'-',SUBSTRING(COALESCE(orden_ano,''), -2)) as ordenp_codigo"),
-           //  DB::raw("CONCAT( (CASE WHEN to.tercero_persona = 'N'
-           //              THEN CONCAT(to.tercero_nombre1,' ',to.tercero_nombre2,' ',to.tercero_apellido1,' ',to.tercero_apellido2,
-           //                  (CASE WHEN (to.tercero_razonsocial IS NOT NULL AND to.tercero_razonsocial != '') THEN CONCAT(' - ', to.tercero_razonsocial) ELSE '' END)
-           //              )
-           //              ELSE to.tercero_razonsocial
-           //          END),
-           //      ' (', orden_referencia ,')'
-           // ) AS ordenp_beneficiario")
         );
         $query->join('tercero as t', 'asiento2_beneficiario', '=', 't.id');
         $query->join('plancuentas', 'asiento2_cuenta', '=', 'plancuentas.id');
         $query->leftJoin('centrocosto', 'asiento2_centro', '=', 'centrocosto.id');
-        // Temporal join
-        // $query->leftJoin('ordenproduccion', 'asiento2_ordenp', '=', 'ordenproduccion.id');
-        // $query->leftJoin('tercero as to', 'orden_cliente', '=', 'to.id');
         $query->where('asiento2_asiento', $asiento);
         return $query->get();
     }
@@ -478,14 +466,6 @@ class Asiento2 extends Model
 
             // Recuperar factura
             $facturap = Facturap1::where('facturap1_factura', $request->facturap1_factura)->where('facturap1_tercero', $this->asiento2_beneficiario)->first();
-            // Validar naturaleza
-            // if($request->asiento2_naturaleza == 'D') {
-            //     if(!$facturap instanceof Facturap1) {
-            //         $response->error = 'Para realizar movimientos de naturaleza débito de ingresar un numero de factura existente.';
-            //         return $response;
-            //     }
-            // }
-
             if($facturap instanceof Facturap1) {
                 // En caso de existir factura se afectan cuotas
                 $cuotas = Facturap2::where('facturap2_factura', $facturap->id)->get();
@@ -646,40 +626,9 @@ class Asiento2 extends Model
             $movimiento = new AsientoMovimiento;
             $result = $movimiento->store($this, $datamov);
             if(!$result->success) {
-                dd($result);
                 $response->error = $result->error;
                 return $response;
             }
-
-            // Preparar movimientos hijos
-            // $datamov = [];
-            // $datamov['Tipo'] = 'FH';
-            // $datamov['Nuevo'] = false;
-
-            // Recuperar Factura1 ->Padre
-            // $factura = Factura1::find($request->factura1_orden);
-            // if(!$factura instanceof Factura1){
-            //     $response->error = "No es posible recuperar la factura, por favor verifique la información o consulte al administrador";
-            //     return $response;
-            // }
-
-            // Recuperar Factura4 -> Hijo
-            // $factura4 = Factura4::where('factura4_factura1', $factura->id)->get();
-            // foreach ($factura4 as $item) {
-            //     if($request->has("factura4_pagar_{$item->id}")){
-            //         if($request->get("factura4_pagar_{$item->id}") != 0){
-            //             $datamov['FacturaChild'] = $item->id;
-            //             $datamov['Valor'] = $request->get("factura4_pagar_{$item->id}");
-
-            //             $movimiento = new AsientoMovimiento;
-            //             $result = $movimiento->store($this, $datamov);
-            //             if(!$result->success) {
-            //                 $response->error = $result->error;
-            //                 return $response;
-            //             }
-            //         }
-            //     }
-            // }
         }
 
         $response->success = true;
@@ -713,67 +662,6 @@ class Asiento2 extends Model
 
     public function storeFacturap()
     {
-        // // Recuperar movimientos
-        // $movementsfp = AsientoMovimiento::where('movimiento_asiento2', $this->id)->where('movimiento_tipo', 'FP')->get();
-        // if ($movementsfp->count() <= 0) {
-        //     return "No es posible recuperar movimientos de inventario para la cuenta {$this->plancuentas_cuenta} y tercero {$this->tercero_nit}, id {$this->id}, por favor verifique la información del asiento o consulte al administrador.";
-        // }
-
-        // foreach ($movementsfp as $movefp)
-        // {
-        //     $facturap = Facturap1::where('facturap1_factura', $movefp->movimiento_facturap)->where('facturap1_tercero', $this->asiento2_beneficiario)->first();
-        //     // Nuevo registro en facturap
-        //     if($movefp->movimiento_nuevo == true) {
-        //         if($facturap instanceof Facturap1){
-        //             return "Ya fue generada la factura proveedor número {$facturap->facturap1_factura} para el tercero {$this->tercero_nit}, por favor verifique la información del asiento o consulte al administrador.";
-        //         }
-
-        //         // Facturap
-        //         $facturap = new Facturap1;
-        //         $facturap->facturap1_tercero = $this->asiento2_beneficiario;
-        //         $facturap->facturap1_factura = $movefp->movimiento_facturap;
-        //         $facturap->facturap1_asiento = $this->asiento2_asiento;
-        //         $facturap->facturap1_sucursal = $movefp->movimiento_sucursal;
-        //         $facturap->facturap1_fecha = $movefp->movimiento_fecha;
-        //         $facturap->facturap1_cuotas = $movefp->movimiento_item;
-        //         $facturap->facturap1_periodicidad = $movefp->movimiento_periodicidad;
-        //         $facturap->facturap1_observaciones = $movefp->movimiento_observaciones;
-        //         $facturap->facturap1_usuario_elaboro = Auth::user()->id;
-        //         $facturap->facturap1_fecha_elaboro = date('Y-m-d H:m:s');
-        //         $facturap->save();
-
-        //         // Facturap2 (Cuotas)
-        //         $result = $facturap->storeCuotas($movefp->movimiento_valor);
-        //         if(!$result->success) {
-        //             return $result->error;
-        //         }
-
-        //     }else{
-        //         // Actualizar cuota para facturap
-        //         if(!$facturap instanceof Facturap) {
-        //             return "No es posible recuperar información factura proveedor para la cuenta {$this->plancuentas_cuenta} y tercero {$this->tercero_nit}, id {$this->id}, por favor verifique la información del asiento o consulte al administrador.";
-        //         }
-
-        //         $facturap2 = Facturap2::find($movefp->movimiento_item);
-        //         if(!$facturap2 instanceof Facturap2){
-        //             return "No es posible recuperar información cuota {$movefp->movimiento_item}, por favor verifique la información del asiento o consulte al administrador.";
-        //         }
-
-        //         if($this->asiento2_naturaleza == 'C') {
-        //             // Credito cuota
-        //             $facturap2->facturap2_saldo = ( $facturap2->facturap2_saldo + $movefp->movimiento_valor );
-
-        //         }else if($this->asiento2_naturaleza == 'D') {
-
-        //             // Debito cuota
-        //             $facturap2->facturap2_saldo = ( $facturap2->facturap2_saldo - $movefp->movimiento_valor );
-        //         }else{
-        //             return "No es posible recuperar naturaleza para la afectación de la cuota {$movefp->movimiento_item}, por favor verifique la información del asiento o consulte al administrador.";
-        //         }
-        //         $facturap2->save();
-        //     }
-        // }
-
         return 'OK';
     }
 
@@ -821,29 +709,6 @@ class Asiento2 extends Model
         if(!$movfather instanceof AsientoMovimiento) {
             return "No es posible recuperar movimiento padre de factura para la cuenta {$this->plancuentas_cuenta} y tercero {$this->tercero_nit}, id {$this->id}, por favor verifique la información del asiento o consulte al administrador.";
         }
-
-        // Recuperar hijos de factura FH
-        // $movchildren = $movements->where('movimiento_tipo', 'FH');
-        // if($movchildren->count() <= 0) {
-        //     return "No es posible recuperar movimientos detalle de factura para la cuenta {$this->plancuentas_cuenta} y tercero {$this->tercero_nit}, id {$this->id}, por favor verifique la información del asiento o consulte al administrador.";
-        // }
-
-        // Nuevo registro en factura
-        // if(!$movfather->movimiento_nuevo) {
-
-        //     // Recuperar factura1 -> Padre
-        //     $factura = Factura1::find($movfather->movimiento_factura);
-        //     if(!$factura instanceof Factura1){
-        //         return "No es posible recuperar la factura, por favor verifique la informacion o consulte con el administrador.";
-        //     }
-
-        //     // Actualizar factura4
-        //     $result = $factura->actualizarFactura4($movchildren, $this->asiento2_naturaleza);
-        //     if(!$result->success){
-        //         return $result->error;
-        //     }
-
-        // }
         return 'OK';
     }
 }

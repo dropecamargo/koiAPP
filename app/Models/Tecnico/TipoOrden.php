@@ -39,6 +39,12 @@ class TipoOrden extends BaseModel
             'tipoorden_nombre' => 'required|max:200|unique:tipoorden'
         ];
 
+		if ($this->exists){
+            $rules['tipoorden_nombre'] .= ',tipoorden_nombre,' . $this->id;
+        }else{
+            $rules['tipoorden_nombre'] .= '|required';
+        }
+
         $validator = Validator::make($data, $rules);
         if ($validator->passes()) {
             return true;
@@ -63,4 +69,9 @@ class TipoOrden extends BaseModel
             return $collection;
         });
     }
+
+	public function tipoajuste()
+	{
+		return $this->hasOne('App\Models\Inventario\TipoAjuste', 'id', 'tipoorden_tipoajuste');
+	}
 }

@@ -13,8 +13,11 @@ app || (app = {});
 
         el: '#tipoajuste-create',
         template: _.template( ($('#add-tipoajuste-tpl').html() || '') ),
+        templateDetalle: _.template( ($('#detalle-tipoajuste-tpl').html() || '') ),
         events: {
-            'submit #form-tipoajuste': 'onStore'
+            'click .submit-tipoajuste': 'submitTipoajuste',
+            'submit #form-tipoajuste': 'onStore',
+            'submit #form-detalle-tipoajuste': 'onStoreItem',
         },
 
         /**
@@ -23,11 +26,51 @@ app || (app = {});
         initialize : function() {
             // Attributes
             this.$wraperForm = this.$('#render-form-tipoajuste');
+            this.detalleTipoAjusteList = new app.DetalleTipoAjusteList();
 
             // Events
             this.listenTo( this.model, 'change', this.render );
             this.listenTo( this.model, 'sync', this.responseServer );
             this.listenTo( this.model, 'request', this.loadSpinner );
+        },
+
+        /*
+        * Render View Element
+        */
+        render: function() {
+            var attributes = this.model.toJSON();
+            this.$wraperForm.html( this.template(attributes) );
+            this.$wraperDetalle = this.$('#render-detalle');
+
+            this.$wraperDetalle.html( this.templateDetalle() );
+
+            // References
+            this.$form = this.$('#form-tipoajuste');
+            this.$formItem = this.$('#form-detallle-tipoajuste');
+
+            this.referenceViews();
+            this.ready();
+        },
+
+        /**
+        * reference to views
+        */
+        referenceViews: function () {
+            // Detalle tipoajuste list
+            this.detalleTipoAjusteListView = new app.DetalleTipoAjusteListView({
+                collection: this.detalleTipoAjusteList,
+                parameters: {
+                    wrapper: this.el,
+                    edit: true,
+                    dataFilter: {
+                        tipoajuste: this.model.get('id')
+                    }
+                }
+            });
+        },
+
+        submitTipoajuste: function() {
+            this.$form.submit();
         },
 
         /**
@@ -38,18 +81,21 @@ app || (app = {});
                 e.preventDefault();
 
                 var data = window.Misc.formToJson( e.target );
+                    data.detalle = this.detalleTipoAjusteList.toJSON();
                 this.model.save( data, {patch: true, silent: true} );
             }
         },
 
-        /*
-        * Render View Element
+        /**
+        * Event Create Tipo Ajuste
         */
-        render: function() {
-            var attributes = this.model.toJSON();
-            this.$wraperForm.html( this.template(attributes) );
+        onStoreItem: function (e) {
+            if (!e.isDefaultPrevented()) {
+                e.preventDefault();
 
-            this.ready();
+                var data = window.Misc.formToJson( e.target ) ;
+                this.detalleTipoAjusteList.trigger('store', data);
+            }
         },
 
         /**
@@ -65,6 +111,9 @@ app || (app = {});
 
             if( typeof window.initComponent.initICheck == 'function' )
                 window.initComponent.initICheck();
+
+            if( typeof window.initComponent.initSelect2 == 'function' )
+                window.initComponent.initSelect2();
         },
 
         /**

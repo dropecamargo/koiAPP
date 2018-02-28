@@ -39,6 +39,12 @@ class Solicitante extends BaseModel
             'solicitante_nombre' => 'required|max:200|unique:solicitante'
         ];
 
+        if ($this->exists){
+            $rules['solicitante_nombre'] .= ',solicitante_nombre,' . $this->id;
+        }else{
+            $rules['solicitante_nombre'] .= '|required';
+        }
+
         $validator = Validator::make($data, $rules);
         if ($validator->passes()) {
             return true;

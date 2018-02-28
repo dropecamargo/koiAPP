@@ -45,7 +45,6 @@ class ConceptoComercial extends BaseModel
 			$rules['conceptocom_nombre'] .= '|required';
 		}
 
-
 		$validator = Validator::make($data, $rules);
     	if ($validator->passes()) {
             return true;

@@ -39,6 +39,12 @@ class Dano extends BaseModel
             'dano_nombre' => 'required|max:200|unique:dano'
         ];
 
+		if ($this->exists){
+            $rules['dano_nombre'] .= ',dano_nombre,' . $this->id;
+        }else{
+            $rules['dano_nombre'] .= '|required';
+        }
+
         $validator = Validator::make($data, $rules);
         if ($validator->passes()) {
             return true;

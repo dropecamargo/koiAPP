@@ -68,11 +68,6 @@ class AsientoContableDocumento {
         	$this->asiento_error = "No es posible recuperar información empresa, por favor consulte al administrador.";
 			return;
 		}
-
-        // Validar cierre contable
-		// if( $this->asiento1_fecha <= $empresa->empresa_fecha_contabilidad){
-		// 	$this->asiento_error = 'La fecha que intenta realizar el asiento: '.$this->asiento1_fecha.' no esta PERMITIDA. Es menor a la del cierre contable :'.$empresa->empresa_fecha_contabilidad;
-		// }
 	}
 
 	function asientoCuentas($cuentas = null)
@@ -213,7 +208,7 @@ class AsientoContableDocumento {
 			}
 		}
 		return 'OK';
-	}	
+	}
 
 	public function saldosTerceros(PlanCuenta $cuenta, Tercero $tercero, $naturaleza, $debito = 0, $credito = 0, $xmes, $xano)
 	{
@@ -559,4 +554,3 @@ class AsientoContableDocumento {
         return 'OK';
 	}
 }
-

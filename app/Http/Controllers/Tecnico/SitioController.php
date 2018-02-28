@@ -45,7 +45,6 @@ class SitioController extends Controller
     {
         if ($request->ajax()) {
             $data = $request->all();
-
             $sitio = new Sitio;
             if ($sitio->isValid($data)) {
                 DB::beginTransaction();

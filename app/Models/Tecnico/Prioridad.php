@@ -39,6 +39,12 @@ class Prioridad extends BaseModel
             'prioridad_nombre' => 'required|max:200|unique:prioridad'
         ];
 
+        if ($this->exists){
+            $rules['prioridad_nombre'] .= ',prioridad_nombre,' . $this->id;
+        }else{
+            $rules['prioridad_nombre'] .= '|required';
+        }
+
         $validator = Validator::make($data, $rules);
         if ($validator->passes()) {
             return true;

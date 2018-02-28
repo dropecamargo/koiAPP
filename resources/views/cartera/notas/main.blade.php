@@ -28,11 +28,13 @@
                             <option  value="{{ $key }}" <%- nota1_sucursal == '{{ $key }}' ? 'selected': ''%>>{{ $value }}</option>
                         @endforeach
                         </select>
+                        <div class="help-block with-errors"></div>
                     </div>
 
                     <label for="nota1_numero" class="col-md-1 control-label">Número</label>
                     <div class="form-group col-md-1">
                         <input id="nota1_numero" name="nota1_numero" class="form-control input-sm" type="number" min="1" value="<%- nota1_numero %>" required readonly>
+                        <div class="help-block with-errors"></div>
                     </div>
 
                     <label for="nota1_fecha" class="col-md-1 control-label">Fecha</label>
@@ -56,9 +58,11 @@
                             </span>
                             <input id="nota1_tercero" placeholder="Cliente" class="form-control tercero-koi-component" name="nota1_tercero" type="text" maxlength="15" data-concepto="nota1_conceptonota" data-wrap="wrapper-detalle" data-name="tercero_nombre" value="<%- tercero_nit %>" required>
                         </div>
+                        <div class="help-block with-errors"></div>
                     </div>
                     <div class="col-md-5 col-xs-10">
                         <input id="tercero_nombre" name="tercero_nombre" placeholder="Nombre cliente" class="form-control input-sm" type="text" maxlength="15" value="<%- tercero_nombre %>" readonly required>
+                        <div class="help-block with-errors"></div>
                     </div>
                 </div>
                 <div class="row">
@@ -69,6 +73,7 @@
                                 <option value="{{ $key }}" <%- nota1_conceptonota == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
                             @endforeach
                         </select>
+                        <div class="help-block with-errors"></div>
                     </div>
                 </div>
                 <div class="row">
