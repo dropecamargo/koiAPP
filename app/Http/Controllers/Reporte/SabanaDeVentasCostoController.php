@@ -44,36 +44,31 @@ class SabanaDeVentasCostoController extends Controller
             $regionales = $regionales->get();
 
             // Presupuesto
-            // $query = PresupuestoAsesor::query();
-            // $query->select(DB::raw('SUM(presupuestoasesor_valor) AS valor'), 'presupuestoasesor_regional AS regional', 'presupuestoasesor_linea AS linea', 'grupo.id as grupo',  'subgrupo.id as subgrupo');
-            // $query->join('linea','presupuestoasesor_linea', '=', 'linea.id' );
-            // $query->join('categoria','subcategoria_categoria', '=', 'categoria.id' );
-            // $query->join('linea','categoria_linea', '=', 'linea.id' );
-            // $query->join('unidadnegocio','linea_unidadnegocio', '=', 'unidadnegocio.id' );
-            // $query->groupBy('regional', 'unidadnegocio', 'linea', 'categoria', 'subcategoria');
-            // !$validation ? $query->whereIn('presupuestoasesor_regional', $request->filter_regional) : '';
-            // $presupuestoAux = $query->get();
-            // $presupuesto = [];
-            //
-            // // Prepare array
-            // foreach ($presupuestoAux as $item) {
-            //     $presupuesto = array_merge(array("$item->regional-$item->unidadnegocio-$item->linea-$item->categoria-$item->subcategoria" => $item->valor), $presupuesto);
-            // }
+            $query = PresupuestoAsesor::query();
+            $query->select(DB::raw('SUM(presupuestoasesor_valor) AS valor'), 'presupuestoasesor_regional AS regional', 'configsabanaventa_agrupacion_nombre as agrupacion', 'configsabanaventa_grupo_nombre as grupo', 'configsabanaventa_unificacion_nombre as unificacion');
+            $query->join('configsabanaventa', 'configsabanaventa_linea', '=', 'presupuestoasesor.presupuestoasesor_linea');
+            $query->groupBy('regional', 'agrupacion', 'grupo', 'unificacion');
+            !$validation ? $query->whereIn('presupuestoasesor_regional', $request->filter_regional) : '';
+            $presupuestoAux = $query->get();
+            $presupuesto = [];
+
+            // Prepare array
+            foreach ($presupuestoAux as $item) {
+                $presupuesto = array_merge(array("$item->regional-$item->agrupacion-$item->grupo-$item->unificacion" => $item->valor), $presupuesto);
+            }
+
             // Factura
             $query = Factura1::query();
-            $query->select('regional.id AS regional', 'regional_nombre', 'unidadnegocio.id AS unidadnegocio','unidadnegocio_nombre', 'linea.id AS linea','linea_nombre', 'categoria.id AS categoria','categoria_nombre','subcategoria.id AS subcategoria','subcategoria_nombre',
+            $query->select('regional.id AS regional', 'regional_nombre', 'configsabanaventa_agrupacion_nombre as agrupacion', 'configsabanaventa_grupo_nombre as grupo', 'configsabanaventa_unificacion_nombre as unificacion', 'configsabanaventa_agrupacion', 'configsabanaventa_grupo', 'configsabanaventa_unificacion',
                 DB::raw('SUM(factura2_precio_venta * (factura2_cantidad - factura2_devueltas)) AS ventas'),
                 DB::raw('SUM(factura2_descuento_valor * (factura2_cantidad - factura2_devueltas)) AS descuentos'),
                 DB::raw('SUM(factura2_costo * (factura2_cantidad - factura2_devueltas)) AS costo'));
             $query->join('factura2', 'factura1.id', '=', 'factura2_factura1');
             $query->join('sucursal', 'factura1_sucursal', '=', 'sucursal.id');
             $query->join('regional', 'sucursal_regional', '=', 'regional.id');
-            $query->join('producto', 'factura2_producto', '=', 'producto.id');
-            $query->join('unidadnegocio','producto.producto_unidadnegocio', '=', 'unidadnegocio.id');
-            $query->join('linea','producto.producto_linea', '=', 'linea.id');
-            $query->join('categoria','producto.producto_categoria', '=', 'categoria.id');
-            $query->join('subcategoria', 'producto.producto_subcategoria', '=', 'subcategoria.id');
-            $query->groupBy('regional.id','producto_unidadnegocio', 'producto_linea', 'producto_categoria', 'producto_subcategoria');
+            $query->join('producto', 'producto.id', '=', 'factura2.factura2_producto');
+            $query->join('configsabanaventa', 'configsabanaventa_linea', '=', 'producto.producto_linea');
+            $query->groupBy('regional', 'agrupacion', 'grupo', 'unificacion');
             !$validation ? $query->whereIn('regional.id', $request->filter_regional) : '';
             $facturas = $query->get();
 
@@ -82,18 +77,15 @@ class SabanaDeVentasCostoController extends Controller
 
             // Devolucion
             $query = Devolucion1::query();
-            $query->select('regional.id AS regional', 'regional_nombre', 'unidadnegocio.id AS unidadnegocio','unidadnegocio_nombre', 'linea.id AS linea','linea_nombre', 'categoria.id AS categoria','categoria_nombre','subcategoria.id AS subcategoria','subcategoria_nombre',
+            $query->select('regional.id AS regional', 'regional_nombre', 'configsabanaventa_agrupacion_nombre as agrupacion', 'configsabanaventa_grupo_nombre as grupo', 'configsabanaventa_unificacion_nombre as unificacion', 'configsabanaventa_agrupacion', 'configsabanaventa_grupo', 'configsabanaventa_unificacion',
                 DB::raw('SUM(devolucion2_precio * devolucion2_cantidad) AS devoluciones'),
                 DB::raw('SUM(devolucion2_costo * devolucion2_cantidad) AS costo'));
             $query->join('devolucion2', 'devolucion1.id', '=', 'devolucion2_devolucion1');
             $query->join('sucursal', 'devolucion1_sucursal', '=', 'sucursal.id');
             $query->join('regional', 'sucursal_regional', '=', 'regional.id');
             $query->join('producto', 'devolucion2_producto', '=', 'producto.id');
-            $query->join('unidadnegocio','producto.producto_unidadnegocio', '=', 'unidadnegocio.id');
-            $query->join('linea','producto.producto_linea', '=', 'linea.id');
-            $query->join('categoria','producto.producto_categoria', '=', 'categoria.id');
-            $query->join('subcategoria', 'producto.producto_subcategoria', '=', 'subcategoria.id');
-            $query->groupBy('regional.id','producto_unidadnegocio', 'producto_linea', 'producto_categoria', 'producto_subcategoria');
+            $query->join('configsabanaventa', 'configsabanaventa_linea', '=', 'producto.producto_linea');
+            $query->groupBy('regional', 'agrupacion', 'grupo', 'unificacion');
             !$validation ? $query->whereIn('regional.id', $request->filter_regional) : '';
             $devoluciones = $query->get();
 

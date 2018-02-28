@@ -46,22 +46,21 @@ class AuxReport extends Model
 	    			$referenciaDescuento = $item->regional.'D';
 
 			        $auxReport = new AuxReport;
-			        $auxReport->auxreporte_varchar1 = $item->unidadnegocio_nombre;
-			        $auxReport->auxreporte_varchar2 = $item->linea_nombre;
-			        $auxReport->auxreporte_varchar3 = $item->categoria_nombre;
-			        $auxReport->auxreporte_varchar4 = $item->subcategoria_nombre;
+			        $auxReport->auxreporte_varchar1 = $item->agrupacion;
+			        $auxReport->auxreporte_varchar2 = $item->grupo;
+			        $auxReport->auxreporte_varchar3 = $item->unificacion;
 			        $auxReport->$valuesRegionales[$referenciaVenta] = $item->ventas;
 			    	$auxReport->$valuesRegionales[$referenciaDescuento] = $item->descuentos;
-			        $auxReport->auxreporte_integer1 = $item->unidadnegocio;
-			        $auxReport->auxreporte_integer2 = $item->linea;
-			        $auxReport->auxreporte_integer3 = $item->categoria;
-			        $auxReport->auxreporte_integer4 = $item->subcategoria;
+			        $auxReport->auxreporte_integer1 = $item->configsabanaventa_agrupacion;
+			        $auxReport->auxreporte_integer2 = $item->configsabanaventa_grupo;
+			        $auxReport->auxreporte_integer3 = $item->configsabanaventa_unificacion;
 			        $auxReport->save();
 
-                    if (!isset($arrayCostos["$item->regional_$item->unidadnegocio_$item->linea_$item->categoria_$item->subcategoria"])) {
-                        $arrayCostos["$item->regional-$item->unidadnegocio-$item->linea-$item->categoria-$item->subcategoria"] = $item->costo;
+                    // Register array costos
+                    if (!isset($arrayCostos["$item->regional_$item->configsabanaventa_agrupacion_$item->configsabanaventa_grupo_$item->configsabanaventa_unificacion"])) {
+                        $arrayCostos["$item->regional-$item->configsabanaventa_agrupacion-$item->configsabanaventa_grupo-$item->configsabanaventa_unificacion"] = $item->costo;
                     }else{
-                        $arrayCostos["$item->regional-$item->unidadnegocio-$item->linea_$item->categoria-$item->subcategoria"] += $item->costo;
+                        $arrayCostos["$item->regional-$item->configsabanaventa_agrupacion-$item->configsabanaventa_grupo-$item->configsabanaventa_unificacion"] += $item->costo;
                     }
 	    		}
     		} elseif ($type == 'DEV') {
@@ -71,22 +70,20 @@ class AuxReport extends Model
                     $referenciaDevolucion = $item->regional.'d';
 
                     $auxReport = new AuxReport;
-                    $auxReport->auxreporte_varchar1 = $item->unidadnegocio_nombre;
-                    $auxReport->auxreporte_varchar2 = $item->linea_nombre;
-                    $auxReport->auxreporte_varchar3 = $item->categoria_nombre;
-                    $auxReport->auxreporte_varchar4 = $item->subcategoria_nombre;
+                    $auxReport->auxreporte_varchar1 = $item->agrupacion;
+			        $auxReport->auxreporte_varchar2 = $item->grupo;
+			        $auxReport->auxreporte_varchar3 = $item->unificacion;
                     $auxReport->$valuesRegionales[$referenciaDevolucion] = $item->devoluciones;
-                    $auxReport->auxreporte_integer1 = $item->unidadnegocio;
-                    $auxReport->auxreporte_integer2 = $item->linea;
-                    $auxReport->auxreporte_integer3 = $item->categoria;
-                    $auxReport->auxreporte_integer4 = $item->subcategoria;
+                    $auxReport->auxreporte_integer1 = $item->configsabanaventa_agrupacion;
+                    $auxReport->auxreporte_integer2 = $item->configsabanaventa_grupo;
+                    $auxReport->auxreporte_integer3 = $item->configsabanaventa_unificacion;
                     $auxReport->save();
 
                     // Register array costos
-                    if (!isset($arrayCostos["$item->regional_$item->unidadnegocio_$item->linea_$item->categoria_$item->subcategoria"])) {
-                        $arrayCostos["$item->regional-$item->unidadnegocio-$item->linea-$item->categoria-$item->subcategoria"] = $item->costo;
+                    if (!isset($arrayCostos["$item->regional_$item->configsabanaventa_agrupacion_$item->configsabanaventa_grupo_$item->configsabanaventa_unificacion"])) {
+                        $arrayCostos["$item->regional-$item->configsabanaventa_agrupacion-$item->configsabanaventa_grupo-$item->configsabanaventa_unificacion"] = $item->costo;
                     }else{
-                        $arrayCostos["$item->regional-$item->unidadnegocio-$item->linea_$item->categoria-$item->subcategoria"] += $item->costo;
+                        $arrayCostos["$item->regional-$item->configsabanaventa_agrupacion-$item->configsabanaventa_grupo-$item->configsabanaventa_unificacion"] += $item->costo;
                     }
                 }
     		}
