@@ -18,7 +18,7 @@ class TipoAjuste2 extends Model
     /**
      * Get the attributes for the tipoproducto.
      */
-    public function TipoProducto()
+    public function tipoproducto()
     {
         return $this->hasOne('App\Models\Inventario\TipoProducto', 'id' , 'tipoajuste2_tipoproducto');
     }

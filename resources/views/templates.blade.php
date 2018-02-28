@@ -496,8 +496,8 @@
 						<i class="fa fa-map-signs"></i>
 					</button>
 				</span>
-				<div class="help-block with-errors"></div>
 			</div>
+			<div class="help-block with-errors"></div>
 		</div>
 
     	<div class="form-group col-sm-4">

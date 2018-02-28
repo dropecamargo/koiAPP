@@ -139,11 +139,15 @@ app || (app = {});
         */
         changeTipoAjuste:function(e){
             var _this = this;
-            tiposajuste = _this.$selectTipoAjuste.val();
+                tiposajuste = _this.$selectTipoAjuste.val();
+
             if (!_.isEmpty(tiposajuste)) {
                 $.ajax({
                     type: 'GET',
                     url: window.Misc.urlFull(Route.route('tiposajuste.show',{tiposajuste: tiposajuste})),
+                    data: {
+                        call: 'ajuste'
+                    },
                     beforeSend: function() {
                         window.Misc.setSpinner( _this.el );
                     }
@@ -152,7 +156,7 @@ app || (app = {});
                     window.Misc.removeSpinner( _this.el );
 
                     //Render form detalle ajuste
-                    _this.$divDetalle.empty().html( _this.templateDetailt(resp) );
+                    _this.$divDetalle.empty().html( _this.templateDetailt( resp ) );
 
                     //Hide input lote
                     (resp.tipoajuste_tipo == 'S') ? _this.$('#ajuste1_lotes').hide() : _this.$('#ajuste1_lotes').show();
@@ -166,6 +170,8 @@ app || (app = {});
                     window.Misc.removeSpinner( _this.el );
                     alertify.error(thrownError);
                 });
+            }else{
+                this.$divDetalle.empty();
             }
         },
         /**

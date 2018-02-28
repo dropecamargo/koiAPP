@@ -88,6 +88,10 @@ class TipoAjusteController extends Controller
     {
         $tipoajuste = TipoAjuste::findOrFail($id);
         if ($request->ajax()) {
+            // Recuperar tipoajuste2
+            if($request->has('call')){
+                $tipoajuste->tipoajuste_tipoproducto = $tipoajuste->getTypesProducto()->tipoajuste_tipoproducto;
+            }
             return response()->json($tipoajuste);
         }
         return view('inventario.tiposajuste.show', ['tipoajuste'=>$tipoajuste]);

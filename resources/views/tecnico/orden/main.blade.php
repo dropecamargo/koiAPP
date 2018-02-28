@@ -6,19 +6,274 @@
     @yield ('module')
 
     <script type="text/template" id="add-orden-tpl">
+        <section class="content-header">
+           <h1>
+               Ordenes <small>Administración de ordenes</small>
+           </h1>
+           <ol class="breadcrumb">
+               <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> {{ trans('app.home') }}</a></li>
+               <li><a href="{{ route('ordenes.index') }}">Orden</a></li>
+               <li class="active">Nuevo</li>
+           </ol>
+       </section>
+
+       <section class="content">
+           <div class="box box-primary" id="spinner-main">
+               <div class="box-body">
+                   <form class="form" method="POST" accept-charset="UTF-8" id="form-orden" data-toggle="validator">
+                       <div class="row">
+                           <label for="orden_sucursal" class="col-sm-1 control-label">Sucursal</label>
+                           <div class="form-group col-sm-3">
+                               <select name="orden_sucursal" id="orden_sucursal" class="form-control select2-default change-sucursal-consecutive-koi-component" data-field="orden_numero" data-document ="orden" required>
+                                   @foreach( App\Models\Base\Sucursal::getSucursales() as $key => $value)
+                                       <option  value="{{ $key }}" <%- orden_sucursal == '{{ $key }}' ? 'selected': ''%>>{{ $value }}</option>
+                                   @endforeach
+                               </select>
+                               <div class="help-block with-errors"></div>
+                           </div>
+
+                           <label for="orden_numero" class="col-sm-1 control-label">Número</label>
+                           <div class="form-group col-sm-1 col-md-1">
+                               <input id="orden_numero" name="orden_numero" class="form-control input-sm" type="number" min="1" value="<%- orden_numero %>" required readonly>
+                               <div class="help-block with-errors"></div>
+                           </div>
+
+                           <label for="orden_fecha_servicio" class="col-md-1 control-label">F. Servicio</label>
+                           <div class="form-group col-md-2">
+                               <input type="text" id="orden_fecha_servicio" name="orden_fecha_servicio" class="form-control input-sm datepicker" value="<%- orden_fecha_servicio %>" required>
+                               <div class="help-block with-errors"></div>
+                           </div>
+
+                           <label for="orden_hora_servicio" class="col-md-1 control-label">H. Servicio</label>
+                           <div class="form-group col-md-2">
+                               <div class="bootstrap-timepicker">
+                                   <div class="input-group">
+                                       <input type="text" id="orden_hora_servicio" name="orden_hora_servicio" placeholder="Fecha servicio" class="form-control input-sm timepicker" value="<%- orden_hora_servicio %>" required>
+                                       <div class="input-group-addon">
+                                           <i class="fa fa-clock-o"></i>
+                                       </div>
+                                   </div>
+                               </div>
+                               <div class="help-block with-errors"></div>
+                           </div>
+                       </div>
+
+                       <div class="row">
+                           <label for="orden_tercero" class="col-sm-1 control-label">Cliente</label>
+                           <div class="form-group col-sm-3">
+                               <div class="input-group input-group-sm">
+                                   <span class="input-group-btn">
+                                       <button type="button" class="btn btn-default btn-flat btn-koi-search-tercero-component-table" data-field="orden_tercero">
+                                           <i class="fa fa-user"></i>
+                                       </button>
+                                   </span>
+                                   <input id="orden_tercero" placeholder="Cliente" class="form-control tercero-koi-component" name="orden_tercero" type="text" maxlength="15" data-wrapper="ordenes-create" data-name="tercero_nombre" data-contacto="btn-add-contact" data-activo="true" value="<%- tercero_nit %>" required>
+                               </div>
+                               <div class="help-block with-errors"></div>
+                           </div>
+                           <div class="col-sm-8 col-xs-12">
+                               <input id="tercero_nombre" name="tercero_nombre" placeholder="Nombre cliente" class="form-control input-sm" type="text" maxlength="15" value="<%- tercero_nombre %>" readonly required>
+                           </div>
+                       </div>
+
+                       <div class="row">
+                           <label for="tcontacto_nombre" class="col-sm-1 control-label">Contacto</label>
+                           <div class="form-group col-sm-3 col-xs-10">
+                               <div class="input-group input-group-sm">
+                                   <span class="input-group-btn">
+                                       <button type="button" class="btn btn-default btn-flat btn-koi-search-contacto-component-table" data-field="orden_contacto" data-name="tcontacto_nombre" data-email="tcontacto_email" data-phone="tcontacto_telefono" data-tercero="btn-add-contact">
+                                           <i class="fa fa-address-book"></i>
+                                       </button>
+                                   </span>
+                                   <input id="orden_contacto" name="orden_contacto" type="hidden" value="<%- orden_contacto %>">
+                                   <input id="tcontacto_nombre" placeholder="Contacto" class="form-control" name="tcontacto_nombre" value="<%- tcontacto_nombre %>" type="text" readonly required>
+                               </div>
+                               <div class="help-block with-errors"></div>
+                           </div>
+                           <div class="col-sm-1 col-xs-2">
+                               <button type="button" id="btn-add-contact" class="btn btn-default btn-flat btn-sm btn-add-resource-koi-component" data-resource="contacto" data-field="orden_contacto" data-name="tcontacto_nombre" data-tercero="<%- orden_tercero %>">
+                                   <i class="fa fa-plus"></i>
+                               </button>
+                           </div>
+
+                           <div class="form-group col-sm-3">
+                               <div class="input-group">
+                                   <div class="input-group-addon">
+                                       <i class="fa fa-phone"></i>
+                                   </div>
+                                   <input id="tcontacto_telefono" class="form-control input-sm" placeholder="Telefono" name="tcontacto_telefono" value="<%- tcontacto_telefono %>" type="text" data-inputmask="'mask': '(999) 999-99-99'" data-mask readonly required>
+                               </div>
+                               <div class="help-block with-errors"></div>
+                           </div>
+
+                           <div class="form-group col-sm-4">
+                               <div class="input-group">
+                                   <div class="input-group-addon">
+                                       <i class="fa fa-envelope-o"></i>
+                                   </div>
+                                   <input id="tcontacto_email" class="form-control input-sm" placeholder="Correo" name="tcontacto_email" value="<%- tcontacto_email %>" type="text" readonly required>
+                               </div>
+                               <div class="help-block with-errors"></div>
+                           </div>
+                       </div>
+
+                       <div class="row">
+                           <label for="orden_serie" class="col-sm-1 control-label">Producto</label>
+                           <div class="form-group col-sm-3">
+                               <div class="input-group input-group-sm">
+                                   <span class="input-group-btn">
+                                       <button type="button" class="btn btn-default btn-flat btn-koi-search-producto-component" data-field="orden_serie" >
+                                           <i class="fa fa-barcode"></i>
+                                       </button>
+                                   </span>
+                                   <input id="orden_serie" placeholder="Serie" class="form-control producto-koi-component" name="orden_serie" type="text" maxlength="15" data-wrapper="producto_create" data-tercero="true" data-orden="true" data-name="orden_nombre_producto" value="<%- producto_serie %>">
+                               </div>
+                               <div class="help-block with-errors"></div>
+                           </div>
+                           <div class="col-sm-8 col-xs-12">
+                               <input id="orden_nombre_producto" name="orden_nombre_producto" placeholder="Nombre producto" class="form-control input-sm" type="text" value="<%- producto_nombre %>" readonly>
+                           </div>
+                       </div>
+
+                       <div class="row">
+                           <label for="orden_tecnico" class="col-sm-1 control-label">Tecnico</label>
+                           <div class="form-group col-sm-3">
+                               <div class="input-group input-group-sm">
+                                   <span class="input-group-btn">
+                                       <button type="button" class="btn btn-default btn-flat btn-koi-search-tercero-component-table" data-field="orden_tecnico">
+                                           <i class="fa fa-user"></i>
+                                       </button>
+                                   </span>
+                                   <input id="orden_tecnico" placeholder="Tecnico" class="form-control tercero-koi-component" name="orden_tecnico" type="text" maxlength="15" data-type="tecnico" data-tecnico="true" data-name="orden_tecnico_nombre" value="<%- tecnico_nit %>" required>
+                               </div>
+                               <div class="help-block with-errors"></div>
+                           </div>
+                           <div class="col-sm-8 col-xs-12">
+                               <input id="orden_tecnico_nombre" name="orden_tecnico_nombre" placeholder="Nombre Tecnico" class="form-control input-sm" type="text" maxlength="15" value="<%- tecnico_nombre %>" readonly required>
+                           </div>
+                       </div>
+
+                       <div class="row">
+                           <label for="orden_tipoorden" class="col-sm-1 control-label">Tipo de orden</label>
+                           <div class="form-group col-sm-3">
+                               <select name="orden_tipoorden" id="orden_tipoorden" class="form-control select2-default" required>
+                                   @foreach( App\Models\Tecnico\TipoOrden::getTiposOrden() as $key => $value)
+                                       <option value="{{ $key }}" <%- orden_tipoorden == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
+                                   @endforeach
+                               </select>
+                               <div class="help-block with-errors"></div>
+                           </div>
+                           <div class="form-group col-sm-1 col-xs-1">
+                               <button type="button" class="btn btn-default btn-flat btn-sm btn-add-resource-koi-component" data-resource="tipoorden" data-field="orden_tipoorden">
+                                   <i class="fa fa-plus"></i>
+                               </button>
+                           </div>
+                           <label for="orden_solicitante" class="col-sm-1 control-label">Solicitante</label>
+                           <div class="form-group col-sm-3">
+                               <select name="orden_solicitante" id="orden_solicitante" class="form-control select2-default" required>
+                                   @foreach( App\Models\Tecnico\Solicitante::getSolicitantes() as $key => $value)
+                                       <option value="{{ $key }}" <%- orden_solicitante == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
+                                   @endforeach
+                               </select>
+                               <div class="help-block with-errors"></div>
+                           </div>
+                           <div class="form-group col-sm-1 col-xs-1">
+                               <button type="button" class="btn btn-default btn-flat btn-sm btn-add-resource-koi-component" data-resource="solicitante" data-field="orden_solicitante">
+                                   <i class="fa fa-plus"></i>
+                               </button>
+                           </div>
+                       </div>
+
+                       <div class="row">
+                           <label for="orden_dano" class="col-sm-1 control-label">Daño</label>
+                           <div class="form-group col-sm-3">
+                               <select name="orden_dano" id="orden_dano" class="form-control select2-default" required>
+                                   @foreach( App\Models\Tecnico\Dano::getDanos() as $key => $value)
+                                       <option value="{{ $key }}" <%- orden_dano == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
+                                   @endforeach
+                               </select>
+                               <div class="help-block with-errors"></div>
+                           </div>
+                           <div class="form-group col-sm-1 col-xs-1">
+                               <button type="button" class="btn btn-default btn-flat btn-sm btn-add-resource-koi-component" data-resource="dano" data-field="orden_dano">
+                                   <i class="fa fa-plus"></i>
+                               </button>
+                           </div>
+
+                           <label for="orden_prioridad" class="col-sm-1 control-label">Prioridad</label>
+                           <div class="form-group col-sm-3">
+                               <select name="orden_prioridad" id="orden_prioridad" class="form-control select2-default" required>
+                                   @foreach( App\Models\Tecnico\Prioridad::getPrioridad() as $key => $value)
+                                       <option value="{{ $key }}" <%- orden_prioridad == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
+                                   @endforeach
+                               </select>
+                               <div class="help-block with-errors"></div>
+                           </div>
+                           <div class="form-group col-sm-1 col-xs-1">
+                               <button type="button" class="btn btn-default btn-flat btn-sm btn-add-resource-koi-component" data-resource="prioridad" data-field="orden_prioridad">
+                                   <i class="fa fa-plus"></i>
+                               </button>
+                           </div>
+                       </div>
+
+                       <div class="row">
+                           <label for="orden_sitio" class="col-sm-1 control-label">Sitio de atención</label>
+                           <div class="form-group col-sm-3">
+                               <select name="orden_sitio" id="orden_sitio" class="form-control select2-default" required>
+                                   @foreach( App\Models\Tecnico\Sitio::getSitios() as $key => $value)
+                                       <option value="{{ $key }}" <%- orden_sitio == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
+                                   @endforeach
+                               </select>
+                               <div class="help-block with-errors"></div>
+                           </div>
+                           <div class="form-group col-sm-1 col-xs-1">
+                               <button type="button" class="btn btn-default btn-flat btn-sm btn-add-resource-koi-component" data-resource="sitio" data-field="orden_sitio">
+                                   <i class="fa fa-plus"></i>
+                               </button>
+                           </div>
+                       </div>
+
+                       <div class="row">
+                           <label for="orden_llamo" class="col-sm-1 control-label">Persona</label>
+                           <div class="form-group col-sm-11">
+                               <input id="orden_llamo" type="text" name="orden_llamo" class="form-control" placeholder="Persona" value="<%- orden_llamo %>">
+                               <div class="help-block with-errors"></div>
+                           </div>
+                       </div>
+
+                       <div class="row">
+                           <label for="orden_problema" class="col-sm-1 control-label">Problema</label>
+                           <div class="form-group col-sm-11">
+                               <textarea id="orden_problema" name="orden_problema" class="form-control" rows="2" placeholder="Problema ..."><%- orden_problema %></textarea>
+                           </div>
+                       </div>
+                   </form>
+               </div>
+
+               <div class="box-footer with-border">
+                   <div class="row">
+                       <div class="col-sm-2 col-sm-offset-4 col-xs-6">
+                           <a href="{{ route('ordenes.index') }}" class="btn btn-default btn-sm btn-block">{{ trans('app.cancel') }}</a>
+                       </div>
+                       <div class="col-sm-2 col-xs-6">
+                           <button type="button" class="btn btn-primary btn-sm btn-block submit-orden">{{ trans('app.create') }}</button>
+                       </div>
+                   </div>
+               </div>
+           </div>
+       </section>
+    </script>
+
+    <script type="text/template" id="edit-orden-tpl">
          <section class="content-header">
             <h1>
                 Ordenes <small>Administración de ordenes</small>
             </h1>
             <ol class="breadcrumb">
                 <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> {{ trans('app.home') }}</a></li>
-                    <li><a href="{{ route('ordenes.index') }}">Orden</a></li>
-                <% if( !_.isUndefined(edit) && !_.isNull(edit) && edit) { %>
-                    <li><a href="<%- window.Misc.urlFull( Route.route('ordenes.show', { ordenes: id}) ) %>"><%- id %></a></li>
-                    <li class="active">Editar</li>
-                <% }else{ %>
-                    <li class="active">Nuevo</li>
-                <% } %>
+                <li><a href="{{ route('ordenes.index') }}">Orden</a></li>
+                <li><a href="<%- window.Misc.urlFull( Route.route('ordenes.show', { ordenes: id}) ) %>"><%- id %></a></li>
+                <li class="active">Editar</li>
             </ol>
         </section>
 
@@ -37,6 +292,7 @@
                                     <li><a href="#tab_cierre" data-toggle="tab">Cierre</a></li>
                                 <% } %>
                             </ul>
+
                             <div class="tab-content" >
                                 {{-- Content orden --}}
                                 <div class="tab-pane active" id="tab_orden">
@@ -44,147 +300,49 @@
                                         <div class="box-body">
                                             <form method="POST" accept-charset="UTF-8" id="form-orden" data-toggle="validator">
                                                 <div class="row">
-                                                    <% if( !_.isUndefined(edit) && !_.isNull(edit) && !edit ) { %>
-                                                        <label for="orden_sucursal" class="col-sm-1 col-md-1 control-label">Sucursal</label>
-                                                        <div class="form-group col-sm-3">
-                                                            <select name="orden_sucursal" id="orden_sucursal" class="form-control select2-default change-sucursal-consecutive-koi-component" data-field="orden_numero" data-wrapper="tab_orden" data-document ="orden">
-                                                                @foreach( App\Models\Base\Sucursal::getSucursales() as $key => $value)
-                                                                    <option  value="{{ $key }}" <%- orden_sucursal == '{{ $key }}' ? 'selected': ''%>>{{ $value }}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                        <label for="orden_numero" class="col-sm-1 col-md-1 control-label">Número</label>
-                                                        <div class="form-group col-sm-1 col-md-1">
-                                                            <input id="orden_numero" name="orden_numero" class="form-control input-sm" type="number" min="1" value="<%- orden_numero %>" required readonly>
-                                                        </div>
-                                                        <label for="orden_fecha_servicio" class="col-md-1 control-label">F. Servicio</label>
-                                                        <div class="form-group col-md-2">
-                                                            <input type="text" id="orden_fecha_servicio" name="orden_fecha_servicio" class="form-control input-sm datepicker" value="<%- orden_fecha_servicio %>" required>
-                                                        </div>
-                                                        <label for="orden_hora_servicio" class="col-md-1 control-label">H. Servicio</label>
-                                                        <div class="form-group col-md-2">
-                                                            <div class="bootstrap-timepicker">
-                                                                <div class="input-group">
-                                                                    <input type="text" id="orden_hora_servicio" name="orden_hora_servicio" placeholder="Fecha servicio" class="form-control input-sm timepicker" value="<%- orden_hora_servicio %>" required>
-                                                                    <div class="input-group-addon">
-                                                                        <i class="fa fa-clock-o"></i>
-                                                                    </div>
+                                                    <div class="col-sm-2">
+                                                        <label>Sucursal</label>
+                                                        <div><%- sucursal_nombre %></div>
+                                                    </div>
+                                                    <div class="col-sm-2">
+                                                        <label>Número</label>
+                                                        <div><%- orden_numero %></div>
+                                                    </div>
+                                                    <div class="form-group col-sm-2">
+                                                        <label for="orden_fecha_servicio" class="control-label">F. Servicio</label>
+                                                        <input type="text" id="orden_fecha_servicio" name="orden_fecha_servicio" class="form-control input-sm datepicker" value="<%- orden_fecha_servicio %>" required>
+                                                    </div>
+                                                    <div class="form-group col-md-2">
+                                                        <label for="orden_hora_servicio" class="control-label">H. Servicio</label>
+                                                        <div class="bootstrap-timepicker">
+                                                            <div class="input-group">
+                                                                <input type="text" id="orden_hora_servicio" name="orden_hora_servicio" placeholder="Fecha servicio" class="form-control input-sm timepicker" value="<%- orden_hora_servicio %>" required>
+                                                                <div class="input-group-addon">
+                                                                    <i class="fa fa-clock-o"></i>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    <% }else{ %>
-                                                        <div class="form-group col-sm-2">
-                                                            <label class="control-label">Sucursal</label>
-                                                            <div><%- sucursal_nombre %></div>
-                                                        </div>
-                                                        <div class="form-group col-sm-2">
-                                                            <label class="control-label">Número</label>
-                                                            <div><%- orden_numero %></div>
-                                                        </div>
-                                                        <div class="form-group col-sm-2">
-                                                            <label for="orden_fecha_servicio" class="control-label">F. Servicio</label>
-                                                            <input type="text" id="orden_fecha_servicio" name="orden_fecha_servicio" class="form-control input-sm datepicker" value="<%- orden_fecha_servicio %>" required>
-                                                        </div>
-                                                        <div class="form-group col-md-2">
-                                                            <label for="orden_hora_servicio" class="control-label">H. Servicio</label>
-                                                            <div class="bootstrap-timepicker">
-                                                                <div class="input-group">
-                                                                    <input type="text" id="orden_hora_servicio" name="orden_hora_servicio" placeholder="Fecha servicio" class="form-control input-sm timepicker" value="<%- orden_hora_servicio %>" required>
-                                                                    <div class="input-group-addon">
-                                                                        <i class="fa fa-clock-o"></i>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    <% } %>
+                                                    </div>
                                                 </div>
 
-                                                <% if( !_.isUndefined(edit) && !_.isNull(edit) && !edit ) { %>
-                                                    <div class="row">
-                                                        <label for="orden_tercero" class="col-md-1 control-label">Cliente</label>
-                                                        <div class="form-group col-md-3">
-                                                            <div class="input-group input-group-sm">
-                                                                <span class="input-group-btn">
-                                                                    <button type="button" class="btn btn-default btn-flat btn-koi-search-tercero-component-table" data-field="orden_tercero">
-                                                                        <i class="fa fa-user"></i>
-                                                                    </button>
-                                                                </span>
-                                                                <input id="orden_tercero" placeholder="Cliente" class="form-control tercero-koi-component" name="orden_tercero" type="text" maxlength="15" data-wrapper="ordenes-create" data-name="tercero_nombre" data-contacto="btn-add-contact" data-activo="true" value="<%- tercero_nit %>" required>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-8 col-xs-12">
-                                                            <input id="tercero_nombre" name="tercero_nombre" placeholder="Nombre cliente" class="form-control input-sm" type="text" maxlength="15" value="<%- tercero_nombre %>" readonly required>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <label for="tcontacto_nombre" class="col-sm-1 control-label">Contacto</label>
-                                                        <div class="form-group col-md-3 col-sm-2 col-xs-10">
-                                                            <div class="input-group input-group-sm">
-                                                                <span class="input-group-btn">
-                                                                    <button type="button" class="btn btn-default btn-flat btn-koi-search-contacto-component-table" data-field="orden_contacto" data-name="tcontacto_nombre" data-email="tcontacto_email" data-phone="tcontacto_telefono" data-tercero="btn-add-contact">
-                                                                        <i class="fa fa-address-book"></i>
-                                                                    </button>
-                                                                </span>
-                                                                <input id="orden_contacto" name="orden_contacto" type="hidden" value="<%- orden_contacto %>">
-                                                                <input id="tcontacto_nombre" placeholder="Contacto" class="form-control" name="tcontacto_nombre" value="<%- tcontacto_nombre %>" type="text" readonly required>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-sm-1 col-md-1 col-xs-2">
-                                                            <button type="button" id="btn-add-contact" class="btn btn-default btn-flat btn-sm btn-add-resource-koi-component" data-resource="contacto" data-field="orden_contacto" data-name="tcontacto_nombre" data-tercero="<%- orden_tercero %>">
-                                                                <i class="fa fa-plus"></i>
-                                                            </button>
-                                                        </div>
-
-                                                        <div class="form-group col-sm-3">
-                                                            <div class="input-group">
-                                                                <div class="input-group-addon">
-                                                                    <i class="fa fa-phone"></i>
-                                                                </div>
-                                                                <input id="tcontacto_telefono" class="form-control input-sm" placeholder="Telefono" name="tcontacto_telefono" value="<%- tcontacto_telefono %>" type="text" data-inputmask="'mask': '(999) 999-99-99'" data-mask readonly required>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="form-group col-sm-4">
-                                                            <div class="input-group">
-                                                                <div class="input-group-addon">
-                                                                    <i class="fa fa-envelope-o"></i>
-                                                                </div>
-                                                                <input id="tcontacto_email" class="form-control input-sm" placeholder="Correo" name="tcontacto_email" value="<%- tcontacto_email %>" type="text" readonly required>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                <% }else{ %>
-                                                    <div class="row">
-                                                        <div class="form-group col-md-6">
-                                                            <label class="control-label">Tercero</label>
-                                                            <div>
-                                                                Documento: <%- tercero_nit %>
-                                                                <br>
-                                                                Nombre: <%- tercero_nombre %>
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group col-md-6">
-                                                            <label class="control-label">Contacto</label>
-                                                            <div>
-                                                                Nombre: <%- tcontacto_nombre %>
-                                                                <br>
-                                                                Telefono: <%- tcontacto_telefono %>
-                                                                <br>
-                                                                Correo: <%- tcontacto_email %>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                <% } %>
-
-                                                {{--producto--}}
                                                 <div class="row">
-                                                    <% if( !_.isUndefined(edit) && !_.isNull(edit) && !edit ) { %>
-                                                        <label for="orden_fecha" class="col-md-1 control-label">Producto</label>
-                                                        <div class="form-group col-md-3">
-                                                    <% }else{ %>
-                                                        <div class="form-group col-md-3">
-                                                            <label for="orden_fecha" class="control-label">Producto</label>
-                                                    <% } %>
+                                                    <div class="col-md-6">
+                                                        <label>Tercero</label>
+                                                        <div>
+                                                            <%- tercero_nombre %> <br> Documento: <a href="<%- window.Misc.urlFull( Route.route('terceros.show', {terceros: orden_tercero } )) %>"><%- tercero_nit %> </a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label>Contacto</label>
+                                                        <div>
+                                                            <%- tcontacto_nombre %> <br> Telefono: <%- tcontacto_telefono %> <br> Correo: <%- tcontacto_email %>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="form-group col-md-3">
+                                                        <label for="orden_fecha" class="control-label">Producto</label>
                                                         <div class="input-group input-group-sm">
                                                             <span class="input-group-btn">
                                                                 <button type="button" class="btn btn-default btn-flat btn-koi-search-producto-component" data-field="orden_serie" >
@@ -194,172 +352,67 @@
                                                             <input id="orden_serie" placeholder="Serie" class="form-control producto-koi-component" name="orden_serie" type="text" maxlength="15" data-wrapper="producto_create" data-tercero="true" data-orden="true" data-name="orden_nombre_producto" value="<%- producto_serie %>">
                                                         </div>
                                                     </div>
-                                                    <div class="<%- edit ? 'col-md-5' : 'col-md-8' %> col-xs-12">
-                                                        <% if( edit ) { %>
-                                                            <br>
-                                                        <% } %>
+                                                    <div class="col-md-5 col-xs-12"><br>
                                                         <input id="orden_nombre_producto" name="orden_nombre_producto" placeholder="Nombre producto" class="form-control input-sm" type="text" value="<%- producto_nombre %>" readonly>
                                                     </div>
                                                 </div>
 
-                                                <% if( !_.isUndefined(edit) && !_.isNull(edit) && !edit ) { %>
-                                                    {{--tecnico--}}
-                                                    <div class="row">
-                                                        <label for="orden_tecnico" class="col-md-1 control-label">Tecnico</label>
-                                                        <div class="form-group col-md-3">
-                                                            <div class="input-group input-group-sm">
-                                                                <span class="input-group-btn">
-                                                                    <button type="button" class="btn btn-default btn-flat btn-koi-search-tercero-component-table" data-field="orden_tecnico">
-                                                                        <i class="fa fa-user"></i>
-                                                                    </button>
-                                                                </span>
-                                                                <input id="orden_tecnico" placeholder="Tecnico" class="form-control tercero-koi-component" name="orden_tecnico" type="text" maxlength="15" data-type="tecnico" data-tecnico="true" data-name="orden_tecnico_nombre" value="<%- tecnico_nit %>" required>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-8 col-xs-12">
-                                                            <input id="orden_tecnico_nombre" name="orden_tecnico_nombre" placeholder="Nombre Tecnico" class="form-control input-sm" type="text" maxlength="15" value="<%- tecnico_nombre %>" readonly required>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <label>Tecnico</label>
+                                                        <div>
+                                                            <%- tecnico_nombre %> <br> Documento: <a href="<%- window.Misc.urlFull( Route.route('terceros.show', {terceros: orden_tecnico } )) %>"><%- tecnico_nit %></a>
                                                         </div>
                                                     </div>
-                                                    {{--selects--}}
-                                                    <div class="row">
-                                                        <label for="orden_tipoorden" class="col-md-1 col-xs-12 control-label">Tipo</label>
-                                                        <div class="form-group col-md-3 col-xs-11">
-                                                            <select name="orden_tipoorden" id="orden_tipoorden" class="form-control select2-default" required>
-                                                                @foreach( App\Models\Tecnico\TipoOrden::getTiposOrden() as $key => $value)
-                                                                    <option value="{{ $key }}" <%- orden_tipoorden == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                        <div class="form-group col-md-1 col-xs-1">
-                                                            <button type="button" class="btn btn-default btn-flat btn-sm btn-add-resource-koi-component" data-resource="tipoorden" data-field="orden_tipoorden">
-                                                                <i class="fa fa-plus"></i>
-                                                            </button>
-                                                        </div>
-                                                        <label for="orden_solicitante" class="col-md-1 col-xs-12 control-label">Solicitante</label>
-                                                        <div class="form-group col-md-3 col-xs-11">
-                                                            <select name="orden_solicitante" id="orden_solicitante" class="form-control select2-default" required>
-                                                                @foreach( App\Models\Tecnico\Solicitante::getSolicitantes() as $key => $value)
-                                                                    <option value="{{ $key }}" <%- orden_solicitante == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                        <div class="form-group col-md-1 col-xs-1">
-                                                            <button type="button" class="btn btn-default btn-flat btn-sm btn-add-resource-koi-component" data-resource="solicitante" data-field="orden_solicitante">
-                                                                <i class="fa fa-plus"></i>
-                                                            </button>
-                                                        </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <label>Daño</label>
+                                                        <div><%- dano_nombre %></div>
                                                     </div>
-                                                    <div class="row">
-                                                        <label for="orden_dano" class="col-md-1 col-xs-12 control-label">Daño</label>
-                                                        <div class="form-group col-md-3 col-xs-11">
-                                                            <select name="orden_dano" id="orden_dano" class="form-control select2-default" required>
-                                                                @foreach( App\Models\Tecnico\Dano::getDanos() as $key => $value)
-                                                                    <option value="{{ $key }}" <%- orden_dano == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                        <div class="form-group col-md-1 col-xs-1">
-                                                            <button type="button" class="btn btn-default btn-flat btn-sm btn-add-resource-koi-component" data-resource="dano" data-field="orden_dano">
-                                                                <i class="fa fa-plus"></i>
-                                                            </button>
-                                                        </div>
-                                                        <label for="orden_prioridad" class="col-md-1 col-xs-12 control-label">Prioridad</label>
-                                                        <div class="form-group col-md-3 col-xs-11">
-                                                            <select name="orden_prioridad" id="orden_prioridad" class="form-control select2-default" required>
-                                                                @foreach( App\Models\Tecnico\Prioridad::getPrioridad() as $key => $value)
-                                                                    <option value="{{ $key }}" <%- orden_prioridad == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                        <div class="form-group col-md-1 col-xs-1">
-                                                            <button type="button" class="btn btn-default btn-flat btn-sm btn-add-resource-koi-component" data-resource="prioridad" data-field="orden_prioridad">
-                                                                <i class="fa fa-plus"></i>
-                                                            </button>
-                                                        </div>
+                                                    <div class="col-md-3">
+                                                        <label>Solicitante</label>
+                                                        <div><%- solicitante_nombre %></div>
                                                     </div>
-                                                    <div class="row">
-                                                        <label for="orden_sitio" class="col-md-1 col-xs-12 control-label">Sitio de atención</label>
-                                                        <div class="form-group col-md-3 col-xs-11">
-                                                            <select name="orden_sitio" id="orden_sitio" class="form-control select2-default" required>
-                                                                @foreach( App\Models\Tecnico\Sitio::getSitios() as $key => $value)
-                                                                    <option value="{{ $key }}" <%- orden_sitio == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                        <div class="form-group col-md-1 col-xs-1">
-                                                            <button type="button" class="btn btn-default btn-flat btn-sm btn-add-resource-koi-component" data-resource="sitio" data-field="orden_sitio">
-                                                                <i class="fa fa-plus"></i>
-                                                            </button>
-                                                        </div>
+                                                    <div class="col-md-3">
+                                                        <label>Tipo</label>
+                                                        <div><%- tipoorden_nombre %></div>
                                                     </div>
-                                                    <div class="row">
-                                                        <label for="orden_llamo" class="col-md-1 control-label">Persona</label>
-                                                        <div class="form-group col-md-11">
-                                                            <input id="orden_llamo" type="text" name="orden_llamo" class="form-control" placeholder="Persona" value="<%- orden_llamo %>">
-                                                        </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <label>Prioridad</label>
+                                                        <div><%- prioridad_nombre %></div>
                                                     </div>
-                                                    <div class="row">
-                                                        <label for="orden_problema" class="col-md-1 control-label">Problema</label>
-                                                        <div class="form-group col-md-11">
-                                                            <textarea id="orden_problema" name="orden_problema" class="form-control" rows="2" placeholder="Problema ..."><%- orden_problema %></textarea>
-                                                        </div>
+                                                    <div class="col-md-3">
+                                                        <label>Sitio de atención</label>
+                                                        <div><%- sitio_nombre %></div>
                                                     </div>
-                                                <% } else { %>
-                                                    <div class="row">
-                                                        <div class="form-group col-md-12">
-                                                            <label class="control-label">Tecnico</label>
-                                                            <div>
-                                                                Documento: <%- tecnico_nit %>
-                                                                <br>
-                                                                Nombre: <%- tecnico_nombre %>
-                                                            </div>
-                                                        </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <label> Problema </label>
+                                                        <div><%- orden_problema %></div>
                                                     </div>
-                                                    <div class="row">
-                                                        <div class="form-group col-md-3">
-                                                            <label class="control-label">Daño</label>
-                                                            <div> <%- dano_nombre %> </div>
-                                                        </div>
-                                                        <div class="form-group col-md-3">
-                                                            <label class="control-label">Solicitante</label>
-                                                            <div> <%- solicitante_nombre %> </div>
-                                                        </div>
-                                                        <div class="form-group col-md-3">
-                                                            <label class="control-label">Tipo</label>
-                                                            <div> <%- tipoorden_nombre %> </div>
-                                                        </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <label> Persona </label>
+                                                        <div><%- orden_llamo %></div>
                                                     </div>
-                                                    <div class="row">
-                                                        <div class="form-group col-md-3">
-                                                            <label class="control-label">Prioridad</label>
-                                                            <div> <%- prioridad_nombre %> </div>
-                                                        </div>
-                                                        <div class="form-group col-md-3">
-                                                            <label class="control-label">Sitio de atención</label>
-                                                            <div> <%- sitio_nombre %> </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-3">
-                                                            <label class="control-label"> Problema </label>
-                                                            <div> <%- orden_problema %> </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-3">
-                                                            <label class="control-label"> Persona </label>
-                                                            <div> <%- orden_llamo %> </div>
-                                                        </div>
-                                                    </div>
-                                                <% } %>
+                                                </div>
                                             </form>
 
                                             <div class="box-footer with-border">
                                                 <div class="row">
-                                                    <div class="col-md-2 col-md-offset-4 col-sm-6 col-xs-6">
+                                                    <div class="col-sm-2 col-sm-offset-4 col-xs-6">
                                                         <a href="{{ route('ordenes.index') }}" class="btn btn-default btn-sm btn-block">{{ trans('app.cancel') }}</a>
                                                     </div>
-                                                    <div class="col-md-2 col-sm-6 col-xs-6">
+                                                    <div class="col-sm-2 col-xs-6">
                                                         <button type="button" class="btn btn-primary btn-sm btn-block submit-orden">{{ trans('app.save') }}</button>
                                                     </div>
                                                 </div>
@@ -383,7 +436,7 @@
                                                                         <i class="fa fa-user"></i>
                                                                     </button>
                                                                 </span>
-                                                                <input id="visita_tercero" placeholder="Cliente" class="form-control tercero-koi-component" name="visita_tercero" type="text" maxlength="15" data-wrapper="ordenes-create" data-type="tecnico" data-name="visita_terecero_nombre" data-contacto="btn-add-contact" value="<%- tecnico_nit%>" required>
+                                                                <input id="visita_tercero" placeholder="Cliente" class="form-control tercero-koi-component" name="visita_tercero" type="text" maxlength="15" data-wrapper="ordenes-create" data-type="tecnico" data-tecnico="true" data-name="visita_terecero_nombre" data-contacto="btn-add-contact" value="<%- tecnico_nit%>" required>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-5 col-xs-10">
@@ -493,7 +546,7 @@
                                                             <label for="remrempu1_tecnico" class="control-label">Tecnico</label>
                                                             <select name="remrempu1_tecnico" id="remrempu1_tecnico" class="form-control select2-default-clear" required>
                                                                 @foreach( App\Models\Base\Tercero::getTechnicals() as $key => $value)
-                                                                <option  value="{{ $key }}">{{ $value }}</option>
+                                                                    <option  value="{{ $key }}">{{ $value }}</option>
                                                                 @endforeach
                                                             </select>
                                                         </div>
@@ -502,7 +555,7 @@
                                                             <label for="remrempu1_sucursal" class="control-label">Sucursal</label>
                                                             <select name="remrempu1_sucursal" id="remrempu1_sucursal" class="form-control select2-default-clear" required>
                                                                 @foreach( App\Models\Base\Sucursal::getSucursales() as $key => $value)
-                                                                <option  value="{{ $key }}">{{ $value }}</option>
+                                                                    <option  value="{{ $key }}">{{ $value }}</option>
                                                                 @endforeach
                                                             </select>
                                                         </div>

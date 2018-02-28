@@ -6,11 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
-use App\Models\Base\Tercero, App\Models\Base\Documentos, App\Models\Base\Sucursal, App\Models\Base\Regional, App\Models\Base\Contacto,App\Models\Base\PuntoVenta;
-use App\Models\Tecnico\Orden, App\Models\Tecnico\Sitio, App\Models\Tecnico\Visita, App\Models\Tecnico\RemRepu, App\Models\Tecnico\RemRepu2;
-use App\Models\Inventario\Producto, App\Models\Inventario\Linea, App\Models\Inventario\Lote, App\Models\Inventario\Prodbode, App\Models\Inventario\Inventario, App\Models\Inventario\Rollo;
-use App\Models\Cartera\Factura1, App\Models\Cartera\Factura2, App\Models\Cartera\Factura3;
+use App\Models\Base\Tercero, App\Models\Base\Documentos, App\Models\Base\Sucursal, App\Models\Base\Regional, App\Models\Base\Contacto ,App\Models\Base\PuntoVenta, App\Models\Tecnico\Orden, App\Models\Tecnico\TipoOrden, App\Models\Tecnico\Solicitante, App\Models\Tecnico\Dano, App\Models\Tecnico\Prioridad, App\Models\Tecnico\Sitio, App\Models\Tecnico\Visita, App\Models\Tecnico\RemRepu, App\Models\Tecnico\RemRepu2, App\Models\Inventario\Producto, App\Models\Inventario\Linea, App\Models\Cartera\Factura1, App\Models\Cartera\Factura2, App\Models\Cartera\Factura3;
 use DB, Log, Datatables, Auth, Mail, App, View;
 
 class OrdenController extends Controller
@@ -106,37 +102,71 @@ class OrdenController extends Controller
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar documentos,por favor verifique la información ó por favor consulte al administrador.']);
                     }
+
                     // Recupero instancia de sucursal
                     $sucursal = Sucursal::find($request->orden_sucursal);
                     if (!$sucursal instanceof Sucursal) {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar sucursal,por favor verifique la información ó por favor consulte al administrador.']);
                     }
+
                     //  Recupero instancia de regional
                     $regional = Regional::find($sucursal->sucursal_regional);
                     if (!$regional instanceof Regional) {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar regional,por favor verifique la información ó por favor consulte al administrador.']);
                     }
+
                     // Recupero instancia Tercero(Tecnico)
                     $tecnico = Tercero::where('tercero_nit', $request->orden_tecnico)->first();
                     if(!$tecnico instanceof Tercero) {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar datos del tecnico, por favor verifique la información o consulte al administrador.']);
                     }
+
                     // Recupero instancia Tercero(cliente)
                     $tercero = Tercero::where('tercero_nit', $request->orden_tercero)->first();
                     if(!$tercero instanceof Tercero) {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar datos del cliente, por favor verifique la información o consulte al administrador.']);
                     }
+
                     // Recuperar contacto
                     $contacto = Contacto::find($request->orden_contacto);
                     if(!$contacto instanceof Contacto) {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar contacto, por favor verifique la información o consulte al administrador.']);
                     }
-                    // Recuperar sitio
+
+                    // Recuperar TipoOrden
+                    $tipoorden = TipoOrden::find($request->orden_tipoorden);
+                    if(!$tipoorden instanceof TipoOrden) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar tipo de orden, por favor verifique la información o consulte al administrador.']);
+                    }
+
+                    // Recuperar Solicitante
+                    $solicitante = Solicitante::find($request->orden_solicitante);
+                    if(!$solicitante instanceof Solicitante) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar solicitante, por favor verifique la información o consulte al administrador.']);
+                    }
+
+                    // Recuperar Daño
+                    $dano = Dano::find($request->orden_dano);
+                    if(!$dano instanceof Dano) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar daño, por favor verifique la información o consulte al administrador.']);
+                    }
+
+                    // Recuperar Prioridad
+                    $prioridad = Prioridad::find($request->orden_prioridad);
+                    if(!$prioridad instanceof Prioridad) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar prioridad, por favor verifique la información o consulte al administrador.']);
+                    }
+
+                    // Recuperar Sitio
                     $sitio = Sitio::find($request->orden_sitio);
                     if(!$sitio instanceof Sitio) {
                         DB::rollback();
@@ -170,9 +200,14 @@ class OrdenController extends Controller
                     $orden->orden_numero = $consecutive;
                     $orden->orden_tercero = $tercero->id;
                     $orden->orden_contacto = $contacto->id;
+                    $orden->orden_tipoorden = $tipoorden->id;
+                    $orden->orden_solicitante = $solicitante->id;
+                    $orden->orden_dano = $dano->id;
+                    $orden->orden_prioridad = $prioridad->id;
                     $orden->orden_sitio = $sitio->id;
                     $orden->orden_tecnico = $tecnico->id;
                     $orden->orden_documentos = $documento->id;
+                    $orden->orden_abierta = true;
                     $orden->orden_usuario_elaboro = Auth::user()->id;
                     $orden->orden_fh_elaboro = date('Y-m-d H:m:s');
                     $orden->save();

@@ -87,6 +87,13 @@ class ProductoController extends Controller
                         $query->where('producto_vence', false);
                         $query->where('producto_unidad', false);
                     }
+
+                    // Type
+                    if( $request->has('type')) {
+                        $query->addSelect('tipoproducto_codigo');
+                        $query->join('tipoproducto', 'producto.producto_tipoproducto', '=', 'tipoproducto.id');
+                        $query->whereIn('tipoproducto_codigo', explode(',', $request->type));
+                    }
                 })
                 ->make(true);
         }

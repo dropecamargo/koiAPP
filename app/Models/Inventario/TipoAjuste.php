@@ -3,8 +3,8 @@
 namespace App\Models\Inventario;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\BaseModel;
-use Validator,Cache;
+use App\Models\BaseModel, App\Models\Inventario\TipoAjuste2;
+use Validator, Cache, DB;
 
 class TipoAjuste extends BaseModel
 {
@@ -81,4 +81,13 @@ class TipoAjuste extends BaseModel
             return $collection;
         });
     }
+
+	public function getTypesProducto()
+	{
+		$query = TipoAjuste2::query();
+		$query->select(DB::raw("GROUP_CONCAT(tipoproducto_codigo SEPARATOR ',') AS tipoajuste_tipoproducto"));
+		$query->join('tipoproducto', 'tipoajuste2_tipoproducto', '=', 'tipoproducto.id');
+		$query->where('tipoajuste2_tipoajuste', $this->id);
+		return $query->first();
+	}
 }

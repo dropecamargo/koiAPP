@@ -136,7 +136,7 @@
                                     <i class="fa fa-barcode"></i>
                                 </button>
                             </span>
-                            <input id="producto_serie" placeholder="Serie" class="form-control producto-koi-component" name="producto_serie" type="text" maxlength="15" data-wrapper="ajuste-create" data-office= "ajuste1_sucursal" data-name="producto_nombre" required <%- tipoajuste_tipo=='S' || tipoajuste_tipo=='R' ? 'data-costo=ajuste2_costo': '' %> <%- tipoajuste_tipo=='S' ?  'data-ref=false' : 'data-ref=true' %>>
+                            <input id="producto_serie" placeholder="Serie" class="form-control producto-koi-component" name="producto_serie" type="text" maxlength="15" data-wrapper="ajuste-create" data-office= "ajuste1_sucursal" data-name="producto_nombre" data-type="<%- tipoajuste_tipoproducto %>" required <%- tipoajuste_tipo=='S' || tipoajuste_tipo=='R' ? 'data-costo=ajuste2_costo': '' %> <%- tipoajuste_tipo=='S' ?  'data-ref=false' : 'data-ref=true' %>>
                         </div>
                     </div>
                     <div class="col-sm-5 ">

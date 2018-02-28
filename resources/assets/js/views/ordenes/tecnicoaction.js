@@ -57,33 +57,34 @@ app || (app = {});
         * Render View Element
         */
         render: function() {
-           var resp = this.parameters,
-           _this = this,
-            stuffToDo = {
-                'remision': function() {
-                    _this.$modalCreate.modal('show');
-                    var data = {sucursal: resp.data.remrempu1_sucursal};
-                    _this.$modalCreate.find('.content-modal').empty().html( _this.templateRemision( data ) );
-                    _this.$form =  _this.$('#form-remrepu');
-                    _this.el = _this.$('#browse-legalizacions-list');
+            var resp = this.parameters,
+                _this = this,
+                stuffToDo = {
+                    'remision': function() {
+                        _this.$modalCreate.modal('show');
+                        var data = {sucursal: resp.data.remrempu1_sucursal, tipoproducto: resp.data.tipoajuste_tipoproducto};
+                        _this.$modalCreate.find('.content-modal').empty().html( _this.templateRemision( data ) );
+                        _this.$form =  _this.$('#form-remrepu');
+                        _this.el = _this.$('#browse-legalizacions-list');
 
-                    _this.referenceView();
-                },
-                'factura': function() {
-                    _this.$modalFactura.modal('show');
-                    _this.$modalFactura.find('.content-modal').empty().html( _this.templateFactura( _this.model.toJSON() ) );
-                    _this.$formFactura =  _this.$('#form-factura-tecnico');
+                        _this.referenceView();
+                    },
+                    'factura': function() {
+                        _this.$modalFactura.modal('show');
+                        _this.$modalFactura.find('.content-modal').empty().html( _this.templateFactura( _this.model.toJSON() ) );
+                        _this.$formFactura =  _this.$('#form-factura-tecnico');
 
-                    _this.$fieldSerie =_this.$('#producto_serie');
-                    _this.$fieldNombre =_this.$('#producto_nombre');
-                    _this.$fieldCantidad =_this.$('#factura2_cantidad');
-                    _this.$fieldCosto =_this.$('#factura2_costo');
-                    _this.$fieldIva =_this.$('#factura2_iva_porcentaje');
+                        _this.$fieldSerie =_this.$('#producto_serie');
+                        _this.$fieldNombre =_this.$('#producto_nombre');
+                        _this.$fieldCantidad =_this.$('#factura2_cantidad');
+                        _this.$fieldCosto =_this.$('#factura2_costo');
+                        _this.$fieldIva =_this.$('#factura2_iva_porcentaje');
 
-                    _this.referenceViewFacturar();
-                    _this.ready();
-                }
-            };
+                        _this.referenceViewFacturar();
+                        _this.ready();
+                    }
+                };
+                
             if (stuffToDo[resp.action]) {
                 stuffToDo[resp.action]();
             }
@@ -115,7 +116,7 @@ app || (app = {});
                 parameters: {
                     wrapper: this.el,
                     edit: false,
-                    template: _.template(($('#add-afacturar-item-tpl').html() || '')), 
+                    template: _.template(($('#add-afacturar-item-tpl').html() || '')),
                     dataFilter: {
                         orden_id: this.model.get('id')
                     }
@@ -228,7 +229,7 @@ app || (app = {});
                 });
 
                 var data = window.Misc.formToJson( e.target );
-               
+
                 if (model instanceof Backbone.Model )
                     data.id = model.get('id');
 
@@ -237,7 +238,7 @@ app || (app = {});
         },
 
         /**
-        *Event change input porcentage 
+        *Event change input porcentage
         */
         changePorcentage: function(e){
             e.preventDefault();
@@ -245,9 +246,9 @@ app || (app = {});
             $('#desc_value').iCheck('uncheck');
             $('#desc_finally').iCheck('uncheck');
 
-            // Make discount 
+            // Make discount
             this.doDiscount('porcentaje');
-        },       
+        },
         /**
         *Event change  input value
         */
@@ -258,7 +259,7 @@ app || (app = {});
             $('#desc_finally').iCheck('uncheck');
 
             this.doDiscount('value');
-        },       
+        },
         /**
         *Event change  input finally
         */
@@ -271,7 +272,7 @@ app || (app = {});
             this.doDiscount('finally');
         },
         /**
-        *Event change radio btn 
+        *Event change radio btn
         */
         changeRadioBtn: function(e){
             e.preventDefault();
@@ -299,14 +300,14 @@ app || (app = {});
             switch(caseDiscount){
                 case 'porcentaje':
                     var descuento = (this.$('#factura2_descuento_porcentaje').val())/100;
-                        valor = this.$fieldCosto.inputmask('unmaskedvalue');    
+                        valor = this.$fieldCosto.inputmask('unmaskedvalue');
                         descuento = descuento * valor;
                     this.$('#factura2_descuento_valor').val(descuento);
                     this.$('#factura2_precio_venta').val(valor-descuento);
                     break;
                 case 'value':
                     var valor = this.$('#factura2_descuento_valor').inputmask('unmaskedvalue');
-                        costo = this.$fieldCosto.inputmask('unmaskedvalue');    
+                        costo = this.$fieldCosto.inputmask('unmaskedvalue');
                         venta = (costo-valor)*100;
                         descuento = 100 - (venta / costo);
                     this.$('#factura2_precio_venta').val(costo-valor);

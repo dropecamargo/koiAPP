@@ -22,7 +22,7 @@ class Orden extends BaseModel
 	* The attributes that are mass assignable.
 	* @var array
 	*/
-    protected $fillable =['orden_tipoorden','orden_solicitante','orden_llamo','orden_dano','orden_prioridad','orden_problema'];
+    protected $fillable =['orden_llamo', 'orden_problema'];
 
     protected $nullable = ['orden_serie'];
 
@@ -52,8 +52,7 @@ class Orden extends BaseModel
     public static function getOrden($id)
     {
         $query = Orden::query();
-        $query->select('orden.*',DB::raw("TIME(orden_fh_servicio) as orden_hora_servicio"), DB::raw("DATE(orden_fh_servicio) as orden_fecha_servicio"), 'o.tercero_nit','t.tercero_nit as tecnico_nit','producto.id as id_p','producto_nombre','producto_serie','dano_nombre','tipoorden_nombre','prioridad_nombre','solicitante_nombre', DB::raw("CONCAT(o.tercero_nombre1, ' ', o.tercero_nombre2, ' ', o.tercero_apellido1, ' ', o.tercero_apellido2) as tercero_nombre"),DB::raw("CONCAT(t.tercero_nombre1 , ' ', t.tercero_nombre2, ' ', t.tercero_apellido1, ' ', t.tercero_apellido2) as tecnico_nombre"),'sucursal_nombre', 'tcontacto_telefono', 'tcontacto_email', DB::raw("CONCAT(tcontacto_nombres,' ',tcontacto_apellidos ) as tcontacto_nombre"), 'sitio_nombre');
-
+        $query->select('orden.*',DB::raw("TIME(orden_fh_servicio) as orden_hora_servicio"), DB::raw("DATE(orden_fh_servicio) as orden_fecha_servicio"), 'o.tercero_nit','t.tercero_nit as tecnico_nit','producto.id as id_p','producto_nombre','producto_serie','dano_nombre','tipoorden_nombre','prioridad_nombre','solicitante_nombre', DB::raw("CONCAT(o.tercero_nombre1, ' ', o.tercero_nombre2, ' ', o.tercero_apellido1, ' ', o.tercero_apellido2) as tercero_nombre"),DB::raw("CONCAT(t.tercero_nombre1 , ' ', t.tercero_nombre2, ' ', t.tercero_apellido1, ' ', t.tercero_apellido2) as tecnico_nombre"),'sucursal_nombre', 'tcontacto_telefono', 'tcontacto_email', DB::raw("CONCAT(tcontacto_nombres,' ',tcontacto_apellidos ) as tcontacto_nombre"), 'sitio_nombre', DB::raw("GROUP_CONCAT(tipoproducto_codigo SEPARATOR ',') AS tipoajuste_tipoproducto"));
         $query->join('tercero as o', 'orden_tercero', '=', 'o.id');
         $query->join('tercero as t', 'orden_tecnico', '=', 't.id');
         $query->join('tcontacto', 'orden_contacto', '=', 'tcontacto.id');
@@ -63,6 +62,9 @@ class Orden extends BaseModel
         $query->join('solicitante', 'orden_solicitante', '=', 'solicitante.id');
         $query->join('prioridad', 'orden_prioridad', '=', 'prioridad.id');
         $query->join('sitio', 'orden_sitio', '=', 'sitio.id');
+        // Joins para traer el detalle de tipoorden_ajuste->tipoajuste_tipoproducto->tipoproducto_codigo
+        $query->join('tipoajuste2', 'tipoorden_tipoajuste', '=', 'tipoajuste2_tipoajuste');
+        $query->join('tipoproducto', 'tipoajuste2_tipoproducto', '=', 'tipoproducto.id');
         $query->leftJoin('producto', 'orden_serie', '=', 'producto.id');
 
         $query->where('orden.id', $id);
@@ -116,7 +118,6 @@ class Orden extends BaseModel
         if (!$destino instanceof Sucursal) {
             return 'No es posible recuperar la sucursal de destino, por favor verifique la información ó consulte al administrador.';
         }
-
 
         // Validar Documento
         $documento = Documentos::where('documentos_codigo', Orden::$default_document)->first();

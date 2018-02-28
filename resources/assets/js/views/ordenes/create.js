@@ -17,14 +17,11 @@ app || (app = {});
             'click .submit-orden': 'submitOrden',
             'submit #form-orden': 'onStore',
         },
-        parameters: {
-        },
 
         /**
         * Constructor Method
         */
         initialize : function() {
-            
             // Events
             this.listenTo( this.model, 'sync', this.responseServer );
             this.listenTo( this.model, 'request', this.loadSpinner );
@@ -35,12 +32,10 @@ app || (app = {});
         */
         render: function() {
             var attributes = this.model.toJSON();
-                attributes.edit = false;
             this.$el.html( this.template(attributes) );
 
+            // Form && Spinner
             this.$form = this.$('#form-orden');
-
-            // Spinner
             this.spinner = this.$('#spinner-main');
 
             // this ready
@@ -71,17 +66,14 @@ app || (app = {});
         */
         ready: function () {
             // to fire plugins
+            if( typeof window.initComponent.initValidator == 'function' )
+                window.initComponent.initValidator();
+
             if( typeof window.initComponent.initToUpper == 'function' )
                 window.initComponent.initToUpper();
 
             if( typeof window.initComponent.initSelect2 == 'function' )
                 window.initComponent.initSelect2();
-
-            if( typeof window.initComponent.initICheck == 'function' )
-                window.initComponent.initICheck();
-
-            if( typeof window.initComponent.initValidator == 'function' )
-                window.initComponent.initValidator();
 
             if( typeof window.initComponent.initDatePicker == 'function' )
                 window.initComponent.initDatePicker();
@@ -91,13 +83,6 @@ app || (app = {});
 
             if( typeof window.initComponent.initInputMask == 'function' )
                 window.initComponent.initInputMask();
-        },
-
-        /**
-        * Load spinner on the request
-        */
-        loadSpinner: function (model, xhr, opts) {
-            window.Misc.setSpinner( this.spinner );
         },
 
         sendMail: function(){
@@ -143,6 +128,13 @@ app || (app = {});
                 }
             });
             sendMail.render();
+        },
+
+        /**
+        * Load spinner on the request
+        */
+        loadSpinner: function (model, xhr, opts) {
+            window.Misc.setSpinner( this.spinner );
         },
 
         /**

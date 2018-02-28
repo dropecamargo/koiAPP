@@ -12,8 +12,7 @@ app || (app = {});
     app.EditOrdenView = Backbone.View.extend({
 
         el: '#ordenes-create',
-        template: _.template( ($('#add-orden-tpl').html() || '') ),
-        templateRemision: _.template( ($('#show-remision-tpl').html() || '') ),
+        template: _.template( ($('#edit-orden-tpl').html() || '') ),
         events: {
         	'click .submit-orden': 'submitOrden',
             'submit #form-orden': 'onStore',
@@ -56,8 +55,6 @@ app || (app = {});
         */
         render: function() {
             var attributes = this.model.toJSON();
-            	attributes.edit = true;
-
             this.$el.html( this.template(attributes) );
 
             this.$form = this.$('#form-orden');
@@ -169,6 +166,7 @@ app || (app = {});
                 // Data sucursal y tecnico
                 var data = window.Misc.formToJson( e.target );
                     data.orden_id = this.model.get('id');
+                    data.tipoajuste_tipoproducto = this.model.get('tipoajuste_tipoproducto');
 
                 // Open TecnicoActionView
                 if ( this.tecnicoActionView instanceof Backbone.View ){
@@ -323,7 +321,7 @@ app || (app = {});
         clickEvaluateOrden: function(e) {
             e.preventDefault();
             var _this = this;
-            
+
             $.ajax ({
                 url: window.Misc.urlFull( Route.route('ordenes.evaluate', { ordenes: _this.model.get('id') }) ),
                 type: 'GET',
@@ -347,7 +345,7 @@ app || (app = {});
                     if (resp.action == 'redirect') {
 
                         window.Misc.successRedirect( resp.msg, window.Misc.urlFull(Route.route('ordenes.show', { ordenes: _this.model.get('id') })) );
-                        
+
                     } else if (resp.action == 'render') {
 
                         // Open TecnicoActionView
@@ -363,14 +361,13 @@ app || (app = {});
                         });
 
                         _this.tecnicoActionView.render();
-                    } 
+                    }
                 }
             }).fail(function(jqXHR, ajaxOptions, thrownError) {
                 window.Misc.removeSpinner( _this.spinner );
                 alertify.error(thrownError);
             });
         },
-
 
         /**
         * fires libraries js

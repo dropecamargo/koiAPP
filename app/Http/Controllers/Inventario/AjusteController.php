@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\Inventario\Ajuste1,App\Models\Inventario\TipoAjuste,App\Models\Inventario\Producto,App\Models\Inventario\Lote,App\Models\Inventario\Rollo,App\Models\Inventario\Ajuste2,App\Models\Inventario\Prodbode,App\Models\Inventario\Inventario, App\Models\Base\Documentos, App\Models\Base\Sucursal;
+use App\Models\Inventario\Ajuste1, App\Models\Inventario\Ajuste2, App\Models\Inventario\TipoAjuste, App\Models\Inventario\Producto ,App\Models\Inventario\Lote, App\Models\Inventario\Rollo, App\Models\Inventario\Prodbode, App\Models\Inventario\Inventario, App\Models\Base\Documentos, App\Models\Base\Sucursal;
 use DB, Log, Datatables, Auth, App, View;
 
 class AjusteController extends Controller
@@ -81,14 +81,16 @@ class AjusteController extends Controller
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar documentos,por favor verifique la información ó por favor consulte al administrador.']);
                     }
-                    $sucursal = Sucursal::where('id', $request->ajuste1_sucursal)->first();
+
+                    $sucursal = Sucursal::find($request->ajuste1_sucursal);
                     if(!$sucursal instanceof Sucursal) {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar sucursal,por favor verifique la información ó por favor consulte al administrador.']);
                     }
+
                     //Validar Tipo Ajuste
-                    $tipoAjuste = TipoAjuste::where('id', $request->ajuste1_tipoajuste)->first();
-                    if (!$tipoAjuste instanceof TipoAjuste) {
+                    $tipoajuste = TipoAjuste::find($request->ajuste1_tipoajuste);
+                     if (!$tipoajuste instanceof TipoAjuste) {
                         DB::rollback();
                         return response()->json(['success' => false,'errors'=>'No es posible recuperar el tipo ajuste,por favor verifique la información ó por favor consulte al administrador']);
                     }
@@ -101,20 +103,25 @@ class AjusteController extends Controller
                     $ajuste->ajuste1_documentos = $documento->id;
                     $ajuste->ajuste1_sucursal = $sucursal->id;
                     $ajuste->ajuste1_numero = $consecutive;
-                    $ajuste->ajuste1_tipoajuste = $tipoAjuste->id;
+                    $ajuste->ajuste1_tipoajuste = $tipoajuste->id;
                     $ajuste->ajuste1_usuario_elaboro = Auth::user()->id;
                     $ajuste->ajuste1_fh_elaboro = date('Y-m-d H:m:s');
                     $ajuste->save();
 
                     // Detalle ajuste
                     foreach ($data['ajuste2'] as $item) {
-                        $producto = Producto::find($item['id_producto']);
+                        $producto = Producto::find( $item['id_producto'] );
                         if (!$producto instanceof Producto) {
                             DB::rollback();
-                            return response()->json(['success' => false,'errors'=>'No es posible recuperar el producto,por favor verifique la información ó por favor consulte al administrador']);
+                            return response()->json(['success' => false, 'errors' => 'No es posible recuperar el producto, por favor verifique la información o consulte al administrador']);
                         }
 
-                        if ($tipoAjuste->tipoajuste_tipo == 'E' || $item['ajuste2_cantidad_entrada'] > 0) {
+                        if( !in_array($producto->tipoproducto->tipoproducto_codigo, explode(',', $tipoajuste->getTypesProducto()->tipoajuste_tipoproducto) ) ){
+                            DB::rollback();
+                            return response()->json(['success' => false, 'errors' => 'El tipo de ajuste no es valido, por favor verifique la información o consulte al administrador']);
+                        }
+
+                        if ($tipoajuste->tipoajuste_tipo == 'E' || $item['ajuste2_cantidad_entrada'] > 0) {
 
                             // Detalle ajuste != Manejaserie
                             if ($producto->producto_maneja_serie != true) {
@@ -227,7 +234,7 @@ class AjusteController extends Controller
                                     return response()->json(['success' => false,'errors '=> $inventario]);
                                 }
                             }
-                        }else if($tipoAjuste->tipoajuste_tipo == 'S'){
+                        }else if($tipoajuste->tipoajuste_tipo == 'S'){
 
                             //Detalle ajuste
                             $ajusteDetalle = new Ajuste2;

@@ -168,4 +168,8 @@ class Producto extends BaseModel
         $query->groupBy('sucursal_nombre');
         return $query->get();
     }
+
+    public function tipoproducto(){
+        return $this->hasOne('App\Models\Inventario\TipoProducto', 'id', 'producto_tipoproducto');
+    }
 }

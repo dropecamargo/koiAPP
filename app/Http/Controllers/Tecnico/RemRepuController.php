@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\Tecnico\RemRepu, App\Models\Tecnico\RemRepu2, App\Models\Tecnico\Orden, App\Models\Base\Tercero, App\Models\Inventario\Producto, App\Models\Base\Sucursal, App\Models\Base\Documentos, App\Models\Inventario\Prodbode;
+use App\Models\Tecnico\RemRepu, App\Models\Tecnico\RemRepu2, App\Models\Tecnico\Orden, App\Models\Base\Tercero, App\Models\Inventario\Producto, App\Models\Base\Sucursal, App\Models\Base\Documentos, App\Models\Inventario\Prodbode, App\Models\Tecnico\TipoOrden, App\Models\Inventario\TipoAjuste;
 use Log, DB, Auth;
 
 class RemRepuController extends Controller
@@ -53,24 +53,41 @@ class RemRepuController extends Controller
             if ($remrepu->isValid($data)) {
                 DB::beginTransaction();
                 try {
-                    // Recupero instancia de documentos
-                    $documentos = Documentos::where('documentos_codigo', RemRepu::$default_document)->first();
-                    if (!$documentos instanceof Documentos) {
-                        DB::rollback();
-                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar documentos, por favor verifique la información o consulte al administrador.']);
-                    }
                     // Recupero instancia de orden
                     $orden = Orden::find($request->remrepu_orden);
                     if (!$orden instanceof Orden) {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar orden, por favor verifique la información o consulte al administrador.']);
                     }
+
+                    // Recuperar TipoOrden
+                    $tipoorden = TipoOrden::find($orden->orden_tipoorden);
+                    if (!$tipoorden instanceof TipoOrden) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar tipo de orden, por favor verifique la información o consulte al administrador.']);
+                    }
+
+                    // Recuperar TipoAjuste
+                    $tipoajuste = TipoAjuste::find($tipoorden->tipoorden_tipoajuste);
+                    if (!$tipoajuste instanceof TipoAjuste) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar tipo de ajuste, por favor verifique la información o consulte al administrador.']);
+                    }
+
+                    // Recupero instancia de documentos
+                    $documentos = Documentos::where('documentos_codigo', RemRepu::$default_document)->first();
+                    if (!$documentos instanceof Documentos) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar documentos, por favor verifique la información o consulte al administrador.']);
+                    }
+
                     // Recupero instancia de sucursal
                     $sucursal  = Sucursal::find($request->sucursal);
                     if (!$sucursal instanceof Sucursal) {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar sucursal, por favor verifique la información o consulte al administrador.']);
                     }
+
                     // Recupero tecnico
                     $tecnico  = Tercero::find($request->tecnico);
                     if (!$tecnico instanceof Tercero) {
@@ -93,10 +110,10 @@ class RemRepuController extends Controller
                     $remrepu->save();
 
                     foreach ($data['detalle'] as $value) {
-
                         // Recuperar Sucursal
                         $sucursal = Sucursal::find($data['sucursal']);
                         if(!$sucursal instanceof Sucursal){
+                            DB::rollback();
                             return response()->json(['success' => false, 'errors' => 'No es posible recuperar la sucursal, por favor verifique la información o consulte al administrador.']);
                         }
 
@@ -105,6 +122,11 @@ class RemRepuController extends Controller
                         if(!$producto instanceof Producto) {
                             DB::rollback();
                             return response()->json(['success' => false, 'errors' => 'No es posible recuperar producto, por favor verifique la información o consulte al administrador.']);
+                        }
+
+                        if( !in_array($producto->tipoproducto->tipoproducto_codigo, explode(',', $tipoajuste->getTypesProducto()->tipoajuste_tipoproducto)) ){
+                            DB::rollback();
+                            return response()->json(['success' => false, 'errors' => 'El tipo de ajuste no es valido para generar una remision, por favor verifique la información o consulte al administrador.']);
                         }
 
                         // Validar sucursal prodbode
