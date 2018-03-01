@@ -6,8 +6,12 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+
 use App\Classes\AsientoContableDocumento;
-use App\Models\Contabilidad\Asiento, App\Models\Contabilidad\Asiento2,App\Models\Contabilidad\AsientoNif, App\Models\Contabilidad\AsientoNif2, App\Models\Contabilidad\PlanCuenta, App\Models\Base\Tercero, App\Models\Contabilidad\Documento, App\Models\Contabilidad\CentroCosto;
+use App\Classes\AsientoNifContableDocumento;
+
+use App\Models\Contabilidad\Asiento, App\Models\Contabilidad\Asiento2,App\Models\Contabilidad\AsientoNif, App\Models\Contabilidad\AsientoNif2, App\Models\Contabilidad\PlanCuenta,App\Models\Contabilidad\PlanCuentaNif, App\Models\Base\Tercero, App\Models\Contabilidad\Documento, App\Models\Contabilidad\CentroCosto;
+
 use DB, Log, Datatables, Auth, View, App;
 
 class AsientoController extends Controller
@@ -21,9 +25,30 @@ class AsientoController extends Controller
     {
         if ($request->ajax()) {
             $query = Asiento::query();
-            $query->select('asiento1.id as id', 'asiento1_numero', 'asiento1_mes', 'asiento1_ano', 'tercero_nit', 'tercero_razonsocial', 'tercero_nombre1', 'tercero_nombre2', 'tercero_apellido1', 'tercero_apellido2', DB::raw("(CASE WHEN tercero_persona = 'N' THEN CONCAT(tercero_nombre1,' ',tercero_nombre2,' ',tercero_apellido1,' ',tercero_apellido2) ELSE tercero_razonsocial END) as tercero_nombre"), 'asiento1_preguardado');
-            $query->join('tercero', 'asiento1.asiento1_beneficiario', '=', 'tercero.id');
-            return Datatables::of($query->get())->make(true);
+            $query->select('asiento1.id as id', 'asiento1_numero', 'documento_nombre', 'asiento1_mes', 'asiento1_ano', 'tercero_nit', 'tercero_razonsocial', 'tercero_nombre1', 'tercero_nombre2', 'tercero_apellido1', 'tercero_apellido2', DB::raw("(CASE WHEN tercero_persona = 'N' THEN CONCAT(tercero_nombre1,' ',tercero_nombre2,' ',tercero_apellido1,' ',tercero_apellido2) ELSE tercero_razonsocial END) as tercero_nombre"), 'asiento1_preguardado');
+            $query->join('tercero', 'asiento1_beneficiario', '=', 'tercero.id');
+            $query->join('documento', 'asiento1_documento', '=', 'documento.id');
+
+            // Persistent data filter
+            if($request->has('persistent') && $request->persistent) {
+                session(['search_tercero' => $request->has('asiento_tercero_nit') ? $request->asiento_tercero_nit : '']);
+                session(['search_tercero_nombre' => $request->has('asiento_tercero_nombre') ? $request->asiento_tercero_nombre : '']);
+                session(['search_documento' => $request->has('asiento_documento') ? $request->asiento_documento : '']);
+            }
+
+            return Datatables::of($query)
+                ->filter(function($query) use ($request){
+                    // Tercero nit
+                    if($request->has('asiento_tercero_nit')) {
+                        $query->where('tercero_nit', $request->asiento_tercero_nit);
+                    }
+
+                    // Documento
+                    if($request->has('asiento_documento')) {
+                        $query->where('asiento1_documento', $request->asiento_documento);
+                    }
+                })
+                ->make(true);
         }
         return view('contabilidad.asiento.index');
     }
@@ -88,6 +113,7 @@ class AsientoController extends Controller
                             }
                         }
                         if ($documento->documento_actual) {
+
                             // Asiento1
                             $asiento->fill($data);
 
@@ -127,7 +153,6 @@ class AsientoController extends Controller
                                 return response()->json(['success' => false, 'errors' => $result->error]);
                             }
                         }
-                        // AsientoNif
                         if ($documento->documento_nif) {
                             $asientoNif = new AsientoNif;
                             $asientoNif2 = new AsientoNif2;
@@ -139,8 +164,7 @@ class AsientoController extends Controller
                             $asientoNif->asienton1_folder = $data['asiento1_folder'];
                             $asientoNif->asienton1_numero = $data['asiento1_numero'];
                             $asientoNif->asienton1_detalle = $data['asiento1_detalle'];
-                            // $asientoNif->asienton1_documentos = $data['asiento1_documentos'];
-                            // $asientoNif->asienton1_id_documentos = $data['asiento1_id_documentos'];
+                            $asientoNif->asienton1_asiento =  isset($asiento->id) ? $asiento->id : null;
                             $asientoNif->asienton1_documento = $documento->id;
                             $asientoNif->asienton1_preguardado = true;
                             $asientoNif->asienton1_beneficiario = $tercero->id;
@@ -153,9 +177,22 @@ class AsientoController extends Controller
                             }
 
                             $asientoNif->save();
+
+                            // Recupero plancuenta
+                            $plancuenta = Plancuenta::where('plancuentas_cuenta',$request->plancuentas_cuenta)->first();
+                            if (!$plancuenta instanceof Plancuenta) {
+                                DB::rollback();
+                                return response()->json(['success' => false, 'errors' => "No es posible recuperar plan de cuenta, por favor verifique la información o consulte a su administrador"]);
+                            }
+
+                            $plancuentaNif = PlanCuentaNif::find($plancuenta->plancuentas_equivalente);
+                            if (!$plancuentaNif instanceof PlanCuentaNif) {
+                                DB::rollback();
+                                return response()->json(['success' => false, 'errors' => "No es posible encontrar plan de cuenta NIF, por favor verifique la información o consulte a su administrador"]);
+                            }
                             // AsientoNif2
                             $cuenta = [];
-                            $cuenta['Cuenta'] = $request->plancuentas_cuenta;
+                            $cuenta['Cuenta'] = $plancuentaNif->plancuentasn_cuenta;
                             $cuenta['Tercero'] = $request->tercero_nit;
                             $cuenta['Detalle'] = $request->asiento2_detalle;
                             $cuenta['Naturaleza'] = $request->asiento2_naturaleza;
@@ -171,11 +208,13 @@ class AsientoController extends Controller
                                 return response()->json(['success' => false, 'errors' => $result->error]);
                             }
 
-                            // Insertar movimiento asiento
-                            $result = $asientoNif2->movimiento($request);
-                            if(!$result->success) {
-                                DB::rollback();
-                                return response()->json(['success' => false, 'errors' => $result->error]);
+                            if ($asientoNif->asienton1_asiento == null) {
+                                // Insertar movimiento asiento
+                                $result = $asientoNif2->movimiento($request, $plancuentaNif->plancuentasn_cuenta);
+                                if(!$result->success) {
+                                    DB::rollback();
+                                    return response()->json(['success' => false, 'errors' => $result->error]);
+                                }
                             }
                         }
                         // Commit Transaction
@@ -243,12 +282,13 @@ class AsientoController extends Controller
             $data = $request->all();
 
             $asiento = Asiento::findOrFail($id);
+            $asientoNif = AsientoNif::where('asienton1_asiento',$id)->first();
             if ($asiento->isValid($data)) {
+
                 DB::beginTransaction();
                 try {
                     // Preparar cuentas
                     // Recupero items asiento 2
-
                     $query = Asiento2::query();
                     $query->select('asiento2.*', 'plancuentas_cuenta', 'plancuentas_tipo', 'tercero_nit',
                         DB::raw("(CASE WHEN asiento2_credito != 0 THEN 'C' ELSE 'D' END) as asiento2_naturaleza")
@@ -277,6 +317,7 @@ class AsientoController extends Controller
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'Por favor ingrese detalle para el asiento contable.']);
                     }
+
                     // Creo el objeto para manejar el asiento
                     $objAsiento = new AsientoContableDocumento($data, $asiento);
                     if($objAsiento->asiento_error) {
@@ -306,8 +347,82 @@ class AsientoController extends Controller
                             return response()->json(['success' => false, 'errors' => $result]);
                         }
                     }
+                    if ($asientoNif instanceof AsientoNif) {
 
+                        // Validar no cambio de documento
+                        if ($asiento->asiento1_documento != $request->asiento1_documento ) {
+                            DB::rollback();
+                            return response()->json(['success' => false, 'errors' => 'Documento no puede ser modificado']);
+                        }
+
+                        $query = AsientoNif2::query();
+                        $query->select('asienton2.*', 'plancuentasn_cuenta', 'plancuentasn_tipo', 'tercero_nit',
+                            DB::raw("(CASE WHEN asienton2_credito != 0 THEN 'C' ELSE 'D' END) as asienton2_naturaleza")
+                        );
+                        $query->join('tercero', 'asienton2_beneficiario', '=', 'tercero.id');
+                        $query->join('plancuentasn', 'asienton2_cuenta', '=', 'plancuentasn.id');
+                        $query->where('asienton2_asiento', $asientoNif->id);
+                        $asientoNif2 = $query->get();
+
+                        $cuentas = [];
+                        foreach ($asientoNif2 as $item) {
+                            $arCuenta = [];
+                            $arCuenta['Id'] = $item->id;
+                            $arCuenta['Cuenta'] = $item->plancuentasn_cuenta;
+                            $arCuenta['Tercero'] = $item->tercero_nit;
+                            $arCuenta['Naturaleza'] = $item->asienton2_naturaleza;
+                            $arCuenta['CentroCosto'] = $item->asienton2_centro;
+                            $arCuenta['Base'] = $item->asienton2_base;
+                            $arCuenta['Credito'] = $item->asienton2_credito;
+                            $arCuenta['Debito'] = $item->asienton2_debito;
+                            $cuentas[] = $arCuenta;
+                        }
+
+                        // Preparo data
+                        $dataNif = [];
+                        $dataNif['asienton1_ano'] = $data['asiento1_ano'];
+                        $dataNif['asienton1_mes'] = $data['asiento1_mes'];
+                        $dataNif['asienton1_dia'] = $data['asiento1_dia'];
+                        $dataNif['asienton1_folder'] = $data['asiento1_folder'];
+                        $dataNif['asienton1_documento'] = $data['asiento1_documento'];
+                        $dataNif['asienton1_numero'] = $data['asiento1_numero'];
+                        $dataNif['asienton1_beneficiario'] = $data['asiento1_beneficiario'];
+                        $dataNif['asienton1_beneficiario_nombre'] = $data['asiento1_beneficiario_nombre'];
+                        $dataNif['asienton1_detalle'] = $data['asiento1_detalle'];
+
+                        // Creo el objeto para manejar el asiento
+                        $objAsiento = new AsientoNifContableDocumento($dataNif, $asientoNif);
+                        if($objAsiento->asientoNif_error) {
+                            DB::rollback();
+                            return response()->json(['success' => false, 'errors' => $objAsiento->asientoNif_error]);
+                        }
+
+                        // Preparar asiento
+                        $result = $objAsiento->asientoCuentas($cuentas);
+                        if($result != 'OK'){
+                            DB::rollback();
+                            return response()->json(['success' => false, 'errors' => $result]);
+                        }
+
+                        // Insertar asiento
+                        $result = $objAsiento->insertarAsientoNif();
+                        if($result != 'OK') {
+                            DB::rollback();
+                            return response()->json(['success' => false, 'errors' => $result]);
+                        }
+
+                        // Insertar movimientos asiento
+                        // foreach ($asiento2 as $item) {
+                        //     $result = $item->movimientos();
+                        //     if($result != 'OK') {
+                        //         DB::rollback();
+                        //         return response()->json(['success' => false, 'errors' => $result]);
+                        //     }
+                        // }
+                    }
                     // Commit Transaction
+                    // DB::rollback();
+                    // return response()->json(['success' => false, 'errors' => "TODO OK"]);
                     DB::commit();
                     return response()->json(['success' => true, 'id' => $asiento->id]);
                 }catch(\Exception $e){

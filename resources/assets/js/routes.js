@@ -414,7 +414,7 @@ app || (app = {});
             this.componentConsecutiveView = new app.ComponentConsecutiveView();
             this.componentPedidocView = new app.ComponentSearchPedidocView();
             this.componentFacturaView = new app.ComponentSearchFacturaView();
-
+            this.componentFilterDocumentView = new app.ComponentDocumentView();
       	},
 
         /**

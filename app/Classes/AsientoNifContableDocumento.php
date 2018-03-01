@@ -8,50 +8,56 @@ use App\Models\Contabilidad\PlanCuentaNif, App\Models\Contabilidad\Documento, Ap
 
 class AsientoNifContableDocumento {
 
-	public $asiento;
+	public $asientoNif;
 	private $beneficiario;
 	private $documento;
-	private $asiento_cuentas = [];
-	public $asiento_error = NULL;
+	private $asientoNif_cuentas = [];
+	public $asientoNif_error = NULL;
 	private $empresa;
 
-	function __construct(Array $data, AsientoNif $asiento = null)
+	function __construct(Array $data, AsientoNif $asientoNif = null)
 	{
-		// Cuando se edita termina un asiento ya existe $asiento
-		if(!$asiento instanceof AsientoNif) {
-   	 		$asiento = new AsientoNif;
+		// Cuando se edita termina un asiento ya existe $asientoNif
+		if(!$asientoNif instanceof AsientoNif) {
+   	 		$asientoNif = new AsientoNif;
 		}
-		$this->asiento = $asiento;
+		$this->asientoNif = $asientoNif;
+
+        if (!$this->asientoNif->isValid($data)) {
+        	$this->asientoNif_error = $this->asientoNif->errors;
+        	return;
+        }
+        $this->asientoNif->fill($data);
 
         // Recuperar tercero
         $this->beneficiario = Tercero::where('tercero_nit', $data['asienton1_beneficiario'])->first();
         if(!$this->beneficiario instanceof Tercero) {
-        	$this->asiento_error = "No es posible recuperar beneficiario, por favor verifique la información del asiento o consulte al administrador.";
+        	$this->asientoNif_error = "No es posible recuperar beneficiario, por favor verifique la información del asiento o consulte al administrador.";
         	return;
         }
 
         // Recuerar documento
-        $this->documento = Documento::where('id', $this->asiento->asienton1_documento)->first();
+        $this->documento = Documento::where('id', $this->asientoNif->asienton1_documento)->first();
         if(!$this->documento instanceof Documento) {
-            $this->asiento_error = "No es posible recuperar documento, por favor verifique la información del asiento o consulte al administrador.";
+            $this->asientoNif_error = "No es posible recuperar documento, por favor verifique la información del asiento o consulte al administrador.";
             return;
         }
 
         // Recuperar consecutivo
         if($this->documento->documento_tipo_consecutivo == 'A'){
-        	$this->asiento->asienton1_numero = $this->documento->documento_consecutivo + 1;
+        	$this->asientoNif->asienton1_numero = $this->documento->documento_consecutivo + 1;
         }
 
         // Validar consecutivo
-        if (!intval($this->asiento->asienton1_numero) || $this->asiento->asienton1_numero <= 0){
-			$this->asiento_error = "No es posible recuperar el consecutivo documento ({$this->asiento->asienton1_numero}), por favor verifique la información del asiento o consulte al administrador.";
+        if (!intval($this->asientoNif->asienton1_numero) || $this->asientoNif->asienton1_numero <= 0){
+			$this->asientoNif_error = "No es posible recuperar el consecutivo documento ({$this->asientoNif->asienton1_numero}), por favor verifique la información del asiento o consulte al administrador.";
 			return;
 		}
 
     	if($this->documento->documento_tipo_consecutivo == 'M') {
-			$asiento = AsientoNif::where('asienton1_numero', $this->asiento->asienton1_numero)->where('asienton1_documento', $this->documento->id)->where('asienton1_preguardado', false)->first();
-			if($asiento instanceof AsientoNif) {
-	            $this->asiento_error = "Ya existe asiento con el numero {$this->asiento->asienton1_numero} para el documento {$this->documento->documento_nombre}, por favor verifique la información del asiento o consulte al administrador.";
+			$asientoNif = AsientoNif::where('asienton1_numero', $this->asientoNif->asienton1_numero)->where('asienton1_documento', $this->documento->id)->where('asienton1_preguardado', false)->first();
+			if($asientoNif instanceof AsientoNif) {
+	            $this->asientoNif_error = "Ya existe asiento con el numero {$this->asientoNif->asienton1_numero} para el documento {$this->documento->documento_nombre}, por favor verifique la información del asiento o consulte al administrador.";
 	            return;
 	        }
        	}
@@ -59,9 +65,14 @@ class AsientoNifContableDocumento {
         // Recuperar empresa
 		$this->empresa = Empresa::getEmpresa();
 		if(!$this->empresa instanceof Empresa) {
-        	$this->asiento_error = "No es posible recuperar información empresa, por favor consulte al administrador.";
+        	$this->asientoNif_error = "No es posible recuperar información empresa, por favor consulte al administrador.";
 			return;
 		}
+
+        // Validar cierre contable
+		// if( $this->asientoNif1_fecha <= $empresa->empresa_fecha_contabilidad){
+		// 	$this->asientoNif_error = 'La fecha que intenta realizar el asiento: '.$this->asientoNif1_fecha.' no esta PERMITIDA. Es menor a la del cierre contable :'.$empresa->empresa_fecha_contabilidad;
+		// }
 	}
 
 	function asientoCuentas($cuentas = null)
@@ -69,20 +80,19 @@ class AsientoNifContableDocumento {
 		if (!is_array( $cuentas )) {
 			return 'El parámetro pasado como cuentas no es un array '.$cuentas;
 		}
-		$this->asiento_cuentas = $cuentas;
+		$this->asientoNif_cuentas = $cuentas;
 
 		// Valido que las sumas sean Iguales
 		$result = $this->validarSumas();
 		if ($result != 'OK'){
 			return $result;
 		}
-
-		foreach ($this->asiento_cuentas as $cuenta)
+		foreach ($this->asientoNif_cuentas as $cuenta)
 		{
 			// Recuperar cuenta
             $objCuenta = PlanCuentaNif::where('plancuentasn_cuenta', $cuenta['Cuenta'])->first();
             if(!$objCuenta instanceof PlanCuentaNif) {
-                return "No es posible recuperar cuenta, por favor verifique la información del asiento o consulte al administrador (asientoCuentas). ";
+                return "No es posible recuperar cuenta, por favor verifique la información del asiento o consulte al administrador (asientoCuentas)";
             }
 
 			// Verifico que no existan subniveles de la cuenta que estoy realizando el asiento
@@ -97,7 +107,7 @@ class AsientoNifContableDocumento {
 	function validarSumas()
 	{
 		$debito = $credito = 0;
-		foreach ($this->asiento_cuentas as $cuenta)
+		foreach ($this->asientoNif_cuentas as $cuenta)
 		{
 			// Valido que las variables hayan sido correctamente inicializadas
 			if (!isset($cuenta['Cuenta'])){
@@ -151,51 +161,52 @@ class AsientoNifContableDocumento {
 
 	public function insertarAsientoNif()
 	{
-		$this->documento->documento_consecutivo = $this->asiento->asienton1_numero;
+		$this->documento->documento_consecutivo = $this->asientoNif->asienton1_numero;
 		$this->documento->save();
 
 		// AsientoNif
-		$this->asiento->asienton1_preguardado = false;
-		$this->asiento->asienton1_beneficiario = $this->beneficiario->id;
-		$this->asiento->asienton1_usuario_elaboro = Auth::user()->id;
-		$this->asiento->asienton1_fecha_elaboro = date('Y-m-d H:m:s');
-		$this->asiento->save();
+		$this->asientoNif->asienton1_preguardado = false;
+		$this->asientoNif->asienton1_beneficiario = $this->beneficiario->id;
+		$this->asientoNif->asienton1_usuario_elaboro = Auth::user()->id;
+		$this->asientoNif->asienton1_fecha_elaboro = date('Y-m-d H:m:s');
+		$this->asientoNif->save();
 
-		foreach ($this->asiento_cuentas as $cuenta)
+		foreach ($this->asientoNif_cuentas as $cuenta)
 		{
 			// AsientoNif2
-			$asiento2 = null;
+			$asientoNif2 = null;
 			if(isset($cuenta['Id']) && !empty($cuenta['Id'])) {
-				$asiento2 = AsientoNif2::find($cuenta['Id']);
+				$asientoNif2 = AsientoNif2::find($cuenta['Id']);
 			}
 
-			if(!$asiento2 instanceof AsientoNif2) {
-				$asiento2 = new AsientoNif2;
-				$result = $asiento2->store($this->asiento, $cuenta);
+			if(!$asientoNif2 instanceof AsientoNif2) {
+				$asientoNif2 = new AsientoNif2;
+				$result = $asientoNif2->store($this->asientoNif, $cuenta);
 	            if(!$result->success) {
 	                return $result->error;
 	            }
 	      	}
+
 	        // Recuperar cuenta
-            $objCuenta = PlanCuentaNif::find($asiento2->asienton2_cuenta);
+            $objCuenta = PlanCuentaNif::find($asientoNif2->asienton2_cuenta);
             if(!$objCuenta instanceof PlanCuentaNif) {
                 return "No es posible recuperar cuenta, por favor verifique la información del asiento o consulte al administrador.";
             }
 
             // Recuperar tercero
-            $objTercero = Tercero::find($asiento2->asienton2_beneficiario);
+            $objTercero = Tercero::find($asientoNif2->asienton2_beneficiario);
 		    if(!$objTercero instanceof Tercero) {
 		        return "No es posible recuperar beneficiario, por favor verifique la información del asiento o consulte al administrador.";
 		    }
 
 		    // Mayorizacion de saldos Contables
-            $result = $this->saldosContables($objCuenta, $cuenta['Naturaleza'], $cuenta['Debito'], $cuenta['Credito'], $this->asiento->asienton1_mes, $this->asiento->asienton1_ano);
+            $result = $this->saldosContables($objCuenta, $cuenta['Naturaleza'], $cuenta['Debito'], $cuenta['Credito'], $this->asientoNif->asienton1_mes, $this->asientoNif->asienton1_ano);
 			if($result != 'OK') {
 				return $result;
 			}
 
 			// Mayorizacion de saldos x tercero
-			$result = $this->saldosTerceros($objCuenta, $objTercero, $cuenta['Naturaleza'], $cuenta['Debito'], $cuenta['Credito'], $this->asiento->asienton1_mes, $this->asiento->asienton1_ano);
+			$result = $this->saldosTerceros($objCuenta, $objTercero, $cuenta['Naturaleza'], $cuenta['Debito'], $cuenta['Credito'], $this->asientoNif->asienton1_mes, $this->asientoNif->asienton1_ano);
 			if($result != 'OK') {
 				return $result;
 			}
@@ -206,7 +217,7 @@ class AsientoNifContableDocumento {
 	public function saldosTerceros(PlanCuentaNif $cuenta, Tercero $tercero, $naturaleza, $debito = 0, $credito = 0, $xmes, $xano)
 	{
         // Recuperar registro saldos terceros
-		$objSaldoTerceroNif = SaldoTerceroNif::where('saldostercerosn_cuenta', $cuenta->id)->where('saldostercerosn_tercero', $tercero->id)->where('saldostercerosn_ano', $this->asiento->asienton1_ano)->where('saldostercerosn_mes', $this->asiento->asienton1_mes)->first();
+		$objSaldoTerceroNif = SaldoTerceroNif::where('saldostercerosn_cuenta', $cuenta->id)->where('saldostercerosn_tercero', $tercero->id)->where('saldostercerosn_ano', $this->asientoNif->asienton1_ano)->where('saldostercerosn_mes', $this->asientoNif->asienton1_mes)->first();
     	if(!$objSaldoTerceroNif instanceof SaldoTerceroNif) {
 
 			 // Recuperar niveles cuenta
@@ -219,8 +230,8 @@ class AsientoNifContableDocumento {
     		$objSaldoTerceroNif = new SaldoTerceroNif;
     		$objSaldoTerceroNif->saldostercerosn_cuenta = $cuenta->id;
     		$objSaldoTerceroNif->saldostercerosn_tercero = $tercero->id;
-    		$objSaldoTerceroNif->saldostercerosn_ano = $this->asiento->asienton1_ano;
-    		$objSaldoTerceroNif->saldostercerosn_mes = $this->asiento->asienton1_mes;
+    		$objSaldoTerceroNif->saldostercerosn_ano = $this->asientoNif->asienton1_ano;
+    		$objSaldoTerceroNif->saldostercerosn_mes = $this->asientoNif->asienton1_mes;
     		$objSaldoTerceroNif->saldostercerosn_nivel1 = $niveles['nivel1'] ?: 0;
     		$objSaldoTerceroNif->saldostercerosn_nivel2 = $niveles['nivel2'] ?: 0;
     		$objSaldoTerceroNif->saldostercerosn_nivel3 = $niveles['nivel3'] ?: 0;
@@ -389,7 +400,7 @@ class AsientoNifContableDocumento {
             }
 
             // Recuperar registro saldos contable
-            $objSaldoContableNif = SaldoContableNif::where('saldoscontablesn_cuenta', $objCuenta->id)->where('saldoscontablesn_ano', $this->asiento->asienton1_ano)->where('saldoscontablesn_mes', $this->asiento->asienton1_mes)->first();
+            $objSaldoContableNif = SaldoContableNif::where('saldoscontablesn_cuenta', $objCuenta->id)->where('saldoscontablesn_ano', $this->asientoNif->asienton1_ano)->where('saldoscontablesn_mes', $this->asientoNif->asienton1_mes)->first();
         	if(!$objSaldoContableNif instanceof SaldoContableNif) {
 
 	            // Recuperar niveles cuenta
@@ -401,8 +412,8 @@ class AsientoNifContableDocumento {
         		// Crear registro en saldos contables
         		$objSaldoContableNif = new SaldoContableNif;
         		$objSaldoContableNif->saldoscontablesn_cuenta = $objCuenta->id;
-        		$objSaldoContableNif->saldoscontablesn_ano = $this->asiento->asienton1_ano;
-        		$objSaldoContableNif->saldoscontablesn_mes = $this->asiento->asienton1_mes;
+        		$objSaldoContableNif->saldoscontablesn_ano = $this->asientoNif->asienton1_ano;
+        		$objSaldoContableNif->saldoscontablesn_mes = $this->asientoNif->asienton1_mes;
         		$objSaldoContableNif->saldoscontablesn_nivel1 = $niveles['nivel1'] ?: 0;
         		$objSaldoContableNif->saldoscontablesn_nivel2 = $niveles['nivel2'] ?: 0;
         		$objSaldoContableNif->saldoscontablesn_nivel3 = $niveles['nivel3'] ?: 0;

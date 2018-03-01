@@ -63,9 +63,8 @@ class DetalleAsientoNifController extends Controller
                     $objCuenta = PlanCuentaNif::where('plancuentasn_cuenta', $request->plancuentasn_cuenta)->first();
                     if(!$objCuenta instanceof PlanCuentaNif) {
                         DB::rollback();
-                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar cuenta, por favor verifique la información del asiento o consulte al administrador.']);
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar cuenta NIF, por favor verifique la información del asiento o consulte al administrador.']);
                     }
-
                     // Recuperar centro costo
                     $centrocosto = $ordenp = null;
                     if($request->has('asienton2_centro')) {
@@ -73,6 +72,17 @@ class DetalleAsientoNifController extends Controller
                         if(!$centrocosto instanceof CentroCosto) {
                             DB::rollback();
                             return response()->json(['success' => false, 'errors' => 'No es posible recuperar centro costo, por favor verifique la información del asiento o consulte al administrador.']);
+                        }
+
+                        if($centrocosto->centrocosto_codigo == 'OP') {
+                            // Validate orden
+                            if($request->has('asienton2_orden')) {
+                                $ordenp = Ordenp::whereRaw("CONCAT(orden_numero,'-',SUBSTRING(orden_ano, -2)) = '{$request->asienton2_orden}'")->first();
+                            }
+                            if(!$ordenp instanceof Ordenp) {
+                                DB::rollback();
+                                return response()->json(['success' => false, 'errors' => "No es posible recuperar orden de producción para centro de costo OP, por favor verifique la información del asiento o consulte al administrador."]);
+                            }
                         }
                     }
 
@@ -84,7 +94,7 @@ class DetalleAsientoNifController extends Controller
                     }
 
                     // Validate asiento2
-                    $result = AsientoNif2::validarAsiento2($request, $objCuenta);
+                    $result = AsientoNif2::validarAsientoNif2($request, $objCuenta);
                     if($result != 'OK') {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => $result]);
@@ -111,8 +121,10 @@ class DetalleAsientoNifController extends Controller
                     $result = $asiento2->movimiento($request);
                     if(!$result->success) {
                         DB::rollback();
+
                         return response()->json(['success' => false, 'errors' => $result->error]);
                     }
+
                     DB::commit();
                     return response()->json(['success' => true, 'id' => $asiento2->id,
                         'asienton2_cuenta' => $objCuenta->id,

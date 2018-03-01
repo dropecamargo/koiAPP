@@ -6,8 +6,11 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+
 use App\Classes\AsientoNifContableDocumento;
+
 use App\Models\Contabilidad\AsientoNif, App\Models\Contabilidad\AsientoNif2, App\Models\Contabilidad\PlanCuentaNif, App\Models\Base\Tercero, App\Models\Contabilidad\Documento, App\Models\Contabilidad\CentroCosto;
+
 use DB, Log, Datatables, Auth, View, App;
 
 class AsientoNifController extends Controller
@@ -77,13 +80,14 @@ class AsientoNifController extends Controller
      */
     public function edit($id)
     {
-
         $asientoNif = AsientoNif::findOrFail($id);
-        if($asientoNif->asienton1_preguardado == false) {
+        // Get document and valid show or edit
+        $documento = Documento::find($asientoNif->asienton1_documento);
+        if($asientoNif->asienton1_preguardado == false || $documento->documento_actual == true ) {
             return redirect()->route('asientosnif.show', ['asientoNif' => $asientoNif]);
         }
 
-        return view('contabilidad.asientonif.create', ['asientoNif' => $asientoNif]);
+        return view('accounting.asientonif.create', ['asientoNif' => $asientoNif]);
     }
 
     /**
@@ -103,8 +107,7 @@ class AsientoNifController extends Controller
                 DB::beginTransaction();
                 try {
                     // Preparar cuentas
-                    // Recupero items asiento 2
-
+                    // Recupero items asiento ;
                     $query = AsientoNif2::query();
                     $query->select('asienton2.*', 'plancuentasn_cuenta', 'plancuentasn_tipo', 'tercero_nit',
                         DB::raw("(CASE WHEN asienton2_credito != 0 THEN 'C' ELSE 'D' END) as asienton2_naturaleza")
@@ -128,16 +131,12 @@ class AsientoNifController extends Controller
                         $cuentas[] = $arCuenta;
                     }
 
-                    // Validar Carrito
-                    if(!isset($cuentas) || $cuentas == null || !is_array($cuentas) || count($cuentas) == 0) {
-                        DB::rollback();
-                        return response()->json(['success' => false, 'errors' => 'Por favor ingrese detalle para el asiento contable.']);
-                    }
+
                     // Creo el objeto para manejar el asiento
                     $objAsiento = new AsientoNifContableDocumento($data, $asientoNif);
-                    if($objAsiento->asiento_error) {
+                    if($objAsiento->asientoNif_error) {
                         DB::rollback();
-                        return response()->json(['success' => false, 'errors' => $objAsiento->asiento_error]);
+                        return response()->json(['success' => false, 'errors' => $objAsiento->asientoNif_error]);
                     }
 
                     // Preparar asiento
@@ -153,7 +152,6 @@ class AsientoNifController extends Controller
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => $result]);
                     }
-
                     // Insertar movimientos asiento
                     foreach ($asientoNif2 as $item) {
                         $result = $item->movimientos();
@@ -162,7 +160,6 @@ class AsientoNifController extends Controller
                             return response()->json(['success' => false, 'errors' => $result]);
                         }
                     }
-
                     // Commit Transaction
                     DB::commit();
                     return response()->json(['success' => true, 'id' => $asientoNif->id]);

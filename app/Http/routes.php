@@ -118,7 +118,6 @@ Route::group(['middleware' => 'auth'], function(){
 	| Contabilidad Routes
 	|--------------------------
 	*/
-	Route::resource('documentos', 'Contabilidad\DocumentoController', ['except' => ['destroy']]);
 	Route::resource('folders', 'Contabilidad\FolderController', ['except' => ['destroy']]);
 	Route::resource('centroscosto', 'Contabilidad\CentroCostoController', ['except' => ['destroy']]);
 	Route::resource('tipoactivos', 'Contabilidad\TipoActivoController', ['except' => ['destroy']]);
@@ -137,6 +136,12 @@ Route::group(['middleware' => 'auth'], function(){
 		Route::get('search', ['as' => 'plancuentasnif.search', 'uses' => 'Contabilidad\PlanCuentasNifController@search']);
 	});
     Route::resource('plancuentasnif', 'Contabilidad\PlanCuentasNifController', ['except' => ['destroy']]);
+
+	Route::group(['prefix' => 'documentos'], function()
+	{
+		Route::get('filter', ['as' => 'documentos.filter', 'uses' => 'Contabilidad\DocumentoController@filter']);
+	});
+	Route::resource('documentos', 'Contabilidad\DocumentoController', ['except' => ['destroy']]);
 
 	Route::group(['prefix' => 'asientos'], function()
 	{

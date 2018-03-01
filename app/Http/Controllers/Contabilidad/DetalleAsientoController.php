@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\Contabilidad\Asiento, App\Models\Contabilidad\Asiento2, App\Models\Tesoreria\Facturap1, App\Models\Tesoreria\Facturap2, App\Models\Contabilidad\AsientoMovimiento, App\Models\Contabilidad\PlanCuenta, App\Models\Contabilidad\CentroCosto, App\Models\Base\Tercero, App\Models\Production\Ordenp;
+
+use App\Models\Contabilidad\Asiento, App\Models\Contabilidad\Asiento2, App\Models\Contabilidad\AsientoNif, App\Models\Contabilidad\AsientoNif2, App\Models\Tesoreria\Facturap1, App\Models\Tesoreria\Facturap2, App\Models\Contabilidad\AsientoMovimiento, App\Models\Contabilidad\PlanCuenta, App\Models\Contabilidad\PlanCuentaNif ,App\Models\Contabilidad\CentroCosto, App\Models\Base\Tercero, App\Models\Production\Ordenp;
+
 use Log, DB;
 
 class DetalleAsientoController extends Controller
@@ -113,6 +115,34 @@ class DetalleAsientoController extends Controller
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => $result->error]);
                     }
+                    // Asiento Nif
+                    $asientoNif = AsientoNif::where('asienton1_asiento', $asiento->id)->first();
+                    $asientoNif2 = null;
+                    if ($asientoNif instanceof AsientoNif) {
+
+                        $cuentaNif = PlanCuentaNif::find($objCuenta->plancuentas_equivalente);
+                        if ( !$cuentaNif instanceof PlanCuentaNif ) {
+                            DB::rollback();
+                            return response()->json(['success' => false, 'errors' => 'No es posible recuperar cuenta NIF, por favor verifique la información del asiento o consulte al administrador.']);
+                        }
+                        $cuenta = [];
+                        $cuenta['Cuenta'] = $cuentaNif->plancuentasn_cuenta;
+                        $cuenta['Tercero'] = $request->tercero_nit;
+                        $cuenta['Detalle'] = $request->asiento2_detalle;
+                        $cuenta['Naturaleza'] = $request->asiento2_naturaleza;
+                        $cuenta['CentroCosto'] = $request->asiento2_centro;
+                        $cuenta['Base'] = $request->asiento2_base;
+                        $cuenta['Credito'] = $request->asiento2_naturaleza == 'C' ? $request->asiento2_valor: 0;
+                        $cuenta['Debito'] = $request->asiento2_naturaleza == 'D' ? $request->asiento2_valor: 0;
+                        $cuenta['Orden'] = ($ordenp instanceof Ordenp ? $ordenp->id : '');
+
+                        $asientoNif2 = new AsientoNif2;
+                        $result = $asientoNif2->store($asientoNif, $cuenta);
+                        if(!$result->success) {
+                            DB::rollback();
+                            return response()->json(['success' => false, 'errors' => $result->error]);
+                        }
+                    }
                     DB::commit();
                     return response()->json(['success' => true, 'id' => $asiento2->id,
                         'asiento2_cuenta' => $objCuenta->id,
@@ -190,6 +220,13 @@ class DetalleAsientoController extends Controller
                 if(!$asiento2 instanceof Asiento2){
                     return response()->json(['success' => false, 'errors' => 'No es posible definir beneficiario, por favor verifique la información del asiento o consulte al administrador.']);
                 }
+                // Si existe asiento NIF
+                $asientoNif = AsientoNif::query()->where('asienton1_asiento',$asiento2->asiento2_asiento)->first();
+                if ($asientoNif instanceof AsientoNif) {
+                    $asientoNif2 = AsientoNif2::query()->where('asienton2_asiento',$asientoNif->id)->where('asienton2_item', $asiento2->asiento2_item)->first();
+                    $asientoNif2->delete();
+                }
+
                 // Eliminar movimiento
                 AsientoMovimiento::where('movimiento_asiento2', $asiento2->id)->delete();
 
