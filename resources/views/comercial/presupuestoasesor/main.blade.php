@@ -44,11 +44,14 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-2 col-md-offset-4 text-left">
+                        <div class="col-md-2 col-md-offset-3 text-left">
                             <button type="button" class="btn btn-default btn-sm btn-block click-btn-search">{{ trans('app.find') }}</button>
                         </div>
                         <div class="col-md-2 text-left">
                             <button type="submit" class="btn btn-primary btn-sm btn-block">{{ trans('app.save') }}</button>
+                        </div>
+                        <div class="col-md-2 text-left">
+                            <button type="button" class="btn btn-default btn-sm btn-block click-btn-clear">{{ trans('app.clear') }}</button>
                         </div>
                     </div>
                     <div id="render-div-asesor">
@@ -65,7 +68,7 @@
             <table id="presupuesto-table" class="table table-bordered table-striped" cellspacing="0" width="100%">
                 <thead>
                     <tr>
-                        <th width="5%">Meses</th>
+                        <th width="5%"></th>
                         <% _.each(regionales, function(regional) { %>
                             <th><%- regional.regional_nombre %></th>
                         <% }); %>

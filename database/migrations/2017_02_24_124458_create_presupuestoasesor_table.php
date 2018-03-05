@@ -27,7 +27,7 @@ class CreatePresupuestoasesorTable extends Migration
             $table->foreign('presupuestoasesor_regional')->references('id')->on('regional')->onDelete('restrict');
             $table->foreign('presupuestoasesor_linea')->references('id')->on('linea')->onDelete('restrict');
 
-            $table->unique(['presupuestoasesor_asesor', 'presupuestoasesor_regional','presupuestoasesor_ano','presupuestoasesor_mes'], 'presupuestoasesor_asesor_regional_ano_mes_unique');
+            $table->unique(['presupuestoasesor_asesor', 'presupuestoasesor_regional','presupuestoasesor_linea', 'presupuestoasesor_ano','presupuestoasesor_mes'], 'presupuestoasesor_asesor_regional_linea_ano_mes_unique');
         });
     }
 

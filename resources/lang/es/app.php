@@ -7,7 +7,7 @@ return [
     | App Language Lines
     |--------------------------------------------------------------------------
     |
-    | The following language lines are used during all app KOI-TI 
+    | The following language lines are used during all app KOI-TI
     |
     */
 
@@ -26,6 +26,7 @@ return [
     'add' => 'Agregar',
     'find' => 'Buscar',
     'continue' => 'Continuar',
+    'clear' => 'Limpiar',
 
     'pdf' => 'Generar PDF',
     'xls' => 'Generar XLS',
@@ -34,5 +35,5 @@ return [
         'upload' => 'Seleccionar archivo',
         'drop' => 'Suelta los archivos aquí',
         'retry' => 'Volver a intentar'
-    ] 
+    ]
 ];

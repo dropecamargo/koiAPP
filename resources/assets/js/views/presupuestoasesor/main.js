@@ -15,6 +15,7 @@ app || (app = {});
         template: _.template( ($('#add-presupuesto-tpl').html() || '') ),
         events: {
             'click .click-btn-search': 'search',
+            'click .click-btn-clear': 'clear',
             'submit #form-presupuestoasesor': 'onStore',
             'change .change-input-presupuesto': 'changePresupuesto'
         },
@@ -156,7 +157,15 @@ app || (app = {});
                 alertify.error(thrownError);
             });
         },
+        clear: function(e){
+            e.preventDefault();
 
+            // Clear fields
+            this.$wraperForm.html('');
+            this.$asesor.val(null).trigger('change');
+            this.$linea.val(null).trigger('change');
+            this.$ano.val(null).trigger('change');
+        },
         /**
         * fires libraries js
         */

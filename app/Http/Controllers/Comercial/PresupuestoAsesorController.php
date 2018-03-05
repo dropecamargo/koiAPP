@@ -92,16 +92,8 @@ class PresupuestoAsesorController extends Controller
                 DB::beginTransaction();
                 try {
                     // Recuperar asesor
-                    $asesor = Tercero::select(
-                            DB::raw("CONCAT((CASE WHEN tercero_persona = 'N'
-                                    THEN CONCAT(tercero_nombre1,' ',tercero_nombre2,' ',tercero_apellido1,' ',tercero_apellido2,
-                                        (CASE WHEN (tercero_razonsocial IS NOT NULL AND tercero_razonsocial != '') THEN CONCAT(' - ', tercero_razonsocial) ELSE '' END)
-                                    )
-                                    ELSE tercero_razonsocial
-                                END)
-                            ) AS tercero_nombre"
-                        ))
-                        ->find($request->presupuestoasesor_asesor);
+                    $asesor = Tercero::select(DB::raw("CONCAT((CASE WHEN tercero_persona = 'N' THEN CONCAT(tercero_nombre1,' ',tercero_nombre2,' ',tercero_apellido1,' ',tercero_apellido2, (CASE WHEN (tercero_razonsocial IS NOT NULL AND tercero_razonsocial != '') THEN CONCAT(' - ', tercero_razonsocial) ELSE '' END) ) ELSE tercero_razonsocial END) ) AS tercero_nombre" ))->find($request->presupuestoasesor_asesor);
+
                     if( !$asesor instanceof Tercero ) {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'Asesor no se encuentra registrado, por favor verifique la información o consulte al administrador.']);
@@ -120,7 +112,7 @@ class PresupuestoAsesorController extends Controller
                     foreach ($regionales as $regional) {
                         foreach ( config('koi.meses') as $key => $name ) {
                             if($request->has("presupuestoasesor_valor_{$key}_{$regional->id}")){
-
+                                // Recuperar presupuesto
                                 $query = PresupuestoAsesor::query();
                                 $query->where('presupuestoasesor_mes', $key);
                                 $query->where('presupuestoasesor_ano', $request->presupuestoasesor_ano);
@@ -143,7 +135,6 @@ class PresupuestoAsesorController extends Controller
                             }
                         }
                     }
-
                     // Commit Transaction
                     DB::commit();
                     return response()->json(['success' => true, 'msg' => "Presupuesto de $asesor->tercero_nombre del año $request->presupuestoasesor_ano actualizado!"]);

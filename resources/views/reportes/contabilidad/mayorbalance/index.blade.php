@@ -51,9 +51,8 @@
 							<input id="cuenta_fin_nombre" name="cuenta_fin_nombre" placeholder="Nombre cuenta" class="form-control input-sm" type="text" maxlength="15" disabled>
 						</div>
 					</div>
-
 					<div class="row">
-						<div class="form-group col-md-offset-4 col-sm-offset-4 col-xs-6 col-sm-3 col-md-2">
+						<div class="form-group col-md-offset-4 col-xs-6 col-sm-3 col-md-2">
 							<label for="mes" class="control-label">Mes</label>
 							<select name="mes" id="mes" class="form-control" required>
 								@foreach( config('koi.meses') as $key => $value)
@@ -72,8 +71,7 @@
 							</select>
 						</div>
 					</div>
-
-					<div class="row">
+					<div class="box-footer">
 						<div class="col-md-2 col-md-offset-4 col-sm-6 col-xs-6">
 							<button type="submit" class="btn btn-default btn-sm btn-block btn-export-xls-koi-component">
 								<i class="fa fa-file-text-o"></i> {{ trans('app.xls') }}

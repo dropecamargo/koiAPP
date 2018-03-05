@@ -106,13 +106,6 @@ Route::group(['middleware' => 'auth'], function(){
 		Route::get('unificaciones', ['as' => 'configsabana.unificaciones', 'uses' => 'Comercial\ConfigSabanaController@unificaciones']);
 	});
 
-    /*
-	|-------------------------
-	| Reportes Routes
-	|-------------------------
-	*/
-	Route::resource('rsabanaventascostos', 'Reporte\SabanaDeVentasCostoController', ['only' => ['index']]);
-
 	/*
 	|--------------------------
 	| Contabilidad Routes
@@ -170,13 +163,6 @@ Route::group(['middleware' => 'auth'], function(){
 		});
 	});
 	Route::resource('asientosnif', 'Contabilidad\AsientoNifController', ['only' => ['index', 'edit', 'update', 'show']]);
-    /*
-	|-------------------------
-	| Reportes Routes
-	|-------------------------
-	*/
-	Route::resource('rmayorbalance', 'Reporte\MayorBalanceController', ['only' => ['index']]);
-   	Route::resource('rplancuentas', 'Reporte\PlanCuentasController', ['only' => ['index']]);
 
    	/*
 	|-------------------------
@@ -245,15 +231,6 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::resource('subgrupos', 'Inventario\SubGrupoController', ['except' => ['destroy']]);
 	Route::resource('servicios', 'Inventario\ServicioController', ['except' => ['edit','destroy']]);
 	Route::resource('tiposproducto', 'Inventario\TipoProductoController', ['except' => ['destroy']]);
-
-    /*
-	|-------------------------
-	| Reportes Routes
-	|-------------------------
-	*/
-	Route::resource('ractivosfijos', 'Reporte\ActivoFijoController', ['only' => ['index']]);
-	Route::resource('rexistencias', 'Reporte\ExistenciaController', ['only' => ['index']]);
-	Route::resource('rmovimientosproductos', 'Reporte\MovProductoController', ['only' => ['index']]);
 
    	/*
 	|-------------------------
@@ -324,13 +301,6 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::resource('cheques', 'Cartera\ChposFechado1Controller', ['except' => ['destroy']]);
 	Route::resource('chequesdevueltos', 'Cartera\ChDevueltoController', ['except' => ['destroy']]);
 	Route::resource('carteraterceros', 'Cartera\CarteraController', ['only' => ['index']]);
-    /*
-	|-------------------------
-	| Reportes Routes
-	|-------------------------
-	*/
-	Route::resource('rcarteraedades', 'Reporte\CarteraEdadController', ['only' => ['index']]);
-	Route::resource('rhistorialclientes', 'Reporte\HistorialClienteController', ['only' => ['index']]);
 
 	/*
 	|-------------------------
@@ -364,12 +334,7 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::resource('gestionestecnico', 'Tecnico\GestionTecnicoController', ['except' => ['destroy']]);
 	Route::resource('agendatecnica', 'Tecnico\AgendaTecnicaController', ['except' => ['destroy']]);
 	Route::resource('sitios', 'Tecnico\SitioController', ['except' => ['destroy']]);
-    /*
-	|-------------------------
-	| Reportes Routes
-	|-------------------------
-	*/
-	Route::resource('rordenesabiertas', 'Reporte\OrdenesAbiertasController', ['only' => ['index']]);
+
 	/*
 	|-------------------------
 	| Tesoreria Routes
@@ -417,4 +382,16 @@ Route::group(['middleware' => 'auth'], function(){
 	*/
 	Route::resource('rhistorialproveedores', 'Reporte\HistorialProveedorController', ['only' => ['index']]);
 	Route::resource('rcarteraedadesproveedores', 'Reporte\CarteraEdadProveedorController', ['only' => ['index']]);
+	Route::resource('ractivosfijos', 'Reporte\ActivoFijoController', ['only' => ['index']]);
+	Route::resource('rexistencias', 'Reporte\ExistenciaController', ['only' => ['index']]);
+	Route::resource('rmovimientosproductos', 'Reporte\MovProductoController', ['only' => ['index']]);
+	Route::resource('rmayorbalance', 'Reporte\MayorBalanceController', ['only' => ['index']]);
+	Route::resource('rplancuentas', 'Reporte\PlanCuentasController', ['only' => ['index']]);
+	Route::resource('rordenesabiertas', 'Reporte\OrdenesAbiertasController', ['only' => ['index']]);
+	Route::resource('rcarteraedades', 'Reporte\CarteraEdadController', ['only' => ['index']]);
+	Route::resource('rhistorialclientes', 'Reporte\HistorialClienteController', ['only' => ['index']]);
+	Route::resource('rsabanaventascostos', 'Reporte\SabanaDeVentasCostoController', ['only' => ['index']]);
+	Route::resource('rauxcontable', 'Reporte\AuxiliarContableController', ['only' => ['index']]);
+	Route::resource('rlibrodiario', 'Reporte\LibroDiarioController', ['only' => ['index']]);
+	Route::resource('rlibromayor', 'Reporte\LibroMayorController', ['only' => ['index']]);
 });

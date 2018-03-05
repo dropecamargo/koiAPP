@@ -23,8 +23,14 @@ class SabanaDeVentasCostoController extends Controller
 
             /* Begin validation form*/
             $validator = Validator::make($request->all(), [
-                'filter_regional' => 'required'
+                'filter_regional' => 'required',
             ]);
+            $validator->after(function ($validator) {
+                $count = DB::table('configsabanaventa')->count();
+                if($count == 0 ){
+                    $validator->errors()->add('field', 'Por favor verifique la configuración de la sabana de ventas');
+                }
+            });
 
             if ($validator->fails()) {
                 return redirect('/rsabanaventascostos')
@@ -32,7 +38,6 @@ class SabanaDeVentasCostoController extends Controller
                         ->withInput();
             }
             /* End validation*/
-
             $validation = in_array("0", $request->filter_regional);
 
             // Array costos
