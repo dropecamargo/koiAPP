@@ -7,12 +7,7 @@ return [
     'image' => '/images/koi.png',
 
     'app' => [
-        'name' => 'Koi-ti APP',
-        'site' => 'http://www.koi-ti.com',
-        'image' => [
-            'logo' => '/images/koi.png',
-            'avatar' => '/images/avatar.svg'
-        ],
+        'avatar' => '/images/avatar.svg',
         'ano' => 2015
     ],
 

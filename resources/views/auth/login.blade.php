@@ -6,8 +6,8 @@
     <html>
     <head>
         <meta charset="UTF-8">
-        <title>{{ config('koi.app.name') }} :: Login</title>
-        <link rel="icon" type="image/png" href="{{ asset(config('koi.app.image.logo')) }}" />
+        <title>{{ ENV('APP_NAME') }} :: Login</title>
+        <link rel="icon" type="image/png" href="{{ asset(env('APP_LOGO')) }}" />
 
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 
@@ -28,8 +28,8 @@
 	<body class="hold-transition login-page">
 		<div class="login-box">
 			<div class="login-logo">
-				<img src="{{ asset(config('koi.app.image.logo')) }}" alt="{{ config('koi.app.sitename') }}"/><br>
-        		<b>{{ config('koi.app.name') }}</b>
+				<img src="{{ asset(env('APP_LOGO')) }}" alt="{{ env('APP_NAME') }}"/><br>
+        		<b>{{ ENV('APP_NAME') }}</b>
 			</div>
 
 			@if (count($errors) > 0)

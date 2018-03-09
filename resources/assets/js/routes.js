@@ -423,11 +423,10 @@ app || (app = {});
         start: function () {
             var config = { pushState: true };
 
-            if( document.documentURI.search(/(dev-signsupply)/gi) != '-1' ) {
-                config.root = '/dev-signsupply/public/';
-
-            }else if( document.domain.search(/(104.236.57.82|localhost)/gi) != '-1' ) {
-                config.root = '/signsupply/public/';
+            if( document.documentURI.search(/(senccob)/gi) != '-1' ) {
+                config.root = '/senccob/public/';
+            }else {
+                config.root = '/koiAPP/public/';
             }
 
             Backbone.history.start( config );

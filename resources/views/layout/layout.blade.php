@@ -6,8 +6,8 @@
     <html>
     <head>
         <meta charset="UTF-8">
-        <title>{{ config('koi.app.name') }} :: @yield('title')</title>
-        <link rel="icon" type="image/png" href="{{ asset(config('koi.app.image.logo')) }}" />
+        <title>{{ env('APP_NAME') }} :: @yield('title')</title>
+        <link rel="icon" type="image/png" href="{{ asset(env('APP_LOGO')) }}" />
 
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 
