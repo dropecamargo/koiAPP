@@ -423,10 +423,12 @@ app || (app = {});
         start: function () {
             var config = { pushState: true };
 
-            if( document.documentURI.search(/(senccob)/gi) != '-1' ) {
-                config.root = '/senccob/public/';
-            }else {
+            if( document.domain.search(/(104.236.57.82|localhost)/gi) != '-1' ) {
                 config.root = '/koiAPP/public/';
+
+                if (document.documentURI.search(/(senccob)/gi) != '-1') {
+                    config.root = '/senccob/public/';
+                }
             }
 
             Backbone.history.start( config );
