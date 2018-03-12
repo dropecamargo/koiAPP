@@ -17,13 +17,13 @@
 			<div class="box-body">
                 <div class="row">
 					<div class="col-sm-1">
-    					<a class="btn btn-app btn-koi-search-tercero-component-table" data-render="show" title="Ver Terceros">
+    					<a class="btn btn-app" href="{{ route('terceros.index') }}" title="Ver Terceros">
     						<i class="fa fa-users"></i> Terceros
     					</a>
                     </div>
 
                     <div class="col-sm-1">
-						<a class="btn btn-app btn-koi-search-producto-component" data-render="show" title="Ver Productos">
+						<a class="btn btn-app" href="{{ route('productos.index') }}" title="Ver Productos">
 							<i class="fa fa-barcode"></i> Productos
 						</a>
 	                </div>

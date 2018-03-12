@@ -42,10 +42,6 @@ app || (app = {});
             this.$searchName = this.$('#koi_search_tercero_nombre');
 
             this.$tercerosSearchTable = this.$modalComponent.find('#koi-search-tercero-component-table');
-            
-            /* Render in <a> dashboard */
-            this.$fieldRender = this.$($(e.currentTarget)).attr("data-render");
-            /* --- */
 
             this.$inputContent = this.$("#"+$(e.currentTarget).attr("data-field"));
             this.$wraperConten = this.$("#"+this.$inputContent.attr("data-wrapper"));
@@ -57,7 +53,7 @@ app || (app = {});
             this.$inputCliente = this.$inputContent.attr("data-cliente");
             this.$inputVendedor = this.$inputContent.attr("data-vendedor");
             this.$inputTecnico = this.$inputContent.attr("data-tecnico");
-            
+
             this.$concepto = this.$("#"+this.$inputContent.attr("data-concepto"));
             this.$wrap = this.$("#"+this.$inputContent.attr("data-wrap"));
 
@@ -65,7 +61,7 @@ app || (app = {});
                 alertify.error('Por favor ingrese punto de venta antes seleccionar tercero.');
                 return;
             }
-            
+
             this.tercerosSearchTable = this.$tercerosSearchTable.DataTable({
                 dom: "<'row'<'col-sm-12'tr>>" +
                		"<'row'<'col-sm-5'i><'col-sm-7'p>>",
@@ -101,9 +97,9 @@ app || (app = {});
                         render: function ( data, type, full, row ) {
 
                             // Render show tercero in dashboard
-                            if (_this.$fieldRender == "show") 
+                            if (_this.$fieldRender == "show")
                                 return '<a href='+ window.Misc.urlFull( Route.route('terceros.show', { terceros: full.id}))+'>' + data + '</a>';
-                            
+
                         	return '<a href="#" class="a-koi-search-tercero-component-table">' + data + '</a>';
                         }
                     },
@@ -131,7 +127,7 @@ app || (app = {});
 			this.$inputContent.val( data.tercero_nit );
             this.$inputName.val( data.tercero_nombre );
             this.$inputAddress.val( data.tercero_direccion );
-            
+
             if(this.$btnContact.length > 0) {
                 this.$btnContact.attr('data-tercero', data.id);
             }
@@ -220,7 +216,7 @@ app || (app = {});
 
                         if(!_.isUndefined(resp.tercero_nombre) && !_.isNull(resp.tercero_nombre)){
                             _this.$inputName.val(resp.tercero_nombre);
-                        } 
+                        }
                         if(!_.isUndefined(resp.tercero_direccion) && !_.isNull(resp.tercero_direccion)){
                             _this.$inputAddress.val(resp.tercero_direccion);
                         }

@@ -44,10 +44,6 @@ app || (app = {});
 
             this.$productosSearchTable = this.$modalComponent.find('#koi-search-producto-component-table');
 
-            /* Render in <a> dashboard */
-            this.$fieldRender = this.$($(e.currentTarget)).attr("data-render");
-            /* --- */
-
 			this.$inputContent = this.$("#"+$(e.currentTarget).attr("data-field"));
 			this.$inputName = this.$("#"+this.$inputContent.attr("data-name"));
 			this.$inputCosto = this.$("#"+this.$inputContent.attr("data-costo"));

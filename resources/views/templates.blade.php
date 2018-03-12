@@ -291,7 +291,6 @@
 						    </div>
 						</form>
 					</div>
-
 					<% if( !_.isUndefined(tercero_nit) && !_.isNull(tercero_nit) && tercero_nit != ''){ %>
 						{{-- Tab empleados --}}
 						<div class="tab-pane" id="tab_empleados">
