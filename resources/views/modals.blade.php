@@ -192,6 +192,22 @@
 		</div>
 	</div>
 </div>
+<!-- Modal import file -->
+<div class="modal fade" id="modal-import-file-component" data-backdrop="static" data-keyboard="false" aria-hidden="true">
+	<div class="modal-dialog modal-md" role="document">
+		<div class="modal-content">
+			<div class="modal-header small-box {{ config('koi.template.bg') }}">
+				<button type="button" class="close icon-close-koi" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="inner-title-modal modal-title"></h4>
+			</div>
+			<div class="modal-body" id="modal-wrapper-import-file">
+				<div class="content-modal"></div>
+			</div>
+		</div>
+	</div>
+</div>
 <!-- Modal medio-pago -->
 <div class="modal fade" id="modal-mediopago-component" data-backdrop="static" data-keyboard="false" aria-hidden="true">
 	<div class="modal-dialog modal-lg" role="document">
@@ -1014,4 +1030,19 @@
 	        </div>
 		</div>
 	</form>
+</script>
+<script type="text/template" id="add-import-file-tpl">
+		<form action="<%- url %>" method="post" data-toggle="validator" enctype="multipart/form-data">
+			{!! Form::token()  !!}
+			<div class="row">
+				<div class="form-group col-md-12">
+					<label for="import_file" class="control-label">Importar</label>
+					<input type="file" id="import_file" name="import_file"></input>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancelar</button>
+				<button type="submit" class="btn btn-primary btn-sm btn-submit-import">Continuar</button>
+			</div>
+		</form>
 </script>

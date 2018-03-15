@@ -29,7 +29,8 @@ app || (app = {});
             this.$searchName = this.$('#producto_nombre');
 
             this.productosSearchTable = this.$productosSearchTable.DataTable({
-                dom: "<'row'<'col-sm-12'tr>>" +
+                dom:"<'row'<'col-sm-4'B><'col-sm-4 text-center'l>>" +
+                    "<'row'<'col-sm-12'tr>>" +
                     "<'row'<'col-sm-5'i><'col-sm-7'p>>",
 				processing: true,
                 serverSide: true,
@@ -47,15 +48,22 @@ app || (app = {});
                     { data: 'producto_referencia', name: 'producto_referencia' },
                     { data: 'producto_nombre', name: 'producto_nombre' }
                 ],
-				buttons: [
-					{
-						text: '<i class="fa fa-user-plus"></i> Nuevo producto',
-                        className: 'btn-sm',
-						action: function ( e, dt, node, config ) {
-							window.Misc.redirect( window.Misc.urlFull( Route.route('productos.create') ) )
-						}
-					}
-				],
+                buttons: [
+                   {
+                       text: 'Importar',
+                       className: 'btn-sm',
+                       action: function () {
+                            _this.importActionView = new app.ImportProductoActionView({
+                               parameters: {
+                                   title: 'productos',
+                                   url: window.Misc.urlFull( Route.route('productos.import') )
+                               }
+                           });
+
+                           _this.importActionView.render();
+                       }
+                   }
+               ],
                 columnDefs: [
                     {
                         targets: 0,

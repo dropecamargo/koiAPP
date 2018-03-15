@@ -30,9 +30,10 @@ app || (app = {});
             this.$searchAjusteTipo = this.$('#searchajuste_ajuste_tipo');
             this.$searchAjusteSucursal = this.$('#searchajuste_ajuste_sucursal');
             this.$searchAjusteFecha = this.$('#searchajuste_ajuste_fecha');
-            
+
             this.ajustesSearchTable = this.$ajustesSearchTable.DataTable({
-                dom: "<'row'<'col-sm-12'tr>>" +
+                dom:"<'row'<'col-sm-4'B><'col-sm-4 text-center'l>>" +
+                    "<'row'<'col-sm-12'tr>>" +
                     "<'row'<'col-sm-5'i><'col-sm-7'p>>",
                 processing: true,
                 serverSide: true,
@@ -46,7 +47,7 @@ app || (app = {});
                         data.fecha = _this.$searchAjusteFecha.val();
                     }
                 },
-                columns: [ 
+                columns: [
                     { data: 'id', name: 'id'},
                     { data: 'tipoajuste_nombre', name: 'tipoajuste_nombre' },
                     { data: 'sucursal_nombre', name: 'sucursal_nombre' },
@@ -60,11 +61,27 @@ app || (app = {});
                         render: function ( data, type, full, row ) {
                            return '<a href="'+ window.Misc.urlFull( Route.route('ajustes.show', {ajustes: full.id }) )  +'">' + data + '</a>';
                         },
-                       
-                    }, 
-                ]
+
+                    },
+                ],
+                buttons: [
+                   {
+                       text: 'Importar',
+                       className: 'btn-sm',
+                       action: function () {
+                            _this.importActionView = new app.ImportProductoActionView({
+                               parameters: {
+                                   title: 'ajustes',
+                                   url: window.Misc.urlFull( Route.route('ajustes.import') )
+                               }
+                           });
+
+                           _this.importActionView.render();
+                       }
+                   }
+               ],
             });
-        }, 
+        },
 
         search: function(e) {
             e.preventDefault();

@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Base\Sucursal, App\Models\Inventario\Producto, App\Models\Inventario\Prodbode, App\Models\Inventario\Impuesto, App\Models\Inventario\TipoAjuste, App\Models\Base\Tercero, App\Models\Base\Contacto, App\Models\Inventario\Servicio, App\Models\Inventario\Linea, App\Models\Inventario\Marca, App\Models\Inventario\Modelo, App\Models\Inventario\TipoProducto, App\Models\Inventario\Grupo, App\Models\Inventario\SubGrupo, App\Models\Inventario\Unidad;
-use DB, Log, Datatables;
+use DB, Log, Datatables, Excel, Validator;
 
 class ProductoController extends Controller
 {
@@ -623,5 +623,132 @@ class ProductoController extends Controller
             }
             return response()->json(['success' => true ]);
         }
+    }
+    /**
+     * Validate productos referencia.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function import(Request $request)
+    {
+        /* Begin validator type file*/
+        // $validator = Validator::make($request->all(), [
+        //     'import_file' => 'required|mimetypes:text/csv'
+        // ]);
+        //
+        // if ($validator->fails()) {
+        //     return redirect('/productos')->withErrors($validator)->withInput();
+        // }
+        /* End validator */
+        $success = 0; // Count registers
+        $excel = Excel::load($request->import_file)->get();
+        foreach ($excel as $row) {
+            $producto = new Producto;
+            if ($producto->isValid($row->toArray())) {
+                DB::beginTransaction();
+                try {
+                    $valid = true;
+                    // Recuperar Impusto
+                    $impuesto = Impuesto::find($row->producto_impuesto);
+                    if ( !$impuesto instanceof Impuesto ) {
+                        DB::rollback();
+                        Log::error('No es posible recuperar IMPUESTO, verifique información o consulte al administrador.');
+                        $valid = false;
+                    }
+
+                    // Recuperar Linea
+                    $linea = Linea::find($row->producto_linea);
+                    if ( !$linea instanceof Linea ) {
+                        DB::rollback();
+                        Log::error('No es posible recuperar LINEA, verifique la información o consulte al administrador.');
+                        $valid = false;
+                    }
+
+                    // Recuperar Grupo
+                    $grupo = Grupo::find($row->producto_grupo);
+                    if ( !$grupo instanceof Grupo ) {
+                        DB::rollback();
+                        Log::error('No es posible recuperar GRUPO, verifique la información o consulte al administrador.');
+                        $valid = false;
+                    }
+
+                    // Recuperar SubGrupo
+                    $subgrupo = SubGrupo::find($row->producto_subgrupo);
+                    if ( !$subgrupo instanceof SubGrupo ) {
+                        DB::rollback();
+                        Log::error('No es posible recuperar SUBGRUPO, verifique la información o consulte al administrador.');
+                        $valid = false;
+                    }
+
+                    // Recuperar TipoProducto
+                    $tipoproducto = TipoProducto::find($row->producto_tipoproducto);
+                    if ( !$tipoproducto instanceof TipoProducto ) {
+                        DB::rollback();
+                        Log::error('No es posible recuperar TIPO DE PRODUCTO, verifique la información o consulte al administrador.');
+                        $valid = false;
+                    }
+
+                    // Recuperar Unidad
+                    $unidad = Unidad::find($row->producto_unidadmedida);
+                    if ( !$unidad instanceof Unidad ) {
+                        DB::rollback();
+                        Log::error('No es posible recuperar UNIDAD DE MEDIDA, verifique la información o consulte al administrador.');
+                        $valid = false;
+                    }
+
+                    // Recuperar Marca
+                    $marca = Marca::find($row->producto_marca);
+                    if ( !$marca instanceof Marca ) {
+                        DB::rollback();
+                        Log::error('No es posible recuperar MARCA, verifique la información o consulte al administrador.');
+                        $valid = false;
+                    }
+                    // Recuperar Modelo
+                    $modelo = Modelo::find($row->producto_modelo);
+                    if ( !$modelo instanceof Modelo ) {
+                        DB::rollback();
+                        Log::error('No es posible recuperar MODELO, verifique la información o consulte al administrador.');
+                        $valid = false;
+                    }
+
+                    if ( $marca->id != $modelo->modelo_marca ){
+                        DB::rollback();
+                        Log::error('El modelo no corresponde a esa marca, verifique la información o consulte al administrador.');
+                        $valid = false;
+                    }
+                    if ($valid) {
+                        $success ++;
+                        // Producto
+                        $producto->fill($row->toArray());
+                        $producto->fillBoolean($row->toArray());
+                        $producto->producto_serie = $row->producto_referencia;
+                        $producto->producto_impuesto = $impuesto->id;
+                        $producto->producto_linea = $linea->id;
+                        $producto->producto_grupo = $grupo->id;
+                        $producto->producto_subgrupo = $subgrupo->id;
+                        $producto->producto_tipoproducto = $tipoproducto->id;
+                        $producto->producto_unidadmedida = $unidad->id;
+                        $producto->producto_marca = $marca->id;
+                        $producto->producto_modelo = $modelo->id;
+                        $producto->save();
+
+                        // Commit Transaction
+                        DB::commit();
+                    }
+                }catch(\Exception $e){
+                    $success--;
+                    DB::rollback();
+                    Log::error($e->getMessage());
+                    Log::error(trans('app.exception'));
+                    // return response()->json(['success' => false, 'error' => trans('app.exception')]);
+                }
+            }
+            Log::error($producto->errors);
+        }
+        // Capture numero de registros para mostrar
+        $errors = ($excel->count() - $success);
+        $msg = [ "Número de registros exitosos $success", "Número de registros NO exitosos $errors"];
+
+        return redirect('/productos')->withErrors($msg);
     }
 }

@@ -17,7 +17,7 @@ app || (app = {});
         * Constructor Method
         */
         initialize : function() {
-
+            var _this = this;
             this.$gruposSearchTable = this.$('#grupos-search-table');
             this.$gruposSearchTable.DataTable({
                 dom: "<'row'<'col-sm-4'B><'col-sm-4 text-center'l><'col-sm-4'f>>" +
@@ -39,6 +39,19 @@ app || (app = {});
                         action: function ( e, dt, node, config ) {
                             window.Misc.redirect( window.Misc.urlFull( Route.route('grupos.create') ) )
                         }
+                    },
+                    {
+                        text: 'Importar',
+                        className: 'btn-sm',
+                        // action: function () {
+                        //     _this.importActionView = new app.ImportProductoActionView({
+                        //        parameters: {
+                        //            title: 'grupos'
+                        //        }
+                        //    });
+                        //
+                        //    _this.importActionView.render();
+                        // }
                     }
                 ],
                 columnDefs: [

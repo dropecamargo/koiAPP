@@ -394,4 +394,15 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::resource('rauxcontable', 'Reporte\AuxiliarContableController', ['only' => ['index']]);
 	Route::resource('rlibrodiario', 'Reporte\LibroDiarioController', ['only' => ['index']]);
 	Route::resource('rlibromayor', 'Reporte\LibroMayorController', ['only' => ['index']]);
+
+	/*
+	|-------------------------
+	| Imports Routes
+	|-------------------------
+	*/
+	Route::group(['prefix' => 'import'], function()
+	{
+		Route::post('productos',['as' =>'productos.import','uses'=>'Inventario\ProductoController@import'] );
+		Route::post('ajustes',['as' =>'ajustes.import','uses'=>'Inventario\AjusteController@import'] );
+	});
 });

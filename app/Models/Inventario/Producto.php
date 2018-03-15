@@ -4,7 +4,7 @@ namespace App\Models\Inventario;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\BaseModel;
-use DB, Validator;
+use DB, Validator, Log;
 
 class Producto extends BaseModel
 {
@@ -55,7 +55,7 @@ class Producto extends BaseModel
         if ($this->exists){
             $rules['producto_serie'] .= ",producto_serie,$this->id";
         }
-
+        
         $validator = Validator::make($data, $rules);
         if ($validator->passes()){
             return true;
@@ -75,6 +75,7 @@ class Producto extends BaseModel
         }
         return false;
     }
+
     public static function getProduct($id)
     {
         $query = Producto::query();
