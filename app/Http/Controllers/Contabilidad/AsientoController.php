@@ -6,13 +6,9 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
-use App\Classes\AsientoContableDocumento;
-use App\Classes\AsientoNifContableDocumento;
-
+use App\Classes\AsientoContableDocumento, App\Classes\AsientoNifContableDocumento;
 use App\Models\Contabilidad\Asiento, App\Models\Contabilidad\Asiento2,App\Models\Contabilidad\AsientoNif, App\Models\Contabilidad\AsientoNif2, App\Models\Contabilidad\PlanCuenta,App\Models\Contabilidad\PlanCuentaNif, App\Models\Base\Tercero, App\Models\Contabilidad\Documento, App\Models\Contabilidad\CentroCosto;
-
-use DB, Log, Datatables, Auth, View, App;
+use DB, Log, Datatables, Auth, View, App, Excel;
 
 class AsientoController extends Controller
 {
@@ -467,4 +463,21 @@ class AsientoController extends Controller
         $pdf->loadHTML(View::make('contabilidad.asiento.export',  compact('asiento', 'detalle' ,'title'))->render());
         return $pdf->download(sprintf('%s_%s_%s_%s.pdf', 'asiento', $asiento->id, date('Y_m_d'), date('H_m_s')));
     }
+
+    public function import(Request $request)
+    {
+        if( isset($request->file) ){
+            // Begin validator type file
+            if ($request->file->getClientMimeType() !== 'text/csv' )
+                return response()->json(['success' => false, 'errors' => "Por favor, seleccione un archivo .csv."]);
+
+            $excel = Excel::load($request->file)->get();
+            foreach ($excel as $row) {
+                # code...
+            }
+            return response()->json(['success'=> true, 'msg'=> 'OK BITCHES', 'destination' => 'asientos' ]);
+        }
+        return response()->json(['success' => false, 'errors' => "Por favor, seleccione un archivo."]);
+    }
+
 }

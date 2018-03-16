@@ -59,8 +59,6 @@ app || (app = {});
                                    url: window.Misc.urlFull( Route.route('productos.import') )
                                }
                            });
-
-                           _this.importActionView.render();
                        }
                    }
                ],

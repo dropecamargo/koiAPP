@@ -12,7 +12,10 @@ app || (app = {});
     app.ImportProductoActionView = Backbone.View.extend({
 
         el: 'body',
-        template: _.template(($('#add-import-file-tpl').html() || '')),
+        events: {
+            'click .btn-import': 'submitForm',
+            'submit #form-import-component': 'onStore'
+        },
         parameters: {
             action: {}
         },
@@ -26,34 +29,73 @@ app || (app = {});
                 this.parameters = $.extend({}, this.parameters, opts.parameters);
 
             this.$modal = $('#modal-import-file-component');
+
+            this.$modal.find('.modal-title').text( 'Importando ' + this.parameters.title );
+            this.$wrapper = this.$('#modal-wrapper-import-file');
+            this.$modal.modal('show');
+
+            this.$form = $('#form-import-component');
+            this.ready();
         },
 
-        /*
-        * Render View Element
-        */
-        render: function() {
-            this.$modal.find('.modal-title').text( 'Importando ' + this.parameters.title );
-            this.$modal.find('.content-modal').empty().html( this.template( this.parameters ) );
-            this.$modal.modal('show');
-            this.ready();
-		},
+        submitForm: function(e) {
+
+            this.$form.submit();
+        },
+
+        onStore: function(e) {
+            if (!e.isDefaultPrevented()) {
+                e.preventDefault();
+
+                var _this = this,
+                    formData =  new FormData( e.target );
+
+                $.ajax({
+                    url: _this.parameters.url,
+                    data: formData,
+                    type: 'POST',
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    beforeSend: function() {
+                        window.Misc.setSpinner( _this.$wrapper );
+                    }
+                })
+                .done(function(resp) {
+                    window.Misc.removeSpinner( _this.$wrapper );
+                    if(!_.isUndefined(resp.success)) {
+                        // response success or error
+                        var text = resp.success ? '' : resp.errors;
+                        if( _.isObject( resp.errors ) ) {
+                            text = window.Misc.parseErrors(resp.errors);
+                        }
+
+                        if( !resp.success ) {
+                            alertify.error(text);
+                            return;
+                        }
+
+                        _this.$modal.modal('hide');
+                        window.Misc.successRedirect( resp.msg, window.Misc.urlFull( Route.route(resp.destination + '.index') ) );
+                    }
+                })
+                .fail(function(jqXHR, ajaxOptions, thrownError) {
+                    window.Misc.removeSpinner( _this.$wrapper );
+                    alertify.error(thrownError);
+                });
+            }
+        },
 
     	/**
         * fires libraries js
         */
         ready: function () {
-            // to fire plugins
-            if( typeof window.initComponent.initToUpper == 'function' )
-                window.initComponent.initToUpper();
-
+            // to fire plugin
             if( typeof window.initComponent.initValidator == 'function' )
                 window.initComponent.initValidator();
 
-            if( typeof window.initComponent.initDatePicker == 'function' )
-                window.initComponent.initDatePicker();
-
-            if( typeof window.initComponent.initSelect2 == 'function' )
-                window.initComponent.initSelect2();
+            if( typeof window.initComponent.initSelectFile == 'function' )
+                window.initComponent.initSelectFile();
         },
     });
 

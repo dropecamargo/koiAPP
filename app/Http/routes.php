@@ -404,5 +404,6 @@ Route::group(['middleware' => 'auth'], function(){
 	{
 		Route::post('productos',['as' =>'productos.import','uses'=>'Inventario\ProductoController@import'] );
 		Route::post('ajustes',['as' =>'ajustes.import','uses'=>'Inventario\AjusteController@import'] );
+		Route::post('asientos',['as' =>'asientos.import','uses'=>'Contabilidad\AsientoController@import'] );
 	});
 });

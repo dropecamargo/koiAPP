@@ -36,6 +36,7 @@ var app = app || {};
             this.initICheck();
             this.initAlertify();
             this.initSelect2();
+            this.initSelectFile();
             this.initToUpper();
             this.initSpinner();
             this.initInputMask();
@@ -155,6 +156,18 @@ var app = app || {};
                 }
                 $(this).val( valor );
            });
+        },
+
+        /**
+        * Init toUpper
+        */
+        initSelectFile: function () {
+            $('.selectfile').change(function(){
+                var filetext = $(this).val().replace(/\\/g, '/').replace(/.*\//, '');
+                var readonly = $(this).parents('.input-group').find(':text');
+
+                readonly.val(filetext);
+            });
         },
 
         /**
