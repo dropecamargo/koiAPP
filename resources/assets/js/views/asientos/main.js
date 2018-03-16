@@ -31,7 +31,8 @@ app || (app = {});
             this.$searchDocumento = this.$('#search_documento');
 
             this.asientosSearchTable = this.$asientosSearchTable.DataTable({
-                dom: "<'row'<'col-sm-12'tr>>" +
+                dom: "<'row'<'col-sm-4'B>>" +
+                    "<'row'<'col-sm-12'tr>>" +
 					"<'row'<'col-sm-5'i><'col-sm-7'p>>",
 				processing: true,
                 serverSide: true,
@@ -59,6 +60,22 @@ app || (app = {});
                     { data: 'tercero_apellido2', name: 'tercero_apellido2' },
                     { data: 'asiento1_preguardado', name: 'asiento1_preguardado' }
                 ],
+                buttons: [
+                   {
+                       text: 'Importar',
+                       className: 'btn-sm',
+                       action: function () {
+                            _this.importActionView = new app.ImportProductoActionView({
+                               parameters: {
+                                   title: 'asientos',
+                                   url: window.Misc.urlFull( Route.route('asientos.import') )
+                               }
+                           });
+
+                           _this.importActionView.render();
+                       }
+                   }
+               ],
                 columnDefs: [
                     {
                         targets: 0,

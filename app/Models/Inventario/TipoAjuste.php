@@ -41,14 +41,16 @@ class TipoAjuste extends BaseModel
 	{
 		$rules = [
 			'tipoajuste_nombre' => 'required|max:25|unique:tipoajuste',
-			'tipoajuste_sigla' => 'required|max:3',
+			'tipoajuste_sigla' => 'required|max:3|unique:tipoajuste',
 			'tipoajuste_tipo' => 'required|max:1',
 		];
 
         if ($this->exists){
             $rules['tipoajuste_nombre'] .= ',tipoajuste_nombre,' . $this->id;
+            $rules['tipoajuste_sigla'] .= ',tipoajuste_sigla,' . $this->id;
         }else{
             $rules['tipoajuste_nombre'] .= '|required';
+            $rules['tipoajuste_sigla'] .= '|required';
         }
 
 		$validator = Validator::make($data, $rules);

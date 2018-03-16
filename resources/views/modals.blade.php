@@ -202,9 +202,17 @@
 				</button>
 				<h4 class="inner-title-modal modal-title"></h4>
 			</div>
-			<div class="modal-body" id="modal-wrapper-import-file">
-				<div class="content-modal"></div>
-			</div>
+			<div class="box box-solid" id="modal-wrapper-import-file">
+			<form  id="form-import-component" data-toggle="validator">
+				<div class="modal-body">
+					<div class="content-modal"></div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancelar</button>
+					<button type="button" class="btn btn-primary btn-sm btn-import">Continuar</button>
+				</div>
+			</form>
+		</div>
 		</div>
 	</div>
 </div>
@@ -1031,18 +1039,32 @@
 		</div>
 	</form>
 </script>
-<script type="text/template" id="add-import-file-tpl">
-		<form action="<%- url %>" method="post" data-toggle="validator" enctype="multipart/form-data">
-			{!! Form::token()  !!}
-			<div class="row">
-				<div class="form-group col-md-12">
-					<label for="import_file" class="control-label">Importar</label>
-					<input type="file" id="import_file" name="import_file"></input>
-				</div>
+<script type="text/template" id="import-data-tpl">
+	<div class="row">
+		<div class="form-group col-md-12">
+			<div class="input-group">
+				<label class="input-group-btn">
+					<span class="btn btn-primary btn-sm">
+						Buscar <input type="file" id="file" name="file" class="selectfile">
+					</span>
+				</label>
+				<input type="text" class="form-control input-sm" readonly>
 			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancelar</button>
-				<button type="submit" class="btn btn-primary btn-sm btn-submit-import">Continuar</button>
+			<span class="help-block">
+				Por favor, seleccione un archivo tipo <b>.csv </b>
+			</span>
+		</div>
+	</div>
+	<% if(title == 'ajustes'){ %>
+		<div class="row">
+			<div class="form-group col-md-12">
+				<label for="import_sucursal" class="control-label">Sucursal</label>
+				<select name="import_sucursal" id="import_sucursal" class="form-control select2-default" required>
+					@foreach( App\Models\Base\Sucursal::getSucursales() as $key => $value)
+					<option  value="{{ $key }}">{{ $value }}</option>
+					@endforeach
+				</select>
 			</div>
-		</form>
+		</div>
+	<% } %>
 </script>
