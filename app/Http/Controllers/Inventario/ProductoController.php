@@ -721,6 +721,10 @@ class ProductoController extends Controller
                         // Producto
                         $producto->fill($row->toArray());
                         $producto->fillBoolean($row->toArray());
+                        $producto->producto_maneja_serie = $row->producto_maneja_serie;
+                        $producto->producto_metrado = $row->producto_metrado;
+                        $producto->producto_vence = $row->producto_vence;
+                        $producto->producto_unidad = $row->producto_unidad;
                         $producto->producto_serie = $row->producto_referencia;
                         $producto->producto_impuesto = $impuesto->id;
                         $producto->producto_linea = $linea->id;
