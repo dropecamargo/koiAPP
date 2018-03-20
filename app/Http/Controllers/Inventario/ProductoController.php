@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Base\Sucursal, App\Models\Inventario\Producto, App\Models\Inventario\Prodbode, App\Models\Inventario\Impuesto, App\Models\Inventario\TipoAjuste, App\Models\Base\Tercero, App\Models\Base\Contacto, App\Models\Inventario\Servicio, App\Models\Inventario\Linea, App\Models\Inventario\Marca, App\Models\Inventario\Modelo, App\Models\Inventario\TipoProducto, App\Models\Inventario\Grupo, App\Models\Inventario\SubGrupo, App\Models\Inventario\Unidad;
-use DB, Log, Datatables, Excel, Validator;
+use DB, Log, Datatables, Excel;
 
 class ProductoController extends Controller
 {
@@ -631,128 +631,103 @@ class ProductoController extends Controller
      */
     public function import(Request $request)
     {
-        /* Begin validator type file*/
-        // $validator = Validator::make($request->all(), [
-        //     'import_file' => 'required|mimetypes:text/csv'
-        // ]);
-        //
-        // if ($validator->fails()) {
-        //     return redirect('/productos')->withErrors($validator)->withInput();
-        // }
-        /* End validator */
-        $success = 0; // Count registers
-        $excel = Excel::load($request->import_file)->get();
-        foreach ($excel as $row) {
-            $producto = new Producto;
-            if ($producto->isValid($row->toArray())) {
-                DB::beginTransaction();
-                try {
-                    $valid = true;
+        if( isset($request->file) ){
+            // Validator type file
+            if ($request->file->getClientMimeType() !== 'text/csv' )
+                return response()->json(['success' => false, 'errors' => "Por favor, seleccione un archivo .csv."]);
+
+            // Begin Transaction
+            DB::beginTransaction();
+            try {
+                // Excel
+                $excel = Excel::load($request->file)->get();
+                foreach ($excel as $row) {
                     // Recuperar Impusto
-                    $impuesto = Impuesto::find($row->producto_impuesto);
+                    $impuesto = Impuesto::where('impuesto_nombre',$row->producto_impuesto)->first();
                     if ( !$impuesto instanceof Impuesto ) {
                         DB::rollback();
-                        Log::error('No es posible recuperar IMPUESTO, verifique información o consulte al administrador.');
-                        $valid = false;
+                        return response()->json(['success' => false, 'errors' => "No es posible recuperar IMPUESTO, para el producto $row->producto_serie verifique información o consulte al administrador."]);
                     }
 
                     // Recuperar Linea
-                    $linea = Linea::find($row->producto_linea);
+                    $linea = Linea::where('linea_nombre',$row->producto_linea)->first();
                     if ( !$linea instanceof Linea ) {
                         DB::rollback();
-                        Log::error('No es posible recuperar LINEA, verifique la información o consulte al administrador.');
-                        $valid = false;
+                        return response()->json(['success' => false, 'errors' => "No es posible recuperar LINEA, para el producto $row->producto_serie verifique la información o consulte al administrador."]);
                     }
 
                     // Recuperar Grupo
-                    $grupo = Grupo::find($row->producto_grupo);
+                    $grupo = Grupo::where('grupo_nombre',$row->producto_grupo)->first();
                     if ( !$grupo instanceof Grupo ) {
                         DB::rollback();
-                        Log::error('No es posible recuperar GRUPO, verifique la información o consulte al administrador.');
-                        $valid = false;
+                        return response()->json(['success' => false, 'errors' => "No es posible recuperar GRUPO, para el producto $row->producto_serie verifique la información o consulte al administrador."]);
                     }
 
                     // Recuperar SubGrupo
-                    $subgrupo = SubGrupo::find($row->producto_subgrupo);
+                    $subgrupo = SubGrupo::where('subgrupo_nombre',$row->producto_subgrupo)->first();
                     if ( !$subgrupo instanceof SubGrupo ) {
                         DB::rollback();
-                        Log::error('No es posible recuperar SUBGRUPO, verifique la información o consulte al administrador.');
-                        $valid = false;
+                        return response()->json(['success' => false, 'errors' => "No es posible recuperar SUBGRUPO, para el producto $row->producto_serie verifique la información o consulte al administrador."]);
                     }
 
                     // Recuperar TipoProducto
-                    $tipoproducto = TipoProducto::find($row->producto_tipoproducto);
+                    $tipoproducto = TipoProducto::where('tipoproducto_codigo',$row->producto_tipoproducto)->first();
                     if ( !$tipoproducto instanceof TipoProducto ) {
                         DB::rollback();
-                        Log::error('No es posible recuperar TIPO DE PRODUCTO, verifique la información o consulte al administrador.');
-                        $valid = false;
+                        return response()->json(['success' => false, 'errors' => "No es posible recuperar TIPO DE PRODUCTO, para el producto $row->producto_serie verifique la información o consulte al administrador."]);
                     }
-
                     // Recuperar Unidad
-                    $unidad = Unidad::find($row->producto_unidadmedida);
+                    $unidad = Unidad::where('unidadmedida_sigla',$row->producto_unidadmedida)->first();
                     if ( !$unidad instanceof Unidad ) {
                         DB::rollback();
-                        Log::error('No es posible recuperar UNIDAD DE MEDIDA, verifique la información o consulte al administrador.');
-                        $valid = false;
+                        return response()->json(['success' => false, 'errors' => "No es posible recuperar UNIDAD DE MEDIDA, para el producto $row->producto_serie verifique la información o consulte al administrador."]);
                     }
 
                     // Recuperar Marca
-                    $marca = Marca::find($row->producto_marca);
+                    $marca = Marca::where('marca_nombre',$row->producto_marca)->first();
                     if ( !$marca instanceof Marca ) {
                         DB::rollback();
-                        Log::error('No es posible recuperar MARCA, verifique la información o consulte al administrador.');
-                        $valid = false;
+                        return response()->json(['success' => false, 'errors' => "No es posible recuperar MARCA, para el producto $row->producto_serie verifique la información o consulte al administrador."]);
                     }
                     // Recuperar Modelo
-                    $modelo = Modelo::find($row->producto_modelo);
+                    $modelo = Modelo::where('modelo_nombre',$row->producto_modelo)->first();
                     if ( !$modelo instanceof Modelo ) {
                         DB::rollback();
-                        Log::error('No es posible recuperar MODELO, verifique la información o consulte al administrador.');
-                        $valid = false;
+                        return response()->json(['success' => false, 'errors' => "No es posible recuperar MODELO, para el producto $row->producto_serie verifique la información o consulte al administrador."]);
                     }
 
                     if ( $marca->id != $modelo->modelo_marca ){
                         DB::rollback();
-                        Log::error('El modelo no corresponde a esa marca, verifique la información o consulte al administrador.');
-                        $valid = false;
+                        return response()->json(['success' => false, 'errors' => "El modelo no corresponde a esa marca, para el producto $row->producto_serie verifique la información o consulte al administrador."]);
                     }
-                    if ($valid) {
-                        $success ++;
-                        // Producto
-                        $producto->fill($row->toArray());
-                        $producto->fillBoolean($row->toArray());
-                        $producto->producto_maneja_serie = $row->producto_maneja_serie;
-                        $producto->producto_metrado = $row->producto_metrado;
-                        $producto->producto_vence = $row->producto_vence;
-                        $producto->producto_unidad = $row->producto_unidad;
-                        $producto->producto_serie = $row->producto_referencia;
-                        $producto->producto_impuesto = $impuesto->id;
-                        $producto->producto_linea = $linea->id;
-                        $producto->producto_grupo = $grupo->id;
-                        $producto->producto_subgrupo = $subgrupo->id;
-                        $producto->producto_tipoproducto = $tipoproducto->id;
-                        $producto->producto_unidadmedida = $unidad->id;
-                        $producto->producto_marca = $marca->id;
-                        $producto->producto_modelo = $modelo->id;
-                        $producto->save();
 
-                        // Commit Transaction
-                        DB::commit();
-                    }
-                }catch(\Exception $e){
-                    $success--;
-                    DB::rollback();
-                    Log::error($e->getMessage());
-                    Log::error(trans('app.exception'));
-                    // return response()->json(['success' => false, 'error' => trans('app.exception')]);
+                    // Producto
+                    $producto = new Producto;
+                    $producto->fill($row->toArray());
+                    $producto->producto_maneja_serie = $row->producto_maneja_serie;
+                    $producto->producto_metrado = $row->producto_metrado;
+                    $producto->producto_vence = $row->producto_vence;
+                    $producto->producto_unidad = $row->producto_unidad;
+                    $producto->producto_serie = $row->producto_referencia;
+                    $producto->producto_impuesto = $impuesto->id;
+                    $producto->producto_linea = $linea->id;
+                    $producto->producto_grupo = $grupo->id;
+                    $producto->producto_subgrupo = $subgrupo->id;
+                    $producto->producto_tipoproducto = $tipoproducto->id;
+                    $producto->producto_unidadmedida = $unidad->id;
+                    $producto->producto_marca = $marca->id;
+                    $producto->producto_modelo = $modelo->id;
+                    $producto->save();
                 }
+                // Commit Transaction
+                DB::commit();
+            } catch (\Exception $e) {
+                DB::rollback();
+                Log::error($e->getMessage());
+                return response()->json(['success' => false, 'errors' => trans('app.exception')]);
             }
-            Log::error($producto->errors);
+            return response()->json(['success'=> true, 'msg'=> 'Importación de datos exitosa', 'destination' => 'productos' ]);
         }
-        // Capture numero de registros para mostrar
-        $errors = ($excel->count() - $success);
-        $msg = [ "Número de registros exitosos $success", "Número de registros NO exitosos $errors"];
-
-        return redirect('/productos')->withErrors($msg);
+        return response()->json(['success' => false, 'errors' => "Por favor, seleccione un archivo."]);
     }
 }

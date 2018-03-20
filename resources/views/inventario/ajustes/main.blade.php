@@ -110,15 +110,17 @@
     </script>
 
     <script type="text/template" id="add-ajustedetalle-item-tpl">
-        <%if(edit){ %>
+        <% if(edit){ %>
             <td class="text-center">
                 <a class="btn btn-default btn-xs item-detalleajuste-remove" data-resource = "<%- id %>">
                     <span><i class="fa fa-times"></i></span>
                 </a>
             </td>
+            <td><%- producto_serie %></td>
+        <% }else{ %>
+            <td><a href="<%- window.Misc.urlFull( Route.route('productos.show', { productos: ajuste2_producto } )) %>" title="Ver producto" target="_blank"> <%- producto_serie %></a></td>
         <% } %>
 
-        <td><%- producto_serie %></td>
         <td><%- producto_nombre %></td>
         <td><%-(ajuste2_cantidad_entrada <= 0) ? '0' : ajuste2_cantidad_entrada %></td>
         <td><%- (ajuste2_cantidad_salida <= 0) ? '0' : ajuste2_cantidad_salida %></td>
