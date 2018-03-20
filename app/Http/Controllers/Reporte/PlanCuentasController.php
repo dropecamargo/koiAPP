@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Contabilidad\PlanCuenta;
-use Excel, View, App;
+use App\Models\Base\Empresa;
+use  Excel, View, App, Fpdf;
 
 class PlanCuentasController extends Controller
 {
@@ -30,7 +31,7 @@ class PlanCuentasController extends Controller
             $plancuentas = $query->get();
 
             // Prepare data
-            $title = 'Listado de producto en inventario según la subcategoria';
+            $title = 'Listado de plan de cuentas';
             $type = $request->type;
 
             // Generate file
@@ -43,12 +44,45 @@ class PlanCuentasController extends Controller
                     })->download('xls');
                 break;
 
-                // case 'pdf':
-                //     $pdf = App::make('dompdf.wrapper');
-                //     $pdf->loadHTML(View::make('reportes.contabilidad.plancuentas.reporte',  compact('plancuentas', 'title', 'type'))->render());
-                //     $pdf->setPaper('A4', 'letter')->setWarnings(false);
-                //     return $pdf->download(sprintf('%s_%s_%s.pdf', 'plancuentas', date('Y_m_d'), date('H_m_s')));
-                // break;
+                case 'pdf':
+                    $empresa = Empresa::getEmpresa();
+                    Fpdf::AddPage();
+                    Fpdf::SetFont('Arial','B',11);
+                    Fpdf::Cell(190,5,$empresa->tercero_razonsocial,0,0,'C');
+                    Fpdf::SetXY(85,17);
+    				Fpdf::SetFont('Arial','B',10);
+    				Fpdf::Cell(40,5,"NIT: $empresa->tercero_nit",0,0,'C');
+                    Fpdf::Line(22,22,180,22);
+    				Fpdf::SetXY(85,23);
+    				Fpdf::Cell(40, 5, utf8_decode($title), 0, 0,'C');
+                    Fpdf::Ln();
+
+                    // Header table
+                    Fpdf::Cell(30,5,'CUENTA',1);
+                    Fpdf::Cell(90,5,'NOMBRE',1);
+                    Fpdf::Cell(10,5,'NV',1);
+                    Fpdf::Cell(15,5,'C/D',1);
+                    Fpdf::Cell(20,5,'TER',1);
+                    Fpdf::Cell(25,5,'TASA',1);
+                    Fpdf::Ln();
+
+                    // Data table
+                    $fill = false;
+                    Fpdf::SetFillColor(247,247,247);
+                    Fpdf::SetFont('Arial', '', 8);
+                    foreach($plancuentas as $cuenta)
+                    {  
+                        $fill = !$fill;
+                        Fpdf::Cell(30,5,$cuenta->plancuentas_cuenta,'',0,'R',$fill);
+                        Fpdf::Cell(90,5,utf8_decode($cuenta->plancuentas_nombre),'',0,'',$fill);
+                        Fpdf::Cell(10,5,$cuenta->plancuentas_nivel ,'',0,'',$fill);
+                        Fpdf::Cell(15,5,$cuenta->plancuentas_naturaleza,'',0,'',$fill);
+                        Fpdf::Cell(20,5,($cuenta->plancuentas_tercero ? 'SI': 'NO') ,'',0,'',$fill);
+                        Fpdf::Cell(25,5,$cuenta->plancuentas_tasa,'',0,'',$fill);
+                        Fpdf::Ln();
+                    }
+                    Fpdf::Output(sprintf('%s_%s_%s.pdf', 'plancuentas', date('Y_m_d'), date('H_m_s')),'d');
+                break;
             }
         }
 
