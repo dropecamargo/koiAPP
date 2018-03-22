@@ -20,6 +20,7 @@ class CentroCostoController extends Controller
     {
         if ($request->ajax()) {
             $query = CentroCosto::query();
+            $query->select('centrocosto.*', DB::raw("CONCAT(centrocosto_codigo,centrocosto_centro) AS centro_codigo"));
             return Datatables::of($query)->make(true);
         }
         return view('contabilidad.centroscosto.index');

@@ -11,7 +11,8 @@
 				<table id="centroscosto-search-table" class="table table-bordered table-striped" cellspacing="0" width="100%">
 			        <thead>
 			            <tr>
-			                <th>Código</th>
+			                <th>#</th>
+							<th>Código</th>
 			                <th>Centro</th>
 			                <th>Nombre</th>
 			                <th>Subnivel</th>

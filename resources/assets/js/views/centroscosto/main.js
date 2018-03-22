@@ -29,6 +29,7 @@ app || (app = {});
             	language: window.Misc.dataTableES(),
                 ajax: window.Misc.urlFull( Route.route('centroscosto.index') ),
                 columns: [
+                    { data: 'id', name: 'id' },
                     { data: 'centrocosto_codigo', name: 'centrocosto_codigo' },
                     { data: 'centrocosto_centro', name: 'centrocosto_centro' },
                     { data: 'centrocosto_nombre', name: 'centrocosto_nombre' },

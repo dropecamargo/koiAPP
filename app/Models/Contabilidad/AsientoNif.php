@@ -49,7 +49,7 @@ class AsientoNif extends Model
             $fecha_asienton = "{$data['asienton1_ano']}-{$data['asienton1_mes']}-{$data['asienton1_dia']}";
 
             // Recuperar empresa
-            $empresa = Empresa::select('empresa_fecha_cierre_contabilidad as fecha_cierre')->first();
+            $empresa = Empresa::select('empresa_fecha_cierre as fecha_cierre')->first();
             if (!$empresa instanceof Empresa) {
                 $this->errors = 'No es posible definir fecha para el asiento contable';
                 return false;

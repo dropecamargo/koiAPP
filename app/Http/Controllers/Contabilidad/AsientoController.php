@@ -406,19 +406,8 @@ class AsientoController extends Controller
                             DB::rollback();
                             return response()->json(['success' => false, 'errors' => $result]);
                         }
-
-                        // Insertar movimientos asiento
-                        // foreach ($asiento2 as $item) {
-                        //     $result = $item->movimientos();
-                        //     if($result != 'OK') {
-                        //         DB::rollback();
-                        //         return response()->json(['success' => false, 'errors' => $result]);
-                        //     }
-                        // }
                     }
                     // Commit Transaction
-                    // DB::rollback();
-                    // return response()->json(['success' => false, 'errors' => "TODO OK"]);
                     DB::commit();
                     return response()->json(['success' => true, 'id' => $asiento->id]);
                 }catch(\Exception $e){
@@ -473,9 +462,175 @@ class AsientoController extends Controller
 
             $excel = Excel::load($request->file)->get();
             foreach ($excel as $row) {
+                $asiento = new Asiento;
+                $asiento2 = new Asiento2;
+
+                if ($asiento->isValid($data)) {
+                    if ($asiento2->isValid($data)) {
+                        DB::beginTransaction();
+                        try {
+                            // Recuperar tercero
+                            $tercero = Tercero::where('tercero_nit', $request->asiento1_beneficiario)->first();
+                            if(!$tercero instanceof Tercero) {
+                                DB::rollback();
+                                return response()->json(['success' => false, 'errors' => 'No es posible recuperar beneficiario, por favor verifique la información del asiento o consulte al administrador.']);
+                            }
+
+                            // Permitir solo un asiento preguardado por documento
+                            $preguardado = Asiento::where('asiento1_preguardado', true)->where('asiento1_folder', $request->asiento1_folder)->where('asiento1_documento', $request->asiento1_documento)->first();
+                            if($preguardado instanceof Asiento) {
+                                DB::rollback();
+                                return response()->json(['success' => false, 'errors' => 'Existe un asiento preguardado para este documento, por favor terminarlo para poder generar uno nuevo.']);
+                            }
+
+                            // Recuerar documento
+                            $documento = Documento::where('id', $request->asiento1_documento)->first();
+                            if(!$documento instanceof Documento) {
+                                DB::rollback();
+                                return response()->json(['success' => false, 'errors' => 'No es posible recuperar documento, por favor verifique la información del asiento o consulte al administrador.']);
+                            }
+
+                            // Recuperar centro costo
+                            $centrocosto = $ordenp = null;
+                            if($request->has('asiento2_centro')) {
+                                $centrocosto = CentroCosto::find($request->asiento2_centro);
+                                if(!$centrocosto instanceof CentroCosto) {
+                                    DB::rollback();
+                                    return response()->json(['success' => false, 'errors' => 'No es posible recuperar centro costo, por favor verifique la información del asiento o consulte al administrador.']);
+                                }
+                            }
+                            if ($documento->documento_actual) {
+
+                                // Asiento1
+                                $asiento->fill($data);
+
+                                // Consecutivo
+                                if($documento->documento_tipo_consecutivo == 'A'){
+                                    $asiento->asiento1_numero = $documento->documento_consecutivo + 1;
+                                }
+
+                                $asiento->asiento1_beneficiario = $tercero->id;
+                                $asiento->asiento1_preguardado = true;
+                                $asiento->asiento1_usuario_elaboro = Auth::user()->id;
+                                $asiento->asiento1_fecha_elaboro = date('Y-m-d H:m:s');
+                                $asiento->save();
+
+                                // Asiento2
+                                $cuenta = [];
+                                $cuenta['Cuenta'] = $request->plancuentas_cuenta;
+                                $cuenta['Tercero'] = $request->tercero_nit;
+                                $cuenta['Detalle'] = $request->asiento2_detalle;
+                                $cuenta['Naturaleza'] = $request->asiento2_naturaleza;
+                                $cuenta['CentroCosto'] = $request->asiento2_centro;
+                                $cuenta['Base'] = $request->asiento2_base;
+                                $cuenta['Credito'] = $request->asiento2_naturaleza == 'C' ? $request->asiento2_valor: 0;
+                                $cuenta['Debito'] = $request->asiento2_naturaleza == 'D' ? $request->asiento2_valor: 0;
+                                $cuenta['Orden'] = ($ordenp instanceof Ordenp ? $ordenp->id : '');
+
+                                $result = $asiento2->store($asiento, $cuenta);
+                                if(!$result->success) {
+                                    DB::rollback();
+                                    return response()->json(['success' => false, 'errors' => $result->error]);
+                                }
+
+                                // Insertar movimiento asiento
+                                $result = $asiento2->movimiento($request);
+                                if(!$result->success) {
+                                    DB::rollback();
+                                    return response()->json(['success' => false, 'errors' => $result->error]);
+                                }
+                            }
+                            if ($documento->documento_nif) {
+                                $asientoNif = new AsientoNif;
+                                $asientoNif2 = new AsientoNif2;
+
+                                // AsientoNif1
+                                $asientoNif->asienton1_mes = $data['asiento1_mes'];
+                                $asientoNif->asienton1_ano = $data['asiento1_ano'];
+                                $asientoNif->asienton1_dia = $data['asiento1_dia'];
+                                $asientoNif->asienton1_folder = $data['asiento1_folder'];
+                                $asientoNif->asienton1_numero = $data['asiento1_numero'];
+                                $asientoNif->asienton1_detalle = $data['asiento1_detalle'];
+                                $asientoNif->asienton1_asiento =  isset($asiento->id) ? $asiento->id : null;
+                                $asientoNif->asienton1_documento = $documento->id;
+                                $asientoNif->asienton1_preguardado = true;
+                                $asientoNif->asienton1_beneficiario = $tercero->id;
+                                $asientoNif->asienton1_usuario_elaboro = Auth::user()->id;
+                                $asientoNif->asienton1_fecha_elaboro = date('Y-m-d H:m:s');
+
+                                // Consecutivo
+                                if($documento->documento_tipo_consecutivo == 'A'){
+                                    $asientoNif->asienton1_numero = $documento->documento_consecutivo + 1;
+                                }
+
+                                $asientoNif->save();
+
+                                // Recupero plancuenta
+                                $plancuenta = Plancuenta::where('plancuentas_cuenta',$request->plancuentas_cuenta)->first();
+                                if (!$plancuenta instanceof Plancuenta) {
+                                    DB::rollback();
+                                    return response()->json(['success' => false, 'errors' => "No es posible recuperar plan de cuenta, por favor verifique la información o consulte a su administrador"]);
+                                }
+
+                                $plancuentaNif = PlanCuentaNif::find($plancuenta->plancuentas_equivalente);
+                                if (!$plancuentaNif instanceof PlanCuentaNif) {
+                                    DB::rollback();
+                                    return response()->json(['success' => false, 'errors' => "No es posible encontrar plan de cuenta NIF, por favor verifique la información o consulte a su administrador"]);
+                                }
+                                // AsientoNif2
+                                $cuenta = [];
+                                $cuenta['Cuenta'] = $plancuentaNif->plancuentasn_cuenta;
+                                $cuenta['Tercero'] = $request->tercero_nit;
+                                $cuenta['Detalle'] = $request->asiento2_detalle;
+                                $cuenta['Naturaleza'] = $request->asiento2_naturaleza;
+                                $cuenta['CentroCosto'] = $request->asiento2_centro;
+                                $cuenta['Base'] = $request->asiento2_base;
+                                $cuenta['Credito'] = $request->asiento2_naturaleza == 'C' ? $request->asiento2_valor: 0;
+                                $cuenta['Debito'] = $request->asiento2_naturaleza == 'D' ? $request->asiento2_valor: 0;
+                                $cuenta['Orden'] = ($ordenp instanceof Ordenp ? $ordenp->id : '');
+
+                                $result = $asientoNif2->store($asientoNif, $cuenta);
+                                if(!$result->success) {
+                                    DB::rollback();
+                                    return response()->json(['success' => false, 'errors' => $result->error]);
+                                }
+
+                                if ($asientoNif->asienton1_asiento == null) {
+                                    // Insertar movimiento asiento
+                                    $result = $asientoNif2->movimiento($request, $plancuentaNif->plancuentasn_cuenta);
+                                    if(!$result->success) {
+                                        DB::rollback();
+                                        return response()->json(['success' => false, 'errors' => $result->error]);
+                                    }
+                                }
+                            }
+                            // Commit Transaction
+                            DB::commit();
+                            return response()->json(['success' => true, 'id' => ( isset($asiento->id) ) ? $asiento->id : '', 'nif' => ( isset($asientoNif->id) ) ? $asientoNif->id : '' ]);
+                        }catch(\Exception $e){
+                            DB::rollback();
+                            Log::error($e->getMessage());
+                            return response()->json(['success' => false, 'errors' => trans('app.exception')]);
+                        }
+                    }
+                    return response()->json(['success' => false, 'errors' => $asiento2->errors]);
+                }
+                return response()->json(['success' => false, 'errors' => $asiento->errors]);
+
+                // Consecutivo
+                if($documento->documento_tipo_consecutivo == 'A'){
+                    $asiento->asiento1_numero = $documento->documento_consecutivo + 1;
+                }
+
+                $asiento->asiento1_beneficiario = $tercero->id;
+                $asiento->asiento1_preguardado = true;
+                $asiento->asiento1_usuario_elaboro = Auth::user()->id;
+                $asiento->asiento1_fecha_elaboro = date('Y-m-d H:m:s');
+                $asiento->save();
+
                 # code...
             }
-            return response()->json(['success'=> true, 'msg'=> 'OK BITCHES', 'destination' => 'asientos' ]);
+            return response()->json(['success'=> true, 'msg'=> 'OK', 'destination' => 'asientos' ]);
         }
         return response()->json(['success' => false, 'errors' => "Por favor, seleccione un archivo."]);
     }
