@@ -65,6 +65,12 @@ app || (app = {});
                        text: 'Importar',
                        className: 'btn-sm',
                        action: function () {
+                           // AsientoActionView undelegateEvents
+                           if ( _this.importActionView instanceof Backbone.View ){
+                               _this.importActionView.stopListening();
+                               _this.importActionView.undelegateEvents();
+                           }
+
                             _this.importActionView = new app.ImportProductoActionView({
                                parameters: {
                                    title: 'asientos',

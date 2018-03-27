@@ -12,6 +12,7 @@ app || (app = {});
     app.ImportProductoActionView = Backbone.View.extend({
 
         el: 'body',
+        template: _.template( ($('#import-data-tpl').html() || '') ),
         events: {
             'click .btn-import': 'submitForm',
             'submit #form-import-component': 'onStore'
@@ -31,6 +32,7 @@ app || (app = {});
             this.$modal = $('#modal-import-file-component');
 
             this.$modal.find('.modal-title').text( 'Importando ' + this.parameters.title );
+            this.$modal.find('.content-modal').empty().html( this.template({title: this.parameters.title}) );
             this.$wrapper = this.$('#modal-wrapper-import-file');
             this.$modal.modal('show');
 
@@ -39,7 +41,6 @@ app || (app = {});
         },
 
         submitForm: function(e) {
-
             this.$form.submit();
         },
 
@@ -96,6 +97,9 @@ app || (app = {});
 
             if( typeof window.initComponent.initSelectFile == 'function' )
                 window.initComponent.initSelectFile();
+
+            if( typeof window.initComponent.initSelect2 == 'function' )
+                window.initComponent.initSelect2();
         },
     });
 

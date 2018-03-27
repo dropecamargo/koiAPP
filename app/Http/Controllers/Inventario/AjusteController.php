@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Inventario\Ajuste1, App\Models\Inventario\Ajuste2, App\Models\Inventario\TipoAjuste, App\Models\Inventario\Producto ,App\Models\Inventario\Lote, App\Models\Inventario\Rollo, App\Models\Inventario\Prodbode, App\Models\Inventario\Inventario, App\Models\Base\Documentos, App\Models\Base\Sucursal;
-use DB, Log, Datatables, Auth, App, View, Validator, Excel;
+use DB, Log, Datatables, Auth, App, View,Excel;
 
 class AjusteController extends Controller
 {
@@ -356,41 +356,6 @@ class AjusteController extends Controller
         }
         return view('inventario.ajustes.show', ['ajuste1' => $ajuste]);
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-
     /**
      * Export pdf the specified resource.
      *
@@ -432,320 +397,188 @@ class AjusteController extends Controller
         return $pdf->stream(sprintf('%s_%s_%s_%s.pdf', 'inventario', $ajuste->id, date('Y_m_d'), date('H_m_s')));
     }
     /**
-     * Validate productos referencia.
+     * Import data ajustes.
      *
      * @return \Illuminate\Http\Response
      */
     public function import(Request $request)
     {
-        /* Begin validator type file*/
-        // $validator = Validator::make($request->all(), [
-        //     'import_file' => 'mimes:csv'
-        // ]);
-        // if ($validator->fails()) {
-        //     return redirect('/ajustes')->withErrors($validator)->withInput();
-        // }
-        /* End validator */
-        $success = 0; // Count registers
-        $excel = Excel::load($request->import_file)->get();
-        foreach ($excel as $row) {
-            dd($row);
-            $ajuste = new Ajuste1;
-            if ($ajuste->isValid($data)) {
-                DB::beginTransaction();
-                try {
-                    $valor = true;
-                    //Validar Documentos
-                    $documento = Documentos::where('documentos_codigo', Ajuste1::$default_document)->first();
-                    if(!$documento instanceof Documentos) {
+        if( isset($request->file) ){
+            // Validator type file
+            if ($request->file->getClientMimeType() !== 'text/csv' )
+                return response()->json(['success' => false, 'errors' => "Por favor, seleccione un archivo .csv."]);
+            // Begin Transaction
+            DB::beginTransaction();
+            try {
+                //Validar Documentos
+                $documento = Documentos::where('documentos_codigo', Ajuste1::$default_document)->first();
+                if(!$documento instanceof Documentos) {
+                    DB::rollback();
+                    return response()->json(['success' => false, 'errors' => 'No es posible recuperar documentos,por favor verifique la información ó por favor consulte al administrador.']);
+                }
+
+                $sucursal = Sucursal::find($request->import_sucursal);
+                if(!$sucursal instanceof Sucursal) {
+                    DB::rollback();
+                    return response()->json(['success' => false, 'errors' => 'No es posible recuperar sucursal,por favor verifique la información ó por favor consulte al administrador.']);
+                }
+
+                //Validar Tipo Ajuste
+                $tipoajuste = TipoAjuste::whereRaw("tipoajuste_sigla = 'IDE'")->first();
+                 if (!$tipoajuste instanceof TipoAjuste) {
+                    DB::rollback();
+                    return response()->json(['success' => false,'errors'=>'No es posible recuperar el tipo ajuste,por favor verifique la información ó por favor consulte al administrador']);
+                }
+
+                // Consecutive
+                $consecutive = $sucursal->sucursal_ajus+ 1;
+
+                // Ajuste1
+                $ajuste = new Ajuste1;
+                $ajuste->ajuste1_fecha = date('Y-m-d');
+                $ajuste->ajuste1_documentos = $documento->id;
+                $ajuste->ajuste1_sucursal = $sucursal->id;
+                $ajuste->ajuste1_numero = $consecutive;
+                $ajuste->ajuste1_tipoajuste = $tipoajuste->id;
+                $ajuste->ajuste1_usuario_elaboro = Auth::user()->id;
+                $ajuste->ajuste1_fh_elaboro = date('Y-m-d H:m:s');
+                $ajuste->ajuste1_observaciones = "Observaciones importando datos desde excel";
+                $ajuste->save();
+
+                // Ajuste2 - Excel
+                $excel = Excel::load($request->file)->get();
+                foreach ($excel as $row) {
+                    $producto = Producto::where( 'producto_serie', $row->producto_serie )->first();
+                    if (!$producto instanceof Producto) {
                         DB::rollback();
-                        Log::error('No es posible recuperar documentos,por favor verifique la información ó por favor consulte al administrador.');
-                        return;
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar el producto, por favor verifique la información o consulte al administrador']);
                     }
 
-                    $sucursal = Sucursal::find($request->ajuste1_sucursal);
-                    if(!$sucursal instanceof Sucursal) {
+                    if( !in_array($producto->tipoproducto->tipoproducto_codigo, explode(',', $tipoajuste->getTypesProducto()->tipoajuste_tipoproducto) ) ){
                         DB::rollback();
-                        Log::error('No es posible recuperar sucursal,por favor verifique la información ó por favor consulte al administrador.');
-                        return;
+                        return response()->json(['success' => false, 'errors' => 'El tipo de ajuste no es valido, por favor verifique la información o consulte al administrador']);
                     }
 
-                    //Validar Tipo Ajuste
-                    $tipoajuste = TipoAjuste::find($request->ajuste1_tipoajuste);
-                     if (!$tipoajuste instanceof TipoAjuste) {
-                        DB::rollback();
-                        Log::error('No es posible recuperar el tipo ajuste,por favor verifique la información ó por favor consulte al administrador');
-                        return;
-                    }
+                    if ($row->cantidad_entrada > 0) {
 
-                    // Consecutive
-                    $consecutive = $sucursal->sucursal_ajus+ 1;
+                        // Detalle ajuste != Manejaserie
+                        if ($producto->producto_maneja_serie != true) {
 
-                    // Ajuste 1
-                    $ajuste->fill($data);
-                    $ajuste->ajuste1_documentos = $documento->id;
-                    $ajuste->ajuste1_sucursal = $sucursal->id;
-                    $ajuste->ajuste1_numero = $consecutive;
-                    $ajuste->ajuste1_tipoajuste = $tipoajuste->id;
-                    $ajuste->ajuste1_usuario_elaboro = Auth::user()->id;
-                    $ajuste->ajuste1_fh_elaboro = date('Y-m-d H:m:s');
-                    $ajuste->save();
+                            // Costo promedio
+                            $costopromedio = $producto->costopromedio($row->costo, $row->cantidad_entrada);
 
-                    // Detalle ajuste
-                    foreach ($data['ajuste2'] as $item) {
-                        $producto = Producto::find( $item['id_producto'] );
-                        if (!$producto instanceof Producto) {
-                            DB::rollback();
-                            Log::error('No es posible recuperar el producto, por favor verifique la información o consulte al administrador');
-                            return;
-                        }
-
-                        if( !in_array($producto->tipoproducto->tipoproducto_codigo, explode(',', $tipoajuste->getTypesProducto()->tipoajuste_tipoproducto) ) ){
-                            DB::rollback();
-                            Log::error('El tipo de ajuste no es valido, por favor verifique la información o consulte al administrador');
-                            return;
-                        }
-
-                        if ($tipoajuste->tipoajuste_tipo == 'E' || $item['ajuste2_cantidad_entrada'] > 0) {
-
-                            // Detalle ajuste != Manejaserie
-                            if ($producto->producto_maneja_serie != true) {
-
-                                // Costo promedio
-                                $costopromedio = $producto->costopromedio($item['ajuste2_costo'], $item['ajuste2_cantidad_entrada']);
-
-                                $ajusteDetalle = new Ajuste2;
-                                $ajusteDetalle->fill($item);
-                                $ajusteDetalle->ajuste2_costo_promedio = $costopromedio;
-                                $ajusteDetalle->ajuste2_ajuste1 = $ajuste->id;
-                                $ajusteDetalle->ajuste2_producto = $producto->id;
-                                $ajusteDetalle->save();
-
-                                // Prodbode
-                                $result = Prodbode::actualizar($producto, $sucursal->id, 'E', $ajusteDetalle->ajuste2_cantidad_entrada, $sucursal->sucursal_defecto);
-                                if(!$result instanceof Prodbode) {
-                                    DB::rollback();
-                                    Log::error($result);
-                                    return;
-                                }
-                            }
-                            // Producto maneja serie
-                            if ($producto->producto_maneja_serie == true) {
-
-                                // Costo
-                                $costo = $item['ajuste2_costo'];
-
-                                for ($i=1; $i <= $item['ajuste2_cantidad_entrada']; $i++) {
-
-                                    //Movimiento entrada maneja serie
-                                    $movimiento = Inventario::entradaManejaSerie($producto, $sucursal, $item["producto_serie_$i"], $costo);
-                                    if($movimiento != 'OK') {
-                                        DB::rollback();
-                                        Log::error($movimiento);
-                                        return;
-                                    }
-                                    // Valido el replicate
-                                    $serie = Producto::where('producto_serie', $item["producto_serie_$i"])->first();
-                                    if(!$serie instanceof Producto) {
-                                        DB::rollback();
-                                        Log::error('No es posible recuperar serie, por favor verifique la información ó por favor consulte al administrador');
-                                        return;
-                                    }
-
-                                    // Detalle ajuste
-                                    $ajusteDetalle = new Ajuste2;
-                                    $ajusteDetalle->fill($item);
-                                    $ajusteDetalle->ajuste2_ajuste1 = $ajuste->id;
-                                    $ajusteDetalle->ajuste2_cantidad_entrada = 1;
-                                    $ajusteDetalle->ajuste2_costo_promedio = $costo;
-                                    $ajusteDetalle->ajuste2_producto = $serie->id;
-                                    $ajusteDetalle->save();
-
-                                    $lote = Lote::actualizar($serie, $sucursal->id, $request->ajuste1_lote, 'E', 1, $sucursal->sucursal_defecto, $ajuste->ajuste1_fecha, null);
-                                    if (!$lote instanceof Lote) {
-                                        DB::rollback();
-                                        Log::error('No es posible recuperar lote, por favor verifique la información ó por favor consulte al administrador');
-                                        return;
-                                    }
-                                    // Inventario
-                                    $inventario = Inventario::movimiento($serie, $sucursal->id, $sucursal->sucursal_defecto,'AJUS', $ajuste->id, 1, 0, [], [], $costo, $costo,$lote->id,[]);
-                                    if ($inventario != 'OK') {
-                                        DB::rollback();
-                                        Log::error($inventario);
-                                        return;
-                                    }
-                                }
-                            // Producto Metrado
-                            }else if ($producto->producto_metrado == true) {
-                                $items = isset($item['items']) ? $item['items'] : null;
-                                foreach ($items as $value) {
-                                    for ($i=0; $i < $value['rollo_cantidad']; $i++) {
-                                        // Individualiza en rollo
-                                        $rollo = Rollo::actualizar($producto, $sucursal->id, 'E', $value['rollo_lote'], $ajuste->ajuste1_fecha, $value['rollo_metros'], $sucursal->sucursal_defecto);
-                                        if (!$rollo->success) {
-                                            DB::rollback();
-                                            Log::error($rollo);
-                                            return;
-                                        }
-                                        // Inventario
-                                        $inventario = Inventario::movimiento($producto, $sucursal->id, $sucursal->sucursal_defecto,'AJUS', $ajuste->id, 0, 0, $rollo->cantidad,[],$ajusteDetalle->ajuste2_costo, $costopromedio,0,$rollo->rollos);
-                                        if ($inventario != 'OK') {
-                                            DB::rollback();
-                                            Log::error($inventario);
-                                            return;
-                                        }
-                                    }
-                                }
-                            }else if ($producto->producto_vence == true) {
-                                $items = isset($item['items']) ? $item['items'] : null;
-                                foreach ($items as $value) {
-                                    // Individualiza en lote
-                                    $lote = Lote::actualizar($producto, $sucursal->id, $value['lote_numero'], 'E', $value['lote_cantidad'], $sucursal->sucursal_defecto ,$ajuste->ajuste1_fecha, $value['lote_fecha']);
-                                    if (!$lote instanceof Lote) {
-                                        DB::rollback();
-                                        Log::error('No es posible recuperar lote, por favor verifique la información ó por favor consulte al administrador');
-                                        return;
-                                    }
-                                    // Inventario
-                                    $inventario = Inventario::movimiento($producto, $sucursal->id, $sucursal->sucursal_defecto,'AJUS', $ajuste->id, $value['lote_cantidad'], 0, [], [], $ajusteDetalle->ajuste2_costo, $costopromedio,$lote->id,[]);
-                                    if ($inventario != 'OK') {
-                                        DB::rollback();
-                                        Log::error($inventario);
-                                        return;
-                                    }
-                                }
-                            }else{
-                                // Individualiza en lote
-                                $lote = Lote::actualizar($producto, $sucursal->id, $request->ajuste1_lote, 'E', $ajusteDetalle->ajuste2_cantidad_entrada, $sucursal->sucursal_defecto, $ajuste->ajuste1_fecha);
-                                if (!$lote instanceof Lote) {
-                                    DB::rollback();
-                                    Log::error('No es posible recuperar lote, por favor verifique la información ó por favor consulte al administrador');
-                                    return;
-                                }
-                                // Inventario
-                                $inventario = Inventario::movimiento($producto, $sucursal->id, $sucursal->sucursal_defecto,'AJUS', $ajuste->id, $ajusteDetalle->ajuste2_cantidad_entrada, 0, [], [], $ajusteDetalle->ajuste2_costo, $costopromedio,$lote->id,[]);
-                                if ($inventario != 'OK') {
-                                    DB::rollback();
-                                    Log::error($inventario);
-                                    return;
-                                }
-                            }
-                        }else if($tipoajuste->tipoajuste_tipo == 'S'){
-
-                            //Detalle ajuste
                             $ajusteDetalle = new Ajuste2;
-                            $ajusteDetalle->fill($item);
-                            $ajusteDetalle->ajuste2_costo = $producto->producto_costo;
-                            $ajusteDetalle->ajuste2_costo_promedio = $producto->producto_costo;
+                            $ajusteDetalle->ajuste2_cantidad_entrada = $row->cantidad_entrada;
+                            $ajusteDetalle->ajuste2_costo = $row->costo;
+                            $ajusteDetalle->ajuste2_costo_promedio = $costopromedio;
                             $ajusteDetalle->ajuste2_ajuste1 = $ajuste->id;
                             $ajusteDetalle->ajuste2_producto = $producto->id;
                             $ajusteDetalle->save();
 
-                            if ($producto->producto_maneja_serie == true) {
-
-                                $lote = Lote::actualizar($producto, $sucursal->id, "", 'S', 1, "", $ajuste->ajuste1_fecha, null);
-                                if (!$lote instanceof Lote) {
-                                    DB::rollback();
-                                    Log::error('No es posible recuperar lote, por favor verifique la información ó por favor consulte al administrador');
-                                    return;
-                                }
-                                // Prodbode
-                                $result = Prodbode::actualizar($producto, $sucursal->id, 'S', 1, $lote->lote_ubicacion);
-                                if(!$result instanceof Prodbode) {
-                                    DB::rollback();
-                                    Log::error($result);
-                                    return;
-                                }
-                                // Inventario
-                                $inventario = Inventario::movimiento($producto, $sucursal->id, $result->prodbode_ubicacion, 'AJUS', $ajuste->id, 0, 1, [], [],$ajusteDetalle->ajuste2_costo, $ajusteDetalle->ajuste2_costo,$lote->id,[]);
-                                if ($inventario != 'OK') {
-                                    DB::rollback();
-                                    Log::error($inventario);
-                                    return;
-                                }
-                            }else if($producto->producto_metrado == true){
-
-                                $items = isset($item['items']) ? $item['items'] : null;
-                                foreach ($items as $key => $valueItem) {
-                                    if ($valueItem > 0) {
-                                        list($text, $rollo) = explode("_", $key);
-                                        // Individualiza en rollo --- $rollo hace las veces de lote
-                                        $rollo = Rollo::actualizar($producto, $sucursal->id, 'S', $rollo, $ajuste->ajuste1_fecha, $valueItem,"");
-                                        if (!$rollo->success) {
-                                            DB::rollback();
-                                            Log::error($rollo->error);
-                                            return;
-                                        }
-
-                                        // Prodbode
-                                        $result = Prodbode::actualizar($producto, $sucursal->id, 'S', $valueItem, $rollo->rollo_ubicacion);
-                                        if(!$result instanceof Prodbode) {
-                                            DB::rollback();
-                                            Log::error($result);
-                                            return;
-                                        }
-                                        // Inventario
-                                        $inventario = Inventario::movimiento($producto, $sucursal->id, $result->prodbode_ubicacion, 'AJUS', $ajuste->id, 0, 0, [], $rollo->cantidad, $ajusteDetalle->ajuste2_costo, $ajusteDetalle->ajuste2_costo, 0, $rollo->rollos);
-                                        if ($inventario != 'OK') {
-                                            DB::rollback();
-                                            Log::error($inventario);
-                                            return;
-                                        }
-                                    }
-                                }
-                            }else{
-                                $items = isset($item['items']) ? $item['items'] : null;
-                                foreach ($items as $key => $value) {
-                                    list($text, $lote) = explode("_", $key);
-
-                                    if ($value > 0) {
-                                        // Individualiza en lote
-                                        $lote = Lote::actualizar($producto, $sucursal->id, $lote, 'S', $value, $sucursal->sucursal_defecto);
-                                        if (!$lote instanceof Lote) {
-                                            DB::rollback();
-                                            Log::error($lote);
-                                            return;
-                                        }
-                                        // Prodbode
-                                        $result = Prodbode::actualizar($producto, $sucursal->id, 'S', $value, $lote->lote_ubicacion);
-                                        if(!$result instanceof Prodbode) {
-                                            DB::rollback();
-                                            Log::error($result);
-                                            return;
-                                        }
-                                        // Inventario
-                                        $inventario = Inventario::movimiento($producto, $sucursal->id, $result->prodbode_ubicacion,'AJUS', $ajuste->id, 0, $value, [], [], $ajusteDetalle->ajuste2_costo, $ajusteDetalle->ajuste2_costo,$lote->id,[]);
-                                        if ($inventario != 'OK') {
-                                            DB::rollback();
-                                            Log::error($inventario);
-                                            return;
-                                        }
-                                    }
-                                }
+                            // Prodbode
+                            $result = Prodbode::actualizar($producto, $sucursal->id, 'E', $ajusteDetalle->ajuste2_cantidad_entrada, $sucursal->sucursal_defecto);
+                            if(!$result instanceof Prodbode) {
+                                DB::rollback();
+                                return response()->json(['success' => false, 'errors'=> $result]);
                             }
                         }
-                        $success++;
+                        // Producto maneja serie
+                        if ($producto->producto_maneja_serie == true) {
+
+                            // Costo
+                            $costo = $row->costo;
+
+                            //Movimiento entrada maneja serie
+                            $movimiento = Inventario::entradaManejaSerie($producto, $sucursal, $row->serie, $row->costo);
+                            if($movimiento != 'OK') {
+                                DB::rollback();
+                                return response()->json(['success' => false, 'errors' => $movimiento]);
+                            }
+                            // Valido el replicate
+                            $serie = Producto::where('producto_serie', $row->serie)->first();
+                            if(!$serie instanceof Producto) {
+                                DB::rollback();
+                                return response()->json(['success' => false, 'errors' => 'No es posible recuperar serie, por favor verifique la información ó por favor consulte al administrador']);
+                            }
+
+                            // Detalle ajuste
+                            $ajusteDetalle = new Ajuste2;
+                            $ajusteDetalle->ajuste2_cantidad_entrada = 1;
+                            $ajusteDetalle->ajuste2_costo = $row->costo;
+                            $ajusteDetalle->ajuste2_costo_promedio = $costopromedio;
+                            $ajusteDetalle->ajuste2_ajuste1 = $ajuste->id;
+                            $ajusteDetalle->ajuste2_producto = $serie->id;
+                            $ajusteDetalle->save();
+
+                            $lote = Lote::actualizar($serie, $sucursal->id, $row->lote, 'E', 1, $sucursal->sucursal_defecto, $ajuste->ajuste1_fecha, null);
+                            if (!$lote instanceof Lote) {
+                                DB::rollback();
+                                return response()->json(['success' => false, 'errors' => 'No es posible recuperar lote, por favor verifique la información ó por favor consulte al administrador']);
+                            }
+                            // Inventario
+                            $inventario = Inventario::movimiento($serie, $sucursal->id, $sucursal->sucursal_defecto,'AJUS', $ajuste->id, 1, 0, [], [], $costo, $costo,$lote->id,[]);
+                            if ($inventario != 'OK') {
+                                DB::rollback();
+                                return response()->json(['success' => false,'errors '=> $inventario]);
+                            }
+                        // Producto Metrado
+                        }else if ($producto->producto_metrado == true) {
+                            for ($i=0; $i < $row->rollo; $i++) {
+                                // Individualiza en rollo
+                                $rollo = Rollo::actualizar($producto, $sucursal->id, 'E', $row->lote, $ajuste->ajuste1_fecha, $row->cantidad_entrada, $sucursal->sucursal_defecto);
+                                if (!$rollo->success) {
+                                    DB::rollback();
+                                    return response()->json(['success' => false, 'errors' => $rollo]);
+                                }
+                                // Inventario
+                                $inventario = Inventario::movimiento($producto, $sucursal->id, $sucursal->sucursal_defecto,'AJUS', $ajuste->id, 0, 0, $rollo->cantidad,[],$ajusteDetalle->ajuste2_costo, $costopromedio,0,$rollo->rollos);
+                                if ($inventario != 'OK') {
+                                    DB::rollback();
+                                    return response()->json(['success' => false,'errors '=> $inventario]);
+                                }
+                            }
+                        }else if ($producto->producto_vence == true) {
+                            // Individualiza en lote
+                            $lote = Lote::actualizar($producto, $sucursal->id, $row->lote, 'E', $row->cantidad_entrada, $sucursal->sucursal_defecto ,$ajuste->ajuste1_fecha, $row->vence);
+                            if (!$lote instanceof Lote) {
+                                DB::rollback();
+                                return response()->json(['success' => false, 'errors' => 'No es posible recuperar lote, por favor verifique la información ó por favor consulte al administrador']);
+                            }
+                            // Inventario
+                            $inventario = Inventario::movimiento($producto, $sucursal->id, $sucursal->sucursal_defecto,'AJUS', $ajuste->id, $row->cantidad_entrada, 0, [], [], $ajusteDetalle->ajuste2_costo, $costopromedio,$lote->id,[]);
+                            if ($inventario != 'OK') {
+                                DB::rollback();
+                                return response()->json(['success' => false,'errors '=> $inventario]);
+                            }
+                        }else{
+                            // Individualiza en lote
+                            $lote = Lote::actualizar($producto, $sucursal->id, $row->lote, 'E', $ajusteDetalle->ajuste2_cantidad_entrada, $sucursal->sucursal_defecto, $ajuste->ajuste1_fecha);
+                            if (!$lote instanceof Lote) {
+                                DB::rollback();
+                                return response()->json(['success' => false, 'errors' => 'No es posible recuperar lote, por favor verifique la información ó por favor consulte al administrador']);
+                            }
+                            // Inventario
+                            $inventario = Inventario::movimiento($producto, $sucursal->id, $sucursal->sucursal_defecto,'AJUS', $ajuste->id, $ajusteDetalle->ajuste2_cantidad_entrada, 0, [], [], $ajusteDetalle->ajuste2_costo, $costopromedio,$lote->id,[]);
+                            if ($inventario != 'OK') {
+                                DB::rollback();
+                                return response()->json(['success' => false,'errors '=> $inventario]);
+                            }
+                        }
                     }
-
-                    // Update consecutive sucursal_ajus in Sucursal
-                    $sucursal->sucursal_ajus = $consecutive;
-                    $sucursal->save();
-
-                    // Commit Transaction
-                    DB::commit();
-                    return response()->json(['success' => true, 'id' => $ajuste->id]);
-                }catch (\Exception $e) {
-                    DB::rollback();
-                    Log::error($e->getMessage());
-                    Log::error(trans('app.exception'));
                 }
+                // Update consecutive sucursal_ajus in Sucursal
+                $sucursal->sucursal_ajus = $consecutive;
+                $sucursal->save();
+
+                // Commit Transaction
+                DB::commit();
+            } catch (\Exception $e) {
+                DB::rollback();
+                Log::error($e->getMessage());
+                return response()->json(['success' => false, 'errors' => trans('app.exception')]);
             }
+            return response()->json(['success'=> true, 'msg'=> 'Importación de datos exitosa', 'destination' => 'ajustes' ]);
         }
-        // Capture numero de registros para mostrar
-        $errors = ($excel->count() - $success);
-        $msg = [ "Número de registros exitosos $success", "Número de registros NO exitosos $errors"];
-
-        return redirect('/ajustes')->withErrors($msg);
+        return response()->json(['success' => false, 'errors' => "Por favor, seleccione un archivo."]);
     }
-
 }
