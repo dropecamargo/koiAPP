@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use App\Classes\Reports\Accounting\LibroDiario;
 use App\Models\Contabilidad\Asiento;
 use View, App, Excel, Validator, DB;
 
@@ -19,10 +20,6 @@ class LibroDiarioController extends Controller
      */
     public function index(Request $request)
     {
-        if( env('APP_ENV') == 'local'){
-            ini_set('memory_limit', '-1');
-            set_time_limit(0);
-        }
         if ($request->has('type')) {
 
             $startDate = strtotime($request->filter_fecha_inicial);
@@ -52,7 +49,7 @@ class LibroDiarioController extends Controller
             }
 
             // Prepare data
-            $title = "Libro diario $request->filter_fecha_inicial $request->filter_fecha_final";
+            $title = "Libro diario desde $request->filter_fecha_inicial hasta $request->filter_fecha_final";
             $type = $request->type;
             $startDate = strtotime($request->filter_fecha_inicial);
             $endDate = strtotime($request->filter_fecha_final);
@@ -67,10 +64,8 @@ class LibroDiarioController extends Controller
                 break;
 
                 case 'pdf':
-                    $pdf = App::make('dompdf.wrapper');
-                    $pdf->loadHTML(View::make('reportes.contabilidad.librodiario.report',  compact('asiento', 'title', 'startDate', 'endDate','type'))->render());
-                    $pdf->setPaper('letter')->setWarnings(false);
-                    return $pdf->stream(sprintf('%s_%s_%s.pdf', 'libro menor', date('Y_m_d'), date('H_m_s')));
+                    $pdf = new LibroDiario;
+                    $pdf->buldReport($asiento, $title);
                 break;
             }
         }

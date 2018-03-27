@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+
+use App\Classes\Reports\Accounting\MayorBalance;
 use DB, View, Excel, App;
 
 class MayorBalanceController extends Controller
@@ -89,10 +91,8 @@ class MayorBalanceController extends Controller
                 break;
 
                 case 'pdf':
-                    $pdf = App::make('dompdf.wrapper');
-                    $pdf->loadHTML(View::make('reportes.contabilidad.mayorbalance.reporte',  compact('saldos', 'title', 'type'))->render());
-                    $pdf->setPaper('A4', 'landscape')->setWarnings(false);
-                    return $pdf->download(sprintf('%s_%s_%s_%s_%s.pdf', 'mayor_y_balance', $request->ano, $request->mes, date('Y_m_d'), date('H_m_s')));
+                    $pdf = new MayorBalance('L','mm','Letter');
+                    $pdf->buldReport($saldos, $title);
                 break;
             }
         }

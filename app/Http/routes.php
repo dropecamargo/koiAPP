@@ -394,6 +394,7 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::resource('rauxcontable', 'Reporte\AuxiliarContableController', ['only' => ['index']]);
 	Route::resource('rlibrodiario', 'Reporte\LibroDiarioController', ['only' => ['index']]);
 	Route::resource('rlibromayor', 'Reporte\LibroMayorController', ['only' => ['index']]);
+	Route::resource('rimpuestos', 'Reporte\RelacionImpuestosController', ['only' => ['index']]);
 
 	/*
 	|-------------------------
