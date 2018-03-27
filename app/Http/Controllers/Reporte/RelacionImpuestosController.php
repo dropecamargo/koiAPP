@@ -7,13 +7,12 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\Classes\Reports\Accounting\AuxiliarContable;
-use App\Models\Contabilidad\Asiento2, App\Models\Contabilidad\PlanCuenta;
+use App\Classes\Reports\Accounting\RelacionImpuestos;
+use App\Models\Contabilidad\Asiento2;
 use App\Models\Base\Tercero;
+use Excel, View, App, DB;
 
-use View, App, Excel, Validator, DB;
-
-class AuxiliarContableController extends Controller
+class RelacionImpuestosController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -22,60 +21,58 @@ class AuxiliarContableController extends Controller
      */
     public function index(Request $request)
     {
-        if ($request->has('type')) {
-            list($año, $mes, $dia) = (explode('-',$request->filter_fecha_inicial));
-            list($añoF, $mesF, $diaF) = (explode('-',$request->filter_fecha_final));
-
+        if($request->has('type')) {
+            list($año, $mes, $dia) = (explode('-',$request->fecha_inicial));
+            list($añoF, $mesF, $diaF) = (explode('-',$request->fecha_final));
             $fechaI = sprintf('%s-%s-%s', intval($año), intval($mes), intval($dia));
             $fechaF = sprintf('%s-%s-%s', intval($añoF), intval($mesF), intval($diaF));
 
             $query = Asiento2::query();
-            $query->select('asiento2_debito as debito', 'asiento2_credito as credito', 'asiento2_base as base', 'asiento1_numero', DB::raw("CONCAT(asiento1_ano,'-',asiento1_mes,'-',asiento1_dia) as date"),'tercero_nit', DB::raw("(CASE WHEN tercero_persona = 'N' THEN CONCAT(tercero_nombre1,'',tercero_nombre2,' ',tercero_apellido1,' ',tercero_apellido2, (CASE WHEN (tercero_razonsocial IS NOT NULL AND tercero_razonsocial != '') THEN CONCAT(' - ', tercero_razonsocial) ELSE '' END)) ELSE tercero_razonsocial END) AS tercero_nombre"), 'documento_nombre', 'plancuentas_cuenta as cuenta', 'plancuentas_nombre');
-            $query->join('asiento1','asiento2_asiento','=','asiento1.id');
+            $query->select(DB::raw("(CASE WHEN tercero_persona = 'N' THEN CONCAT(tercero_nombre1,'',tercero_nombre2,' ',tercero_apellido1,' ',tercero_apellido2, (CASE WHEN (tercero_razonsocial IS NOT NULL AND tercero_razonsocial != '') THEN CONCAT(' - ', tercero_razonsocial) ELSE '' END)) ELSE tercero_razonsocial END) AS tercero_nombre"),'tercero_nit', 'tercero_direccion','tercero_telefono1','plancuentas_nombre', 'plancuentas_cuenta', 'plancuentas_tasa', DB::raw('SUM((plancuentas_tasa / 100) * asiento2_base) as impuesto, SUM(asiento2_base) as base'), DB::raw("CONCAT(asiento1_ano,'-',asiento1_mes,'-',asiento1_dia) as date") );
             $query->join('tercero', 'asiento2_beneficiario', '=', 'tercero.id');
-            $query->join('documento', 'asiento1_documento', '=', 'documento.id');
             $query->join('plancuentas', 'asiento2_cuenta', '=', 'plancuentas.id');
+            $query->join('asiento1', 'asiento2_asiento', '=', 'asiento1.id');
+            $query->whereRaw("plancuentas_cuenta >= '$request->cuenta_inicio'");
+            $query->whereRaw("plancuentas_cuenta <= '$request->cuenta_fin'");
             $query->whereRaw("CONCAT(asiento1_ano,'-',asiento1_mes,'-',asiento1_dia) >= '$fechaI'");
             $query->whereRaw("CONCAT(asiento1_ano,'-',asiento1_mes,'-',asiento1_dia) <= '$fechaF'");
-            $query->whereRaw("plancuentas_cuenta >= '$request->filter_cuenta_inicio'");
-            $query->whereRaw("plancuentas_cuenta <= '$request->filter_cuenta_fin'");
 
-            if ($request->has('filter_tercero')) {
+            // Filter tercero
+            if($request->has('filter_tercero')) {
                 $tercero = Tercero::where('tercero_nit',$request->filter_tercero)->first();
                 // Validate Tercero
                 if (!$tercero instanceof Tercero) {
-                    return redirect('/rauxcontable')
+                    return redirect('/rimpuestos')
                     ->withErrors("No es posible recuperar tercero, por favor verifique la información o consulte al administrador.")
                     ->withInput();
                 }
                 $query->where('asiento2_beneficiario', $tercero->id);
             }
-            $query->orderBy('asiento1.asiento1_ano', 'desc');
-            $query->orderBy('asiento1.asiento1_mes', 'asc');
-            $query->orderBy('asiento1.asiento1_dia', 'asc');
+            $query->groupBy('tercero_nit','plancuentas_cuenta');
+            $query->orderBy('plancuentas_cuenta', 'asc');
+            $data = $query->get();
 
             // Prepare data
-            $auxcontable = $query->get();
-            $title = "Auxiliar contable desde $request->filter_fecha_inicial hasta $request->filter_fecha_final";
+            $title = "Reporte relación de impuestos durante el período de $request->fecha_inicial hasta $request->fecha_final";
             $type = $request->type;
-
-
+            // Generate file
             switch ($type) {
                 case 'xls':
-                    Excel::create(sprintf('%s_%s_%s', 'auxcontable', date('Y_m_d'), date('H_m_s')), function($excel) use($auxcontable, $title, $type) {
-                        $excel->sheet('Excel', function($sheet) use($auxcontable, $title, $type) {
-                            $sheet->loadView('reportes.contabilidad.auxcontable.report', compact('auxcontable', 'title', 'type'));
+                    Excel::create(sprintf('%s_%s_%s', 'relacion_impuestos', date('Y_m_d'), date('H_m_s')), function($excel) use($data, $title, $type) {
+                        $excel->sheet('Excel', function($sheet) use($data, $title, $type) {
+                            $sheet->loadView('reportes.contabilidad.impuestos.report', compact('data', 'title', 'type'));
                         });
                     })->download('xls');
                 break;
 
                 case 'pdf':
-                    $pdf = new AuxiliarContable('L','mm','A4');
-                    $pdf->buldReport($auxcontable, $title);
+                    $pdf = new RelacionImpuestos('L', 'mm', 'Letter');
+                    $pdf->buldReport($data, $title);
                 break;
             }
         }
-        return view('reportes.contabilidad.auxcontable.index');
+
+        return view('reportes.contabilidad.impuestos.index');
     }
 
     /**
