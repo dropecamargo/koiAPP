@@ -6,32 +6,32 @@
 		<tbody>
 			<tr>
 				<th width="15%">Fecha</th>
-				<td width="10%">{{ sprintf('%s-%s-%s', $asiento->asiento1_ano, $asiento->asiento1_mes, $asiento->asiento1_dia) }}</td>
-				@if($asiento->asiento1_preguardado)
+				<td width="10%">{{ sprintf('%s-%s-%s', $asientoNif->asienton1_ano, $asientoNif->asienton1_mes, $asientoNif->asienton1_dia) }}</td>
+				@if($asientoNif->asienton1_preguardado)
 					<th colspan="4" class="right">PRE-GUARDADO</th>
 				@endif
 			</tr>
 			<tr>
 				<th width="15%">Folder</th>
-				<td width="10%">{{ $asiento->folder_nombre }}</td>
+				<td width="10%">{{ $asientoNif->folder_nombre }}</td>
 				<th width="15%">Documento</th>
-				<td width="20%">{{ $asiento->documento_nombre }}</td>
+				<td width="20%">{{ $asientoNif->documento_nombre }}</td>
 				<th width="15%">Número</th>
-				<td width="10%">{{ $asiento->asiento1_numero }}</td>
+				<td width="10%">{{ $asientoNif->asienton1_numero }}</td>
 			</tr>
 			<tr>
 				<th width="15%">Beneficiario</th>
-				<td colspan="5">{{ sprintf('%s %s', $asiento->tercero_nit, $asiento->tercero_nombre) }}</td>
+				<td colspan="5">{{ sprintf('%s %s', $asientoNif->tercero_nit, $asientoNif->tercero_nombre) }}</td>
 			</tr>
 			<tr>
 				<th width="15%">Detalle</th>
-				<td colspan="5">{{ $asiento->asiento1_detalle }}</td>
+				<td colspan="5">{{ $asientoNif->asienton1_detalle }}</td>
 			</tr>
 			<tr>
 				<th width="15%">Usuario elaboro</th>
-				<td width="10%">{{ $asiento->username_elaboro }}</td>
+				<td width="10%">{{ $asientoNif->username_elaboro }}</td>
 				<th width="15%">Fecha elaboro</th>
-				<td width="10%">{{ $asiento->asiento1_fecha_elaboro }}</td>
+				<td width="10%">{{ $asientoNif->asienton1_fecha_elaboro }}</td>
 			</tr>
 		</tbody>
 	</table>
@@ -52,21 +52,21 @@
    		<tbody>
 			@if(count($detalle) > 0)
 				{{--*/ $tdebito = $tcredito = 0; /*--}}
-				@foreach($detalle as $asiento2)
+				@foreach($detalle as $asientoNif2)
 					<tr>
-						<td class="left">{{ $asiento2->plancuentas_cuenta }}</td>
-						<td class="left">{{ $asiento2->plancuentas_nombre }}</td>
-						<td class="left">{{ $asiento2->tercero_nit }}</td>
-						<td class="left">{{ $asiento2->centrocosto_nombre }}</td>
-						<td class="right">{{ number_format($asiento2->asiento2_base,2,'.',',') }}</td>
-						<td class="right">{{ number_format($asiento2->asiento2_credito,2,'.',',') }}</td>
-						<td class="right">{{ number_format($asiento2->asiento2_debito,2,'.',',') }}</td>
+						<td class="left">{{ $asientoNif2->plancuentasn_cuenta }}</td>
+						<td class="left">{{ $asientoNif2->plancuentasn_nombre }}</td>
+						<td class="left">{{ $asientoNif2->tercero_nit }}</td>
+						<td class="left">{{ $asientoNif2->centrocosto_nombre }}</td>
+						<td class="right">{{ number_format($asientoNif2->asienton2_base,2,'.',',') }}</td>
+						<td class="right">{{ number_format($asientoNif2->asienton2_credito,2,'.',',') }}</td>
+						<td class="right">{{ number_format($asientoNif2->asienton2_debito,2,'.',',') }}</td>
 					</tr>
 
 					{{-- Calculo totales --}}
 					{{--*/
-						$tcredito += $asiento2->asiento2_credito;
-						$tdebito += $asiento2->asiento2_debito;
+						$tcredito += $asientoNif2->asienton2_credito;
+						$tdebito += $asientoNif2->asienton2_debito;
 					/*--}}
 				@endforeach
 				<tr>

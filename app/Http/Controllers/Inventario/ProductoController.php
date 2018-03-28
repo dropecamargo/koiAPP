@@ -643,54 +643,54 @@ class ProductoController extends Controller
                 $excel = Excel::load($request->file)->get();
                 foreach ($excel as $row) {
                     // Recuperar Impusto
-                    $impuesto = Impuesto::where('impuesto_nombre',$row->producto_impuesto)->first();
+                    $impuesto = Impuesto::find($row->producto_impuesto);
                     if ( !$impuesto instanceof Impuesto ) {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => "No es posible recuperar IMPUESTO, para el producto $row->producto_serie verifique información o consulte al administrador."]);
                     }
 
                     // Recuperar Linea
-                    $linea = Linea::where('linea_nombre',$row->producto_linea)->first();
+                    $linea = Linea::find($row->producto_linea);
                     if ( !$linea instanceof Linea ) {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => "No es posible recuperar LINEA, para el producto $row->producto_serie verifique la información o consulte al administrador."]);
                     }
 
                     // Recuperar Grupo
-                    $grupo = Grupo::where('grupo_nombre',$row->producto_grupo)->first();
+                    $grupo = Grupo::find($row->producto_grupo);
                     if ( !$grupo instanceof Grupo ) {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => "No es posible recuperar GRUPO, para el producto $row->producto_serie verifique la información o consulte al administrador."]);
                     }
 
                     // Recuperar SubGrupo
-                    $subgrupo = SubGrupo::where('subgrupo_nombre',$row->producto_subgrupo)->first();
+                    $subgrupo = SubGrupo::find($row->producto_subgrupo);
                     if ( !$subgrupo instanceof SubGrupo ) {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => "No es posible recuperar SUBGRUPO, para el producto $row->producto_serie verifique la información o consulte al administrador."]);
                     }
 
                     // Recuperar TipoProducto
-                    $tipoproducto = TipoProducto::where('tipoproducto_codigo',$row->producto_tipoproducto)->first();
+                    $tipoproducto = TipoProducto::find($row->producto_tipoproducto);
                     if ( !$tipoproducto instanceof TipoProducto ) {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => "No es posible recuperar TIPO DE PRODUCTO, para el producto $row->producto_serie verifique la información o consulte al administrador."]);
                     }
                     // Recuperar Unidad
-                    $unidad = Unidad::where('unidadmedida_sigla',$row->producto_unidadmedida)->first();
+                    $unidad = Unidad::find($row->producto_unidadmedida);
                     if ( !$unidad instanceof Unidad ) {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => "No es posible recuperar UNIDAD DE MEDIDA, para el producto $row->producto_serie verifique la información o consulte al administrador."]);
                     }
 
                     // Recuperar Marca
-                    $marca = Marca::where('marca_nombre',$row->producto_marca)->first();
+                    $marca = Marca::find($row->producto_marca);
                     if ( !$marca instanceof Marca ) {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => "No es posible recuperar MARCA, para el producto $row->producto_serie verifique la información o consulte al administrador."]);
                     }
                     // Recuperar Modelo
-                    $modelo = Modelo::where('modelo_nombre',$row->producto_modelo)->first();
+                    $modelo = Modelo::find($row->producto_modelo);
                     if ( !$modelo instanceof Modelo ) {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => "No es posible recuperar MODELO, para el producto $row->producto_serie verifique la información o consulte al administrador."]);

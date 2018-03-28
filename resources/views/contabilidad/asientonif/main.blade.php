@@ -287,9 +287,9 @@
 	    <td class="text-right"><%- window.Misc.currency(asienton2_debito ? asienton2_debito : 0) %></td>
 	    <td class="text-right"><%- window.Misc.currency(asienton2_credito ? asienton2_credito: 0) %></td>
 	    <td class="text-center">
-			<a class="btn btn-default btn-xs item-asiento2-show-info" data-resource="<%- id %>">
+			<!-- <a class="btn btn-default btn-xs item-asiento2-show-info" data-resource="<%- id %>">
 				<span><i class="fa fa-info-circle"></i></span>
-			</a>
+			</a> -->
 		</td>
 	</script>
 

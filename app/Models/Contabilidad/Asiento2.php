@@ -83,7 +83,7 @@ class Asiento2 extends Model
         if(isset($data['CentroCosto']) && !empty($data['CentroCosto'])) {
             $objCentroCosto = CentroCosto::find($data['CentroCosto']);
             if(!$objCentroCosto instanceof CentroCosto) {
-                $response->error = "No es posible recuperar cuenta, por favor verifique la información del asiento o consulte al administrador.";
+                $response->error = "No es posible recuperar centro de costo, por favor verifique la información del asiento o consulte al administrador.";
                 return $response;
             }
         }
@@ -102,7 +102,6 @@ class Asiento2 extends Model
                 return $response;
             }
         }
-
         // Insert si no existe asiento2
         if(!isset($data['Id']) || empty($data['Id']))
         {
@@ -120,16 +119,6 @@ class Asiento2 extends Model
             if($objCentroCosto instanceof CentroCosto)
             {
                 $this->asiento2_centro = $objCentroCosto->id;
-                if($objCentroCosto->centrocosto_codigo == 'OP') {
-
-                    $objOrdenp = Ordenp::find($data['Orden']);
-                    if(!$objOrdenp instanceof Ordenp) {
-                        $response->error = "No es posible recuperar orden de producción para centro de costo OP, por favor verifique la información del asiento o consulte al administrador.";
-                        return $response;
-                    }
-
-                    $this->asiento2_ordenp = $objOrdenp->id;
-                }
             }
             $this->asiento2_detalle = $data['Detalle'] ?: '';
             $this->asiento2_credito = $data['Credito'] ?: 0;

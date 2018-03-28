@@ -1070,6 +1070,18 @@
 				<input id="searchasiento_tercero_nombre" name="searchasiento_tercero_nombre" placeholder="Tercero beneficiario" class="form-control input-sm" type="text" maxlength="15" readonly>
 			</div>
 		</div>
+		<br>
+		<div class="row">
+			<div class="form-group col-md-12">
+				<label for="asiento1_documento" class="control-label">Documento</label>
+				<select name="asiento1_documento" id="asiento1_documento" class="form-control select2-default" required>
+					<option value="" selected>Seleccione</option>
+					@foreach( App\Models\Contabilidad\Documento::getDocuments() as $key => $value)
+						<option value="{{ $key }}" >{{ $value }}</option>
+					@endforeach
+				</select>
+			</div>
+		</div>
 	<% } %>
 	<br>
 	<div class="row">

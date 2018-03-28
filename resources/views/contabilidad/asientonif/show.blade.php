@@ -30,7 +30,7 @@
 					</div>
 
 					<div class="col-md-1 col-md-offset-8 col-sm-6 col-xs-6 text-right">
-						<a href="{{ route('asientos.exportar', ['asientos' => $asientoNif->id]) }}" class="btn btn-danger btn-sm btn-block">
+						<a href="{{ route('asientosnif.exportar', ['asientosnif' => $asientoNif->id]) }}" class="btn btn-danger btn-sm btn-block">
 							<i class="fa fa-file-pdf-o"></i>
 						</a>
 					</div>

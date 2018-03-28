@@ -193,16 +193,15 @@ class AsientoNifController extends Controller
      */
     public function exportar($id)
     {
-        // $asientoNif = AsientoNif::getAsientoNif($id);
-        // if(!$asientoNif instanceof Asiento){
-        //     abort(404);
-        // }
-        // $detalle = AsientoNif2::getAsientoNif2($asientoNif->id);
-        // $title = 'Asiento contable';
-
-        // // Export pdf
-        // $pdf = App::make('dompdf.wrapper');
-        // $pdf->loadHTML(View::make('contabilidad.asientonif.export',  compact('asiento', 'detalle' ,'title'))->render());
-        // return $pdf->download(sprintf('%s_%s_%s_%s.pdf', 'asiento', $asientoNif->id, date('Y_m_d'), date('H_m_s')));
+        $asientoNif = AsientoNif::getAsientoNif($id);
+        if(!$asientoNif instanceof AsientoNif){
+            abort(404);
+        }
+        $detalle = AsientoNif2::getAsientoNif2($asientoNif->id);
+        $title = 'Asiento contable NIF';
+        // Export pdf
+        $pdf = App::make('dompdf.wrapper');
+        $pdf->loadHTML(View::make('contabilidad.asientonif.export',  compact('asientoNif', 'detalle' ,'title'))->render());
+        return $pdf->download(sprintf('%s_%s_%s_%s.pdf', 'asiento', $asientoNif->id, date('Y_m_d'), date('H_m_s')));
     }
 }

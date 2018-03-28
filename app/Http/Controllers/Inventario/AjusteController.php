@@ -451,7 +451,7 @@ class AjusteController extends Controller
                     $producto = Producto::where( 'producto_serie', $row->producto_serie )->first();
                     if (!$producto instanceof Producto) {
                         DB::rollback();
-                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar el producto, por favor verifique la información o consulte al administrador']);
+                        return response()->json(['success' => false, 'errors' => "No es posible recuperar el producto $row->producto_serie , por favor verifique la información o consulte al administrador"]);
                     }
 
                     if( !in_array($producto->tipoproducto->tipoproducto_codigo, explode(',', $tipoajuste->getTypesProducto()->tipoajuste_tipoproducto) ) ){
