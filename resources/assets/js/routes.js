@@ -424,12 +424,12 @@ app || (app = {});
             var config = { pushState: true };
 
             if( document.domain.search(/(104.236.57.82|localhost)/gi) != '-1' ) {
+                config.root = '/koiAPP/public/';
                 if (document.documentURI.search(/(senccob)/gi) != '-1') {
                     config.root = '/senccob/public/';
                 }else if (document.documentURI.search(/(koiSOFT)/gi) != '-1'){
                     config.root = '/koiSOFT/public/';
                 }
-                config.root = '/koiAPP/public/';
 
             }
 
