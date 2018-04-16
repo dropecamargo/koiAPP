@@ -17,12 +17,12 @@
 			</tr>
 		</thead>
 		<tbody>
+			{{--*/ $tdebito = $tcredito = 0; /*--}}
 			@if (empty($historyClient))
 				<tr class="subtitle">
 					<th colspan="11" class="center">NO SE ENCUENTRAN REGISTROS PARA ESTE REPORTE</th>
 				</tr>
 			@else
-				{{--*/ $tdebito = $tcredito = 0; /*--}}
 				@for($i = 0; $i < count($historyClient); $i++)
 					<tr>
 						<td>{{ $historyClient[$i]['documento'] }}</td>

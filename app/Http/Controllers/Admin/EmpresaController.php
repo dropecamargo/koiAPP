@@ -79,7 +79,6 @@ class EmpresaController extends Controller
     {
         if ($request->ajax()) {
             $data = $request->all();
-
             $empresa = Empresa::findOrFail($id);
             $tercero = Tercero::findOrFail($empresa->empresa_tercero);
             if ($tercero->isValid($data)) {
@@ -92,7 +91,11 @@ class EmpresaController extends Controller
 
                     // Empresa
                     $empresa->fill($data);
+                    $empresa->fillBoolean($data);
                     $empresa->save();
+
+                    // Update variable the session
+                    session([ 'empresa' => $empresa ]);
 
                     // Commit Transaction
                     DB::commit();

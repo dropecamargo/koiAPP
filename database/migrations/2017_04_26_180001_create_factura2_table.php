@@ -18,6 +18,7 @@ class CreateFactura2Table extends Migration
             $table->increments('id');
             $table->integer('factura2_factura1')->unsigned();
             $table->integer('factura2_producto')->unsigned();
+            $table->string('factura2_producto_nombre',50);
             $table->integer('factura2_linea')->unsigned();
             $table->integer('factura2_cantidad');
             $table->integer('factura2_devueltas');

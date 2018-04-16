@@ -169,6 +169,13 @@
 	    		<label for="tercero_cc_representante" class="control-label">Cédula</label>
 	    		<input id="tercero_cc_representante" value="<%- tercero_cc_representante %>" placeholder="Cédula" class="form-control input-sm" name="tercero_cc_representante" type="text" maxlength="15">
 	    	</div>
+
+            <div class="form-group col-md-3">
+                <br>
+                <label class="checkbox-inline" for="empresa_pedidoc">
+                    <input type="checkbox" id="empresa_pedidoc" name="empresa_pedidoc" value="empresa_pedidoc" <%- parseInt(empresa_pedidoc) ? 'checked': ''%>> ¿ Pedido comercial ?
+                </label>
+            </div>
 		</div>
 
 	    <div class="row">

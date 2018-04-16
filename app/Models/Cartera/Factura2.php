@@ -22,7 +22,7 @@ class Factura2 extends BaseModel
 	*
 	* @var array
 	*/
-    protected $fillable = ['factura2_cantidad', 'factura2_precio_venta','factura2_descuento_porcentaje','factura2_descuento_valor','factura2_costo','factura2_iva_porcentaje','factura2_iva_valor'];
+    protected $fillable = ['factura2_cantidad','factura2_producto_nombre', 'factura2_precio_venta','factura2_descuento_porcentaje','factura2_descuento_valor','factura2_costo','factura2_iva_porcentaje','factura2_iva_valor'];
 
 	public function isValid($data)
 	{
@@ -47,7 +47,7 @@ class Factura2 extends BaseModel
 	public static function getFactura2($id)
 	{
 		$query = Factura2::query();
-		$query->select('factura2.*','producto_serie','producto_nombre');
+		$query->select('factura2.*','producto_serie','factura2_producto_nombre as producto_nombre', 'producto_nombre as nombre_original');
         $query->join('producto', 'factura2_producto', '=' ,'producto.id');
         $query->orderBy('factura2.id', 'asc');
 		$query->where('factura2_factura1', $id);

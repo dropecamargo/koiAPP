@@ -3,8 +3,9 @@
 namespace App\Models\Base;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 
-class Empresa extends Model
+class Empresa extends BaseModel
 {
     /**
      * The database table used by the model.
@@ -14,6 +15,13 @@ class Empresa extends Model
     protected $table = 'empresa';
 
     public $timestamps = false;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $boolean = ['empresa_pedidoc'];
 
     /**
      * The attributes that are mass assignable.

@@ -42,7 +42,7 @@ class Ajustec2 extends BaseModel
     /**
     * Function for reportes history client in cartera
     */
-	public static function historyClientReport(Tercero $tercero, Array $historyClient, $i ) 
+	public static function historyClientReport(Tercero $tercero, Array $historyClient, $i )
 	{
         $response = new \stdClass();
         $response->success = false;
@@ -50,7 +50,7 @@ class Ajustec2 extends BaseModel
         $response->position = 0;
 
         $query = Ajustec2::query();
-        $query->select('ajustec2.*', 'docafecta.documentos_nombre as docafecta', 'docafecta.documentos_codigo as afectaCode' ,'documento.documentos_nombre as documento','ajustec1_numero','ajustec1_fh_elaboro' ,'ajustec1_fecha','conceptoajustec_plancuentas', 'sucursal_nombre');
+        $query->select('ajustec2.*', 'docafecta.documentos_nombre as docafecta', 'docafecta.documentos_codigo as afectaCode' ,'documento.documentos_nombre as documento','ajustec1_numero','ajustec1_fh_elaboro' ,'ajustec1_fecha', 'sucursal_nombre');
         $query->where('ajustec2_tercero', $tercero->id);
         $query->join('ajustec1', 'ajustec1.id', '=', 'ajustec2_ajustec1');
         $query->join('sucursal', 'ajustec1.ajustec1_sucursal', '=', 'sucursal.id');
@@ -80,7 +80,7 @@ class Ajustec2 extends BaseModel
         	$historyClient[$i]['fecha'] = $value->ajustec1_fecha;
             $historyClient[$i]['elaboro_fh'] = $value->ajustec1_fh_elaboro;
             $historyClient[$i]['afectaCode'] = $value->afectaCode;
-            
+
         	$i++;
         }
         $response->ajusteCartera = $historyClient;

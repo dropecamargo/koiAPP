@@ -195,6 +195,7 @@ app || (app = {});
 	                    if(!_.isUndefined(resp.producto_precio1) && !_.isNull(resp.producto_precio1)){
 							_this.$inputPrecio1.val(window.Misc.currency(resp.producto_precio1));
 							_this.$('#pedidoc2_iva_porcentaje').val(resp.impuesto_porcentaje);
+							_this.$('#factura2_iva_porcentaje').val(resp.impuesto_porcentaje);
 	                    }
 	                }
 	            })

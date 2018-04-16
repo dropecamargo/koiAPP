@@ -122,18 +122,21 @@ class Factura1Controller extends Controller
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar punto venta,por favor verifique la información ó por favor consulte al administrador.']);
                     }
-                    $pedidoc1 = Pedidoc1::where('pedidoc1_sucursal', $sucursal->id)->where('pedidoc1_numero', $request->factura1_pedido)->first();
-                    if (!$pedidoc1 instanceof Pedidoc1) {
-                        DB:rollback();
-                        return response()->json(['success'=> false, 'errors'=>'No es posible recuperar punto venta,por favor verifique la información ó por favor consulte al administrador.']);
+                    if(session('empresa')->empresa_pedidoc){
+                        $pedidoc1 = Pedidoc1::where('pedidoc1_sucursal', $sucursal->id)->where('pedidoc1_numero', $request->factura1_pedido)->first();
+                        if (!$pedidoc1 instanceof Pedidoc1) {
+                            DB:rollback();
+                            return response()->json(['success'=> false, 'errors'=>'No es posible recuperar punto venta,por favor verifique la información ó por favor consulte al administrador.']);
+                        }
                     }
+
                     // Consecutive punto venta
                     $consecutive = $puntoventa->puntoventa_numero + 1;
 
                     // Factura1
                     $factura1->fill($data);
                     $factura1->factura1_sucursal = $sucursal->id;
-                    $factura1->factura1_pedidoc1 = $pedidoc1->id;
+                    $factura1->factura1_pedidoc1 = session('empresa')->empresa_pedidoc ? $pedidoc1->id : null ;
                     $factura1->factura1_numero = $consecutive;
                     $factura1->factura1_puntoventa = $puntoventa->id;
                     $factura1->factura1_prefijo = $puntoventa->puntoventa_prefijo;
@@ -158,10 +161,12 @@ class Factura1Controller extends Controller
                             return response()->json(['success' => false, 'errors' => 'No es posible recuperar linea, por favor verifique información o consulte al administrador']);
                         }
                         //prepare detalle2
-                        $pedidoc2 = Pedidoc2::where('pedidoc2_pedidoc1', $pedidoc1->id)->where('pedidoc2_producto',$producto->id)->first();
-                        if (!$pedidoc2 instanceof Pedidoc2) {
-                            DB::rollback();
-                            return response()->json(['success'=>false , 'errors'=> 'No es posible recuperar detalle pedido, por favor verifique información o consulte al administrador']);
+                        if(session('empresa')->empresa_pedidoc){
+                            $pedidoc2 = Pedidoc2::where('pedidoc2_pedidoc1', $pedidoc1->id)->where('pedidoc2_producto',$producto->id)->first();
+                            if (!$pedidoc2 instanceof Pedidoc2) {
+                                DB::rollback();
+                                return response()->json(['success'=>false , 'errors'=> 'No es posible recuperar detalle pedido, por favor verifique información o consulte al administrador']);
+                            }
                         }
 
                         //Detalle factura
@@ -169,6 +174,7 @@ class Factura1Controller extends Controller
                         $factura2->fill($item);
                         $factura2->factura2_factura1 = $factura1->id;
                         $factura2->factura2_producto = $producto->id;
+                        $factura2->factura2_producto_nombre = $request->producto_nombre;
                         $factura2->factura2_linea = $linea->id;
                         $factura2->factura2_margen = $linea->linea_margen_nivel1;
                         $factura2->save();
@@ -257,9 +263,11 @@ class Factura1Controller extends Controller
                     $puntoventa->puntoventa_numero = $consecutive;
                     $puntoventa->save();
 
-                    // Update pedidoc1_factura1 in pedidoc1
-                    $pedidoc1->pedidoc1_factura1 = $factura1->id;
-                    $pedidoc1->save();
+                    if(session('empresa')->empresa_pedidoc){
+                        // Update pedidoc1_factura1 in pedidoc1
+                        $pedidoc1->pedidoc1_factura1 = $factura1->id;
+                        $pedidoc1->save();
+                    }
 
                     DB::commit();
                     return response()->json(['success'=>true , 'id' => $factura1->id]);

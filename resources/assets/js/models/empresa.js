@@ -44,7 +44,8 @@ app || (app = {});
             'tercero_autoretenedor_ica': false,
             'actividad_tarifa' : '',
             'empresa_niif' : '',
-            'empresa_iva' : ''
+            'empresa_iva' : '',
+            'empresa_pedidoc' : 0
         }
     });
 

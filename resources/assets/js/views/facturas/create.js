@@ -16,9 +16,14 @@ app || (app = {});
 
         events: {
             'click .submit-factura' : 'submitForm',
-            'change #factura1_pedido' : 'referenceViewCollection',
             'submit #form-factura1' :'onStore',
+            'submit #form-detalle-factura' :'onStoreItem',
+            'change #factura1_pedido' : 'referenceViewCollection',
             'click .a-click-modals-lotes-koi': 'renderModals',
+            'change .desc-porcentage': 'changePorcentage',
+            'change .desc-value': 'changeValue',
+            'change .desc-finally': 'changeFinally',
+            'ifChecked .desc': 'changeRadioBtn',
         },
         parameters: {
         },
@@ -30,7 +35,6 @@ app || (app = {});
 
             // Attributes
             this.$wraperForm = this.$('#render-form-factura');
-
             this.detalleFactura = new app.DetalleFactura2Collection();
 
             // Events
@@ -48,6 +52,11 @@ app || (app = {});
             this.$wraperForm.html( this.template(attributes) );
 
             this.$form = this.$('#form-factura1');
+            this.$formDetail = this.$('#form-detalle-factura');
+
+            if (this.$formDetail.length == 1) {
+                this.referenceViews();
+            }
 
         },
         /**
@@ -59,7 +68,7 @@ app || (app = {});
         /*
         *Reference fetch
         */
-        referenceViewCollection: function(e, data){
+        referenceViewCollection: function(e){
             e.preventDefault();
             this.detalleFacturaView = new app.FacturaDetalle2View( {
                 collection: this.detalleFactura,
@@ -67,7 +76,22 @@ app || (app = {});
                     wrapper: this.el,
                     edit: true,
                     dataFilter: {
-                        'id_pedido': data
+                        'id_pedido': this.$(e.currentTarget).val()
+                    }
+               }
+            });
+        },
+        /*
+        * References the collection
+        */
+        referenceViews:function(){
+            this.detalleFacturaView = new app.FacturaDetalle2View( {
+                collection: this.detalleFactura,
+                parameters: {
+                    wrapper: this.el,
+                    edit: true,
+                    dataFilter: {
+                        'id': this.model.get('id')
                     }
                }
             });
@@ -87,6 +111,19 @@ app || (app = {});
                 this.model.save( data, {patch: true, silent: true} );
             }
         },
+        /**
+        *Event store item the collection
+        */
+        onStoreItem: function(e){
+            if (!e.isDefaultPrevented()) {
+                e.preventDefault();
+
+                var data = $.extend({}, window.Misc.formToJson( e.target ) );
+                data.sucursal = this.$('#pedidoc1_sucursal').val();
+                this.detalleFactura.trigger( 'store', data);
+            }
+        },
+
         renderModals:function(e){
             e.preventDefault();
             var model = _.find(this.detalleFactura.models, function(item) {
@@ -123,6 +160,95 @@ app || (app = {});
                     }
                 })(this)
             });
+        },
+        /**
+        *Event change input porcentage
+        */
+        changePorcentage: function(e){
+            e.preventDefault();
+
+            $('#desc_porcentage').iCheck('check');
+            $('#desc_value').iCheck('uncheck');
+            $('#desc_finally').iCheck('uncheck');
+
+            // Make discount
+            this.doDiscount('porcentaje');
+        },
+        /**
+        *Event change  input value
+        */
+        changeValue: function(e){
+            e.preventDefault();
+
+            $('#desc_value').iCheck('check');
+            $('#desc_porcentage').iCheck('uncheck');
+            $('#desc_finally').iCheck('uncheck');
+
+            this.doDiscount('value');
+        },
+        /**
+        *Event change  input finally
+        */
+        changeFinally: function(e){
+            e.preventDefault();
+
+            $('#desc_finally').iCheck('check');
+            $('#desc_porcentage').iCheck('uncheck');
+            $('#desc_value').iCheck('uncheck');
+
+            this.doDiscount('finally');
+        },
+        /**
+        *Event change radio btn
+        */
+        changeRadioBtn: function(e){
+            e.preventDefault();
+            var radioBtn = this.$(e.currentTarget).attr('id');
+
+            if( radioBtn == 'desc_porcentage'){
+                this.$('#factura2_descuento_porcentaje').prop('readonly',false);
+                this.$('#factura2_descuento_valor').prop('readonly',true);
+                this.$('#factura2_precio_venta').prop('readonly',true);
+                this.$('#factura2_precio_venta').prop('');
+            }else if(radioBtn == 'desc_value'){
+                this.$('#factura2_descuento_valor').prop('readonly',false);
+                this.$('#factura2_descuento_porcentaje').prop('readonly',true);
+                this.$('#factura2_precio_venta').prop('readonly',true);
+            }else{
+                this.$('#factura2_precio_venta').prop('readonly',false);
+                this.$('#factura2_descuento_porcentaje').prop('readonly',true);
+                this.$('#factura2_descuento_valor').prop('readonly',true);
+            }
+
+        },
+        /**
+        *   Se aplican las operaciones matematicas para allar los descuentos
+        */
+        doDiscount: function(caseDiscount){
+            switch(caseDiscount){
+                case 'porcentaje':
+                    var descuento = (this.$('#factura2_descuento_porcentaje').val())/100;
+                        valor = this.$('#factura2_costo').inputmask('unmaskedvalue');
+                        descuento = descuento * valor;
+                    this.$('#factura2_descuento_valor').val(descuento);
+                    this.$('#factura2_precio_venta').val(valor-descuento);
+                    break;
+                case 'value':
+                    var valor = this.$('#factura2_descuento_valor').inputmask('unmaskedvalue');
+                        costo = this.$('#factura2_costo').inputmask('unmaskedvalue');
+                        venta = (costo-valor)*100;
+                        descuento = 100 - (venta / costo);
+                    this.$('#factura2_precio_venta').val(costo-valor);
+                    this.$('#factura2_descuento_porcentaje').val(descuento.toFixed(2));
+                    break;
+                case 'finally':
+                    var valor =  (this.$('#factura2_precio_venta').inputmask('unmaskedvalue'))*100;
+                        precio = this.$('#factura2_costo').inputmask('unmaskedvalue');
+                        descuento = 100 - (valor/precio);
+                    this.$('#factura2_descuento_porcentaje').val(descuento.toFixed(2));
+                    this.$('#factura2_descuento_valor').val(precio - (valor/100));
+                    break;
+            }
         },
         /**
         * fires libraries js

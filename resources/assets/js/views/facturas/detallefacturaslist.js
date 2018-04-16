@@ -74,8 +74,8 @@ app || (app = {});
             });
             detalleFacturaModel.view = view;
             this.$el.append( view.render().el );
-            
-            //setter subtotal de registro 
+
+            //setter subtotal de registro
             this.setterModel(detalleFacturaModel);
 
             //totalize actually in collection
@@ -85,9 +85,9 @@ app || (app = {});
         * stores detalleFactura
         * @param form element
         */
-        storeOne: function (data) {      
+        storeOne: function (data) {
             var _this = this;
-                
+
             // Set Spinner
             window.Misc.setSpinner( this.parameters.wrapper );
 
@@ -95,7 +95,7 @@ app || (app = {});
                 return item.get('producto_serie') == data.producto_serie;
             });
 
-            if(!(model instanceof Backbone.Model) ) 
+            if(!(model instanceof Backbone.Model) )
                 var model = new app.Factura2Model();
 
             model.save(data, {
@@ -113,7 +113,7 @@ app || (app = {});
                             alertify.error(text);
                             return;
                         }
-                        //setter subtotal de registro 
+                        //setter subtotal de registro
                         _this.setterModel(model);
                         //totalize actually in collection
                         _this.totalize();

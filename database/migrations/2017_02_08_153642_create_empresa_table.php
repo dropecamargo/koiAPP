@@ -27,6 +27,7 @@ class CreateEmpresaTable extends Migration
             $table->date('empresa_fecha_cierre_contabilidad');
             $table->date('empresa_fecha_cierre');
             $table->integer('empresa_iva')->unsigned();
+            $table->boolean('empresa_pedidoc')->default(false);
 
             $table->foreign('empresa_tercero')->references('id')->on('tercero')->onDelete('restrict');
         });
