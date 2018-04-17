@@ -26,7 +26,8 @@ app || (app = {});
 
             // Validate exist
             _.each(this.models, function(item) {
-                if (!item.get('maneja_serie')) {
+                console.log(item);
+                if (!item.get('maneja_serie') ) {
                     (item.has('items')) ? error.success = true: error.success = false;
                 }
             });

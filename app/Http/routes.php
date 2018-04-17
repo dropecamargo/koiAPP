@@ -163,6 +163,8 @@ Route::group(['middleware' => 'auth'], function(){
 		});
 	});
 	Route::resource('asientosnif', 'Contabilidad\AsientoNifController', ['only' => ['index', 'edit', 'update', 'show']]);
+	Route::resource('reglasasientos', 'Contabilidad\ReglaAsientoController');
+
 
    	/*
 	|-------------------------

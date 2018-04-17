@@ -225,14 +225,14 @@
     </li>
 
     {{-- Contabilidad --}}
-    <li class="treeview {{ in_array(Request::segment(1), ['asientos','asientosnif','activosfijos','folders','documentos','plancuentas','plancuentasnif', 'tipoactivos','centroscosto','rplancuentas','rmayorbalance', 'rauxcontable', 'rlibrodiario', 'rlibromayor', 'rimpuestos']) ? 'active' : '' }}">
+    <li class="treeview {{ in_array(Request::segment(1), ['asientos','asientosnif','activosfijos','reglasasientos','folders','documentos','plancuentas','plancuentasnif', 'tipoactivos','centroscosto','rplancuentas','rmayorbalance', 'rauxcontable', 'rlibrodiario', 'rlibromayor', 'rimpuestos']) ? 'active' : '' }}">
         <a href="#">
             <i class="fa fa-book"></i> <span>Contabilidad</span><i class="fa fa-angle-left pull-right"></i>
         </a>
 
         <ul class="treeview-menu">
             {{-- Modulos contabilidad --}}
-            <li class="{{ in_array(Request::segment(1), ['asientos','asientosnif','activosfijos']) ? 'active' : '' }}">
+            <li class="{{ in_array(Request::segment(1), ['asientos','asientosnif','activosfijos','reglasasientos']) ? 'active' : '' }}">
                 <a href="#">
                     <i class="fa fa-wpforms"></i> Módulos <i class="fa fa-angle-left pull-right"></i>
                 </a>
@@ -245,6 +245,9 @@
                     </li>
                     <li class="{{ Request::segment(1) == 'asientosnif' ? 'active' : '' }}">
                         <a href="{{ route('asientosnif.index') }}"><i class="fa fa-file-text"></i> Asientos NIF</a>
+                    </li>
+                    <li class="{{ Request::segment(1) == 'reglasasientos' ? 'active' : '' }}">
+                        <a href="{{ route('reglasasientos.index') }}"><i class="fa fa-wrench"></i> Reglas asientos</a>
                     </li>
                 </ul>
             </li>

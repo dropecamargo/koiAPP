@@ -165,11 +165,11 @@
                                                 <i class="fa fa-barcode"></i>
                                             </button>
                                         </span>
-                                        <input id="producto_serie" placeholder="Serie" class="form-control producto-koi-component" name="producto_serie" type="text" maxlength="15" data-wrapper="pedidosc-create" data-name="producto_nombre" data-ref="false" data-price="factura2_costo" data-office = "factura1_puntoventa" required>
+                                        <input id="producto_serie" placeholder="Serie" class="form-control producto-koi-component" name="producto_serie" type="text" maxlength="15" data-wrapper="factura-create" data-name="producto_nombre" data-ref="true" data-price="factura2_costo" data-office = "factura1_sucursal" data-pedidoc="false" required>
                                     </div>
                                 </div>
                                 <div class="form-group col-md-4">
-                                    <input id="producto_nombre" name="producto_nombre" placeholder="Nombre producto" class="form-control input-sm" type="text" maxlength="100" required>
+                                    <input id="producto_nombre" name="producto_nombre" placeholder="Nombre producto" class="form-control input-sm" type="text" maxlength="100" required readonly>
                                 </div>
 
                                 <label for="factura2_cantidad" class="col-xs-6 col-md-1 col-md-1 control-label">Cantidad </label>

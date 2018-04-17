@@ -52,6 +52,7 @@ app || (app = {});
 			this.$remision = this.$inputContent.attr("data-remision");
 			this.$orden = this.$inputContent.attr("data-orden");
 			this.$sucursal = this.$inputContent.attr("data-sucursal");
+            this.$dataPedidoc = this.$inputContent.attr("data-pedidoc");
             this.$dataType = this.$inputContent.data("type");
 
 			// remove for add item in factura orden
@@ -60,10 +61,12 @@ app || (app = {});
 			// Filters
 			this.$equalsRef = this.$inputContent.attr("data-ref");
 			this.$whitOutInventory = this.$inputContent.attr("data-inventory");
+
 			if((this.$equalsRef == "true" || this.$equalsRef == "false") && this.$inputSucursal.val() == '' ){
 				alertify.error('Por favor ingrese sucursal antes agregar producto.');
                 return;
 			}
+
 			this.productosSearchTable = this.$productosSearchTable.DataTable({
 				dom: "<'row'<'col-sm-12'tr>>" +
 					"<'row'<'col-sm-5'i><'col-sm-7'p>>",
@@ -114,10 +117,16 @@ app || (app = {});
 
 		setProducto: function(e) {
 			e.preventDefault();
+
 	        var data = this.productosSearchTable.row( $(e.currentTarget).parents('tr') ).data();
-			this.$inputContent.val( data.producto_serie );
-			this.$inputName.val( data.producto_nombre );
-			(!_.isUndefined( this.$inputCosto )) ? this.$inputCosto.val(window.Misc.currency(data.producto_costo)) : '';
+                this.$inputContent.val( data.producto_serie );
+                this.$inputName.val( data.producto_nombre );
+
+            //  Read only producto que NO son servicios (Factura)
+            if (this.$dataPedidoc == 'false' && data.producto_unidad == 0)
+                this.$inputName.prop('readonly', false);
+
+        	(!_.isUndefined( this.$inputCosto )) ? this.$inputCosto.val(window.Misc.currency(data.producto_costo)) : '';
 
 			if (! _.isUndefined(this.$inputPrecio1)) {
 				this.$inputPrecio1.val(window.Misc.currency(data.producto_precio1));
@@ -157,12 +166,15 @@ app || (app = {});
 			this.$inputCosto = this.$("#"+$(e.currentTarget).attr("data-costo"));
 			this.$wraperConten = this.$("#"+$(e.currentTarget).attr("data-wrapper"));
 			this.$inputPrecio1 = this.$("#"+this.$inputContent.attr("data-price"));
+            this.$inputSucursal = this.$("#"+this.$inputContent.attr("data-office"));
+            this.$dataPedidoc = this.$inputContent.attr("data-pedidoc");
         	this.equalsRef = this.$inputContent.attr("data-ref");
 
-			if(this.equalsRef == "true" && this.$('#ajuste1_sucursal').val() == '' ){
-				alertify.error('Por favor ingrese sucursal antes agregar producto.');
+            if((this.equalsRef == "true" || this.equalsRef == "false") && this.$inputSucursal.val() == '' ){
+                alertify.error('Por favor ingrese sucursal antes agregar producto.');
                 return;
-			}
+            }
+
 
 			var producto = this.$inputContent.val();
 
@@ -186,16 +198,21 @@ app || (app = {});
 	                window.Misc.removeSpinner( _this.$wraperConten );
 
 	                if(resp.success) {
-	                    if(!_.isUndefined(resp.producto_nombre) && !_.isNull(resp.producto_nombre)){
-							_this.$inputName.val(resp.producto_nombre);
+
+                        //  Read only producto que NO son servicios (Factura)
+                        if (_this.$dataPedidoc == 'false' && resp.producto.producto_unidad == 0)
+                            _this.$inputName.prop('readonly', false);
+
+	                    if(!_.isUndefined(resp.producto.producto_nombre) && !_.isNull(resp.producto.producto_nombre)){
+							_this.$inputName.val(resp.producto.producto_nombre);
 	                    }
-	                    if(!_.isUndefined(resp.producto_costo) && !_.isNull(resp.producto_costo)){
-							_this.$inputCosto.val(window.Misc.currency(resp.producto_costo));
+	                    if(!_.isUndefined(resp.producto.producto_costo) && !_.isNull(resp.producto.producto_costo)){
+							_this.$inputCosto.val(window.Misc.currency(resp.producto.producto_costo));
 	                    }
-	                    if(!_.isUndefined(resp.producto_precio1) && !_.isNull(resp.producto_precio1)){
-							_this.$inputPrecio1.val(window.Misc.currency(resp.producto_precio1));
-							_this.$('#pedidoc2_iva_porcentaje').val(resp.impuesto_porcentaje);
-							_this.$('#factura2_iva_porcentaje').val(resp.impuesto_porcentaje);
+	                    if(!_.isUndefined(resp.producto.producto_precio1) && !_.isNull(resp.producto.producto_precio1)){
+							_this.$inputPrecio1.val(window.Misc.currency(resp.producto.producto_precio1));
+							_this.$('#pedidoc2_iva_porcentaje').val(resp.producto.impuesto_porcentaje);
+							_this.$('#factura2_iva_porcentaje').val(resp.producto.impuesto_porcentaje);
 	                    }
 	                }
 	            })

@@ -54,8 +54,14 @@ app || (app = {});
             this.$numPedido = this.$("#"+$(e.currentTarget).attr("data-numPedido"));
             this.$contact = this.$("#"+this.$inputContent.attr("data-idTC"));
             this.$dataChange = this.$inputContent.attr("data-change");
-
+            this.$inputPuntoVenta = this.$("#"+this.$inputContent.attr("data-punto"));
+            this.$changeIf = this.$inputContent.attr("data-change");
             var tercero = this.$inputContent.val();
+
+            // Validate en factura punto de venta
+            if (this.$changeIf == "true" && (this.$inputPuntoVenta.val() == ''  && this.$inputPuntoVenta.length > 0)) {
+                return;
+            }
 
             this.pedidoscSearchTable = this.$pedidoscSearchTable.DataTable({
                 dom: "<'row'<'col-sm-12'tr>>" +
@@ -74,7 +80,7 @@ app || (app = {});
                 columns: [
                     { data: 'pedidoc1_numero', name: 'pedidoc1_numero' },
                     { data: 'sucursal_nombre', name: 'sucursal_nombre'},
-                    { data: 'pedidoc1_fecha', name: 'pedidoc1_fecha' }, 
+                    { data: 'pedidoc1_fecha', name: 'pedidoc1_fecha' },
                     { data: 'vendedor_nombre', name: 'vendedor_nombre' },
                 ],
                 columnDefs: [
@@ -85,7 +91,7 @@ app || (app = {});
 							return '<a href="#" class="a-koi-search-pedidoc-component-table">' + data + '</a>';
 						}
 					}
-					
+
                 ]
 			});
 
@@ -112,7 +118,7 @@ app || (app = {});
                 this.$sucursal.select2({ data: select2 });
                 this.$vendedor.select2({ data: select2Vendedor });
                 this.$contact.val(data.pedidoc1_contacto);
-                
+
                 this.$numPedido.trigger('change',[data.id]);
             }
 			this.$modalComponent.modal('hide');

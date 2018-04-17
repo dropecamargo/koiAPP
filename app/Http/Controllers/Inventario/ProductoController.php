@@ -21,7 +21,7 @@ class ProductoController extends Controller
         if ($request->ajax()) {
 
             $query = Producto::query();
-            $query->select('producto.id as id', 'producto_serie', 'producto_nombre','producto_referencia','producto_costo','producto_precio1','impuesto.impuesto_porcentaje');
+            $query->select('producto.id as id', 'producto_serie', 'producto_nombre','producto_referencia','producto_costo','producto_precio1','producto_metrado','producto_vence', 'producto_unidad','impuesto.impuesto_porcentaje');
             $query->join('impuesto', 'producto.producto_impuesto', '=', 'impuesto.id');
             // Persistent data filter
             if($request->has('persistent') && $request->persistent) {
@@ -50,7 +50,7 @@ class ProductoController extends Controller
                         if($request->equalsRef == "true"){
                             $query->whereRaw('producto_serie = producto_referencia');
                         }else{
-                            $query->select('producto.id as id','impuesto.impuesto_porcentaje','producto_maneja_serie','producto_serie', 'producto_nombre','producto_referencia','producto_costo','producto_precio1','prodbode.prodbode_cantidad','prodbode_serie', 'prodbode_sucursal');
+                            $query->select('producto.id as id','impuesto.impuesto_porcentaje','producto_maneja_serie','producto_serie','producto_metrado','producto_vence', 'producto_unidad', 'producto_nombre','producto_referencia','producto_costo','producto_precio1','prodbode.prodbode_cantidad','prodbode_serie', 'prodbode_sucursal');
                             $query->join('prodbode', 'producto.id','=','prodbode.prodbode_serie');
                             $query->whereRaw('prodbode_cantidad > 0');
                             $sucursal = Sucursal::find($request->officeSucursal);
@@ -471,12 +471,12 @@ class ProductoController extends Controller
     {
         if($request->has('producto_serie')) {
             $query = Producto::query();
-            $query->select('producto.id as id', 'producto_nombre', 'producto_serie','producto_costo','producto_precio1','impuesto.impuesto_porcentaje');
+            $query->select('producto.id as id', 'producto_nombre', 'producto_serie','producto_costo','producto_precio1','producto_metrado','producto_vence', 'producto_unidad','impuesto.impuesto_porcentaje');
             $query->join('impuesto','producto_impuesto', '=', 'impuesto.id');
             $query->where('producto_serie', $request->producto_serie);
             $producto = $query->first();
             if($producto instanceof Producto) {
-                return response()->json(['success' => true, 'id' => $producto->id, 'producto_nombre' => $producto->producto_nombre, 'producto_serie' => $producto->producto_serie ,'producto_costo'=>$producto->producto_costo, 'producto_precio1'=>$producto->producto_precio1, 'impuesto_porcentaje'=> $producto->impuesto_porcentaje]);
+                return response()->json(['success' => true, 'producto' => $producto]);
             }
         }
         return response()->json(['success' => false]);
