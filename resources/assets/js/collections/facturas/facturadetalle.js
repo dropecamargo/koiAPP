@@ -22,12 +22,11 @@ app || (app = {});
         initialize : function(){
         },
         valid: function(){
-            var error = { success: false };
+            var error = { success: true };
 
             // Validate exist
             _.each(this.models, function(item) {
-                console.log(item);
-                if (!item.get('maneja_serie') ) {
+                if (!item.get('maneja_serie') && item.get('maneja_inventario')) {
                     (item.has('items')) ? error.success = true: error.success = false;
                 }
             });

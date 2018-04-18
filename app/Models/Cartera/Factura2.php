@@ -71,6 +71,7 @@ class Factura2 extends BaseModel
 	    $factura2->factura2_margen = $data->pedidoc2_margen;
 	    $factura2->producto_id = $data->pedidoc2_producto;
 	    $factura2->maneja_serie = $data->producto_maneja_serie;
+	    $factura2->maneja_inventario = $data->producto_unidad;
 	    return $factura2;
 	}
 	public static function remRmpuModelCreate ($data)

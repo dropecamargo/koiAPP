@@ -168,13 +168,13 @@ class Factura1Controller extends Controller
                                 return response()->json(['success'=>false , 'errors'=> 'No es posible recuperar detalle pedido, por favor verifique información o consulte al administrador']);
                             }
                         }
-
+                        Log::info($item);
                         //Detalle factura
                         $factura2 = new Factura2;
                         $factura2->fill($item);
                         $factura2->factura2_factura1 = $factura1->id;
                         $factura2->factura2_producto = $producto->id;
-                        $factura2->factura2_producto_nombre = $request->producto_nombre;
+                        $factura2->factura2_producto_nombre = $item['producto_nombre'];
                         $factura2->factura2_linea = $linea->id;
                         $factura2->factura2_margen = $linea->linea_margen_nivel1;
                         $factura2->save();
@@ -226,7 +226,7 @@ class Factura1Controller extends Controller
                                     }
                                 }
                             }
-                        }else{
+                        }else if ($producto->producto_vence	 == true){
                             $items = isset($item['items']) ? $item['items'] : null;
                             foreach ($items as $key => $value) {
                                 list($text, $lote) = explode("_", $key);
@@ -251,6 +251,13 @@ class Factura1Controller extends Controller
                                         return response()->json(['success' => false,'errors '=> $inventario]);
                                     }
                                 }
+                            }
+                        }else{
+                            // Inventario
+                            $inventario = Inventario::movimiento($producto, $sucursal->id, $sucursal->sucursal_defecto,'FACT', $factura1->id, 0, 1, [], [],$factura2->factura2_costo, $factura2->factura2_costo,0,[]);
+                            if ($inventario != 'OK') {
+                                DB::rollback();
+                                return response()->json(['success' => false,'errors '=> $inventario]);
                             }
                         }
                     }

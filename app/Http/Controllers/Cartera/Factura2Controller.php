@@ -80,7 +80,7 @@ class Factura2Controller extends Controller
                     $producto = Producto::where('producto_serie', $request->producto_serie)->first();
                     if(!$producto instanceof Producto){
                         return response()->json(['success'=> false, 'errors'=>'No es posible recuperar producto, por favor consulte al administrador.']);
-                    } 
+                    }
                     if ($request->get('factura2_cantidad') <= 0 && $request->get('factura2_costo') == 0) {
                         return response()->json(['success' => false,'errors' => "No es posible realizar $tipoAjuste->tipoajuste_nombre, por favor verifique la información ó consulte al administrador"]);
                     }
@@ -100,7 +100,7 @@ class Factura2Controller extends Controller
                             }
                         }
                     }
-                    return response()->json(['success' => true, 'id' => uniqid()]);
+                    return response()->json(['success' => true, 'id' => uniqid(), 'maneja_serie' => $producto->producto_maneja_serie, 'maneja_inventario' => $producto->producto_unidad]);
                 } catch (\Exception $e) {
                     Log::error($e->getMessage());
                     return response()->json(['success' => false, 'errors' => trans('app.exception')]);
@@ -140,7 +140,7 @@ class Factura2Controller extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {   
+    {
         if ($request->ajax()) {
             $data = $request->all();
             $factura2 = new Factura2;
@@ -149,7 +149,7 @@ class Factura2Controller extends Controller
                     $producto = Producto::where('producto_serie', $request->producto_serie)->first();
                     if(!$producto instanceof Producto){
                         return response()->json(['success'=> false, 'errors'=>'No es posible recuperar producto, por favor consulte al administrador.']);
-                    } 
+                    }
                     if ($request->get('factura2_cantidad') <= 0 && $request->get('factura2_costo') == 0) {
                         return response()->json(['success' => false,'errors' => "No es posible realizar $tipoAjuste->tipoajuste_nombre, por favor verifique la información ó consulte al administrador"]);
                     }

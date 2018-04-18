@@ -165,7 +165,7 @@
                                                 <i class="fa fa-barcode"></i>
                                             </button>
                                         </span>
-                                        <input id="producto_serie" placeholder="Serie" class="form-control producto-koi-component" name="producto_serie" type="text" maxlength="15" data-wrapper="factura-create" data-name="producto_nombre" data-ref="true" data-price="factura2_costo" data-office = "factura1_sucursal" data-pedidoc="false" required>
+                                        <input id="producto_serie" placeholder="Serie" class="form-control producto-koi-component" name="producto_serie" type="text" maxlength="15" data-wrapper="factura-create" data-name="producto_nombre" data-ref="false" data-price="factura2_costo" data-office = "factura1_sucursal" data-pedidoc="false" required>
                                     </div>
                                 </div>
                                 <div class="form-group col-md-4">

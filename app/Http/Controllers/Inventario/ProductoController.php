@@ -51,11 +51,14 @@ class ProductoController extends Controller
                             $query->whereRaw('producto_serie = producto_referencia');
                         }else{
                             $query->select('producto.id as id','impuesto.impuesto_porcentaje','producto_maneja_serie','producto_serie','producto_metrado','producto_vence', 'producto_unidad', 'producto_nombre','producto_referencia','producto_costo','producto_precio1','prodbode.prodbode_cantidad','prodbode_serie', 'prodbode_sucursal');
-                            $query->join('prodbode', 'producto.id','=','prodbode.prodbode_serie');
-                            $query->whereRaw('prodbode_cantidad > 0');
-                            $sucursal = Sucursal::find($request->officeSucursal);
-                            ($sucursal instanceof Sucursal) ? $query->where('prodbode_sucursal', $sucursal->id) : '' ;
-                            $query->groupBy('prodbode_serie');
+                            $query->leftJoin('prodbode', 'producto.id','=','prodbode.prodbode_serie');
+                            $query->leftJoin('sucursal', 'prodbode_sucursal','=','sucursal.id');
+                            $query->where('prodbode_cantidad', '>', 0);
+                            $query->where(function($query) use ($request){
+                                $query->where('prodbode_sucursal', $request->officeSucursal);
+                            });
+                            $query->orWhere('producto_unidad', false);
+                            // $query->groupBy('prodbode_serie');
                         }
                     }
 
