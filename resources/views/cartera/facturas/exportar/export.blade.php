@@ -1,118 +1,112 @@
 @extends('cartera.facturas.exportar.layout', ['type' => 'pdf', 'title' => $title])
 
 @section('content')
-
-	<div class="container-factura">
-		<tr>
-			<th width="78%" class="left"></th>
-			<th width="22%" class="center">{{ $factura->factura1_numero }}</th>
-		</tr>
-	</div>
-
-	<table class="htable" border="0" cellspacing="0" cellpadding="0">
-		<tr>
-			<th class="left"></th>
-			<th class="left">{{ $factura->tercero_nombre }}</th>
-		</tr>
-
-		<tr>
-			<th width="12%"></th>
-			<th width="30%" class="left">{{ $factura->tercero_direccion }}</th>
-
-			<th width="12%"></th>
-			<th width="40%" class="right">{{ $factura->municipio_nombre }}</th>
-
-			<th colspan="2"></th>
-			<th width="10%" class="center">{{ $factura->factura1_primerpago }}</th>
-			<th width="10%" class="center">xx - xx - xx</th>
-		</tr>
-
-		<tr>
-			<th width="10%"></th>
-			@if( !empty($factura->tercero_telefono1) )
-				<th width="20%" class="left">{{ $factura->tercero_telefono1 }}</th>
-			@elseif ( !empty($factura->tercero_telefono2) )
-				<th width="20%" class="left">{{ $factura->tercero_telefono2 }}</th>
-			@elseif ( !empty($factura->tercero_celular) )
-				<th width="20%" class="left">{{ $factura->tercero_celular }}</th>
-			@else
-				<th width="20%" class="left"></th>
-			@endif
-
-
-			<th width="10%"></th>
-			<th width="20%" class="left">{{ $factura->tercero_fax }}</th>
-
-			<th width="10%"></th>
-			<th width="20%" class="left">{{ $factura->tercero_nit }}</th>
-
-			<th width="10%"></th>
-			<th width="20%" class="right">xxxxx</th>
-		</tr>
-	</table>
-
-	<table class="rtable" border="0" cellspacing="0" cellpadding="0">
+	<table class="bordered">
 		<thead>
 			<tr>
-				<th width="15%" class="left"></th>
-				<th width="5%" class="left"></th>
-				<th width="50%" class="center"></th>
-				<th width="15%" class="center"></th>
-				<th width="15%" class="center"></th>
+				<th>Fecha de facturación</th>
+				<td>{{ $factura->factura1_fecha }}</td>
+				<th>Factura de vencimiento</th>
+				<td>{{ $factura->factura1_fecha }}</td>
+				<th>FACTURA DE VENTA N°</th>
+				<td>{{ $factura->factura1_numero }}</td>
+			</tr>
+			<tr>
+				<th>Señor (es)</th>
+				<td colspan="3">{{ $factura->tercero_nombre }}</td>
+				<th>Nit</th>
+				<td>{{ $factura->tercero_nit }}</td>
+			</tr>
+			<tr>
+				<th>Dirección</th>
+				<td colspan="3">{{ $factura->tercero_direccion }}</td>
+				<th>Tel</th>
+				<td>
+					@if( !empty($factura->tercero_telefono1) )
+						{{ $factura->tercero_telefono1 }}
+					@elseif ( !empty($factura->tercero_telefono2) )
+						{{ $factura->tercero_telefono2 }}
+					@elseif ( !empty($factura->tercero_celular) )
+						{{ $factura->tercero_celular }}
+					@endif
+				</td>
+			</tr>
+		</thead>
+	</table><br>
+
+	<table class="bordered">
+		<thead>
+			<tr>
+				<th width="10%" class="center border-bottom border-right">CANT</th>
+				<th width="60%" class="center border-bottom border-right">DESCRIPCIÓN</th>
+				<th width="15%" class="center border-bottom border-right">VR. UNITARIO</th>
+				<th width="15%" class="center border-bottom">TOTAL</th>
 			</tr>
 		</thead>
 		<tbody>
-			@if(count($detalle) > 0)
+			{{--*/ $rows = count($detalle); /*--}}
+			@if($rows > 0)
 				@foreach($detalle as $item)
 					<tr>
-						<td class="left">{{ $item->producto_serie }}</td>
-						<td class="center">{{ $item->factura2_cantidad }}</td>
-						<td class="left">{{ $item->producto_nombre }}</td>
-						<td class="right">{{ number_format($item->factura2_costo,2,',','.') }}</td>
-						<td class="right">{{ number_format($item->factura2_costo,2,',','.') }}</td>
+						<td class="center border-bottom">{{ $item->factura2_cantidad }}</td>
+						<td class="left border-bottom border-left">{{ $item->producto_serie }} - {{ $item->producto_nombre }}</td>
+						<td class="right border-bottom border-left">{{ number_format($item->factura2_costo,2,',','.') }}&nbsp;</td>
+						<td class="right border-bottom border-left">{{ number_format($item->factura2_costo * $item->factura2_cantidad,2,',','.') }}&nbsp;</td>
 					</tr>
 				@endforeach
-				@if( count($detalle) < 14)
-					@for($i = count($detalle); $i < 14; $i++)
-						<tr>
-							<td colspan="5"></td>
-						</tr>
-					@endfor
-				@endif
 			@endif
+			@for($rows; $rows < 23 ; $rows++)
+				<tr>
+					<td class="border-bottom"></td>
+					<td class="border-bottom border-left"></td>
+					<td class="border-bottom border-left"></td>
+					<td class="border-bottom border-left"></td>
+				</tr>
+			@endfor
 		</tbody>
 		<tfoot>
 			<tr>
-				<td colspan="3" rowspan="8"></td>
+				<td rowspan="4" colspan="2">&nbsp;</td>
+				<th class="right border-bottom border-left">SUB-TOTAL &nbsp;</th>
+				<th class="right border-bottom border-left">{{ number_format($item->factura1_bruto,2,',','.') }}&nbsp;</th>
 			</tr>
 			<tr>
-				<td class="right"></td>
-				<td class="right">{{ number_format($item->factura1_bruto,2,',','.') }}</td>
+				<th class="right border-bottom border-left">IVA &nbsp;</th>
+				<th class="right border-bottom border-left">{{ number_format($factura->factura1_iva,2,',','.') }}&nbsp;</th>
 			</tr>
 			<tr>
-				<td class="right"></td>
-				<td class="right">{{ number_format($factura->factura1_descuento,2,',','.') }}</td>
+				<th class="right border-bottom border-left">RET/FUENTE &nbsp;</th>
+				<th class="right border-bottom border-left"> {{ number_format($factura->factura1_retencion,2,',','.') }}&nbsp;</th>
 			</tr>
 			<tr>
-				<td class="right"></td>
-				<td class="right">{{ number_format($factura->factura1_iva,2,',','.') }}</td>
-			</tr>
-			<tr>
-				<td class="right"></td>
-				<td class="right">{{ number_format( 0 ,2,',','.') }}</td>
-			</tr>
-			<tr>
-				<td class="right"></td>
-				<td class="right">{{ number_format( 0 ,2,',','.') }}</td>
-			</tr>
-			<tr>
-				<td class="right"></td>
-				<td class="right">{{ number_format( 0 ,2,',','.') }}</td>
-			</tr>
-			<tr>
-				<td class="right"></td>
-				<td class="right">{{ number_format($factura->factura1_total,2,',','.') }}</td>
+				<th class="right border-left">TOTAL &nbsp;</th>
+				<th class="right border-left">{{ number_format($factura->factura1_total,2,',','.') }}&nbsp;</th>
 			</tr>
 		</tfoot>
+	</table><br>
+
+	<table class="bordered">
+		<tr>
+			<td colspan="6" rowspan="4"></td>
+		</tr>
+	</table><br>
+
+	<table class="bordered">
+		<tr>
+			<td width="50%" class="border-right bold padding-text">Declaramos haber recibido de conformidad real y materialmente los artículos relacionados en la presente FACTURA CAMBIARIA, obligándonos al pago en la forma aquí descrita</td>
+			<td width="50%" valign="top" class="bold padding-text">Para todos sus efectos esta FACTURA se asimila a una letra de cambio. (Artículo 774 del Código de Comercio).</td>
+		</tr>
+		<tr>
+			<td class="border-right"></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td class="center border-right">__________________________________________________________</td>
+			<td class="center">__________________________________________________________</td>
+		</tr>
+		<tr>
+			<td class="center bold border-right">RECIBÓ A SATISFACCIÓN (FIRMA Y SELLO) FECHA</td>
+			<td class="center bold">FIRMA PROVEEDOR</td>
+		</tr>
 	</table>
 @stop

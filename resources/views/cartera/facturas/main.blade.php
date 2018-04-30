@@ -169,7 +169,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group col-md-4">
-                                    <input id="producto_nombre" name="producto_nombre" placeholder="Nombre producto" class="form-control input-sm" type="text" maxlength="100" required readonly>
+                                    <input id="producto_nombre" name="producto_nombre" placeholder="Nombre producto" class="form-control input-sm input-toupper" type="text" maxlength="100" required readonly>
                                 </div>
 
                                 <label for="factura2_cantidad" class="col-xs-6 col-md-1 col-md-1 control-label">Cantidad </label>

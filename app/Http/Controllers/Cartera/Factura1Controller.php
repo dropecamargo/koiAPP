@@ -413,12 +413,13 @@ class Factura1Controller extends Controller
             abort(404);
         }
 
+        $title = sprintf("Factura $factura->factura1_numero");
         $detalle = Factura2::getFactura2($factura->id);
-        $title = sprintf('Factura %s', $factura->factura1_numero);
 
         // Export pdf
         $pdf = App::make('dompdf.wrapper');
         $pdf->loadHTML(View::make('cartera.facturas.exportar.export',  compact('factura', 'detalle', 'title'))->render());
-        return $pdf->stream(sprintf('%s_%s_%s_%s.pdf', 'factura', $factura->id, date('Y_m_d'), date('H_m_s')));
+        $pdf->setPaper('letter', 'portrait')->setWarnings(false);
+        return $pdf->stream(sprintf('%s_%s_%s_%s.pdf', 'factura', $factura->factura1_numero, date('Y_m_d'), date('H_m_s')));
     }
 }
