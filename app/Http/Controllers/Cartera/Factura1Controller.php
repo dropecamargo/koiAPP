@@ -277,7 +277,7 @@ class Factura1Controller extends Controller
                     }
 
                     DB::commit();
-                    return response()->json(['success'=>true , 'id' => $factura1->id]);
+                    return response()->json([ 'success'=>true , 'id' => $factura1->id ]);
                 } catch (\Exception $e) {
                     DB::rollback();
                     Log::error($e->getMessage());

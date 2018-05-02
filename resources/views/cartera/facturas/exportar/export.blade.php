@@ -53,6 +53,15 @@
 						<td class="right border-bottom border-left">{{ number_format($item->factura2_costo,2,',','.') }}&nbsp;</td>
 						<td class="right border-bottom border-left">{{ number_format($item->factura2_costo * $item->factura2_cantidad,2,',','.') }}&nbsp;</td>
 					</tr>
+					@if(!empty($item->factura2_detalle))
+						{{--*/ $rows ++ /*--}}
+						<tr>
+							<td class="center border-bottom"></td>
+							<td class="left border-bottom border-left">{{ $item->factura2_detalle }}</td>
+							<td class="right border-bottom border-left"></td>
+							<td class="right border-bottom border-left"></td>
+						</tr>
+					@endif
 				@endforeach
 			@endif
 			@for($rows; $rows < 23 ; $rows++)
@@ -68,14 +77,14 @@
 			<tr>
 				<td rowspan="4" colspan="2">&nbsp;</td>
 				<th class="right border-bottom border-left">SUB-TOTAL &nbsp;</th>
-				<th class="right border-bottom border-left">{{ number_format($item->factura1_bruto,2,',','.') }}&nbsp;</th>
+				<th class="right border-bottom border-left">{{ number_format($factura->factura1_bruto,2,',','.') }}&nbsp;</th>
 			</tr>
 			<tr>
-				<th class="right border-bottom border-left">IVA &nbsp;</th>
+				<th class="right border-bottom border-left">IVA ()&nbsp;</th>
 				<th class="right border-bottom border-left">{{ number_format($factura->factura1_iva,2,',','.') }}&nbsp;</th>
 			</tr>
 			<tr>
-				<th class="right border-bottom border-left">RET/FUENTE &nbsp;</th>
+				<th class="right border-bottom border-left">RET/FUENTE (3,5%)&nbsp;</th>
 				<th class="right border-bottom border-left"> {{ number_format($factura->factura1_retencion,2,',','.') }}&nbsp;</th>
 			</tr>
 			<tr>

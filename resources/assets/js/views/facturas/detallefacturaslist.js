@@ -14,6 +14,7 @@ app || (app = {});
         el: '#browse-detalle-factura-list',
         events: {
             'click .item-detallefactura-remove': 'removeOne',
+            'click .item-detallefactura-comment': 'commentOne',
         },
         parameters: {
             wrapper: null,
@@ -172,6 +173,32 @@ app || (app = {});
 
                 // totalize actually in collection
                 this.totalize();
+            }
+        },
+
+        /*
+        * Event comment item
+        */
+        commentOne: function (e){
+            e.preventDefault();
+            var resource = $(e.currentTarget).attr("data-resource");
+                model = this.collection.get(resource);
+
+            if ( model instanceof Backbone.Model ) {
+
+                // Open InventarioActionView
+                if ( this.commentFacturaView instanceof Backbone.View ){
+                    this.commentFacturaView.stopListening();
+                    this.commentFacturaView.undelegateEvents();
+                }
+                this.commentFacturaView = new app.CommentFacturaView({
+                    model: model,
+                    parameters: {
+                    }
+                });
+                this.commentFacturaView.render();
+
+                // console.log(model);
             }
         },
 

@@ -308,6 +308,28 @@
 		</div>
 	</div>
 </div>
+<!-- Modal Comments factura -->
+<div class="modal fade" id="modal-comments-factura" data-backdrop="static" data-keyboard="false" aria-hidden="true">
+	<div class="modal-dialog modal-md" role="document">
+		<div class="modal-content">
+			<div class="modal-header small-box {{ config('koi.template.bg') }}">
+				<button type="button" class="close icon-close-koi" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="inner-title-modal modal-title"> Comentario factura</h4>
+			</div>
+			<form id="form-comment-factura" method="POST" data-toggle='validator'>
+				<div class="modal-body">
+					<div class="content-modal"></div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancelar</button>
+					<button type="submit" class="btn btn-primary btn-sm">Enviar</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
 <!-- Modal Submit config sabana -->
 <div class="modal fade" id="modal-configsabana-component" data-backdrop="static" data-keyboard="false" aria-hidden="true">
 	<div class="modal-dialog modal-md" role="document">
@@ -1097,6 +1119,16 @@
 			<span class="help-block">
 				Por favor, seleccione un archivo tipo <b>.csv </b>
 			</span>
+		</div>
+	</div>
+</script>
+<script type="text/template" id="add-comments-tpl">
+	<div class="row">
+		<div class="form-group col-md-12">
+			<span class="help-block">
+				Escriba aquí el comentario para el producto <b><%- model.get('producto_serie') %> - <%- model.get('producto_nombre') %></b>
+			</span>
+			<textarea id="factura2_detalle" name="factura2_detalle" class="form-control" rows="3" placeholder="Detalle"></textarea>
 		</div>
 	</div>
 </script>

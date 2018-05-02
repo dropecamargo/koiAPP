@@ -29,6 +29,7 @@ class CreateFactura2Table extends Migration
             $table->double('factura2_iva_valor')->default(0);
             $table->double('factura2_iva_porcentaje')->default(0);
             $table->double('factura2_margen')->default(0);
+            $table->string('factura2_detalle',255)->nullable();
 
             $table->foreign('factura2_factura1')->references('id')->on('factura1')->onDelete('restrict');
             $table->foreign('factura2_producto')->references('id')->on('producto')->onDelete('restrict');

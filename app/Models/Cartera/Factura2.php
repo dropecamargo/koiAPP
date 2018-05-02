@@ -22,7 +22,7 @@ class Factura2 extends BaseModel
 	*
 	* @var array
 	*/
-    protected $fillable = ['factura2_cantidad','factura2_producto_nombre', 'factura2_precio_venta','factura2_descuento_porcentaje','factura2_descuento_valor','factura2_costo','factura2_iva_porcentaje','factura2_iva_valor'];
+    protected $fillable = ['factura2_cantidad','factura2_producto_nombre', 'factura2_precio_venta','factura2_descuento_porcentaje','factura2_descuento_valor','factura2_costo','factura2_iva_porcentaje','factura2_iva_valor', 'factura2_detalle'];
 
 	public function isValid($data)
 	{

@@ -227,14 +227,14 @@
                 <table id="browse-detalle-factura-list" class="table table-hover table-bordered" cellspacing="0">
                     <thead>
                         <tr>
-                            <th width="3%"></th>
+                            <th width="5%"></th>
                             <th width="10%">Referencia</th>
-                            <th width="35%">Nombre</th>
-                            <th width="3%">Cant</th>
-                            <th width="15%">Precio</th>
-                            <th width="15%">Descuento</th>
-                            <th width="9%">Iva</th>
-                            <th  width="10%">Total</th>
+                            <th width="40%">Nombre</th>
+                            <th width="5%">Cant</th>
+                            <th width="10%">Precio</th>
+                            <th width="10%">Descuento</th>
+                            <th width="10%">Iva</th>
+                            <th width="10%">Total</th>
                         </tr>
                     </thead>
 

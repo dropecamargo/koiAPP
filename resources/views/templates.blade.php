@@ -1927,17 +1927,18 @@
     </div>
 </script>
 
-{{--template Ubicacion--}}
+{{--template item factura--}}
 <script type="text/template" id="add-factura-item-tpl">
     <%if(edit){ %>
         <td class="text-center">
+			<a class="btn btn-default btn-xs item-detallefactura-comment" data-resource = "<%- id %>">
+				<span><i class="fa fa-comment"></i></span>
+			</a>
             <a class="btn btn-default btn-xs item-detallefactura-remove" data-resource = "<%- id %>">
                 <span><i class="fa fa-times"></i></span>
             </a>
         </td>
-    <% } %>
-    <%if(edit){ %>
-        <td><a href="#" class="a-click-modals-lotes-koi" data-id = "<%- id %>"><%- producto_serie %></a></td>
+		<td><a href="#" class="a-click-modals-lotes-koi" data-id = "<%- id %>"><%- producto_serie %></a></td>
     <% }else{ %>
         <td><%- producto_serie %></td>
     <% } %>
