@@ -318,18 +318,17 @@
 				</button>
 				<h4 class="inner-title-modal modal-title"> Comentario factura</h4>
 			</div>
-			<form id="form-comment-factura" method="POST" data-toggle='validator'>
-				<div class="modal-body">
-					<div class="content-modal"></div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancelar</button>
-					<button type="submit" class="btn btn-primary btn-sm">Enviar</button>
-				</div>
-			</form>
+			<div class="modal-body">
+				<div class="content-modal"></div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Cancelar</button>
+				<button type="button" class="btn btn-primary btn-sm btn-add-collection">Continuar</button>
+			</div>
 		</div>
 	</div>
 </div>
+
 <!-- Modal Submit config sabana -->
 <div class="modal fade" id="modal-configsabana-component" data-backdrop="static" data-keyboard="false" aria-hidden="true">
 	<div class="modal-dialog modal-md" role="document">
@@ -386,7 +385,7 @@
 			<div class="form-group">
 				<div class="col-md-12 table-responsive">
 					<table id="koi-search-tercero-component-table" class="table table-bordered table-striped" cellspacing="0" width="100%">
-		                <thead>
+		                <thead>submit
 		                    <tr>
 				                <th>Documento</th>
 				                <th>Nombre</th>
@@ -1122,13 +1121,38 @@
 		</div>
 	</div>
 </script>
-<script type="text/template" id="add-comments-tpl">
-	<div class="row">
-		<div class="form-group col-md-12">
-			<span class="help-block">
-				Escriba aquí el comentario para el producto <b><%- model.get('producto_serie') %> - <%- model.get('producto_nombre') %></b>
-			</span>
-			<textarea id="factura2_detalle" name="factura2_detalle" class="form-control" rows="3" placeholder="Detalle"></textarea>
+<script type="text/template" id="comments-tpl">
+	<form id="form-comment-factura" method="POST" data-toggle='validator'>
+		<div class="row">
+			<div class="form-group col-md-12">
+				<span class="help-block">
+					Escriba aquí el comentario para el producto <b><%- model.get('producto_serie') %> - <%- model.get('producto_nombre') %></b>
+				</span>
+			</div>
 		</div>
+		<div class="row">
+			<div class="form-group col-md-10">
+				<input type="text" name="factura4_comment" id="factura4_comment" class="form-control input-sm" placeholder="Comentario" required>
+			</div>
+			<div class="form-group col-md-2 pull-right">
+				<button type="submit"  class="btn btn-success btn-sm btn-block">
+					<i class="fa fa-plus"></i>
+				</button>
+			</div>
+		</div>
+	</form>
+	<div class="table-responsive no-padding">
+		<table id="browse-comment-factura-list" class="table table-hover table-bordered" cellspacing="0">
+			<thead>
+				<tr>
+					<th width="5%"></th>
+					<th>Comentario</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				{{-- Render content comment factura --}}
+			</tbody>
+		</table>
 	</div>
 </script>

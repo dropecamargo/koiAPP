@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\Models\Cartera\Factura1, App\Models\Cartera\Factura2, App\Models\Cartera\Factura3, App\Models\Comercial\Pedidoc1, App\Models\Comercial\Pedidoc2, App\Models\Inventario\Producto, App\Models\Inventario\Linea, App\Models\Inventario\Lote, App\Models\Inventario\Prodbode, App\Models\Inventario\Inventario, App\Models\Inventario\Rollo, App\Models\Base\Tercero, App\Models\Base\PuntoVenta, App\Models\Base\Documentos, App\Models\Base\Sucursal, App\Models\Base\Contacto;
+use App\Models\Cartera\Factura1, App\Models\Cartera\Factura2, App\Models\Cartera\Factura3, App\Models\Cartera\Factura4, App\Models\Comercial\Pedidoc1, App\Models\Comercial\Pedidoc2, App\Models\Inventario\Producto, App\Models\Inventario\Linea, App\Models\Inventario\Lote, App\Models\Inventario\Prodbode, App\Models\Inventario\Inventario, App\Models\Inventario\Rollo, App\Models\Base\Tercero, App\Models\Base\PuntoVenta, App\Models\Base\Documentos, App\Models\Base\Sucursal, App\Models\Base\Contacto;
 
 use App, View, Auth, DB, Log, Datatables;
 
@@ -122,6 +122,7 @@ class Factura1Controller extends Controller
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar punto venta,por favor verifique la información ó por favor consulte al administrador.']);
                     }
+                    // Se define si se necesita pedido
                     if(session('empresa')->empresa_pedidoc){
                         $pedidoc1 = Pedidoc1::where('pedidoc1_sucursal', $sucursal->id)->where('pedidoc1_numero', $request->factura1_pedido)->first();
                         if (!$pedidoc1 instanceof Pedidoc1) {
@@ -168,7 +169,7 @@ class Factura1Controller extends Controller
                                 return response()->json(['success'=>false , 'errors'=> 'No es posible recuperar detalle pedido, por favor verifique información o consulte al administrador']);
                             }
                         }
-                        Log::info($item);
+
                         //Detalle factura
                         $factura2 = new Factura2;
                         $factura2->fill($item);
@@ -178,6 +179,16 @@ class Factura1Controller extends Controller
                         $factura2->factura2_linea = $linea->id;
                         $factura2->factura2_margen = $linea->linea_margen_nivel1;
                         $factura2->save();
+
+                        // Comments factura4
+                        if (isset($item['comments'])) {
+                            foreach ($item['comments'] as $comment) {
+                                $factura4 = new Factura4;
+                                $factura4->fill($comment);
+                                $factura4->factura4_factura2 = $factura2->id;
+                                $factura4->save();
+                            }
+                        }
 
                         if ($producto->producto_maneja_serie == true) {
 
@@ -277,7 +288,7 @@ class Factura1Controller extends Controller
                     }
 
                     DB::commit();
-                    return response()->json([ 'success'=>true , 'id' => $factura1->id ]);
+                    return response()->json([ 'success'=> true , 'id' => $factura1->id ]);
                 } catch (\Exception $e) {
                     DB::rollback();
                     Log::error($e->getMessage());

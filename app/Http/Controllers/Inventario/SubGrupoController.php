@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Inventario\SubGrupo;
+use App\Models\Tesoreria\ReteFuente;
 use DB, Log, Datatables, Cache;
 
 class SubGrupoController extends Controller
@@ -50,9 +51,17 @@ class SubGrupoController extends Controller
             if ($subgrupo->isValid($data)) {
                 DB::beginTransaction();
                 try {
+                    // ReteFuente
+                    $retefuente = ReteFuente::find($request->subgrupo_retefuente);
+                    if (!$retefuente instanceof ReteFuente) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar ReteFuente, por favor consulte al administrador.']);
+                    }
+
                     // SubGrupo
                     $subgrupo->fill($data);
                     $subgrupo->fillBoolean($data);
+                    $subgrupo->subgrupo_retefuente = $retefuente->id;
                     $subgrupo->save();
 
                     // Commit Transaction
@@ -80,7 +89,7 @@ class SubGrupoController extends Controller
      */
     public function show(Request $request, $id)
     {
-        $subgrupo = SubGrupo::findOrFail($id);
+        $subgrupo = SubGrupo::getSubGrupo($id);
         if ($request->ajax()) {
             return response()->json($subgrupo);
         }
@@ -115,9 +124,16 @@ class SubGrupoController extends Controller
             if ($subgrupo->isValid($data)) {
                 DB::beginTransaction();
                 try {
+                    // ReteFuente
+                    $retefuente = ReteFuente::find($request->subgrupo_retefuente);
+                    if (!$retefuente instanceof ReteFuente) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar ReteFuente, por favor consulte al administrador.']);
+                    }
                     // SubGrupo
                     $subgrupo->fill($data);
                     $subgrupo->fillBoolean($data);
+                    $subgrupo->subgrupo_retefuente = $retefuente->id;
                     $subgrupo->save();
 
                     // Commit Transaction

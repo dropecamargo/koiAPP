@@ -29,15 +29,16 @@ class ReteFuente extends BaseModel
 	*
 	* @var array
 	*/
-    protected $fillable = ['retefuente_nombre','retefuente_tarifa_natural','retefuente_tarifa_juridico','retefuente_base'];
+    protected $fillable = ['retefuente_nombre','retefuente_tarifa_declarante_natural','retefuente_tarifa_no_declarate_natural','retefuente_tarifa_juridico','retefuente_base'];
 
     protected $boolean = ['retefuente_activo'];
 
     public function isValid($data)
     {
         $rules = [
-            'retefuente_nombre' => 'required|max:50|unique:retefuente',
-            'retefuente_tarifa_natural' => 'numeric',
+            'retefuente_nombre' => 'required|max:100|unique:retefuente',
+            'retefuente_tarifa_declarante_natural' => 'numeric',
+            'retefuente_tarifa_no_declarate_natural' => 'numeric',
             'retefuente_tarifa_juridico' => 'numeric',
             'retefuente_base' => 'required|numeric'
         ];
@@ -47,7 +48,7 @@ class ReteFuente extends BaseModel
         }else{
             $rules['retefuente_nombre'] .= '|required';
         }
-        
+
         $validator = Validator::make($data, $rules);
         if ($validator->passes()) {
             return true;

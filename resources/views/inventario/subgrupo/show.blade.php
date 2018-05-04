@@ -25,6 +25,14 @@
                     </label>
                 </div>
             </div>
+            @if(!is_null($subgrupo->subgrupo_retefuente))
+                <div class="row">
+                    <div class="form-group col-md-8">
+                        <label class="control-label">Retefuente</label>
+                        <div><a href="{{ route('retefuentes.show', ['retefuentes' =>  $subgrupo->retefuente ]) }}" target="_blank" title="Ver retefuente">{{ $subgrupo->retefuente_nombre }}</a></div>
+                    </div>
+                </div>
+            @endif
         </div>
 
         <div class="box-footer with-border">

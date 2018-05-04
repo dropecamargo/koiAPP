@@ -44,7 +44,7 @@ app || (app = {});
                 columnDefs: [
                     {
                         targets: 0,
-                        width: '10%',
+                        width: '5%',
                         render: function ( data, type, full, row ) {
                             return '<a href="'+ window.Misc.urlFull( Route.route('retefuentes.show', {retefuentes: full.id }) )  +'">' + data + '</a>';
                         }

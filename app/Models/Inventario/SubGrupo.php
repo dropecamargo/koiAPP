@@ -70,4 +70,13 @@ class SubGrupo extends BaseModel
            return $collection;
        });
    }
+
+   public static function getSubGrupo($id){
+       $subgrupo = SubGrupo::select('subgrupo.*', 'retefuente_nombre', 'retefuente.id as retefuente');
+       $subgrupo->leftJoin('retefuente', 'subgrupo_retefuente', '=', 'retefuente.id');
+       $subgrupo->where('subgrupo_activo', true);
+       $subgrupo->where('subgrupo.id', $id);
+
+       return $subgrupo->first();
+   }
 }

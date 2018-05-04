@@ -1097,6 +1097,16 @@
 			</label>
 		</div>
     </div>
+	<div class="row">
+		<div class="form-group col-md-4">
+			<label for="subgrupo_retefuente" class="control-label">Retefuente</label>
+			<select id="subgrupo_retefuente" name="subgrupo_retefuente" class="form-control select2-default-clear" required>
+				@foreach( App\Models\Tesoreria\ReteFuente::getReteFuentes() as $key => $value)
+					<option  value="{{ $key }}" >{{ $value }}</option>
+				@endforeach
+			</select>
+		</div>
+	</div>
 </script>
 
 <script type="text/template" id="add-marca-tpl">
@@ -1950,6 +1960,14 @@
     <td><%- window.Misc.currency(factura2_subtotal) %></td>
 </script>
 
+<script type="text/template" id="add-comment-item-tpl">
+	<td class="text-ceter">
+		<a class="btn btn-default btn-xs item-comment-remove" data-resource = "<%- id %>">
+			<span><i class="fa fa-times"></i></span>
+		</a>
+	</td>
+	<td><%- factura4_comment %></td>
+</script>
 <script type="text/template" id="add-afacturar-item-tpl">
     <td><a href="#" class="click-render-item" data-id = "<%- id %>"><%- producto_serie %></a></td>
     <td><%- producto_nombre %></td>

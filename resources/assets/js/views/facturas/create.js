@@ -44,6 +44,7 @@ app || (app = {});
 
             this.ready();
         },
+
         /*
         * Render View Element
         */

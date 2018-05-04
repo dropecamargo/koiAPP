@@ -270,13 +270,14 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::group(['prefix' => 'facturas'], function()
 	{
 		Route::resource('detalle', 'Cartera\Factura2Controller');
+		Route::resource('comments', 'Cartera\Factura4Controller', ['only' => ['index', 'store']]);
 		Route::get('search', ['as' => 'facturas.search', 'uses' => 'Cartera\Factura1Controller@search']);
 		Route::get('anular/{facturas}', ['as' => 'facturas.anular', 'uses' => 'Cartera\Factura1Controller@anular']);
 		Route::get('exportar/{facturas}', ['as' => 'facturas.exportar', 'uses' => 'Cartera\Factura1Controller@exportar']);
 	});
 	Route::group(['prefix' => 'devoluciones'], function()
 	{
-		Route::resource('detalle', 'Cartera\Devolucion2Controller',['execpt' => ['destroy']]);
+		Route::resource('detalle', 'Cartera\Devolucion2Controller',['except' => ['destroy']]);
 	});
 
 	Route::group(['prefix' => 'ajustesc'], function()

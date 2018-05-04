@@ -68,6 +68,9 @@ app || (app = {});
 
             if( typeof window.initComponent.initSpinner == 'function' )
                 window.initComponent.initSpinner();
+
+            if( typeof window.initComponent.initInputMask == 'function' )
+                window.initComponent.initInputMask();
         },
 
         /**

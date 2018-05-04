@@ -54,6 +54,18 @@ class Factura2 extends BaseModel
 		return $query->get();
 	}
 
+	public static function getFactura2Export($id)
+	{
+		$query = Factura2::query();
+		$query->select('factura2.*','producto_serie','factura2_producto_nombre as producto_nombre', 'producto_nombre as nombre_original', 'factura4_comment');
+		$query->join('producto', 'factura2_producto', '=' ,'producto.id');
+		$query->leftJoin('factura4', 'factura2.id', '=' ,'factura4.factura4_factura2');
+		$query->orderBy('factura2.id', 'asc');
+		$query->where('factura2_factura1', $id);
+		return $query->get();
+
+	}
+
 	public static function modelCreate ($data)
 	{
 		$factura2 = new Factura2;

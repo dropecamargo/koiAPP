@@ -58,6 +58,9 @@
 				.padding-text{
 					padding: 5px;
 				}
+				.comment{
+					text-indent: 10px;
+				}
 				.bold{
 					font-weight: bold;
 				}

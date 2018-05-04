@@ -197,8 +197,6 @@ app || (app = {});
                     }
                 });
                 this.commentFacturaView.render();
-
-                // console.log(model);
             }
         },
 

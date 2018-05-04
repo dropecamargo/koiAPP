@@ -18,7 +18,8 @@ app || (app = {});
         defaults: {
             'retefuente_nombre': '',
             'retefuente_base': 0,
-            'retefuente_tarifa_natural': 0,
+            'retefuente_tarifa_declarante_natural': 0,
+            'retefuente_tarifa_no_declarate_natural': 0,
             'retefuente_tarifa_juridico': 0,
             'retefuente_activo': 1,
         }

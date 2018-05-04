@@ -213,7 +213,7 @@
                                 <div class="form-group col-md-1 col-md-1">
                                     <input type="text" class="input-sm form-control spinner-percentage" min="0" id="factura2_iva_porcentaje" name="factura2_iva_porcentaje" required>
                                 </div>
-                                <div class="col-md-1 col-md-1">
+                                <div class="col-md-1">
                                     <button type="submit" class="btn btn-success btn-sm btn-block">
                                         <i class="fa fa-plus"></i>
                                     </button>
