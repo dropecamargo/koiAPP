@@ -192,7 +192,6 @@ class Factura1Controller extends Controller
                         }
 
                         // Retencion
-                        DB::rollback();
                         $precio = $factura2->factura2_precio_venta > 0 ? $factura2->factura2_precio_venta : $factura2->factura2_costo;
                         $retencion = $producto->getRetencion($cliente,$precio);
                         if ($factura1->factura1_retencion < $retencion) {
@@ -298,8 +297,8 @@ class Factura1Controller extends Controller
                         $pedidoc1->save();
                     }
 
-                    DB::rollback();
-                    return response()->json([ 'success'=> false , 'id' => $factura1->id ]);
+                    DB::commit();
+                    return response()->json([ 'success'=> true , 'id' => $factura1->id ]);
                 } catch (\Exception $e) {
                     DB::rollback();
                     Log::error($e->getMessage());
