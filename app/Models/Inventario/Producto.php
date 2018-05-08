@@ -4,6 +4,7 @@ namespace App\Models\Inventario;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\BaseModel;
+use App\Models\Base\Tercero;
 use DB, Validator, Log;
 
 class Producto extends BaseModel
@@ -55,7 +56,7 @@ class Producto extends BaseModel
         if ($this->exists){
             $rules['producto_serie'] .= ",producto_serie,$this->id";
         }
-        
+
         $validator = Validator::make($data, $rules);
         if ($validator->passes()){
             return true;
@@ -172,5 +173,31 @@ class Producto extends BaseModel
 
     public function tipoproducto(){
         return $this->hasOne('App\Models\Inventario\TipoProducto', 'id', 'producto_tipoproducto');
+    }
+
+    public function getRetencion(Tercero $cliente, $precio){
+
+        $valor = $porcentaje = 0;
+
+        // Query trae retencion en la fuente
+        $query = SubGrupo::query();
+        $query->select('retefuente_base', 'retefuente_tarifa_juridico', 'retefuente_tarifa_declarante_natural', 'retefuente_tarifa_no_declarate_natural');
+        $query->join('retefuente', 'subgrupo_retefuente', '=', 'retefuente.id');
+        $query->where('subgrupo.id', $this->producto_subgrupo);
+        $query->where('retefuente_base', '<=', $precio);
+        $retencion = $query->first();
+
+        // Tipo de persona
+        if ($cliente->tercero_persona == 'N') {
+            $porcentaje = $retencion->retefuente_tarifa_no_declarate_natural / 100;
+        }elseif ($cliente->tercero_persona == 'J') {
+            $porcentaje = $retencion->retefuente_tarifa_juridico / 100;
+        }
+        // Aplica porcentaje
+        if ($precio >= $retencion->retefuente_base) {
+            $valor = $precio * $porcentaje;
+        }
+
+        return $valor;
     }
 }

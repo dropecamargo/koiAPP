@@ -89,14 +89,14 @@
 			</tr>
 			<tr>
 				<th class="right border-left">TOTAL &nbsp;</th>
-				<th class="right border-left">{{ number_format($factura->factura1_total,2,',','.') }}&nbsp;</th>
+				<th class="right border-left">{{ number_format($factura->factura1_total-$factura->factura1_retencion,2,',','.') }}&nbsp;</th>
 			</tr>
 		</tfoot>
 	</table><br>
 
 	<table class="bordered">
 		<tr>
-			<td colspan="6" rowspan="4"></td>
+			<td colspan="6" rowspan="4">{{$factura->factura1_observaciones}}</td>
 		</tr>
 	</table><br>
 

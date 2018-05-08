@@ -150,6 +150,7 @@ class Factura1Controller extends Controller
                     $factura1->save();
 
                     foreach ($data['factura2'] as $item) {
+
                         $producto = Producto::where('producto_serie', $item['producto_serie'])->first();
                         if (!$producto instanceof Producto) {
                             DB::rollback();
@@ -190,6 +191,16 @@ class Factura1Controller extends Controller
                             }
                         }
 
+                        // Retencion
+                        DB::rollback();
+                        $precio = $factura2->factura2_precio_venta > 0 ? $factura2->factura2_precio_venta : $factura2->factura2_costo;
+                        $retencion = $producto->getRetencion($cliente,$precio);
+                        if ($factura1->factura1_retencion < $retencion) {
+                            $factura1->factura1_retencion = $retencion;
+                            $factura1->save();
+                        }
+
+                        // Inventario
                         if ($producto->producto_maneja_serie == true) {
 
                             // Prodbode
@@ -287,8 +298,8 @@ class Factura1Controller extends Controller
                         $pedidoc1->save();
                     }
 
-                    DB::commit();
-                    return response()->json([ 'success'=> true , 'id' => $factura1->id ]);
+                    DB::rollback();
+                    return response()->json([ 'success'=> false , 'id' => $factura1->id ]);
                 } catch (\Exception $e) {
                     DB::rollback();
                     Log::error($e->getMessage());
