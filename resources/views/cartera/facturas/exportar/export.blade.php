@@ -31,9 +31,11 @@
 					@endif
 				</td>
 			</tr>
+			<tr>
+				<td colspan="6"> {{ $factura->puntoventa_resolucion_dian }}</td>
+			</tr>
 		</thead>
-	</table><br>
-
+	</table>&nbsp;
 	<table class="bordered">
 		<thead>
 			<tr>
@@ -64,7 +66,7 @@
 					@endforeach
 				@endforeach
 			@endif
-			@for($rows; $rows < 23 ; $rows++)
+			@for($rows; $rows < 22 ; $rows++)
 				<tr>
 					<td class="border-bottom"></td>
 					<td class="border-bottom border-left"></td>
@@ -75,7 +77,7 @@
 		</tbody>
 		<tfoot>
 			<tr>
-				<td rowspan="4" colspan="2">&nbsp;</td>
+				<td rowspan="4" colspan="2" class="bold">{{ NumeroALetras::convertir($factura->factura1_total-$factura->factura1_retencion, 'pesos', 'centavos') }}</td>
 				<th class="right border-bottom border-left">SUB-TOTAL &nbsp;</th>
 				<th class="right border-bottom border-left">{{ number_format($factura->factura1_bruto,2,',','.') }}&nbsp;</th>
 			</tr>
@@ -96,14 +98,14 @@
 
 	<table class="bordered">
 		<tr>
-			<td colspan="6" rowspan="4">{{$factura->factura1_observaciones}}</td>
+			<td colspan="6" rowspan="4">{{$factura->puntoventa_observacion}}</td>
 		</tr>
 	</table><br>
 
 	<table class="bordered">
 		<tr>
-			<td width="50%" class="border-right bold padding-text">Declaramos haber recibido de conformidad real y materialmente los artículos relacionados en la presente FACTURA CAMBIARIA, obligándonos al pago en la forma aquí descrita</td>
-			<td width="50%" valign="top" class="bold padding-text">Para todos sus efectos esta FACTURA se asimila a una letra de cambio. (Artículo 774 del Código de Comercio).</td>
+			<td width="50%" class="border-right bold padding-text size7">{{$factura->puntoventa_footer1}}</td>
+			<td width="50%" valign="top" class="bold padding-text size7">{{$factura->puntoventa_footer2}}</td>
 		</tr>
 		<tr>
 			<td class="border-right"></td>

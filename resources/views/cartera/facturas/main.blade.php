@@ -86,7 +86,7 @@
                                 </button>
                             </span>
                             <input id="factura1_tercerocontacto" name="factura1_tercerocontacto" type="hidden" value="<%- factura1_tercerocontacto %>">
-                            <input id="tcontacto_nombre" placeholder="Contacto" class="form-control" name="tcontacto_nombre" type="text" value="<%- contacto_nombre %>" readonly required>
+                            <input id="tcontacto_nombre" placeholder="Contacto" class="form-control" name="tcontacto_nombre" type="text" value="<%- contacto_nombre %>" readonly >
                         </div>
                     </div>
                     <label for="tcontacto_direccion" class="col-sm-2 control-label"> Dirección de despacho</label>

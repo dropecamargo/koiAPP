@@ -9,6 +9,8 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Cartera\Factura1, App\Models\Cartera\Factura2, App\Models\Cartera\Factura3, App\Models\Cartera\Factura4, App\Models\Comercial\Pedidoc1, App\Models\Comercial\Pedidoc2, App\Models\Inventario\Producto, App\Models\Inventario\Linea, App\Models\Inventario\Lote, App\Models\Inventario\Prodbode, App\Models\Inventario\Inventario, App\Models\Inventario\Rollo, App\Models\Base\Tercero, App\Models\Base\PuntoVenta, App\Models\Base\Documentos, App\Models\Base\Sucursal, App\Models\Base\Contacto;
 
+use App\Classes\Exports\Factura\FacturaExport;
+
 use App, View, Auth, DB, Log, Datatables;
 
 class Factura1Controller extends Controller
@@ -193,6 +195,7 @@ class Factura1Controller extends Controller
 
                         // Retencion
                         $precio = $factura2->factura2_precio_venta > 0 ? $factura2->factura2_precio_venta : $factura2->factura2_costo;
+                        $precio = $precio * $factura2->factura2_cantidad;
                         $retencion = $producto->getRetencion($cliente,$precio);
                         if ($factura1->factura1_retencion < $retencion) {
                             $factura1->factura1_retencion = $retencion;
@@ -430,17 +433,22 @@ class Factura1Controller extends Controller
     public function exportar($id)
     {
         $factura = Factura1::getFactura($id);
+        $detalle = Factura2::getFactura2($factura->id);
         if(!$factura instanceof Factura1){
             abort(404);
         }
 
-        $title = sprintf("Factura $factura->factura1_numero");
-        $detalle = Factura2::getFactura2($factura->id);
+        $title = sprintf("Factura de venta N° $factura->factura1_numero");
 
         // Export pdf
-        $pdf = App::make('dompdf.wrapper');
-        $pdf->loadHTML(View::make('cartera.facturas.exportar.export',  compact('factura', 'detalle', 'title'))->render());
-        $pdf->setPaper('letter', 'portrait')->setWarnings(false);
-        return $pdf->stream(sprintf('%s_%s_%s_%s.pdf', 'factura', $factura->factura1_numero, date('Y_m_d'), date('H_m_s')));
+        $pdf = new FacturaExport('P','mm','Letter');
+        $pdf->buldReport($factura, $detalle, $title);
+        $pdf->Output('I', sprintf('%s_%s_%s.pdf', utf8_decode($title), date('Y_m_d'), date('H_m_s')));
+
+
+        // $pdf = App::make('dompdf.wrapper');
+        // $pdf->loadHTML(View::make('cartera.facturas.exportar.export',  compact('factura', 'detalle', 'title'))->render());
+        // $pdf->setPaper('letter', 'portrait')->setWarnings(false);
+        // return $pdf->stream(sprintf('%s_%s_%s_%s.pdf', 'factura', $factura->factura1_numero, date('Y_m_d'), date('H_m_s')));
     }
 }

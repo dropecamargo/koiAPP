@@ -29,7 +29,7 @@ class PuntoVenta extends BaseModel
      *
      * @var array
      */
-    protected $fillable = ['puntoventa_nombre', 'puntoventa_prefijo', 'puntoventa_resolucion_dian','puntoventa_numero'];
+    protected $fillable = ['puntoventa_nombre', 'puntoventa_prefijo', 'puntoventa_resolucion_dian','puntoventa_numero', 'puntoventa_encabezado','puntoventa_frase','puntoventa_footer1', 'puntoventa_footer2','puntoventa_observacion'];
 
     protected $nullable = ['puntoventa_resolucion_dian','puntoventa_prefijo'];
 
@@ -40,7 +40,11 @@ class PuntoVenta extends BaseModel
         $rules = [
             'puntoventa_nombre' => 'required|max:200|unique_with:puntoventa,puntoventa_prefijo',
             'puntoventa_prefijo' => 'max:4',
-            'puntoventa_numero' => 'min:0'
+            'puntoventa_numero' => 'min:0',
+            'puntoventa_encabezado' => 'max:200',
+            'puntoventa_frase' => 'max:200',
+            'puntoventa_footer1' => 'max:200',
+            'puntoventa_footer2' => 'max:200'
         ];
 
         if ($this->exists){

@@ -27,7 +27,7 @@
 				}
 
 				.regimen{
-					font-size: 8;
+					font-size: 6;
 					text-align: center;
 				}
 
@@ -64,7 +64,9 @@
 				.bold{
 					font-weight: bold;
 				}
-
+				.size6{
+					font-size: 6;
+				}
 				.left {
 					text-align: left !important;
 				}

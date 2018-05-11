@@ -68,7 +68,7 @@ class Factura1 extends BaseModel
 	public static function getFactura($id)
 	{
 		$query = Factura1::query();
-		$query->select('factura1.*','sucursal_nombre','puntoventa_numero','puntoventa_nombre','puntoventa_prefijo','tercero_direccion','tercero_fax', 'tercero_municipio' , DB::raw("CONCAT(municipio_nombre, ' - ', departamento_nombre) as municipio_nombre"), 'tercero_telefono1','tercero_telefono2','tercero_nit', DB::raw("(CASE WHEN tercero_persona = 'N'
+		$query->select('factura1.*','sucursal_nombre','puntoventa_numero','puntoventa_prefijo','puntoventa_resolucion_dian','puntoventa_footer1','puntoventa_footer2','puntoventa_observacion','puntoventa_encabezado','puntoventa_frase','tercero_direccion','tercero_fax', 'tercero_municipio' , DB::raw("CONCAT(municipio_nombre, ' - ', departamento_nombre) as municipio_nombre"), 'tercero_telefono1','tercero_telefono2','tercero_celular','tercero_nit', 'tercero_digito',DB::raw("(CASE WHEN tercero_persona = 'N'
                     THEN CONCAT(tercero_nombre1,' ',tercero_nombre2,' ',tercero_apellido1,' ',tercero_apellido2,
                             (CASE WHEN (tercero_razonsocial IS NOT NULL AND tercero_razonsocial != '') THEN CONCAT(' - ', tercero_razonsocial) ELSE '' END)
                         )

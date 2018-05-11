@@ -20,7 +20,12 @@ app || (app = {});
             'puntoventa_numero': 0,
             'puntoventa_prefijo': '',
             'puntoventa_resolucion_dian': '',
-            'puntoventa_activo': 1
+            'puntoventa_activo': 1,
+            'puntoventa_observacion':'',
+            'puntoventa_encabezado':'',
+            'puntoventa_frase':'',
+            'puntoventa_footer1': '',
+            'puntoventa_footer2': '',
         }
     });
 

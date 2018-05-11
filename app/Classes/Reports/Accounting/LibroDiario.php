@@ -25,7 +25,7 @@ class LibroDiario extends FPDF
 		$this->SetXY(75,17);
 		$this->SetFont('Arial','B',8);
         $this->Cell(70,5,"NIT: $empresa->tercero_nit",0,0,'C');
-		$this->Line(10,22,200,22);;
+		$this->Line(10,22,200,22);
 		$this->SetXY(85,23);
         $this->Cell(50, 5, $this->metadata['Title'], 0, 0,'C');
         $this->Ln(5);

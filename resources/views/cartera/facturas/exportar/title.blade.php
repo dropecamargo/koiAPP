@@ -9,11 +9,11 @@
 		</tr>
 		<tr>
 			<td></td>
-			<td class="regimen">{{ config('koi.regimen') }}</td>
+			<td class="regimen">{{ $factura->puntoventa_encabezado }}</td>
 			<td></td>
 		</tr>
 		<tr>
-			<td colspan="3"class="nit">{{ config('koi.detalle') }}</td>
+			<td colspan="3"class="nit">{{ $factura->puntoventa_frase }}</td>
 		</tr>
 	</thead>
 </table>

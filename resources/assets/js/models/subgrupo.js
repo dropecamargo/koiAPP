@@ -19,6 +19,7 @@ app || (app = {});
             'subgrupo_codigo': '',
             'subgrupo_nombre': '',
             'subgrupo_activo': 1,
+            'subgrupo_retefuente': ''
         }
     });
 

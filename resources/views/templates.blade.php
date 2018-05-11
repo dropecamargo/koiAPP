@@ -610,12 +610,42 @@
 			<input type="text" id="puntoventa_resolucion_dian" name="puntoventa_resolucion_dian" value="<%- puntoventa_resolucion_dian %>" placeholder="Resolución de facturación DIAN" class="form-control input-sm input-toupper" maxlength="200">
 			<div class="help-block with-errors"></div>
 		</div>
-		<div class="col-sm-3"><br>
+		<div class="form-group col-sm-4">
+			<label for="puntoventa_observacion" class="control-label">Detalle N° cuenta</label>
+			<input type="text" id="puntoventa_observacion" name="puntoventa_observacion" value="<%- puntoventa_observacion %>" placeholder="Detalle N° cuenta" class="form-control input-sm input-toupper" maxlength="200">
+			<div class="help-block with-errors"></div>
+		</div>
+		<div class="col-sm-2"><br>
 	    	<label class="checkbox-inline" for="puntoventa_activo">
 				<input type="checkbox" id="puntoventa_activo" name="puntoventa_activo" value="puntoventa_activo" <%- parseInt(puntoventa_activo) ? 'checked': ''%>> Activo
 			</label>
 		</div>
     </div>
+
+	<div class="row">
+		<div class="form-group col-sm-6">
+			<label for="puntoventa_encabezado" class="control-label">Encabezado</label>
+			<textarea id="puntoventa_encabezado" name="puntoventa_encabezado" class="form-control input-toupper" rows="2" placeholder="Encabezado" maxlength="200"><%- puntoventa_encabezado %></textarea>
+			<div class="help-block with-errors"></div>
+		</div>
+		<div class="form-group col-sm-6">
+			<label for="puntoventa_frase" class="control-label">Frase</label>
+			<textarea id="puntoventa_frase" name="puntoventa_frase" class="form-control input-toupper" rows="2" placeholder="Frase" maxlength="200"><%- puntoventa_frase %></textarea>
+			<div class="help-block with-errors"></div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="form-group col-sm-6">
+			<label for="puntoventa_footer1" class="control-label">Pie de firma 1</label>
+			<textarea id="puntoventa_footer1" name="puntoventa_footer1" class="form-control input-toupper" rows="2" placeholder="Pie de firma" maxlength="200"><%- puntoventa_footer1 %></textarea>
+			<div class="help-block with-errors"></div>
+		</div>
+		<div class="form-group col-sm-6">
+			<label for="puntoventa_footer2" class="control-label">Pie de firma 2</label>
+			<textarea id="puntoventa_footer2" name="puntoventa_footer2" class="form-control input-toupper" rows="2" placeholder="Pie de firma" maxlength="200"><%- puntoventa_footer2 %></textarea>
+			<div class="help-block with-errors"></div>
+		</div>
+	</div>
 </script>
 
 <script type="text/template" id="add-regional-tpl">
@@ -1081,30 +1111,30 @@
 
 <script type="text/template" id="add-subgrupo-tpl">
 	<div class="row">
-		<div class="form-group col-sm-3">
+		<div class="form-group col-sm-2">
 			<label for="subgrupo_codigo" class="control-label">Código</label>
 			<input type="text" id="subgrupo_codigo" name="subgrupo_codigo" value="<%- subgrupo_codigo %>" placeholder="Código" class="form-control input-sm input-toupper" maxlength="4" required>
 			<div class="help-block with-errors"></div>
 		</div>
-		<div class="form-group col-sm-7">
+		<div class="form-group col-sm-6">
 			<label for="subgrupo_nombre" class="control-label">Nombre</label>
 			<input type="text" id="subgrupo_nombre" name="subgrupo_nombre" value="<%- subgrupo_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="100" required>
 			<div class="help-block with-errors"></div>
+		</div>
+    </div>
+	<div class="row">
+		<div class="form-group col-md-6">
+			<label for="subgrupo_retefuente" class="control-label">Retefuente</label>
+			<select id="subgrupo_retefuente" name="subgrupo_retefuente" class="form-control select2-default-clear" required>
+				@foreach( App\Models\Tesoreria\ReteFuente::getReteFuentes() as $key => $value)
+					<option value="{{ $key }}" <%- subgrupo_retefuente == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
+				@endforeach
+			</select>
 		</div>
 		<div class="form-group col-sm-2 col-xs-8">
 			<br><label class="checkbox-inline" for="subgrupo_activo">
 				<input type="checkbox" id="subgrupo_activo" name="subgrupo_activo" value="subgrupo_activo" <%- parseInt(subgrupo_activo) ? 'checked': ''%>> Activo
 			</label>
-		</div>
-    </div>
-	<div class="row">
-		<div class="form-group col-md-4">
-			<label for="subgrupo_retefuente" class="control-label">Retefuente</label>
-			<select id="subgrupo_retefuente" name="subgrupo_retefuente" class="form-control select2-default-clear" required>
-				@foreach( App\Models\Tesoreria\ReteFuente::getReteFuentes() as $key => $value)
-					<option  value="{{ $key }}" >{{ $value }}</option>
-				@endforeach
-			</select>
 		</div>
 	</div>
 </script>

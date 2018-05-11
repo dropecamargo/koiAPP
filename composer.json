@@ -15,7 +15,8 @@
         "barryvdh/laravel-dompdf": "0.6.*",
         "zizaco/entrust": "5.2.x-dev",
         "felixkiss/uniquewith-validator": "^3.1",
-        "codedge/laravel-fpdf": "^1.2"
+        "codedge/laravel-fpdf": "^1.2",
+        "arielcr/numero-a-letras": "dev-master"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

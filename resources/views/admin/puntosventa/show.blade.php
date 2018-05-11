@@ -27,10 +27,34 @@
                     <label class="control-label">Consecutivo</label>
                     <div>{{ $puntoventa->puntoventa_numero }}</div>
                 </div>
+                <div class="form-group col-sm-4">
+                    <label class="control-label">Detalle N° cuenta</label>
+                    <div>{{ $puntoventa->puntoventa_observacion }}</div>
+                </div>
                 <div class="form-group col-sm-2"><br>
                     <label class="checkbox-inline" for="puntoventa_activo">
                         <input type="checkbox" id="puntoventa_activo" name="puntoventa_activo" value="puntoventa_activo" disabled {{ $puntoventa->puntoventa_activo ? 'checked': '' }}> Activo
                     </label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-sm-6">
+                    <label class="control-label">Encabezado</label>
+                    <div>{{ $puntoventa->puntoventa_frase }}</div>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label class="control-label">Frase</label>
+                    <div>{{ $puntoventa->puntoventa_frase }}</div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-sm-6">
+                    <label class="control-label">Pie de firma 1</label>
+                    <div>{{ $puntoventa->puntoventa_footer1 }}</div>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label class="control-label">Pie de firma 2</label>
+                    <div>{{ $puntoventa->puntoventa_footer2 }}</div>
                 </div>
             </div>
         </div>
