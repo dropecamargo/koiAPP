@@ -21,6 +21,12 @@ class CreatePuntoventaTable extends Migration
             $table->string('puntoventa_prefijo', 4)->nullable()->unique();
             $table->string('puntoventa_resolucion_dian', 200)->nullable();
             $table->boolean('puntoventa_activo')->default(false);
+            $table->string('puntoventa_footer1', 250)->nullable();
+            $table->string('puntoventa_footer2', 250)->nullable();
+            $table->string('puntoventa_observacion', 250)->nullable();
+            $table->string('puntoventa_encabezado', 250)->nullable();
+            $table->string('puntoventa_frase', 250)->nullable();
+
         });
     }
 

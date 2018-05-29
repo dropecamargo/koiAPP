@@ -4,7 +4,7 @@ namespace App\Models\Contabilidad;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\BaseModel;
-use Cache, Validator;
+use Cache, Validator, DB;
 
 class PlanCuenta extends BaseModel
 {
@@ -361,8 +361,8 @@ class PlanCuenta extends BaseModel
 
         return Cache::rememberForever( self::$key_cache , function() {
             $query = PlanCuenta::query();
-            $query->select('id','plancuentas_nombre');
-            $collection = $query->lists('plancuentas_nombre', 'id');
+            $query->select('id', DB::raw("CONCAT(plancuentas_cuenta, ' - ' ,plancuentas_nombre) AS cuenta" ));
+            $collection = $query->lists('cuenta', 'id');
 
             $collection->prepend('', '');
             return $collection;

@@ -17,7 +17,10 @@ class CreateTipogastoTable extends Migration
 
             $table->increments('id');
             $table->string('tipogasto_nombre', 50)->unique();
+            $table->integer('tipogasto_cuenta')->unsigned();
             $table->boolean('tipogasto_activo')->default(false);
+
+            $table->foreign('tipogasto_cuenta')->references('id')->on('plancuentas')->onDelete('restrict');
         });
     }
 

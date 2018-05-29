@@ -577,6 +577,55 @@ app || (app = {});
 })(this, this.document);
 
 /**
+* Class CajaMenor1Model extend of Backbone Model
+* @author KOI || @dropecamargo
+* @link http://koi-ti.com
+*/
+
+//Global App Backbone
+app || (app = {});
+
+(function (window, document, undefined) {
+    app.CajaMenor1Model = Backbone.Model.extend({
+        urlRoot: function () {
+            return window.Misc.urlFull( Route.route('cajasmenores.index') );
+        },
+        idAttribute: 'id',
+        defaults: {
+        	'cajamenor1_regional': '',
+        	'cajamenor1_numero': '',
+        	'cajamenor1_tercero': '',
+        	'cajamenor1_fecha': '',
+        	'cajamenor1_observaciones': ''
+        }
+    });
+})(this, this.document);
+
+/**
+* Class CajaMenor2Model extend of Backbone Model
+* @author KOI || @dropecamargo
+* @link http://koi-ti.com
+*/
+
+//Global App Backbone
+app || (app = {});
+
+(function (window, document, undefined) {
+
+    app.CajaMenor2Model = Backbone.Model.extend({
+
+        urlRoot: function () {
+            return window.Misc.urlFull( Route.route('cajasmenores.detalle.index') );
+        },
+        idAttribute: 'id',
+        defaults: {
+            'cajamenor2_tercero': '',
+            'cajamenor2_valor': 0,
+        }
+    });
+})(this, this.document);
+
+/**
 * Class CarteraTerceroModel extend of Backbone Model
 * @author KOI || @dropecamargo
 * @link http://koi-ti.com
@@ -794,6 +843,35 @@ app || (app = {});
             'plancuentas_nombre': '',
         	'conceptoajustep_sumas_iguales': 1,
         	'conceptoajustep_activo': 1
+        }
+    });
+
+})(this, this.document);
+
+/**
+* Class ConceptoCajaMenorModel extend of Backbone Model
+* @author KOI || @dropecamargo
+* @link http://koi-ti.com
+*/
+
+//Global App Backbone
+app || (app = {});
+
+(function (window, document, undefined) {
+
+    app.ConceptoCajaMenorModel = Backbone.Model.extend({
+
+        urlRoot: function () {
+            return window.Misc.urlFull( Route.route('conceptoscajamenor.index') );
+        },
+        idAttribute: 'id',
+        defaults: {
+        	'conceptocajamenor_nombre': '',
+            'conceptocajamenor_ventas': '',
+            'conceptocajamenor_administrativo': '',
+            'conceptocajamenor_activo': 1,
+        	// 'plancuentas_cuenta': '',
+            // 'plancuentas_nombre': '',
         }
     });
 
@@ -3302,6 +3380,131 @@ app || (app = {});
 
 })(this, this.document);
 /**
+* Class AjustesDetalleCollection of Backbone Collection
+* @author KOI || @dropecamargo
+* @link http://koi-ti.com
+*/
+
+//Global App Backbone
+app || (app = {});
+
+(function (window, document, undefined) {
+
+    app.AjustesDetalleCollection = Backbone.Collection.extend({
+
+        url: function() {
+            return window.Misc.urlFull( Route.route('ajustes.detalle.index') );
+        },
+        model: app.AjusteDetalleModel,
+
+        /**
+        * Constructor Method
+        */
+        initialize : function(){
+        }
+   });
+
+})(this, this.document);
+/**
+* Class AsientoCuentasList of Backbone Collection
+* @author KOI || @dropecamargo
+* @link http://koi-ti.com
+*/
+
+//Global App Backbone
+app || (app = {});
+
+(function (window, document, undefined) {
+
+    app.AsientoCuentasList = Backbone.Collection.extend({
+
+        url: function() {
+            return window.Misc.urlFull( Route.route('asientos.detalle.index') );
+        },
+        model: app.Asiento2Model,
+
+        /**
+        * Constructor Method
+        */
+        initialize : function() {
+        },
+
+        debitos: function() {
+            return this.reduce(function(sum, model) {
+                return sum + parseFloat(model.get('asiento2_debito'))
+            }, 0);
+        },
+
+        creditos: function() {
+            return this.reduce(function(sum, model) {
+                return sum + parseFloat(model.get('asiento2_credito'))
+            }, 0);
+        },
+
+        totalize: function() {
+            var debitos = this.debitos();
+            var creditos = this.creditos();
+            return { 'debitos': debitos, 'creditos': creditos, 'diferencia': Math.abs(creditos - debitos)}
+        },
+   });
+
+})(this, this.document);
+
+/**
+* Class AsientoFacturaCommentsList of Backbone Collection
+* @author KOI || @dropecamargo
+* @link http://koi-ti.com
+*/
+
+//Global App Backbone
+app || (app = {});
+
+(function (window, document, undefined) {
+
+    app.AsientoFacturaCommentsList = Backbone.Collection.extend({
+
+        url: function() {
+            return window.Misc.urlFull( Route.route('asientos.facturas.detalle.index') );
+        },
+        model: app.Factura3Model,
+
+        /**
+        * Constructor Method
+        */
+        initialize : function() {
+        }
+   });
+})(this, this.document);
+
+/**
+* Class AsientoMovimientosList of Backbone Collection
+* @author KOI || @dropecamargo
+* @link http://koi-ti.com
+*/
+
+//Global App Backbone
+app || (app = {});
+
+(function (window, document, undefined) {
+
+    app.AsientoMovimientosList = Backbone.Collection.extend({
+
+        url: function() {
+            return window.Misc.urlFull( Route.route('asientos.detalle.movimientos') );
+        },
+        model: app.AsientoMovModel,
+
+        /**
+        * Constructor Method
+        */
+        initialize : function() {
+
+        }
+   });
+
+})(this, this.document);
+
+/**
 * Class AjustepDetalleList of Backbone Collection
 * @author KOI || @dropecamargo
 * @link http://koi-ti.com
@@ -3376,32 +3579,6 @@ app || (app = {});
             var credito = this.credito();
             return { 'debito': debito, 'credito': credito }
         },
-   });
-
-})(this, this.document);
-/**
-* Class AjustesDetalleCollection of Backbone Collection
-* @author KOI || @dropecamargo
-* @link http://koi-ti.com
-*/
-
-//Global App Backbone
-app || (app = {});
-
-(function (window, document, undefined) {
-
-    app.AjustesDetalleCollection = Backbone.Collection.extend({
-
-        url: function() {
-            return window.Misc.urlFull( Route.route('ajustes.detalle.index') );
-        },
-        model: app.AjusteDetalleModel,
-
-        /**
-        * Constructor Method
-        */
-        initialize : function(){
-        }
    });
 
 })(this, this.document);
@@ -3551,105 +3728,6 @@ app || (app = {});
    });
 })(this, this.document);
 /**
-* Class AsientoCuentasList of Backbone Collection
-* @author KOI || @dropecamargo
-* @link http://koi-ti.com
-*/
-
-//Global App Backbone
-app || (app = {});
-
-(function (window, document, undefined) {
-
-    app.AsientoCuentasList = Backbone.Collection.extend({
-
-        url: function() {
-            return window.Misc.urlFull( Route.route('asientos.detalle.index') );
-        },
-        model: app.Asiento2Model,
-
-        /**
-        * Constructor Method
-        */
-        initialize : function() {
-        },
-
-        debitos: function() {
-            return this.reduce(function(sum, model) {
-                return sum + parseFloat(model.get('asiento2_debito'))
-            }, 0);
-        },
-
-        creditos: function() {
-            return this.reduce(function(sum, model) {
-                return sum + parseFloat(model.get('asiento2_credito'))
-            }, 0);
-        },
-
-        totalize: function() {
-            var debitos = this.debitos();
-            var creditos = this.creditos();
-            return { 'debitos': debitos, 'creditos': creditos, 'diferencia': Math.abs(creditos - debitos)}
-        },
-   });
-
-})(this, this.document);
-
-/**
-* Class AsientoFacturaCommentsList of Backbone Collection
-* @author KOI || @dropecamargo
-* @link http://koi-ti.com
-*/
-
-//Global App Backbone
-app || (app = {});
-
-(function (window, document, undefined) {
-
-    app.AsientoFacturaCommentsList = Backbone.Collection.extend({
-
-        url: function() {
-            return window.Misc.urlFull( Route.route('asientos.facturas.detalle.index') );
-        },
-        model: app.Factura3Model,
-
-        /**
-        * Constructor Method
-        */
-        initialize : function() {
-        }
-   });
-})(this, this.document);
-
-/**
-* Class AsientoMovimientosList of Backbone Collection
-* @author KOI || @dropecamargo
-* @link http://koi-ti.com
-*/
-
-//Global App Backbone
-app || (app = {});
-
-(function (window, document, undefined) {
-
-    app.AsientoMovimientosList = Backbone.Collection.extend({
-
-        url: function() {
-            return window.Misc.urlFull( Route.route('asientos.detalle.movimientos') );
-        },
-        model: app.AsientoMovModel,
-
-        /**
-        * Constructor Method
-        */
-        initialize : function() {
-
-        }
-   });
-
-})(this, this.document);
-
-/**
 * Class AsientoNifCuentasList of Backbone Collection
 * @author KOI || @dropecamargo
 * @link http://koi-ti.com
@@ -3748,6 +3826,58 @@ app || (app = {});
    });
 
 })(this, this.document);
+/**
+* Class CajaMenorDetalleList of Backbone Collection
+* @author KOI || @dropecamargo
+* @link http://koi-ti.com
+*/
+
+//Global App Backbone
+app || (app = {});
+
+(function (window, document, undefined) {
+
+    app.CajaMenorDetalleList = Backbone.Collection.extend({
+
+        url: function() {
+            return window.Misc.urlFull( Route.route('cajasmenores.detalle.index') );
+        },
+        model: app.CajaMenor2Model,
+
+        /**
+        * Constructor Method
+        */
+        initialize : function(){
+        },
+
+        debito: function() {
+            var debitos = _.filter(this.models, function(item){
+                return item.get('ajustep2_naturaleza') == 'D';
+            });
+            return _.reduce(debitos, function(sum, model) {
+                return sum + parseFloat( model.get('facturap3_valor') ? model.get('facturap3_valor') : model.get('ajustep2_valor'))
+            }, 0);
+        },
+
+        credito: function() {
+            var creditos = _.filter(this.models, function(item){
+                return item.get('ajustep2_naturaleza') == 'C';
+            });
+
+            return _.reduce(creditos, function(sum, model) {
+                return sum + parseFloat( model.get('facturap3_valor') ? model.get('facturap3_valor') : model.get('ajustep2_valor'))
+            }, 0);
+        },
+
+        totalize: function() {
+            var debito = this.debito();
+            var credito = this.credito();
+            return { 'debito': debito, 'credito': credito }
+        },
+   });
+
+})(this, this.document);
+
 /**
 * Class DetalleCarteraTercero of Backbone Collection
 * @author KOI || @dropecamargo
@@ -8334,6 +8464,739 @@ app || (app = {});
 })(jQuery, this, this.document);
 
 /**
+* Class AsientoCuentasNifListView  of Backbone Router
+* @author KOI || @dropecamargo
+* @link http://koi-ti.com
+*/
+
+//Global App Backbone
+app || (app = {});
+
+(function ($, window, document, undefined) {
+
+    app.AsientoNifCuentasListView = Backbone.View.extend({
+
+        el: '#browse-detalle-asienton-list',
+        events: {
+            'click .item-asienton2-remove': 'removeOne'
+        },
+        parameters: {
+            wrapper: null,
+            edit: false,
+            dataFilter: {}
+        },
+
+        /**
+        * Constructor Method
+        */
+        initialize : function(opts){
+            // extends parameters
+            if( opts !== undefined && _.isObject(opts.parameters) )
+                this.parameters = $.extend({},this.parameters, opts.parameters);
+
+            // References
+            this.$debitos = this.$('#total-debitos');
+            this.$creditos = this.$('#total-creditos');
+            this.$diferencia = this.$('#total-diferencia');
+
+            //Init Attributes
+            this.confCollection = { reset: true, data: {} };
+
+            // Events Listeners
+            this.listenTo( this.collection, 'add', this.addOne );
+            this.listenTo( this.collection, 'reset', this.addAll );
+            this.listenTo( this.collection, 'request', this.loadSpinner );
+            this.listenTo( this.collection, 'store', this.storeOne );
+            this.listenTo( this.collection, 'sync', this.responseServer );
+
+            /* if was passed asiento code */
+            if( !_.isUndefined(this.parameters.dataFilter.asiento) && !_.isNull(this.parameters.dataFilter.asiento) ){
+                 this.confCollection.data.asiento = this.parameters.dataFilter.asiento;
+
+                this.collection.fetch( this.confCollection );
+            }
+        },
+
+        /**
+        * Render view task by model
+        * @param Object mentoringTaskModel Model instance
+        */
+        addOne: function (asientoNif2Model) {
+            var view = new app.AsientoCuentasNifItemView({
+                model: asientoNif2Model,
+                parameters: {
+                    edit: this.parameters.edit
+                }
+            });
+            asientoNif2Model.view = view;
+            this.$el.append( view.render().el );
+
+            // Update total
+            this.totalize();
+        },
+
+        /**
+        * Render all view tast of the collection
+        */
+        addAll: function () {
+            this.collection.forEach( this.addOne, this );
+        },
+
+        /**
+        * storescuenta
+        * @param form element
+        */
+        storeOne: function (data) {
+            var _this = this
+
+            // Set Spinner
+            window.Misc.setSpinner( this.parameters.wrapper );
+
+            // Add model in collection
+            var asiento2Model = new app.AsientoNif2Model();
+            asiento2Model.save(data, {
+                success : function(model, resp) {
+                    if(!_.isUndefined(resp.success)) {
+                        window.Misc.removeSpinner( _this.parameters.wrapper );
+
+                        // response success or error
+                        var text = resp.success ? '' : resp.errors;
+                        if( _.isObject( resp.errors ) ) {
+                            text = window.Misc.parseErrors(resp.errors);
+                        }
+
+                        if( !resp.success ) {
+                            alertify.error(text);
+                            return;
+                        }
+
+                        // Add model in collection
+                        _this.collection.add(model);
+                    }
+                },
+                error : function(model, error) {
+                    window.Misc.removeSpinner( _this.parameters.wrapper );
+                    alertify.error(error.statusText)
+                }
+            });
+        },
+
+        /**
+        * Event remove item
+        */
+        removeOne: function (e) {
+            e.preventDefault();
+
+            var resource = $(e.currentTarget).attr("data-resource"),
+                model = this.collection.get(resource),
+                _this = this;
+
+            if ( model instanceof Backbone.Model ) {
+                model.destroy({
+                    success : function(model, resp) {
+                        if(!_.isUndefined(resp.success)) {
+                            window.Misc.removeSpinner( _this.parameters.wrapper );
+
+                            if( !resp.success ) {
+                                alertify.error(resp.errors);
+                                return;
+                            }
+
+                            model.view.remove();
+                            _this.collection.remove(model);
+
+                            // Update total
+                            _this.totalize();
+                        }
+                    }
+                });
+
+            }
+        },
+
+        /**
+        * Render totalize debitos and creditos
+        */
+        totalize: function () {
+            var data = this.collection.totalize();
+
+            if(this.$debitos.length) {
+                this.$debitos.html( window.Misc.currency(data.debitos) );
+            }
+
+            if(this.$creditos.length) {
+                this.$creditos.html( window.Misc.currency(data.creditos) );
+            }
+
+            if(this.$diferencia.length) {
+                this.$diferencia.html( window.Misc.currency(data.diferencia) );
+            }
+        },
+
+        /**
+        * Load spinner on the request
+        */
+        loadSpinner: function (model, xhr, opts) {
+            window.Misc.setSpinner( this.parameters.wrapper );
+        },
+
+        /**
+        * response of the server
+        */
+        responseServer: function ( model, resp, opts ) {
+            window.Misc.removeSpinner( this.parameters.wrapper );
+        }
+   });
+
+})(jQuery, this, this.document);
+
+/**
+* Class AsientoCuentasNifItemView  of Backbone Router
+* @author KOI || @dropecamargo
+* @link http://koi-ti.com
+*/
+
+//Global App Backbone
+app || (app = {});
+
+(function ($, window, document, undefined) {
+
+    app.AsientoCuentasNifItemView = Backbone.View.extend({
+
+        tagName: 'tr',
+        template: _.template( ($('#add-asienton2-item-tpl').html() || '') ),
+        templateInfo: _.template( ($('#show-info-asienton2-tpl').html() || '') ),
+
+        // Factura
+        templateInfoFacturaItem: _.template( ($('#add-info-factura-item').html() || '') ),
+        // Facturap
+        templateInfoFacturapItem: _.template( ($('#add-info-facturap-item').html() || '') ),
+        // Inventario
+        templateInfoInventarioItem: _.template( ($('#add-info-inventario-item').html() || '') ),
+
+        events: {
+            'click .item-asiento2-show-info': 'showInfo'
+        },
+        parameters: {
+            edit: false
+        },
+
+        /**
+        * Constructor Method
+        */
+        initialize: function(opts){
+            // extends parameters
+            if( opts !== undefined && _.isObject(opts.parameters) )
+                this.parameters = $.extend({},this.parameters, opts.parameters);
+
+            //Init Attributes
+            this.$modalInfo = $('#modal-asiento-show-info-component');
+            this.asientoMovimientosList = new app.AsientoMovimientosList();
+
+            // Events Listener
+            this.listenTo( this.model, 'change', this.render );
+
+            this.listenTo( this.asientoMovimientosList, 'request', this.loadSpinner );
+            this.listenTo( this.asientoMovimientosList, 'sync', this.responseServer );
+            this.listenTo( this.asientoMovimientosList, 'reset', this.addAll );
+        },
+
+        /*
+        * Render View Element
+        */
+        render: function() {
+            var attributes = this.model.toJSON();
+            attributes.edit = this.parameters.edit;
+
+            this.$tercero = {tercero_nit: attributes.tercero_nit, tercero_nombre: attributes.tercero_nombre};
+            this.$naturaleza = attributes.asiento2_naturaleza;
+
+            this.$el.html( this.template(attributes) );
+            return this;
+        },
+
+        /**
+        * Show info asiento
+        */
+        showInfo: function () {
+            var attributes = this.model.toJSON();
+
+            // Render info
+            this.$modalInfo.find('.content-modal').empty().html( this.templateInfo( attributes ) );
+
+            // Wrapper Info
+            this.$wrapGeneral = this.$modalInfo.find('#render-info-modal');
+
+            // Count
+            this.count = 0;
+
+            // Get movimientos list
+            this.asientoMovimientosList.fetch({ reset: true, data: { asiento2: this.model.get('id') } });
+
+            // Open modal
+            this.$modalInfo.modal('show');
+        },
+
+        /**
+        * Render view task by model
+        * @param Object mentoringTaskModel Model instance
+        */
+        addOne: function (AsientoMovModel) {
+            var attributes = AsientoMovModel.toJSON();
+                attributes.tercero = this.$tercero;
+                attributes.naturaleza = this.$naturaleza;
+
+
+            if( attributes.movimiento_tipo == 'F'){
+
+                this.$wrapGeneral.empty().html(  this.templateInfoFacturaItem( attributes ) );
+                this.$wrapperList = this.$modalInfo.find('#browse-showinfo-factura-list');
+
+            }else if ( attributes.movimiento_tipo == 'FP' ){
+
+                if (attributes.movimiento_nuevo){
+                    this.$wrapGeneral.empty().html(  this.templateInfoFacturapItem( attributes ) );
+                    return;
+                }else{
+                    if ( this.count == 0){
+                        this.$wrapGeneral.empty().html(  this.templateInfoFacturapItem( attributes ) );
+                        this.$wrapperList = this.$modalInfo.find('#browse-showinfo-facturap-list');
+                        this.count = this.count + 1;
+                    }
+                }
+
+            }else if ( attributes.movimiento_tipo == 'IP') {
+
+                this.$wrapGeneral.empty().html(  this.templateInfoInventarioItem( attributes ) );
+                this.$wrapperList = this.$modalInfo.find('#browse-showinfo-asiento-list');
+                
+            }
+            
+            var view = new app.AsientoMovimientosItemView({
+                model: AsientoMovModel,
+            });
+
+            this.$wrapperList.append( view.render().el );
+        },
+
+        /**
+        * Render all view tast of the collection
+        */
+        addAll: function () {
+            this.asientoMovimientosList.forEach( this.addOne, this );
+        },
+
+        /**
+        * Load spinner on the request
+        */
+        loadSpinner: function (model, xhr, opts) {
+            window.Misc.setSpinner( this.$wrapperList );
+        },
+
+        /**
+        * response of the server
+        */
+        responseServer: function ( model, resp, opts ) {
+            window.Misc.removeSpinner( this.$wrapperList );
+        }
+    });
+
+})(jQuery, this, this.document);
+/**
+* Class EditAsientoNifView  of Backbone Router
+* @author KOI || @dropecamargo
+* @link http://koi-ti.com
+*/
+
+//Global App Backbone
+app || (app = {});
+
+(function ($, window, document, undefined) {
+
+    app.EditAsientoNifView = Backbone.View.extend({
+
+        el: '#asientosnif-create',
+        template: _.template( ($('#add-asienton-tpl').html() || '') ),
+        templateFp: _.template( ($('#add-rfacturap-tpl').html() || '') ),
+        events: {
+            'change select#asienton1_documento': 'documentoChanged',
+            'submit #form-item-asienton': 'onStoreItem',
+            'change input#asienton2_base': 'baseChanged',
+            'click .submit-asienton': 'submitAsiento',
+            'submit #form-asientosn': 'onStore',
+        },
+
+        /**
+        * Constructor Method
+        */
+        initialize : function() {
+            // Attributes
+            this.asientoNifCuentasList = new app.AsientoNifCuentasList();
+
+            this.listenTo( this.model, 'change', this.render );
+            this.listenTo( this.model, 'sync', this.responseServer );
+            this.listenTo( this.model, 'request', this.loadSpinner );
+        },
+
+        /*
+        * Render View Element
+        */
+        render: function() {
+
+            var attributes = this.model.toJSON();
+            attributes.edit = true;
+            this.$el.html( this.template(attributes) );
+
+            this.$numero = this.$('#asienton1_numero');
+            this.$form = this.$('#form-asientosn');
+            this.$formItem = this.$('#form-item-asienton');
+            this.$inputTasa = this.$("#asienton2_tasa");
+            this.$inputValor = this.$("#asienton2_valor");
+            this.$inputBase = this.$("#asienton2_base");
+            this.$inputDocumento = this.$("#asienton1_documento");
+            this.spinner = this.$('#spinner-main');
+
+            // Reference views
+            this.referenceViews();
+
+            // to fire plugins
+            this.ready();
+
+            // to change document
+            if(this.model.get('documento_tipo_consecutivo') == 'A'){
+                this.$inputDocumento.change();
+            }
+		},
+
+        /**
+        * fires libraries js
+        */
+        ready: function () {
+            // to fire plugins
+            if( typeof window.initComponent.initToUpper == 'function' )
+                window.initComponent.initToUpper();
+
+            if( typeof window.initComponent.initICheck == 'function' )
+                window.initComponent.initICheck();
+
+            if( typeof window.initComponent.initSelect2 == 'function' )
+                window.initComponent.initSelect2();
+
+            if( typeof window.initComponent.initValidator == 'function' )
+                window.initComponent.initValidator();
+
+            if( typeof window.initComponent.initDatePicker == 'function' )
+                window.initComponent.initDatePicker();
+
+            if( typeof window.initComponent.initInputMask == 'function' )
+                window.initComponent.initInputMask();
+        },
+
+        /**
+        * reference to views
+        */
+        referenceViews: function () {
+            // Detalle asiento list
+            this.cuentasListView = new app.AsientoNifCuentasListView({
+                collection: this.asientoNifCuentasList,
+                parameters: {
+                    wrapper: this.spinner,
+                    edit: true,
+                    dataFilter: {
+                        'asiento': this.model.get('id')
+                    }
+                }
+            });
+        },
+
+        documentoChanged: function(e) {
+            var _this = this,
+                documento = $(e.currentTarget).val();
+
+            // Clear numero
+            _this.$numero.val('');
+
+            if(!_.isUndefined(documento) && !_.isNull(documento) && documento != '') {
+                $.ajax({
+                    url: window.Misc.urlFull(Route.route('documentos.show', { documentos: documento })),
+                    type: 'GET',
+                    beforeSend: function() {
+                        window.Misc.setSpinner( _this.spinner );
+                    }
+                })
+                .done(function(resp) {
+                    window.Misc.removeSpinner( _this.spinner );
+                    if( _.isObject( resp ) ) {
+                        if(!_.isUndefined(resp.documento_tipo_consecutivo) && !_.isNull(resp.documento_tipo_consecutivo)) {
+                            _this.$numero.val(resp.documento_consecutivo + 1);
+                            if(resp.documento_tipo_consecutivo == 'M') {
+                                _this.$numero.prop('readonly', false);
+                            }else if (resp.documento_tipo_consecutivo == 'A'){
+                                _this.$numero.prop('readonly', true);
+                            }
+                        }
+                    }
+                })
+                .fail(function(jqXHR, ajaxOptions, thrownError) {
+                    window.Misc.removeSpinner( _this.spinner );
+                    alertify.error(thrownError);
+                });
+            }
+        },
+
+        /**
+        * Event submit Asiento
+        */
+        submitAsiento: function (e) {
+            this.$form.submit();
+        },
+
+        /**
+        * Event Create Cuenta
+        */
+        onStore: function (e) {
+
+            if (!e.isDefaultPrevented()) {
+
+                e.preventDefault();
+                var data = window.Misc.formToJson( e.target );
+                this.model.save( data, {patch: true, silent: true} );
+            }
+        },
+
+        /**
+        * Event add item Asiento Cuentas
+        */
+        onStoreItem: function (e) {
+            if (!e.isDefaultPrevented()) {
+                e.preventDefault();
+
+                // Prepare global data
+                var data = window.Misc.formToJson( e.target );
+                data.asienton1_id = this.model.get('id');
+
+                // Definir tercero
+                data.tercero_nit = data.tercero_nit ? data.tercero_nit : this.model.get('tercero_nit');
+                data.tercero_nombre = data.tercero_nombre ? data.tercero_nombre : this.model.get('tercero_nombre');
+
+
+                // Default insert
+                this.asientoNifCuentasList.trigger( 'store', data );
+                window.Misc.clearForm( this.$formItem );   
+                // Evaluate account
+                // window.Misc.evaluateActionsAccount({
+                //     'data': data,
+                //     'wrap': this.spinner,
+                //     'callback': (function (_this) {
+                //         return function ( actions )
+                //         {
+                //             if( Array.isArray( actions ) && actions.length > 0 ) {
+                //                 // Open AsientoActionView
+                //                 if ( _this.asientoActionView instanceof Backbone.View ){
+                //                     _this.asientoActionView.stopListening();
+                //                     _this.asientoActionView.undelegateEvents();
+                //                 }
+
+                //                 _this.asientoActionView = new app.AsientoActionView({
+                //                     model: _this.model,
+                //                     collection: _this.asientoNifCuentasList,
+                //                     parameters: {
+                //                         data: data,
+                //                         actions: actions
+                //                     }
+                //                 });
+                //                 _this.asientoActionView.render();
+                //             }else{
+                //                 // Default insert
+                //                 _this.asientoNifCuentasList.trigger( 'store', data );
+                //                 window.Misc.clearForm( _this.$formItem );   
+                //             }
+                //         }
+                //     })(this)
+                // });
+            }
+        },
+
+        /**
+        * Change base
+        */
+        baseChanged: function(e) {
+            var _this = this;
+
+            var tasa = this.$inputTasa.val();
+            var base = this.$inputBase.inputmask('unmaskedvalue');
+
+            // Set valor
+            if(!_.isUndefined(tasa) && !_.isNull(tasa) && tasa > 0) {
+                this.$inputValor.val( (tasa * base) / 100 );
+            }else{
+                // Case without plancuentas_tasa
+                this.$inputValor.val('');
+            }
+        },
+
+        /**
+        * Load spinner on the request
+        */
+        loadSpinner: function (model, xhr, opts) {
+            window.Misc.setSpinner( this.spinner );
+        },
+
+        /**
+        * response of the server
+        */
+        responseServer: function ( model, resp, opts ) {
+            window.Misc.removeSpinner( this.spinner );
+
+            if(!_.isUndefined(resp.success)) {
+                // response success or error
+                var text = resp.success ? '' : resp.errors;
+                if( _.isObject( resp.errors ) ) {
+                    text = window.Misc.parseErrors(resp.errors);
+                }
+
+                if( !resp.success ) {
+                    alertify.error(text);
+                    return;
+                }
+                console.log(resp.id);
+                // Redirect to show view
+                window.Misc.redirect( window.Misc.urlFull( Route.route('asientosnif.edit', { asientosnif: resp.id }) ) );
+            }
+        }
+    });
+
+})(jQuery, this, this.document);
+
+/**
+* Class MainAsientosNifView
+* @author KOI || @dropecamargo
+* @link http://koi-ti.com
+*/
+
+//Global App Backbone
+app || (app = {});
+
+(function ($, window, document, undefined) {
+
+    app.MainAsientosNifView = Backbone.View.extend({
+
+        el: '#asientosnif-main',
+
+        /**
+        * Constructor Method
+        */
+        initialize : function() {
+            this.$asientosNifSearchTable = this.$('#asientosnif-search-table');
+
+            this.$asientosNifSearchTable.DataTable({
+				processing: true,
+                serverSide: true,
+            	language: window.Misc.dataTableES(),
+                ajax: window.Misc.urlFull( Route.route('asientosnif.index') ),
+                columns: [
+                    { data: 'asienton1_numero', name: 'asienton1_numero' },
+                    { data: 'asienton1_ano', name: 'asienton1_ano' },
+                    { data: 'asienton1_mes', name: 'asienton1_mes' },
+                    { data: 'tercero_nit', name: 'tercero_nit' },
+                    { data: 'tercero_nombre', name: 'tercero_nombre' },
+                    { data: 'tercero_razonsocial', name: 'tercero_razonsocial'},
+                    { data: 'tercero_nombre1', name: 'tercero_nombre1' },
+                    { data: 'tercero_nombre2', name: 'tercero_nombre2' },
+                    { data: 'tercero_apellido1', name: 'tercero_apellido1' },
+                    { data: 'tercero_apellido2', name: 'tercero_apellido2' },
+                    { data: 'asienton1_preguardado', name: 'asienton1_preguardado' }
+                ],
+                columnDefs: [
+                    {
+                        targets: 0,
+                        width: '10%',
+                        render: function ( data, type, full, row ) {
+                            if( parseInt(full.asienton1_preguardado) ) {
+                                return '<a href="'+ window.Misc.urlFull( Route.route('asientosnif.edit', {asientosnif: full.id }) )  +'">' + data + ' <span class="label label-warning">PRE</span></a>';
+                            }else{
+                                return '<a href="'+ window.Misc.urlFull( Route.route('asientosnif.show', {asientosnif: full.id }) )  +'">' + data + '</a>';
+                            }
+                        }
+                    },
+                    {
+                        targets: [1, 2],
+                        width: '10%'
+                    },
+                    {
+                        targets: 3,
+                        width: '15%'
+                    },
+                    {
+                        targets: 4,
+                        searchable: false
+                    },
+                    {
+                        targets: [5, 6, 7, 8, 9],
+                        visible: false
+                    },
+                    {
+                        targets: 10,
+                        visible: false,
+                        searchable: false
+                    }
+                ]
+			});
+        }
+    });
+
+})(jQuery, this, this.document);
+
+/**
+* Class ShowAsientoNifView
+* @author KOI || @dropecamargo
+* @link http://koi-ti.com
+*/
+
+//Global App Backbone
+app || (app = {});
+
+(function ($, window, document, undefined) {
+
+    app.ShowAsientoNifView = Backbone.View.extend({
+
+        el: '#asientosnif-show',
+
+        /**
+        * Constructor Method
+        */
+        initialize : function() {
+            // Model exist
+            if( this.model.id != undefined ) {
+             
+                this.asientoNifCuentasList = new app.AsientoNifCuentasList();
+
+                // Reference views
+                this.referenceViews();
+            }
+        },
+
+        /**
+        * reference to views
+        */
+        referenceViews: function () {
+            // Detalle asiento list
+            this.cuentasListView = new app.AsientoNifCuentasListView({
+                collection: this.asientoNifCuentasList,
+                parameters: {
+                    wrapper: this.spinner,
+                    edit: false,
+                    dataFilter: {
+                        'asiento': this.model.get('id')
+                    }
+                }
+            });
+        }
+    });
+
+})(jQuery, this, this.document);
+
+/**
 * Class AsientoActionView  of Backbone Router
 * @author KOI || @dropecamargo
 * @link http://koi-ti.com
@@ -9969,739 +10832,6 @@ app || (app = {});
 })(jQuery, this, this.document);
 
 /**
-* Class AsientoCuentasNifListView  of Backbone Router
-* @author KOI || @dropecamargo
-* @link http://koi-ti.com
-*/
-
-//Global App Backbone
-app || (app = {});
-
-(function ($, window, document, undefined) {
-
-    app.AsientoNifCuentasListView = Backbone.View.extend({
-
-        el: '#browse-detalle-asienton-list',
-        events: {
-            'click .item-asienton2-remove': 'removeOne'
-        },
-        parameters: {
-            wrapper: null,
-            edit: false,
-            dataFilter: {}
-        },
-
-        /**
-        * Constructor Method
-        */
-        initialize : function(opts){
-            // extends parameters
-            if( opts !== undefined && _.isObject(opts.parameters) )
-                this.parameters = $.extend({},this.parameters, opts.parameters);
-
-            // References
-            this.$debitos = this.$('#total-debitos');
-            this.$creditos = this.$('#total-creditos');
-            this.$diferencia = this.$('#total-diferencia');
-
-            //Init Attributes
-            this.confCollection = { reset: true, data: {} };
-
-            // Events Listeners
-            this.listenTo( this.collection, 'add', this.addOne );
-            this.listenTo( this.collection, 'reset', this.addAll );
-            this.listenTo( this.collection, 'request', this.loadSpinner );
-            this.listenTo( this.collection, 'store', this.storeOne );
-            this.listenTo( this.collection, 'sync', this.responseServer );
-
-            /* if was passed asiento code */
-            if( !_.isUndefined(this.parameters.dataFilter.asiento) && !_.isNull(this.parameters.dataFilter.asiento) ){
-                 this.confCollection.data.asiento = this.parameters.dataFilter.asiento;
-
-                this.collection.fetch( this.confCollection );
-            }
-        },
-
-        /**
-        * Render view task by model
-        * @param Object mentoringTaskModel Model instance
-        */
-        addOne: function (asientoNif2Model) {
-            var view = new app.AsientoCuentasNifItemView({
-                model: asientoNif2Model,
-                parameters: {
-                    edit: this.parameters.edit
-                }
-            });
-            asientoNif2Model.view = view;
-            this.$el.append( view.render().el );
-
-            // Update total
-            this.totalize();
-        },
-
-        /**
-        * Render all view tast of the collection
-        */
-        addAll: function () {
-            this.collection.forEach( this.addOne, this );
-        },
-
-        /**
-        * storescuenta
-        * @param form element
-        */
-        storeOne: function (data) {
-            var _this = this
-
-            // Set Spinner
-            window.Misc.setSpinner( this.parameters.wrapper );
-
-            // Add model in collection
-            var asiento2Model = new app.AsientoNif2Model();
-            asiento2Model.save(data, {
-                success : function(model, resp) {
-                    if(!_.isUndefined(resp.success)) {
-                        window.Misc.removeSpinner( _this.parameters.wrapper );
-
-                        // response success or error
-                        var text = resp.success ? '' : resp.errors;
-                        if( _.isObject( resp.errors ) ) {
-                            text = window.Misc.parseErrors(resp.errors);
-                        }
-
-                        if( !resp.success ) {
-                            alertify.error(text);
-                            return;
-                        }
-
-                        // Add model in collection
-                        _this.collection.add(model);
-                    }
-                },
-                error : function(model, error) {
-                    window.Misc.removeSpinner( _this.parameters.wrapper );
-                    alertify.error(error.statusText)
-                }
-            });
-        },
-
-        /**
-        * Event remove item
-        */
-        removeOne: function (e) {
-            e.preventDefault();
-
-            var resource = $(e.currentTarget).attr("data-resource"),
-                model = this.collection.get(resource),
-                _this = this;
-
-            if ( model instanceof Backbone.Model ) {
-                model.destroy({
-                    success : function(model, resp) {
-                        if(!_.isUndefined(resp.success)) {
-                            window.Misc.removeSpinner( _this.parameters.wrapper );
-
-                            if( !resp.success ) {
-                                alertify.error(resp.errors);
-                                return;
-                            }
-
-                            model.view.remove();
-                            _this.collection.remove(model);
-
-                            // Update total
-                            _this.totalize();
-                        }
-                    }
-                });
-
-            }
-        },
-
-        /**
-        * Render totalize debitos and creditos
-        */
-        totalize: function () {
-            var data = this.collection.totalize();
-
-            if(this.$debitos.length) {
-                this.$debitos.html( window.Misc.currency(data.debitos) );
-            }
-
-            if(this.$creditos.length) {
-                this.$creditos.html( window.Misc.currency(data.creditos) );
-            }
-
-            if(this.$diferencia.length) {
-                this.$diferencia.html( window.Misc.currency(data.diferencia) );
-            }
-        },
-
-        /**
-        * Load spinner on the request
-        */
-        loadSpinner: function (model, xhr, opts) {
-            window.Misc.setSpinner( this.parameters.wrapper );
-        },
-
-        /**
-        * response of the server
-        */
-        responseServer: function ( model, resp, opts ) {
-            window.Misc.removeSpinner( this.parameters.wrapper );
-        }
-   });
-
-})(jQuery, this, this.document);
-
-/**
-* Class AsientoCuentasNifItemView  of Backbone Router
-* @author KOI || @dropecamargo
-* @link http://koi-ti.com
-*/
-
-//Global App Backbone
-app || (app = {});
-
-(function ($, window, document, undefined) {
-
-    app.AsientoCuentasNifItemView = Backbone.View.extend({
-
-        tagName: 'tr',
-        template: _.template( ($('#add-asienton2-item-tpl').html() || '') ),
-        templateInfo: _.template( ($('#show-info-asienton2-tpl').html() || '') ),
-
-        // Factura
-        templateInfoFacturaItem: _.template( ($('#add-info-factura-item').html() || '') ),
-        // Facturap
-        templateInfoFacturapItem: _.template( ($('#add-info-facturap-item').html() || '') ),
-        // Inventario
-        templateInfoInventarioItem: _.template( ($('#add-info-inventario-item').html() || '') ),
-
-        events: {
-            'click .item-asiento2-show-info': 'showInfo'
-        },
-        parameters: {
-            edit: false
-        },
-
-        /**
-        * Constructor Method
-        */
-        initialize: function(opts){
-            // extends parameters
-            if( opts !== undefined && _.isObject(opts.parameters) )
-                this.parameters = $.extend({},this.parameters, opts.parameters);
-
-            //Init Attributes
-            this.$modalInfo = $('#modal-asiento-show-info-component');
-            this.asientoMovimientosList = new app.AsientoMovimientosList();
-
-            // Events Listener
-            this.listenTo( this.model, 'change', this.render );
-
-            this.listenTo( this.asientoMovimientosList, 'request', this.loadSpinner );
-            this.listenTo( this.asientoMovimientosList, 'sync', this.responseServer );
-            this.listenTo( this.asientoMovimientosList, 'reset', this.addAll );
-        },
-
-        /*
-        * Render View Element
-        */
-        render: function() {
-            var attributes = this.model.toJSON();
-            attributes.edit = this.parameters.edit;
-
-            this.$tercero = {tercero_nit: attributes.tercero_nit, tercero_nombre: attributes.tercero_nombre};
-            this.$naturaleza = attributes.asiento2_naturaleza;
-
-            this.$el.html( this.template(attributes) );
-            return this;
-        },
-
-        /**
-        * Show info asiento
-        */
-        showInfo: function () {
-            var attributes = this.model.toJSON();
-
-            // Render info
-            this.$modalInfo.find('.content-modal').empty().html( this.templateInfo( attributes ) );
-
-            // Wrapper Info
-            this.$wrapGeneral = this.$modalInfo.find('#render-info-modal');
-
-            // Count
-            this.count = 0;
-
-            // Get movimientos list
-            this.asientoMovimientosList.fetch({ reset: true, data: { asiento2: this.model.get('id') } });
-
-            // Open modal
-            this.$modalInfo.modal('show');
-        },
-
-        /**
-        * Render view task by model
-        * @param Object mentoringTaskModel Model instance
-        */
-        addOne: function (AsientoMovModel) {
-            var attributes = AsientoMovModel.toJSON();
-                attributes.tercero = this.$tercero;
-                attributes.naturaleza = this.$naturaleza;
-
-
-            if( attributes.movimiento_tipo == 'F'){
-
-                this.$wrapGeneral.empty().html(  this.templateInfoFacturaItem( attributes ) );
-                this.$wrapperList = this.$modalInfo.find('#browse-showinfo-factura-list');
-
-            }else if ( attributes.movimiento_tipo == 'FP' ){
-
-                if (attributes.movimiento_nuevo){
-                    this.$wrapGeneral.empty().html(  this.templateInfoFacturapItem( attributes ) );
-                    return;
-                }else{
-                    if ( this.count == 0){
-                        this.$wrapGeneral.empty().html(  this.templateInfoFacturapItem( attributes ) );
-                        this.$wrapperList = this.$modalInfo.find('#browse-showinfo-facturap-list');
-                        this.count = this.count + 1;
-                    }
-                }
-
-            }else if ( attributes.movimiento_tipo == 'IP') {
-
-                this.$wrapGeneral.empty().html(  this.templateInfoInventarioItem( attributes ) );
-                this.$wrapperList = this.$modalInfo.find('#browse-showinfo-asiento-list');
-                
-            }
-            
-            var view = new app.AsientoMovimientosItemView({
-                model: AsientoMovModel,
-            });
-
-            this.$wrapperList.append( view.render().el );
-        },
-
-        /**
-        * Render all view tast of the collection
-        */
-        addAll: function () {
-            this.asientoMovimientosList.forEach( this.addOne, this );
-        },
-
-        /**
-        * Load spinner on the request
-        */
-        loadSpinner: function (model, xhr, opts) {
-            window.Misc.setSpinner( this.$wrapperList );
-        },
-
-        /**
-        * response of the server
-        */
-        responseServer: function ( model, resp, opts ) {
-            window.Misc.removeSpinner( this.$wrapperList );
-        }
-    });
-
-})(jQuery, this, this.document);
-/**
-* Class EditAsientoNifView  of Backbone Router
-* @author KOI || @dropecamargo
-* @link http://koi-ti.com
-*/
-
-//Global App Backbone
-app || (app = {});
-
-(function ($, window, document, undefined) {
-
-    app.EditAsientoNifView = Backbone.View.extend({
-
-        el: '#asientosnif-create',
-        template: _.template( ($('#add-asienton-tpl').html() || '') ),
-        templateFp: _.template( ($('#add-rfacturap-tpl').html() || '') ),
-        events: {
-            'change select#asienton1_documento': 'documentoChanged',
-            'submit #form-item-asienton': 'onStoreItem',
-            'change input#asienton2_base': 'baseChanged',
-            'click .submit-asienton': 'submitAsiento',
-            'submit #form-asientosn': 'onStore',
-        },
-
-        /**
-        * Constructor Method
-        */
-        initialize : function() {
-            // Attributes
-            this.asientoNifCuentasList = new app.AsientoNifCuentasList();
-
-            this.listenTo( this.model, 'change', this.render );
-            this.listenTo( this.model, 'sync', this.responseServer );
-            this.listenTo( this.model, 'request', this.loadSpinner );
-        },
-
-        /*
-        * Render View Element
-        */
-        render: function() {
-
-            var attributes = this.model.toJSON();
-            attributes.edit = true;
-            this.$el.html( this.template(attributes) );
-
-            this.$numero = this.$('#asienton1_numero');
-            this.$form = this.$('#form-asientosn');
-            this.$formItem = this.$('#form-item-asienton');
-            this.$inputTasa = this.$("#asienton2_tasa");
-            this.$inputValor = this.$("#asienton2_valor");
-            this.$inputBase = this.$("#asienton2_base");
-            this.$inputDocumento = this.$("#asienton1_documento");
-            this.spinner = this.$('#spinner-main');
-
-            // Reference views
-            this.referenceViews();
-
-            // to fire plugins
-            this.ready();
-
-            // to change document
-            if(this.model.get('documento_tipo_consecutivo') == 'A'){
-                this.$inputDocumento.change();
-            }
-		},
-
-        /**
-        * fires libraries js
-        */
-        ready: function () {
-            // to fire plugins
-            if( typeof window.initComponent.initToUpper == 'function' )
-                window.initComponent.initToUpper();
-
-            if( typeof window.initComponent.initICheck == 'function' )
-                window.initComponent.initICheck();
-
-            if( typeof window.initComponent.initSelect2 == 'function' )
-                window.initComponent.initSelect2();
-
-            if( typeof window.initComponent.initValidator == 'function' )
-                window.initComponent.initValidator();
-
-            if( typeof window.initComponent.initDatePicker == 'function' )
-                window.initComponent.initDatePicker();
-
-            if( typeof window.initComponent.initInputMask == 'function' )
-                window.initComponent.initInputMask();
-        },
-
-        /**
-        * reference to views
-        */
-        referenceViews: function () {
-            // Detalle asiento list
-            this.cuentasListView = new app.AsientoNifCuentasListView({
-                collection: this.asientoNifCuentasList,
-                parameters: {
-                    wrapper: this.spinner,
-                    edit: true,
-                    dataFilter: {
-                        'asiento': this.model.get('id')
-                    }
-                }
-            });
-        },
-
-        documentoChanged: function(e) {
-            var _this = this,
-                documento = $(e.currentTarget).val();
-
-            // Clear numero
-            _this.$numero.val('');
-
-            if(!_.isUndefined(documento) && !_.isNull(documento) && documento != '') {
-                $.ajax({
-                    url: window.Misc.urlFull(Route.route('documentos.show', { documentos: documento })),
-                    type: 'GET',
-                    beforeSend: function() {
-                        window.Misc.setSpinner( _this.spinner );
-                    }
-                })
-                .done(function(resp) {
-                    window.Misc.removeSpinner( _this.spinner );
-                    if( _.isObject( resp ) ) {
-                        if(!_.isUndefined(resp.documento_tipo_consecutivo) && !_.isNull(resp.documento_tipo_consecutivo)) {
-                            _this.$numero.val(resp.documento_consecutivo + 1);
-                            if(resp.documento_tipo_consecutivo == 'M') {
-                                _this.$numero.prop('readonly', false);
-                            }else if (resp.documento_tipo_consecutivo == 'A'){
-                                _this.$numero.prop('readonly', true);
-                            }
-                        }
-                    }
-                })
-                .fail(function(jqXHR, ajaxOptions, thrownError) {
-                    window.Misc.removeSpinner( _this.spinner );
-                    alertify.error(thrownError);
-                });
-            }
-        },
-
-        /**
-        * Event submit Asiento
-        */
-        submitAsiento: function (e) {
-            this.$form.submit();
-        },
-
-        /**
-        * Event Create Cuenta
-        */
-        onStore: function (e) {
-
-            if (!e.isDefaultPrevented()) {
-
-                e.preventDefault();
-                var data = window.Misc.formToJson( e.target );
-                this.model.save( data, {patch: true, silent: true} );
-            }
-        },
-
-        /**
-        * Event add item Asiento Cuentas
-        */
-        onStoreItem: function (e) {
-            if (!e.isDefaultPrevented()) {
-                e.preventDefault();
-
-                // Prepare global data
-                var data = window.Misc.formToJson( e.target );
-                data.asienton1_id = this.model.get('id');
-
-                // Definir tercero
-                data.tercero_nit = data.tercero_nit ? data.tercero_nit : this.model.get('tercero_nit');
-                data.tercero_nombre = data.tercero_nombre ? data.tercero_nombre : this.model.get('tercero_nombre');
-
-
-                // Default insert
-                this.asientoNifCuentasList.trigger( 'store', data );
-                window.Misc.clearForm( this.$formItem );   
-                // Evaluate account
-                // window.Misc.evaluateActionsAccount({
-                //     'data': data,
-                //     'wrap': this.spinner,
-                //     'callback': (function (_this) {
-                //         return function ( actions )
-                //         {
-                //             if( Array.isArray( actions ) && actions.length > 0 ) {
-                //                 // Open AsientoActionView
-                //                 if ( _this.asientoActionView instanceof Backbone.View ){
-                //                     _this.asientoActionView.stopListening();
-                //                     _this.asientoActionView.undelegateEvents();
-                //                 }
-
-                //                 _this.asientoActionView = new app.AsientoActionView({
-                //                     model: _this.model,
-                //                     collection: _this.asientoNifCuentasList,
-                //                     parameters: {
-                //                         data: data,
-                //                         actions: actions
-                //                     }
-                //                 });
-                //                 _this.asientoActionView.render();
-                //             }else{
-                //                 // Default insert
-                //                 _this.asientoNifCuentasList.trigger( 'store', data );
-                //                 window.Misc.clearForm( _this.$formItem );   
-                //             }
-                //         }
-                //     })(this)
-                // });
-            }
-        },
-
-        /**
-        * Change base
-        */
-        baseChanged: function(e) {
-            var _this = this;
-
-            var tasa = this.$inputTasa.val();
-            var base = this.$inputBase.inputmask('unmaskedvalue');
-
-            // Set valor
-            if(!_.isUndefined(tasa) && !_.isNull(tasa) && tasa > 0) {
-                this.$inputValor.val( (tasa * base) / 100 );
-            }else{
-                // Case without plancuentas_tasa
-                this.$inputValor.val('');
-            }
-        },
-
-        /**
-        * Load spinner on the request
-        */
-        loadSpinner: function (model, xhr, opts) {
-            window.Misc.setSpinner( this.spinner );
-        },
-
-        /**
-        * response of the server
-        */
-        responseServer: function ( model, resp, opts ) {
-            window.Misc.removeSpinner( this.spinner );
-
-            if(!_.isUndefined(resp.success)) {
-                // response success or error
-                var text = resp.success ? '' : resp.errors;
-                if( _.isObject( resp.errors ) ) {
-                    text = window.Misc.parseErrors(resp.errors);
-                }
-
-                if( !resp.success ) {
-                    alertify.error(text);
-                    return;
-                }
-                console.log(resp.id);
-                // Redirect to show view
-                window.Misc.redirect( window.Misc.urlFull( Route.route('asientosnif.edit', { asientosnif: resp.id }) ) );
-            }
-        }
-    });
-
-})(jQuery, this, this.document);
-
-/**
-* Class MainAsientosNifView
-* @author KOI || @dropecamargo
-* @link http://koi-ti.com
-*/
-
-//Global App Backbone
-app || (app = {});
-
-(function ($, window, document, undefined) {
-
-    app.MainAsientosNifView = Backbone.View.extend({
-
-        el: '#asientosnif-main',
-
-        /**
-        * Constructor Method
-        */
-        initialize : function() {
-            this.$asientosNifSearchTable = this.$('#asientosnif-search-table');
-
-            this.$asientosNifSearchTable.DataTable({
-				processing: true,
-                serverSide: true,
-            	language: window.Misc.dataTableES(),
-                ajax: window.Misc.urlFull( Route.route('asientosnif.index') ),
-                columns: [
-                    { data: 'asienton1_numero', name: 'asienton1_numero' },
-                    { data: 'asienton1_ano', name: 'asienton1_ano' },
-                    { data: 'asienton1_mes', name: 'asienton1_mes' },
-                    { data: 'tercero_nit', name: 'tercero_nit' },
-                    { data: 'tercero_nombre', name: 'tercero_nombre' },
-                    { data: 'tercero_razonsocial', name: 'tercero_razonsocial'},
-                    { data: 'tercero_nombre1', name: 'tercero_nombre1' },
-                    { data: 'tercero_nombre2', name: 'tercero_nombre2' },
-                    { data: 'tercero_apellido1', name: 'tercero_apellido1' },
-                    { data: 'tercero_apellido2', name: 'tercero_apellido2' },
-                    { data: 'asienton1_preguardado', name: 'asienton1_preguardado' }
-                ],
-                columnDefs: [
-                    {
-                        targets: 0,
-                        width: '10%',
-                        render: function ( data, type, full, row ) {
-                            if( parseInt(full.asienton1_preguardado) ) {
-                                return '<a href="'+ window.Misc.urlFull( Route.route('asientosnif.edit', {asientosnif: full.id }) )  +'">' + data + ' <span class="label label-warning">PRE</span></a>';
-                            }else{
-                                return '<a href="'+ window.Misc.urlFull( Route.route('asientosnif.show', {asientosnif: full.id }) )  +'">' + data + '</a>';
-                            }
-                        }
-                    },
-                    {
-                        targets: [1, 2],
-                        width: '10%'
-                    },
-                    {
-                        targets: 3,
-                        width: '15%'
-                    },
-                    {
-                        targets: 4,
-                        searchable: false
-                    },
-                    {
-                        targets: [5, 6, 7, 8, 9],
-                        visible: false
-                    },
-                    {
-                        targets: 10,
-                        visible: false,
-                        searchable: false
-                    }
-                ]
-			});
-        }
-    });
-
-})(jQuery, this, this.document);
-
-/**
-* Class ShowAsientoNifView
-* @author KOI || @dropecamargo
-* @link http://koi-ti.com
-*/
-
-//Global App Backbone
-app || (app = {});
-
-(function ($, window, document, undefined) {
-
-    app.ShowAsientoNifView = Backbone.View.extend({
-
-        el: '#asientosnif-show',
-
-        /**
-        * Constructor Method
-        */
-        initialize : function() {
-            // Model exist
-            if( this.model.id != undefined ) {
-             
-                this.asientoNifCuentasList = new app.AsientoNifCuentasList();
-
-                // Reference views
-                this.referenceViews();
-            }
-        },
-
-        /**
-        * reference to views
-        */
-        referenceViews: function () {
-            // Detalle asiento list
-            this.cuentasListView = new app.AsientoNifCuentasListView({
-                collection: this.asientoNifCuentasList,
-                parameters: {
-                    wrapper: this.spinner,
-                    edit: false,
-                    dataFilter: {
-                        'asiento': this.model.get('id')
-                    }
-                }
-            });
-        }
-    });
-
-})(jQuery, this, this.document);
-
-/**
 * Class MainAutorizacionesCaView
 * @author KOI || @dropecamargo
 * @link http://koi-ti.com
@@ -10911,6 +11041,500 @@ app || (app = {});
         }
     });
 
+})(jQuery, this, this.document);
+
+/**
+* Class CreateCajaMenorView  of Backbone Router
+* @author KOI || @dropecamargo
+* @link http://koi-ti.com
+*/
+
+//Global App Backbone
+app || (app = {});
+
+(function ($, window, document, undefined) {
+
+    app.CreateCajaMenorView = Backbone.View.extend({
+
+        el: '#cajamenor-create',
+        template: _.template( ($('#add-cajamenor-tpl').html() || '') ),
+        templateDetailt: _.template( ($('#add-cajamenor-detail-tpl').html() || '') ),
+        events: {
+            'click .submit-cajamenor' :'submitFormAjustec',
+            'submit #form-cajamenor': 'onStore',
+            'submit #form-detail-cajamenor': 'onStoreItem',
+            'change #cajamenor2_conceptocajamenor': 'changeConcepto',
+        },
+
+        /**
+        * Constructor Method
+        */
+        initialize : function(opts) {
+            // Initialize
+            if( opts !== undefined && _.isObject(opts.parameters) )
+                this.parameters = $.extend({}, this.parameters, opts.parameters);
+
+            // Attributes
+            this.$wraperForm = this.$('#render-form-cajamenor');
+            this.detalleCajaMenor = new app.CajaMenorDetalleList();
+
+            // Events
+            this.listenTo( this.model, 'change', this.render );
+            this.listenTo( this.model, 'sync', this.responseServer );
+            this.listenTo( this.model, 'request', this.loadSpinner );
+        },
+
+        /*
+        * Render View Element
+        */
+        render: function() {
+            var attributes = this.model.toJSON();
+            this.$wraperForm.html( this.template(attributes) );
+
+            this.$wraperDetail = this.$('#render-form-detail');
+            this.$wraperDetail.html( this.templateDetailt() );
+
+            // Reference Fields
+            this.$form = this.$('#form-cajamenor');
+            this.$cuenta = this.$('#cajamenor2_cuenta');
+            this.$cuenta.prop('disabled', true);
+
+            // Reference views
+            this.referenceViews();
+            this.ready();
+        },
+
+        referenceViews:function(){
+            this.detalleCajaMenorView = new app.DetalleCajaMenorView( {
+                collection: this.detalleCajaMenor,
+                parameters: {
+                    wrapper: this.el,
+                    edit: true,
+                    dataFilter: {
+                        'id': this.model.get('id')
+                    }
+               }
+            });
+        },
+
+        /**
+        * Event submit Caja Menor
+        */
+        submitFormAjustec: function (e) {
+            this.$form.submit();
+        },
+
+        /**
+        * Event Create Caja Menor
+        */
+        onStore: function (e) {
+            if (!e.isDefaultPrevented()) {
+                e.preventDefault();
+
+                var data = window.Misc.formToJson( e.target );
+                    data.detalle = this.detalleCajaMenor.toJSON();
+                this.model.save( data, {patch: true, silent: true} );
+            }
+        },
+
+        /**
+        *   Evenet Submit item
+        */
+        onStoreItem: function (e) {
+            if (!e.isDefaultPrevented()) {
+                e.preventDefault();
+
+                var data = window.Misc.formToJson( e.target );
+                this.detalleCajaMenor.trigger( 'store', data );
+
+                this.$('#ajustep2_documentos_doc').val(0).trigger('change');
+                this.$('#ajustep2_naturaleza').val('');
+                this.$('#ajustep2_valor').val('');
+            }
+        },
+        /**
+        *
+        */
+        changeConcepto: function(e){
+            e.preventDefault();
+            this.concepto = this.$(e.currentTarget).val();
+
+            if( !_.isUndefined(this.concepto) && !_.isNull(this.concepto) && this.concepto != ''){
+                var _this = this;
+                $.ajax({
+                    type: 'GET',
+                    url: window.Misc.urlFull(Route.route('conceptoscajamenor.show',{conceptoscajamenor: _this.concepto})),
+                    beforeSend: function() {
+                        window.Misc.setSpinner( _this.el );
+                    }
+                })
+                .done(function(resp) {
+                    window.Misc.removeSpinner( _this.el );
+
+                    _this.$cuenta.prop('disabled', false);
+                    _this.$cuenta.prepend("<option value=''></option>");
+                    _this.$cuenta.prepend("<option value="+resp.conceptocajamenor_administrativo +">" + resp.cuenta_administrativa +"</option>");
+                    _this.$cuenta.prepend("<option value="+resp.conceptocajamenor_ventas +">" + resp.cuenta_ventas +"</option>");
+                })
+                .fail(function(jqXHR, ajaxOptions, thrownError) {
+                    window.Misc.removeSpinner( _this.el );
+                    alertify.error(thrownError);
+                });
+            }
+        },
+        /**
+        * fires libraries js
+        */
+        ready: function () {
+            // to fire plugins
+            if( typeof window.initComponent.initToUpper == 'function' )
+                window.initComponent.initToUpper();
+
+            if( typeof window.initComponent.initSelect2 == 'function' )
+                window.initComponent.initSelect2();
+
+            if( typeof window.initComponent.initValidator == 'function' )
+                window.initComponent.initValidator();
+        },
+
+        /**
+        * Load spinner on the request
+        */
+        loadSpinner: function (model, xhr, opts) {
+            window.Misc.setSpinner( this.el );
+        },
+
+        /**
+        * response of the server
+        */
+        responseServer: function ( model, resp, opts ) {
+            window.Misc.removeSpinner( this.el );
+
+            if(!_.isUndefined(resp.success)) {
+                // response success or error
+                var text = resp.success ? '' : resp.errors;
+                if( _.isObject( resp.errors ) ) {
+                    text = window.Misc.parseErrors(resp.errors);
+                }
+
+                if( !resp.success ) {
+                    alertify.error(text);
+                    return;
+                }
+
+                window.Misc.redirect( window.Misc.urlFull( Route.route('cajasmenores.show', { cajasmenores: resp.id }), { trigger:true }) );
+            }
+        }
+    });
+
+})(jQuery, this, this.document);
+
+/**
+* Class DetalleCajaMenorItemView  of Backbone Router
+* @author KOI || @dropecamargo
+* @link http://koi-ti.com
+*/
+
+//Global App Backbone
+app || (app = {});
+
+(function ($, window, document, undefined) {
+
+    app.DetalleCajaMenorItemView = Backbone.View.extend({
+
+        tagName: 'tr',
+        template: _.template( ($('#add-detalle-cajamenor-tpl').html() || '') ),
+        parameters: {
+            edit: false
+        },
+
+        /**
+        * Constructor Method
+        */
+        initialize: function(opts){
+	        // Extends parameters
+            if( opts !== undefined && _.isObject(opts.parameters) )
+                this.parameters = $.extend({},this.parameters, opts.parameters);
+
+            // Events Listener
+            this.listenTo( this.model, 'change', this.render );
+        },
+
+        /*
+        * Render View Element
+        */
+        render: function(){
+            var attributes = this.model.toJSON();
+            attributes.edit = this.parameters.edit;
+            this.$el.html( this.template(attributes) );
+            return this;
+        }
+    });
+
+})(jQuery, this, this.document);
+
+/**
+* Class DetalleCajaMenorView  of Backbone Router
+* @author KOI || @dropecamargo
+* @link http://koi-ti.com
+*/
+
+//Global App Backbone
+app || (app = {});
+
+(function ($, window, document, undefined) {
+
+    app.DetalleCajaMenorView = Backbone.View.extend({
+
+        el: '#browse-detalle-cajamenor-list',
+        events: {
+            'click .item-detalle-cajamenor-remove': 'removeOne'
+        },
+        parameters: {
+            wrapper: null,
+            edit: false,
+            dataFilter: {}
+        },
+
+        /**
+        * Constructor Method
+        */
+        initialize : function(opts){
+
+            // extends parameters
+            if( opts !== undefined && _.isObject(opts.parameters) )
+                this.parameters = $.extend({},this.parameters, opts.parameters);
+
+            //Init Attributes
+            this.confCollection = { reset: true, data: {} };
+
+            // References
+            this.$debito = this.$('#total-debito');
+            this.$credito = this.$('#total-credito');
+
+            // Events Listeners
+            this.listenTo( this.collection, 'add', this.addOne );
+            this.listenTo( this.collection, 'reset', this.addAll );
+            this.listenTo( this.collection, 'request', this.loadSpinner);
+            this.listenTo( this.collection, 'store', this.storeOne );
+            this.listenTo( this.collection, 'sync', this.responseServer);
+
+            if( !_.isUndefined(this.parameters.dataFilter.cajamenor) && !_.isNull(this.parameters.dataFilter.cajamenor) ){
+                this.confCollection.data.cajamenor = this.parameters.dataFilter.cajamenor;
+                this.collection.fetch( this.confCollection );
+            }
+        },
+
+        /**
+        * Render view contact by model
+        * @param Object cajamenor2Model Model instance
+        */
+        addOne: function (cajamenor2Model) {
+            var view = new app.DetalleCajaMenorItemView({
+                model: cajamenor2Model,
+                parameters: {
+                    edit: this.parameters.edit
+                }
+            });
+            cajamenor2Model.view = view;
+            this.$el.append( view.render().el );
+
+            // Update total
+            this.totalize();
+        },
+
+        /**
+        * Render all view Marketplace of the collection
+        */
+        addAll: function () {
+            this.collection.forEach( this.addOne, this );
+        },
+
+        /**
+        * stores detalleAjustec
+        * @param form element
+        */
+        storeOne: function (data) {
+            var _this = this
+
+            // Set Spinner
+            window.Misc.setSpinner( this.parameters.wrapper );
+
+            // Add model in collection
+            var cajamenor2Model = new app.CajaMenor2Model();
+            cajamenor2Model.save(data, {
+                success : function(model, resp) {
+                    if(!_.isUndefined(resp.success)) {
+                        window.Misc.removeSpinner( _this.parameters.wrapper );
+
+                        // response success or error
+                        var text = resp.success ? '' : resp.errors;
+                        if( _.isObject( resp.errors ) ) {
+                            text = window.Misc.parseErrors(resp.errors);
+                        }
+
+                        if( !resp.success ) {
+                            alertify.error(text);
+                            return;
+                        }
+                        // Add model in collection
+                        _this.collection.add(model);
+                    }
+                },
+                error : function(model, error) {
+                    window.Misc.removeSpinner( _this.parameters.wrapper );
+                    alertify.error(error.statusText)
+                }
+            });
+        },
+
+        /**
+        * Event remove item
+        */
+        removeOne: function (e) {
+            e.preventDefault();
+            var resource = $(e.currentTarget).attr("data-resource");
+            var model = this.collection.get(resource);
+            if ( model instanceof Backbone.Model ) {
+                model.view.remove();
+                this.collection.remove(model);
+            }
+        },
+
+        /**
+        * Render totalize valor
+        */
+        totalize: function () {
+            var data = this.collection.totalize();
+            if(this.$debito.length) {
+                this.$debito.html( window.Misc.currency(data.debito) );
+            }
+
+            if(this.$credito.length) {
+                this.$credito.html( window.Misc.currency(data.credito) );
+            }
+        },
+
+        /**
+        * Load spinner on the request
+        */
+        loadSpinner: function ( target, xhr, opts ) {
+            window.Misc.setSpinner( this.el );
+        },
+
+        /**
+        * response of the server
+        */
+        responseServer: function ( target, resp, opts ) {
+            window.Misc.removeSpinner( this.el );
+        }
+   });
+
+})(jQuery, this, this.document);
+
+/**
+* Class MainCajasMenoresView
+* @author KOI || @dropecamargo
+* @link http://koi-ti.com
+*/
+
+//Global App Backbone
+app || (app = {});
+
+(function ($, window, document, undefined) {
+
+    app.MainCajasMenoresView = Backbone.View.extend({
+
+        el: '#cajasmenores-main',
+
+        /**
+        * Constructor Method
+        */
+        initialize : function() {
+            this.$cajaMenorSearchTable = this.$('#cajasmenores-search-table');
+
+            this.$cajaMenorSearchTable.DataTable({
+                dom: "<'row'<'col-sm-4'B><'col-sm-4 text-center'l><'col-sm-4'f>>" +
+                    "<'row'<'col-sm-12'tr>>" +
+                    "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+                processing: true,
+                serverSide: true,
+                language: window.Misc.dataTableES(),
+                ajax: window.Misc.urlFull( Route.route('cajasmenores.index') ),
+                columns: [
+                    { data: 'id', name: 'id' },
+                    { data: 'cajamenor1_tercero', name: 'cajamenor1_tercero' },
+                    { data: 'cajamenor1_observaciones', name: 'cajamenor1_observaciones'}
+                ],
+                buttons: [
+                    {
+                        text: '<i class="fa fa-plus"></i> Nuevo',
+                        className: 'btn-sm',
+                        action: function ( e, dt, node, config ) {
+                            window.Misc.redirect( window.Misc.urlFull( Route.route('cajasmenores.create') ) )
+                        }
+                    }
+                ],
+                columnDefs: [
+                    {
+                        targets: 0,
+                        width: '10%',
+                        render: function ( data, type, full, row ) {
+                            return '<a href="'+ window.Misc.urlFull( Route.route('cajasmenores.show', {cajasmenores: full.id }) )  +'">' + data + '</a>';
+                        }
+                    }
+                ]
+            });
+        }
+    });
+
+})(jQuery, this, this.document);
+
+/**
+* Class ShowCajaMenorView
+* @author KOI || @dropecamargo
+* @link http://koi-ti.com
+*/
+
+//Global App Backbone
+app || (app = {});
+
+(function ($, window, document, undefined) {
+
+    app.ShowCajaMenorView = Backbone.View.extend({
+
+        el: '#cajamenor-show',
+        events:{
+        },
+        /**
+        * Constructor Method
+        */
+        initialize : function() {
+            // Model exist
+            if( this.model.id != undefined ) {
+                this.detalleCajaMenor = new app.CajaMenorDetalleList();
+
+                // Reference views
+                this.referenceViews();
+            }
+        },
+
+        /**
+        * reference to views
+        */
+        referenceViews: function () {
+    		// Detalle ajustec list
+            this.detalleCajaMenorView = new app.DetalleCajaMenorView({
+                collection: this.detalleCajaMenor,
+                parameters: {
+                    edit: false,
+                    dataFilter: {
+                    	cajamenor: this.model.get('id')
+                    }
+                }
+            });
+        },
+    });
 })(jQuery, this, this.document);
 
 /**
@@ -12141,6 +12765,173 @@ app || (app = {});
         }
     });
 
+})(jQuery, this, this.document);
+
+/**
+* Class CreateConceptoAjustecView  of Backbone Router
+* @author KOI || @dropecamargo
+* @link http://koi-ti.com
+*/
+
+//Global App Backbone
+app || (app = {});
+
+(function ($, window, document, undefined) {
+
+    app.CreateConceptoAjustecView = Backbone.View.extend({
+
+        el: '#conceptoajustec-create',
+        template: _.template( ($('#add-conceptoajustec-tpl').html() || '') ),
+        events: {
+            'submit #form-conceptoajustec': 'onStore'
+        },
+
+        /**
+        * Constructor Method
+        */
+        initialize : function() {
+            // Attributes
+            this.$wraperForm = this.$('#render-form-conceptoajustec');
+
+            // Events
+            this.listenTo( this.model, 'change', this.render );
+            this.listenTo( this.model, 'sync', this.responseServer );
+            this.listenTo( this.model, 'request', this.loadSpinner );
+        },
+
+        /**
+        * Event Create Folder
+        */
+        onStore: function (e) {
+            if (!e.isDefaultPrevented()) {
+                e.preventDefault();
+
+                var data = window.Misc.formToJson( e.target );
+                this.model.save( data, {patch: true, silent: true} );
+            }
+        },
+
+        /*
+        * Render View Element
+        */
+        render: function() {
+            var attributes = this.model.toJSON();
+            this.$wraperForm.html( this.template(attributes) );
+
+            this.ready();
+        },
+
+        /**
+        * fires libraries js
+        */
+        ready: function () {
+            // to fire plugins
+            if( typeof window.initComponent.initValidator == 'function' )
+                window.initComponent.initValidator();
+
+            if( typeof window.initComponent.initICheck == 'function' )
+                window.initComponent.initICheck();
+
+            if( typeof window.initComponent.initToUpper == 'function' )
+                window.initComponent.initToUpper();
+
+            if( typeof window.initComponent.initSelect2 == 'function' )
+                window.initComponent.initSelect2();
+        },
+
+        /**
+        * Load spinner on the request
+        */
+        loadSpinner: function (model, xhr, opts) {
+            window.Misc.setSpinner( this.el );
+        },
+
+        /**
+        * response of the server
+        */
+        responseServer: function ( model, resp, opts ) {
+            window.Misc.removeSpinner( this.el );
+            if(!_.isUndefined(resp.success)) {
+                // response success or error
+                var text = resp.success ? '' : resp.errors;
+                if( _.isObject( resp.errors ) ) {
+                    text = window.Misc.parseErrors(resp.errors);
+                }
+
+                if( !resp.success ) {
+                    alertify.error(text);
+                    return;
+                }
+
+                window.Misc.redirect( window.Misc.urlFull( Route.route('conceptosajustec.index')) );
+            }
+        }
+    });
+
+})(jQuery, this, this.document);
+
+/**
+* Class MainConceptoAjustecView
+* @author KOI || @dropecamargo
+* @link http://koi-ti.com
+*/
+
+//Global App Backbone
+app || (app = {});
+
+(function ($, window, document, undefined) {
+
+    app.MainConceptoAjustecView = Backbone.View.extend({
+
+        el: '#conceptoajustec-main',
+
+        /**
+        * Constructor Method
+        */
+        initialize : function() {
+
+            this.$conceptoajustecSearchTable = this.$('#conceptoajustec-search-table');
+            this.$conceptoajustecSearchTable.DataTable({
+                dom: "<'row'<'col-sm-4'B><'col-sm-4 text-center'l><'col-sm-4'f>>" +
+                    "<'row'<'col-sm-12'tr>>" +
+                    "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+                processing: true,
+                serverSide: true,
+                language: window.Misc.dataTableES(),
+                ajax: window.Misc.urlFull( Route.route('conceptosajustec.index') ),
+                columns: [
+                    { data: 'id', name: 'id' },
+                    { data: 'conceptoajustec_nombre', name: 'conceptoajustec_nombre' },
+                    { data: 'conceptoajustec_activo', name: 'conceptoajustec_activo'}
+                ],
+                buttons: [
+                    {
+                        text: '<i class="fa fa-plus"></i> Nuevo concepto de ajuste',
+                        className: 'btn-sm',
+                        action: function ( e, dt, node, config ) {
+                            window.Misc.redirect( window.Misc.urlFull( Route.route('conceptosajustec.create') ) )
+                        }
+                    }
+                ],
+                columnDefs: [
+                    {
+                        targets: 0,
+                        width: '10%',
+                        render: function ( data, type, full, row ) {
+                            return '<a href="'+ window.Misc.urlFull( Route.route('conceptosajustec.show', {conceptosajustec: full.id }) )  +'">' + data + '</a>';
+                        }
+                    },
+                    {
+                        targets: 2,
+                        width: '10%',
+                        render: function ( data, type, full, row ) {
+                            return parseInt(data) ? 'Si' : 'No';
+                        },
+                    }
+                ]
+            });
+        }
+    });
 })(jQuery, this, this.document);
 
 /**
@@ -13489,6 +14280,7 @@ app || (app = {});
 
             // Reference to fields
             this.$consecutive = $("#"+$(e.currentTarget).attr("data-field"));
+            this.$consecutive.val('');
             this.$wrapperContent = $("#"+$(e.currentTarget).attr("data-wrapper"));
 
             if (regional != '') {
@@ -13508,6 +14300,7 @@ app || (app = {});
                     if(documents == 'facturap') consecutive = resp.regional_fpro;
                     if(documents == 'ajustep') consecutive = resp.regional_ajup;
                     if(documents == 'egreso') consecutive = resp.regional_egre;
+                    if(documents == 'cajamenor') consecutive = resp.regional_cm;
 
                     // Set consecutive
                     _this.$consecutive.val( parseInt(consecutive) + 1);
@@ -16902,173 +17695,6 @@ app || (app = {});
 
 })(jQuery, this, this.document);
 /**
-* Class CreateConceptoAjustecView  of Backbone Router
-* @author KOI || @dropecamargo
-* @link http://koi-ti.com
-*/
-
-//Global App Backbone
-app || (app = {});
-
-(function ($, window, document, undefined) {
-
-    app.CreateConceptoAjustecView = Backbone.View.extend({
-
-        el: '#conceptoajustec-create',
-        template: _.template( ($('#add-conceptoajustec-tpl').html() || '') ),
-        events: {
-            'submit #form-conceptoajustec': 'onStore'
-        },
-
-        /**
-        * Constructor Method
-        */
-        initialize : function() {
-            // Attributes
-            this.$wraperForm = this.$('#render-form-conceptoajustec');
-
-            // Events
-            this.listenTo( this.model, 'change', this.render );
-            this.listenTo( this.model, 'sync', this.responseServer );
-            this.listenTo( this.model, 'request', this.loadSpinner );
-        },
-
-        /**
-        * Event Create Folder
-        */
-        onStore: function (e) {
-            if (!e.isDefaultPrevented()) {
-                e.preventDefault();
-
-                var data = window.Misc.formToJson( e.target );
-                this.model.save( data, {patch: true, silent: true} );
-            }
-        },
-
-        /*
-        * Render View Element
-        */
-        render: function() {
-            var attributes = this.model.toJSON();
-            this.$wraperForm.html( this.template(attributes) );
-
-            this.ready();
-        },
-
-        /**
-        * fires libraries js
-        */
-        ready: function () {
-            // to fire plugins
-            if( typeof window.initComponent.initValidator == 'function' )
-                window.initComponent.initValidator();
-
-            if( typeof window.initComponent.initICheck == 'function' )
-                window.initComponent.initICheck();
-
-            if( typeof window.initComponent.initToUpper == 'function' )
-                window.initComponent.initToUpper();
-
-            if( typeof window.initComponent.initSelect2 == 'function' )
-                window.initComponent.initSelect2();
-        },
-
-        /**
-        * Load spinner on the request
-        */
-        loadSpinner: function (model, xhr, opts) {
-            window.Misc.setSpinner( this.el );
-        },
-
-        /**
-        * response of the server
-        */
-        responseServer: function ( model, resp, opts ) {
-            window.Misc.removeSpinner( this.el );
-            if(!_.isUndefined(resp.success)) {
-                // response success or error
-                var text = resp.success ? '' : resp.errors;
-                if( _.isObject( resp.errors ) ) {
-                    text = window.Misc.parseErrors(resp.errors);
-                }
-
-                if( !resp.success ) {
-                    alertify.error(text);
-                    return;
-                }
-
-                window.Misc.redirect( window.Misc.urlFull( Route.route('conceptosajustec.index')) );
-            }
-        }
-    });
-
-})(jQuery, this, this.document);
-
-/**
-* Class MainConceptoAjustecView
-* @author KOI || @dropecamargo
-* @link http://koi-ti.com
-*/
-
-//Global App Backbone
-app || (app = {});
-
-(function ($, window, document, undefined) {
-
-    app.MainConceptoAjustecView = Backbone.View.extend({
-
-        el: '#conceptoajustec-main',
-
-        /**
-        * Constructor Method
-        */
-        initialize : function() {
-
-            this.$conceptoajustecSearchTable = this.$('#conceptoajustec-search-table');
-            this.$conceptoajustecSearchTable.DataTable({
-                dom: "<'row'<'col-sm-4'B><'col-sm-4 text-center'l><'col-sm-4'f>>" +
-                    "<'row'<'col-sm-12'tr>>" +
-                    "<'row'<'col-sm-5'i><'col-sm-7'p>>",
-                processing: true,
-                serverSide: true,
-                language: window.Misc.dataTableES(),
-                ajax: window.Misc.urlFull( Route.route('conceptosajustec.index') ),
-                columns: [
-                    { data: 'id', name: 'id' },
-                    { data: 'conceptoajustec_nombre', name: 'conceptoajustec_nombre' },
-                    { data: 'conceptoajustec_activo', name: 'conceptoajustec_activo'}
-                ],
-                buttons: [
-                    {
-                        text: '<i class="fa fa-plus"></i> Nuevo concepto de ajuste',
-                        className: 'btn-sm',
-                        action: function ( e, dt, node, config ) {
-                            window.Misc.redirect( window.Misc.urlFull( Route.route('conceptosajustec.create') ) )
-                        }
-                    }
-                ],
-                columnDefs: [
-                    {
-                        targets: 0,
-                        width: '10%',
-                        render: function ( data, type, full, row ) {
-                            return '<a href="'+ window.Misc.urlFull( Route.route('conceptosajustec.show', {conceptosajustec: full.id }) )  +'">' + data + '</a>';
-                        }
-                    },
-                    {
-                        targets: 2,
-                        width: '10%',
-                        render: function ( data, type, full, row ) {
-                            return parseInt(data) ? 'Si' : 'No';
-                        },
-                    }
-                ]
-            });
-        }
-    });
-})(jQuery, this, this.document);
-
-/**
 * Class CreateConceptoAjustepView  of Backbone Router
 * @author KOI || @dropecamargo
 * @link http://koi-ti.com
@@ -17220,6 +17846,174 @@ app || (app = {});
                         width: '10%',
                         render: function ( data, type, full, row ) {
                             return '<a href="'+ window.Misc.urlFull( Route.route('conceptosajustep.show', {conceptosajustep: full.id }) )  +'">' + data + '</a>';
+                        }
+                    },
+                    {
+                        targets: 2,
+                        width: '10%',
+                        render: function ( data, type, full, row ) {
+                            return parseInt(data) ? 'Si' : 'No';
+                        },
+                    }
+                ]
+            });
+        }
+    });
+
+})(jQuery, this, this.document);
+
+/**
+* Class CreateConceptoCajaMenorView  of Backbone Router
+* @author KOI || @dropecamargo
+* @link http://koi-ti.com
+*/
+
+//Global App Backbone
+app || (app = {});
+
+(function ($, window, document, undefined) {
+
+    app.CreateConceptoCajaMenorView = Backbone.View.extend({
+
+        el: '#conceptocajamenor-create',
+        template: _.template( ($('#add-conceptocajamenor-tpl').html() || '') ),
+        events: {
+            'submit #form-conceptocajamenor': 'onStore'
+        },
+
+        /**
+        * Constructor Method
+        */
+        initialize : function() {
+            // Attributes
+            this.$wraperForm = this.$('#render-form-conceptocajamenor');
+
+            // Events
+            this.listenTo( this.model, 'change', this.render );
+            this.listenTo( this.model, 'sync', this.responseServer );
+            this.listenTo( this.model, 'request', this.loadSpinner );
+        },
+
+        /**
+        * Event Create Folder
+        */
+        onStore: function (e) {
+            if (!e.isDefaultPrevented()) {
+                e.preventDefault();
+
+                var data = window.Misc.formToJson( e.target );
+                this.model.save( data, {patch: true, silent: true} );
+            }
+        },
+
+        /*
+        * Render View Element
+        */
+        render: function() {
+            var attributes = this.model.toJSON();
+            this.$wraperForm.html( this.template(attributes) );
+
+            this.ready();
+        },
+
+        /**
+        * fires libraries js
+        */
+        ready: function () {
+            // to fire plugins
+            if( typeof window.initComponent.initValidator == 'function' )
+                window.initComponent.initValidator();
+
+            if( typeof window.initComponent.initICheck == 'function' )
+                window.initComponent.initICheck();
+
+            if( typeof window.initComponent.initToUpper == 'function' )
+                window.initComponent.initToUpper();
+
+            if( typeof window.initComponent.initSelect2 == 'function' )
+                window.initComponent.initSelect2();
+        },
+
+        /**
+        * Load spinner on the request
+        */
+        loadSpinner: function (model, xhr, opts) {
+            window.Misc.setSpinner( this.el );
+        },
+
+        /**
+        * response of the server
+        */
+        responseServer: function ( model, resp, opts ) {
+            window.Misc.removeSpinner( this.el );
+            if(!_.isUndefined(resp.success)) {
+                // response success or error
+                var text = resp.success ? '' : resp.errors;
+                if( _.isObject( resp.errors ) ) {
+                    text = window.Misc.parseErrors(resp.errors);
+                }
+
+                if( !resp.success ) {
+                    alertify.error(text);
+                    return;
+                }
+
+                window.Misc.redirect( window.Misc.urlFull( Route.route('conceptoscajamenor.index')) );
+            }
+        }
+    });
+
+})(jQuery, this, this.document);
+
+/**
+* Class MainConceptosCajaMenorView
+* @author KOI || @dropecamargo
+* @link http://koi-ti.com
+*/
+
+//Global App Backbone
+app || (app = {});
+
+(function ($, window, document, undefined) {
+
+    app.MainConceptosCajaMenorView = Backbone.View.extend({
+
+        el: '#conceptoscajamenor-main',
+
+        /**
+        * Constructor Method
+        */
+        initialize : function() {
+
+            this.$conceptoscajamenorSearchTable = this.$('#conceptoscajamenor-search-table');
+            this.$conceptoscajamenorSearchTable.DataTable({
+                dom: "<'row'<'col-sm-4'B><'col-sm-4 text-center'l><'col-sm-4'f>>" +
+                    "<'row'<'col-sm-12'tr>>" +
+                    "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+                processing: true,
+                serverSide: true,
+                language: window.Misc.dataTableES(),
+                ajax: window.Misc.urlFull( Route.route('conceptoscajamenor.index') ),
+                columns: [
+                    { data: 'id', name: 'id' },
+                    { data: 'conceptocajamenor_nombre', name: 'conceptocajamenor_nombre' },
+                    { data: 'conceptocajamenor_activo', name: 'conceptocajamenor_activo'}
+                ],
+                buttons: [
+                    {
+                        text: '<i class="fa fa-plus"></i> Nuevo concepto',
+                        className: 'btn-sm',
+                        action: function ( e, dt, node, config ) {
+                            window.Misc.redirect( window.Misc.urlFull( Route.route('conceptoscajamenor.create') ) )
+                        }
+                    }
+                ],
+                columnDefs: [
+                    {
+                        targets: 0,
+                        width: '10%',
+                        render: function ( data, type, full, row ) {
+                            return '<a href="'+ window.Misc.urlFull( Route.route('conceptoscajamenor.show', {conceptoscajamenor: full.id }) )  +'">' + data + '</a>';
                         }
                     },
                     {
@@ -32764,6 +33558,175 @@ app || (app = {});
 })(jQuery, this, this.document);
 
 /**
+* Class CreateTipoActivoView  of Backbone Router
+* @author KOI || @dropecamargo
+* @link http://koi-ti.com
+*/
+
+//Global App Backbone
+app || (app = {});
+
+(function ($, window, document, undefined) {
+
+    app.CreateTipoActivoView = Backbone.View.extend({
+
+        el: '#tipoactivo-create',
+        template: _.template( ($('#add-tipoactivo-tpl').html() || '') ),
+        events: {
+            'submit #form-tipoactivo': 'onStore'
+        },
+
+        /**
+        * Constructor Method
+        */
+        initialize : function() {
+            // Attributes
+            this.$wraperForm = this.$('#render-form-tipoactivo');
+
+            // Events
+            this.listenTo( this.model, 'change', this.render );
+            this.listenTo( this.model, 'sync', this.responseServer );
+            this.listenTo( this.model, 'request', this.loadSpinner );
+        },
+
+        /**
+        * Event Create Folder
+        */
+        onStore: function (e) {
+            if (!e.isDefaultPrevented()) {
+                e.preventDefault();
+
+                var data = window.Misc.formToJson( e.target );
+                this.model.save( data, {patch: true, silent: true} );
+            }
+        },
+
+        /*
+        * Render View Element
+        */
+        render: function() {
+            var attributes = this.model.toJSON();
+            this.$wraperForm.html( this.template(attributes) );
+
+            this.ready();
+        },
+
+        /**
+        * fires libraries js
+        */
+        ready: function () {
+            // to fire plugins
+            if( typeof window.initComponent.initValidator == 'function' )
+                window.initComponent.initValidator();
+
+            if( typeof window.initComponent.initICheck == 'function' )
+                window.initComponent.initICheck();
+
+            if( typeof window.initComponent.initToUpper == 'function' )
+                window.initComponent.initToUpper();
+                
+            if( typeof window.initComponent.initSpinner == 'function' )
+                window.initComponent.initSpinner();
+        },
+
+        /**
+        * Load spinner on the request
+        */
+        loadSpinner: function (model, xhr, opts) {
+            window.Misc.setSpinner( this.el );
+        },
+
+        /**
+        * response of the server
+        */
+        responseServer: function ( model, resp, opts ) {
+            window.Misc.removeSpinner( this.el );
+
+            if(!_.isUndefined(resp.success)) {
+                // response success or error
+                var text = resp.success ? '' : resp.errors;
+                if( _.isObject( resp.errors ) ) {
+                    text = window.Misc.parseErrors(resp.errors);
+                }
+
+                if( !resp.success ) {
+                    alertify.error(text);
+                    return;
+                }
+
+                window.Misc.redirect( window.Misc.urlFull( Route.route('tipoactivos.index')) );
+            }
+        }
+    });
+
+})(jQuery, this, this.document);
+
+/**
+* Class MainTipoActivoView
+* @author KOI || @dropecamargo
+* @link http://koi-ti.com
+*/
+
+//Global App Backbone
+app || (app = {});
+
+(function ($, window, document, undefined) {
+
+    app.MainTipoActivoView = Backbone.View.extend({
+
+        el: '#tipoactivos-main',
+
+        /**
+        * Constructor Method
+        */
+        initialize : function() {
+
+            this.$tipoactivosSearchTable = this.$('#tipoactivos-search-table');
+            this.$tipoactivosSearchTable.DataTable({
+                dom: "<'row'<'col-sm-4'B><'col-sm-4 text-center'l><'col-sm-4'f>>" +
+                    "<'row'<'col-sm-12'tr>>" +
+                    "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+                processing: true,
+                serverSide: true,
+                language: window.Misc.dataTableES(),
+                ajax: window.Misc.urlFull( Route.route('tipoactivos.index') ),
+                columns: [
+                    { data: 'id', name: 'id' },
+                    { data: 'tipoactivo_nombre', name: 'tipoactivo_nombre' },
+                    { data: 'tipoactivo_activo', name: 'tipoactivo_activo'}
+                ],
+                buttons: [
+                    {
+                        text: '<i class="fa fa-plus"></i> Nuevo tipo de activo',
+                        className: 'btn-sm',
+                        action: function ( e, dt, node, config ) {
+                            window.Misc.redirect( window.Misc.urlFull( Route.route('tipoactivos.create') ) )
+                        }
+                    }
+                ],
+                columnDefs: [
+                    {
+                        targets: 0,
+                        width: '10%',
+                        render: function ( data, type, full, row ) {
+                            return '<a href="'+ window.Misc.urlFull( Route.route('tipoactivos.show', {tipoactivos: full.id }) )  +'">' + data + '</a>';
+                        }
+                    },
+                    {
+                        targets: 2,
+                        width: '10%',
+                        render: function ( data, type, full, row ) {
+                            return parseInt(data) ? 'Si' : 'No';
+                        },
+                    }
+                ]
+            });
+        }
+    });
+
+})(jQuery, this, this.document);
+
+/**
 * Class ContactItemView  of Backbone Router
 * @author KOI || @dropecamargo
 * @link http://koi-ti.com
@@ -34165,175 +35128,6 @@ app || (app = {});
 })(jQuery, this, this.document);
 
 /**
-* Class CreateTipoActivoView  of Backbone Router
-* @author KOI || @dropecamargo
-* @link http://koi-ti.com
-*/
-
-//Global App Backbone
-app || (app = {});
-
-(function ($, window, document, undefined) {
-
-    app.CreateTipoActivoView = Backbone.View.extend({
-
-        el: '#tipoactivo-create',
-        template: _.template( ($('#add-tipoactivo-tpl').html() || '') ),
-        events: {
-            'submit #form-tipoactivo': 'onStore'
-        },
-
-        /**
-        * Constructor Method
-        */
-        initialize : function() {
-            // Attributes
-            this.$wraperForm = this.$('#render-form-tipoactivo');
-
-            // Events
-            this.listenTo( this.model, 'change', this.render );
-            this.listenTo( this.model, 'sync', this.responseServer );
-            this.listenTo( this.model, 'request', this.loadSpinner );
-        },
-
-        /**
-        * Event Create Folder
-        */
-        onStore: function (e) {
-            if (!e.isDefaultPrevented()) {
-                e.preventDefault();
-
-                var data = window.Misc.formToJson( e.target );
-                this.model.save( data, {patch: true, silent: true} );
-            }
-        },
-
-        /*
-        * Render View Element
-        */
-        render: function() {
-            var attributes = this.model.toJSON();
-            this.$wraperForm.html( this.template(attributes) );
-
-            this.ready();
-        },
-
-        /**
-        * fires libraries js
-        */
-        ready: function () {
-            // to fire plugins
-            if( typeof window.initComponent.initValidator == 'function' )
-                window.initComponent.initValidator();
-
-            if( typeof window.initComponent.initICheck == 'function' )
-                window.initComponent.initICheck();
-
-            if( typeof window.initComponent.initToUpper == 'function' )
-                window.initComponent.initToUpper();
-                
-            if( typeof window.initComponent.initSpinner == 'function' )
-                window.initComponent.initSpinner();
-        },
-
-        /**
-        * Load spinner on the request
-        */
-        loadSpinner: function (model, xhr, opts) {
-            window.Misc.setSpinner( this.el );
-        },
-
-        /**
-        * response of the server
-        */
-        responseServer: function ( model, resp, opts ) {
-            window.Misc.removeSpinner( this.el );
-
-            if(!_.isUndefined(resp.success)) {
-                // response success or error
-                var text = resp.success ? '' : resp.errors;
-                if( _.isObject( resp.errors ) ) {
-                    text = window.Misc.parseErrors(resp.errors);
-                }
-
-                if( !resp.success ) {
-                    alertify.error(text);
-                    return;
-                }
-
-                window.Misc.redirect( window.Misc.urlFull( Route.route('tipoactivos.index')) );
-            }
-        }
-    });
-
-})(jQuery, this, this.document);
-
-/**
-* Class MainTipoActivoView
-* @author KOI || @dropecamargo
-* @link http://koi-ti.com
-*/
-
-//Global App Backbone
-app || (app = {});
-
-(function ($, window, document, undefined) {
-
-    app.MainTipoActivoView = Backbone.View.extend({
-
-        el: '#tipoactivos-main',
-
-        /**
-        * Constructor Method
-        */
-        initialize : function() {
-
-            this.$tipoactivosSearchTable = this.$('#tipoactivos-search-table');
-            this.$tipoactivosSearchTable.DataTable({
-                dom: "<'row'<'col-sm-4'B><'col-sm-4 text-center'l><'col-sm-4'f>>" +
-                    "<'row'<'col-sm-12'tr>>" +
-                    "<'row'<'col-sm-5'i><'col-sm-7'p>>",
-                processing: true,
-                serverSide: true,
-                language: window.Misc.dataTableES(),
-                ajax: window.Misc.urlFull( Route.route('tipoactivos.index') ),
-                columns: [
-                    { data: 'id', name: 'id' },
-                    { data: 'tipoactivo_nombre', name: 'tipoactivo_nombre' },
-                    { data: 'tipoactivo_activo', name: 'tipoactivo_activo'}
-                ],
-                buttons: [
-                    {
-                        text: '<i class="fa fa-plus"></i> Nuevo tipo de activo',
-                        className: 'btn-sm',
-                        action: function ( e, dt, node, config ) {
-                            window.Misc.redirect( window.Misc.urlFull( Route.route('tipoactivos.create') ) )
-                        }
-                    }
-                ],
-                columnDefs: [
-                    {
-                        targets: 0,
-                        width: '10%',
-                        render: function ( data, type, full, row ) {
-                            return '<a href="'+ window.Misc.urlFull( Route.route('tipoactivos.show', {tipoactivos: full.id }) )  +'">' + data + '</a>';
-                        }
-                    },
-                    {
-                        targets: 2,
-                        width: '10%',
-                        render: function ( data, type, full, row ) {
-                            return parseInt(data) ? 'Si' : 'No';
-                        },
-                    }
-                ]
-            });
-        }
-    });
-
-})(jQuery, this, this.document);
-
-/**
 * Class CreateTipoGastoView  of Backbone Router
 * @author KOI || @dropecamargo
 * @link http://koi-ti.com
@@ -34841,6 +35635,174 @@ app || (app = {});
 })(jQuery, this, this.document);
 
 /**
+* Class CreateTipoActividadView  of Backbone Router
+* @author KOI || @dropecamargo
+* @link http://koi-ti.com
+*/
+
+//Global App Backbone
+app || (app = {});
+
+(function ($, window, document, undefined) {
+
+    app.CreateTipoActividadView = Backbone.View.extend({
+
+        el: '#tiposactividad-create',
+        template: _.template( ($('#add-tipoactividad-tpl').html() || '') ),
+        events: {
+            'submit #form-tiposactividad': 'onStore'
+        },
+
+        /**
+        * Constructor Method
+        */
+        initialize : function() {
+            // Attributes
+            this.$wraperForm = this.$('#render-form-tipoactividad');
+
+            // Events
+            this.listenTo( this.model, 'change', this.render );
+            this.listenTo( this.model, 'sync', this.responseServer );
+            this.listenTo( this.model, 'request', this.loadSpinner );
+        },
+
+        /**
+        * Event Create Folder
+        */
+        onStore: function (e) {
+            if (!e.isDefaultPrevented()) {
+                e.preventDefault();
+
+                var data = window.Misc.formToJson( e.target );
+                this.model.save( data, {patch: true, silent: true} );
+            }
+        },
+
+        /*
+        * Render View Element
+        */
+        render: function() {
+            var attributes = this.model.toJSON();
+            this.$wraperForm.html( this.template(attributes) );
+
+            this.ready();
+        },
+
+        /**
+        * fires libraries js
+        */
+        ready: function () {
+            // to fire plugins
+            if( typeof window.initComponent.initValidator == 'function' )
+                window.initComponent.initValidator();
+
+            if( typeof window.initComponent.initToUpper == 'function' )
+                window.initComponent.initToUpper();
+
+            if( typeof window.initComponent.initICheck == 'function' )
+                window.initComponent.initICheck();
+        },
+
+        /**
+        * Load spinner on the request
+        */
+        loadSpinner: function (model, xhr, opts) {
+            window.Misc.setSpinner( this.el );
+        },
+
+        /**
+        * response of the server
+        */
+        responseServer: function ( model, resp, opts ) {
+            window.Misc.removeSpinner( this.el );
+
+            if(!_.isUndefined(resp.success)) {
+                // response success or error
+                var text = resp.success ? '' : resp.errors;
+                if( _.isObject( resp.errors ) ) {
+                    text = window.Misc.parseErrors(resp.errors);
+                }
+
+                if( !resp.success ) {
+                    alertify.error(text);
+                    return;
+                }
+
+                window.Misc.redirect( window.Misc.urlFull( Route.route('tiposactividad.index') ) );
+            }
+        }
+    });
+})(jQuery, this, this.document);
+
+/**
+* Class MainTipoActividadView
+* @author KOI || @dropecamargo
+* @link http://koi-ti.com
+*/
+
+//Global App Backbone
+app || (app = {});
+
+(function ($, window, document, undefined) {
+
+    app.MainTipoActividadView = Backbone.View.extend({
+
+        el: '#tiposactividad-main',
+
+        /**
+        * Constructor Method
+        */
+        initialize : function() {
+
+            this.$tiposactividadSearchTable = this.$('#tiposactividad-search-table');
+            this.$tiposactividadSearchTable.DataTable({
+				dom: "<'row'<'col-sm-4'B><'col-sm-4 text-center'l><'col-sm-4'f>>" +
+					"<'row'<'col-sm-12'tr>>" +
+					"<'row'<'col-sm-5'i><'col-sm-7'p>>",
+				processing: true,
+                serverSide: true,
+            	language: window.Misc.dataTableES(),
+                ajax: window.Misc.urlFull( Route.route('tiposactividad.index') ),
+                columns: [
+                    { data: 'tipoactividad_nombre', name: 'tipoactividad_nombre' },
+                    { data: 'tipoactividad_activo', name: 'tipoactividad_activo' },
+                    { data: 'tipoactividad_comercial', name: 'tipoactividad_comercial' },
+                    { data: 'tipoactividad_tecnico', name: 'tipoactividad_tecnico' },
+                    { data: 'tipoactividad_cartera', name: 'tipoactividad_cartera' },
+                ],
+				buttons: [
+					{
+						text: '<i class="fa fa-plus"></i> Nuevo tipo de actividad',
+                        className: 'btn-sm',
+						action: function ( e, dt, node, config ) {
+							window.Misc.redirect( window.Misc.urlFull( Route.route('tiposactividad.create') ) )
+						}
+					}
+				],
+                columnDefs: [
+                    {
+                        targets: 0,
+                        width: '40%',
+                        render: function ( data, type, full, row ) {
+                            return '<a href="'+ window.Misc.urlFull( Route.route('tiposactividad.show', {tiposactividad: full.id }) )  +'">' + data + '</a>';
+                        }
+                    },
+                    {
+                        targets: [1,2,3,4],
+                        width: '15%',
+                        render: function ( data, type, full, row ) {
+                            return parseInt(data) ? 'Si' : 'No';
+                        },
+
+                    }
+                ]
+			});
+        }
+    });
+
+})(jQuery, this, this.document);
+
+/**
 * Class CreateTipoProveedorView  of Backbone Router
 * @author KOI || @dropecamargo
 * @link http://koi-ti.com
@@ -35004,174 +35966,6 @@ app || (app = {});
                     }
                 ]
             });
-        }
-    });
-
-})(jQuery, this, this.document);
-
-/**
-* Class CreateTipoActividadView  of Backbone Router
-* @author KOI || @dropecamargo
-* @link http://koi-ti.com
-*/
-
-//Global App Backbone
-app || (app = {});
-
-(function ($, window, document, undefined) {
-
-    app.CreateTipoActividadView = Backbone.View.extend({
-
-        el: '#tiposactividad-create',
-        template: _.template( ($('#add-tipoactividad-tpl').html() || '') ),
-        events: {
-            'submit #form-tiposactividad': 'onStore'
-        },
-
-        /**
-        * Constructor Method
-        */
-        initialize : function() {
-            // Attributes
-            this.$wraperForm = this.$('#render-form-tipoactividad');
-
-            // Events
-            this.listenTo( this.model, 'change', this.render );
-            this.listenTo( this.model, 'sync', this.responseServer );
-            this.listenTo( this.model, 'request', this.loadSpinner );
-        },
-
-        /**
-        * Event Create Folder
-        */
-        onStore: function (e) {
-            if (!e.isDefaultPrevented()) {
-                e.preventDefault();
-
-                var data = window.Misc.formToJson( e.target );
-                this.model.save( data, {patch: true, silent: true} );
-            }
-        },
-
-        /*
-        * Render View Element
-        */
-        render: function() {
-            var attributes = this.model.toJSON();
-            this.$wraperForm.html( this.template(attributes) );
-
-            this.ready();
-        },
-
-        /**
-        * fires libraries js
-        */
-        ready: function () {
-            // to fire plugins
-            if( typeof window.initComponent.initValidator == 'function' )
-                window.initComponent.initValidator();
-
-            if( typeof window.initComponent.initToUpper == 'function' )
-                window.initComponent.initToUpper();
-
-            if( typeof window.initComponent.initICheck == 'function' )
-                window.initComponent.initICheck();
-        },
-
-        /**
-        * Load spinner on the request
-        */
-        loadSpinner: function (model, xhr, opts) {
-            window.Misc.setSpinner( this.el );
-        },
-
-        /**
-        * response of the server
-        */
-        responseServer: function ( model, resp, opts ) {
-            window.Misc.removeSpinner( this.el );
-
-            if(!_.isUndefined(resp.success)) {
-                // response success or error
-                var text = resp.success ? '' : resp.errors;
-                if( _.isObject( resp.errors ) ) {
-                    text = window.Misc.parseErrors(resp.errors);
-                }
-
-                if( !resp.success ) {
-                    alertify.error(text);
-                    return;
-                }
-
-                window.Misc.redirect( window.Misc.urlFull( Route.route('tiposactividad.index') ) );
-            }
-        }
-    });
-})(jQuery, this, this.document);
-
-/**
-* Class MainTipoActividadView
-* @author KOI || @dropecamargo
-* @link http://koi-ti.com
-*/
-
-//Global App Backbone
-app || (app = {});
-
-(function ($, window, document, undefined) {
-
-    app.MainTipoActividadView = Backbone.View.extend({
-
-        el: '#tiposactividad-main',
-
-        /**
-        * Constructor Method
-        */
-        initialize : function() {
-
-            this.$tiposactividadSearchTable = this.$('#tiposactividad-search-table');
-            this.$tiposactividadSearchTable.DataTable({
-				dom: "<'row'<'col-sm-4'B><'col-sm-4 text-center'l><'col-sm-4'f>>" +
-					"<'row'<'col-sm-12'tr>>" +
-					"<'row'<'col-sm-5'i><'col-sm-7'p>>",
-				processing: true,
-                serverSide: true,
-            	language: window.Misc.dataTableES(),
-                ajax: window.Misc.urlFull( Route.route('tiposactividad.index') ),
-                columns: [
-                    { data: 'tipoactividad_nombre', name: 'tipoactividad_nombre' },
-                    { data: 'tipoactividad_activo', name: 'tipoactividad_activo' },
-                    { data: 'tipoactividad_comercial', name: 'tipoactividad_comercial' },
-                    { data: 'tipoactividad_tecnico', name: 'tipoactividad_tecnico' },
-                    { data: 'tipoactividad_cartera', name: 'tipoactividad_cartera' },
-                ],
-				buttons: [
-					{
-						text: '<i class="fa fa-plus"></i> Nuevo tipo de actividad',
-                        className: 'btn-sm',
-						action: function ( e, dt, node, config ) {
-							window.Misc.redirect( window.Misc.urlFull( Route.route('tiposactividad.create') ) )
-						}
-					}
-				],
-                columnDefs: [
-                    {
-                        targets: 0,
-                        width: '40%',
-                        render: function ( data, type, full, row ) {
-                            return '<a href="'+ window.Misc.urlFull( Route.route('tiposactividad.show', {tiposactividad: full.id }) )  +'">' + data + '</a>';
-                        }
-                    },
-                    {
-                        targets: [1,2,3,4],
-                        width: '15%',
-                        render: function ( data, type, full, row ) {
-                            return parseInt(data) ? 'Si' : 'No';
-                        },
-
-                    }
-                ]
-			});
         }
     });
 
@@ -37834,7 +38628,7 @@ app || (app = {});
 
             absolute: false,
             rootUrl: 'http://localhost',
-            routes : [{"host":null,"methods":["POST"],"uri":"auth\/login","name":"auth.login","action":"App\Http\Controllers\Auth\AuthController@postLogin"},{"host":null,"methods":["GET","HEAD"],"uri":"auth\/logout","name":"auth.logout","action":"App\Http\Controllers\Auth\AuthController@getLogout"},{"host":null,"methods":["GET","HEAD"],"uri":"auth\/integrate","name":"auth.integrate","action":"App\Http\Controllers\Auth\AuthController@integrate"},{"host":null,"methods":["GET","HEAD"],"uri":"login","name":"login","action":"App\Http\Controllers\Auth\AuthController@getLogin"},{"host":null,"methods":["GET","HEAD"],"uri":"\/","name":"dashboard","action":"App\Http\Controllers\HomeController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"terceros\/dv","name":"terceros.dv","action":"App\Http\Controllers\Admin\TerceroController@dv"},{"host":null,"methods":["GET","HEAD"],"uri":"terceros\/rcree","name":"terceros.rcree","action":"App\Http\Controllers\Admin\TerceroController@rcree"},{"host":null,"methods":["GET","HEAD"],"uri":"terceros\/search","name":"terceros.search","action":"App\Http\Controllers\Admin\TerceroController@search"},{"host":null,"methods":["POST"],"uri":"terceros\/setpassword","name":"terceros.setpassword","action":"App\Http\Controllers\Admin\TerceroController@setpassword"},{"host":null,"methods":["GET","HEAD"],"uri":"terceros\/contactos","name":"terceros.contactos.index","action":"App\Http\Controllers\Admin\ContactoController@index"},{"host":null,"methods":["POST"],"uri":"terceros\/contactos","name":"terceros.contactos.store","action":"App\Http\Controllers\Admin\ContactoController@store"},{"host":null,"methods":["PUT"],"uri":"terceros\/contactos\/{contactos}","name":"terceros.contactos.update","action":"App\Http\Controllers\Admin\ContactoController@update"},{"host":null,"methods":["PATCH"],"uri":"terceros\/contactos\/{contactos}","name":null,"action":"App\Http\Controllers\Admin\ContactoController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"terceros\/roles","name":"terceros.roles.index","action":"App\Http\Controllers\Admin\UsuarioRolController@index"},{"host":null,"methods":["POST"],"uri":"terceros\/roles","name":"terceros.roles.store","action":"App\Http\Controllers\Admin\UsuarioRolController@store"},{"host":null,"methods":["DELETE"],"uri":"terceros\/roles\/{roles}","name":"terceros.roles.destroy","action":"App\Http\Controllers\Admin\UsuarioRolController@destroy"},{"host":null,"methods":["GET","HEAD"],"uri":"empresa","name":"empresa.index","action":"App\Http\Controllers\Admin\EmpresaController@index"},{"host":null,"methods":["PUT"],"uri":"empresa\/{empresa}","name":"empresa.update","action":"App\Http\Controllers\Admin\EmpresaController@update"},{"host":null,"methods":["PATCH"],"uri":"empresa\/{empresa}","name":null,"action":"App\Http\Controllers\Admin\EmpresaController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"terceros","name":"terceros.index","action":"App\Http\Controllers\Admin\TerceroController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"terceros\/create","name":"terceros.create","action":"App\Http\Controllers\Admin\TerceroController@create"},{"host":null,"methods":["POST"],"uri":"terceros","name":"terceros.store","action":"App\Http\Controllers\Admin\TerceroController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"terceros\/{terceros}","name":"terceros.show","action":"App\Http\Controllers\Admin\TerceroController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"terceros\/{terceros}\/edit","name":"terceros.edit","action":"App\Http\Controllers\Admin\TerceroController@edit"},{"host":null,"methods":["PUT"],"uri":"terceros\/{terceros}","name":"terceros.update","action":"App\Http\Controllers\Admin\TerceroController@update"},{"host":null,"methods":["PATCH"],"uri":"terceros\/{terceros}","name":null,"action":"App\Http\Controllers\Admin\TerceroController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"actividades","name":"actividades.index","action":"App\Http\Controllers\Admin\ActividadController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"actividades\/create","name":"actividades.create","action":"App\Http\Controllers\Admin\ActividadController@create"},{"host":null,"methods":["POST"],"uri":"actividades","name":"actividades.store","action":"App\Http\Controllers\Admin\ActividadController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"actividades\/{actividades}","name":"actividades.show","action":"App\Http\Controllers\Admin\ActividadController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"actividades\/{actividades}\/edit","name":"actividades.edit","action":"App\Http\Controllers\Admin\ActividadController@edit"},{"host":null,"methods":["PUT"],"uri":"actividades\/{actividades}","name":"actividades.update","action":"App\Http\Controllers\Admin\ActividadController@update"},{"host":null,"methods":["PATCH"],"uri":"actividades\/{actividades}","name":null,"action":"App\Http\Controllers\Admin\ActividadController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"departamentos","name":"departamentos.index","action":"App\Http\Controllers\Admin\DepartamentoController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"departamentos\/{departamentos}","name":"departamentos.show","action":"App\Http\Controllers\Admin\DepartamentoController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"municipios","name":"municipios.index","action":"App\Http\Controllers\Admin\MunicipioController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"paises","name":"paises.index","action":"App\Http\Controllers\Admin\PaisController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"sucursales","name":"sucursales.index","action":"App\Http\Controllers\Admin\SucursalController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"sucursales\/create","name":"sucursales.create","action":"App\Http\Controllers\Admin\SucursalController@create"},{"host":null,"methods":["POST"],"uri":"sucursales","name":"sucursales.store","action":"App\Http\Controllers\Admin\SucursalController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"sucursales\/{sucursales}","name":"sucursales.show","action":"App\Http\Controllers\Admin\SucursalController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"sucursales\/{sucursales}\/edit","name":"sucursales.edit","action":"App\Http\Controllers\Admin\SucursalController@edit"},{"host":null,"methods":["PUT"],"uri":"sucursales\/{sucursales}","name":"sucursales.update","action":"App\Http\Controllers\Admin\SucursalController@update"},{"host":null,"methods":["PATCH"],"uri":"sucursales\/{sucursales}","name":null,"action":"App\Http\Controllers\Admin\SucursalController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"ubicaciones","name":"ubicaciones.index","action":"App\Http\Controllers\Admin\UbicacionController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"ubicaciones\/create","name":"ubicaciones.create","action":"App\Http\Controllers\Admin\UbicacionController@create"},{"host":null,"methods":["POST"],"uri":"ubicaciones","name":"ubicaciones.store","action":"App\Http\Controllers\Admin\UbicacionController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"ubicaciones\/{ubicaciones}","name":"ubicaciones.show","action":"App\Http\Controllers\Admin\UbicacionController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"ubicaciones\/{ubicaciones}\/edit","name":"ubicaciones.edit","action":"App\Http\Controllers\Admin\UbicacionController@edit"},{"host":null,"methods":["PUT"],"uri":"ubicaciones\/{ubicaciones}","name":"ubicaciones.update","action":"App\Http\Controllers\Admin\UbicacionController@update"},{"host":null,"methods":["PATCH"],"uri":"ubicaciones\/{ubicaciones}","name":null,"action":"App\Http\Controllers\Admin\UbicacionController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"notificaciones","name":"notificaciones.index","action":"App\Http\Controllers\Admin\NotificacionController@index"},{"host":null,"methods":["PUT"],"uri":"notificaciones\/{notificaciones}","name":"notificaciones.update","action":"App\Http\Controllers\Admin\NotificacionController@update"},{"host":null,"methods":["PATCH"],"uri":"notificaciones\/{notificaciones}","name":null,"action":"App\Http\Controllers\Admin\NotificacionController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"regionales","name":"regionales.index","action":"App\Http\Controllers\Admin\RegionalController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"regionales\/create","name":"regionales.create","action":"App\Http\Controllers\Admin\RegionalController@create"},{"host":null,"methods":["POST"],"uri":"regionales","name":"regionales.store","action":"App\Http\Controllers\Admin\RegionalController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"regionales\/{regionales}","name":"regionales.show","action":"App\Http\Controllers\Admin\RegionalController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"regionales\/{regionales}\/edit","name":"regionales.edit","action":"App\Http\Controllers\Admin\RegionalController@edit"},{"host":null,"methods":["PUT"],"uri":"regionales\/{regionales}","name":"regionales.update","action":"App\Http\Controllers\Admin\RegionalController@update"},{"host":null,"methods":["PATCH"],"uri":"regionales\/{regionales}","name":null,"action":"App\Http\Controllers\Admin\RegionalController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"puntosventa","name":"puntosventa.index","action":"App\Http\Controllers\Admin\PuntoVentaController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"puntosventa\/create","name":"puntosventa.create","action":"App\Http\Controllers\Admin\PuntoVentaController@create"},{"host":null,"methods":["POST"],"uri":"puntosventa","name":"puntosventa.store","action":"App\Http\Controllers\Admin\PuntoVentaController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"puntosventa\/{puntosventa}","name":"puntosventa.show","action":"App\Http\Controllers\Admin\PuntoVentaController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"puntosventa\/{puntosventa}\/edit","name":"puntosventa.edit","action":"App\Http\Controllers\Admin\PuntoVentaController@edit"},{"host":null,"methods":["PUT"],"uri":"puntosventa\/{puntosventa}","name":"puntosventa.update","action":"App\Http\Controllers\Admin\PuntoVentaController@update"},{"host":null,"methods":["PATCH"],"uri":"puntosventa\/{puntosventa}","name":null,"action":"App\Http\Controllers\Admin\PuntoVentaController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"tiposactividad","name":"tiposactividad.index","action":"App\Http\Controllers\Admin\TipoActividadController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"tiposactividad\/create","name":"tiposactividad.create","action":"App\Http\Controllers\Admin\TipoActividadController@create"},{"host":null,"methods":["POST"],"uri":"tiposactividad","name":"tiposactividad.store","action":"App\Http\Controllers\Admin\TipoActividadController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"tiposactividad\/{tiposactividad}","name":"tiposactividad.show","action":"App\Http\Controllers\Admin\TipoActividadController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"tiposactividad\/{tiposactividad}\/edit","name":"tiposactividad.edit","action":"App\Http\Controllers\Admin\TipoActividadController@edit"},{"host":null,"methods":["PUT"],"uri":"tiposactividad\/{tiposactividad}","name":"tiposactividad.update","action":"App\Http\Controllers\Admin\TipoActividadController@update"},{"host":null,"methods":["PATCH"],"uri":"tiposactividad\/{tiposactividad}","name":null,"action":"App\Http\Controllers\Admin\TipoActividadController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"bitacoras","name":"bitacoras.index","action":"App\Http\Controllers\Admin\BitacoraController@index"},{"host":null,"methods":["POST"],"uri":"documento\/evaluate","name":"documento.evaluate","action":"App\Http\Controllers\Admin\DocumentosController@evaluate"},{"host":null,"methods":["GET","HEAD"],"uri":"documento","name":"documento.index","action":"App\Http\Controllers\Admin\DocumentosController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"documento\/create","name":"documento.create","action":"App\Http\Controllers\Admin\DocumentosController@create"},{"host":null,"methods":["POST"],"uri":"documento","name":"documento.store","action":"App\Http\Controllers\Admin\DocumentosController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"documento\/{documento}","name":"documento.show","action":"App\Http\Controllers\Admin\DocumentosController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"documento\/{documento}\/edit","name":"documento.edit","action":"App\Http\Controllers\Admin\DocumentosController@edit"},{"host":null,"methods":["PUT"],"uri":"documento\/{documento}","name":"documento.update","action":"App\Http\Controllers\Admin\DocumentosController@update"},{"host":null,"methods":["PATCH"],"uri":"documento\/{documento}","name":null,"action":"App\Http\Controllers\Admin\DocumentosController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"roles\/permisos","name":"roles.permisos.index","action":"App\Http\Controllers\Admin\PermisoRolController@index"},{"host":null,"methods":["PUT"],"uri":"roles\/permisos\/{permisos}","name":"roles.permisos.update","action":"App\Http\Controllers\Admin\PermisoRolController@update"},{"host":null,"methods":["PATCH"],"uri":"roles\/permisos\/{permisos}","name":null,"action":"App\Http\Controllers\Admin\PermisoRolController@update"},{"host":null,"methods":["DELETE"],"uri":"roles\/permisos\/{permisos}","name":"roles.permisos.destroy","action":"App\Http\Controllers\Admin\PermisoRolController@destroy"},{"host":null,"methods":["GET","HEAD"],"uri":"roles","name":"roles.index","action":"App\Http\Controllers\Admin\RolController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"roles\/create","name":"roles.create","action":"App\Http\Controllers\Admin\RolController@create"},{"host":null,"methods":["POST"],"uri":"roles","name":"roles.store","action":"App\Http\Controllers\Admin\RolController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"roles\/{roles}","name":"roles.show","action":"App\Http\Controllers\Admin\RolController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"roles\/{roles}\/edit","name":"roles.edit","action":"App\Http\Controllers\Admin\RolController@edit"},{"host":null,"methods":["PUT"],"uri":"roles\/{roles}","name":"roles.update","action":"App\Http\Controllers\Admin\RolController@update"},{"host":null,"methods":["PATCH"],"uri":"roles\/{roles}","name":null,"action":"App\Http\Controllers\Admin\RolController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"permisos","name":"permisos.index","action":"App\Http\Controllers\Admin\PermisoController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"modulos","name":"modulos.index","action":"App\Http\Controllers\Admin\ModuloController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"pedidosc\/detalle","name":"pedidosc.detalle.index","action":"App\Http\Controllers\Comercial\DetallePedidoController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"pedidosc\/detalle\/create","name":"pedidosc.detalle.create","action":"App\Http\Controllers\Comercial\DetallePedidoController@create"},{"host":null,"methods":["POST"],"uri":"pedidosc\/detalle","name":"pedidosc.detalle.store","action":"App\Http\Controllers\Comercial\DetallePedidoController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"pedidosc\/detalle\/{detalle}","name":"pedidosc.detalle.show","action":"App\Http\Controllers\Comercial\DetallePedidoController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"pedidosc\/detalle\/{detalle}\/edit","name":"pedidosc.detalle.edit","action":"App\Http\Controllers\Comercial\DetallePedidoController@edit"},{"host":null,"methods":["PUT"],"uri":"pedidosc\/detalle\/{detalle}","name":"pedidosc.detalle.update","action":"App\Http\Controllers\Comercial\DetallePedidoController@update"},{"host":null,"methods":["PATCH"],"uri":"pedidosc\/detalle\/{detalle}","name":null,"action":"App\Http\Controllers\Comercial\DetallePedidoController@update"},{"host":null,"methods":["DELETE"],"uri":"pedidosc\/detalle\/{detalle}","name":"pedidosc.detalle.destroy","action":"App\Http\Controllers\Comercial\DetallePedidoController@destroy"},{"host":null,"methods":["GET","HEAD"],"uri":"pedidosc\/anular\/{pedidosc}","name":"pedidosc.anular","action":"App\Http\Controllers\Comercial\PedidoController@anular"},{"host":null,"methods":["GET","HEAD"],"uri":"pedidosc\/exportar\/{pedidosc}","name":"pedidosc.exportar","action":"App\Http\Controllers\Comercial\PedidoController@exportar"},{"host":null,"methods":["GET","HEAD"],"uri":"autorizacionesco","name":"autorizacionesco.index","action":"App\Http\Controllers\Comercial\AutorizaComercialController@index"},{"host":null,"methods":["POST"],"uri":"autorizacionesco","name":"autorizacionesco.store","action":"App\Http\Controllers\Comercial\AutorizaComercialController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"presupuestoasesor","name":"presupuestoasesor.index","action":"App\Http\Controllers\Comercial\PresupuestoAsesorController@index"},{"host":null,"methods":["POST"],"uri":"presupuestoasesor","name":"presupuestoasesor.store","action":"App\Http\Controllers\Comercial\PresupuestoAsesorController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"pedidosc","name":"pedidosc.index","action":"App\Http\Controllers\Comercial\PedidoController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"pedidosc\/create","name":"pedidosc.create","action":"App\Http\Controllers\Comercial\PedidoController@create"},{"host":null,"methods":["POST"],"uri":"pedidosc","name":"pedidosc.store","action":"App\Http\Controllers\Comercial\PedidoController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"pedidosc\/{pedidosc}","name":"pedidosc.show","action":"App\Http\Controllers\Comercial\PedidoController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"pedidosc\/{pedidosc}\/edit","name":"pedidosc.edit","action":"App\Http\Controllers\Comercial\PedidoController@edit"},{"host":null,"methods":["PUT"],"uri":"pedidosc\/{pedidosc}","name":"pedidosc.update","action":"App\Http\Controllers\Comercial\PedidoController@update"},{"host":null,"methods":["PATCH"],"uri":"pedidosc\/{pedidosc}","name":null,"action":"App\Http\Controllers\Comercial\PedidoController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"conceptoscomercial","name":"conceptoscomercial.index","action":"App\Http\Controllers\Comercial\ConceptoComercialController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"conceptoscomercial\/create","name":"conceptoscomercial.create","action":"App\Http\Controllers\Comercial\ConceptoComercialController@create"},{"host":null,"methods":["POST"],"uri":"conceptoscomercial","name":"conceptoscomercial.store","action":"App\Http\Controllers\Comercial\ConceptoComercialController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"conceptoscomercial\/{conceptoscomercial}","name":"conceptoscomercial.show","action":"App\Http\Controllers\Comercial\ConceptoComercialController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"conceptoscomercial\/{conceptoscomercial}\/edit","name":"conceptoscomercial.edit","action":"App\Http\Controllers\Comercial\ConceptoComercialController@edit"},{"host":null,"methods":["PUT"],"uri":"conceptoscomercial\/{conceptoscomercial}","name":"conceptoscomercial.update","action":"App\Http\Controllers\Comercial\ConceptoComercialController@update"},{"host":null,"methods":["PATCH"],"uri":"conceptoscomercial\/{conceptoscomercial}","name":null,"action":"App\Http\Controllers\Comercial\ConceptoComercialController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"gestionescomercial","name":"gestionescomercial.index","action":"App\Http\Controllers\Comercial\GestionComercialController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"gestionescomercial\/create","name":"gestionescomercial.create","action":"App\Http\Controllers\Comercial\GestionComercialController@create"},{"host":null,"methods":["POST"],"uri":"gestionescomercial","name":"gestionescomercial.store","action":"App\Http\Controllers\Comercial\GestionComercialController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"gestionescomercial\/{gestionescomercial}","name":"gestionescomercial.show","action":"App\Http\Controllers\Comercial\GestionComercialController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"gestionescomercial\/{gestionescomercial}\/edit","name":"gestionescomercial.edit","action":"App\Http\Controllers\Comercial\GestionComercialController@edit"},{"host":null,"methods":["PUT"],"uri":"gestionescomercial\/{gestionescomercial}","name":"gestionescomercial.update","action":"App\Http\Controllers\Comercial\GestionComercialController@update"},{"host":null,"methods":["PATCH"],"uri":"gestionescomercial\/{gestionescomercial}","name":null,"action":"App\Http\Controllers\Comercial\GestionComercialController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"configsabana","name":"configsabana.index","action":"App\Http\Controllers\Comercial\ConfigSabanaController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"configsabana\/create","name":"configsabana.create","action":"App\Http\Controllers\Comercial\ConfigSabanaController@create"},{"host":null,"methods":["POST"],"uri":"configsabana","name":"configsabana.store","action":"App\Http\Controllers\Comercial\ConfigSabanaController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"configsabana\/{configsabana}","name":"configsabana.show","action":"App\Http\Controllers\Comercial\ConfigSabanaController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"configsabana\/{configsabana}\/edit","name":"configsabana.edit","action":"App\Http\Controllers\Comercial\ConfigSabanaController@edit"},{"host":null,"methods":["PUT"],"uri":"configsabana\/{configsabana}","name":"configsabana.update","action":"App\Http\Controllers\Comercial\ConfigSabanaController@update"},{"host":null,"methods":["PATCH"],"uri":"configsabana\/{configsabana}","name":null,"action":"App\Http\Controllers\Comercial\ConfigSabanaController@update"},{"host":null,"methods":["DELETE"],"uri":"configsabana\/{configsabana}","name":"configsabana.destroy","action":"App\Http\Controllers\Comercial\ConfigSabanaController@destroy"},{"host":null,"methods":["GET","HEAD"],"uri":"selects\/grupos","name":"configsabana.grupos","action":"App\Http\Controllers\Comercial\ConfigSabanaController@grupos"},{"host":null,"methods":["GET","HEAD"],"uri":"selects\/unificaciones","name":"configsabana.unificaciones","action":"App\Http\Controllers\Comercial\ConfigSabanaController@unificaciones"},{"host":null,"methods":["GET","HEAD"],"uri":"folders","name":"folders.index","action":"App\Http\Controllers\Contabilidad\FolderController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"folders\/create","name":"folders.create","action":"App\Http\Controllers\Contabilidad\FolderController@create"},{"host":null,"methods":["POST"],"uri":"folders","name":"folders.store","action":"App\Http\Controllers\Contabilidad\FolderController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"folders\/{folders}","name":"folders.show","action":"App\Http\Controllers\Contabilidad\FolderController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"folders\/{folders}\/edit","name":"folders.edit","action":"App\Http\Controllers\Contabilidad\FolderController@edit"},{"host":null,"methods":["PUT"],"uri":"folders\/{folders}","name":"folders.update","action":"App\Http\Controllers\Contabilidad\FolderController@update"},{"host":null,"methods":["PATCH"],"uri":"folders\/{folders}","name":null,"action":"App\Http\Controllers\Contabilidad\FolderController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"centroscosto","name":"centroscosto.index","action":"App\Http\Controllers\Contabilidad\CentroCostoController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"centroscosto\/create","name":"centroscosto.create","action":"App\Http\Controllers\Contabilidad\CentroCostoController@create"},{"host":null,"methods":["POST"],"uri":"centroscosto","name":"centroscosto.store","action":"App\Http\Controllers\Contabilidad\CentroCostoController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"centroscosto\/{centroscosto}","name":"centroscosto.show","action":"App\Http\Controllers\Contabilidad\CentroCostoController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"centroscosto\/{centroscosto}\/edit","name":"centroscosto.edit","action":"App\Http\Controllers\Contabilidad\CentroCostoController@edit"},{"host":null,"methods":["PUT"],"uri":"centroscosto\/{centroscosto}","name":"centroscosto.update","action":"App\Http\Controllers\Contabilidad\CentroCostoController@update"},{"host":null,"methods":["PATCH"],"uri":"centroscosto\/{centroscosto}","name":null,"action":"App\Http\Controllers\Contabilidad\CentroCostoController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"tipoactivos","name":"tipoactivos.index","action":"App\Http\Controllers\Contabilidad\TipoActivoController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"tipoactivos\/create","name":"tipoactivos.create","action":"App\Http\Controllers\Contabilidad\TipoActivoController@create"},{"host":null,"methods":["POST"],"uri":"tipoactivos","name":"tipoactivos.store","action":"App\Http\Controllers\Contabilidad\TipoActivoController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"tipoactivos\/{tipoactivos}","name":"tipoactivos.show","action":"App\Http\Controllers\Contabilidad\TipoActivoController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"tipoactivos\/{tipoactivos}\/edit","name":"tipoactivos.edit","action":"App\Http\Controllers\Contabilidad\TipoActivoController@edit"},{"host":null,"methods":["PUT"],"uri":"tipoactivos\/{tipoactivos}","name":"tipoactivos.update","action":"App\Http\Controllers\Contabilidad\TipoActivoController@update"},{"host":null,"methods":["PATCH"],"uri":"tipoactivos\/{tipoactivos}","name":null,"action":"App\Http\Controllers\Contabilidad\TipoActivoController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"activosfijos","name":"activosfijos.index","action":"App\Http\Controllers\Contabilidad\ActivoFijoController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"activosfijos\/create","name":"activosfijos.create","action":"App\Http\Controllers\Contabilidad\ActivoFijoController@create"},{"host":null,"methods":["POST"],"uri":"activosfijos","name":"activosfijos.store","action":"App\Http\Controllers\Contabilidad\ActivoFijoController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"activosfijos\/{activosfijos}","name":"activosfijos.show","action":"App\Http\Controllers\Contabilidad\ActivoFijoController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"activosfijos\/{activosfijos}\/edit","name":"activosfijos.edit","action":"App\Http\Controllers\Contabilidad\ActivoFijoController@edit"},{"host":null,"methods":["PUT"],"uri":"activosfijos\/{activosfijos}","name":"activosfijos.update","action":"App\Http\Controllers\Contabilidad\ActivoFijoController@update"},{"host":null,"methods":["PATCH"],"uri":"activosfijos\/{activosfijos}","name":null,"action":"App\Http\Controllers\Contabilidad\ActivoFijoController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"plancuentas\/nivel","name":"plancuentas.nivel","action":"App\Http\Controllers\Contabilidad\PlanCuentasController@nivel"},{"host":null,"methods":["GET","HEAD"],"uri":"plancuentas\/search","name":"plancuentas.search","action":"App\Http\Controllers\Contabilidad\PlanCuentasController@search"},{"host":null,"methods":["GET","HEAD"],"uri":"plancuentas","name":"plancuentas.index","action":"App\Http\Controllers\Contabilidad\PlanCuentasController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"plancuentas\/create","name":"plancuentas.create","action":"App\Http\Controllers\Contabilidad\PlanCuentasController@create"},{"host":null,"methods":["POST"],"uri":"plancuentas","name":"plancuentas.store","action":"App\Http\Controllers\Contabilidad\PlanCuentasController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"plancuentas\/{plancuentas}","name":"plancuentas.show","action":"App\Http\Controllers\Contabilidad\PlanCuentasController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"plancuentas\/{plancuentas}\/edit","name":"plancuentas.edit","action":"App\Http\Controllers\Contabilidad\PlanCuentasController@edit"},{"host":null,"methods":["PUT"],"uri":"plancuentas\/{plancuentas}","name":"plancuentas.update","action":"App\Http\Controllers\Contabilidad\PlanCuentasController@update"},{"host":null,"methods":["PATCH"],"uri":"plancuentas\/{plancuentas}","name":null,"action":"App\Http\Controllers\Contabilidad\PlanCuentasController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"plancuentasnif\/nivel","name":"plancuentasnif.nivel","action":"App\Http\Controllers\Contabilidad\PlanCuentasNifController@nivel"},{"host":null,"methods":["GET","HEAD"],"uri":"plancuentasnif\/search","name":"plancuentasnif.search","action":"App\Http\Controllers\Contabilidad\PlanCuentasNifController@search"},{"host":null,"methods":["GET","HEAD"],"uri":"plancuentasnif","name":"plancuentasnif.index","action":"App\Http\Controllers\Contabilidad\PlanCuentasNifController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"plancuentasnif\/create","name":"plancuentasnif.create","action":"App\Http\Controllers\Contabilidad\PlanCuentasNifController@create"},{"host":null,"methods":["POST"],"uri":"plancuentasnif","name":"plancuentasnif.store","action":"App\Http\Controllers\Contabilidad\PlanCuentasNifController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"plancuentasnif\/{plancuentasnif}","name":"plancuentasnif.show","action":"App\Http\Controllers\Contabilidad\PlanCuentasNifController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"plancuentasnif\/{plancuentasnif}\/edit","name":"plancuentasnif.edit","action":"App\Http\Controllers\Contabilidad\PlanCuentasNifController@edit"},{"host":null,"methods":["PUT"],"uri":"plancuentasnif\/{plancuentasnif}","name":"plancuentasnif.update","action":"App\Http\Controllers\Contabilidad\PlanCuentasNifController@update"},{"host":null,"methods":["PATCH"],"uri":"plancuentasnif\/{plancuentasnif}","name":null,"action":"App\Http\Controllers\Contabilidad\PlanCuentasNifController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"documentos\/filter","name":"documentos.filter","action":"App\Http\Controllers\Contabilidad\DocumentoController@filter"},{"host":null,"methods":["GET","HEAD"],"uri":"documentos","name":"documentos.index","action":"App\Http\Controllers\Contabilidad\DocumentoController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"documentos\/create","name":"documentos.create","action":"App\Http\Controllers\Contabilidad\DocumentoController@create"},{"host":null,"methods":["POST"],"uri":"documentos","name":"documentos.store","action":"App\Http\Controllers\Contabilidad\DocumentoController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"documentos\/{documentos}","name":"documentos.show","action":"App\Http\Controllers\Contabilidad\DocumentoController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"documentos\/{documentos}\/edit","name":"documentos.edit","action":"App\Http\Controllers\Contabilidad\DocumentoController@edit"},{"host":null,"methods":["PUT"],"uri":"documentos\/{documentos}","name":"documentos.update","action":"App\Http\Controllers\Contabilidad\DocumentoController@update"},{"host":null,"methods":["PATCH"],"uri":"documentos\/{documentos}","name":null,"action":"App\Http\Controllers\Contabilidad\DocumentoController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"asientos\/detalle","name":"asientos.detalle.index","action":"App\Http\Controllers\Contabilidad\DetalleAsientoController@index"},{"host":null,"methods":["POST"],"uri":"asientos\/detalle","name":"asientos.detalle.store","action":"App\Http\Controllers\Contabilidad\DetalleAsientoController@store"},{"host":null,"methods":["DELETE"],"uri":"asientos\/detalle\/{detalle}","name":"asientos.detalle.destroy","action":"App\Http\Controllers\Contabilidad\DetalleAsientoController@destroy"},{"host":null,"methods":["GET","HEAD"],"uri":"asientos\/exportar\/{asientos}","name":"asientos.exportar","action":"App\Http\Controllers\Contabilidad\AsientoController@exportar"},{"host":null,"methods":["POST"],"uri":"asientos\/detalle\/evaluate","name":"asientos.detalle.evaluate","action":"App\Http\Controllers\Contabilidad\DetalleAsientoController@evaluate"},{"host":null,"methods":["POST"],"uri":"asientos\/detalle\/validate","name":"asientos.detalle.validate","action":"App\Http\Controllers\Contabilidad\DetalleAsientoController@validation"},{"host":null,"methods":["GET","HEAD"],"uri":"asientos\/detalle\/movimientos","name":"asientos.detalle.movimientos","action":"App\Http\Controllers\Contabilidad\DetalleAsientoController@movimientos"},{"host":null,"methods":["GET","HEAD"],"uri":"asientos","name":"asientos.index","action":"App\Http\Controllers\Contabilidad\AsientoController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"asientos\/create","name":"asientos.create","action":"App\Http\Controllers\Contabilidad\AsientoController@create"},{"host":null,"methods":["POST"],"uri":"asientos","name":"asientos.store","action":"App\Http\Controllers\Contabilidad\AsientoController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"asientos\/{asientos}","name":"asientos.show","action":"App\Http\Controllers\Contabilidad\AsientoController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"asientos\/{asientos}\/edit","name":"asientos.edit","action":"App\Http\Controllers\Contabilidad\AsientoController@edit"},{"host":null,"methods":["PUT"],"uri":"asientos\/{asientos}","name":"asientos.update","action":"App\Http\Controllers\Contabilidad\AsientoController@update"},{"host":null,"methods":["PATCH"],"uri":"asientos\/{asientos}","name":null,"action":"App\Http\Controllers\Contabilidad\AsientoController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"asientosnif\/detalle","name":"asientosnif.detalle.index","action":"App\Http\Controllers\Contabilidad\DetalleAsientoNifController@index"},{"host":null,"methods":["POST"],"uri":"asientosnif\/detalle","name":"asientosnif.detalle.store","action":"App\Http\Controllers\Contabilidad\DetalleAsientoNifController@store"},{"host":null,"methods":["DELETE"],"uri":"asientosnif\/detalle\/{detalle}","name":"asientosnif.detalle.destroy","action":"App\Http\Controllers\Contabilidad\DetalleAsientoNifController@destroy"},{"host":null,"methods":["GET","HEAD"],"uri":"asientosnif\/exportar\/{asientosnif}","name":"asientosnif.exportar","action":"App\Http\Controllers\Contabilidad\AsientoNifController@exportar"},{"host":null,"methods":["POST"],"uri":"asientosnif\/detalle\/evaluate","name":"asientosnif.detalle.evaluate","action":"App\Http\Controllers\Contabilidad\DetalleAsientoNifController@evaluate"},{"host":null,"methods":["POST"],"uri":"asientosnif\/detalle\/validate","name":"asientosnif.detalle.validate","action":"App\Http\Controllers\Contabilidad\DetalleAsientoNifController@validation"},{"host":null,"methods":["GET","HEAD"],"uri":"asientosnif\/detalle\/movimientos","name":"asientosnif.detalle.movimientos","action":"App\Http\Controllers\Contabilidad\DetalleAsientoNifController@movimientos"},{"host":null,"methods":["GET","HEAD"],"uri":"asientosnif","name":"asientosnif.index","action":"App\Http\Controllers\Contabilidad\AsientoNifController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"asientosnif\/{asientosnif}","name":"asientosnif.show","action":"App\Http\Controllers\Contabilidad\AsientoNifController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"asientosnif\/{asientosnif}\/edit","name":"asientosnif.edit","action":"App\Http\Controllers\Contabilidad\AsientoNifController@edit"},{"host":null,"methods":["PUT"],"uri":"asientosnif\/{asientosnif}","name":"asientosnif.update","action":"App\Http\Controllers\Contabilidad\AsientoNifController@update"},{"host":null,"methods":["PATCH"],"uri":"asientosnif\/{asientosnif}","name":null,"action":"App\Http\Controllers\Contabilidad\AsientoNifController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"reglasasientos","name":"reglasasientos.index","action":"App\Http\Controllers\Contabilidad\ReglaAsientoController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"reglasasientos\/create","name":"reglasasientos.create","action":"App\Http\Controllers\Contabilidad\ReglaAsientoController@create"},{"host":null,"methods":["POST"],"uri":"reglasasientos","name":"reglasasientos.store","action":"App\Http\Controllers\Contabilidad\ReglaAsientoController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"reglasasientos\/{reglasasientos}","name":"reglasasientos.show","action":"App\Http\Controllers\Contabilidad\ReglaAsientoController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"reglasasientos\/{reglasasientos}\/edit","name":"reglasasientos.edit","action":"App\Http\Controllers\Contabilidad\ReglaAsientoController@edit"},{"host":null,"methods":["PUT"],"uri":"reglasasientos\/{reglasasientos}","name":"reglasasientos.update","action":"App\Http\Controllers\Contabilidad\ReglaAsientoController@update"},{"host":null,"methods":["PATCH"],"uri":"reglasasientos\/{reglasasientos}","name":null,"action":"App\Http\Controllers\Contabilidad\ReglaAsientoController@update"},{"host":null,"methods":["DELETE"],"uri":"reglasasientos\/{reglasasientos}","name":"reglasasientos.destroy","action":"App\Http\Controllers\Contabilidad\ReglaAsientoController@destroy"},{"host":null,"methods":["GET","HEAD"],"uri":"productos\/search","name":"productos.search","action":"App\Http\Controllers\Inventario\ProductoController@search"},{"host":null,"methods":["GET","HEAD"],"uri":"productos\/rollos","name":"productos.rollos.index","action":"App\Http\Controllers\Inventario\RolloController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"productos\/lotes","name":"productos.lotes.index","action":"App\Http\Controllers\Inventario\LoteController@index"},{"host":null,"methods":["POST"],"uri":"productos\/evaluate","name":"productos.evaluate","action":"App\Http\Controllers\Inventario\ProductoController@evaluate"},{"host":null,"methods":["POST"],"uri":"productos\/validate","name":"productos.validate","action":"App\Http\Controllers\Inventario\ProductoController@validation"},{"host":null,"methods":["PUT"],"uri":"productos\/machine","name":"productos.machine","action":"App\Http\Controllers\Inventario\ProductoController@machine"},{"host":null,"methods":["POST"],"uri":"productos\/storeserie","name":"productos.storeserie","action":"App\Http\Controllers\Inventario\ProductoController@storeserie"},{"host":null,"methods":["GET","HEAD"],"uri":"productos\/prodbode","name":"productos.prodbode.index","action":"App\Http\Controllers\Inventario\ProdbodeController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"productos\/referencia","name":"productos.referencia","action":"App\Http\Controllers\Inventario\ProductoController@referencia"},{"host":null,"methods":["GET","HEAD"],"uri":"pedidos\/detalle","name":"pedidos.detalle.index","action":"App\Http\Controllers\Inventario\DetallePedidoController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"pedidos\/detalle\/create","name":"pedidos.detalle.create","action":"App\Http\Controllers\Inventario\DetallePedidoController@create"},{"host":null,"methods":["POST"],"uri":"pedidos\/detalle","name":"pedidos.detalle.store","action":"App\Http\Controllers\Inventario\DetallePedidoController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"pedidos\/detalle\/{detalle}","name":"pedidos.detalle.show","action":"App\Http\Controllers\Inventario\DetallePedidoController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"pedidos\/detalle\/{detalle}\/edit","name":"pedidos.detalle.edit","action":"App\Http\Controllers\Inventario\DetallePedidoController@edit"},{"host":null,"methods":["PUT"],"uri":"pedidos\/detalle\/{detalle}","name":"pedidos.detalle.update","action":"App\Http\Controllers\Inventario\DetallePedidoController@update"},{"host":null,"methods":["PATCH"],"uri":"pedidos\/detalle\/{detalle}","name":null,"action":"App\Http\Controllers\Inventario\DetallePedidoController@update"},{"host":null,"methods":["DELETE"],"uri":"pedidos\/detalle\/{detalle}","name":"pedidos.detalle.destroy","action":"App\Http\Controllers\Inventario\DetallePedidoController@destroy"},{"host":null,"methods":["GET","HEAD"],"uri":"pedidos\/cerrar\/{pedidos}","name":"pedidos.cerrar","action":"App\Http\Controllers\Inventario\PedidoController@cerrar"},{"host":null,"methods":["GET","HEAD"],"uri":"pedidos\/anular\/{pedidos}","name":"pedidos.anular","action":"App\Http\Controllers\Inventario\PedidoController@anular"},{"host":null,"methods":["GET","HEAD"],"uri":"ajustes\/detalle","name":"ajustes.detalle.index","action":"App\Http\Controllers\Inventario\DetalleAjusteController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"ajustes\/detalle\/create","name":"ajustes.detalle.create","action":"App\Http\Controllers\Inventario\DetalleAjusteController@create"},{"host":null,"methods":["POST"],"uri":"ajustes\/detalle","name":"ajustes.detalle.store","action":"App\Http\Controllers\Inventario\DetalleAjusteController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"ajustes\/detalle\/{detalle}","name":"ajustes.detalle.show","action":"App\Http\Controllers\Inventario\DetalleAjusteController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"ajustes\/detalle\/{detalle}\/edit","name":"ajustes.detalle.edit","action":"App\Http\Controllers\Inventario\DetalleAjusteController@edit"},{"host":null,"methods":["PUT"],"uri":"ajustes\/detalle\/{detalle}","name":"ajustes.detalle.update","action":"App\Http\Controllers\Inventario\DetalleAjusteController@update"},{"host":null,"methods":["PATCH"],"uri":"ajustes\/detalle\/{detalle}","name":null,"action":"App\Http\Controllers\Inventario\DetalleAjusteController@update"},{"host":null,"methods":["DELETE"],"uri":"ajustes\/detalle\/{detalle}","name":"ajustes.detalle.destroy","action":"App\Http\Controllers\Inventario\DetalleAjusteController@destroy"},{"host":null,"methods":["GET","HEAD"],"uri":"ajustes\/exportar\/{ajustes}","name":"ajustes.exportar","action":"App\Http\Controllers\Inventario\AjusteController@exportar"},{"host":null,"methods":["GET","HEAD"],"uri":"ajustes\/alistar\/{ajustes}","name":"ajustes.alistar","action":"App\Http\Controllers\Inventario\AjusteController@alistar"},{"host":null,"methods":["GET","HEAD"],"uri":"traslados\/detalle","name":"traslados.detalle.index","action":"App\Http\Controllers\Inventario\DetalleTrasladoController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"traslados\/detalle\/create","name":"traslados.detalle.create","action":"App\Http\Controllers\Inventario\DetalleTrasladoController@create"},{"host":null,"methods":["POST"],"uri":"traslados\/detalle","name":"traslados.detalle.store","action":"App\Http\Controllers\Inventario\DetalleTrasladoController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"traslados\/detalle\/{detalle}","name":"traslados.detalle.show","action":"App\Http\Controllers\Inventario\DetalleTrasladoController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"traslados\/detalle\/{detalle}\/edit","name":"traslados.detalle.edit","action":"App\Http\Controllers\Inventario\DetalleTrasladoController@edit"},{"host":null,"methods":["PUT"],"uri":"traslados\/detalle\/{detalle}","name":"traslados.detalle.update","action":"App\Http\Controllers\Inventario\DetalleTrasladoController@update"},{"host":null,"methods":["PATCH"],"uri":"traslados\/detalle\/{detalle}","name":null,"action":"App\Http\Controllers\Inventario\DetalleTrasladoController@update"},{"host":null,"methods":["DELETE"],"uri":"traslados\/detalle\/{detalle}","name":"traslados.detalle.destroy","action":"App\Http\Controllers\Inventario\DetalleTrasladoController@destroy"},{"host":null,"methods":["GET","HEAD"],"uri":"traslados\/exportar\/{traslados}","name":"traslados.exportar","action":"App\Http\Controllers\Inventario\TrasladoController@exportar"},{"host":null,"methods":["GET","HEAD"],"uri":"trasladosubicaciones\/detalle","name":"trasladosubicaciones.detalle.index","action":"App\Http\Controllers\Inventario\DetalleTrasladoUbicacionController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"trasladosubicaciones\/detalle\/create","name":"trasladosubicaciones.detalle.create","action":"App\Http\Controllers\Inventario\DetalleTrasladoUbicacionController@create"},{"host":null,"methods":["POST"],"uri":"trasladosubicaciones\/detalle","name":"trasladosubicaciones.detalle.store","action":"App\Http\Controllers\Inventario\DetalleTrasladoUbicacionController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"trasladosubicaciones\/detalle\/{detalle}","name":"trasladosubicaciones.detalle.show","action":"App\Http\Controllers\Inventario\DetalleTrasladoUbicacionController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"trasladosubicaciones\/detalle\/{detalle}\/edit","name":"trasladosubicaciones.detalle.edit","action":"App\Http\Controllers\Inventario\DetalleTrasladoUbicacionController@edit"},{"host":null,"methods":["PUT"],"uri":"trasladosubicaciones\/detalle\/{detalle}","name":"trasladosubicaciones.detalle.update","action":"App\Http\Controllers\Inventario\DetalleTrasladoUbicacionController@update"},{"host":null,"methods":["PATCH"],"uri":"trasladosubicaciones\/detalle\/{detalle}","name":null,"action":"App\Http\Controllers\Inventario\DetalleTrasladoUbicacionController@update"},{"host":null,"methods":["DELETE"],"uri":"trasladosubicaciones\/detalle\/{detalle}","name":"trasladosubicaciones.detalle.destroy","action":"App\Http\Controllers\Inventario\DetalleTrasladoUbicacionController@destroy"},{"host":null,"methods":["GET","HEAD"],"uri":"trasladosubicaciones\/exportar\/{trasladosubicaciones}","name":"trasladosubicaciones.exportar","action":"App\Http\Controllers\Inventario\TrasladoUbicacionController@exportar"},{"host":null,"methods":["GET","HEAD"],"uri":"entradas\/detalle","name":"entradas.detalle.index","action":"App\Http\Controllers\Inventario\EntradaDetalleController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"entradas\/detalle\/create","name":"entradas.detalle.create","action":"App\Http\Controllers\Inventario\EntradaDetalleController@create"},{"host":null,"methods":["POST"],"uri":"entradas\/detalle","name":"entradas.detalle.store","action":"App\Http\Controllers\Inventario\EntradaDetalleController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"entradas\/detalle\/{detalle}","name":"entradas.detalle.show","action":"App\Http\Controllers\Inventario\EntradaDetalleController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"entradas\/detalle\/{detalle}\/edit","name":"entradas.detalle.edit","action":"App\Http\Controllers\Inventario\EntradaDetalleController@edit"},{"host":null,"methods":["PUT"],"uri":"entradas\/detalle\/{detalle}","name":"entradas.detalle.update","action":"App\Http\Controllers\Inventario\EntradaDetalleController@update"},{"host":null,"methods":["PATCH"],"uri":"entradas\/detalle\/{detalle}","name":null,"action":"App\Http\Controllers\Inventario\EntradaDetalleController@update"},{"host":null,"methods":["DELETE"],"uri":"entradas\/detalle\/{detalle}","name":"entradas.detalle.destroy","action":"App\Http\Controllers\Inventario\EntradaDetalleController@destroy"},{"host":null,"methods":["GET","HEAD"],"uri":"tiposajuste\/detalle","name":"tiposajuste.detalle.index","action":"App\Http\Controllers\Inventario\DetalleTipoAjusteController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"tiposajuste\/detalle\/create","name":"tiposajuste.detalle.create","action":"App\Http\Controllers\Inventario\DetalleTipoAjusteController@create"},{"host":null,"methods":["POST"],"uri":"tiposajuste\/detalle","name":"tiposajuste.detalle.store","action":"App\Http\Controllers\Inventario\DetalleTipoAjusteController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"tiposajuste\/detalle\/{detalle}","name":"tiposajuste.detalle.show","action":"App\Http\Controllers\Inventario\DetalleTipoAjusteController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"tiposajuste\/detalle\/{detalle}\/edit","name":"tiposajuste.detalle.edit","action":"App\Http\Controllers\Inventario\DetalleTipoAjusteController@edit"},{"host":null,"methods":["PUT"],"uri":"tiposajuste\/detalle\/{detalle}","name":"tiposajuste.detalle.update","action":"App\Http\Controllers\Inventario\DetalleTipoAjusteController@update"},{"host":null,"methods":["PATCH"],"uri":"tiposajuste\/detalle\/{detalle}","name":null,"action":"App\Http\Controllers\Inventario\DetalleTipoAjusteController@update"},{"host":null,"methods":["DELETE"],"uri":"tiposajuste\/detalle\/{detalle}","name":"tiposajuste.detalle.destroy","action":"App\Http\Controllers\Inventario\DetalleTipoAjusteController@destroy"},{"host":null,"methods":["GET","HEAD"],"uri":"modelos","name":"modelos.index","action":"App\Http\Controllers\Inventario\ModeloController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"modelos\/create","name":"modelos.create","action":"App\Http\Controllers\Inventario\ModeloController@create"},{"host":null,"methods":["POST"],"uri":"modelos","name":"modelos.store","action":"App\Http\Controllers\Inventario\ModeloController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"modelos\/{modelos}","name":"modelos.show","action":"App\Http\Controllers\Inventario\ModeloController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"modelos\/{modelos}\/edit","name":"modelos.edit","action":"App\Http\Controllers\Inventario\ModeloController@edit"},{"host":null,"methods":["PUT"],"uri":"modelos\/{modelos}","name":"modelos.update","action":"App\Http\Controllers\Inventario\ModeloController@update"},{"host":null,"methods":["PATCH"],"uri":"modelos\/{modelos}","name":null,"action":"App\Http\Controllers\Inventario\ModeloController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"marcas","name":"marcas.index","action":"App\Http\Controllers\Inventario\MarcaController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"marcas\/create","name":"marcas.create","action":"App\Http\Controllers\Inventario\MarcaController@create"},{"host":null,"methods":["POST"],"uri":"marcas","name":"marcas.store","action":"App\Http\Controllers\Inventario\MarcaController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"marcas\/{marcas}","name":"marcas.show","action":"App\Http\Controllers\Inventario\MarcaController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"marcas\/{marcas}\/edit","name":"marcas.edit","action":"App\Http\Controllers\Inventario\MarcaController@edit"},{"host":null,"methods":["PUT"],"uri":"marcas\/{marcas}","name":"marcas.update","action":"App\Http\Controllers\Inventario\MarcaController@update"},{"host":null,"methods":["PATCH"],"uri":"marcas\/{marcas}","name":null,"action":"App\Http\Controllers\Inventario\MarcaController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"grupos","name":"grupos.index","action":"App\Http\Controllers\Inventario\GrupoController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"grupos\/create","name":"grupos.create","action":"App\Http\Controllers\Inventario\GrupoController@create"},{"host":null,"methods":["POST"],"uri":"grupos","name":"grupos.store","action":"App\Http\Controllers\Inventario\GrupoController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"grupos\/{grupos}","name":"grupos.show","action":"App\Http\Controllers\Inventario\GrupoController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"grupos\/{grupos}\/edit","name":"grupos.edit","action":"App\Http\Controllers\Inventario\GrupoController@edit"},{"host":null,"methods":["PUT"],"uri":"grupos\/{grupos}","name":"grupos.update","action":"App\Http\Controllers\Inventario\GrupoController@update"},{"host":null,"methods":["PATCH"],"uri":"grupos\/{grupos}","name":null,"action":"App\Http\Controllers\Inventario\GrupoController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"impuestos","name":"impuestos.index","action":"App\Http\Controllers\Inventario\ImpuestoController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"impuestos\/create","name":"impuestos.create","action":"App\Http\Controllers\Inventario\ImpuestoController@create"},{"host":null,"methods":["POST"],"uri":"impuestos","name":"impuestos.store","action":"App\Http\Controllers\Inventario\ImpuestoController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"impuestos\/{impuestos}","name":"impuestos.show","action":"App\Http\Controllers\Inventario\ImpuestoController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"impuestos\/{impuestos}\/edit","name":"impuestos.edit","action":"App\Http\Controllers\Inventario\ImpuestoController@edit"},{"host":null,"methods":["PUT"],"uri":"impuestos\/{impuestos}","name":"impuestos.update","action":"App\Http\Controllers\Inventario\ImpuestoController@update"},{"host":null,"methods":["PATCH"],"uri":"impuestos\/{impuestos}","name":null,"action":"App\Http\Controllers\Inventario\ImpuestoController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"pedidos","name":"pedidos.index","action":"App\Http\Controllers\Inventario\PedidoController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"pedidos\/create","name":"pedidos.create","action":"App\Http\Controllers\Inventario\PedidoController@create"},{"host":null,"methods":["POST"],"uri":"pedidos","name":"pedidos.store","action":"App\Http\Controllers\Inventario\PedidoController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"pedidos\/{pedidos}","name":"pedidos.show","action":"App\Http\Controllers\Inventario\PedidoController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"pedidos\/{pedidos}\/edit","name":"pedidos.edit","action":"App\Http\Controllers\Inventario\PedidoController@edit"},{"host":null,"methods":["PUT"],"uri":"pedidos\/{pedidos}","name":"pedidos.update","action":"App\Http\Controllers\Inventario\PedidoController@update"},{"host":null,"methods":["PATCH"],"uri":"pedidos\/{pedidos}","name":null,"action":"App\Http\Controllers\Inventario\PedidoController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"productos","name":"productos.index","action":"App\Http\Controllers\Inventario\ProductoController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"productos\/create","name":"productos.create","action":"App\Http\Controllers\Inventario\ProductoController@create"},{"host":null,"methods":["POST"],"uri":"productos","name":"productos.store","action":"App\Http\Controllers\Inventario\ProductoController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"productos\/{productos}","name":"productos.show","action":"App\Http\Controllers\Inventario\ProductoController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"productos\/{productos}\/edit","name":"productos.edit","action":"App\Http\Controllers\Inventario\ProductoController@edit"},{"host":null,"methods":["PUT"],"uri":"productos\/{productos}","name":"productos.update","action":"App\Http\Controllers\Inventario\ProductoController@update"},{"host":null,"methods":["PATCH"],"uri":"productos\/{productos}","name":null,"action":"App\Http\Controllers\Inventario\ProductoController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"lineas","name":"lineas.index","action":"App\Http\Controllers\Inventario\LineaController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"lineas\/create","name":"lineas.create","action":"App\Http\Controllers\Inventario\LineaController@create"},{"host":null,"methods":["POST"],"uri":"lineas","name":"lineas.store","action":"App\Http\Controllers\Inventario\LineaController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"lineas\/{lineas}","name":"lineas.show","action":"App\Http\Controllers\Inventario\LineaController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"lineas\/{lineas}\/edit","name":"lineas.edit","action":"App\Http\Controllers\Inventario\LineaController@edit"},{"host":null,"methods":["PUT"],"uri":"lineas\/{lineas}","name":"lineas.update","action":"App\Http\Controllers\Inventario\LineaController@update"},{"host":null,"methods":["PATCH"],"uri":"lineas\/{lineas}","name":null,"action":"App\Http\Controllers\Inventario\LineaController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"unidades","name":"unidades.index","action":"App\Http\Controllers\Inventario\UnidadesMedidaController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"unidades\/create","name":"unidades.create","action":"App\Http\Controllers\Inventario\UnidadesMedidaController@create"},{"host":null,"methods":["POST"],"uri":"unidades","name":"unidades.store","action":"App\Http\Controllers\Inventario\UnidadesMedidaController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"unidades\/{unidades}","name":"unidades.show","action":"App\Http\Controllers\Inventario\UnidadesMedidaController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"unidades\/{unidades}\/edit","name":"unidades.edit","action":"App\Http\Controllers\Inventario\UnidadesMedidaController@edit"},{"host":null,"methods":["PUT"],"uri":"unidades\/{unidades}","name":"unidades.update","action":"App\Http\Controllers\Inventario\UnidadesMedidaController@update"},{"host":null,"methods":["PATCH"],"uri":"unidades\/{unidades}","name":null,"action":"App\Http\Controllers\Inventario\UnidadesMedidaController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"ajustes","name":"ajustes.index","action":"App\Http\Controllers\Inventario\AjusteController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"ajustes\/create","name":"ajustes.create","action":"App\Http\Controllers\Inventario\AjusteController@create"},{"host":null,"methods":["POST"],"uri":"ajustes","name":"ajustes.store","action":"App\Http\Controllers\Inventario\AjusteController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"ajustes\/{ajustes}","name":"ajustes.show","action":"App\Http\Controllers\Inventario\AjusteController@show"},{"host":null,"methods":["PUT"],"uri":"ajustes\/{ajustes}","name":"ajustes.update","action":"App\Http\Controllers\Inventario\AjusteController@update"},{"host":null,"methods":["PATCH"],"uri":"ajustes\/{ajustes}","name":null,"action":"App\Http\Controllers\Inventario\AjusteController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"traslados","name":"traslados.index","action":"App\Http\Controllers\Inventario\TrasladoController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"traslados\/create","name":"traslados.create","action":"App\Http\Controllers\Inventario\TrasladoController@create"},{"host":null,"methods":["POST"],"uri":"traslados","name":"traslados.store","action":"App\Http\Controllers\Inventario\TrasladoController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"traslados\/{traslados}","name":"traslados.show","action":"App\Http\Controllers\Inventario\TrasladoController@show"},{"host":null,"methods":["PUT"],"uri":"traslados\/{traslados}","name":"traslados.update","action":"App\Http\Controllers\Inventario\TrasladoController@update"},{"host":null,"methods":["PATCH"],"uri":"traslados\/{traslados}","name":null,"action":"App\Http\Controllers\Inventario\TrasladoController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"trasladosubicaciones","name":"trasladosubicaciones.index","action":"App\Http\Controllers\Inventario\TrasladoUbicacionController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"trasladosubicaciones\/create","name":"trasladosubicaciones.create","action":"App\Http\Controllers\Inventario\TrasladoUbicacionController@create"},{"host":null,"methods":["POST"],"uri":"trasladosubicaciones","name":"trasladosubicaciones.store","action":"App\Http\Controllers\Inventario\TrasladoUbicacionController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"trasladosubicaciones\/{trasladosubicaciones}","name":"trasladosubicaciones.show","action":"App\Http\Controllers\Inventario\TrasladoUbicacionController@show"},{"host":null,"methods":["PUT"],"uri":"trasladosubicaciones\/{trasladosubicaciones}","name":"trasladosubicaciones.update","action":"App\Http\Controllers\Inventario\TrasladoUbicacionController@update"},{"host":null,"methods":["PATCH"],"uri":"trasladosubicaciones\/{trasladosubicaciones}","name":null,"action":"App\Http\Controllers\Inventario\TrasladoUbicacionController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"tiposajuste","name":"tiposajuste.index","action":"App\Http\Controllers\Inventario\TipoAjusteController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"tiposajuste\/create","name":"tiposajuste.create","action":"App\Http\Controllers\Inventario\TipoAjusteController@create"},{"host":null,"methods":["POST"],"uri":"tiposajuste","name":"tiposajuste.store","action":"App\Http\Controllers\Inventario\TipoAjusteController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"tiposajuste\/{tiposajuste}","name":"tiposajuste.show","action":"App\Http\Controllers\Inventario\TipoAjusteController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"tiposajuste\/{tiposajuste}\/edit","name":"tiposajuste.edit","action":"App\Http\Controllers\Inventario\TipoAjusteController@edit"},{"host":null,"methods":["PUT"],"uri":"tiposajuste\/{tiposajuste}","name":"tiposajuste.update","action":"App\Http\Controllers\Inventario\TipoAjusteController@update"},{"host":null,"methods":["PATCH"],"uri":"tiposajuste\/{tiposajuste}","name":null,"action":"App\Http\Controllers\Inventario\TipoAjusteController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"tipostraslados","name":"tipostraslados.index","action":"App\Http\Controllers\Inventario\TipoTrasladoController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"tipostraslados\/create","name":"tipostraslados.create","action":"App\Http\Controllers\Inventario\TipoTrasladoController@create"},{"host":null,"methods":["POST"],"uri":"tipostraslados","name":"tipostraslados.store","action":"App\Http\Controllers\Inventario\TipoTrasladoController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"tipostraslados\/{tipostraslados}","name":"tipostraslados.show","action":"App\Http\Controllers\Inventario\TipoTrasladoController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"tipostraslados\/{tipostraslados}\/edit","name":"tipostraslados.edit","action":"App\Http\Controllers\Inventario\TipoTrasladoController@edit"},{"host":null,"methods":["PUT"],"uri":"tipostraslados\/{tipostraslados}","name":"tipostraslados.update","action":"App\Http\Controllers\Inventario\TipoTrasladoController@update"},{"host":null,"methods":["PATCH"],"uri":"tipostraslados\/{tipostraslados}","name":null,"action":"App\Http\Controllers\Inventario\TipoTrasladoController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"subgrupos","name":"subgrupos.index","action":"App\Http\Controllers\Inventario\SubGrupoController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"subgrupos\/create","name":"subgrupos.create","action":"App\Http\Controllers\Inventario\SubGrupoController@create"},{"host":null,"methods":["POST"],"uri":"subgrupos","name":"subgrupos.store","action":"App\Http\Controllers\Inventario\SubGrupoController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"subgrupos\/{subgrupos}","name":"subgrupos.show","action":"App\Http\Controllers\Inventario\SubGrupoController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"subgrupos\/{subgrupos}\/edit","name":"subgrupos.edit","action":"App\Http\Controllers\Inventario\SubGrupoController@edit"},{"host":null,"methods":["PUT"],"uri":"subgrupos\/{subgrupos}","name":"subgrupos.update","action":"App\Http\Controllers\Inventario\SubGrupoController@update"},{"host":null,"methods":["PATCH"],"uri":"subgrupos\/{subgrupos}","name":null,"action":"App\Http\Controllers\Inventario\SubGrupoController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"servicios","name":"servicios.index","action":"App\Http\Controllers\Inventario\ServicioController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"servicios\/create","name":"servicios.create","action":"App\Http\Controllers\Inventario\ServicioController@create"},{"host":null,"methods":["POST"],"uri":"servicios","name":"servicios.store","action":"App\Http\Controllers\Inventario\ServicioController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"servicios\/{servicios}","name":"servicios.show","action":"App\Http\Controllers\Inventario\ServicioController@show"},{"host":null,"methods":["PUT"],"uri":"servicios\/{servicios}","name":"servicios.update","action":"App\Http\Controllers\Inventario\ServicioController@update"},{"host":null,"methods":["PATCH"],"uri":"servicios\/{servicios}","name":null,"action":"App\Http\Controllers\Inventario\ServicioController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"tiposproducto","name":"tiposproducto.index","action":"App\Http\Controllers\Inventario\TipoProductoController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"tiposproducto\/create","name":"tiposproducto.create","action":"App\Http\Controllers\Inventario\TipoProductoController@create"},{"host":null,"methods":["POST"],"uri":"tiposproducto","name":"tiposproducto.store","action":"App\Http\Controllers\Inventario\TipoProductoController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"tiposproducto\/{tiposproducto}","name":"tiposproducto.show","action":"App\Http\Controllers\Inventario\TipoProductoController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"tiposproducto\/{tiposproducto}\/edit","name":"tiposproducto.edit","action":"App\Http\Controllers\Inventario\TipoProductoController@edit"},{"host":null,"methods":["PUT"],"uri":"tiposproducto\/{tiposproducto}","name":"tiposproducto.update","action":"App\Http\Controllers\Inventario\TipoProductoController@update"},{"host":null,"methods":["PATCH"],"uri":"tiposproducto\/{tiposproducto}","name":null,"action":"App\Http\Controllers\Inventario\TipoProductoController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"recibos\/detalle","name":"recibos.detalle.index","action":"App\Http\Controllers\Cartera\Recibo2Controller@index"},{"host":null,"methods":["GET","HEAD"],"uri":"recibos\/detalle\/create","name":"recibos.detalle.create","action":"App\Http\Controllers\Cartera\Recibo2Controller@create"},{"host":null,"methods":["POST"],"uri":"recibos\/detalle","name":"recibos.detalle.store","action":"App\Http\Controllers\Cartera\Recibo2Controller@store"},{"host":null,"methods":["GET","HEAD"],"uri":"recibos\/detalle\/{detalle}","name":"recibos.detalle.show","action":"App\Http\Controllers\Cartera\Recibo2Controller@show"},{"host":null,"methods":["GET","HEAD"],"uri":"recibos\/detalle\/{detalle}\/edit","name":"recibos.detalle.edit","action":"App\Http\Controllers\Cartera\Recibo2Controller@edit"},{"host":null,"methods":["PUT"],"uri":"recibos\/detalle\/{detalle}","name":"recibos.detalle.update","action":"App\Http\Controllers\Cartera\Recibo2Controller@update"},{"host":null,"methods":["PATCH"],"uri":"recibos\/detalle\/{detalle}","name":null,"action":"App\Http\Controllers\Cartera\Recibo2Controller@update"},{"host":null,"methods":["DELETE"],"uri":"recibos\/detalle\/{detalle}","name":"recibos.detalle.destroy","action":"App\Http\Controllers\Cartera\Recibo2Controller@destroy"},{"host":null,"methods":["GET","HEAD"],"uri":"recibos\/factura","name":"recibos.factura.index","action":"App\Http\Controllers\Cartera\Factura3Controller@index"},{"host":null,"methods":["GET","HEAD"],"uri":"recibos\/factura\/create","name":"recibos.factura.create","action":"App\Http\Controllers\Cartera\Factura3Controller@create"},{"host":null,"methods":["POST"],"uri":"recibos\/factura","name":"recibos.factura.store","action":"App\Http\Controllers\Cartera\Factura3Controller@store"},{"host":null,"methods":["GET","HEAD"],"uri":"recibos\/factura\/{factura}","name":"recibos.factura.show","action":"App\Http\Controllers\Cartera\Factura3Controller@show"},{"host":null,"methods":["GET","HEAD"],"uri":"recibos\/factura\/{factura}\/edit","name":"recibos.factura.edit","action":"App\Http\Controllers\Cartera\Factura3Controller@edit"},{"host":null,"methods":["PUT"],"uri":"recibos\/factura\/{factura}","name":"recibos.factura.update","action":"App\Http\Controllers\Cartera\Factura3Controller@update"},{"host":null,"methods":["PATCH"],"uri":"recibos\/factura\/{factura}","name":null,"action":"App\Http\Controllers\Cartera\Factura3Controller@update"},{"host":null,"methods":["DELETE"],"uri":"recibos\/factura\/{factura}","name":"recibos.factura.destroy","action":"App\Http\Controllers\Cartera\Factura3Controller@destroy"},{"host":null,"methods":["GET","HEAD"],"uri":"recibos\/mediopago","name":"recibos.mediopago.index","action":"App\Http\Controllers\Cartera\Recibo3Controller@index"},{"host":null,"methods":["GET","HEAD"],"uri":"recibos\/mediopago\/create","name":"recibos.mediopago.create","action":"App\Http\Controllers\Cartera\Recibo3Controller@create"},{"host":null,"methods":["POST"],"uri":"recibos\/mediopago","name":"recibos.mediopago.store","action":"App\Http\Controllers\Cartera\Recibo3Controller@store"},{"host":null,"methods":["GET","HEAD"],"uri":"recibos\/mediopago\/{mediopago}","name":"recibos.mediopago.show","action":"App\Http\Controllers\Cartera\Recibo3Controller@show"},{"host":null,"methods":["GET","HEAD"],"uri":"recibos\/mediopago\/{mediopago}\/edit","name":"recibos.mediopago.edit","action":"App\Http\Controllers\Cartera\Recibo3Controller@edit"},{"host":null,"methods":["PUT"],"uri":"recibos\/mediopago\/{mediopago}","name":"recibos.mediopago.update","action":"App\Http\Controllers\Cartera\Recibo3Controller@update"},{"host":null,"methods":["PATCH"],"uri":"recibos\/mediopago\/{mediopago}","name":null,"action":"App\Http\Controllers\Cartera\Recibo3Controller@update"},{"host":null,"methods":["DELETE"],"uri":"recibos\/mediopago\/{mediopago}","name":"recibos.mediopago.destroy","action":"App\Http\Controllers\Cartera\Recibo3Controller@destroy"},{"host":null,"methods":["GET","HEAD"],"uri":"anticipos\/mediopago","name":"anticipos.mediopago.index","action":"App\Http\Controllers\Cartera\Anticipo2Controller@index"},{"host":null,"methods":["GET","HEAD"],"uri":"anticipos\/mediopago\/create","name":"anticipos.mediopago.create","action":"App\Http\Controllers\Cartera\Anticipo2Controller@create"},{"host":null,"methods":["POST"],"uri":"anticipos\/mediopago","name":"anticipos.mediopago.store","action":"App\Http\Controllers\Cartera\Anticipo2Controller@store"},{"host":null,"methods":["GET","HEAD"],"uri":"anticipos\/mediopago\/{mediopago}","name":"anticipos.mediopago.show","action":"App\Http\Controllers\Cartera\Anticipo2Controller@show"},{"host":null,"methods":["GET","HEAD"],"uri":"anticipos\/mediopago\/{mediopago}\/edit","name":"anticipos.mediopago.edit","action":"App\Http\Controllers\Cartera\Anticipo2Controller@edit"},{"host":null,"methods":["PUT"],"uri":"anticipos\/mediopago\/{mediopago}","name":"anticipos.mediopago.update","action":"App\Http\Controllers\Cartera\Anticipo2Controller@update"},{"host":null,"methods":["PATCH"],"uri":"anticipos\/mediopago\/{mediopago}","name":null,"action":"App\Http\Controllers\Cartera\Anticipo2Controller@update"},{"host":null,"methods":["DELETE"],"uri":"anticipos\/mediopago\/{mediopago}","name":"anticipos.mediopago.destroy","action":"App\Http\Controllers\Cartera\Anticipo2Controller@destroy"},{"host":null,"methods":["GET","HEAD"],"uri":"anticipos\/detalle","name":"anticipos.detalle.index","action":"App\Http\Controllers\Cartera\Anticipo3Controller@index"},{"host":null,"methods":["GET","HEAD"],"uri":"anticipos\/detalle\/create","name":"anticipos.detalle.create","action":"App\Http\Controllers\Cartera\Anticipo3Controller@create"},{"host":null,"methods":["POST"],"uri":"anticipos\/detalle","name":"anticipos.detalle.store","action":"App\Http\Controllers\Cartera\Anticipo3Controller@store"},{"host":null,"methods":["GET","HEAD"],"uri":"anticipos\/detalle\/{detalle}","name":"anticipos.detalle.show","action":"App\Http\Controllers\Cartera\Anticipo3Controller@show"},{"host":null,"methods":["GET","HEAD"],"uri":"anticipos\/detalle\/{detalle}\/edit","name":"anticipos.detalle.edit","action":"App\Http\Controllers\Cartera\Anticipo3Controller@edit"},{"host":null,"methods":["PUT"],"uri":"anticipos\/detalle\/{detalle}","name":"anticipos.detalle.update","action":"App\Http\Controllers\Cartera\Anticipo3Controller@update"},{"host":null,"methods":["PATCH"],"uri":"anticipos\/detalle\/{detalle}","name":null,"action":"App\Http\Controllers\Cartera\Anticipo3Controller@update"},{"host":null,"methods":["DELETE"],"uri":"anticipos\/detalle\/{detalle}","name":"anticipos.detalle.destroy","action":"App\Http\Controllers\Cartera\Anticipo3Controller@destroy"},{"host":null,"methods":["GET","HEAD"],"uri":"cheques\/detalle","name":"cheques.detalle.index","action":"App\Http\Controllers\Cartera\ChposFechado2Controller@index"},{"host":null,"methods":["GET","HEAD"],"uri":"cheques\/detalle\/create","name":"cheques.detalle.create","action":"App\Http\Controllers\Cartera\ChposFechado2Controller@create"},{"host":null,"methods":["POST"],"uri":"cheques\/detalle","name":"cheques.detalle.store","action":"App\Http\Controllers\Cartera\ChposFechado2Controller@store"},{"host":null,"methods":["GET","HEAD"],"uri":"cheques\/detalle\/{detalle}","name":"cheques.detalle.show","action":"App\Http\Controllers\Cartera\ChposFechado2Controller@show"},{"host":null,"methods":["GET","HEAD"],"uri":"cheques\/detalle\/{detalle}\/edit","name":"cheques.detalle.edit","action":"App\Http\Controllers\Cartera\ChposFechado2Controller@edit"},{"host":null,"methods":["PUT"],"uri":"cheques\/detalle\/{detalle}","name":"cheques.detalle.update","action":"App\Http\Controllers\Cartera\ChposFechado2Controller@update"},{"host":null,"methods":["PATCH"],"uri":"cheques\/detalle\/{detalle}","name":null,"action":"App\Http\Controllers\Cartera\ChposFechado2Controller@update"},{"host":null,"methods":["DELETE"],"uri":"cheques\/detalle\/{detalle}","name":"cheques.detalle.destroy","action":"App\Http\Controllers\Cartera\ChposFechado2Controller@destroy"},{"host":null,"methods":["GET","HEAD"],"uri":"cheques\/anular\/{cheques}","name":"cheques.anular","action":"App\Http\Controllers\Cartera\ChposFechado1Controller@anular"},{"host":null,"methods":["POST"],"uri":"conceptosrc\/evaluate","name":"conceptosrc.evaluate","action":"App\Http\Controllers\Cartera\ConceptosrcController@evaluate"},{"host":null,"methods":["GET","HEAD"],"uri":"notas\/detalle","name":"notas.detalle.index","action":"App\Http\Controllers\Cartera\Nota2Controller@index"},{"host":null,"methods":["GET","HEAD"],"uri":"notas\/detalle\/create","name":"notas.detalle.create","action":"App\Http\Controllers\Cartera\Nota2Controller@create"},{"host":null,"methods":["POST"],"uri":"notas\/detalle","name":"notas.detalle.store","action":"App\Http\Controllers\Cartera\Nota2Controller@store"},{"host":null,"methods":["GET","HEAD"],"uri":"notas\/detalle\/{detalle}","name":"notas.detalle.show","action":"App\Http\Controllers\Cartera\Nota2Controller@show"},{"host":null,"methods":["GET","HEAD"],"uri":"notas\/detalle\/{detalle}\/edit","name":"notas.detalle.edit","action":"App\Http\Controllers\Cartera\Nota2Controller@edit"},{"host":null,"methods":["PUT"],"uri":"notas\/detalle\/{detalle}","name":"notas.detalle.update","action":"App\Http\Controllers\Cartera\Nota2Controller@update"},{"host":null,"methods":["PATCH"],"uri":"notas\/detalle\/{detalle}","name":null,"action":"App\Http\Controllers\Cartera\Nota2Controller@update"},{"host":null,"methods":["DELETE"],"uri":"notas\/detalle\/{detalle}","name":"notas.detalle.destroy","action":"App\Http\Controllers\Cartera\Nota2Controller@destroy"},{"host":null,"methods":["GET","HEAD"],"uri":"facturas\/detalle","name":"facturas.detalle.index","action":"App\Http\Controllers\Cartera\Factura2Controller@index"},{"host":null,"methods":["GET","HEAD"],"uri":"facturas\/detalle\/create","name":"facturas.detalle.create","action":"App\Http\Controllers\Cartera\Factura2Controller@create"},{"host":null,"methods":["POST"],"uri":"facturas\/detalle","name":"facturas.detalle.store","action":"App\Http\Controllers\Cartera\Factura2Controller@store"},{"host":null,"methods":["GET","HEAD"],"uri":"facturas\/detalle\/{detalle}","name":"facturas.detalle.show","action":"App\Http\Controllers\Cartera\Factura2Controller@show"},{"host":null,"methods":["GET","HEAD"],"uri":"facturas\/detalle\/{detalle}\/edit","name":"facturas.detalle.edit","action":"App\Http\Controllers\Cartera\Factura2Controller@edit"},{"host":null,"methods":["PUT"],"uri":"facturas\/detalle\/{detalle}","name":"facturas.detalle.update","action":"App\Http\Controllers\Cartera\Factura2Controller@update"},{"host":null,"methods":["PATCH"],"uri":"facturas\/detalle\/{detalle}","name":null,"action":"App\Http\Controllers\Cartera\Factura2Controller@update"},{"host":null,"methods":["DELETE"],"uri":"facturas\/detalle\/{detalle}","name":"facturas.detalle.destroy","action":"App\Http\Controllers\Cartera\Factura2Controller@destroy"},{"host":null,"methods":["GET","HEAD"],"uri":"facturas\/comments","name":"facturas.comments.index","action":"App\Http\Controllers\Cartera\Factura4Controller@index"},{"host":null,"methods":["POST"],"uri":"facturas\/comments","name":"facturas.comments.store","action":"App\Http\Controllers\Cartera\Factura4Controller@store"},{"host":null,"methods":["GET","HEAD"],"uri":"facturas\/search","name":"facturas.search","action":"App\Http\Controllers\Cartera\Factura1Controller@search"},{"host":null,"methods":["GET","HEAD"],"uri":"facturas\/anular\/{facturas}","name":"facturas.anular","action":"App\Http\Controllers\Cartera\Factura1Controller@anular"},{"host":null,"methods":["GET","HEAD"],"uri":"facturas\/exportar\/{facturas}","name":"facturas.exportar","action":"App\Http\Controllers\Cartera\Factura1Controller@exportar"},{"host":null,"methods":["GET","HEAD"],"uri":"devoluciones\/detalle","name":"devoluciones.detalle.index","action":"App\Http\Controllers\Cartera\Devolucion2Controller@index"},{"host":null,"methods":["GET","HEAD"],"uri":"devoluciones\/detalle\/create","name":"devoluciones.detalle.create","action":"App\Http\Controllers\Cartera\Devolucion2Controller@create"},{"host":null,"methods":["POST"],"uri":"devoluciones\/detalle","name":"devoluciones.detalle.store","action":"App\Http\Controllers\Cartera\Devolucion2Controller@store"},{"host":null,"methods":["GET","HEAD"],"uri":"devoluciones\/detalle\/{detalle}","name":"devoluciones.detalle.show","action":"App\Http\Controllers\Cartera\Devolucion2Controller@show"},{"host":null,"methods":["GET","HEAD"],"uri":"devoluciones\/detalle\/{detalle}\/edit","name":"devoluciones.detalle.edit","action":"App\Http\Controllers\Cartera\Devolucion2Controller@edit"},{"host":null,"methods":["PUT"],"uri":"devoluciones\/detalle\/{detalle}","name":"devoluciones.detalle.update","action":"App\Http\Controllers\Cartera\Devolucion2Controller@update"},{"host":null,"methods":["PATCH"],"uri":"devoluciones\/detalle\/{detalle}","name":null,"action":"App\Http\Controllers\Cartera\Devolucion2Controller@update"},{"host":null,"methods":["GET","HEAD"],"uri":"ajustesc\/detalle","name":"ajustesc.detalle.index","action":"App\Http\Controllers\Cartera\Ajustec2Controller@index"},{"host":null,"methods":["GET","HEAD"],"uri":"ajustesc\/detalle\/create","name":"ajustesc.detalle.create","action":"App\Http\Controllers\Cartera\Ajustec2Controller@create"},{"host":null,"methods":["POST"],"uri":"ajustesc\/detalle","name":"ajustesc.detalle.store","action":"App\Http\Controllers\Cartera\Ajustec2Controller@store"},{"host":null,"methods":["GET","HEAD"],"uri":"ajustesc\/detalle\/{detalle}","name":"ajustesc.detalle.show","action":"App\Http\Controllers\Cartera\Ajustec2Controller@show"},{"host":null,"methods":["GET","HEAD"],"uri":"ajustesc\/detalle\/{detalle}\/edit","name":"ajustesc.detalle.edit","action":"App\Http\Controllers\Cartera\Ajustec2Controller@edit"},{"host":null,"methods":["PUT"],"uri":"ajustesc\/detalle\/{detalle}","name":"ajustesc.detalle.update","action":"App\Http\Controllers\Cartera\Ajustec2Controller@update"},{"host":null,"methods":["PATCH"],"uri":"ajustesc\/detalle\/{detalle}","name":null,"action":"App\Http\Controllers\Cartera\Ajustec2Controller@update"},{"host":null,"methods":["DELETE"],"uri":"ajustesc\/detalle\/{detalle}","name":"ajustesc.detalle.destroy","action":"App\Http\Controllers\Cartera\Ajustec2Controller@destroy"},{"host":null,"methods":["GET","HEAD"],"uri":"autorizacionesca","name":"autorizacionesca.index","action":"App\Http\Controllers\Cartera\AutorizaCaController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"bancos","name":"bancos.index","action":"App\Http\Controllers\Cartera\BancoController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"bancos\/create","name":"bancos.create","action":"App\Http\Controllers\Cartera\BancoController@create"},{"host":null,"methods":["POST"],"uri":"bancos","name":"bancos.store","action":"App\Http\Controllers\Cartera\BancoController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"bancos\/{bancos}","name":"bancos.show","action":"App\Http\Controllers\Cartera\BancoController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"bancos\/{bancos}\/edit","name":"bancos.edit","action":"App\Http\Controllers\Cartera\BancoController@edit"},{"host":null,"methods":["PUT"],"uri":"bancos\/{bancos}","name":"bancos.update","action":"App\Http\Controllers\Cartera\BancoController@update"},{"host":null,"methods":["PATCH"],"uri":"bancos\/{bancos}","name":null,"action":"App\Http\Controllers\Cartera\BancoController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"causas","name":"causas.index","action":"App\Http\Controllers\Cartera\CausalController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"causas\/create","name":"causas.create","action":"App\Http\Controllers\Cartera\CausalController@create"},{"host":null,"methods":["POST"],"uri":"causas","name":"causas.store","action":"App\Http\Controllers\Cartera\CausalController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"causas\/{causas}","name":"causas.show","action":"App\Http\Controllers\Cartera\CausalController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"causas\/{causas}\/edit","name":"causas.edit","action":"App\Http\Controllers\Cartera\CausalController@edit"},{"host":null,"methods":["PUT"],"uri":"causas\/{causas}","name":"causas.update","action":"App\Http\Controllers\Cartera\CausalController@update"},{"host":null,"methods":["PATCH"],"uri":"causas\/{causas}","name":null,"action":"App\Http\Controllers\Cartera\CausalController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"cuentabancos","name":"cuentabancos.index","action":"App\Http\Controllers\Cartera\CuentaBancoController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"cuentabancos\/create","name":"cuentabancos.create","action":"App\Http\Controllers\Cartera\CuentaBancoController@create"},{"host":null,"methods":["POST"],"uri":"cuentabancos","name":"cuentabancos.store","action":"App\Http\Controllers\Cartera\CuentaBancoController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"cuentabancos\/{cuentabancos}","name":"cuentabancos.show","action":"App\Http\Controllers\Cartera\CuentaBancoController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"cuentabancos\/{cuentabancos}\/edit","name":"cuentabancos.edit","action":"App\Http\Controllers\Cartera\CuentaBancoController@edit"},{"host":null,"methods":["PUT"],"uri":"cuentabancos\/{cuentabancos}","name":"cuentabancos.update","action":"App\Http\Controllers\Cartera\CuentaBancoController@update"},{"host":null,"methods":["PATCH"],"uri":"cuentabancos\/{cuentabancos}","name":null,"action":"App\Http\Controllers\Cartera\CuentaBancoController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"mediopagos","name":"mediopagos.index","action":"App\Http\Controllers\Cartera\MedioPagoController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"mediopagos\/create","name":"mediopagos.create","action":"App\Http\Controllers\Cartera\MedioPagoController@create"},{"host":null,"methods":["POST"],"uri":"mediopagos","name":"mediopagos.store","action":"App\Http\Controllers\Cartera\MedioPagoController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"mediopagos\/{mediopagos}","name":"mediopagos.show","action":"App\Http\Controllers\Cartera\MedioPagoController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"mediopagos\/{mediopagos}\/edit","name":"mediopagos.edit","action":"App\Http\Controllers\Cartera\MedioPagoController@edit"},{"host":null,"methods":["PUT"],"uri":"mediopagos\/{mediopagos}","name":"mediopagos.update","action":"App\Http\Controllers\Cartera\MedioPagoController@update"},{"host":null,"methods":["PATCH"],"uri":"mediopagos\/{mediopagos}","name":null,"action":"App\Http\Controllers\Cartera\MedioPagoController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"conceptosrc","name":"conceptosrc.index","action":"App\Http\Controllers\Cartera\ConceptosrcController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"conceptosrc\/create","name":"conceptosrc.create","action":"App\Http\Controllers\Cartera\ConceptosrcController@create"},{"host":null,"methods":["POST"],"uri":"conceptosrc","name":"conceptosrc.store","action":"App\Http\Controllers\Cartera\ConceptosrcController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"conceptosrc\/{conceptosrc}","name":"conceptosrc.show","action":"App\Http\Controllers\Cartera\ConceptosrcController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"conceptosrc\/{conceptosrc}\/edit","name":"conceptosrc.edit","action":"App\Http\Controllers\Cartera\ConceptosrcController@edit"},{"host":null,"methods":["PUT"],"uri":"conceptosrc\/{conceptosrc}","name":"conceptosrc.update","action":"App\Http\Controllers\Cartera\ConceptosrcController@update"},{"host":null,"methods":["PATCH"],"uri":"conceptosrc\/{conceptosrc}","name":null,"action":"App\Http\Controllers\Cartera\ConceptosrcController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"conceptonotas","name":"conceptonotas.index","action":"App\Http\Controllers\Cartera\ConceptoNotaController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"conceptonotas\/create","name":"conceptonotas.create","action":"App\Http\Controllers\Cartera\ConceptoNotaController@create"},{"host":null,"methods":["POST"],"uri":"conceptonotas","name":"conceptonotas.store","action":"App\Http\Controllers\Cartera\ConceptoNotaController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"conceptonotas\/{conceptonotas}","name":"conceptonotas.show","action":"App\Http\Controllers\Cartera\ConceptoNotaController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"conceptonotas\/{conceptonotas}\/edit","name":"conceptonotas.edit","action":"App\Http\Controllers\Cartera\ConceptoNotaController@edit"},{"host":null,"methods":["PUT"],"uri":"conceptonotas\/{conceptonotas}","name":"conceptonotas.update","action":"App\Http\Controllers\Cartera\ConceptoNotaController@update"},{"host":null,"methods":["PATCH"],"uri":"conceptonotas\/{conceptonotas}","name":null,"action":"App\Http\Controllers\Cartera\ConceptoNotaController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"conceptocobros","name":"conceptocobros.index","action":"App\Http\Controllers\Cartera\ConceptoCobroController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"conceptocobros\/create","name":"conceptocobros.create","action":"App\Http\Controllers\Cartera\ConceptoCobroController@create"},{"host":null,"methods":["POST"],"uri":"conceptocobros","name":"conceptocobros.store","action":"App\Http\Controllers\Cartera\ConceptoCobroController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"conceptocobros\/{conceptocobros}","name":"conceptocobros.show","action":"App\Http\Controllers\Cartera\ConceptoCobroController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"conceptocobros\/{conceptocobros}\/edit","name":"conceptocobros.edit","action":"App\Http\Controllers\Cartera\ConceptoCobroController@edit"},{"host":null,"methods":["PUT"],"uri":"conceptocobros\/{conceptocobros}","name":"conceptocobros.update","action":"App\Http\Controllers\Cartera\ConceptoCobroController@update"},{"host":null,"methods":["PATCH"],"uri":"conceptocobros\/{conceptocobros}","name":null,"action":"App\Http\Controllers\Cartera\ConceptoCobroController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"recibos","name":"recibos.index","action":"App\Http\Controllers\Cartera\Recibo1Controller@index"},{"host":null,"methods":["GET","HEAD"],"uri":"recibos\/create","name":"recibos.create","action":"App\Http\Controllers\Cartera\Recibo1Controller@create"},{"host":null,"methods":["POST"],"uri":"recibos","name":"recibos.store","action":"App\Http\Controllers\Cartera\Recibo1Controller@store"},{"host":null,"methods":["GET","HEAD"],"uri":"recibos\/{recibos}","name":"recibos.show","action":"App\Http\Controllers\Cartera\Recibo1Controller@show"},{"host":null,"methods":["GET","HEAD"],"uri":"notas","name":"notas.index","action":"App\Http\Controllers\Cartera\Nota1Controller@index"},{"host":null,"methods":["GET","HEAD"],"uri":"notas\/create","name":"notas.create","action":"App\Http\Controllers\Cartera\Nota1Controller@create"},{"host":null,"methods":["POST"],"uri":"notas","name":"notas.store","action":"App\Http\Controllers\Cartera\Nota1Controller@store"},{"host":null,"methods":["GET","HEAD"],"uri":"notas\/{notas}","name":"notas.show","action":"App\Http\Controllers\Cartera\Nota1Controller@show"},{"host":null,"methods":["GET","HEAD"],"uri":"facturas","name":"facturas.index","action":"App\Http\Controllers\Cartera\Factura1Controller@index"},{"host":null,"methods":["GET","HEAD"],"uri":"facturas\/create","name":"facturas.create","action":"App\Http\Controllers\Cartera\Factura1Controller@create"},{"host":null,"methods":["POST"],"uri":"facturas","name":"facturas.store","action":"App\Http\Controllers\Cartera\Factura1Controller@store"},{"host":null,"methods":["GET","HEAD"],"uri":"facturas\/{facturas}","name":"facturas.show","action":"App\Http\Controllers\Cartera\Factura1Controller@show"},{"host":null,"methods":["GET","HEAD"],"uri":"devoluciones","name":"devoluciones.index","action":"App\Http\Controllers\Cartera\Devolucion1Controller@index"},{"host":null,"methods":["GET","HEAD"],"uri":"devoluciones\/create","name":"devoluciones.create","action":"App\Http\Controllers\Cartera\Devolucion1Controller@create"},{"host":null,"methods":["POST"],"uri":"devoluciones","name":"devoluciones.store","action":"App\Http\Controllers\Cartera\Devolucion1Controller@store"},{"host":null,"methods":["GET","HEAD"],"uri":"devoluciones\/{devoluciones}","name":"devoluciones.show","action":"App\Http\Controllers\Cartera\Devolucion1Controller@show"},{"host":null,"methods":["GET","HEAD"],"uri":"gestioncobros","name":"gestioncobros.index","action":"App\Http\Controllers\Cartera\GestionCobroController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"gestioncobros\/create","name":"gestioncobros.create","action":"App\Http\Controllers\Cartera\GestionCobroController@create"},{"host":null,"methods":["POST"],"uri":"gestioncobros","name":"gestioncobros.store","action":"App\Http\Controllers\Cartera\GestionCobroController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"gestioncobros\/{gestioncobros}","name":"gestioncobros.show","action":"App\Http\Controllers\Cartera\GestionCobroController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"conceptosajustec","name":"conceptosajustec.index","action":"App\Http\Controllers\Cartera\ConceptoAjustecController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"conceptosajustec\/create","name":"conceptosajustec.create","action":"App\Http\Controllers\Cartera\ConceptoAjustecController@create"},{"host":null,"methods":["POST"],"uri":"conceptosajustec","name":"conceptosajustec.store","action":"App\Http\Controllers\Cartera\ConceptoAjustecController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"conceptosajustec\/{conceptosajustec}","name":"conceptosajustec.show","action":"App\Http\Controllers\Cartera\ConceptoAjustecController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"conceptosajustec\/{conceptosajustec}\/edit","name":"conceptosajustec.edit","action":"App\Http\Controllers\Cartera\ConceptoAjustecController@edit"},{"host":null,"methods":["PUT"],"uri":"conceptosajustec\/{conceptosajustec}","name":"conceptosajustec.update","action":"App\Http\Controllers\Cartera\ConceptoAjustecController@update"},{"host":null,"methods":["PATCH"],"uri":"conceptosajustec\/{conceptosajustec}","name":null,"action":"App\Http\Controllers\Cartera\ConceptoAjustecController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"ajustesc","name":"ajustesc.index","action":"App\Http\Controllers\Cartera\Ajustec1Controller@index"},{"host":null,"methods":["GET","HEAD"],"uri":"ajustesc\/create","name":"ajustesc.create","action":"App\Http\Controllers\Cartera\Ajustec1Controller@create"},{"host":null,"methods":["POST"],"uri":"ajustesc","name":"ajustesc.store","action":"App\Http\Controllers\Cartera\Ajustec1Controller@store"},{"host":null,"methods":["GET","HEAD"],"uri":"ajustesc\/{ajustesc}","name":"ajustesc.show","action":"App\Http\Controllers\Cartera\Ajustec1Controller@show"},{"host":null,"methods":["GET","HEAD"],"uri":"ajustesc\/{ajustesc}\/edit","name":"ajustesc.edit","action":"App\Http\Controllers\Cartera\Ajustec1Controller@edit"},{"host":null,"methods":["PUT"],"uri":"ajustesc\/{ajustesc}","name":"ajustesc.update","action":"App\Http\Controllers\Cartera\Ajustec1Controller@update"},{"host":null,"methods":["PATCH"],"uri":"ajustesc\/{ajustesc}","name":null,"action":"App\Http\Controllers\Cartera\Ajustec1Controller@update"},{"host":null,"methods":["GET","HEAD"],"uri":"anticipos","name":"anticipos.index","action":"App\Http\Controllers\Cartera\AnticipoController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"anticipos\/create","name":"anticipos.create","action":"App\Http\Controllers\Cartera\AnticipoController@create"},{"host":null,"methods":["POST"],"uri":"anticipos","name":"anticipos.store","action":"App\Http\Controllers\Cartera\AnticipoController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"anticipos\/{anticipos}","name":"anticipos.show","action":"App\Http\Controllers\Cartera\AnticipoController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"anticipos\/{anticipos}\/edit","name":"anticipos.edit","action":"App\Http\Controllers\Cartera\AnticipoController@edit"},{"host":null,"methods":["PUT"],"uri":"anticipos\/{anticipos}","name":"anticipos.update","action":"App\Http\Controllers\Cartera\AnticipoController@update"},{"host":null,"methods":["PATCH"],"uri":"anticipos\/{anticipos}","name":null,"action":"App\Http\Controllers\Cartera\AnticipoController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"cheques","name":"cheques.index","action":"App\Http\Controllers\Cartera\ChposFechado1Controller@index"},{"host":null,"methods":["GET","HEAD"],"uri":"cheques\/create","name":"cheques.create","action":"App\Http\Controllers\Cartera\ChposFechado1Controller@create"},{"host":null,"methods":["POST"],"uri":"cheques","name":"cheques.store","action":"App\Http\Controllers\Cartera\ChposFechado1Controller@store"},{"host":null,"methods":["GET","HEAD"],"uri":"cheques\/{cheques}","name":"cheques.show","action":"App\Http\Controllers\Cartera\ChposFechado1Controller@show"},{"host":null,"methods":["GET","HEAD"],"uri":"cheques\/{cheques}\/edit","name":"cheques.edit","action":"App\Http\Controllers\Cartera\ChposFechado1Controller@edit"},{"host":null,"methods":["PUT"],"uri":"cheques\/{cheques}","name":"cheques.update","action":"App\Http\Controllers\Cartera\ChposFechado1Controller@update"},{"host":null,"methods":["PATCH"],"uri":"cheques\/{cheques}","name":null,"action":"App\Http\Controllers\Cartera\ChposFechado1Controller@update"},{"host":null,"methods":["GET","HEAD"],"uri":"chequesdevueltos","name":"chequesdevueltos.index","action":"App\Http\Controllers\Cartera\ChDevueltoController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"chequesdevueltos\/create","name":"chequesdevueltos.create","action":"App\Http\Controllers\Cartera\ChDevueltoController@create"},{"host":null,"methods":["POST"],"uri":"chequesdevueltos","name":"chequesdevueltos.store","action":"App\Http\Controllers\Cartera\ChDevueltoController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"chequesdevueltos\/{chequesdevueltos}","name":"chequesdevueltos.show","action":"App\Http\Controllers\Cartera\ChDevueltoController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"chequesdevueltos\/{chequesdevueltos}\/edit","name":"chequesdevueltos.edit","action":"App\Http\Controllers\Cartera\ChDevueltoController@edit"},{"host":null,"methods":["PUT"],"uri":"chequesdevueltos\/{chequesdevueltos}","name":"chequesdevueltos.update","action":"App\Http\Controllers\Cartera\ChDevueltoController@update"},{"host":null,"methods":["PATCH"],"uri":"chequesdevueltos\/{chequesdevueltos}","name":null,"action":"App\Http\Controllers\Cartera\ChDevueltoController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"carteraterceros","name":"carteraterceros.index","action":"App\Http\Controllers\Cartera\CarteraController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"ordenes\/visitas","name":"ordenes.visitas.index","action":"App\Http\Controllers\Tecnico\VisitaController@index"},{"host":null,"methods":["POST"],"uri":"ordenes\/visitas","name":"ordenes.visitas.store","action":"App\Http\Controllers\Tecnico\VisitaController@store"},{"host":null,"methods":["DELETE"],"uri":"ordenes\/visitas\/{visitas}","name":"ordenes.visitas.destroy","action":"App\Http\Controllers\Tecnico\VisitaController@destroy"},{"host":null,"methods":["GET","HEAD"],"uri":"ordenes\/remrepuestos","name":"ordenes.remrepuestos.index","action":"App\Http\Controllers\Tecnico\RemRepuController@index"},{"host":null,"methods":["POST"],"uri":"ordenes\/remrepuestos","name":"ordenes.remrepuestos.store","action":"App\Http\Controllers\Tecnico\RemRepuController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"ordenes\/imagenes","name":"ordenes.imagenes.index","action":"App\Http\Controllers\Tecnico\OrdenImagenController@index"},{"host":null,"methods":["POST"],"uri":"ordenes\/imagenes","name":"ordenes.imagenes.store","action":"App\Http\Controllers\Tecnico\OrdenImagenController@store"},{"host":null,"methods":["DELETE"],"uri":"ordenes\/imagenes\/{imagenes}","name":"ordenes.imagenes.destroy","action":"App\Http\Controllers\Tecnico\OrdenImagenController@destroy"},{"host":null,"methods":["POST"],"uri":"ordenes\/cerrar","name":"ordenes.cerrar","action":"App\Http\Controllers\Tecnico\OrdenController@cerrar"},{"host":null,"methods":["GET","HEAD"],"uri":"ordenes\/mail\/{ordenes}","name":"ordenes.mail","action":"App\Http\Controllers\Tecnico\OrdenController@mail"},{"host":null,"methods":["GET","HEAD"],"uri":"ordenes\/exportar\/{ordenes}","name":"ordenes.exportar","action":"App\Http\Controllers\Tecnico\OrdenController@exportar"},{"host":null,"methods":["GET","HEAD"],"uri":"ordenes\/evaluate\/{ordenes}","name":"ordenes.evaluate","action":"App\Http\Controllers\Tecnico\OrdenController@evaluate"},{"host":null,"methods":["GET","HEAD"],"uri":"ordenes\/detalle\/remrepuestos","name":"ordenes.detalle.remrepuestos.index","action":"App\Http\Controllers\Tecnico\RemRepuDetalleController@index"},{"host":null,"methods":["POST"],"uri":"ordenes\/detalle\/remrepuestos","name":"ordenes.detalle.remrepuestos.store","action":"App\Http\Controllers\Tecnico\RemRepuDetalleController@store"},{"host":null,"methods":["PUT"],"uri":"ordenes\/detalle\/remrepuestos\/{remrepuestos}","name":"ordenes.detalle.remrepuestos.update","action":"App\Http\Controllers\Tecnico\RemRepuDetalleController@update"},{"host":null,"methods":["PATCH"],"uri":"ordenes\/detalle\/remrepuestos\/{remrepuestos}","name":null,"action":"App\Http\Controllers\Tecnico\RemRepuDetalleController@update"},{"host":null,"methods":["POST"],"uri":"ordenes\/detalle\/legalizacion","name":"ordenes.detalle.remrepuestos.legalizacion","action":"App\Http\Controllers\Tecnico\RemRepuDetalleController@legalizacion"},{"host":null,"methods":["GET","HEAD"],"uri":"ordenes","name":"ordenes.index","action":"App\Http\Controllers\Tecnico\OrdenController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"ordenes\/create","name":"ordenes.create","action":"App\Http\Controllers\Tecnico\OrdenController@create"},{"host":null,"methods":["POST"],"uri":"ordenes","name":"ordenes.store","action":"App\Http\Controllers\Tecnico\OrdenController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"ordenes\/{ordenes}","name":"ordenes.show","action":"App\Http\Controllers\Tecnico\OrdenController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"ordenes\/{ordenes}\/edit","name":"ordenes.edit","action":"App\Http\Controllers\Tecnico\OrdenController@edit"},{"host":null,"methods":["PUT"],"uri":"ordenes\/{ordenes}","name":"ordenes.update","action":"App\Http\Controllers\Tecnico\OrdenController@update"},{"host":null,"methods":["PATCH"],"uri":"ordenes\/{ordenes}","name":null,"action":"App\Http\Controllers\Tecnico\OrdenController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"danos","name":"danos.index","action":"App\Http\Controllers\Tecnico\DanoController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"danos\/create","name":"danos.create","action":"App\Http\Controllers\Tecnico\DanoController@create"},{"host":null,"methods":["POST"],"uri":"danos","name":"danos.store","action":"App\Http\Controllers\Tecnico\DanoController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"danos\/{danos}","name":"danos.show","action":"App\Http\Controllers\Tecnico\DanoController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"danos\/{danos}\/edit","name":"danos.edit","action":"App\Http\Controllers\Tecnico\DanoController@edit"},{"host":null,"methods":["PUT"],"uri":"danos\/{danos}","name":"danos.update","action":"App\Http\Controllers\Tecnico\DanoController@update"},{"host":null,"methods":["PATCH"],"uri":"danos\/{danos}","name":null,"action":"App\Http\Controllers\Tecnico\DanoController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"tiposorden","name":"tiposorden.index","action":"App\Http\Controllers\Tecnico\TipoOrdenController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"tiposorden\/create","name":"tiposorden.create","action":"App\Http\Controllers\Tecnico\TipoOrdenController@create"},{"host":null,"methods":["POST"],"uri":"tiposorden","name":"tiposorden.store","action":"App\Http\Controllers\Tecnico\TipoOrdenController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"tiposorden\/{tiposorden}","name":"tiposorden.show","action":"App\Http\Controllers\Tecnico\TipoOrdenController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"tiposorden\/{tiposorden}\/edit","name":"tiposorden.edit","action":"App\Http\Controllers\Tecnico\TipoOrdenController@edit"},{"host":null,"methods":["PUT"],"uri":"tiposorden\/{tiposorden}","name":"tiposorden.update","action":"App\Http\Controllers\Tecnico\TipoOrdenController@update"},{"host":null,"methods":["PATCH"],"uri":"tiposorden\/{tiposorden}","name":null,"action":"App\Http\Controllers\Tecnico\TipoOrdenController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"solicitantes","name":"solicitantes.index","action":"App\Http\Controllers\Tecnico\SolicitanteController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"solicitantes\/create","name":"solicitantes.create","action":"App\Http\Controllers\Tecnico\SolicitanteController@create"},{"host":null,"methods":["POST"],"uri":"solicitantes","name":"solicitantes.store","action":"App\Http\Controllers\Tecnico\SolicitanteController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"solicitantes\/{solicitantes}","name":"solicitantes.show","action":"App\Http\Controllers\Tecnico\SolicitanteController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"solicitantes\/{solicitantes}\/edit","name":"solicitantes.edit","action":"App\Http\Controllers\Tecnico\SolicitanteController@edit"},{"host":null,"methods":["PUT"],"uri":"solicitantes\/{solicitantes}","name":"solicitantes.update","action":"App\Http\Controllers\Tecnico\SolicitanteController@update"},{"host":null,"methods":["PATCH"],"uri":"solicitantes\/{solicitantes}","name":null,"action":"App\Http\Controllers\Tecnico\SolicitanteController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"prioridades","name":"prioridades.index","action":"App\Http\Controllers\Tecnico\PrioridadController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"prioridades\/create","name":"prioridades.create","action":"App\Http\Controllers\Tecnico\PrioridadController@create"},{"host":null,"methods":["POST"],"uri":"prioridades","name":"prioridades.store","action":"App\Http\Controllers\Tecnico\PrioridadController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"prioridades\/{prioridades}","name":"prioridades.show","action":"App\Http\Controllers\Tecnico\PrioridadController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"prioridades\/{prioridades}\/edit","name":"prioridades.edit","action":"App\Http\Controllers\Tecnico\PrioridadController@edit"},{"host":null,"methods":["PUT"],"uri":"prioridades\/{prioridades}","name":"prioridades.update","action":"App\Http\Controllers\Tecnico\PrioridadController@update"},{"host":null,"methods":["PATCH"],"uri":"prioridades\/{prioridades}","name":null,"action":"App\Http\Controllers\Tecnico\PrioridadController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"conceptostecnico","name":"conceptostecnico.index","action":"App\Http\Controllers\Tecnico\ConceptoTecController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"conceptostecnico\/create","name":"conceptostecnico.create","action":"App\Http\Controllers\Tecnico\ConceptoTecController@create"},{"host":null,"methods":["POST"],"uri":"conceptostecnico","name":"conceptostecnico.store","action":"App\Http\Controllers\Tecnico\ConceptoTecController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"conceptostecnico\/{conceptostecnico}","name":"conceptostecnico.show","action":"App\Http\Controllers\Tecnico\ConceptoTecController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"conceptostecnico\/{conceptostecnico}\/edit","name":"conceptostecnico.edit","action":"App\Http\Controllers\Tecnico\ConceptoTecController@edit"},{"host":null,"methods":["PUT"],"uri":"conceptostecnico\/{conceptostecnico}","name":"conceptostecnico.update","action":"App\Http\Controllers\Tecnico\ConceptoTecController@update"},{"host":null,"methods":["PATCH"],"uri":"conceptostecnico\/{conceptostecnico}","name":null,"action":"App\Http\Controllers\Tecnico\ConceptoTecController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"gestionestecnico","name":"gestionestecnico.index","action":"App\Http\Controllers\Tecnico\GestionTecnicoController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"gestionestecnico\/create","name":"gestionestecnico.create","action":"App\Http\Controllers\Tecnico\GestionTecnicoController@create"},{"host":null,"methods":["POST"],"uri":"gestionestecnico","name":"gestionestecnico.store","action":"App\Http\Controllers\Tecnico\GestionTecnicoController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"gestionestecnico\/{gestionestecnico}","name":"gestionestecnico.show","action":"App\Http\Controllers\Tecnico\GestionTecnicoController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"gestionestecnico\/{gestionestecnico}\/edit","name":"gestionestecnico.edit","action":"App\Http\Controllers\Tecnico\GestionTecnicoController@edit"},{"host":null,"methods":["PUT"],"uri":"gestionestecnico\/{gestionestecnico}","name":"gestionestecnico.update","action":"App\Http\Controllers\Tecnico\GestionTecnicoController@update"},{"host":null,"methods":["PATCH"],"uri":"gestionestecnico\/{gestionestecnico}","name":null,"action":"App\Http\Controllers\Tecnico\GestionTecnicoController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"agendatecnica","name":"agendatecnica.index","action":"App\Http\Controllers\Tecnico\AgendaTecnicaController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"agendatecnica\/create","name":"agendatecnica.create","action":"App\Http\Controllers\Tecnico\AgendaTecnicaController@create"},{"host":null,"methods":["POST"],"uri":"agendatecnica","name":"agendatecnica.store","action":"App\Http\Controllers\Tecnico\AgendaTecnicaController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"agendatecnica\/{agendatecnica}","name":"agendatecnica.show","action":"App\Http\Controllers\Tecnico\AgendaTecnicaController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"agendatecnica\/{agendatecnica}\/edit","name":"agendatecnica.edit","action":"App\Http\Controllers\Tecnico\AgendaTecnicaController@edit"},{"host":null,"methods":["PUT"],"uri":"agendatecnica\/{agendatecnica}","name":"agendatecnica.update","action":"App\Http\Controllers\Tecnico\AgendaTecnicaController@update"},{"host":null,"methods":["PATCH"],"uri":"agendatecnica\/{agendatecnica}","name":null,"action":"App\Http\Controllers\Tecnico\AgendaTecnicaController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"sitios","name":"sitios.index","action":"App\Http\Controllers\Tecnico\SitioController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"sitios\/create","name":"sitios.create","action":"App\Http\Controllers\Tecnico\SitioController@create"},{"host":null,"methods":["POST"],"uri":"sitios","name":"sitios.store","action":"App\Http\Controllers\Tecnico\SitioController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"sitios\/{sitios}","name":"sitios.show","action":"App\Http\Controllers\Tecnico\SitioController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"sitios\/{sitios}\/edit","name":"sitios.edit","action":"App\Http\Controllers\Tecnico\SitioController@edit"},{"host":null,"methods":["PUT"],"uri":"sitios\/{sitios}","name":"sitios.update","action":"App\Http\Controllers\Tecnico\SitioController@update"},{"host":null,"methods":["PATCH"],"uri":"sitios\/{sitios}","name":null,"action":"App\Http\Controllers\Tecnico\SitioController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"facturasp\/detalle","name":"facturasp.detalle.index","action":"App\Http\Controllers\Tesoreria\Facturap2Controller@index"},{"host":null,"methods":["POST"],"uri":"facturasp\/detalle","name":"facturasp.detalle.store","action":"App\Http\Controllers\Tesoreria\Facturap2Controller@store"},{"host":null,"methods":["DELETE"],"uri":"facturasp\/detalle\/{detalle}","name":"facturasp.detalle.destroy","action":"App\Http\Controllers\Tesoreria\Facturap2Controller@destroy"},{"host":null,"methods":["GET","HEAD"],"uri":"facturasp\/cuotas","name":"facturasp.cuotas.index","action":"App\Http\Controllers\Tesoreria\Facturap3Controller@index"},{"host":null,"methods":["GET","HEAD"],"uri":"facturasp\/valorescentroscostos","name":"facturasp.valorescentroscostos.index","action":"App\Http\Controllers\Tesoreria\Facturap4Controller@index"},{"host":null,"methods":["POST"],"uri":"facturasp\/valorescentroscostos","name":"facturasp.valorescentroscostos.store","action":"App\Http\Controllers\Tesoreria\Facturap4Controller@store"},{"host":null,"methods":["GET","HEAD"],"uri":"facturasp\/validate","name":"facturasp.validate","action":"App\Http\Controllers\Tesoreria\Facturap1Controller@validation"},{"host":null,"methods":["GET","HEAD"],"uri":"ajustesp\/detalle","name":"ajustesp.detalle.index","action":"App\Http\Controllers\Tesoreria\AjustepDetalleController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"ajustesp\/detalle\/create","name":"ajustesp.detalle.create","action":"App\Http\Controllers\Tesoreria\AjustepDetalleController@create"},{"host":null,"methods":["POST"],"uri":"ajustesp\/detalle","name":"ajustesp.detalle.store","action":"App\Http\Controllers\Tesoreria\AjustepDetalleController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"ajustesp\/detalle\/{detalle}","name":"ajustesp.detalle.show","action":"App\Http\Controllers\Tesoreria\AjustepDetalleController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"ajustesp\/detalle\/{detalle}\/edit","name":"ajustesp.detalle.edit","action":"App\Http\Controllers\Tesoreria\AjustepDetalleController@edit"},{"host":null,"methods":["PUT"],"uri":"ajustesp\/detalle\/{detalle}","name":"ajustesp.detalle.update","action":"App\Http\Controllers\Tesoreria\AjustepDetalleController@update"},{"host":null,"methods":["PATCH"],"uri":"ajustesp\/detalle\/{detalle}","name":null,"action":"App\Http\Controllers\Tesoreria\AjustepDetalleController@update"},{"host":null,"methods":["DELETE"],"uri":"ajustesp\/detalle\/{detalle}","name":"ajustesp.detalle.destroy","action":"App\Http\Controllers\Tesoreria\AjustepDetalleController@destroy"},{"host":null,"methods":["GET","HEAD"],"uri":"ajustesp\/exportar\/{ajustesp}","name":"ajustesp.exportar","action":"App\Http\Controllers\Tesoreria\AjustepController@exportar"},{"host":null,"methods":["GET","HEAD"],"uri":"egresos\/detalle","name":"egresos.detalle.index","action":"App\Http\Controllers\Tesoreria\EgresoDetalleController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"egresos\/detalle\/create","name":"egresos.detalle.create","action":"App\Http\Controllers\Tesoreria\EgresoDetalleController@create"},{"host":null,"methods":["POST"],"uri":"egresos\/detalle","name":"egresos.detalle.store","action":"App\Http\Controllers\Tesoreria\EgresoDetalleController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"egresos\/detalle\/{detalle}","name":"egresos.detalle.show","action":"App\Http\Controllers\Tesoreria\EgresoDetalleController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"egresos\/detalle\/{detalle}\/edit","name":"egresos.detalle.edit","action":"App\Http\Controllers\Tesoreria\EgresoDetalleController@edit"},{"host":null,"methods":["PUT"],"uri":"egresos\/detalle\/{detalle}","name":"egresos.detalle.update","action":"App\Http\Controllers\Tesoreria\EgresoDetalleController@update"},{"host":null,"methods":["PATCH"],"uri":"egresos\/detalle\/{detalle}","name":null,"action":"App\Http\Controllers\Tesoreria\EgresoDetalleController@update"},{"host":null,"methods":["DELETE"],"uri":"egresos\/detalle\/{detalle}","name":"egresos.detalle.destroy","action":"App\Http\Controllers\Tesoreria\EgresoDetalleController@destroy"},{"host":null,"methods":["GET","HEAD"],"uri":"egresos\/anular\/{egresos}","name":"egresos.anular","action":"App\Http\Controllers\Tesoreria\EgresoController@anular"},{"host":null,"methods":["GET","HEAD"],"uri":"egresos\/exportar\/{egresos}","name":"egresos.exportar","action":"App\Http\Controllers\Tesoreria\EgresoController@exportar"},{"host":null,"methods":["GET","HEAD"],"uri":"facturasp\/exportar\/{facturasp}","name":"facturasp.exportar","action":"App\Http\Controllers\Tesoreria\Facturap1Controller@exportar"},{"host":null,"methods":["GET","HEAD"],"uri":"facturasp","name":"facturasp.index","action":"App\Http\Controllers\Tesoreria\Facturap1Controller@index"},{"host":null,"methods":["GET","HEAD"],"uri":"facturasp\/create","name":"facturasp.create","action":"App\Http\Controllers\Tesoreria\Facturap1Controller@create"},{"host":null,"methods":["POST"],"uri":"facturasp","name":"facturasp.store","action":"App\Http\Controllers\Tesoreria\Facturap1Controller@store"},{"host":null,"methods":["GET","HEAD"],"uri":"facturasp\/{facturasp}","name":"facturasp.show","action":"App\Http\Controllers\Tesoreria\Facturap1Controller@show"},{"host":null,"methods":["GET","HEAD"],"uri":"ajustesp","name":"ajustesp.index","action":"App\Http\Controllers\Tesoreria\AjustepController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"ajustesp\/create","name":"ajustesp.create","action":"App\Http\Controllers\Tesoreria\AjustepController@create"},{"host":null,"methods":["POST"],"uri":"ajustesp","name":"ajustesp.store","action":"App\Http\Controllers\Tesoreria\AjustepController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"ajustesp\/{ajustesp}","name":"ajustesp.show","action":"App\Http\Controllers\Tesoreria\AjustepController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"ajustesp\/{ajustesp}\/edit","name":"ajustesp.edit","action":"App\Http\Controllers\Tesoreria\AjustepController@edit"},{"host":null,"methods":["PUT"],"uri":"ajustesp\/{ajustesp}","name":"ajustesp.update","action":"App\Http\Controllers\Tesoreria\AjustepController@update"},{"host":null,"methods":["PATCH"],"uri":"ajustesp\/{ajustesp}","name":null,"action":"App\Http\Controllers\Tesoreria\AjustepController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"egresos","name":"egresos.index","action":"App\Http\Controllers\Tesoreria\EgresoController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"egresos\/create","name":"egresos.create","action":"App\Http\Controllers\Tesoreria\EgresoController@create"},{"host":null,"methods":["POST"],"uri":"egresos","name":"egresos.store","action":"App\Http\Controllers\Tesoreria\EgresoController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"egresos\/{egresos}","name":"egresos.show","action":"App\Http\Controllers\Tesoreria\EgresoController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"egresos\/{egresos}\/edit","name":"egresos.edit","action":"App\Http\Controllers\Tesoreria\EgresoController@edit"},{"host":null,"methods":["PUT"],"uri":"egresos\/{egresos}","name":"egresos.update","action":"App\Http\Controllers\Tesoreria\EgresoController@update"},{"host":null,"methods":["PATCH"],"uri":"egresos\/{egresos}","name":null,"action":"App\Http\Controllers\Tesoreria\EgresoController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"retefuentes","name":"retefuentes.index","action":"App\Http\Controllers\Tesoreria\ReteFuenteController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"retefuentes\/create","name":"retefuentes.create","action":"App\Http\Controllers\Tesoreria\ReteFuenteController@create"},{"host":null,"methods":["POST"],"uri":"retefuentes","name":"retefuentes.store","action":"App\Http\Controllers\Tesoreria\ReteFuenteController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"retefuentes\/{retefuentes}","name":"retefuentes.show","action":"App\Http\Controllers\Tesoreria\ReteFuenteController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"retefuentes\/{retefuentes}\/edit","name":"retefuentes.edit","action":"App\Http\Controllers\Tesoreria\ReteFuenteController@edit"},{"host":null,"methods":["PUT"],"uri":"retefuentes\/{retefuentes}","name":"retefuentes.update","action":"App\Http\Controllers\Tesoreria\ReteFuenteController@update"},{"host":null,"methods":["PATCH"],"uri":"retefuentes\/{retefuentes}","name":null,"action":"App\Http\Controllers\Tesoreria\ReteFuenteController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"tipogastos","name":"tipogastos.index","action":"App\Http\Controllers\Tesoreria\TipoGastoController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"tipogastos\/create","name":"tipogastos.create","action":"App\Http\Controllers\Tesoreria\TipoGastoController@create"},{"host":null,"methods":["POST"],"uri":"tipogastos","name":"tipogastos.store","action":"App\Http\Controllers\Tesoreria\TipoGastoController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"tipogastos\/{tipogastos}","name":"tipogastos.show","action":"App\Http\Controllers\Tesoreria\TipoGastoController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"tipogastos\/{tipogastos}\/edit","name":"tipogastos.edit","action":"App\Http\Controllers\Tesoreria\TipoGastoController@edit"},{"host":null,"methods":["PUT"],"uri":"tipogastos\/{tipogastos}","name":"tipogastos.update","action":"App\Http\Controllers\Tesoreria\TipoGastoController@update"},{"host":null,"methods":["PATCH"],"uri":"tipogastos\/{tipogastos}","name":null,"action":"App\Http\Controllers\Tesoreria\TipoGastoController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"tipopagos","name":"tipopagos.index","action":"App\Http\Controllers\Tesoreria\TipoPagoController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"tipopagos\/create","name":"tipopagos.create","action":"App\Http\Controllers\Tesoreria\TipoPagoController@create"},{"host":null,"methods":["POST"],"uri":"tipopagos","name":"tipopagos.store","action":"App\Http\Controllers\Tesoreria\TipoPagoController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"tipopagos\/{tipopagos}","name":"tipopagos.show","action":"App\Http\Controllers\Tesoreria\TipoPagoController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"tipopagos\/{tipopagos}\/edit","name":"tipopagos.edit","action":"App\Http\Controllers\Tesoreria\TipoPagoController@edit"},{"host":null,"methods":["PUT"],"uri":"tipopagos\/{tipopagos}","name":"tipopagos.update","action":"App\Http\Controllers\Tesoreria\TipoPagoController@update"},{"host":null,"methods":["PATCH"],"uri":"tipopagos\/{tipopagos}","name":null,"action":"App\Http\Controllers\Tesoreria\TipoPagoController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"tipoproveedores","name":"tipoproveedores.index","action":"App\Http\Controllers\Tesoreria\TipoProveedorController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"tipoproveedores\/create","name":"tipoproveedores.create","action":"App\Http\Controllers\Tesoreria\TipoProveedorController@create"},{"host":null,"methods":["POST"],"uri":"tipoproveedores","name":"tipoproveedores.store","action":"App\Http\Controllers\Tesoreria\TipoProveedorController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"tipoproveedores\/{tipoproveedores}","name":"tipoproveedores.show","action":"App\Http\Controllers\Tesoreria\TipoProveedorController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"tipoproveedores\/{tipoproveedores}\/edit","name":"tipoproveedores.edit","action":"App\Http\Controllers\Tesoreria\TipoProveedorController@edit"},{"host":null,"methods":["PUT"],"uri":"tipoproveedores\/{tipoproveedores}","name":"tipoproveedores.update","action":"App\Http\Controllers\Tesoreria\TipoProveedorController@update"},{"host":null,"methods":["PATCH"],"uri":"tipoproveedores\/{tipoproveedores}","name":null,"action":"App\Http\Controllers\Tesoreria\TipoProveedorController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"conceptosajustep","name":"conceptosajustep.index","action":"App\Http\Controllers\Tesoreria\ConceptoAjustepController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"conceptosajustep\/create","name":"conceptosajustep.create","action":"App\Http\Controllers\Tesoreria\ConceptoAjustepController@create"},{"host":null,"methods":["POST"],"uri":"conceptosajustep","name":"conceptosajustep.store","action":"App\Http\Controllers\Tesoreria\ConceptoAjustepController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"conceptosajustep\/{conceptosajustep}","name":"conceptosajustep.show","action":"App\Http\Controllers\Tesoreria\ConceptoAjustepController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"conceptosajustep\/{conceptosajustep}\/edit","name":"conceptosajustep.edit","action":"App\Http\Controllers\Tesoreria\ConceptoAjustepController@edit"},{"host":null,"methods":["PUT"],"uri":"conceptosajustep\/{conceptosajustep}","name":"conceptosajustep.update","action":"App\Http\Controllers\Tesoreria\ConceptoAjustepController@update"},{"host":null,"methods":["PATCH"],"uri":"conceptosajustep\/{conceptosajustep}","name":null,"action":"App\Http\Controllers\Tesoreria\ConceptoAjustepController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"rhistorialproveedores","name":"rhistorialproveedores.index","action":"App\Http\Controllers\Reporte\HistorialProveedorController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"rcarteraedadesproveedores","name":"rcarteraedadesproveedores.index","action":"App\Http\Controllers\Reporte\CarteraEdadProveedorController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"ractivosfijos","name":"ractivosfijos.index","action":"App\Http\Controllers\Reporte\ActivoFijoController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"rexistencias","name":"rexistencias.index","action":"App\Http\Controllers\Reporte\ExistenciaController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"rmovimientosproductos","name":"rmovimientosproductos.index","action":"App\Http\Controllers\Reporte\MovProductoController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"rmayorbalance","name":"rmayorbalance.index","action":"App\Http\Controllers\Reporte\MayorBalanceController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"rplancuentas","name":"rplancuentas.index","action":"App\Http\Controllers\Reporte\PlanCuentasController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"rordenesabiertas","name":"rordenesabiertas.index","action":"App\Http\Controllers\Reporte\OrdenesAbiertasController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"rcarteraedades","name":"rcarteraedades.index","action":"App\Http\Controllers\Reporte\CarteraEdadController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"rhistorialclientes","name":"rhistorialclientes.index","action":"App\Http\Controllers\Reporte\HistorialClienteController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"rsabanaventascostos","name":"rsabanaventascostos.index","action":"App\Http\Controllers\Reporte\SabanaDeVentasCostoController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"rauxcontable","name":"rauxcontable.index","action":"App\Http\Controllers\Reporte\AuxiliarContableController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"rlibrodiario","name":"rlibrodiario.index","action":"App\Http\Controllers\Reporte\LibroDiarioController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"rlibromayor","name":"rlibromayor.index","action":"App\Http\Controllers\Reporte\LibroMayorController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"rimpuestos","name":"rimpuestos.index","action":"App\Http\Controllers\Reporte\RelacionImpuestosController@index"},{"host":null,"methods":["POST"],"uri":"import\/productos","name":"productos.import","action":"App\Http\Controllers\Inventario\ProductoController@import"},{"host":null,"methods":["POST"],"uri":"import\/ajustes","name":"ajustes.import","action":"App\Http\Controllers\Inventario\AjusteController@import"},{"host":null,"methods":["POST"],"uri":"import\/asientos","name":"asientos.import","action":"App\Http\Controllers\Contabilidad\AsientoController@import"}],
+            routes : [{"host":null,"methods":["POST"],"uri":"auth\/login","name":"auth.login","action":"App\Http\Controllers\Auth\AuthController@postLogin"},{"host":null,"methods":["GET","HEAD"],"uri":"auth\/logout","name":"auth.logout","action":"App\Http\Controllers\Auth\AuthController@getLogout"},{"host":null,"methods":["GET","HEAD"],"uri":"auth\/integrate","name":"auth.integrate","action":"App\Http\Controllers\Auth\AuthController@integrate"},{"host":null,"methods":["GET","HEAD"],"uri":"login","name":"login","action":"App\Http\Controllers\Auth\AuthController@getLogin"},{"host":null,"methods":["GET","HEAD"],"uri":"\/","name":"dashboard","action":"App\Http\Controllers\HomeController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"terceros\/dv","name":"terceros.dv","action":"App\Http\Controllers\Admin\TerceroController@dv"},{"host":null,"methods":["GET","HEAD"],"uri":"terceros\/rcree","name":"terceros.rcree","action":"App\Http\Controllers\Admin\TerceroController@rcree"},{"host":null,"methods":["GET","HEAD"],"uri":"terceros\/search","name":"terceros.search","action":"App\Http\Controllers\Admin\TerceroController@search"},{"host":null,"methods":["POST"],"uri":"terceros\/setpassword","name":"terceros.setpassword","action":"App\Http\Controllers\Admin\TerceroController@setpassword"},{"host":null,"methods":["GET","HEAD"],"uri":"terceros\/contactos","name":"terceros.contactos.index","action":"App\Http\Controllers\Admin\ContactoController@index"},{"host":null,"methods":["POST"],"uri":"terceros\/contactos","name":"terceros.contactos.store","action":"App\Http\Controllers\Admin\ContactoController@store"},{"host":null,"methods":["PUT"],"uri":"terceros\/contactos\/{contactos}","name":"terceros.contactos.update","action":"App\Http\Controllers\Admin\ContactoController@update"},{"host":null,"methods":["PATCH"],"uri":"terceros\/contactos\/{contactos}","name":null,"action":"App\Http\Controllers\Admin\ContactoController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"terceros\/roles","name":"terceros.roles.index","action":"App\Http\Controllers\Admin\UsuarioRolController@index"},{"host":null,"methods":["POST"],"uri":"terceros\/roles","name":"terceros.roles.store","action":"App\Http\Controllers\Admin\UsuarioRolController@store"},{"host":null,"methods":["DELETE"],"uri":"terceros\/roles\/{roles}","name":"terceros.roles.destroy","action":"App\Http\Controllers\Admin\UsuarioRolController@destroy"},{"host":null,"methods":["GET","HEAD"],"uri":"empresa","name":"empresa.index","action":"App\Http\Controllers\Admin\EmpresaController@index"},{"host":null,"methods":["PUT"],"uri":"empresa\/{empresa}","name":"empresa.update","action":"App\Http\Controllers\Admin\EmpresaController@update"},{"host":null,"methods":["PATCH"],"uri":"empresa\/{empresa}","name":null,"action":"App\Http\Controllers\Admin\EmpresaController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"terceros","name":"terceros.index","action":"App\Http\Controllers\Admin\TerceroController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"terceros\/create","name":"terceros.create","action":"App\Http\Controllers\Admin\TerceroController@create"},{"host":null,"methods":["POST"],"uri":"terceros","name":"terceros.store","action":"App\Http\Controllers\Admin\TerceroController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"terceros\/{terceros}","name":"terceros.show","action":"App\Http\Controllers\Admin\TerceroController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"terceros\/{terceros}\/edit","name":"terceros.edit","action":"App\Http\Controllers\Admin\TerceroController@edit"},{"host":null,"methods":["PUT"],"uri":"terceros\/{terceros}","name":"terceros.update","action":"App\Http\Controllers\Admin\TerceroController@update"},{"host":null,"methods":["PATCH"],"uri":"terceros\/{terceros}","name":null,"action":"App\Http\Controllers\Admin\TerceroController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"actividades","name":"actividades.index","action":"App\Http\Controllers\Admin\ActividadController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"actividades\/create","name":"actividades.create","action":"App\Http\Controllers\Admin\ActividadController@create"},{"host":null,"methods":["POST"],"uri":"actividades","name":"actividades.store","action":"App\Http\Controllers\Admin\ActividadController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"actividades\/{actividades}","name":"actividades.show","action":"App\Http\Controllers\Admin\ActividadController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"actividades\/{actividades}\/edit","name":"actividades.edit","action":"App\Http\Controllers\Admin\ActividadController@edit"},{"host":null,"methods":["PUT"],"uri":"actividades\/{actividades}","name":"actividades.update","action":"App\Http\Controllers\Admin\ActividadController@update"},{"host":null,"methods":["PATCH"],"uri":"actividades\/{actividades}","name":null,"action":"App\Http\Controllers\Admin\ActividadController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"departamentos","name":"departamentos.index","action":"App\Http\Controllers\Admin\DepartamentoController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"departamentos\/{departamentos}","name":"departamentos.show","action":"App\Http\Controllers\Admin\DepartamentoController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"municipios","name":"municipios.index","action":"App\Http\Controllers\Admin\MunicipioController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"paises","name":"paises.index","action":"App\Http\Controllers\Admin\PaisController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"sucursales","name":"sucursales.index","action":"App\Http\Controllers\Admin\SucursalController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"sucursales\/create","name":"sucursales.create","action":"App\Http\Controllers\Admin\SucursalController@create"},{"host":null,"methods":["POST"],"uri":"sucursales","name":"sucursales.store","action":"App\Http\Controllers\Admin\SucursalController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"sucursales\/{sucursales}","name":"sucursales.show","action":"App\Http\Controllers\Admin\SucursalController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"sucursales\/{sucursales}\/edit","name":"sucursales.edit","action":"App\Http\Controllers\Admin\SucursalController@edit"},{"host":null,"methods":["PUT"],"uri":"sucursales\/{sucursales}","name":"sucursales.update","action":"App\Http\Controllers\Admin\SucursalController@update"},{"host":null,"methods":["PATCH"],"uri":"sucursales\/{sucursales}","name":null,"action":"App\Http\Controllers\Admin\SucursalController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"ubicaciones","name":"ubicaciones.index","action":"App\Http\Controllers\Admin\UbicacionController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"ubicaciones\/create","name":"ubicaciones.create","action":"App\Http\Controllers\Admin\UbicacionController@create"},{"host":null,"methods":["POST"],"uri":"ubicaciones","name":"ubicaciones.store","action":"App\Http\Controllers\Admin\UbicacionController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"ubicaciones\/{ubicaciones}","name":"ubicaciones.show","action":"App\Http\Controllers\Admin\UbicacionController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"ubicaciones\/{ubicaciones}\/edit","name":"ubicaciones.edit","action":"App\Http\Controllers\Admin\UbicacionController@edit"},{"host":null,"methods":["PUT"],"uri":"ubicaciones\/{ubicaciones}","name":"ubicaciones.update","action":"App\Http\Controllers\Admin\UbicacionController@update"},{"host":null,"methods":["PATCH"],"uri":"ubicaciones\/{ubicaciones}","name":null,"action":"App\Http\Controllers\Admin\UbicacionController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"notificaciones","name":"notificaciones.index","action":"App\Http\Controllers\Admin\NotificacionController@index"},{"host":null,"methods":["PUT"],"uri":"notificaciones\/{notificaciones}","name":"notificaciones.update","action":"App\Http\Controllers\Admin\NotificacionController@update"},{"host":null,"methods":["PATCH"],"uri":"notificaciones\/{notificaciones}","name":null,"action":"App\Http\Controllers\Admin\NotificacionController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"regionales","name":"regionales.index","action":"App\Http\Controllers\Admin\RegionalController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"regionales\/create","name":"regionales.create","action":"App\Http\Controllers\Admin\RegionalController@create"},{"host":null,"methods":["POST"],"uri":"regionales","name":"regionales.store","action":"App\Http\Controllers\Admin\RegionalController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"regionales\/{regionales}","name":"regionales.show","action":"App\Http\Controllers\Admin\RegionalController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"regionales\/{regionales}\/edit","name":"regionales.edit","action":"App\Http\Controllers\Admin\RegionalController@edit"},{"host":null,"methods":["PUT"],"uri":"regionales\/{regionales}","name":"regionales.update","action":"App\Http\Controllers\Admin\RegionalController@update"},{"host":null,"methods":["PATCH"],"uri":"regionales\/{regionales}","name":null,"action":"App\Http\Controllers\Admin\RegionalController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"puntosventa","name":"puntosventa.index","action":"App\Http\Controllers\Admin\PuntoVentaController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"puntosventa\/create","name":"puntosventa.create","action":"App\Http\Controllers\Admin\PuntoVentaController@create"},{"host":null,"methods":["POST"],"uri":"puntosventa","name":"puntosventa.store","action":"App\Http\Controllers\Admin\PuntoVentaController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"puntosventa\/{puntosventa}","name":"puntosventa.show","action":"App\Http\Controllers\Admin\PuntoVentaController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"puntosventa\/{puntosventa}\/edit","name":"puntosventa.edit","action":"App\Http\Controllers\Admin\PuntoVentaController@edit"},{"host":null,"methods":["PUT"],"uri":"puntosventa\/{puntosventa}","name":"puntosventa.update","action":"App\Http\Controllers\Admin\PuntoVentaController@update"},{"host":null,"methods":["PATCH"],"uri":"puntosventa\/{puntosventa}","name":null,"action":"App\Http\Controllers\Admin\PuntoVentaController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"tiposactividad","name":"tiposactividad.index","action":"App\Http\Controllers\Admin\TipoActividadController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"tiposactividad\/create","name":"tiposactividad.create","action":"App\Http\Controllers\Admin\TipoActividadController@create"},{"host":null,"methods":["POST"],"uri":"tiposactividad","name":"tiposactividad.store","action":"App\Http\Controllers\Admin\TipoActividadController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"tiposactividad\/{tiposactividad}","name":"tiposactividad.show","action":"App\Http\Controllers\Admin\TipoActividadController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"tiposactividad\/{tiposactividad}\/edit","name":"tiposactividad.edit","action":"App\Http\Controllers\Admin\TipoActividadController@edit"},{"host":null,"methods":["PUT"],"uri":"tiposactividad\/{tiposactividad}","name":"tiposactividad.update","action":"App\Http\Controllers\Admin\TipoActividadController@update"},{"host":null,"methods":["PATCH"],"uri":"tiposactividad\/{tiposactividad}","name":null,"action":"App\Http\Controllers\Admin\TipoActividadController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"bitacoras","name":"bitacoras.index","action":"App\Http\Controllers\Admin\BitacoraController@index"},{"host":null,"methods":["POST"],"uri":"documento\/evaluate","name":"documento.evaluate","action":"App\Http\Controllers\Admin\DocumentosController@evaluate"},{"host":null,"methods":["GET","HEAD"],"uri":"documento","name":"documento.index","action":"App\Http\Controllers\Admin\DocumentosController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"documento\/create","name":"documento.create","action":"App\Http\Controllers\Admin\DocumentosController@create"},{"host":null,"methods":["POST"],"uri":"documento","name":"documento.store","action":"App\Http\Controllers\Admin\DocumentosController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"documento\/{documento}","name":"documento.show","action":"App\Http\Controllers\Admin\DocumentosController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"documento\/{documento}\/edit","name":"documento.edit","action":"App\Http\Controllers\Admin\DocumentosController@edit"},{"host":null,"methods":["PUT"],"uri":"documento\/{documento}","name":"documento.update","action":"App\Http\Controllers\Admin\DocumentosController@update"},{"host":null,"methods":["PATCH"],"uri":"documento\/{documento}","name":null,"action":"App\Http\Controllers\Admin\DocumentosController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"roles\/permisos","name":"roles.permisos.index","action":"App\Http\Controllers\Admin\PermisoRolController@index"},{"host":null,"methods":["PUT"],"uri":"roles\/permisos\/{permisos}","name":"roles.permisos.update","action":"App\Http\Controllers\Admin\PermisoRolController@update"},{"host":null,"methods":["PATCH"],"uri":"roles\/permisos\/{permisos}","name":null,"action":"App\Http\Controllers\Admin\PermisoRolController@update"},{"host":null,"methods":["DELETE"],"uri":"roles\/permisos\/{permisos}","name":"roles.permisos.destroy","action":"App\Http\Controllers\Admin\PermisoRolController@destroy"},{"host":null,"methods":["GET","HEAD"],"uri":"roles","name":"roles.index","action":"App\Http\Controllers\Admin\RolController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"roles\/create","name":"roles.create","action":"App\Http\Controllers\Admin\RolController@create"},{"host":null,"methods":["POST"],"uri":"roles","name":"roles.store","action":"App\Http\Controllers\Admin\RolController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"roles\/{roles}","name":"roles.show","action":"App\Http\Controllers\Admin\RolController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"roles\/{roles}\/edit","name":"roles.edit","action":"App\Http\Controllers\Admin\RolController@edit"},{"host":null,"methods":["PUT"],"uri":"roles\/{roles}","name":"roles.update","action":"App\Http\Controllers\Admin\RolController@update"},{"host":null,"methods":["PATCH"],"uri":"roles\/{roles}","name":null,"action":"App\Http\Controllers\Admin\RolController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"permisos","name":"permisos.index","action":"App\Http\Controllers\Admin\PermisoController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"modulos","name":"modulos.index","action":"App\Http\Controllers\Admin\ModuloController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"pedidosc\/detalle","name":"pedidosc.detalle.index","action":"App\Http\Controllers\Comercial\DetallePedidoController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"pedidosc\/detalle\/create","name":"pedidosc.detalle.create","action":"App\Http\Controllers\Comercial\DetallePedidoController@create"},{"host":null,"methods":["POST"],"uri":"pedidosc\/detalle","name":"pedidosc.detalle.store","action":"App\Http\Controllers\Comercial\DetallePedidoController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"pedidosc\/detalle\/{detalle}","name":"pedidosc.detalle.show","action":"App\Http\Controllers\Comercial\DetallePedidoController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"pedidosc\/detalle\/{detalle}\/edit","name":"pedidosc.detalle.edit","action":"App\Http\Controllers\Comercial\DetallePedidoController@edit"},{"host":null,"methods":["PUT"],"uri":"pedidosc\/detalle\/{detalle}","name":"pedidosc.detalle.update","action":"App\Http\Controllers\Comercial\DetallePedidoController@update"},{"host":null,"methods":["PATCH"],"uri":"pedidosc\/detalle\/{detalle}","name":null,"action":"App\Http\Controllers\Comercial\DetallePedidoController@update"},{"host":null,"methods":["DELETE"],"uri":"pedidosc\/detalle\/{detalle}","name":"pedidosc.detalle.destroy","action":"App\Http\Controllers\Comercial\DetallePedidoController@destroy"},{"host":null,"methods":["GET","HEAD"],"uri":"pedidosc\/anular\/{pedidosc}","name":"pedidosc.anular","action":"App\Http\Controllers\Comercial\PedidoController@anular"},{"host":null,"methods":["GET","HEAD"],"uri":"pedidosc\/exportar\/{pedidosc}","name":"pedidosc.exportar","action":"App\Http\Controllers\Comercial\PedidoController@exportar"},{"host":null,"methods":["GET","HEAD"],"uri":"autorizacionesco","name":"autorizacionesco.index","action":"App\Http\Controllers\Comercial\AutorizaComercialController@index"},{"host":null,"methods":["POST"],"uri":"autorizacionesco","name":"autorizacionesco.store","action":"App\Http\Controllers\Comercial\AutorizaComercialController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"presupuestoasesor","name":"presupuestoasesor.index","action":"App\Http\Controllers\Comercial\PresupuestoAsesorController@index"},{"host":null,"methods":["POST"],"uri":"presupuestoasesor","name":"presupuestoasesor.store","action":"App\Http\Controllers\Comercial\PresupuestoAsesorController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"pedidosc","name":"pedidosc.index","action":"App\Http\Controllers\Comercial\PedidoController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"pedidosc\/create","name":"pedidosc.create","action":"App\Http\Controllers\Comercial\PedidoController@create"},{"host":null,"methods":["POST"],"uri":"pedidosc","name":"pedidosc.store","action":"App\Http\Controllers\Comercial\PedidoController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"pedidosc\/{pedidosc}","name":"pedidosc.show","action":"App\Http\Controllers\Comercial\PedidoController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"pedidosc\/{pedidosc}\/edit","name":"pedidosc.edit","action":"App\Http\Controllers\Comercial\PedidoController@edit"},{"host":null,"methods":["PUT"],"uri":"pedidosc\/{pedidosc}","name":"pedidosc.update","action":"App\Http\Controllers\Comercial\PedidoController@update"},{"host":null,"methods":["PATCH"],"uri":"pedidosc\/{pedidosc}","name":null,"action":"App\Http\Controllers\Comercial\PedidoController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"conceptoscomercial","name":"conceptoscomercial.index","action":"App\Http\Controllers\Comercial\ConceptoComercialController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"conceptoscomercial\/create","name":"conceptoscomercial.create","action":"App\Http\Controllers\Comercial\ConceptoComercialController@create"},{"host":null,"methods":["POST"],"uri":"conceptoscomercial","name":"conceptoscomercial.store","action":"App\Http\Controllers\Comercial\ConceptoComercialController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"conceptoscomercial\/{conceptoscomercial}","name":"conceptoscomercial.show","action":"App\Http\Controllers\Comercial\ConceptoComercialController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"conceptoscomercial\/{conceptoscomercial}\/edit","name":"conceptoscomercial.edit","action":"App\Http\Controllers\Comercial\ConceptoComercialController@edit"},{"host":null,"methods":["PUT"],"uri":"conceptoscomercial\/{conceptoscomercial}","name":"conceptoscomercial.update","action":"App\Http\Controllers\Comercial\ConceptoComercialController@update"},{"host":null,"methods":["PATCH"],"uri":"conceptoscomercial\/{conceptoscomercial}","name":null,"action":"App\Http\Controllers\Comercial\ConceptoComercialController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"gestionescomercial","name":"gestionescomercial.index","action":"App\Http\Controllers\Comercial\GestionComercialController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"gestionescomercial\/create","name":"gestionescomercial.create","action":"App\Http\Controllers\Comercial\GestionComercialController@create"},{"host":null,"methods":["POST"],"uri":"gestionescomercial","name":"gestionescomercial.store","action":"App\Http\Controllers\Comercial\GestionComercialController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"gestionescomercial\/{gestionescomercial}","name":"gestionescomercial.show","action":"App\Http\Controllers\Comercial\GestionComercialController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"gestionescomercial\/{gestionescomercial}\/edit","name":"gestionescomercial.edit","action":"App\Http\Controllers\Comercial\GestionComercialController@edit"},{"host":null,"methods":["PUT"],"uri":"gestionescomercial\/{gestionescomercial}","name":"gestionescomercial.update","action":"App\Http\Controllers\Comercial\GestionComercialController@update"},{"host":null,"methods":["PATCH"],"uri":"gestionescomercial\/{gestionescomercial}","name":null,"action":"App\Http\Controllers\Comercial\GestionComercialController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"configsabana","name":"configsabana.index","action":"App\Http\Controllers\Comercial\ConfigSabanaController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"configsabana\/create","name":"configsabana.create","action":"App\Http\Controllers\Comercial\ConfigSabanaController@create"},{"host":null,"methods":["POST"],"uri":"configsabana","name":"configsabana.store","action":"App\Http\Controllers\Comercial\ConfigSabanaController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"configsabana\/{configsabana}","name":"configsabana.show","action":"App\Http\Controllers\Comercial\ConfigSabanaController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"configsabana\/{configsabana}\/edit","name":"configsabana.edit","action":"App\Http\Controllers\Comercial\ConfigSabanaController@edit"},{"host":null,"methods":["PUT"],"uri":"configsabana\/{configsabana}","name":"configsabana.update","action":"App\Http\Controllers\Comercial\ConfigSabanaController@update"},{"host":null,"methods":["PATCH"],"uri":"configsabana\/{configsabana}","name":null,"action":"App\Http\Controllers\Comercial\ConfigSabanaController@update"},{"host":null,"methods":["DELETE"],"uri":"configsabana\/{configsabana}","name":"configsabana.destroy","action":"App\Http\Controllers\Comercial\ConfigSabanaController@destroy"},{"host":null,"methods":["GET","HEAD"],"uri":"selects\/grupos","name":"configsabana.grupos","action":"App\Http\Controllers\Comercial\ConfigSabanaController@grupos"},{"host":null,"methods":["GET","HEAD"],"uri":"selects\/unificaciones","name":"configsabana.unificaciones","action":"App\Http\Controllers\Comercial\ConfigSabanaController@unificaciones"},{"host":null,"methods":["GET","HEAD"],"uri":"folders","name":"folders.index","action":"App\Http\Controllers\Contabilidad\FolderController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"folders\/create","name":"folders.create","action":"App\Http\Controllers\Contabilidad\FolderController@create"},{"host":null,"methods":["POST"],"uri":"folders","name":"folders.store","action":"App\Http\Controllers\Contabilidad\FolderController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"folders\/{folders}","name":"folders.show","action":"App\Http\Controllers\Contabilidad\FolderController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"folders\/{folders}\/edit","name":"folders.edit","action":"App\Http\Controllers\Contabilidad\FolderController@edit"},{"host":null,"methods":["PUT"],"uri":"folders\/{folders}","name":"folders.update","action":"App\Http\Controllers\Contabilidad\FolderController@update"},{"host":null,"methods":["PATCH"],"uri":"folders\/{folders}","name":null,"action":"App\Http\Controllers\Contabilidad\FolderController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"centroscosto","name":"centroscosto.index","action":"App\Http\Controllers\Contabilidad\CentroCostoController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"centroscosto\/create","name":"centroscosto.create","action":"App\Http\Controllers\Contabilidad\CentroCostoController@create"},{"host":null,"methods":["POST"],"uri":"centroscosto","name":"centroscosto.store","action":"App\Http\Controllers\Contabilidad\CentroCostoController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"centroscosto\/{centroscosto}","name":"centroscosto.show","action":"App\Http\Controllers\Contabilidad\CentroCostoController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"centroscosto\/{centroscosto}\/edit","name":"centroscosto.edit","action":"App\Http\Controllers\Contabilidad\CentroCostoController@edit"},{"host":null,"methods":["PUT"],"uri":"centroscosto\/{centroscosto}","name":"centroscosto.update","action":"App\Http\Controllers\Contabilidad\CentroCostoController@update"},{"host":null,"methods":["PATCH"],"uri":"centroscosto\/{centroscosto}","name":null,"action":"App\Http\Controllers\Contabilidad\CentroCostoController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"tipoactivos","name":"tipoactivos.index","action":"App\Http\Controllers\Contabilidad\TipoActivoController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"tipoactivos\/create","name":"tipoactivos.create","action":"App\Http\Controllers\Contabilidad\TipoActivoController@create"},{"host":null,"methods":["POST"],"uri":"tipoactivos","name":"tipoactivos.store","action":"App\Http\Controllers\Contabilidad\TipoActivoController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"tipoactivos\/{tipoactivos}","name":"tipoactivos.show","action":"App\Http\Controllers\Contabilidad\TipoActivoController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"tipoactivos\/{tipoactivos}\/edit","name":"tipoactivos.edit","action":"App\Http\Controllers\Contabilidad\TipoActivoController@edit"},{"host":null,"methods":["PUT"],"uri":"tipoactivos\/{tipoactivos}","name":"tipoactivos.update","action":"App\Http\Controllers\Contabilidad\TipoActivoController@update"},{"host":null,"methods":["PATCH"],"uri":"tipoactivos\/{tipoactivos}","name":null,"action":"App\Http\Controllers\Contabilidad\TipoActivoController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"activosfijos","name":"activosfijos.index","action":"App\Http\Controllers\Contabilidad\ActivoFijoController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"activosfijos\/create","name":"activosfijos.create","action":"App\Http\Controllers\Contabilidad\ActivoFijoController@create"},{"host":null,"methods":["POST"],"uri":"activosfijos","name":"activosfijos.store","action":"App\Http\Controllers\Contabilidad\ActivoFijoController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"activosfijos\/{activosfijos}","name":"activosfijos.show","action":"App\Http\Controllers\Contabilidad\ActivoFijoController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"activosfijos\/{activosfijos}\/edit","name":"activosfijos.edit","action":"App\Http\Controllers\Contabilidad\ActivoFijoController@edit"},{"host":null,"methods":["PUT"],"uri":"activosfijos\/{activosfijos}","name":"activosfijos.update","action":"App\Http\Controllers\Contabilidad\ActivoFijoController@update"},{"host":null,"methods":["PATCH"],"uri":"activosfijos\/{activosfijos}","name":null,"action":"App\Http\Controllers\Contabilidad\ActivoFijoController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"plancuentas\/nivel","name":"plancuentas.nivel","action":"App\Http\Controllers\Contabilidad\PlanCuentasController@nivel"},{"host":null,"methods":["GET","HEAD"],"uri":"plancuentas\/search","name":"plancuentas.search","action":"App\Http\Controllers\Contabilidad\PlanCuentasController@search"},{"host":null,"methods":["GET","HEAD"],"uri":"plancuentas","name":"plancuentas.index","action":"App\Http\Controllers\Contabilidad\PlanCuentasController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"plancuentas\/create","name":"plancuentas.create","action":"App\Http\Controllers\Contabilidad\PlanCuentasController@create"},{"host":null,"methods":["POST"],"uri":"plancuentas","name":"plancuentas.store","action":"App\Http\Controllers\Contabilidad\PlanCuentasController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"plancuentas\/{plancuentas}","name":"plancuentas.show","action":"App\Http\Controllers\Contabilidad\PlanCuentasController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"plancuentas\/{plancuentas}\/edit","name":"plancuentas.edit","action":"App\Http\Controllers\Contabilidad\PlanCuentasController@edit"},{"host":null,"methods":["PUT"],"uri":"plancuentas\/{plancuentas}","name":"plancuentas.update","action":"App\Http\Controllers\Contabilidad\PlanCuentasController@update"},{"host":null,"methods":["PATCH"],"uri":"plancuentas\/{plancuentas}","name":null,"action":"App\Http\Controllers\Contabilidad\PlanCuentasController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"plancuentasnif\/nivel","name":"plancuentasnif.nivel","action":"App\Http\Controllers\Contabilidad\PlanCuentasNifController@nivel"},{"host":null,"methods":["GET","HEAD"],"uri":"plancuentasnif\/search","name":"plancuentasnif.search","action":"App\Http\Controllers\Contabilidad\PlanCuentasNifController@search"},{"host":null,"methods":["GET","HEAD"],"uri":"plancuentasnif","name":"plancuentasnif.index","action":"App\Http\Controllers\Contabilidad\PlanCuentasNifController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"plancuentasnif\/create","name":"plancuentasnif.create","action":"App\Http\Controllers\Contabilidad\PlanCuentasNifController@create"},{"host":null,"methods":["POST"],"uri":"plancuentasnif","name":"plancuentasnif.store","action":"App\Http\Controllers\Contabilidad\PlanCuentasNifController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"plancuentasnif\/{plancuentasnif}","name":"plancuentasnif.show","action":"App\Http\Controllers\Contabilidad\PlanCuentasNifController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"plancuentasnif\/{plancuentasnif}\/edit","name":"plancuentasnif.edit","action":"App\Http\Controllers\Contabilidad\PlanCuentasNifController@edit"},{"host":null,"methods":["PUT"],"uri":"plancuentasnif\/{plancuentasnif}","name":"plancuentasnif.update","action":"App\Http\Controllers\Contabilidad\PlanCuentasNifController@update"},{"host":null,"methods":["PATCH"],"uri":"plancuentasnif\/{plancuentasnif}","name":null,"action":"App\Http\Controllers\Contabilidad\PlanCuentasNifController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"documentos\/filter","name":"documentos.filter","action":"App\Http\Controllers\Contabilidad\DocumentoController@filter"},{"host":null,"methods":["GET","HEAD"],"uri":"documentos","name":"documentos.index","action":"App\Http\Controllers\Contabilidad\DocumentoController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"documentos\/create","name":"documentos.create","action":"App\Http\Controllers\Contabilidad\DocumentoController@create"},{"host":null,"methods":["POST"],"uri":"documentos","name":"documentos.store","action":"App\Http\Controllers\Contabilidad\DocumentoController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"documentos\/{documentos}","name":"documentos.show","action":"App\Http\Controllers\Contabilidad\DocumentoController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"documentos\/{documentos}\/edit","name":"documentos.edit","action":"App\Http\Controllers\Contabilidad\DocumentoController@edit"},{"host":null,"methods":["PUT"],"uri":"documentos\/{documentos}","name":"documentos.update","action":"App\Http\Controllers\Contabilidad\DocumentoController@update"},{"host":null,"methods":["PATCH"],"uri":"documentos\/{documentos}","name":null,"action":"App\Http\Controllers\Contabilidad\DocumentoController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"asientos\/detalle","name":"asientos.detalle.index","action":"App\Http\Controllers\Contabilidad\DetalleAsientoController@index"},{"host":null,"methods":["POST"],"uri":"asientos\/detalle","name":"asientos.detalle.store","action":"App\Http\Controllers\Contabilidad\DetalleAsientoController@store"},{"host":null,"methods":["DELETE"],"uri":"asientos\/detalle\/{detalle}","name":"asientos.detalle.destroy","action":"App\Http\Controllers\Contabilidad\DetalleAsientoController@destroy"},{"host":null,"methods":["GET","HEAD"],"uri":"asientos\/exportar\/{asientos}","name":"asientos.exportar","action":"App\Http\Controllers\Contabilidad\AsientoController@exportar"},{"host":null,"methods":["POST"],"uri":"asientos\/detalle\/evaluate","name":"asientos.detalle.evaluate","action":"App\Http\Controllers\Contabilidad\DetalleAsientoController@evaluate"},{"host":null,"methods":["POST"],"uri":"asientos\/detalle\/validate","name":"asientos.detalle.validate","action":"App\Http\Controllers\Contabilidad\DetalleAsientoController@validation"},{"host":null,"methods":["GET","HEAD"],"uri":"asientos\/detalle\/movimientos","name":"asientos.detalle.movimientos","action":"App\Http\Controllers\Contabilidad\DetalleAsientoController@movimientos"},{"host":null,"methods":["GET","HEAD"],"uri":"asientos","name":"asientos.index","action":"App\Http\Controllers\Contabilidad\AsientoController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"asientos\/create","name":"asientos.create","action":"App\Http\Controllers\Contabilidad\AsientoController@create"},{"host":null,"methods":["POST"],"uri":"asientos","name":"asientos.store","action":"App\Http\Controllers\Contabilidad\AsientoController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"asientos\/{asientos}","name":"asientos.show","action":"App\Http\Controllers\Contabilidad\AsientoController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"asientos\/{asientos}\/edit","name":"asientos.edit","action":"App\Http\Controllers\Contabilidad\AsientoController@edit"},{"host":null,"methods":["PUT"],"uri":"asientos\/{asientos}","name":"asientos.update","action":"App\Http\Controllers\Contabilidad\AsientoController@update"},{"host":null,"methods":["PATCH"],"uri":"asientos\/{asientos}","name":null,"action":"App\Http\Controllers\Contabilidad\AsientoController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"asientosnif\/detalle","name":"asientosnif.detalle.index","action":"App\Http\Controllers\Contabilidad\DetalleAsientoNifController@index"},{"host":null,"methods":["POST"],"uri":"asientosnif\/detalle","name":"asientosnif.detalle.store","action":"App\Http\Controllers\Contabilidad\DetalleAsientoNifController@store"},{"host":null,"methods":["DELETE"],"uri":"asientosnif\/detalle\/{detalle}","name":"asientosnif.detalle.destroy","action":"App\Http\Controllers\Contabilidad\DetalleAsientoNifController@destroy"},{"host":null,"methods":["GET","HEAD"],"uri":"asientosnif\/exportar\/{asientosnif}","name":"asientosnif.exportar","action":"App\Http\Controllers\Contabilidad\AsientoNifController@exportar"},{"host":null,"methods":["POST"],"uri":"asientosnif\/detalle\/evaluate","name":"asientosnif.detalle.evaluate","action":"App\Http\Controllers\Contabilidad\DetalleAsientoNifController@evaluate"},{"host":null,"methods":["POST"],"uri":"asientosnif\/detalle\/validate","name":"asientosnif.detalle.validate","action":"App\Http\Controllers\Contabilidad\DetalleAsientoNifController@validation"},{"host":null,"methods":["GET","HEAD"],"uri":"asientosnif\/detalle\/movimientos","name":"asientosnif.detalle.movimientos","action":"App\Http\Controllers\Contabilidad\DetalleAsientoNifController@movimientos"},{"host":null,"methods":["GET","HEAD"],"uri":"asientosnif","name":"asientosnif.index","action":"App\Http\Controllers\Contabilidad\AsientoNifController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"asientosnif\/{asientosnif}","name":"asientosnif.show","action":"App\Http\Controllers\Contabilidad\AsientoNifController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"asientosnif\/{asientosnif}\/edit","name":"asientosnif.edit","action":"App\Http\Controllers\Contabilidad\AsientoNifController@edit"},{"host":null,"methods":["PUT"],"uri":"asientosnif\/{asientosnif}","name":"asientosnif.update","action":"App\Http\Controllers\Contabilidad\AsientoNifController@update"},{"host":null,"methods":["PATCH"],"uri":"asientosnif\/{asientosnif}","name":null,"action":"App\Http\Controllers\Contabilidad\AsientoNifController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"reglasasientos","name":"reglasasientos.index","action":"App\Http\Controllers\Contabilidad\ReglaAsientoController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"reglasasientos\/create","name":"reglasasientos.create","action":"App\Http\Controllers\Contabilidad\ReglaAsientoController@create"},{"host":null,"methods":["POST"],"uri":"reglasasientos","name":"reglasasientos.store","action":"App\Http\Controllers\Contabilidad\ReglaAsientoController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"reglasasientos\/{reglasasientos}","name":"reglasasientos.show","action":"App\Http\Controllers\Contabilidad\ReglaAsientoController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"reglasasientos\/{reglasasientos}\/edit","name":"reglasasientos.edit","action":"App\Http\Controllers\Contabilidad\ReglaAsientoController@edit"},{"host":null,"methods":["PUT"],"uri":"reglasasientos\/{reglasasientos}","name":"reglasasientos.update","action":"App\Http\Controllers\Contabilidad\ReglaAsientoController@update"},{"host":null,"methods":["PATCH"],"uri":"reglasasientos\/{reglasasientos}","name":null,"action":"App\Http\Controllers\Contabilidad\ReglaAsientoController@update"},{"host":null,"methods":["DELETE"],"uri":"reglasasientos\/{reglasasientos}","name":"reglasasientos.destroy","action":"App\Http\Controllers\Contabilidad\ReglaAsientoController@destroy"},{"host":null,"methods":["GET","HEAD"],"uri":"productos\/search","name":"productos.search","action":"App\Http\Controllers\Inventario\ProductoController@search"},{"host":null,"methods":["GET","HEAD"],"uri":"productos\/rollos","name":"productos.rollos.index","action":"App\Http\Controllers\Inventario\RolloController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"productos\/lotes","name":"productos.lotes.index","action":"App\Http\Controllers\Inventario\LoteController@index"},{"host":null,"methods":["POST"],"uri":"productos\/evaluate","name":"productos.evaluate","action":"App\Http\Controllers\Inventario\ProductoController@evaluate"},{"host":null,"methods":["POST"],"uri":"productos\/validate","name":"productos.validate","action":"App\Http\Controllers\Inventario\ProductoController@validation"},{"host":null,"methods":["PUT"],"uri":"productos\/machine","name":"productos.machine","action":"App\Http\Controllers\Inventario\ProductoController@machine"},{"host":null,"methods":["POST"],"uri":"productos\/storeserie","name":"productos.storeserie","action":"App\Http\Controllers\Inventario\ProductoController@storeserie"},{"host":null,"methods":["GET","HEAD"],"uri":"productos\/prodbode","name":"productos.prodbode.index","action":"App\Http\Controllers\Inventario\ProdbodeController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"productos\/referencia","name":"productos.referencia","action":"App\Http\Controllers\Inventario\ProductoController@referencia"},{"host":null,"methods":["GET","HEAD"],"uri":"pedidos\/detalle","name":"pedidos.detalle.index","action":"App\Http\Controllers\Inventario\DetallePedidoController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"pedidos\/detalle\/create","name":"pedidos.detalle.create","action":"App\Http\Controllers\Inventario\DetallePedidoController@create"},{"host":null,"methods":["POST"],"uri":"pedidos\/detalle","name":"pedidos.detalle.store","action":"App\Http\Controllers\Inventario\DetallePedidoController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"pedidos\/detalle\/{detalle}","name":"pedidos.detalle.show","action":"App\Http\Controllers\Inventario\DetallePedidoController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"pedidos\/detalle\/{detalle}\/edit","name":"pedidos.detalle.edit","action":"App\Http\Controllers\Inventario\DetallePedidoController@edit"},{"host":null,"methods":["PUT"],"uri":"pedidos\/detalle\/{detalle}","name":"pedidos.detalle.update","action":"App\Http\Controllers\Inventario\DetallePedidoController@update"},{"host":null,"methods":["PATCH"],"uri":"pedidos\/detalle\/{detalle}","name":null,"action":"App\Http\Controllers\Inventario\DetallePedidoController@update"},{"host":null,"methods":["DELETE"],"uri":"pedidos\/detalle\/{detalle}","name":"pedidos.detalle.destroy","action":"App\Http\Controllers\Inventario\DetallePedidoController@destroy"},{"host":null,"methods":["GET","HEAD"],"uri":"pedidos\/cerrar\/{pedidos}","name":"pedidos.cerrar","action":"App\Http\Controllers\Inventario\PedidoController@cerrar"},{"host":null,"methods":["GET","HEAD"],"uri":"pedidos\/anular\/{pedidos}","name":"pedidos.anular","action":"App\Http\Controllers\Inventario\PedidoController@anular"},{"host":null,"methods":["GET","HEAD"],"uri":"ajustes\/detalle","name":"ajustes.detalle.index","action":"App\Http\Controllers\Inventario\DetalleAjusteController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"ajustes\/detalle\/create","name":"ajustes.detalle.create","action":"App\Http\Controllers\Inventario\DetalleAjusteController@create"},{"host":null,"methods":["POST"],"uri":"ajustes\/detalle","name":"ajustes.detalle.store","action":"App\Http\Controllers\Inventario\DetalleAjusteController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"ajustes\/detalle\/{detalle}","name":"ajustes.detalle.show","action":"App\Http\Controllers\Inventario\DetalleAjusteController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"ajustes\/detalle\/{detalle}\/edit","name":"ajustes.detalle.edit","action":"App\Http\Controllers\Inventario\DetalleAjusteController@edit"},{"host":null,"methods":["PUT"],"uri":"ajustes\/detalle\/{detalle}","name":"ajustes.detalle.update","action":"App\Http\Controllers\Inventario\DetalleAjusteController@update"},{"host":null,"methods":["PATCH"],"uri":"ajustes\/detalle\/{detalle}","name":null,"action":"App\Http\Controllers\Inventario\DetalleAjusteController@update"},{"host":null,"methods":["DELETE"],"uri":"ajustes\/detalle\/{detalle}","name":"ajustes.detalle.destroy","action":"App\Http\Controllers\Inventario\DetalleAjusteController@destroy"},{"host":null,"methods":["GET","HEAD"],"uri":"ajustes\/exportar\/{ajustes}","name":"ajustes.exportar","action":"App\Http\Controllers\Inventario\AjusteController@exportar"},{"host":null,"methods":["GET","HEAD"],"uri":"ajustes\/alistar\/{ajustes}","name":"ajustes.alistar","action":"App\Http\Controllers\Inventario\AjusteController@alistar"},{"host":null,"methods":["GET","HEAD"],"uri":"traslados\/detalle","name":"traslados.detalle.index","action":"App\Http\Controllers\Inventario\DetalleTrasladoController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"traslados\/detalle\/create","name":"traslados.detalle.create","action":"App\Http\Controllers\Inventario\DetalleTrasladoController@create"},{"host":null,"methods":["POST"],"uri":"traslados\/detalle","name":"traslados.detalle.store","action":"App\Http\Controllers\Inventario\DetalleTrasladoController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"traslados\/detalle\/{detalle}","name":"traslados.detalle.show","action":"App\Http\Controllers\Inventario\DetalleTrasladoController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"traslados\/detalle\/{detalle}\/edit","name":"traslados.detalle.edit","action":"App\Http\Controllers\Inventario\DetalleTrasladoController@edit"},{"host":null,"methods":["PUT"],"uri":"traslados\/detalle\/{detalle}","name":"traslados.detalle.update","action":"App\Http\Controllers\Inventario\DetalleTrasladoController@update"},{"host":null,"methods":["PATCH"],"uri":"traslados\/detalle\/{detalle}","name":null,"action":"App\Http\Controllers\Inventario\DetalleTrasladoController@update"},{"host":null,"methods":["DELETE"],"uri":"traslados\/detalle\/{detalle}","name":"traslados.detalle.destroy","action":"App\Http\Controllers\Inventario\DetalleTrasladoController@destroy"},{"host":null,"methods":["GET","HEAD"],"uri":"traslados\/exportar\/{traslados}","name":"traslados.exportar","action":"App\Http\Controllers\Inventario\TrasladoController@exportar"},{"host":null,"methods":["GET","HEAD"],"uri":"trasladosubicaciones\/detalle","name":"trasladosubicaciones.detalle.index","action":"App\Http\Controllers\Inventario\DetalleTrasladoUbicacionController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"trasladosubicaciones\/detalle\/create","name":"trasladosubicaciones.detalle.create","action":"App\Http\Controllers\Inventario\DetalleTrasladoUbicacionController@create"},{"host":null,"methods":["POST"],"uri":"trasladosubicaciones\/detalle","name":"trasladosubicaciones.detalle.store","action":"App\Http\Controllers\Inventario\DetalleTrasladoUbicacionController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"trasladosubicaciones\/detalle\/{detalle}","name":"trasladosubicaciones.detalle.show","action":"App\Http\Controllers\Inventario\DetalleTrasladoUbicacionController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"trasladosubicaciones\/detalle\/{detalle}\/edit","name":"trasladosubicaciones.detalle.edit","action":"App\Http\Controllers\Inventario\DetalleTrasladoUbicacionController@edit"},{"host":null,"methods":["PUT"],"uri":"trasladosubicaciones\/detalle\/{detalle}","name":"trasladosubicaciones.detalle.update","action":"App\Http\Controllers\Inventario\DetalleTrasladoUbicacionController@update"},{"host":null,"methods":["PATCH"],"uri":"trasladosubicaciones\/detalle\/{detalle}","name":null,"action":"App\Http\Controllers\Inventario\DetalleTrasladoUbicacionController@update"},{"host":null,"methods":["DELETE"],"uri":"trasladosubicaciones\/detalle\/{detalle}","name":"trasladosubicaciones.detalle.destroy","action":"App\Http\Controllers\Inventario\DetalleTrasladoUbicacionController@destroy"},{"host":null,"methods":["GET","HEAD"],"uri":"trasladosubicaciones\/exportar\/{trasladosubicaciones}","name":"trasladosubicaciones.exportar","action":"App\Http\Controllers\Inventario\TrasladoUbicacionController@exportar"},{"host":null,"methods":["GET","HEAD"],"uri":"entradas\/detalle","name":"entradas.detalle.index","action":"App\Http\Controllers\Inventario\EntradaDetalleController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"entradas\/detalle\/create","name":"entradas.detalle.create","action":"App\Http\Controllers\Inventario\EntradaDetalleController@create"},{"host":null,"methods":["POST"],"uri":"entradas\/detalle","name":"entradas.detalle.store","action":"App\Http\Controllers\Inventario\EntradaDetalleController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"entradas\/detalle\/{detalle}","name":"entradas.detalle.show","action":"App\Http\Controllers\Inventario\EntradaDetalleController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"entradas\/detalle\/{detalle}\/edit","name":"entradas.detalle.edit","action":"App\Http\Controllers\Inventario\EntradaDetalleController@edit"},{"host":null,"methods":["PUT"],"uri":"entradas\/detalle\/{detalle}","name":"entradas.detalle.update","action":"App\Http\Controllers\Inventario\EntradaDetalleController@update"},{"host":null,"methods":["PATCH"],"uri":"entradas\/detalle\/{detalle}","name":null,"action":"App\Http\Controllers\Inventario\EntradaDetalleController@update"},{"host":null,"methods":["DELETE"],"uri":"entradas\/detalle\/{detalle}","name":"entradas.detalle.destroy","action":"App\Http\Controllers\Inventario\EntradaDetalleController@destroy"},{"host":null,"methods":["GET","HEAD"],"uri":"tiposajuste\/detalle","name":"tiposajuste.detalle.index","action":"App\Http\Controllers\Inventario\DetalleTipoAjusteController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"tiposajuste\/detalle\/create","name":"tiposajuste.detalle.create","action":"App\Http\Controllers\Inventario\DetalleTipoAjusteController@create"},{"host":null,"methods":["POST"],"uri":"tiposajuste\/detalle","name":"tiposajuste.detalle.store","action":"App\Http\Controllers\Inventario\DetalleTipoAjusteController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"tiposajuste\/detalle\/{detalle}","name":"tiposajuste.detalle.show","action":"App\Http\Controllers\Inventario\DetalleTipoAjusteController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"tiposajuste\/detalle\/{detalle}\/edit","name":"tiposajuste.detalle.edit","action":"App\Http\Controllers\Inventario\DetalleTipoAjusteController@edit"},{"host":null,"methods":["PUT"],"uri":"tiposajuste\/detalle\/{detalle}","name":"tiposajuste.detalle.update","action":"App\Http\Controllers\Inventario\DetalleTipoAjusteController@update"},{"host":null,"methods":["PATCH"],"uri":"tiposajuste\/detalle\/{detalle}","name":null,"action":"App\Http\Controllers\Inventario\DetalleTipoAjusteController@update"},{"host":null,"methods":["DELETE"],"uri":"tiposajuste\/detalle\/{detalle}","name":"tiposajuste.detalle.destroy","action":"App\Http\Controllers\Inventario\DetalleTipoAjusteController@destroy"},{"host":null,"methods":["GET","HEAD"],"uri":"modelos","name":"modelos.index","action":"App\Http\Controllers\Inventario\ModeloController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"modelos\/create","name":"modelos.create","action":"App\Http\Controllers\Inventario\ModeloController@create"},{"host":null,"methods":["POST"],"uri":"modelos","name":"modelos.store","action":"App\Http\Controllers\Inventario\ModeloController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"modelos\/{modelos}","name":"modelos.show","action":"App\Http\Controllers\Inventario\ModeloController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"modelos\/{modelos}\/edit","name":"modelos.edit","action":"App\Http\Controllers\Inventario\ModeloController@edit"},{"host":null,"methods":["PUT"],"uri":"modelos\/{modelos}","name":"modelos.update","action":"App\Http\Controllers\Inventario\ModeloController@update"},{"host":null,"methods":["PATCH"],"uri":"modelos\/{modelos}","name":null,"action":"App\Http\Controllers\Inventario\ModeloController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"marcas","name":"marcas.index","action":"App\Http\Controllers\Inventario\MarcaController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"marcas\/create","name":"marcas.create","action":"App\Http\Controllers\Inventario\MarcaController@create"},{"host":null,"methods":["POST"],"uri":"marcas","name":"marcas.store","action":"App\Http\Controllers\Inventario\MarcaController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"marcas\/{marcas}","name":"marcas.show","action":"App\Http\Controllers\Inventario\MarcaController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"marcas\/{marcas}\/edit","name":"marcas.edit","action":"App\Http\Controllers\Inventario\MarcaController@edit"},{"host":null,"methods":["PUT"],"uri":"marcas\/{marcas}","name":"marcas.update","action":"App\Http\Controllers\Inventario\MarcaController@update"},{"host":null,"methods":["PATCH"],"uri":"marcas\/{marcas}","name":null,"action":"App\Http\Controllers\Inventario\MarcaController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"grupos","name":"grupos.index","action":"App\Http\Controllers\Inventario\GrupoController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"grupos\/create","name":"grupos.create","action":"App\Http\Controllers\Inventario\GrupoController@create"},{"host":null,"methods":["POST"],"uri":"grupos","name":"grupos.store","action":"App\Http\Controllers\Inventario\GrupoController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"grupos\/{grupos}","name":"grupos.show","action":"App\Http\Controllers\Inventario\GrupoController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"grupos\/{grupos}\/edit","name":"grupos.edit","action":"App\Http\Controllers\Inventario\GrupoController@edit"},{"host":null,"methods":["PUT"],"uri":"grupos\/{grupos}","name":"grupos.update","action":"App\Http\Controllers\Inventario\GrupoController@update"},{"host":null,"methods":["PATCH"],"uri":"grupos\/{grupos}","name":null,"action":"App\Http\Controllers\Inventario\GrupoController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"impuestos","name":"impuestos.index","action":"App\Http\Controllers\Inventario\ImpuestoController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"impuestos\/create","name":"impuestos.create","action":"App\Http\Controllers\Inventario\ImpuestoController@create"},{"host":null,"methods":["POST"],"uri":"impuestos","name":"impuestos.store","action":"App\Http\Controllers\Inventario\ImpuestoController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"impuestos\/{impuestos}","name":"impuestos.show","action":"App\Http\Controllers\Inventario\ImpuestoController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"impuestos\/{impuestos}\/edit","name":"impuestos.edit","action":"App\Http\Controllers\Inventario\ImpuestoController@edit"},{"host":null,"methods":["PUT"],"uri":"impuestos\/{impuestos}","name":"impuestos.update","action":"App\Http\Controllers\Inventario\ImpuestoController@update"},{"host":null,"methods":["PATCH"],"uri":"impuestos\/{impuestos}","name":null,"action":"App\Http\Controllers\Inventario\ImpuestoController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"pedidos","name":"pedidos.index","action":"App\Http\Controllers\Inventario\PedidoController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"pedidos\/create","name":"pedidos.create","action":"App\Http\Controllers\Inventario\PedidoController@create"},{"host":null,"methods":["POST"],"uri":"pedidos","name":"pedidos.store","action":"App\Http\Controllers\Inventario\PedidoController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"pedidos\/{pedidos}","name":"pedidos.show","action":"App\Http\Controllers\Inventario\PedidoController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"pedidos\/{pedidos}\/edit","name":"pedidos.edit","action":"App\Http\Controllers\Inventario\PedidoController@edit"},{"host":null,"methods":["PUT"],"uri":"pedidos\/{pedidos}","name":"pedidos.update","action":"App\Http\Controllers\Inventario\PedidoController@update"},{"host":null,"methods":["PATCH"],"uri":"pedidos\/{pedidos}","name":null,"action":"App\Http\Controllers\Inventario\PedidoController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"productos","name":"productos.index","action":"App\Http\Controllers\Inventario\ProductoController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"productos\/create","name":"productos.create","action":"App\Http\Controllers\Inventario\ProductoController@create"},{"host":null,"methods":["POST"],"uri":"productos","name":"productos.store","action":"App\Http\Controllers\Inventario\ProductoController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"productos\/{productos}","name":"productos.show","action":"App\Http\Controllers\Inventario\ProductoController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"productos\/{productos}\/edit","name":"productos.edit","action":"App\Http\Controllers\Inventario\ProductoController@edit"},{"host":null,"methods":["PUT"],"uri":"productos\/{productos}","name":"productos.update","action":"App\Http\Controllers\Inventario\ProductoController@update"},{"host":null,"methods":["PATCH"],"uri":"productos\/{productos}","name":null,"action":"App\Http\Controllers\Inventario\ProductoController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"lineas","name":"lineas.index","action":"App\Http\Controllers\Inventario\LineaController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"lineas\/create","name":"lineas.create","action":"App\Http\Controllers\Inventario\LineaController@create"},{"host":null,"methods":["POST"],"uri":"lineas","name":"lineas.store","action":"App\Http\Controllers\Inventario\LineaController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"lineas\/{lineas}","name":"lineas.show","action":"App\Http\Controllers\Inventario\LineaController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"lineas\/{lineas}\/edit","name":"lineas.edit","action":"App\Http\Controllers\Inventario\LineaController@edit"},{"host":null,"methods":["PUT"],"uri":"lineas\/{lineas}","name":"lineas.update","action":"App\Http\Controllers\Inventario\LineaController@update"},{"host":null,"methods":["PATCH"],"uri":"lineas\/{lineas}","name":null,"action":"App\Http\Controllers\Inventario\LineaController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"unidades","name":"unidades.index","action":"App\Http\Controllers\Inventario\UnidadesMedidaController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"unidades\/create","name":"unidades.create","action":"App\Http\Controllers\Inventario\UnidadesMedidaController@create"},{"host":null,"methods":["POST"],"uri":"unidades","name":"unidades.store","action":"App\Http\Controllers\Inventario\UnidadesMedidaController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"unidades\/{unidades}","name":"unidades.show","action":"App\Http\Controllers\Inventario\UnidadesMedidaController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"unidades\/{unidades}\/edit","name":"unidades.edit","action":"App\Http\Controllers\Inventario\UnidadesMedidaController@edit"},{"host":null,"methods":["PUT"],"uri":"unidades\/{unidades}","name":"unidades.update","action":"App\Http\Controllers\Inventario\UnidadesMedidaController@update"},{"host":null,"methods":["PATCH"],"uri":"unidades\/{unidades}","name":null,"action":"App\Http\Controllers\Inventario\UnidadesMedidaController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"ajustes","name":"ajustes.index","action":"App\Http\Controllers\Inventario\AjusteController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"ajustes\/create","name":"ajustes.create","action":"App\Http\Controllers\Inventario\AjusteController@create"},{"host":null,"methods":["POST"],"uri":"ajustes","name":"ajustes.store","action":"App\Http\Controllers\Inventario\AjusteController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"ajustes\/{ajustes}","name":"ajustes.show","action":"App\Http\Controllers\Inventario\AjusteController@show"},{"host":null,"methods":["PUT"],"uri":"ajustes\/{ajustes}","name":"ajustes.update","action":"App\Http\Controllers\Inventario\AjusteController@update"},{"host":null,"methods":["PATCH"],"uri":"ajustes\/{ajustes}","name":null,"action":"App\Http\Controllers\Inventario\AjusteController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"traslados","name":"traslados.index","action":"App\Http\Controllers\Inventario\TrasladoController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"traslados\/create","name":"traslados.create","action":"App\Http\Controllers\Inventario\TrasladoController@create"},{"host":null,"methods":["POST"],"uri":"traslados","name":"traslados.store","action":"App\Http\Controllers\Inventario\TrasladoController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"traslados\/{traslados}","name":"traslados.show","action":"App\Http\Controllers\Inventario\TrasladoController@show"},{"host":null,"methods":["PUT"],"uri":"traslados\/{traslados}","name":"traslados.update","action":"App\Http\Controllers\Inventario\TrasladoController@update"},{"host":null,"methods":["PATCH"],"uri":"traslados\/{traslados}","name":null,"action":"App\Http\Controllers\Inventario\TrasladoController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"trasladosubicaciones","name":"trasladosubicaciones.index","action":"App\Http\Controllers\Inventario\TrasladoUbicacionController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"trasladosubicaciones\/create","name":"trasladosubicaciones.create","action":"App\Http\Controllers\Inventario\TrasladoUbicacionController@create"},{"host":null,"methods":["POST"],"uri":"trasladosubicaciones","name":"trasladosubicaciones.store","action":"App\Http\Controllers\Inventario\TrasladoUbicacionController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"trasladosubicaciones\/{trasladosubicaciones}","name":"trasladosubicaciones.show","action":"App\Http\Controllers\Inventario\TrasladoUbicacionController@show"},{"host":null,"methods":["PUT"],"uri":"trasladosubicaciones\/{trasladosubicaciones}","name":"trasladosubicaciones.update","action":"App\Http\Controllers\Inventario\TrasladoUbicacionController@update"},{"host":null,"methods":["PATCH"],"uri":"trasladosubicaciones\/{trasladosubicaciones}","name":null,"action":"App\Http\Controllers\Inventario\TrasladoUbicacionController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"tiposajuste","name":"tiposajuste.index","action":"App\Http\Controllers\Inventario\TipoAjusteController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"tiposajuste\/create","name":"tiposajuste.create","action":"App\Http\Controllers\Inventario\TipoAjusteController@create"},{"host":null,"methods":["POST"],"uri":"tiposajuste","name":"tiposajuste.store","action":"App\Http\Controllers\Inventario\TipoAjusteController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"tiposajuste\/{tiposajuste}","name":"tiposajuste.show","action":"App\Http\Controllers\Inventario\TipoAjusteController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"tiposajuste\/{tiposajuste}\/edit","name":"tiposajuste.edit","action":"App\Http\Controllers\Inventario\TipoAjusteController@edit"},{"host":null,"methods":["PUT"],"uri":"tiposajuste\/{tiposajuste}","name":"tiposajuste.update","action":"App\Http\Controllers\Inventario\TipoAjusteController@update"},{"host":null,"methods":["PATCH"],"uri":"tiposajuste\/{tiposajuste}","name":null,"action":"App\Http\Controllers\Inventario\TipoAjusteController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"tipostraslados","name":"tipostraslados.index","action":"App\Http\Controllers\Inventario\TipoTrasladoController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"tipostraslados\/create","name":"tipostraslados.create","action":"App\Http\Controllers\Inventario\TipoTrasladoController@create"},{"host":null,"methods":["POST"],"uri":"tipostraslados","name":"tipostraslados.store","action":"App\Http\Controllers\Inventario\TipoTrasladoController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"tipostraslados\/{tipostraslados}","name":"tipostraslados.show","action":"App\Http\Controllers\Inventario\TipoTrasladoController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"tipostraslados\/{tipostraslados}\/edit","name":"tipostraslados.edit","action":"App\Http\Controllers\Inventario\TipoTrasladoController@edit"},{"host":null,"methods":["PUT"],"uri":"tipostraslados\/{tipostraslados}","name":"tipostraslados.update","action":"App\Http\Controllers\Inventario\TipoTrasladoController@update"},{"host":null,"methods":["PATCH"],"uri":"tipostraslados\/{tipostraslados}","name":null,"action":"App\Http\Controllers\Inventario\TipoTrasladoController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"subgrupos","name":"subgrupos.index","action":"App\Http\Controllers\Inventario\SubGrupoController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"subgrupos\/create","name":"subgrupos.create","action":"App\Http\Controllers\Inventario\SubGrupoController@create"},{"host":null,"methods":["POST"],"uri":"subgrupos","name":"subgrupos.store","action":"App\Http\Controllers\Inventario\SubGrupoController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"subgrupos\/{subgrupos}","name":"subgrupos.show","action":"App\Http\Controllers\Inventario\SubGrupoController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"subgrupos\/{subgrupos}\/edit","name":"subgrupos.edit","action":"App\Http\Controllers\Inventario\SubGrupoController@edit"},{"host":null,"methods":["PUT"],"uri":"subgrupos\/{subgrupos}","name":"subgrupos.update","action":"App\Http\Controllers\Inventario\SubGrupoController@update"},{"host":null,"methods":["PATCH"],"uri":"subgrupos\/{subgrupos}","name":null,"action":"App\Http\Controllers\Inventario\SubGrupoController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"servicios","name":"servicios.index","action":"App\Http\Controllers\Inventario\ServicioController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"servicios\/create","name":"servicios.create","action":"App\Http\Controllers\Inventario\ServicioController@create"},{"host":null,"methods":["POST"],"uri":"servicios","name":"servicios.store","action":"App\Http\Controllers\Inventario\ServicioController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"servicios\/{servicios}","name":"servicios.show","action":"App\Http\Controllers\Inventario\ServicioController@show"},{"host":null,"methods":["PUT"],"uri":"servicios\/{servicios}","name":"servicios.update","action":"App\Http\Controllers\Inventario\ServicioController@update"},{"host":null,"methods":["PATCH"],"uri":"servicios\/{servicios}","name":null,"action":"App\Http\Controllers\Inventario\ServicioController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"tiposproducto","name":"tiposproducto.index","action":"App\Http\Controllers\Inventario\TipoProductoController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"tiposproducto\/create","name":"tiposproducto.create","action":"App\Http\Controllers\Inventario\TipoProductoController@create"},{"host":null,"methods":["POST"],"uri":"tiposproducto","name":"tiposproducto.store","action":"App\Http\Controllers\Inventario\TipoProductoController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"tiposproducto\/{tiposproducto}","name":"tiposproducto.show","action":"App\Http\Controllers\Inventario\TipoProductoController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"tiposproducto\/{tiposproducto}\/edit","name":"tiposproducto.edit","action":"App\Http\Controllers\Inventario\TipoProductoController@edit"},{"host":null,"methods":["PUT"],"uri":"tiposproducto\/{tiposproducto}","name":"tiposproducto.update","action":"App\Http\Controllers\Inventario\TipoProductoController@update"},{"host":null,"methods":["PATCH"],"uri":"tiposproducto\/{tiposproducto}","name":null,"action":"App\Http\Controllers\Inventario\TipoProductoController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"recibos\/detalle","name":"recibos.detalle.index","action":"App\Http\Controllers\Cartera\Recibo2Controller@index"},{"host":null,"methods":["GET","HEAD"],"uri":"recibos\/detalle\/create","name":"recibos.detalle.create","action":"App\Http\Controllers\Cartera\Recibo2Controller@create"},{"host":null,"methods":["POST"],"uri":"recibos\/detalle","name":"recibos.detalle.store","action":"App\Http\Controllers\Cartera\Recibo2Controller@store"},{"host":null,"methods":["GET","HEAD"],"uri":"recibos\/detalle\/{detalle}","name":"recibos.detalle.show","action":"App\Http\Controllers\Cartera\Recibo2Controller@show"},{"host":null,"methods":["GET","HEAD"],"uri":"recibos\/detalle\/{detalle}\/edit","name":"recibos.detalle.edit","action":"App\Http\Controllers\Cartera\Recibo2Controller@edit"},{"host":null,"methods":["PUT"],"uri":"recibos\/detalle\/{detalle}","name":"recibos.detalle.update","action":"App\Http\Controllers\Cartera\Recibo2Controller@update"},{"host":null,"methods":["PATCH"],"uri":"recibos\/detalle\/{detalle}","name":null,"action":"App\Http\Controllers\Cartera\Recibo2Controller@update"},{"host":null,"methods":["DELETE"],"uri":"recibos\/detalle\/{detalle}","name":"recibos.detalle.destroy","action":"App\Http\Controllers\Cartera\Recibo2Controller@destroy"},{"host":null,"methods":["GET","HEAD"],"uri":"recibos\/factura","name":"recibos.factura.index","action":"App\Http\Controllers\Cartera\Factura3Controller@index"},{"host":null,"methods":["GET","HEAD"],"uri":"recibos\/factura\/create","name":"recibos.factura.create","action":"App\Http\Controllers\Cartera\Factura3Controller@create"},{"host":null,"methods":["POST"],"uri":"recibos\/factura","name":"recibos.factura.store","action":"App\Http\Controllers\Cartera\Factura3Controller@store"},{"host":null,"methods":["GET","HEAD"],"uri":"recibos\/factura\/{factura}","name":"recibos.factura.show","action":"App\Http\Controllers\Cartera\Factura3Controller@show"},{"host":null,"methods":["GET","HEAD"],"uri":"recibos\/factura\/{factura}\/edit","name":"recibos.factura.edit","action":"App\Http\Controllers\Cartera\Factura3Controller@edit"},{"host":null,"methods":["PUT"],"uri":"recibos\/factura\/{factura}","name":"recibos.factura.update","action":"App\Http\Controllers\Cartera\Factura3Controller@update"},{"host":null,"methods":["PATCH"],"uri":"recibos\/factura\/{factura}","name":null,"action":"App\Http\Controllers\Cartera\Factura3Controller@update"},{"host":null,"methods":["DELETE"],"uri":"recibos\/factura\/{factura}","name":"recibos.factura.destroy","action":"App\Http\Controllers\Cartera\Factura3Controller@destroy"},{"host":null,"methods":["GET","HEAD"],"uri":"recibos\/mediopago","name":"recibos.mediopago.index","action":"App\Http\Controllers\Cartera\Recibo3Controller@index"},{"host":null,"methods":["GET","HEAD"],"uri":"recibos\/mediopago\/create","name":"recibos.mediopago.create","action":"App\Http\Controllers\Cartera\Recibo3Controller@create"},{"host":null,"methods":["POST"],"uri":"recibos\/mediopago","name":"recibos.mediopago.store","action":"App\Http\Controllers\Cartera\Recibo3Controller@store"},{"host":null,"methods":["GET","HEAD"],"uri":"recibos\/mediopago\/{mediopago}","name":"recibos.mediopago.show","action":"App\Http\Controllers\Cartera\Recibo3Controller@show"},{"host":null,"methods":["GET","HEAD"],"uri":"recibos\/mediopago\/{mediopago}\/edit","name":"recibos.mediopago.edit","action":"App\Http\Controllers\Cartera\Recibo3Controller@edit"},{"host":null,"methods":["PUT"],"uri":"recibos\/mediopago\/{mediopago}","name":"recibos.mediopago.update","action":"App\Http\Controllers\Cartera\Recibo3Controller@update"},{"host":null,"methods":["PATCH"],"uri":"recibos\/mediopago\/{mediopago}","name":null,"action":"App\Http\Controllers\Cartera\Recibo3Controller@update"},{"host":null,"methods":["DELETE"],"uri":"recibos\/mediopago\/{mediopago}","name":"recibos.mediopago.destroy","action":"App\Http\Controllers\Cartera\Recibo3Controller@destroy"},{"host":null,"methods":["GET","HEAD"],"uri":"anticipos\/mediopago","name":"anticipos.mediopago.index","action":"App\Http\Controllers\Cartera\Anticipo2Controller@index"},{"host":null,"methods":["GET","HEAD"],"uri":"anticipos\/mediopago\/create","name":"anticipos.mediopago.create","action":"App\Http\Controllers\Cartera\Anticipo2Controller@create"},{"host":null,"methods":["POST"],"uri":"anticipos\/mediopago","name":"anticipos.mediopago.store","action":"App\Http\Controllers\Cartera\Anticipo2Controller@store"},{"host":null,"methods":["GET","HEAD"],"uri":"anticipos\/mediopago\/{mediopago}","name":"anticipos.mediopago.show","action":"App\Http\Controllers\Cartera\Anticipo2Controller@show"},{"host":null,"methods":["GET","HEAD"],"uri":"anticipos\/mediopago\/{mediopago}\/edit","name":"anticipos.mediopago.edit","action":"App\Http\Controllers\Cartera\Anticipo2Controller@edit"},{"host":null,"methods":["PUT"],"uri":"anticipos\/mediopago\/{mediopago}","name":"anticipos.mediopago.update","action":"App\Http\Controllers\Cartera\Anticipo2Controller@update"},{"host":null,"methods":["PATCH"],"uri":"anticipos\/mediopago\/{mediopago}","name":null,"action":"App\Http\Controllers\Cartera\Anticipo2Controller@update"},{"host":null,"methods":["DELETE"],"uri":"anticipos\/mediopago\/{mediopago}","name":"anticipos.mediopago.destroy","action":"App\Http\Controllers\Cartera\Anticipo2Controller@destroy"},{"host":null,"methods":["GET","HEAD"],"uri":"anticipos\/detalle","name":"anticipos.detalle.index","action":"App\Http\Controllers\Cartera\Anticipo3Controller@index"},{"host":null,"methods":["GET","HEAD"],"uri":"anticipos\/detalle\/create","name":"anticipos.detalle.create","action":"App\Http\Controllers\Cartera\Anticipo3Controller@create"},{"host":null,"methods":["POST"],"uri":"anticipos\/detalle","name":"anticipos.detalle.store","action":"App\Http\Controllers\Cartera\Anticipo3Controller@store"},{"host":null,"methods":["GET","HEAD"],"uri":"anticipos\/detalle\/{detalle}","name":"anticipos.detalle.show","action":"App\Http\Controllers\Cartera\Anticipo3Controller@show"},{"host":null,"methods":["GET","HEAD"],"uri":"anticipos\/detalle\/{detalle}\/edit","name":"anticipos.detalle.edit","action":"App\Http\Controllers\Cartera\Anticipo3Controller@edit"},{"host":null,"methods":["PUT"],"uri":"anticipos\/detalle\/{detalle}","name":"anticipos.detalle.update","action":"App\Http\Controllers\Cartera\Anticipo3Controller@update"},{"host":null,"methods":["PATCH"],"uri":"anticipos\/detalle\/{detalle}","name":null,"action":"App\Http\Controllers\Cartera\Anticipo3Controller@update"},{"host":null,"methods":["DELETE"],"uri":"anticipos\/detalle\/{detalle}","name":"anticipos.detalle.destroy","action":"App\Http\Controllers\Cartera\Anticipo3Controller@destroy"},{"host":null,"methods":["GET","HEAD"],"uri":"cheques\/detalle","name":"cheques.detalle.index","action":"App\Http\Controllers\Cartera\ChposFechado2Controller@index"},{"host":null,"methods":["GET","HEAD"],"uri":"cheques\/detalle\/create","name":"cheques.detalle.create","action":"App\Http\Controllers\Cartera\ChposFechado2Controller@create"},{"host":null,"methods":["POST"],"uri":"cheques\/detalle","name":"cheques.detalle.store","action":"App\Http\Controllers\Cartera\ChposFechado2Controller@store"},{"host":null,"methods":["GET","HEAD"],"uri":"cheques\/detalle\/{detalle}","name":"cheques.detalle.show","action":"App\Http\Controllers\Cartera\ChposFechado2Controller@show"},{"host":null,"methods":["GET","HEAD"],"uri":"cheques\/detalle\/{detalle}\/edit","name":"cheques.detalle.edit","action":"App\Http\Controllers\Cartera\ChposFechado2Controller@edit"},{"host":null,"methods":["PUT"],"uri":"cheques\/detalle\/{detalle}","name":"cheques.detalle.update","action":"App\Http\Controllers\Cartera\ChposFechado2Controller@update"},{"host":null,"methods":["PATCH"],"uri":"cheques\/detalle\/{detalle}","name":null,"action":"App\Http\Controllers\Cartera\ChposFechado2Controller@update"},{"host":null,"methods":["DELETE"],"uri":"cheques\/detalle\/{detalle}","name":"cheques.detalle.destroy","action":"App\Http\Controllers\Cartera\ChposFechado2Controller@destroy"},{"host":null,"methods":["GET","HEAD"],"uri":"cheques\/anular\/{cheques}","name":"cheques.anular","action":"App\Http\Controllers\Cartera\ChposFechado1Controller@anular"},{"host":null,"methods":["POST"],"uri":"conceptosrc\/evaluate","name":"conceptosrc.evaluate","action":"App\Http\Controllers\Cartera\ConceptosrcController@evaluate"},{"host":null,"methods":["GET","HEAD"],"uri":"notas\/detalle","name":"notas.detalle.index","action":"App\Http\Controllers\Cartera\Nota2Controller@index"},{"host":null,"methods":["GET","HEAD"],"uri":"notas\/detalle\/create","name":"notas.detalle.create","action":"App\Http\Controllers\Cartera\Nota2Controller@create"},{"host":null,"methods":["POST"],"uri":"notas\/detalle","name":"notas.detalle.store","action":"App\Http\Controllers\Cartera\Nota2Controller@store"},{"host":null,"methods":["GET","HEAD"],"uri":"notas\/detalle\/{detalle}","name":"notas.detalle.show","action":"App\Http\Controllers\Cartera\Nota2Controller@show"},{"host":null,"methods":["GET","HEAD"],"uri":"notas\/detalle\/{detalle}\/edit","name":"notas.detalle.edit","action":"App\Http\Controllers\Cartera\Nota2Controller@edit"},{"host":null,"methods":["PUT"],"uri":"notas\/detalle\/{detalle}","name":"notas.detalle.update","action":"App\Http\Controllers\Cartera\Nota2Controller@update"},{"host":null,"methods":["PATCH"],"uri":"notas\/detalle\/{detalle}","name":null,"action":"App\Http\Controllers\Cartera\Nota2Controller@update"},{"host":null,"methods":["DELETE"],"uri":"notas\/detalle\/{detalle}","name":"notas.detalle.destroy","action":"App\Http\Controllers\Cartera\Nota2Controller@destroy"},{"host":null,"methods":["GET","HEAD"],"uri":"facturas\/detalle","name":"facturas.detalle.index","action":"App\Http\Controllers\Cartera\Factura2Controller@index"},{"host":null,"methods":["GET","HEAD"],"uri":"facturas\/detalle\/create","name":"facturas.detalle.create","action":"App\Http\Controllers\Cartera\Factura2Controller@create"},{"host":null,"methods":["POST"],"uri":"facturas\/detalle","name":"facturas.detalle.store","action":"App\Http\Controllers\Cartera\Factura2Controller@store"},{"host":null,"methods":["GET","HEAD"],"uri":"facturas\/detalle\/{detalle}","name":"facturas.detalle.show","action":"App\Http\Controllers\Cartera\Factura2Controller@show"},{"host":null,"methods":["GET","HEAD"],"uri":"facturas\/detalle\/{detalle}\/edit","name":"facturas.detalle.edit","action":"App\Http\Controllers\Cartera\Factura2Controller@edit"},{"host":null,"methods":["PUT"],"uri":"facturas\/detalle\/{detalle}","name":"facturas.detalle.update","action":"App\Http\Controllers\Cartera\Factura2Controller@update"},{"host":null,"methods":["PATCH"],"uri":"facturas\/detalle\/{detalle}","name":null,"action":"App\Http\Controllers\Cartera\Factura2Controller@update"},{"host":null,"methods":["DELETE"],"uri":"facturas\/detalle\/{detalle}","name":"facturas.detalle.destroy","action":"App\Http\Controllers\Cartera\Factura2Controller@destroy"},{"host":null,"methods":["GET","HEAD"],"uri":"facturas\/comments","name":"facturas.comments.index","action":"App\Http\Controllers\Cartera\Factura4Controller@index"},{"host":null,"methods":["POST"],"uri":"facturas\/comments","name":"facturas.comments.store","action":"App\Http\Controllers\Cartera\Factura4Controller@store"},{"host":null,"methods":["GET","HEAD"],"uri":"facturas\/search","name":"facturas.search","action":"App\Http\Controllers\Cartera\Factura1Controller@search"},{"host":null,"methods":["GET","HEAD"],"uri":"facturas\/anular\/{facturas}","name":"facturas.anular","action":"App\Http\Controllers\Cartera\Factura1Controller@anular"},{"host":null,"methods":["GET","HEAD"],"uri":"facturas\/exportar\/{facturas}","name":"facturas.exportar","action":"App\Http\Controllers\Cartera\Factura1Controller@exportar"},{"host":null,"methods":["GET","HEAD"],"uri":"devoluciones\/detalle","name":"devoluciones.detalle.index","action":"App\Http\Controllers\Cartera\Devolucion2Controller@index"},{"host":null,"methods":["GET","HEAD"],"uri":"devoluciones\/detalle\/create","name":"devoluciones.detalle.create","action":"App\Http\Controllers\Cartera\Devolucion2Controller@create"},{"host":null,"methods":["POST"],"uri":"devoluciones\/detalle","name":"devoluciones.detalle.store","action":"App\Http\Controllers\Cartera\Devolucion2Controller@store"},{"host":null,"methods":["GET","HEAD"],"uri":"devoluciones\/detalle\/{detalle}","name":"devoluciones.detalle.show","action":"App\Http\Controllers\Cartera\Devolucion2Controller@show"},{"host":null,"methods":["GET","HEAD"],"uri":"devoluciones\/detalle\/{detalle}\/edit","name":"devoluciones.detalle.edit","action":"App\Http\Controllers\Cartera\Devolucion2Controller@edit"},{"host":null,"methods":["PUT"],"uri":"devoluciones\/detalle\/{detalle}","name":"devoluciones.detalle.update","action":"App\Http\Controllers\Cartera\Devolucion2Controller@update"},{"host":null,"methods":["PATCH"],"uri":"devoluciones\/detalle\/{detalle}","name":null,"action":"App\Http\Controllers\Cartera\Devolucion2Controller@update"},{"host":null,"methods":["GET","HEAD"],"uri":"ajustesc\/detalle","name":"ajustesc.detalle.index","action":"App\Http\Controllers\Cartera\Ajustec2Controller@index"},{"host":null,"methods":["GET","HEAD"],"uri":"ajustesc\/detalle\/create","name":"ajustesc.detalle.create","action":"App\Http\Controllers\Cartera\Ajustec2Controller@create"},{"host":null,"methods":["POST"],"uri":"ajustesc\/detalle","name":"ajustesc.detalle.store","action":"App\Http\Controllers\Cartera\Ajustec2Controller@store"},{"host":null,"methods":["GET","HEAD"],"uri":"ajustesc\/detalle\/{detalle}","name":"ajustesc.detalle.show","action":"App\Http\Controllers\Cartera\Ajustec2Controller@show"},{"host":null,"methods":["GET","HEAD"],"uri":"ajustesc\/detalle\/{detalle}\/edit","name":"ajustesc.detalle.edit","action":"App\Http\Controllers\Cartera\Ajustec2Controller@edit"},{"host":null,"methods":["PUT"],"uri":"ajustesc\/detalle\/{detalle}","name":"ajustesc.detalle.update","action":"App\Http\Controllers\Cartera\Ajustec2Controller@update"},{"host":null,"methods":["PATCH"],"uri":"ajustesc\/detalle\/{detalle}","name":null,"action":"App\Http\Controllers\Cartera\Ajustec2Controller@update"},{"host":null,"methods":["DELETE"],"uri":"ajustesc\/detalle\/{detalle}","name":"ajustesc.detalle.destroy","action":"App\Http\Controllers\Cartera\Ajustec2Controller@destroy"},{"host":null,"methods":["GET","HEAD"],"uri":"autorizacionesca","name":"autorizacionesca.index","action":"App\Http\Controllers\Cartera\AutorizaCaController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"bancos","name":"bancos.index","action":"App\Http\Controllers\Cartera\BancoController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"bancos\/create","name":"bancos.create","action":"App\Http\Controllers\Cartera\BancoController@create"},{"host":null,"methods":["POST"],"uri":"bancos","name":"bancos.store","action":"App\Http\Controllers\Cartera\BancoController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"bancos\/{bancos}","name":"bancos.show","action":"App\Http\Controllers\Cartera\BancoController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"bancos\/{bancos}\/edit","name":"bancos.edit","action":"App\Http\Controllers\Cartera\BancoController@edit"},{"host":null,"methods":["PUT"],"uri":"bancos\/{bancos}","name":"bancos.update","action":"App\Http\Controllers\Cartera\BancoController@update"},{"host":null,"methods":["PATCH"],"uri":"bancos\/{bancos}","name":null,"action":"App\Http\Controllers\Cartera\BancoController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"causas","name":"causas.index","action":"App\Http\Controllers\Cartera\CausalController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"causas\/create","name":"causas.create","action":"App\Http\Controllers\Cartera\CausalController@create"},{"host":null,"methods":["POST"],"uri":"causas","name":"causas.store","action":"App\Http\Controllers\Cartera\CausalController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"causas\/{causas}","name":"causas.show","action":"App\Http\Controllers\Cartera\CausalController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"causas\/{causas}\/edit","name":"causas.edit","action":"App\Http\Controllers\Cartera\CausalController@edit"},{"host":null,"methods":["PUT"],"uri":"causas\/{causas}","name":"causas.update","action":"App\Http\Controllers\Cartera\CausalController@update"},{"host":null,"methods":["PATCH"],"uri":"causas\/{causas}","name":null,"action":"App\Http\Controllers\Cartera\CausalController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"cuentabancos","name":"cuentabancos.index","action":"App\Http\Controllers\Cartera\CuentaBancoController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"cuentabancos\/create","name":"cuentabancos.create","action":"App\Http\Controllers\Cartera\CuentaBancoController@create"},{"host":null,"methods":["POST"],"uri":"cuentabancos","name":"cuentabancos.store","action":"App\Http\Controllers\Cartera\CuentaBancoController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"cuentabancos\/{cuentabancos}","name":"cuentabancos.show","action":"App\Http\Controllers\Cartera\CuentaBancoController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"cuentabancos\/{cuentabancos}\/edit","name":"cuentabancos.edit","action":"App\Http\Controllers\Cartera\CuentaBancoController@edit"},{"host":null,"methods":["PUT"],"uri":"cuentabancos\/{cuentabancos}","name":"cuentabancos.update","action":"App\Http\Controllers\Cartera\CuentaBancoController@update"},{"host":null,"methods":["PATCH"],"uri":"cuentabancos\/{cuentabancos}","name":null,"action":"App\Http\Controllers\Cartera\CuentaBancoController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"mediopagos","name":"mediopagos.index","action":"App\Http\Controllers\Cartera\MedioPagoController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"mediopagos\/create","name":"mediopagos.create","action":"App\Http\Controllers\Cartera\MedioPagoController@create"},{"host":null,"methods":["POST"],"uri":"mediopagos","name":"mediopagos.store","action":"App\Http\Controllers\Cartera\MedioPagoController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"mediopagos\/{mediopagos}","name":"mediopagos.show","action":"App\Http\Controllers\Cartera\MedioPagoController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"mediopagos\/{mediopagos}\/edit","name":"mediopagos.edit","action":"App\Http\Controllers\Cartera\MedioPagoController@edit"},{"host":null,"methods":["PUT"],"uri":"mediopagos\/{mediopagos}","name":"mediopagos.update","action":"App\Http\Controllers\Cartera\MedioPagoController@update"},{"host":null,"methods":["PATCH"],"uri":"mediopagos\/{mediopagos}","name":null,"action":"App\Http\Controllers\Cartera\MedioPagoController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"conceptosrc","name":"conceptosrc.index","action":"App\Http\Controllers\Cartera\ConceptosrcController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"conceptosrc\/create","name":"conceptosrc.create","action":"App\Http\Controllers\Cartera\ConceptosrcController@create"},{"host":null,"methods":["POST"],"uri":"conceptosrc","name":"conceptosrc.store","action":"App\Http\Controllers\Cartera\ConceptosrcController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"conceptosrc\/{conceptosrc}","name":"conceptosrc.show","action":"App\Http\Controllers\Cartera\ConceptosrcController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"conceptosrc\/{conceptosrc}\/edit","name":"conceptosrc.edit","action":"App\Http\Controllers\Cartera\ConceptosrcController@edit"},{"host":null,"methods":["PUT"],"uri":"conceptosrc\/{conceptosrc}","name":"conceptosrc.update","action":"App\Http\Controllers\Cartera\ConceptosrcController@update"},{"host":null,"methods":["PATCH"],"uri":"conceptosrc\/{conceptosrc}","name":null,"action":"App\Http\Controllers\Cartera\ConceptosrcController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"conceptonotas","name":"conceptonotas.index","action":"App\Http\Controllers\Cartera\ConceptoNotaController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"conceptonotas\/create","name":"conceptonotas.create","action":"App\Http\Controllers\Cartera\ConceptoNotaController@create"},{"host":null,"methods":["POST"],"uri":"conceptonotas","name":"conceptonotas.store","action":"App\Http\Controllers\Cartera\ConceptoNotaController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"conceptonotas\/{conceptonotas}","name":"conceptonotas.show","action":"App\Http\Controllers\Cartera\ConceptoNotaController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"conceptonotas\/{conceptonotas}\/edit","name":"conceptonotas.edit","action":"App\Http\Controllers\Cartera\ConceptoNotaController@edit"},{"host":null,"methods":["PUT"],"uri":"conceptonotas\/{conceptonotas}","name":"conceptonotas.update","action":"App\Http\Controllers\Cartera\ConceptoNotaController@update"},{"host":null,"methods":["PATCH"],"uri":"conceptonotas\/{conceptonotas}","name":null,"action":"App\Http\Controllers\Cartera\ConceptoNotaController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"conceptocobros","name":"conceptocobros.index","action":"App\Http\Controllers\Cartera\ConceptoCobroController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"conceptocobros\/create","name":"conceptocobros.create","action":"App\Http\Controllers\Cartera\ConceptoCobroController@create"},{"host":null,"methods":["POST"],"uri":"conceptocobros","name":"conceptocobros.store","action":"App\Http\Controllers\Cartera\ConceptoCobroController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"conceptocobros\/{conceptocobros}","name":"conceptocobros.show","action":"App\Http\Controllers\Cartera\ConceptoCobroController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"conceptocobros\/{conceptocobros}\/edit","name":"conceptocobros.edit","action":"App\Http\Controllers\Cartera\ConceptoCobroController@edit"},{"host":null,"methods":["PUT"],"uri":"conceptocobros\/{conceptocobros}","name":"conceptocobros.update","action":"App\Http\Controllers\Cartera\ConceptoCobroController@update"},{"host":null,"methods":["PATCH"],"uri":"conceptocobros\/{conceptocobros}","name":null,"action":"App\Http\Controllers\Cartera\ConceptoCobroController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"recibos","name":"recibos.index","action":"App\Http\Controllers\Cartera\Recibo1Controller@index"},{"host":null,"methods":["GET","HEAD"],"uri":"recibos\/create","name":"recibos.create","action":"App\Http\Controllers\Cartera\Recibo1Controller@create"},{"host":null,"methods":["POST"],"uri":"recibos","name":"recibos.store","action":"App\Http\Controllers\Cartera\Recibo1Controller@store"},{"host":null,"methods":["GET","HEAD"],"uri":"recibos\/{recibos}","name":"recibos.show","action":"App\Http\Controllers\Cartera\Recibo1Controller@show"},{"host":null,"methods":["GET","HEAD"],"uri":"notas","name":"notas.index","action":"App\Http\Controllers\Cartera\Nota1Controller@index"},{"host":null,"methods":["GET","HEAD"],"uri":"notas\/create","name":"notas.create","action":"App\Http\Controllers\Cartera\Nota1Controller@create"},{"host":null,"methods":["POST"],"uri":"notas","name":"notas.store","action":"App\Http\Controllers\Cartera\Nota1Controller@store"},{"host":null,"methods":["GET","HEAD"],"uri":"notas\/{notas}","name":"notas.show","action":"App\Http\Controllers\Cartera\Nota1Controller@show"},{"host":null,"methods":["GET","HEAD"],"uri":"facturas","name":"facturas.index","action":"App\Http\Controllers\Cartera\Factura1Controller@index"},{"host":null,"methods":["GET","HEAD"],"uri":"facturas\/create","name":"facturas.create","action":"App\Http\Controllers\Cartera\Factura1Controller@create"},{"host":null,"methods":["POST"],"uri":"facturas","name":"facturas.store","action":"App\Http\Controllers\Cartera\Factura1Controller@store"},{"host":null,"methods":["GET","HEAD"],"uri":"facturas\/{facturas}","name":"facturas.show","action":"App\Http\Controllers\Cartera\Factura1Controller@show"},{"host":null,"methods":["GET","HEAD"],"uri":"devoluciones","name":"devoluciones.index","action":"App\Http\Controllers\Cartera\Devolucion1Controller@index"},{"host":null,"methods":["GET","HEAD"],"uri":"devoluciones\/create","name":"devoluciones.create","action":"App\Http\Controllers\Cartera\Devolucion1Controller@create"},{"host":null,"methods":["POST"],"uri":"devoluciones","name":"devoluciones.store","action":"App\Http\Controllers\Cartera\Devolucion1Controller@store"},{"host":null,"methods":["GET","HEAD"],"uri":"devoluciones\/{devoluciones}","name":"devoluciones.show","action":"App\Http\Controllers\Cartera\Devolucion1Controller@show"},{"host":null,"methods":["GET","HEAD"],"uri":"gestioncobros","name":"gestioncobros.index","action":"App\Http\Controllers\Cartera\GestionCobroController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"gestioncobros\/create","name":"gestioncobros.create","action":"App\Http\Controllers\Cartera\GestionCobroController@create"},{"host":null,"methods":["POST"],"uri":"gestioncobros","name":"gestioncobros.store","action":"App\Http\Controllers\Cartera\GestionCobroController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"gestioncobros\/{gestioncobros}","name":"gestioncobros.show","action":"App\Http\Controllers\Cartera\GestionCobroController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"conceptosajustec","name":"conceptosajustec.index","action":"App\Http\Controllers\Cartera\ConceptoAjustecController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"conceptosajustec\/create","name":"conceptosajustec.create","action":"App\Http\Controllers\Cartera\ConceptoAjustecController@create"},{"host":null,"methods":["POST"],"uri":"conceptosajustec","name":"conceptosajustec.store","action":"App\Http\Controllers\Cartera\ConceptoAjustecController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"conceptosajustec\/{conceptosajustec}","name":"conceptosajustec.show","action":"App\Http\Controllers\Cartera\ConceptoAjustecController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"conceptosajustec\/{conceptosajustec}\/edit","name":"conceptosajustec.edit","action":"App\Http\Controllers\Cartera\ConceptoAjustecController@edit"},{"host":null,"methods":["PUT"],"uri":"conceptosajustec\/{conceptosajustec}","name":"conceptosajustec.update","action":"App\Http\Controllers\Cartera\ConceptoAjustecController@update"},{"host":null,"methods":["PATCH"],"uri":"conceptosajustec\/{conceptosajustec}","name":null,"action":"App\Http\Controllers\Cartera\ConceptoAjustecController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"ajustesc","name":"ajustesc.index","action":"App\Http\Controllers\Cartera\Ajustec1Controller@index"},{"host":null,"methods":["GET","HEAD"],"uri":"ajustesc\/create","name":"ajustesc.create","action":"App\Http\Controllers\Cartera\Ajustec1Controller@create"},{"host":null,"methods":["POST"],"uri":"ajustesc","name":"ajustesc.store","action":"App\Http\Controllers\Cartera\Ajustec1Controller@store"},{"host":null,"methods":["GET","HEAD"],"uri":"ajustesc\/{ajustesc}","name":"ajustesc.show","action":"App\Http\Controllers\Cartera\Ajustec1Controller@show"},{"host":null,"methods":["GET","HEAD"],"uri":"ajustesc\/{ajustesc}\/edit","name":"ajustesc.edit","action":"App\Http\Controllers\Cartera\Ajustec1Controller@edit"},{"host":null,"methods":["PUT"],"uri":"ajustesc\/{ajustesc}","name":"ajustesc.update","action":"App\Http\Controllers\Cartera\Ajustec1Controller@update"},{"host":null,"methods":["PATCH"],"uri":"ajustesc\/{ajustesc}","name":null,"action":"App\Http\Controllers\Cartera\Ajustec1Controller@update"},{"host":null,"methods":["GET","HEAD"],"uri":"anticipos","name":"anticipos.index","action":"App\Http\Controllers\Cartera\AnticipoController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"anticipos\/create","name":"anticipos.create","action":"App\Http\Controllers\Cartera\AnticipoController@create"},{"host":null,"methods":["POST"],"uri":"anticipos","name":"anticipos.store","action":"App\Http\Controllers\Cartera\AnticipoController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"anticipos\/{anticipos}","name":"anticipos.show","action":"App\Http\Controllers\Cartera\AnticipoController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"anticipos\/{anticipos}\/edit","name":"anticipos.edit","action":"App\Http\Controllers\Cartera\AnticipoController@edit"},{"host":null,"methods":["PUT"],"uri":"anticipos\/{anticipos}","name":"anticipos.update","action":"App\Http\Controllers\Cartera\AnticipoController@update"},{"host":null,"methods":["PATCH"],"uri":"anticipos\/{anticipos}","name":null,"action":"App\Http\Controllers\Cartera\AnticipoController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"cheques","name":"cheques.index","action":"App\Http\Controllers\Cartera\ChposFechado1Controller@index"},{"host":null,"methods":["GET","HEAD"],"uri":"cheques\/create","name":"cheques.create","action":"App\Http\Controllers\Cartera\ChposFechado1Controller@create"},{"host":null,"methods":["POST"],"uri":"cheques","name":"cheques.store","action":"App\Http\Controllers\Cartera\ChposFechado1Controller@store"},{"host":null,"methods":["GET","HEAD"],"uri":"cheques\/{cheques}","name":"cheques.show","action":"App\Http\Controllers\Cartera\ChposFechado1Controller@show"},{"host":null,"methods":["GET","HEAD"],"uri":"cheques\/{cheques}\/edit","name":"cheques.edit","action":"App\Http\Controllers\Cartera\ChposFechado1Controller@edit"},{"host":null,"methods":["PUT"],"uri":"cheques\/{cheques}","name":"cheques.update","action":"App\Http\Controllers\Cartera\ChposFechado1Controller@update"},{"host":null,"methods":["PATCH"],"uri":"cheques\/{cheques}","name":null,"action":"App\Http\Controllers\Cartera\ChposFechado1Controller@update"},{"host":null,"methods":["GET","HEAD"],"uri":"chequesdevueltos","name":"chequesdevueltos.index","action":"App\Http\Controllers\Cartera\ChDevueltoController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"chequesdevueltos\/create","name":"chequesdevueltos.create","action":"App\Http\Controllers\Cartera\ChDevueltoController@create"},{"host":null,"methods":["POST"],"uri":"chequesdevueltos","name":"chequesdevueltos.store","action":"App\Http\Controllers\Cartera\ChDevueltoController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"chequesdevueltos\/{chequesdevueltos}","name":"chequesdevueltos.show","action":"App\Http\Controllers\Cartera\ChDevueltoController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"chequesdevueltos\/{chequesdevueltos}\/edit","name":"chequesdevueltos.edit","action":"App\Http\Controllers\Cartera\ChDevueltoController@edit"},{"host":null,"methods":["PUT"],"uri":"chequesdevueltos\/{chequesdevueltos}","name":"chequesdevueltos.update","action":"App\Http\Controllers\Cartera\ChDevueltoController@update"},{"host":null,"methods":["PATCH"],"uri":"chequesdevueltos\/{chequesdevueltos}","name":null,"action":"App\Http\Controllers\Cartera\ChDevueltoController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"carteraterceros","name":"carteraterceros.index","action":"App\Http\Controllers\Cartera\CarteraController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"ordenes\/visitas","name":"ordenes.visitas.index","action":"App\Http\Controllers\Tecnico\VisitaController@index"},{"host":null,"methods":["POST"],"uri":"ordenes\/visitas","name":"ordenes.visitas.store","action":"App\Http\Controllers\Tecnico\VisitaController@store"},{"host":null,"methods":["DELETE"],"uri":"ordenes\/visitas\/{visitas}","name":"ordenes.visitas.destroy","action":"App\Http\Controllers\Tecnico\VisitaController@destroy"},{"host":null,"methods":["GET","HEAD"],"uri":"ordenes\/remrepuestos","name":"ordenes.remrepuestos.index","action":"App\Http\Controllers\Tecnico\RemRepuController@index"},{"host":null,"methods":["POST"],"uri":"ordenes\/remrepuestos","name":"ordenes.remrepuestos.store","action":"App\Http\Controllers\Tecnico\RemRepuController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"ordenes\/imagenes","name":"ordenes.imagenes.index","action":"App\Http\Controllers\Tecnico\OrdenImagenController@index"},{"host":null,"methods":["POST"],"uri":"ordenes\/imagenes","name":"ordenes.imagenes.store","action":"App\Http\Controllers\Tecnico\OrdenImagenController@store"},{"host":null,"methods":["DELETE"],"uri":"ordenes\/imagenes\/{imagenes}","name":"ordenes.imagenes.destroy","action":"App\Http\Controllers\Tecnico\OrdenImagenController@destroy"},{"host":null,"methods":["POST"],"uri":"ordenes\/cerrar","name":"ordenes.cerrar","action":"App\Http\Controllers\Tecnico\OrdenController@cerrar"},{"host":null,"methods":["GET","HEAD"],"uri":"ordenes\/mail\/{ordenes}","name":"ordenes.mail","action":"App\Http\Controllers\Tecnico\OrdenController@mail"},{"host":null,"methods":["GET","HEAD"],"uri":"ordenes\/exportar\/{ordenes}","name":"ordenes.exportar","action":"App\Http\Controllers\Tecnico\OrdenController@exportar"},{"host":null,"methods":["GET","HEAD"],"uri":"ordenes\/evaluate\/{ordenes}","name":"ordenes.evaluate","action":"App\Http\Controllers\Tecnico\OrdenController@evaluate"},{"host":null,"methods":["GET","HEAD"],"uri":"ordenes\/detalle\/remrepuestos","name":"ordenes.detalle.remrepuestos.index","action":"App\Http\Controllers\Tecnico\RemRepuDetalleController@index"},{"host":null,"methods":["POST"],"uri":"ordenes\/detalle\/remrepuestos","name":"ordenes.detalle.remrepuestos.store","action":"App\Http\Controllers\Tecnico\RemRepuDetalleController@store"},{"host":null,"methods":["PUT"],"uri":"ordenes\/detalle\/remrepuestos\/{remrepuestos}","name":"ordenes.detalle.remrepuestos.update","action":"App\Http\Controllers\Tecnico\RemRepuDetalleController@update"},{"host":null,"methods":["PATCH"],"uri":"ordenes\/detalle\/remrepuestos\/{remrepuestos}","name":null,"action":"App\Http\Controllers\Tecnico\RemRepuDetalleController@update"},{"host":null,"methods":["POST"],"uri":"ordenes\/detalle\/legalizacion","name":"ordenes.detalle.remrepuestos.legalizacion","action":"App\Http\Controllers\Tecnico\RemRepuDetalleController@legalizacion"},{"host":null,"methods":["GET","HEAD"],"uri":"ordenes","name":"ordenes.index","action":"App\Http\Controllers\Tecnico\OrdenController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"ordenes\/create","name":"ordenes.create","action":"App\Http\Controllers\Tecnico\OrdenController@create"},{"host":null,"methods":["POST"],"uri":"ordenes","name":"ordenes.store","action":"App\Http\Controllers\Tecnico\OrdenController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"ordenes\/{ordenes}","name":"ordenes.show","action":"App\Http\Controllers\Tecnico\OrdenController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"ordenes\/{ordenes}\/edit","name":"ordenes.edit","action":"App\Http\Controllers\Tecnico\OrdenController@edit"},{"host":null,"methods":["PUT"],"uri":"ordenes\/{ordenes}","name":"ordenes.update","action":"App\Http\Controllers\Tecnico\OrdenController@update"},{"host":null,"methods":["PATCH"],"uri":"ordenes\/{ordenes}","name":null,"action":"App\Http\Controllers\Tecnico\OrdenController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"danos","name":"danos.index","action":"App\Http\Controllers\Tecnico\DanoController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"danos\/create","name":"danos.create","action":"App\Http\Controllers\Tecnico\DanoController@create"},{"host":null,"methods":["POST"],"uri":"danos","name":"danos.store","action":"App\Http\Controllers\Tecnico\DanoController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"danos\/{danos}","name":"danos.show","action":"App\Http\Controllers\Tecnico\DanoController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"danos\/{danos}\/edit","name":"danos.edit","action":"App\Http\Controllers\Tecnico\DanoController@edit"},{"host":null,"methods":["PUT"],"uri":"danos\/{danos}","name":"danos.update","action":"App\Http\Controllers\Tecnico\DanoController@update"},{"host":null,"methods":["PATCH"],"uri":"danos\/{danos}","name":null,"action":"App\Http\Controllers\Tecnico\DanoController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"tiposorden","name":"tiposorden.index","action":"App\Http\Controllers\Tecnico\TipoOrdenController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"tiposorden\/create","name":"tiposorden.create","action":"App\Http\Controllers\Tecnico\TipoOrdenController@create"},{"host":null,"methods":["POST"],"uri":"tiposorden","name":"tiposorden.store","action":"App\Http\Controllers\Tecnico\TipoOrdenController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"tiposorden\/{tiposorden}","name":"tiposorden.show","action":"App\Http\Controllers\Tecnico\TipoOrdenController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"tiposorden\/{tiposorden}\/edit","name":"tiposorden.edit","action":"App\Http\Controllers\Tecnico\TipoOrdenController@edit"},{"host":null,"methods":["PUT"],"uri":"tiposorden\/{tiposorden}","name":"tiposorden.update","action":"App\Http\Controllers\Tecnico\TipoOrdenController@update"},{"host":null,"methods":["PATCH"],"uri":"tiposorden\/{tiposorden}","name":null,"action":"App\Http\Controllers\Tecnico\TipoOrdenController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"solicitantes","name":"solicitantes.index","action":"App\Http\Controllers\Tecnico\SolicitanteController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"solicitantes\/create","name":"solicitantes.create","action":"App\Http\Controllers\Tecnico\SolicitanteController@create"},{"host":null,"methods":["POST"],"uri":"solicitantes","name":"solicitantes.store","action":"App\Http\Controllers\Tecnico\SolicitanteController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"solicitantes\/{solicitantes}","name":"solicitantes.show","action":"App\Http\Controllers\Tecnico\SolicitanteController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"solicitantes\/{solicitantes}\/edit","name":"solicitantes.edit","action":"App\Http\Controllers\Tecnico\SolicitanteController@edit"},{"host":null,"methods":["PUT"],"uri":"solicitantes\/{solicitantes}","name":"solicitantes.update","action":"App\Http\Controllers\Tecnico\SolicitanteController@update"},{"host":null,"methods":["PATCH"],"uri":"solicitantes\/{solicitantes}","name":null,"action":"App\Http\Controllers\Tecnico\SolicitanteController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"prioridades","name":"prioridades.index","action":"App\Http\Controllers\Tecnico\PrioridadController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"prioridades\/create","name":"prioridades.create","action":"App\Http\Controllers\Tecnico\PrioridadController@create"},{"host":null,"methods":["POST"],"uri":"prioridades","name":"prioridades.store","action":"App\Http\Controllers\Tecnico\PrioridadController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"prioridades\/{prioridades}","name":"prioridades.show","action":"App\Http\Controllers\Tecnico\PrioridadController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"prioridades\/{prioridades}\/edit","name":"prioridades.edit","action":"App\Http\Controllers\Tecnico\PrioridadController@edit"},{"host":null,"methods":["PUT"],"uri":"prioridades\/{prioridades}","name":"prioridades.update","action":"App\Http\Controllers\Tecnico\PrioridadController@update"},{"host":null,"methods":["PATCH"],"uri":"prioridades\/{prioridades}","name":null,"action":"App\Http\Controllers\Tecnico\PrioridadController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"conceptostecnico","name":"conceptostecnico.index","action":"App\Http\Controllers\Tecnico\ConceptoTecController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"conceptostecnico\/create","name":"conceptostecnico.create","action":"App\Http\Controllers\Tecnico\ConceptoTecController@create"},{"host":null,"methods":["POST"],"uri":"conceptostecnico","name":"conceptostecnico.store","action":"App\Http\Controllers\Tecnico\ConceptoTecController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"conceptostecnico\/{conceptostecnico}","name":"conceptostecnico.show","action":"App\Http\Controllers\Tecnico\ConceptoTecController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"conceptostecnico\/{conceptostecnico}\/edit","name":"conceptostecnico.edit","action":"App\Http\Controllers\Tecnico\ConceptoTecController@edit"},{"host":null,"methods":["PUT"],"uri":"conceptostecnico\/{conceptostecnico}","name":"conceptostecnico.update","action":"App\Http\Controllers\Tecnico\ConceptoTecController@update"},{"host":null,"methods":["PATCH"],"uri":"conceptostecnico\/{conceptostecnico}","name":null,"action":"App\Http\Controllers\Tecnico\ConceptoTecController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"gestionestecnico","name":"gestionestecnico.index","action":"App\Http\Controllers\Tecnico\GestionTecnicoController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"gestionestecnico\/create","name":"gestionestecnico.create","action":"App\Http\Controllers\Tecnico\GestionTecnicoController@create"},{"host":null,"methods":["POST"],"uri":"gestionestecnico","name":"gestionestecnico.store","action":"App\Http\Controllers\Tecnico\GestionTecnicoController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"gestionestecnico\/{gestionestecnico}","name":"gestionestecnico.show","action":"App\Http\Controllers\Tecnico\GestionTecnicoController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"gestionestecnico\/{gestionestecnico}\/edit","name":"gestionestecnico.edit","action":"App\Http\Controllers\Tecnico\GestionTecnicoController@edit"},{"host":null,"methods":["PUT"],"uri":"gestionestecnico\/{gestionestecnico}","name":"gestionestecnico.update","action":"App\Http\Controllers\Tecnico\GestionTecnicoController@update"},{"host":null,"methods":["PATCH"],"uri":"gestionestecnico\/{gestionestecnico}","name":null,"action":"App\Http\Controllers\Tecnico\GestionTecnicoController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"agendatecnica","name":"agendatecnica.index","action":"App\Http\Controllers\Tecnico\AgendaTecnicaController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"agendatecnica\/create","name":"agendatecnica.create","action":"App\Http\Controllers\Tecnico\AgendaTecnicaController@create"},{"host":null,"methods":["POST"],"uri":"agendatecnica","name":"agendatecnica.store","action":"App\Http\Controllers\Tecnico\AgendaTecnicaController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"agendatecnica\/{agendatecnica}","name":"agendatecnica.show","action":"App\Http\Controllers\Tecnico\AgendaTecnicaController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"agendatecnica\/{agendatecnica}\/edit","name":"agendatecnica.edit","action":"App\Http\Controllers\Tecnico\AgendaTecnicaController@edit"},{"host":null,"methods":["PUT"],"uri":"agendatecnica\/{agendatecnica}","name":"agendatecnica.update","action":"App\Http\Controllers\Tecnico\AgendaTecnicaController@update"},{"host":null,"methods":["PATCH"],"uri":"agendatecnica\/{agendatecnica}","name":null,"action":"App\Http\Controllers\Tecnico\AgendaTecnicaController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"sitios","name":"sitios.index","action":"App\Http\Controllers\Tecnico\SitioController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"sitios\/create","name":"sitios.create","action":"App\Http\Controllers\Tecnico\SitioController@create"},{"host":null,"methods":["POST"],"uri":"sitios","name":"sitios.store","action":"App\Http\Controllers\Tecnico\SitioController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"sitios\/{sitios}","name":"sitios.show","action":"App\Http\Controllers\Tecnico\SitioController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"sitios\/{sitios}\/edit","name":"sitios.edit","action":"App\Http\Controllers\Tecnico\SitioController@edit"},{"host":null,"methods":["PUT"],"uri":"sitios\/{sitios}","name":"sitios.update","action":"App\Http\Controllers\Tecnico\SitioController@update"},{"host":null,"methods":["PATCH"],"uri":"sitios\/{sitios}","name":null,"action":"App\Http\Controllers\Tecnico\SitioController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"facturasp\/detalle","name":"facturasp.detalle.index","action":"App\Http\Controllers\Tesoreria\Facturap2Controller@index"},{"host":null,"methods":["POST"],"uri":"facturasp\/detalle","name":"facturasp.detalle.store","action":"App\Http\Controllers\Tesoreria\Facturap2Controller@store"},{"host":null,"methods":["DELETE"],"uri":"facturasp\/detalle\/{detalle}","name":"facturasp.detalle.destroy","action":"App\Http\Controllers\Tesoreria\Facturap2Controller@destroy"},{"host":null,"methods":["GET","HEAD"],"uri":"facturasp\/cuotas","name":"facturasp.cuotas.index","action":"App\Http\Controllers\Tesoreria\Facturap3Controller@index"},{"host":null,"methods":["GET","HEAD"],"uri":"facturasp\/valorescentroscostos","name":"facturasp.valorescentroscostos.index","action":"App\Http\Controllers\Tesoreria\Facturap4Controller@index"},{"host":null,"methods":["POST"],"uri":"facturasp\/valorescentroscostos","name":"facturasp.valorescentroscostos.store","action":"App\Http\Controllers\Tesoreria\Facturap4Controller@store"},{"host":null,"methods":["GET","HEAD"],"uri":"facturasp\/validate","name":"facturasp.validate","action":"App\Http\Controllers\Tesoreria\Facturap1Controller@validation"},{"host":null,"methods":["GET","HEAD"],"uri":"facturasp\/exportar\/{facturasp}","name":"facturasp.exportar","action":"App\Http\Controllers\Tesoreria\Facturap1Controller@exportar"},{"host":null,"methods":["GET","HEAD"],"uri":"ajustesp\/detalle","name":"ajustesp.detalle.index","action":"App\Http\Controllers\Tesoreria\AjustepDetalleController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"ajustesp\/detalle\/create","name":"ajustesp.detalle.create","action":"App\Http\Controllers\Tesoreria\AjustepDetalleController@create"},{"host":null,"methods":["POST"],"uri":"ajustesp\/detalle","name":"ajustesp.detalle.store","action":"App\Http\Controllers\Tesoreria\AjustepDetalleController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"ajustesp\/detalle\/{detalle}","name":"ajustesp.detalle.show","action":"App\Http\Controllers\Tesoreria\AjustepDetalleController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"ajustesp\/detalle\/{detalle}\/edit","name":"ajustesp.detalle.edit","action":"App\Http\Controllers\Tesoreria\AjustepDetalleController@edit"},{"host":null,"methods":["PUT"],"uri":"ajustesp\/detalle\/{detalle}","name":"ajustesp.detalle.update","action":"App\Http\Controllers\Tesoreria\AjustepDetalleController@update"},{"host":null,"methods":["PATCH"],"uri":"ajustesp\/detalle\/{detalle}","name":null,"action":"App\Http\Controllers\Tesoreria\AjustepDetalleController@update"},{"host":null,"methods":["DELETE"],"uri":"ajustesp\/detalle\/{detalle}","name":"ajustesp.detalle.destroy","action":"App\Http\Controllers\Tesoreria\AjustepDetalleController@destroy"},{"host":null,"methods":["GET","HEAD"],"uri":"ajustesp\/exportar\/{ajustesp}","name":"ajustesp.exportar","action":"App\Http\Controllers\Tesoreria\AjustepController@exportar"},{"host":null,"methods":["GET","HEAD"],"uri":"egresos\/detalle","name":"egresos.detalle.index","action":"App\Http\Controllers\Tesoreria\EgresoDetalleController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"egresos\/detalle\/create","name":"egresos.detalle.create","action":"App\Http\Controllers\Tesoreria\EgresoDetalleController@create"},{"host":null,"methods":["POST"],"uri":"egresos\/detalle","name":"egresos.detalle.store","action":"App\Http\Controllers\Tesoreria\EgresoDetalleController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"egresos\/detalle\/{detalle}","name":"egresos.detalle.show","action":"App\Http\Controllers\Tesoreria\EgresoDetalleController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"egresos\/detalle\/{detalle}\/edit","name":"egresos.detalle.edit","action":"App\Http\Controllers\Tesoreria\EgresoDetalleController@edit"},{"host":null,"methods":["PUT"],"uri":"egresos\/detalle\/{detalle}","name":"egresos.detalle.update","action":"App\Http\Controllers\Tesoreria\EgresoDetalleController@update"},{"host":null,"methods":["PATCH"],"uri":"egresos\/detalle\/{detalle}","name":null,"action":"App\Http\Controllers\Tesoreria\EgresoDetalleController@update"},{"host":null,"methods":["DELETE"],"uri":"egresos\/detalle\/{detalle}","name":"egresos.detalle.destroy","action":"App\Http\Controllers\Tesoreria\EgresoDetalleController@destroy"},{"host":null,"methods":["GET","HEAD"],"uri":"egresos\/anular\/{egresos}","name":"egresos.anular","action":"App\Http\Controllers\Tesoreria\EgresoController@anular"},{"host":null,"methods":["GET","HEAD"],"uri":"egresos\/exportar\/{egresos}","name":"egresos.exportar","action":"App\Http\Controllers\Tesoreria\EgresoController@exportar"},{"host":null,"methods":["GET","HEAD"],"uri":"cajasmenores\/detalle","name":"cajasmenores.detalle.index","action":"App\Http\Controllers\Tesoreria\CajaMenorDetalleController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"cajasmenores\/detalle\/create","name":"cajasmenores.detalle.create","action":"App\Http\Controllers\Tesoreria\CajaMenorDetalleController@create"},{"host":null,"methods":["POST"],"uri":"cajasmenores\/detalle","name":"cajasmenores.detalle.store","action":"App\Http\Controllers\Tesoreria\CajaMenorDetalleController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"cajasmenores\/detalle\/{detalle}","name":"cajasmenores.detalle.show","action":"App\Http\Controllers\Tesoreria\CajaMenorDetalleController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"cajasmenores\/detalle\/{detalle}\/edit","name":"cajasmenores.detalle.edit","action":"App\Http\Controllers\Tesoreria\CajaMenorDetalleController@edit"},{"host":null,"methods":["PUT"],"uri":"cajasmenores\/detalle\/{detalle}","name":"cajasmenores.detalle.update","action":"App\Http\Controllers\Tesoreria\CajaMenorDetalleController@update"},{"host":null,"methods":["PATCH"],"uri":"cajasmenores\/detalle\/{detalle}","name":null,"action":"App\Http\Controllers\Tesoreria\CajaMenorDetalleController@update"},{"host":null,"methods":["DELETE"],"uri":"cajasmenores\/detalle\/{detalle}","name":"cajasmenores.detalle.destroy","action":"App\Http\Controllers\Tesoreria\CajaMenorDetalleController@destroy"},{"host":null,"methods":["GET","HEAD"],"uri":"facturasp","name":"facturasp.index","action":"App\Http\Controllers\Tesoreria\Facturap1Controller@index"},{"host":null,"methods":["GET","HEAD"],"uri":"facturasp\/create","name":"facturasp.create","action":"App\Http\Controllers\Tesoreria\Facturap1Controller@create"},{"host":null,"methods":["POST"],"uri":"facturasp","name":"facturasp.store","action":"App\Http\Controllers\Tesoreria\Facturap1Controller@store"},{"host":null,"methods":["GET","HEAD"],"uri":"facturasp\/{facturasp}","name":"facturasp.show","action":"App\Http\Controllers\Tesoreria\Facturap1Controller@show"},{"host":null,"methods":["GET","HEAD"],"uri":"ajustesp","name":"ajustesp.index","action":"App\Http\Controllers\Tesoreria\AjustepController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"ajustesp\/create","name":"ajustesp.create","action":"App\Http\Controllers\Tesoreria\AjustepController@create"},{"host":null,"methods":["POST"],"uri":"ajustesp","name":"ajustesp.store","action":"App\Http\Controllers\Tesoreria\AjustepController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"ajustesp\/{ajustesp}","name":"ajustesp.show","action":"App\Http\Controllers\Tesoreria\AjustepController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"ajustesp\/{ajustesp}\/edit","name":"ajustesp.edit","action":"App\Http\Controllers\Tesoreria\AjustepController@edit"},{"host":null,"methods":["PUT"],"uri":"ajustesp\/{ajustesp}","name":"ajustesp.update","action":"App\Http\Controllers\Tesoreria\AjustepController@update"},{"host":null,"methods":["PATCH"],"uri":"ajustesp\/{ajustesp}","name":null,"action":"App\Http\Controllers\Tesoreria\AjustepController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"egresos","name":"egresos.index","action":"App\Http\Controllers\Tesoreria\EgresoController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"egresos\/create","name":"egresos.create","action":"App\Http\Controllers\Tesoreria\EgresoController@create"},{"host":null,"methods":["POST"],"uri":"egresos","name":"egresos.store","action":"App\Http\Controllers\Tesoreria\EgresoController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"egresos\/{egresos}","name":"egresos.show","action":"App\Http\Controllers\Tesoreria\EgresoController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"egresos\/{egresos}\/edit","name":"egresos.edit","action":"App\Http\Controllers\Tesoreria\EgresoController@edit"},{"host":null,"methods":["PUT"],"uri":"egresos\/{egresos}","name":"egresos.update","action":"App\Http\Controllers\Tesoreria\EgresoController@update"},{"host":null,"methods":["PATCH"],"uri":"egresos\/{egresos}","name":null,"action":"App\Http\Controllers\Tesoreria\EgresoController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"cajasmenores","name":"cajasmenores.index","action":"App\Http\Controllers\Tesoreria\CajaMenorController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"cajasmenores\/create","name":"cajasmenores.create","action":"App\Http\Controllers\Tesoreria\CajaMenorController@create"},{"host":null,"methods":["POST"],"uri":"cajasmenores","name":"cajasmenores.store","action":"App\Http\Controllers\Tesoreria\CajaMenorController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"cajasmenores\/{cajasmenores}","name":"cajasmenores.show","action":"App\Http\Controllers\Tesoreria\CajaMenorController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"cajasmenores\/{cajasmenores}\/edit","name":"cajasmenores.edit","action":"App\Http\Controllers\Tesoreria\CajaMenorController@edit"},{"host":null,"methods":["PUT"],"uri":"cajasmenores\/{cajasmenores}","name":"cajasmenores.update","action":"App\Http\Controllers\Tesoreria\CajaMenorController@update"},{"host":null,"methods":["PATCH"],"uri":"cajasmenores\/{cajasmenores}","name":null,"action":"App\Http\Controllers\Tesoreria\CajaMenorController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"retefuentes","name":"retefuentes.index","action":"App\Http\Controllers\Tesoreria\ReteFuenteController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"retefuentes\/create","name":"retefuentes.create","action":"App\Http\Controllers\Tesoreria\ReteFuenteController@create"},{"host":null,"methods":["POST"],"uri":"retefuentes","name":"retefuentes.store","action":"App\Http\Controllers\Tesoreria\ReteFuenteController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"retefuentes\/{retefuentes}","name":"retefuentes.show","action":"App\Http\Controllers\Tesoreria\ReteFuenteController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"retefuentes\/{retefuentes}\/edit","name":"retefuentes.edit","action":"App\Http\Controllers\Tesoreria\ReteFuenteController@edit"},{"host":null,"methods":["PUT"],"uri":"retefuentes\/{retefuentes}","name":"retefuentes.update","action":"App\Http\Controllers\Tesoreria\ReteFuenteController@update"},{"host":null,"methods":["PATCH"],"uri":"retefuentes\/{retefuentes}","name":null,"action":"App\Http\Controllers\Tesoreria\ReteFuenteController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"tipogastos","name":"tipogastos.index","action":"App\Http\Controllers\Tesoreria\TipoGastoController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"tipogastos\/create","name":"tipogastos.create","action":"App\Http\Controllers\Tesoreria\TipoGastoController@create"},{"host":null,"methods":["POST"],"uri":"tipogastos","name":"tipogastos.store","action":"App\Http\Controllers\Tesoreria\TipoGastoController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"tipogastos\/{tipogastos}","name":"tipogastos.show","action":"App\Http\Controllers\Tesoreria\TipoGastoController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"tipogastos\/{tipogastos}\/edit","name":"tipogastos.edit","action":"App\Http\Controllers\Tesoreria\TipoGastoController@edit"},{"host":null,"methods":["PUT"],"uri":"tipogastos\/{tipogastos}","name":"tipogastos.update","action":"App\Http\Controllers\Tesoreria\TipoGastoController@update"},{"host":null,"methods":["PATCH"],"uri":"tipogastos\/{tipogastos}","name":null,"action":"App\Http\Controllers\Tesoreria\TipoGastoController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"tipopagos","name":"tipopagos.index","action":"App\Http\Controllers\Tesoreria\TipoPagoController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"tipopagos\/create","name":"tipopagos.create","action":"App\Http\Controllers\Tesoreria\TipoPagoController@create"},{"host":null,"methods":["POST"],"uri":"tipopagos","name":"tipopagos.store","action":"App\Http\Controllers\Tesoreria\TipoPagoController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"tipopagos\/{tipopagos}","name":"tipopagos.show","action":"App\Http\Controllers\Tesoreria\TipoPagoController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"tipopagos\/{tipopagos}\/edit","name":"tipopagos.edit","action":"App\Http\Controllers\Tesoreria\TipoPagoController@edit"},{"host":null,"methods":["PUT"],"uri":"tipopagos\/{tipopagos}","name":"tipopagos.update","action":"App\Http\Controllers\Tesoreria\TipoPagoController@update"},{"host":null,"methods":["PATCH"],"uri":"tipopagos\/{tipopagos}","name":null,"action":"App\Http\Controllers\Tesoreria\TipoPagoController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"tipoproveedores","name":"tipoproveedores.index","action":"App\Http\Controllers\Tesoreria\TipoProveedorController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"tipoproveedores\/create","name":"tipoproveedores.create","action":"App\Http\Controllers\Tesoreria\TipoProveedorController@create"},{"host":null,"methods":["POST"],"uri":"tipoproveedores","name":"tipoproveedores.store","action":"App\Http\Controllers\Tesoreria\TipoProveedorController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"tipoproveedores\/{tipoproveedores}","name":"tipoproveedores.show","action":"App\Http\Controllers\Tesoreria\TipoProveedorController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"tipoproveedores\/{tipoproveedores}\/edit","name":"tipoproveedores.edit","action":"App\Http\Controllers\Tesoreria\TipoProveedorController@edit"},{"host":null,"methods":["PUT"],"uri":"tipoproveedores\/{tipoproveedores}","name":"tipoproveedores.update","action":"App\Http\Controllers\Tesoreria\TipoProveedorController@update"},{"host":null,"methods":["PATCH"],"uri":"tipoproveedores\/{tipoproveedores}","name":null,"action":"App\Http\Controllers\Tesoreria\TipoProveedorController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"conceptosajustep","name":"conceptosajustep.index","action":"App\Http\Controllers\Tesoreria\ConceptoAjustepController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"conceptosajustep\/create","name":"conceptosajustep.create","action":"App\Http\Controllers\Tesoreria\ConceptoAjustepController@create"},{"host":null,"methods":["POST"],"uri":"conceptosajustep","name":"conceptosajustep.store","action":"App\Http\Controllers\Tesoreria\ConceptoAjustepController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"conceptosajustep\/{conceptosajustep}","name":"conceptosajustep.show","action":"App\Http\Controllers\Tesoreria\ConceptoAjustepController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"conceptosajustep\/{conceptosajustep}\/edit","name":"conceptosajustep.edit","action":"App\Http\Controllers\Tesoreria\ConceptoAjustepController@edit"},{"host":null,"methods":["PUT"],"uri":"conceptosajustep\/{conceptosajustep}","name":"conceptosajustep.update","action":"App\Http\Controllers\Tesoreria\ConceptoAjustepController@update"},{"host":null,"methods":["PATCH"],"uri":"conceptosajustep\/{conceptosajustep}","name":null,"action":"App\Http\Controllers\Tesoreria\ConceptoAjustepController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"conceptoscajamenor","name":"conceptoscajamenor.index","action":"App\Http\Controllers\Tesoreria\ConceptoCajaMenorController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"conceptoscajamenor\/create","name":"conceptoscajamenor.create","action":"App\Http\Controllers\Tesoreria\ConceptoCajaMenorController@create"},{"host":null,"methods":["POST"],"uri":"conceptoscajamenor","name":"conceptoscajamenor.store","action":"App\Http\Controllers\Tesoreria\ConceptoCajaMenorController@store"},{"host":null,"methods":["GET","HEAD"],"uri":"conceptoscajamenor\/{conceptoscajamenor}","name":"conceptoscajamenor.show","action":"App\Http\Controllers\Tesoreria\ConceptoCajaMenorController@show"},{"host":null,"methods":["GET","HEAD"],"uri":"conceptoscajamenor\/{conceptoscajamenor}\/edit","name":"conceptoscajamenor.edit","action":"App\Http\Controllers\Tesoreria\ConceptoCajaMenorController@edit"},{"host":null,"methods":["PUT"],"uri":"conceptoscajamenor\/{conceptoscajamenor}","name":"conceptoscajamenor.update","action":"App\Http\Controllers\Tesoreria\ConceptoCajaMenorController@update"},{"host":null,"methods":["PATCH"],"uri":"conceptoscajamenor\/{conceptoscajamenor}","name":null,"action":"App\Http\Controllers\Tesoreria\ConceptoCajaMenorController@update"},{"host":null,"methods":["GET","HEAD"],"uri":"rhistorialproveedores","name":"rhistorialproveedores.index","action":"App\Http\Controllers\Reporte\HistorialProveedorController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"rcarteraedadesproveedores","name":"rcarteraedadesproveedores.index","action":"App\Http\Controllers\Reporte\CarteraEdadProveedorController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"ractivosfijos","name":"ractivosfijos.index","action":"App\Http\Controllers\Reporte\ActivoFijoController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"rexistencias","name":"rexistencias.index","action":"App\Http\Controllers\Reporte\ExistenciaController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"rmovimientosproductos","name":"rmovimientosproductos.index","action":"App\Http\Controllers\Reporte\MovProductoController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"rmayorbalance","name":"rmayorbalance.index","action":"App\Http\Controllers\Reporte\MayorBalanceController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"rplancuentas","name":"rplancuentas.index","action":"App\Http\Controllers\Reporte\PlanCuentasController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"rordenesabiertas","name":"rordenesabiertas.index","action":"App\Http\Controllers\Reporte\OrdenesAbiertasController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"rcarteraedades","name":"rcarteraedades.index","action":"App\Http\Controllers\Reporte\CarteraEdadController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"rhistorialclientes","name":"rhistorialclientes.index","action":"App\Http\Controllers\Reporte\HistorialClienteController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"rsabanaventascostos","name":"rsabanaventascostos.index","action":"App\Http\Controllers\Reporte\SabanaDeVentasCostoController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"rauxcontable","name":"rauxcontable.index","action":"App\Http\Controllers\Reporte\AuxiliarContableController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"rlibrodiario","name":"rlibrodiario.index","action":"App\Http\Controllers\Reporte\LibroDiarioController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"rlibromayor","name":"rlibromayor.index","action":"App\Http\Controllers\Reporte\LibroMayorController@index"},{"host":null,"methods":["GET","HEAD"],"uri":"rimpuestos","name":"rimpuestos.index","action":"App\Http\Controllers\Reporte\RelacionImpuestosController@index"},{"host":null,"methods":["POST"],"uri":"import\/productos","name":"productos.import","action":"App\Http\Controllers\Inventario\ProductoController@import"},{"host":null,"methods":["POST"],"uri":"import\/ajustes","name":"ajustes.import","action":"App\Http\Controllers\Inventario\AjusteController@import"},{"host":null,"methods":["POST"],"uri":"import\/asientos","name":"asientos.import","action":"App\Http\Controllers\Contabilidad\AsientoController@import"}],
             prefix: '',
 
             route : function (name, parameters, route) {
@@ -38102,10 +38896,11 @@ app || (app = {});
             'tipostraslados/create(/)': 'getTipoTrasladoCreate',
             'tipostraslados/:tipostraslados/edit(/)': 'getTipoTrasladoEdit',
 
-            //permisos
+            //Permisos
             'permisos(/)': 'getPermisosMain',
             'modulos(/)': 'getModulosMain',
 
+            // Roles
             'roles(/)': 'getRolesMain',
             'roles/create(/)': 'getRolesCreate',
             'roles/:rol/edit(/)': 'getRolesEdit',
@@ -38115,18 +38910,24 @@ app || (app = {});
             | Comercial
             |----------------------
             */
+
+            // Presupuesto Asesor
             'presupuestoasesor(/)': 'getPresupuestoAsesorMain',
 
+            // Configuración sabana de ventas
             'configsabana(/)': 'getConfigSabanaVentaMain',
 
+            // Pedidos Comerciales
             'pedidosc(/)': 'getPedidoscMain',
             'pedidosc/create(/)': 'getPedidoscCreate',
             'pedidosc/:pedidosc(/)': 'getPedidoscShow',
 
+            // Conceptos Comerciales
             'conceptoscomercial(/)': 'getConceptosComMain',
             'conceptoscomercial/create(/)': 'getConceptoComCreate',
             'conceptoscomercial/:conceptoscomercial/edit(/)': 'getConceptoComEdit',
 
+            // Gestión Comercial
             'gestionescomercial(/)': 'getGestionesComercialMain',
             'gestionescomercial/create(/)': 'getGestionComercialCreate',
 
@@ -38135,37 +38936,47 @@ app || (app = {});
             | Contabilidad
             |-----------------------
             */
+
+            // Documentos Contables
             'documentos(/)': 'getDocumentosMain',
             'documentos/create(/)': 'getDocumentosCreate',
             'documentos/:documento/edit(/)':'getDocumentosEdit',
 
+            // Folders
             'folders(/)': 'getFoldersMain',
             'folders/create(/)': 'getFoldersCreate',
             'folders/:folder/edit(/)':'getFoldersEdit',
 
+            //  Plan Cuentas
             'plancuentas(/)': 'getPlanCuentasMain',
             'plancuentas/create(/)': 'getPlanCuentasCreate',
             'plancuentas/:plancuenta/edit(/)': 'getPlanCuentasEdit',
 
+            // Plan Cuentas NIIF
             'plancuentasnif(/)': 'getPlanCuentasNifMain',
             'plancuentasnif/create(/)': 'getPlanCuentasNifCreate',
             'plancuentasnif/:plancuentanif/edit(/)': 'getPlanCuentasNifEdit',
 
+            // Centro de Costo
             'centroscosto(/)': 'getCentrosCostoMain',
             'centroscosto/create(/)': 'getCentrosCostoCreate',
             'centroscosto/:centrocosto/edit(/)': 'getCentrosCostoEdit',
 
+            // Asientos
             'asientos(/)': 'getAsientosMain',
             'asientos/create(/)': 'getAsientosCreate',
             'asientos/:asientos(/)': 'getAsientosShow',
             'asientos/:asiento/edit(/)': 'getAsientosEdit',
 
+            // Asientos NIIF
             'asientosnif(/)': 'getAsientosNifMain',
             'asientosnif/:asientonif(/)': 'getAsientosNifShow',
             'asientosnif/:asientonif/edit(/)': 'getAsientosNifEdit',
 
+            // Activos Fijos
             'activosfijos(/)': 'getActivosFijosMain',
 
+            // Tipo de Activos
             'tipoactivos(/)': 'getTipoActivosMain',
             'tipoactivos/create(/)': 'getTipoActivoCreate',
             'tipoactivos/:tipoactivos/edit(/)': 'getTipoActivoEdit',
@@ -38369,6 +39180,11 @@ app || (app = {});
             'egresos/create(/)': 'getEgresoCreate',
             'egresos/:egresos(/)': 'getEgresoShow',
 
+            // Caja Menor
+            'cajasmenores(/)': 'getCajasMenoresMain',
+            'cajasmenores/create(/)': 'getCajaMenorCreate',
+            'cajasmenores/:cajasmenores(/)': 'getCajaMenorShow',
+
             // Retefuente
             'retefuentes(/)': 'getReteFuentesMain',
             'retefuentes/create(/)': 'getReteFuenteCreate',
@@ -38393,6 +39209,11 @@ app || (app = {});
             'conceptosajustep(/)': 'getConceptosAjustepMain',
             'conceptosajustep/create(/)': 'getConceptosAjustepCreate',
             'conceptosajustep/:conceptosajustep/edit(/)': 'getConceptosAjustepEdit',
+
+            // Conceptoajustep
+            'conceptoscajamenor(/)': 'getConceptosCajaMenorMain',
+            'conceptoscajamenor/create(/)': 'getConceptoCajaMenorCreate',
+            'conceptoscajamenor/:conceptoscajamenor/edit(/)': 'getConceptoCajaMenorEdit',
         },
 
         /**
@@ -40949,6 +41770,38 @@ app || (app = {});
             this.showEgresoView = new app.ShowEgresoView({ model: this.egreso1Model });
         },
 
+        // Cajas Menores
+        getCajasMenoresMain: function () {
+            if ( this.mainCajasMenoresView instanceof Backbone.View ){
+                this.mainCajasMenoresView.stopListening();
+                this.mainCajasMenoresView.undelegateEvents();
+            }
+            this.mainCajasMenoresView = new app.MainCajasMenoresView();
+        },
+
+        getCajaMenorCreate: function () {
+            this.cajaMenor1Model = new app.CajaMenor1Model();
+
+            if ( this.createCajaMenorView instanceof Backbone.View ){
+                this.createCajaMenorView.stopListening();
+                this.createCajaMenorView.undelegateEvents();
+            }
+            this.createCajaMenorView = new app.CreateCajaMenorView({ model: this.cajaMenor1Model });
+            this.createCajaMenorView.render();
+        },
+
+        getCajaMenorShow: function (cajaMenor1Model) {
+            this.cajaMenor1Model = new app.CajaMenor1Model();
+            this.cajaMenor1Model.set({'id': cajaMenor1Model}, {'silent':true});
+
+            if ( this.showCajaMenorView instanceof Backbone.View ){
+                this.showCajaMenorView.stopListening();
+                this.showCajaMenorView.undelegateEvents();
+            }
+
+            this.showCajaMenorView = new app.ShowCajaMenorView({ model: this.cajaMenor1Model });
+        },
+
         // Facturap
         getFacturaspMain: function () {
 
@@ -41157,6 +42010,42 @@ app || (app = {});
 
             this.createConceptoAjustepView = new app.CreateConceptoAjustepView({ model: this.conceptoajustepModel });
             this.conceptoajustepModel.fetch();
+        },
+
+        //ConceptoCajaMenor
+        getConceptosCajaMenorMain: function () {
+
+            if ( this.mainConceptosCajaMenorView instanceof Backbone.View ){
+                this.mainConceptosCajaMenorView.stopListening();
+                this.mainConceptosCajaMenorView.undelegateEvents();
+            }
+
+            this.mainConceptosCajaMenorView = new app.MainConceptosCajaMenorView( );
+        },
+
+        getConceptoCajaMenorCreate: function () {
+            this.conceptoCajaMenorModel = new app.ConceptoCajaMenorModel();
+
+            if ( this.createConceptoCajaMenorView instanceof Backbone.View ){
+                this.createConceptoCajaMenorView.stopListening();
+                this.createConceptoCajaMenorView.undelegateEvents();
+            }
+
+            this.createConceptoCajaMenorView = new app.CreateConceptoCajaMenorView({ model: this.conceptoCajaMenorModel });
+            this.createConceptoCajaMenorView.render();
+        },
+
+        getConceptoCajaMenorEdit: function (conceptocajamenor) {
+            this.conceptoCajaMenorModel = new app.ConceptoCajaMenorModel();
+            this.conceptoCajaMenorModel.set({'id': conceptocajamenor}, {'silent':true});
+
+            if ( this.createConceptoCajaMenorView instanceof Backbone.View ){
+                this.createConceptoCajaMenorView.stopListening();
+                this.createConceptoCajaMenorView.undelegateEvents();
+            }
+
+            this.createConceptoCajaMenorView = new app.CreateConceptoCajaMenorView({ model: this.conceptoCajaMenorModel });
+            this.conceptoCajaMenorModel.fetch();
         },
     }));
 })(jQuery, this, this.document);

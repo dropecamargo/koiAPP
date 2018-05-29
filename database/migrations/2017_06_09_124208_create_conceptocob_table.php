@@ -17,7 +17,10 @@ class CreateConceptocobTable extends Migration
 
             $table->increments('id');
             $table->string('conceptocob_nombre', 25)->unique();
+            $table->integer('conceptocob_cuenta')->unsigned();
             $table->boolean('conceptocob_activo')->default(false);
+
+            $table->foreign('conceptocob_cuenta')->references('id')->on('plancuentas')->onDelete('restrict');
         });
     }
 

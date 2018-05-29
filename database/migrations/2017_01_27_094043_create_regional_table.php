@@ -27,6 +27,7 @@ class CreateRegionalTable extends Migration
             $table->integer('regional_fpro')->unsigned();
             $table->integer('regional_ajup')->unsigned();
             $table->integer('regional_egre')->unsigned();
+            $table->integer('regional_cm')->unsigned();
             $table->boolean('regional_activo')->default(false);
         });
     }

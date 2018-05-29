@@ -17,7 +17,10 @@ class CreateConceptotecTable extends Migration
 
             $table->increments('id');
             $table->string('conceptotec_nombre', 50)->unique();
+            $table->integer('conceptotec_cuenta')->unsigned();
             $table->boolean('conceptotec_activo')->default(false);
+
+            $table->foreign('conceptotec_cuenta')->references('id')->on('plancuentas')->onDelete('restrict');
         });
     }
 

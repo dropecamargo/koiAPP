@@ -17,8 +17,11 @@ class CreateConceptoajustecTable extends Migration
 
             $table->increments('id');
             $table->string('conceptoajustec_nombre', 50)->unique();
+            $table->integer('conceptoajustec_cuenta')->unsigned();
             $table->boolean('conceptoajustec_sumas_iguales')->default(false);
             $table->boolean('conceptoajustec_activo')->default(false);
+
+            $table->foreign('conceptoajustec_cuenta')->references('id')->on('plancuentas')->onDelete('restrict');
         });
     }
 

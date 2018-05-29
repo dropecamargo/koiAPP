@@ -349,6 +349,7 @@ Route::group(['middleware' => 'auth'], function(){
 		Route::resource('cuotas','Tesoreria\Facturap3Controller',['only'=>['index']]);
 		Route::resource('valorescentroscostos','Tesoreria\Facturap4Controller',['only'=>['index', 'store']]);
 		Route::get('validate', ['as' => 'facturasp.validate', 'uses' => 'Tesoreria\Facturap1Controller@validation']);
+		Route::get('exportar/{facturasp}', ['as' => 'facturasp.exportar', 'uses' => 'Tesoreria\Facturap1Controller@exportar']);
 	});
 
 	Route::group(['prefix' => 'ajustesp'], function()
@@ -363,20 +364,22 @@ Route::group(['middleware' => 'auth'], function(){
 		Route::get('anular/{egresos}', ['as' => 'egresos.anular', 'uses' => 'Tesoreria\EgresoController@anular']);
 		Route::get('exportar/{egresos}', ['as' => 'egresos.exportar', 'uses' => 'Tesoreria\EgresoController@exportar']);
 	});
-
-	Route::group(['prefix' => 'facturasp'], function()
+	
+	Route::group(['prefix' => 'cajasmenores'], function()
 	{
-		Route::get('exportar/{facturasp}', ['as' => 'facturasp.exportar', 'uses' => 'Tesoreria\Facturap1Controller@exportar']);
+		Route::resource('detalle', 'Tesoreria\CajaMenorDetalleController');
 	});
 
 	Route::resource('facturasp', 'Tesoreria\Facturap1Controller', ['except' => ['destroy','update','edit']]);
 	Route::resource('ajustesp', 'Tesoreria\AjustepController', ['except' => ['destroy']]);
 	Route::resource('egresos', 'Tesoreria\EgresoController', ['except' => ['destroy']]);
+	Route::resource('cajasmenores', 'Tesoreria\CajaMenorController', ['except' => ['destroy']]);
 	Route::resource('retefuentes', 'Tesoreria\ReteFuenteController', ['except' => ['destroy']]);
 	Route::resource('tipogastos', 'Tesoreria\TipoGastoController', ['except' => ['destroy']]);
 	Route::resource('tipopagos', 'Tesoreria\TipoPagoController', ['except' => ['destroy']]);
 	Route::resource('tipoproveedores', 'Tesoreria\TipoProveedorController', ['except' => ['destroy']]);
 	Route::resource('conceptosajustep', 'Tesoreria\ConceptoAjustepController', ['except' => ['destroy']]);
+	Route::resource('conceptoscajamenor', 'Tesoreria\ConceptoCajaMenorController', ['except' => ['destroy']]);
 
     /*
 	|-------------------------

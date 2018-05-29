@@ -1668,6 +1668,38 @@
 		</div>
 	</div>
 </script>
+<script type="text/template" id="add-conceptocajamenor-tpl">
+	<div class="row">
+		<div class="form-group col-sm-8">
+			<label for="conceptocajamenor_nombre" class="control-label">Nombre</label>
+			<input type="text" id="conceptocajamenor_nombre" name="conceptocajamenor_nombre" value="<%- conceptocajamenor_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="50" required>
+			<div class="help-block with-errors"></div>
+		</div>
+		<div class="form-group col-sm-2 col-xs-8">
+			<br><label class="checkbox-inline" for="conceptocajamenor_activo">
+				<input type="checkbox" id="conceptocajamenor_activo" name="conceptocajamenor_activo" value="conceptocajamenor_activo" <%- parseInt(conceptocajamenor_activo) ? 'checked': ''%>> Activo
+			</label>
+		</div>
+	</div>
+	<div class="row">
+		<div class="form-group col-sm-5">
+			<label for="conceptocajamenor_administrativo" class="control-label">Cuenta administrativa</label>
+			<select name="conceptocajamenor_administrativo" id="conceptocajamenor_administrativo" class="form-control select2-default-clear">
+				@foreach( App\Models\Contabilidad\PlanCuenta::getPlanCuentas() as $key => $value)
+					<option value="{{ $key }}" <%- conceptocajamenor_administrativo == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
+				@endforeach
+			</select>
+		</div>
+		<div class="form-group col-sm-5">
+			<label for="conceptocajamenor_ventas" class="control-label">Cuenta ventas</label>
+			<select name="conceptocajamenor_ventas" id="conceptocajamenor_ventas" class="form-control select2-default-clear">
+				@foreach( App\Models\Contabilidad\PlanCuenta::getPlanCuentas() as $key => $value)
+					<option value="{{ $key }}" <%- conceptocajamenor_ventas == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
+				@endforeach
+			</select>
+		</div>
+	</div>
+</script>
 
 {{-- templeates Tecnicos --}}
 <script type="text/template" id="add-tipoorden-tpl">

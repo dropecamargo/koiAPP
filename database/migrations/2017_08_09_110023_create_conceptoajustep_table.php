@@ -17,7 +17,10 @@ class CreateConceptoajustepTable extends Migration
 
             $table->increments('id');
             $table->string('conceptoajustep_nombre', 50)->unique();
+            $table->integer('conceptoajustep_cuenta')->unsigned();
             $table->boolean('conceptoajustep_activo')->default(false);
+
+            $table->foreign('conceptoajustep_cuenta')->references('id')->on('plancuentas')->onDelete('restrict');
         });
     }
 

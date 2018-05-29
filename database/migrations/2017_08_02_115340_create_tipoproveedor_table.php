@@ -17,7 +17,10 @@ class CreateTipoproveedorTable extends Migration
 
             $table->increments('id');
             $table->string('tipoproveedor_nombre', 50)->unique();
+            $table->integer('tipoproveedor_cuenta')->unsigned();
             $table->boolean('tipoproveedor_activo')->default(false);
+
+            $table->foreign('tipoproveedor_cuenta')->references('id')->on('plancuentas')->onDelete('restrict');
         });
     }
 

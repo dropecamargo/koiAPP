@@ -113,6 +113,7 @@ app || (app = {});
 
             // Reference to fields
             this.$consecutive = $("#"+$(e.currentTarget).attr("data-field"));
+            this.$consecutive.val('');
             this.$wrapperContent = $("#"+$(e.currentTarget).attr("data-wrapper"));
 
             if (regional != '') {
@@ -132,6 +133,7 @@ app || (app = {});
                     if(documents == 'facturap') consecutive = resp.regional_fpro;
                     if(documents == 'ajustep') consecutive = resp.regional_ajup;
                     if(documents == 'egreso') consecutive = resp.regional_egre;
+                    if(documents == 'cajamenor') consecutive = resp.regional_cm;
 
                     // Set consecutive
                     _this.$consecutive.val( parseInt(consecutive) + 1);
