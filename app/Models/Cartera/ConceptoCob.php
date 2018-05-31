@@ -37,6 +37,7 @@ class ConceptoCob extends BaseModel
 	{
 		$rules = [
 			'conceptocob_nombre' => 'required|max:25|unique:conceptocob',
+			'conceptocob_cuenta' => 'required'
 		];
 
 		if ($this->exists){
@@ -52,7 +53,13 @@ class ConceptoCob extends BaseModel
 		$this->errors = $validator->errors();
 		return false;
 	}
-
+	public static function getConcepto($id)
+	{
+		$concepto = ConceptoCob::select('conceptocob.*', 'plancuentas_nombre', 'plancuentas_cuenta');
+		$concepto->join('plancuentas', 'conceptocob_cuenta', '=', 'plancuentas.id');
+		$concepto->where('conceptocob.id', $id);
+		return $concepto->first();
+	}
 	public static function getConceptoCobro()
     {
         if ( Cache::has(self::$key_cache)) {

@@ -17,6 +17,7 @@ app || (app = {});
         idAttribute: 'id',
         defaults: {
         	'conceptocob_nombre': '',
+        	'conceptocob_cuenta': '',
         	'conceptocob_activo': 1
         }
     });

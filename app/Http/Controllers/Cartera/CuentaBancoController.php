@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\Cartera\CuentaBanco, App\Models\Cartera\Banco;
+use App\Models\Cartera\CuentaBanco, App\Models\Cartera\Banco, App\Models\Contabilidad\PlanCuenta;
 use DB, Log, Cache, Datatables;
 
 class CuentaBancoController extends Controller
@@ -58,10 +58,25 @@ class CuentaBancoController extends Controller
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar banco, verifique información ó por favor consulte al administrador.']);
                     }
 
+                    //Recuperar Plan cuenta
+                    $cuenta = PlanCuenta::find($request->cuentabanco_cuenta);
+                    if(!$cuenta instanceof PlanCuenta) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar plan de cuenta, verifique información ó por favor consulte al administrador.']);
+                    }
+                    
+                    // Validando Sub Niveles
+                    $result = $cuenta->validarSubnivelesCuenta();
+                    if ($result != 'OK') {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $result ]);
+                    }
+
                     // Cuenta Banco
                     $cuentabanco->fill($data);
                     $cuentabanco->fillBoolean($data);
                     $cuentabanco->cuentabanco_banco = $banco->id;
+                    $cuentabanco->cuentabanco_cuenta = $cuenta->id;
                     $cuentabanco->save();
 
                     // Commit Transaction
@@ -123,22 +138,37 @@ class CuentaBancoController extends Controller
             if ($cuentabanco->isValid($data)) {
                 DB::beginTransaction();
                 try {
-                    //Recuperar Banco && plancuentas
+                    //Recuperar Banco
                     $banco = Banco::find($request->cuentabanco_banco);
                     if(!$banco instanceof Banco) {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar banco, verifique información ó por favor consulte al administrador.']);
                     }
 
+                    //Recuperar Plan cuenta
+                    $cuenta = PlanCuenta::find($request->cuentabanco_cuenta);
+                    if(!$cuenta instanceof PlanCuenta) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar plan de cuenta, verifique información ó por favor consulte al administrador.']);
+                    }
+
+                    // Validando Sub Niveles
+                    $result = $cuenta->validarSubnivelesCuenta();
+                    if ($result != 'OK') {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $result ]);
+                    }
+
                     // Cuenta Banco
                     $cuentabanco->fill($data);
                     $cuentabanco->fillBoolean($data);
                     $cuentabanco->cuentabanco_banco = $banco->id;
+                    $cuentabanco->cuentabanco_cuenta = $cuenta->id;
                     $cuentabanco->save();
 
                     // Commit Transaction
                     DB::commit();
-                    
+
                     //Forget cache
                     Cache::forget( CuentaBanco::$key_cache );
                     return response()->json(['success' => true, 'id' => $cuentabanco->id]);

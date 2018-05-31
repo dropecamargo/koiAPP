@@ -25,6 +25,12 @@
                     </label>
                 </div>
             </div>
+            <div class="row">
+                <div class="form-group col-md-4 col-xs-12 col-sm-12">
+                    <label class="control-label">Plan cuentas</label>
+                    <div>{{ $conceptosrc->plancuentas_cuenta}} - {{ $conceptosrc->plancuentas_nombre }}</div>
+                </div>
+            </div>
         </div>
         <div class="box-footer with-border">
             <div class="row">

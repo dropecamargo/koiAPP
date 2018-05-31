@@ -37,6 +37,7 @@ class ConceptoAjustec extends BaseModel
 	{
 		$rules = [
 			'conceptoajustec_nombre' => 'required|max:50|unique:conceptoajustec',
+			'conceptoajustec_cuenta' => 'required',
 		];
 
 		if ($this->exists){
@@ -52,7 +53,13 @@ class ConceptoAjustec extends BaseModel
 		$this->errors = $validator->errors();
 		return false;
 	}
-
+	public static function getConcepto($id)
+	{
+		$concepto = ConceptoAjustec::select('conceptoajustec.*', 'plancuentas_cuenta', 'plancuentas_nombre');
+		$concepto->join('plancuentas', 'conceptoajustec_cuenta', '=', 'plancuentas.id');
+		$concepto->where('conceptoajustec.id', $id);
+		return $concepto->first();
+	}
 	public static function getConceptoAjustec()
     {
         if ( Cache::has(self::$key_cache)) {

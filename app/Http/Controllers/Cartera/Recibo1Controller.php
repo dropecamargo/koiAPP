@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use App\Classes\AsientoContableDocumento, App\Classes\AsientoNifContableDocumento;
 use App\Models\Cartera\Recibo1, App\Models\Cartera\Recibo2, App\Models\Cartera\Recibo3, App\Models\Cartera\Factura3, App\Models\Cartera\Factura1,App\Models\Cartera\ChposFechado1,App\Models\Cartera\ChDevuelto,App\Models\Cartera\Anticipo1;
 use App\Models\Cartera\Conceptosrc, App\Models\Cartera\CuentaBanco, App\Models\Cartera\MedioPago,App\Models\Cartera\Banco;
 use App\Models\Base\Documentos, App\Models\Base\Sucursal,App\Models\Base\Regional, App\Models\Base\Tercero;
@@ -106,6 +107,8 @@ class Recibo1Controller extends Controller
 
                     // Recibo2
                     $recibo2 = isset($data['recibo2']) ? $data['recibo2'] : null;
+                    $detalle = $encabezado = [];
+                    $credito = $debito = 0;
                     foreach ($recibo2 as $item)
                     {
                         $recibo2 = new Recibo2;
@@ -176,6 +179,22 @@ class Recibo1Controller extends Controller
                             $recibo2->recibo2_valor = $item['recibo2_valor'];
                         }
                         $recibo2->save();
+
+                        // Valor del recibo 1
+                        $recibo1->recibo1_valor += $recibo2->recibo2_valor;
+                        $recibo1->save();
+
+                        // Credito y debito
+                        $credito +=  ($recibo2->recibo2_naturaleza == 'C') ? $recibo2->recibo2_valor : 0;
+                        $debito +=  ($recibo2->recibo2_naturaleza == 'D') ? $recibo2->recibo2_valor : 0;
+
+                        // Preparando detalle asiento
+                        $result = $recibo1->detalleAsiento($recibo2, $tercero, $conceptorc);
+                        if(!is_array($result)){
+                            DB::rollback();
+                            return response()->json(['success' => false, 'errors' => $result]);
+                        }
+                        $detalle[] = $result;
                     }
 
                     foreach ($data['recibo3'] as $value) {
@@ -214,15 +233,68 @@ class Recibo1Controller extends Controller
                         $recibo3->recibo3_vence_medio = ($value['recibo3_vence_medio'] == "") ? null : $value['recibo3_vence_medio'];
                         $recibo3->save();
                     }
+                    // Encabezado Asiento
+                    $encabezado = $recibo1->encabezadoAsiento($tercero, $cuentabanco, $credito, $debito);
+                    if(!is_object($encabezado)){
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $encabezado]);
+                    }
+                    $detalle[] = $encabezado->cuenta;
 
+                    // Creo el objeto para manejar el asiento
+                    $objAsiento = new AsientoContableDocumento($encabezado->data);
+                    if($objAsiento->asiento_error) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $objAsiento->asiento_error]);
+                    }
+                    // Preparar asiento
+                    $result = $objAsiento->asientoCuentas($detalle);
+                    if($result != 'OK'){
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $result]);
+                    }
+
+                    // Insertar asiento
+                    $result = $objAsiento->insertarAsiento();
+                    if($result != 'OK') {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $result]);
+                    }
+                    // AsientoNif
+                    if (!empty($encabezado->dataNif)) {
+                        // Creo el objeto para manejar el asiento
+                        $objAsientoNif = new AsientoNifContableDocumento($encabezado->dataNif);
+                        if($objAsientoNif->asientoNif_error) {
+                            DB::rollback();
+                            return response()->json(['success' => false, 'errors' => $objAsiento->asientoNif_error]);
+                        }
+
+                        // Preparar asiento
+                        $result = $objAsientoNif->asientoCuentas($detalle);
+                        if($result != 'OK'){
+                            DB::rollback();
+                            return response()->json(['success' => false, 'errors' => $result]);
+                        }
+
+                        // Insertar asiento
+                        $result = $objAsientoNif->insertarAsientoNif();
+                        if($result != 'OK') {
+                            DB::rollback();
+                            return response()->json(['success' => false, 'errors' => $result]);
+                        }
+                        // Recuperar el Id del asiento y guardar en la factura
+                        $recibo1->recibo1_asienton = $objAsientoNif->asientoNif->id;
+                    }
+                    $recibo1->recibo1_asiento = $objAsiento->asiento->id;
+                    $recibo1->save();
                     // Update consecutive regional_reci in Regional
                     $regional->regional_reci = $consecutive;
                     $regional->save();
 
                     // Commit Transaction
-                    DB::commit();
-                    // return response()->json(['success' => false, 'errors' => 'TODO OK']);
-                    return response()->json(['success' => true, 'id' => $recibo1->id]);
+                    DB::rollback();
+                    return response()->json(['success' => false, 'errors' => 'TODO OK']);
+                    // return response()->json(['success' => true, 'id' => $recibo1->id]);
                 }catch(\Exception $e){
                     DB::rollback();
                     Log::error($e->getMessage());

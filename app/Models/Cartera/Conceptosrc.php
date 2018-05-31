@@ -40,6 +40,7 @@ class Conceptosrc extends BaseModel
 	{
 		$rules = [
 			'conceptosrc_nombre' => 'required|max:50|unique:conceptosrc',
+			'conceptosrc_cuenta' => 'required',
 		];
 
 		if ($this->exists){
@@ -59,8 +60,9 @@ class Conceptosrc extends BaseModel
 	public static function getConceptosrc($id)
 	{
 		$query = Conceptosrc::query();
-		$query->select('conceptosrc.*', 'documentos_nombre', 'documentos_codigo');
+		$query->select('conceptosrc.*', 'documentos_nombre', 'documentos_codigo', 'plancuentas_cuenta', 'plancuentas_nombre');
 		$query->leftJoin('documentos', 'conceptosrc_documentos', '=', 'documentos.id');
+		$query->join('plancuentas', 'conceptosrc_cuenta', '=', 'plancuentas.id');
 		$query->where('conceptosrc.id', $id);
 		return $query->first();
 	}

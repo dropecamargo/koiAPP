@@ -17,8 +17,7 @@ app || (app = {});
         idAttribute: 'id',
         defaults: {
         	'conceptoajustec_nombre': '',
-        	'plancuentas_cuenta': '',
-            'plancuentas_nombre': '',
+        	'conceptoajustec_cuenta': '',
         	'conceptoajustec_sumas_iguales': 1,
         	'conceptoajustec_activo': 1
         }

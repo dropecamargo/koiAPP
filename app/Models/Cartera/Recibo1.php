@@ -4,7 +4,7 @@ namespace App\Models\Cartera;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\BaseModel;
-use App\Models\Base\Tercero;
+use App\Models\Base\Tercero, App\Models\Contabilidad\Documento, App\Models\Contabilidad\PlanCuenta;
 use DB, Validator;
 
 class Recibo1 extends BaseModel
@@ -115,5 +115,100 @@ class Recibo1 extends BaseModel
         $response->recibo = $historyClient;
         $response->position = $i;
         return $response;
+	}
+	/**
+	*
+	*/
+	public function detalleAsiento(Recibo2 $detalle, Tercero $tercero, Conceptosrc $concepto)
+	{
+        // Plan de cuentas
+		$planCuenta = PlanCuenta::find($concepto->conceptosrc_cuenta);
+		if (!$planCuenta instanceof PlanCuenta) {
+			return "Error al recuperar cuenta en Concepto de recibo";
+		}
+
+		$cuenta = [];
+		$cuenta['Cuenta'] = $planCuenta->plancuentas_cuenta;
+		$cuenta['Cuenta_Nombre'] = $planCuenta->plancuentas_nombre;
+		$cuenta['Tercero'] = $tercero->tercero_nit;
+		$cuenta['CentroCosto'] = '';
+		$cuenta['CentroCosto_Nombre'] = '';
+		$cuenta['Detalle'] = '';
+		$cuenta['Naturaleza'] = $detalle->recibo2_naturaleza;
+		$cuenta['Base'] = 0;
+		$cuenta['Credito'] = ($detalle->recibo2_naturaleza == 'C') ? $detalle->recibo2_valor : 0;
+		$cuenta['Debito'] = ($detalle->recibo2_naturaleza == 'D') ? $detalle->recibo2_valor : 0;
+		$cuenta['Orden'] = '';
+
+		return $cuenta;
+	}
+	/**
+	*
+	*/
+	public function encabezadoAsiento(Tercero $tercero, CuentaBanco $cuentaBanco, $credito, $debito)
+	{
+		$object = new \stdClass();
+		$object->data = [];
+		$object->dataNif = [];
+		$object->cuenta = [];
+
+		// Recuperar documento contable
+		$documento = Documento::where('documento_codigo', 'RC')->first();
+		if(!$documento instanceof Documento){
+			$object->error = "No es posible recuperar el prefijo $codigo en los documentos contables.";
+			return $object;
+		}
+
+
+		// Cuadre entre debito y credito para el asiento
+		if ($credito != $debito) {
+			// Plan de cuentas
+			$planCuenta = PlanCuenta::find($cuentaBanco->cuentabanco_cuenta);
+			if (!$planCuenta instanceof PlanCuenta) {
+				return "Error al recuperar plan de cuenta en Cuenta de banco";
+			}
+			$cuadre = [];
+			$cuadre['Cuenta'] = $planCuenta->plancuentas_cuenta;
+			$cuadre['Cuenta_Nombre'] = $planCuenta->plancuentas_nombre;
+			$cuadre['Tercero'] = $tercero->tercero_nit;
+			$cuadre['CentroCosto'] = '';
+			$cuadre['CentroCosto_Nombre'] = '';
+			$cuadre['Detalle'] = '';
+			$cuadre['Naturaleza'] = ($credito > $debito) ? 'D' : 'C';
+			$cuadre['Base'] = 0;
+			$cuadre['Credito'] = ($debito > $credito) ? $debito - $credito : 0;
+			$cuadre['Debito'] = ($credito > $debito) ? $credito - $debito  : 0;
+			$cuadre['Orden'] = '';
+			$object->cuenta = $cuadre;
+		}
+
+		// Data asiento
+		$object->data = [
+			'asiento1_mes' => (Int) date('m'),
+			'asiento1_ano' => (Int) date('Y'),
+			'asiento1_dia' => (Int) date('d'),
+			'asiento1_numero' => $documento->documento_consecutivo + 1,
+			'asiento1_folder' => $documento->documento_folder,
+			'asiento1_documento' => $documento->id,
+			'asiento1_documentos' => $documento->documento_codigo,
+			'asiento1_id_documentos' => $this->id,
+			'asiento1_beneficiario' => $tercero->tercero_nit,
+		];
+
+		// Data Asiento Nif
+		if ($documento->documento_nif) {
+			$object->dataNif = [
+				'asienton1_mes' => (Int) date('m'),
+				'asienton1_ano' => (Int) date('Y'),
+				'asienton1_dia' => (Int) date('d'),
+				'asienton1_numero' => $documento->documento_consecutivo + 1,
+				'asienton1_folder' => $documento->documento_folder,
+				'asienton1_documento' => $documento->id,
+				'asienton1_documentos' => $documento->documento_codigo,
+				'asienton1_id_documentos' => $this->id,
+				'asienton1_beneficiario' => $tercero->tercero_nit,
+			];
+		}
+		return $object;
 	}
 }

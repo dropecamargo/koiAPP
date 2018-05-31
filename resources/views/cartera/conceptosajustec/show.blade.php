@@ -24,8 +24,14 @@
                     </label>
                 </div>
             </div>
+            <div class="row">
+                <div class="form-group col-md-4 col-xs-12 col-sm-12">
+                    <label class="control-label">Plan cuentas</label>
+                    <div>{{ $conceptoajustec->plancuentas_cuenta}} - {{ $conceptoajustec->plancuentas_nombre }}</div>
+                </div>
+            </div>
         </div>
-        
+
         <div class="box-footer with-border">
             <div class="row">
                 <div class="col-md-2 col-md-offset-4 col-sm-6 col-xs-6 text-left">

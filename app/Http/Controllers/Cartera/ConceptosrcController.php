@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\Cartera\Conceptosrc, App\Models\Cartera\ConceptoNota, App\Models\Base\Documentos;
+use App\Models\Cartera\Conceptosrc, App\Models\Cartera\ConceptoNota, App\Models\Base\Documentos, App\Models\Contabilidad\PlanCuenta;
 use DB, Log, Cache, Datatables;
 
 class ConceptosrcController extends Controller
@@ -59,10 +59,23 @@ class ConceptosrcController extends Controller
                         }
                         $conceptosrc->conceptosrc_documentos = $documentos->id;
                     }
+                    //Recuperar Plan cuenta
+                    $cuenta = PlanCuenta::find($request->conceptosrc_cuenta);
+                    if(!$cuenta instanceof PlanCuenta) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar plan de cuenta, verifique información ó por favor consulte al administrador.']);
+                    }
 
+                    // Validando Sub Niveles
+                    $result = $cuenta->validarSubnivelesCuenta();
+                    if ($result != 'OK') {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $result ]);
+                    }
                     // conceptosrc
                     $conceptosrc->fill($data);
                     $conceptosrc->fillBoolean($data);
+                    $conceptosrc->conceptosrc_cuenta = $cuenta->id;
                     $conceptosrc->save();
 
                     // Commit Transaction
@@ -133,14 +146,28 @@ class ConceptosrcController extends Controller
                         $conceptosrc->conceptosrc_documentos = $documentos->id;
                     }
 
+                    //Recuperar Plan cuenta
+                    $cuenta = PlanCuenta::find($request->conceptosrc_cuenta);
+                    if(!$cuenta instanceof PlanCuenta) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar plan de cuenta, verifique información ó por favor consulte al administrador.']);
+                    }
+
+                    // Validando Sub Niveles
+                    $result = $cuenta->validarSubnivelesCuenta();
+                    if ($result != 'OK') {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $result ]);
+                    }
                     // conceptosrc
                     $conceptosrc->fill($data);
                     $conceptosrc->fillBoolean($data);
-                    $conceptosrc->save();;
+                    $conceptosrc->conceptosrc_cuenta = $cuenta->id;
+                    $conceptosrc->save();
 
                     // Commit Transaction
                     DB::commit();
-                    
+
                     //Forget cache
                     Cache::forget( Conceptosrc::$key_cache );
                     return response()->json(['success' => true, 'id' => $conceptosrc->id]);

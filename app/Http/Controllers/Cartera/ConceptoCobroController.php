@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\Cartera\ConceptoCob;
+use App\Models\Cartera\ConceptoCob, App\Models\Contabilidad\PlanCuenta;
 use DB, Log, Datatables, Cache;
 
 class ConceptoCobroController extends Controller
@@ -49,8 +49,24 @@ class ConceptoCobroController extends Controller
             if ($conceptocobro->isValid($data)) {
                 DB::beginTransaction();
                 try {
+                    //Recuperar Plan cuenta
+                    $cuenta = PlanCuenta::find($request->conceptocob_cuenta);
+                    if(!$cuenta instanceof PlanCuenta) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar plan de cuenta, verifique información ó por favor consulte al administrador.']);
+                    }
+
+                    // Validando Sub Niveles
+                    $result = $cuenta->validarSubnivelesCuenta();
+                    if ($result != 'OK') {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $result ]);
+                    }
+
+                    // Concepto Cobro
                     $conceptocobro->fill($data);
                     $conceptocobro->fillBoolean($data);
+                    $conceptocobro->conceptocob_cuenta= $cuenta->id;
                     $conceptocobro->save();
 
                     // Commit Transaction
@@ -78,7 +94,7 @@ class ConceptoCobroController extends Controller
      */
     public function show(Request $request, $id)
     {
-        $conceptocobro = ConceptoCob::findOrFail($id);
+        $conceptocobro = ConceptoCob::getConcepto($id);
         if ($request->ajax()) {
             return response()->json($conceptocobro);
         }
@@ -112,14 +128,29 @@ class ConceptoCobroController extends Controller
             if ($conceptocobro->isValid($data)) {
                 DB::beginTransaction();
                 try {
-                    // ConceptoCobro
+                    //Recuperar Plan cuenta
+                    $cuenta = PlanCuenta::find($request->conceptocob_cuenta);
+                    if(!$cuenta instanceof PlanCuenta) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar plan de cuenta, verifique información ó por favor consulte al administrador.']);
+                    }
+
+                    // Validando Sub Niveles
+                    $result = $cuenta->validarSubnivelesCuenta();
+                    if ($result != 'OK') {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $result ]);
+                    }
+
+                    // Concepto Cobro
                     $conceptocobro->fill($data);
                     $conceptocobro->fillBoolean($data);
+                    $conceptocobro->conceptocob_cuenta= $cuenta->id;
                     $conceptocobro->save();
 
                     // Commit Transaction
                     DB::commit();
-                    
+
                     //Forget cache
                     Cache::forget( ConceptoCob::$key_cache );
                     return response()->json(['success' => true, 'id' => $conceptocobro->id]);

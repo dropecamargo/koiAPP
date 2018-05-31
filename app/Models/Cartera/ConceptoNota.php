@@ -37,6 +37,7 @@ class ConceptoNota extends BaseModel
 	{
 		$rules = [
 		    'conceptonota_nombre' => 'required|max:50|unique:conceptonota',
+		    'conceptonota_cuenta' => 'required'
 		];
 
 		if ($this->exists){
@@ -52,7 +53,13 @@ class ConceptoNota extends BaseModel
 		$this->errors = $validator->errors();
 		return false;
 	}
-
+	public static function getConceptoNota($id)
+	{
+		$nota = ConceptoNota::select('conceptonota.*', 'plancuentas_cuenta', 'plancuentas_nombre');
+		$nota->join('plancuentas', 'conceptonota_cuenta', '=', 'plancuentas.id');
+		$nota->where('conceptonota.id', $id);
+		return $nota->first();
+	}
 	public static function getConcepto()
     {
     	if ( Cache::has(self::$key_cache)) {

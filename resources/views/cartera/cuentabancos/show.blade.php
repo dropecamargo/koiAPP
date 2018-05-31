@@ -23,6 +23,10 @@
                     <label class="control-label">Banco</label>
                     <div>{{ $cuentabanco->banco_nombre }}</div>
                 </div>
+                <div class="form-group col-md-4">
+                    <label class="control-label">Plan cuenta</label>
+                    <div>{{ $cuentabanco->plancuentas_cuenta }} - {{ $cuentabanco->plancuentas_nombre }}</div>
+                </div>
                 <div class="form-group col-md-1 col-xs-8 col-sm-3"><br>
                     <label class="checkbox-inline" for="cuentabanco_activa">
                         <input type="checkbox" id="cuentabanco_activa" name="cuentabanco_activa" value="cuentabanco_activo" disabled {{ $cuentabanco->cuentabanco_activa ? 'checked': '' }}> Activo

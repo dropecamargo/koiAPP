@@ -1418,6 +1418,15 @@
 			</select>
 			<div class="help-block with-errors"></div>
 		</div>
+		<div class="form-group col-sm-5">
+			<label for="cuentabanco_cuenta" class="control-label">Plan cuenta</label>
+			<select name="cuentabanco_cuenta" id="cuentabanco_cuenta" class="form-control select2-default-clear" required>
+				@foreach( App\Models\Contabilidad\PlanCuenta::getPlanCuentas() as $key => $value)
+					<option value="{{ $key }}" <%- cuentabanco_cuenta == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
+				@endforeach
+			</select>
+			<div class="help-block with-errors"></div>
+		</div>
 		<div class="form-group col-sm-2 col-xs-8"><br>
 			<label class="checkbox-inline" for="cuentabanco_activa">
 				<input type="checkbox" id="cuentabanco_activa" name="cuentabanco_activa" value="cuentabanco_activa" <%- parseInt(cuentabanco_activa) ? 'checked': ''%>> Activo
@@ -1433,10 +1442,22 @@
 			<input type="text" id="conceptonota_nombre" name="conceptonota_nombre" value="<%- conceptonota_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="25" required>
 			<div class="help-block with-errors"></div>
 		</div>
+
 		<div class="form-group col-sm-2 col-xs-8"><br>
 			<label class="checkbox-inline" for="conceptonota_activo">
 				<input type="checkbox" id="conceptonota_activo" name="conceptonota_activo" value="conceptonota_activo" <%- parseInt(conceptonota_activo) ? 'checked': ''%>> Activo
 			</label>
+		</div>
+	</div>
+	<div class="row">
+		<div class="form-group col-sm-5">
+			<label for="conceptonota_cuenta" class="control-label">Plan cuenta</label>
+			<select name="conceptonota_cuenta" id="conceptonota_cuenta" class="form-control select2-default-clear" required>
+				@foreach( App\Models\Contabilidad\PlanCuenta::getPlanCuentas() as $key => $value)
+					<option value="{{ $key }}" <%- conceptonota_cuenta == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
+				@endforeach
+			</select>
+			<div class="help-block with-errors"></div>
 		</div>
 	</div>
 </script>
@@ -1454,6 +1475,17 @@
 			</label>
 		</div>
     </div>
+	<div class="row">
+		<div class="form-group col-sm-5">
+			<label for="conceptocob_cuenta" class="control-label">Plan cuenta</label>
+			<select name="conceptocob_cuenta" id="conceptocob_cuenta" class="form-control select2-default-clear" required>
+				@foreach( App\Models\Contabilidad\PlanCuenta::getPlanCuentas() as $key => $value)
+					<option value="{{ $key }}" <%- conceptocob_cuenta == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
+				@endforeach
+			</select>
+			<div class="help-block with-errors"></div>
+		</div>
+	</div>
 </script>
 
 <script type="text/template" id="add-conceptoajustec-tpl">
@@ -1473,6 +1505,17 @@
 			<br><label class="checkbox-inline" for="conceptoajustec_sumas_iguales">
 				<input type="checkbox" id="conceptoajustec_sumas_iguales" name="conceptoajustec_sumas_iguales" value="conceptoajustec_sumas_iguales" <%- parseInt(conceptoajustec_sumas_iguales) ? 'checked': ''%>> Sumas igual
 			</label>
+		</div>
+	</div>
+	<div class="row">
+		<div class="form-group col-sm-6">
+			<label for="conceptoajustec_cuenta" class="control-label">Plan cuenta</label>
+			<select name="conceptoajustec_cuenta" id="conceptoajustec_cuenta" class="form-control select2-default-clear" required>
+				@foreach( App\Models\Contabilidad\PlanCuenta::getPlanCuentas() as $key => $value)
+					<option value="{{ $key }}" <%- conceptoajustec_cuenta == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
+				@endforeach
+			</select>
+			<div class="help-block with-errors"></div>
 		</div>
 	</div>
 </script>
@@ -1497,6 +1540,17 @@
 			<label class="checkbox-inline" for="conceptosrc_activo">
 				<input type="checkbox" id="conceptosrc_activo" name="conceptosrc_activo" value="conceptosrc_activo" <%- parseInt(conceptosrc_activo) ? 'checked': ''%>> Activo
 			</label>
+		</div>
+	</div>
+	<div class="row">
+		<div class="form-group col-sm-6">
+			<label for="conceptosrc_cuenta" class="control-label">Plan cuenta</label>
+			<select name="conceptosrc_cuenta" id="conceptosrc_cuenta" class="form-control select2-default-clear" required>
+				@foreach( App\Models\Contabilidad\PlanCuenta::getPlanCuentas() as $key => $value)
+					<option value="{{ $key }}" <%- conceptosrc_cuenta == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
+				@endforeach
+			</select>
+			<div class="help-block with-errors"></div>
 		</div>
 	</div>
 </script>

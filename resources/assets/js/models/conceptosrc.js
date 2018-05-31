@@ -18,8 +18,7 @@ app || (app = {});
         defaults: {
         	'conceptosrc_nombre': '',
             'conceptosrc_documentos': '',
-            'plancuentas_cuenta': '',
-            'plancuentas_nombre': '',
+            'conceptosrc_cuenta': '',
         	'conceptosrc_activo': 1
         }
     });

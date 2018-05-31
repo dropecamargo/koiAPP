@@ -49,8 +49,23 @@ class ConceptoNotaController extends Controller
             if ($conceptonota->isValid($data)) {
                 DB::beginTransaction();
                 try {
+
+                    //Recuperar Plan cuenta
+                    $cuenta = PlanCuenta::find($request->conceptonota_cuenta);
+                    if(!$cuenta instanceof PlanCuenta) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar plan de cuenta, verifique información ó por favor consulte al administrador.']);
+                    }
+
+                    // Validando Sub Niveles
+                    $result = $cuenta->validarSubnivelesCuenta();
+                    if ($result != 'OK') {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $result ]);
+                    }
                     $conceptonota->fill($data);
                     $conceptonota->fillBoolean($data);
+                    $conceptonota->conceptonota_cuenta = $cuenta->id;
                     $conceptonota->save();
 
                     // Commit Transaction
@@ -78,7 +93,7 @@ class ConceptoNotaController extends Controller
      */
     public function show(Request $request, $id)
     {
-        $conceptonota = ConceptoNota::find($id);
+        $conceptonota = ConceptoNota::getConceptoNota($id);
         if ($request->ajax()) {
             return response()->json($conceptonota);
         }
@@ -113,9 +128,22 @@ class ConceptoNotaController extends Controller
                 DB::beginTransaction();
                 try {
 
-                    // Conceptonota
+                    //Recuperar Plan cuenta
+                    $cuenta = PlanCuenta::find($request->conceptonota_cuenta);
+                    if(!$cuenta instanceof PlanCuenta) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar plan de cuenta, verifique información ó por favor consulte al administrador.']);
+                    }
+
+                    // Validando Sub Niveles
+                    $result = $cuenta->validarSubnivelesCuenta();
+                    if ($result != 'OK') {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $result ]);
+                    }
                     $conceptonota->fill($data);
                     $conceptonota->fillBoolean($data);
+                    $conceptonota->conceptonota_cuenta = $cuenta->id;
                     $conceptonota->save();
 
                     // Commit Transaction

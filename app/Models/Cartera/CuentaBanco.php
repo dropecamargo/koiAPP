@@ -38,6 +38,7 @@ class CuentaBanco extends BaseModel
 		$rules = [
 			'cuentabanco_nombre' => 'required|max:50|unique:cuentabanco',
 			'cuentabanco_banco' => 'required',
+			'cuentabanco_cuenta' => 'required',
 			'cuentabanco_numero' => 'required|max:25',
 		];
 
@@ -57,8 +58,9 @@ class CuentaBanco extends BaseModel
 
 	public static function getCuentaBanco($id){
         $query = CuentaBanco::query();
-        $query->select('cuentabanco.*','banco_nombre');
+        $query->select('cuentabanco.*','banco_nombre', 'plancuentas_nombre', 'plancuentas_cuenta');
         $query->join('banco', 'cuentabanco_banco', '=', 'banco.id');
+        $query->join('plancuentas', 'cuentabanco_cuenta', '=', 'plancuentas.id');
         $query->where('cuentabanco.id', $id);
         return $query->first();
 	}
