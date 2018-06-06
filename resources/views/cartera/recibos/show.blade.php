@@ -28,7 +28,7 @@
                     <div>{{ $recibo->sucursal_nombre }}</div>
                 </div>
                 <div class="form-group col-md-2">
-                    <label class="control-label">Numero</label>
+                    <label class="control-label">Número</label>
                     <div>{{ $recibo->recibo1_numero }}</div>
                 </div>
                 <div class="form-group col-md-4">
@@ -56,7 +56,7 @@
                         <tr>
                             <th width="95px">Concepto</th>
                             <th width="95px">Documento</th>
-                            <th width="95px">Numero</th>
+                            <th width="95px">Número</th>
                             <th width="95px">Cuota</th>
                             <th width="95px">Naturaleza</th>
                             <th width="95px">Valor</th>
@@ -82,7 +82,7 @@
                         <tr>
                             <th>Medio de pago</th>
                             <th>Banco</th>
-                            <th>Numero</th>
+                            <th>Número</th>
                             <th>Fecha</th>
                             <th>Valor</th>
                         </tr>
@@ -104,6 +104,18 @@
             <div class="row">
                 <div class="col-md-offset-5 col-md-2 col-sm-6 col-xs-6 text-left">
                     <a href=" {{ route('recibos.index') }}" class="btn btn-default btn-sm btn-block">{{ trans('app.comeback') }}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="box box-solid">
+        <div class="box-body">
+            <div class="row">
+                <div class="col-md-6 col-sm-6 col-xs-6 text-left">
+                    <h4><a href="{{ route('asientos.show', ['asientos' =>  $recibo->recibo1_asiento ]) }}" target="_blanck" title="Ver Asiento"> Ver asiento contable </a></h4>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-6 text-right">
+                    <h4><b>Recibo N° {{$recibo->recibo1_numero}} </b></h4>
                 </div>
             </div>
         </div>

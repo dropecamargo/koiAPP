@@ -18,6 +18,7 @@ app || (app = {});
         	'cajamenor1_numero': '',
         	'cajamenor1_tercero': '',
         	'cajamenor1_fecha': '',
+            'cajamenor1_cuentabanco': '',
         	'cajamenor1_observaciones': ''
         }
     });

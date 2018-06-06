@@ -21,6 +21,7 @@ class CreateCajamenor1Table extends Migration
             $table->integer('cajamenor1_regional')->unsigned();
             $table->integer('cajamenor1_tercero')->unsigned();
             $table->integer('cajamenor1_documentos')->unsigned();
+            $table->integer('cajamenor1_cuentabanco')->unsigned();
             $table->double('cajamenor1_fondo');
             $table->double('cajamenor1_efectivo');
             $table->double('cajamenor1_provisionales');
@@ -30,6 +31,7 @@ class CreateCajamenor1Table extends Migration
             $table->integer('cajamenor1_usuario_elaboro')->unsigned();
             $table->dateTime('cajamenor1_fh_elaboro');
 
+            $table->foreign('cajamenor1_cuentabanco')->references('id')->on('cuentabanco')->onDelete('restrict');
             $table->foreign('cajamenor1_documentos')->references('id')->on('documentos')->onDelete('restrict');
             $table->foreign('cajamenor1_regional')->references('id')->on('regional')->onDelete('restrict');
             $table->foreign('cajamenor1_tercero')->references('id')->on('tercero')->onDelete('restrict');

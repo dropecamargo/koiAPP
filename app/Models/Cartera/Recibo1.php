@@ -117,7 +117,7 @@ class Recibo1 extends BaseModel
         return $response;
 	}
 	/**
-	*
+	* Prepara el detalle del asiento , cuentas (Credito , Debito)
 	*/
 	public function detalleAsiento(Recibo2 $detalle, Tercero $tercero, Conceptosrc $concepto)
 	{
@@ -143,7 +143,7 @@ class Recibo1 extends BaseModel
 		return $cuenta;
 	}
 	/**
-	*
+	* Prepara el asiento 1 y hace el cuadre de credido y debito con la cuenta bancaria(Plan cuentas) del recibo
 	*/
 	public function encabezadoAsiento(Tercero $tercero, CuentaBanco $cuentaBanco, $credito, $debito)
 	{

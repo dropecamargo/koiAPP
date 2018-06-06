@@ -292,9 +292,9 @@ class Recibo1Controller extends Controller
                     $regional->save();
 
                     // Commit Transaction
-                    DB::rollback();
-                    return response()->json(['success' => false, 'errors' => 'TODO OK']);
-                    // return response()->json(['success' => true, 'id' => $recibo1->id]);
+                    DB::commit();
+                    // return response()->json(['success' => false, 'errors' => 'TODO OK']);
+                    return response()->json(['success' => true, 'id' => $recibo1->id]);
                 }catch(\Exception $e){
                     DB::rollback();
                     Log::error($e->getMessage());

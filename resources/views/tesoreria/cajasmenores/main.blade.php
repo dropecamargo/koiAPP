@@ -74,9 +74,17 @@
                 </div>
             </div>
             <div class="row">
-                <div class="form-group col-md-12">
+                <div class="form-group col-md-8">
                     <label for="cajamenor1_observaciones" class="control-label">Observaciones</label>
                     <textarea id="cajamenor1_observaciones" name="cajamenor1_observaciones" class="form-control" rows="2" placeholder="Observaciones"></textarea>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="cajamenor1_cuentabanco" class="control-label">Cuenta de banco</label>
+                    <select name="cajamenor1_cuentabanco" id="cajamenor1_cuentabanco" class="form-control select2-default" required>
+                       @foreach( App\Models\Cartera\CuentaBanco::getCuenta() as $key => $value)
+                            <option  value="{{ $key }}" <%- cajamenor1_cuentabanco == '{{ $key }}' ? 'selected': ''%>>{{ $value }}</option>
+                        @endforeach
+                    </select>
                 </div>
             </div>
         </form>
@@ -145,7 +153,7 @@
                         </div>
 
                         <div class="form-group col-md-2">
-                            <label for="cajamenor2_reteiva" class="control-label">Rete iva</label>
+                            <label for="cajamenor2_reteiva" class="control-label">Rete Iva</label>
                             <input type="text" id="cajamenor2_reteiva" name="cajamenor2_reteiva" class="form-control input-sm"   data-currency required>
                         </div>
                         <div class="form-group col-md-2">

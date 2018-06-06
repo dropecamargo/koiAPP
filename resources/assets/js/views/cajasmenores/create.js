@@ -101,21 +101,19 @@ app || (app = {});
 
                 var data = window.Misc.formToJson( e.target );
                 this.detalleCajaMenor.trigger( 'store', data );
-
-                this.$('#ajustep2_documentos_doc').val(0).trigger('change');
-                this.$('#ajustep2_naturaleza').val('');
-                this.$('#ajustep2_valor').val('');
             }
         },
         /**
-        *
+        * Get cuentas administrativa y de ventas
         */
         changeConcepto: function(e){
             e.preventDefault();
+            var _this = this;
             this.concepto = this.$(e.currentTarget).val();
+            this.$cuenta.prop('disabled', true);
+            this.$cuenta.empty();
 
             if( !_.isUndefined(this.concepto) && !_.isNull(this.concepto) && this.concepto != ''){
-                var _this = this;
                 $.ajax({
                     type: 'GET',
                     url: window.Misc.urlFull(Route.route('conceptoscajamenor.show',{conceptoscajamenor: _this.concepto})),
