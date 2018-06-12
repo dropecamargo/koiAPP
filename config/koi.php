@@ -2,12 +2,9 @@
 
 return [
     'name' => 'KOI Tecnologías de la Información S.A.S.',
-    'regimen' => "Régimen común. Actividad Económica Ica 6201 9.66 X 100. \n Somos retenedores de Iva al régimen simplificado \n No somo Auto retenedores. \n No somos Grandes Contribuyentes",
-    'detalle' => 'DESARROLLO DE SOFTWARE A LA MEDIDA',
     'nickname' => 'KOI-TI',
     'site' => 'http://www.koi-ti.com',
     'image' => '/images/koi.png',
-    'logo' => '/images/logo.png',
 
     'app' => [
         'avatar' => '/images/avatar.svg',

@@ -22,6 +22,7 @@ elixir(function(mix) {
         paths.libs + 'jquery-ui/themes/base/spinner.css',
         paths.libs + 'jquery-ui/themes/base/theme.css',
 		paths.adminlte + 'bootstrap/css/bootstrap.min.css',
+        paths.adminlte + 'dist/css/skins/skin-purple.min.css',
         paths.adminlte + 'dist/css/skins/skin-blue.min.css',
 		paths.adminlte + 'plugins/iCheck/minimal/green.css',
         paths.adminlte + 'plugins/select2/select2.min.css',

@@ -1,5 +1,5 @@
 /**
-* Class DetalleCarteraTercero of Backbone Collection
+* Class DocumentoCobroList of Backbone Collection
 * @author KOI || @dropecamargo
 * @link http://koi-ti.com
 */
@@ -9,33 +9,34 @@ app || (app = {});
 
 (function (window, document, undefined) {
 
-    app.DetalleCarteraTercero = Backbone.Collection.extend({
+    app.DocumentoCobroList = Backbone.Collection.extend({
         url: function() {
-            return window.Misc.urlFull( Route.route('carteraterceros.index') );
+            return window.Misc.urlFull( Route.route('deudores.documentos.index') );
         },
-        model: app.CarteraTerceroModel,
+        model: app.DocumentoCobroModel,
 
         /**
         * Constructor Method
         */
-        initialize : function(){
+        initialize: function() {
+
         },
 
         saldo: function() {
             return this.reduce(function(sum, model) {
-                return sum + parseFloat(model.get('factura3_saldo'))
+                return sum + parseFloat(model.get('documentocobro_saldo'))
             }, 0);
         },
 
         valor: function(){
             return this.reduce(function(sum, model) {
-                return sum + parseFloat(model.get('factura3_valor'))
+                return sum + parseFloat(model.get('documentocobro_valor'))
             }, 0);
         },
 
-        calculate: function(modelos){
+        calculate: function( modelos ){
             var saldo = _.reduce(modelos, function(sum, model) {
-                return sum + parseFloat(model.get('factura3_saldo'))
+                return sum + parseFloat(model.get('documentocobro_saldo'))
             }, 0);
 
             var count = modelos.length;
@@ -109,7 +110,7 @@ app || (app = {});
             var menor90 = this.matchMenor90();
             var menor60 = this.matchMenor60();
             var menor30 = this.matchMenor30();
-            var tcount = porvencer.count + menor30.count + menor60.count + menor90.count + menor180.count +menor360.count + mayor360.count;
+            var tcount = porvencer.count + menor30.count + menor60.count + menor90.count + menor180.count + menor360.count + mayor360.count;
             var total = porvencer.saldo + menor30.saldo + menor60.saldo + menor90.saldo + menor180.saldo + menor360.saldo + mayor360.saldo;
 
             return {
@@ -127,4 +128,5 @@ app || (app = {});
             }
         },
    });
+
 })(this, this.document);

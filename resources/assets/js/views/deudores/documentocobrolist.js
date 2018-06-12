@@ -1,5 +1,5 @@
 /**
-* Class Factura3ListView  of Backbone Router
+* Class DocumentoCobroView  of Backbone Router
 * @author KOI || @dropecamargo
 * @link http://koi-ti.com
 */
@@ -9,14 +9,11 @@ app || (app = {});
 
 (function ($, window, document, undefined) {
 
-    app.Factura3ListView = Backbone.View.extend({
+    app.DocumentoCobroView = Backbone.View.extend({
 
-        el: '#browse-factura3-list',
+        el: '#browse-documentos-deudor-list',
         template: _.template( ($('#tfoot-tercero-deuda').html() || '') ),
         parameters: {
-            wrapper: null,
-            edit: false,
-            call: null,
             dataFilter: {}
         },
 
@@ -29,12 +26,12 @@ app || (app = {});
                 this.parameters = $.extend({},this.parameters, opts.parameters);
 
             // Events Listeners
-            this.listenTo( this.collection, 'add', this.addOne );
             this.listenTo( this.collection, 'reset', this.addAll );
             this.listenTo( this.collection, 'request', this.loadSpinner);
+            this.listenTo( this.collection, 'store', this.storeOne );
             this.listenTo( this.collection, 'sync', this.responseServer);
 
-            this.collection.fetch({ data: {tercero: this.parameters.dataFilter.tercero , factura1: this.parameters.dataFilter.factura1}, reset: true });
+            this.collection.fetch({ data: {deudor_id: this.parameters.dataFilter.deudor_id}, reset: true });
         },
 
         /*
@@ -45,20 +42,15 @@ app || (app = {});
         },
 
         /**
-        * Render view rol by model
-        * @param Object contactModel Model instance
+        * Render view contact by model
+        * @param Object documentocobroModel Model instance
         */
-        addOne: function (factura3Model) {
-            var view = new app.Factura3ItemView({
-                model: factura3Model,
-                parameters: {
-                    edit: this.parameters.edit,
-                    call: this.parameters.call,
-                    template: this.parameters.template,
-                }
+        addOne: function (documentocobroModel) {
+            var view = new app.DocumentoCobroItemView({
+                model: documentocobroModel
             });
-            factura3Model.view = view;
-            this.$el.prepend( view.render().el );
+            documentocobroModel.view = view;
+            this.$el.append( view.render().el );
 
             // Update total
             this.totalize();
@@ -68,7 +60,6 @@ app || (app = {});
         * Render all view Marketplace of the collection
         */
         addAll: function () {
-
             this.$el.find('tbody').html('');
             this.$el.find('tfoot').html( this.template() );
 
@@ -103,7 +94,8 @@ app || (app = {});
         */
         totalize: function () {
             var data = this.collection.totalize();
-            if(this.$saldo.length > 0 && this.$valor.length > 0 ) {
+
+            if( this.$saldo.length > 0 && this.$valor.length > 0 ) {
                 this.$saldo.html( window.Misc.currency(data.saldo) );
                 this.$valor.html( window.Misc.currency(data.valor) );
             }
@@ -153,14 +145,14 @@ app || (app = {});
         * Load spinner on the request
         */
         loadSpinner: function ( target, xhr, opts ) {
-            window.Misc.setSpinner( this.parameters.wrapper );
+            window.Misc.setSpinner( this.el );
         },
 
         /**
         * response of the server
         */
         responseServer: function ( target, resp, opts ) {
-            window.Misc.removeSpinner( this.parameters.wrapper );
+            window.Misc.removeSpinner( this.el );
         }
    });
 

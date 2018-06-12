@@ -26,7 +26,7 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
         <![endif]-->
     </head>
-    <body class="hold-transition fixed skin-blue sidebar-mini {{ Cookie::get('sidebar_toggle') }}">
+    <body class="hold-transition fixed {{ env('APP_SKIN') }} sidebar-mini {{ Cookie::get('sidebar_toggle') }}">
         <div class="wrapper">
 
             {{-- Main Header --}}

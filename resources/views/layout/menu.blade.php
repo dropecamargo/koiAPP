@@ -5,7 +5,7 @@
     </li>
 
     {{-- Administracion --}}
-    <li class="treeview {{ in_array(Request::segment(1), ['puntosventa','empresa', 'terceros', 'actividades', 'tiposactividad', 'documento', 'municipios', 'departamentos', 'sucursales','ubicaciones','regionales', 'modulos', 'permisos', 'roles','paises']) ? 'active' : '' }}">
+    <li class="treeview {{ in_array(Request::segment(1), ['puntosventa', 'empresa', 'terceros', 'actividades', 'tiposactividad', 'documento', 'municipios', 'departamentos', 'sucursales', 'ubicaciones', 'regionales', 'modulos', 'permisos', 'roles', 'paises']) ? 'active' : '' }}">
         <a href="{{ route('dashboard') }}">
             <i class="fa fa-cog"></i> <span>Administración</span><i class="fa fa-angle-left pull-right"></i>
         </a>
@@ -30,7 +30,7 @@
             </li>
 
             {{-- Referencias administracion --}}
-            <li class="{{ in_array(Request::segment(1), ['puntosventa', 'modulos', 'permisos','actividades', 'municipios', 'documento', 'tiposactividad', 'departamentos', 'sucursales','ubicaciones','regionales','paises']) ? 'active' : '' }}">
+            <li class="{{ in_array(Request::segment(1), ['puntosventa', 'modulos', 'permisos', 'actividades', 'municipios', 'documento', 'tiposactividad', 'departamentos', 'sucursales', 'ubicaciones', 'regionales', 'paises']) ? 'active' : '' }}">
                 <a href="#">
                     <i class="fa fa-circle-o"></i> Referencias <i class="fa fa-angle-left pull-right"></i>
                 </a>
@@ -77,12 +77,12 @@
     </li>
 
     {{--Cartera--}}
-    <li class="{{ in_array(Request::segment(1), ['autorizacionesca','bancos','conceptosrc','conceptocobros','cuentabancos','autorizaco','mediopagos', 'recibos', 'conceptonotas', 'notas','facturas','conceptosajustec','ajustesc','devoluciones','anticipos','cheques','chequesdevueltos','gestioncobros','causas','rcarteraedades', 'rhistorialclientes']) ? 'active' : '' }}">
+    <li class="{{ in_array(Request::segment(1), ['autorizacionesca', 'bancos', 'conceptosrc', 'conceptocobros', 'cuentabancos', 'autorizaco', 'mediopagos', 'recibos', 'conceptonotas', 'notas', 'facturas', 'conceptosajustec', 'ajustesc', 'devoluciones', 'anticipos', 'cheques', 'chequesdevueltos', 'causas', 'rcarteraedades', 'rhistorialclientes', 'gestioncobros']) ? 'active' : '' }}">
         <a href="#">
             <i class="fa fa-suitcase"></i> <span>Cartera</span><i class="fa fa-angle-left pull-right"></i>
         </a>
         <ul class="treeview-menu">
-            <li class="{{ in_array(Request::segment(1), ['recibos', 'notas','facturas', 'ajustesc', 'devoluciones','anticipos','cheques','gestioncobros','chequesdevueltos']) ? 'active' : '' }}">
+            <li class="{{ in_array(Request::segment(1), ['recibos', 'notas','facturas', 'ajustesc', 'devoluciones', 'anticipos', 'cheques', 'chequesdevueltos', 'gestioncobros']) ? 'active' : '' }}">
                 <a href="#">
                     <i class="fa fa-wpforms"></i> Módulos <i class="fa fa-angle-left pull-right"></i>
                 </a>
@@ -132,7 +132,7 @@
                 </ul>
             </li>
             {{--Referencias Cartera--}}
-            <li class="{{ in_array(Request::segment(1), ['autorizacionesca','bancos','conceptosrc','cuentabancos','autorizaco','mediopagos', 'conceptonotas','conceptosajustec','conceptocobros', 'causas']) ? 'active' : '' }}">
+            <li class="{{ in_array(Request::segment(1), ['autorizacionesca', 'bancos', 'conceptosrc', 'cuentabancos', 'autorizaco', 'mediopagos', 'conceptonotas', 'conceptosajustec', 'conceptocobros', 'causas']) ? 'active' : '' }}">
                 <a href="#">
                     <i class="fa fa-circle-o"></i> Referencias <i class="fa fa-angle-left pull-right"></i>
                 </a>
@@ -172,15 +172,39 @@
         </ul>
     </li>
 
+    {{-- Cobro --}}
+    <li class="treeview {{ in_array(Request::segment(1), ['deudores', 'gestioncarteras']) ? 'active' : '' }}">
+        <a href="#">
+            <i class="fa fa-briefcase"></i> <span>Cobros</span><i class="fa fa-angle-left pull-right"></i>
+        </a>
+
+        <ul class="treeview-menu">
+            {{-- Modulos de cobro --}}
+            <li class="{{ in_array(Request::segment(1), ['deudores', 'gestioncarteras']) ? 'active' : '' }}">
+                <a href="#">
+                    <i class="fa fa-wpforms"></i> Módulos <i class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="treeview-menu">
+                    <li class="{{ Request::segment(1) == 'deudores' ? 'active' : '' }}">
+                        <a href="{{ route('deudores.index') }}"><i class="fa fa-user"></i> Deudores</a>
+                    </li>
+                    <li class="{{ Request::segment(1) == 'gestioncarteras' ? 'active' : '' }}">
+                        <a href="{{ route('gestioncarteras.index') }}"><i class="fa fa-archive"></i> Gestión de carteras</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+
     {{-- Comercial --}}
-    <li class="treeview {{ in_array(Request::segment(1), ['presupuestoasesor', 'pedidosc', 'gestionescomercial' ,'conceptoscomercial', 'rsabanaventascostos', 'configsabana']) ? 'active' : '' }}">
+    <li class="treeview {{ in_array(Request::segment(1), ['presupuestoasesor', 'pedidosc', 'gestionescomercial', 'conceptoscomercial', 'rsabanaventascostos', 'configsabana']) ? 'active' : '' }}">
         <a href="#">
             <i class="fa fa-globe"></i> <span>Comercial</span><i class="fa fa-angle-left pull-right"></i>
         </a>
 
         <ul class="treeview-menu">
             {{-- Modulos comercial --}}
-            <li class="{{ in_array(Request::segment(1), ['presupuestoasesor', 'pedidosc','gestionescomercial', 'configsabana']) ? 'active' : '' }}">
+            <li class="{{ in_array(Request::segment(1), ['presupuestoasesor', 'pedidosc', 'gestionescomercial', 'configsabana']) ? 'active' : '' }}">
                 <a href="#">
                     <i class="fa fa-wpforms"></i> Módulos <i class="fa fa-angle-left pull-right"></i>
                 </a>
@@ -225,14 +249,14 @@
     </li>
 
     {{-- Contabilidad --}}
-    <li class="treeview {{ in_array(Request::segment(1), ['asientos','asientosnif','activosfijos','reglasasientos','folders','documentos','plancuentas','plancuentasnif', 'tipoactivos','centroscosto','rplancuentas','rmayorbalance', 'rauxcontable', 'rlibrodiario', 'rlibromayor', 'rimpuestos']) ? 'active' : '' }}">
+    <li class="treeview {{ in_array(Request::segment(1), ['asientos', 'asientosnif', 'activosfijos', 'reglasasientos', 'folders', 'documentos', 'plancuentas', 'plancuentasnif', 'tipoactivos', 'centroscosto', 'rplancuentas', 'rmayorbalance', 'rauxcontable', 'rlibrodiario', 'rlibromayor', 'rimpuestos']) ? 'active' : '' }}">
         <a href="#">
             <i class="fa fa-book"></i> <span>Contabilidad</span><i class="fa fa-angle-left pull-right"></i>
         </a>
 
         <ul class="treeview-menu">
             {{-- Modulos contabilidad --}}
-            <li class="{{ in_array(Request::segment(1), ['asientos','asientosnif','activosfijos','reglasasientos']) ? 'active' : '' }}">
+            <li class="{{ in_array(Request::segment(1), ['asientos', 'asientosnif', 'activosfijos', 'reglasasientos']) ? 'active' : '' }}">
                 <a href="#">
                     <i class="fa fa-wpforms"></i> Módulos <i class="fa fa-angle-left pull-right"></i>
                 </a>
@@ -253,7 +277,7 @@
             </li>
 
             {{-- Reportes contabilidad --}}
-            <li class="{{ in_array(Request::segment(1), ['rplancuentas', 'rmayorbalance', 'rauxcontable','rlibrodiario', 'rlibromayor', 'rimpuestos']) ? 'active' : '' }}">
+            <li class="{{ in_array(Request::segment(1), ['rplancuentas', 'rmayorbalance', 'rauxcontable', 'rlibrodiario', 'rlibromayor', 'rimpuestos']) ? 'active' : '' }}">
                 <a href="#">
                     <i class="fa fa-bar-chart-o"></i> Reportes <i class="fa fa-angle-left pull-right"></i>
                 </a>
@@ -280,7 +304,7 @@
             </li>
 
             {{-- Referencias Contabilidad --}}
-            <li class="{{ in_array(Request::segment(1), ['folders','centroscosto','documentos','plancuentas', 'tipoactivos', 'plancuentasnif']) ? 'active' : '' }}">
+            <li class="{{ in_array(Request::segment(1), ['folders', 'centroscosto', 'documentos', 'plancuentas', 'tipoactivos', 'plancuentasnif']) ? 'active' : '' }}">
 
                 <a href="#">
                     <i class="fa fa-circle-o"></i> Referencias <i class="fa fa-angle-left pull-right"></i>
@@ -311,14 +335,14 @@
     </li>
 
     {{-- Inventario --}}
-    <li class="treeview {{ in_array(Request::segment(1), ['unidades', 'productos','lineas','marcas','modelos','grupos','impuestos','pedidos','ajustes','tiposajuste','subgrupos','servicios','traslados','trasladosubicaciones','tiposproducto','tipostraslados','rexistencias', 'rmovimientosproductos','ractivosfijos']) ? 'active' : '' }}">
+    <li class="treeview {{ in_array(Request::segment(1), ['unidades', 'productos', 'lineas', 'marcas', 'modelos', 'grupos', 'impuestos', 'pedidos', 'ajustes', 'tiposajuste', 'subgrupos', 'servicios', 'traslados', 'trasladosubicaciones', 'tiposproducto', 'tipostraslados', 'rexistencias', 'rmovimientosproductos', 'ractivosfijos']) ? 'active' : '' }}">
         <a href="#">
             <i class="fa fa-list"></i> <span>Inventario</span><i class="fa fa-angle-left pull-right"></i>
         </a>
 
         <ul class="treeview-menu">
             {{-- Modulos inventario --}}
-            <li class="{{ in_array(Request::segment(1), ['productos','pedidos','ajustes','traslados','trasladosubicaciones']) ? 'active' : '' }}">
+            <li class="{{ in_array(Request::segment(1), ['productos', 'pedidos', 'ajustes', 'traslados', 'trasladosubicaciones']) ? 'active' : '' }}">
                 <a href="#">
                     <i class="fa fa-wpforms"></i> Módulos <i class="fa fa-angle-left pull-right"></i>
                 </a>
@@ -359,7 +383,7 @@
             </li>
 
             {{-- Referencias inventario --}}
-            <li class="{{ in_array(Request::segment(1), ['unidades','lineas','marcas','modelos','grupos','impuestos','tiposajuste','tipostraslados','tiposproducto','subgrupos','servicios']) ? 'active' : '' }}">
+            <li class="{{ in_array(Request::segment(1), ['unidades', 'lineas', 'marcas', 'modelos', 'grupos', 'impuestos', 'tiposajuste', 'tipostraslados', 'tiposproducto', 'subgrupos', 'servicios']) ? 'active' : '' }}">
                 <a href="#">
                     <i class="fa fa-circle-o"></i> Referencias <i class="fa fa-angle-left pull-right"></i>
                 </a>
@@ -402,13 +426,13 @@
         </ul>
     </li>
     {{-- Tecnico --}}
-    <li class="treeview {{ in_array(Request::segment(1), ['ordenes','tiposorden','solicitantes', 'sitios', 'danos','prioridades','conceptostecnico','gestionestecnico', 'agendatecnica', 'rordenesabiertas']) ? 'active' : '' }}">
+    <li class="treeview {{ in_array(Request::segment(1), ['ordenes', 'tiposorden', 'solicitantes', 'sitios', 'danos', 'prioridades', 'conceptostecnico', 'gestionestecnico', 'agendatecnica', 'rordenesabiertas']) ? 'active' : '' }}">
         <a href="#">
             <i class="fa fa-cogs"></i> <span>Tecnico</span><i class="fa fa-angle-left pull-right"></i>
         </a>
         <ul class="treeview-menu">
             {{-- Modulos Tecnico --}}
-            <li class="{{ in_array(Request::segment(1), ['ordenes','gestionestecnico', 'agendatecnica']) ? 'active' : '' }}">
+            <li class="{{ in_array(Request::segment(1), ['ordenes', 'gestionestecnico', 'agendatecnica']) ? 'active' : '' }}">
                 <a href="#">
                     <i class="fa fa-wpforms"></i> Modulos <i class="fa fa-angle-left pull-right"></i>
                 </a>
@@ -424,7 +448,7 @@
                     </li>
                 </ul>
             </li>
-            {{-- Reportes  Tecnico --}}
+            {{-- Reportes  Tesoreria --}}
             <li class="{{ in_array(Request::segment(1), ['rordenesabiertas']) ? 'active' : '' }}">
                 <a href="#">
                     <i class="fa fa-bar-chart-o"></i> Reportes<i class= "fa fa-angle-left pull-right"></i>
@@ -436,7 +460,7 @@
                 </ul>
             </li>
             {{-- Referencias Tecnico --}}
-            <li class="{{ in_array(Request::segment(1), ['tiposorden','solicitantes','danos','prioridades','conceptostecnico', 'sitios']) ? 'active' : '' }}">
+            <li class="{{ in_array(Request::segment(1), ['tiposorden', 'solicitantes', 'danos', 'prioridades', 'conceptostecnico', 'sitios']) ? 'active' : '' }}">
                 <a href="#">
                     <i class="fa fa-circle-o"></i> Referencias <i class="fa fa-angle-left pull-right"></i>
                 </a>
@@ -464,22 +488,19 @@
         </ul>
     </li>
     {{-- Tesoreria --}}
-    <li class="treeview {{ in_array(Request::segment(1), ['facturasp','ajustesp','egresos','cajasmenores','retefuentes','tipoproveedores', 'tipogastos', 'tipopagos', 'conceptosajustep', 'conceptoscajamenor','rhistorialproveedores', 'rcarteraedadesproveedores']) ? 'active' : '' }}">
+    <li class="treeview {{ in_array(Request::segment(1), ['facturasp', 'ajustesp', 'egresos', 'retefuentes', 'tipoproveedores', 'tipogastos', 'tipopagos', 'conceptosajustep', 'rhistorialproveedores', 'rcarteraedadesproveedores']) ? 'active' : '' }}">
         <a href="#">
             <i class="fa fa-balance-scale"></i><span> Tesorería</span><i class="fa fa-angle-left pull-right"></i>
         </a>
         <ul class="treeview-menu">
             {{-- Modulos Tesoreria --}}
-            <li class="{{ in_array(Request::segment(1), ['facturasp', 'ajustesp', 'egresos', 'cajasmenores']) ? 'active' : '' }}">
+            <li class="{{ in_array(Request::segment(1), ['facturasp', 'ajustesp', 'egresos']) ? 'active' : '' }}">
                 <a href="#">
                     <i class="fa fa-wpforms"></i> Modulos <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
                     <li class="{{ Request::segment(1) == 'ajustesp' ? 'active' : '' }}">
                         <a href="{{ route('ajustesp.index') }}"><i class="fa fa-adjust"></i> Ajustes Proveedor</a>
-                    </li>
-                    <li class="{{ Request::segment(1) == 'cajasmenores' ? 'active' : '' }}">
-                        <a href="{{ route('cajasmenores.index') }}"><i class="fa fa-archive"></i> Caja Menor</a>
                     </li>
                     <li class="{{ Request::segment(1) == 'egresos' ? 'active' : '' }}">
                         <a href="{{ route('egresos.index') }}"><i class="fa fa-file-text-o"></i> Egresos</a>
@@ -504,14 +525,11 @@
                 </ul>
             </li>
             {{-- Referencias Tesoreria --}}
-            <li class="{{ in_array(Request::segment(1), ['retefuentes', 'tipoproveedores', 'tipogastos', 'conceptosajustep', 'conceptoscajamenor','tipopagos']) ? 'active' : '' }}">
+            <li class="{{ in_array(Request::segment(1), ['retefuentes', 'tipoproveedores', 'tipogastos', 'conceptosajustep', 'tipopagos']) ? 'active' : '' }}">
                 <a href="#">
                     <i class="fa fa-circle-o"></i> Referencias <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
-                    <li class="{{ Request::segment(1) == 'conceptoscajamenor' ? 'active' : '' }}">
-                        <a href="{{ route('conceptoscajamenor.index') }}"><i class="fa fa-circle-o"></i> Conceptos caja</a>
-                    </li>
                     <li class="{{ Request::segment(1) == 'conceptosajustep' ? 'active' : '' }}">
                         <a href="{{ route('conceptosajustep.index') }}"><i class="fa fa-circle-o"></i> Conceptos de ajuste</a>
                     </li>

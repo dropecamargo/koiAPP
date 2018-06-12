@@ -1,6 +1,6 @@
 <header class="main-header">
     <a href="{{ route('dashboard') }}" class="logo">
-        <span class="logo-mini"><img src="{{ asset(env('APP_LOGO')) }}" width="40" height="40"/></span>
+        <span class="logo-mini">{{ env('APP_LOGOMINI') }}</span>
         {{-- logo for regular state and mobile devices --}}
         <span class="logo-lg"><b>{{ env('APP_NAME') }}</b></span>
     </a>
