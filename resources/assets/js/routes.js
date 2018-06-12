@@ -78,11 +78,10 @@ app || (app = {});
             'tipostraslados/create(/)': 'getTipoTrasladoCreate',
             'tipostraslados/:tipostraslados/edit(/)': 'getTipoTrasladoEdit',
 
-            //Permisos
+            //permisos
             'permisos(/)': 'getPermisosMain',
             'modulos(/)': 'getModulosMain',
 
-            // Roles
             'roles(/)': 'getRolesMain',
             'roles/create(/)': 'getRolesCreate',
             'roles/:rol/edit(/)': 'getRolesEdit',
@@ -92,24 +91,18 @@ app || (app = {});
             | Comercial
             |----------------------
             */
-
-            // Presupuesto Asesor
             'presupuestoasesor(/)': 'getPresupuestoAsesorMain',
 
-            // Configuración sabana de ventas
             'configsabana(/)': 'getConfigSabanaVentaMain',
 
-            // Pedidos Comerciales
             'pedidosc(/)': 'getPedidoscMain',
             'pedidosc/create(/)': 'getPedidoscCreate',
             'pedidosc/:pedidosc(/)': 'getPedidoscShow',
 
-            // Conceptos Comerciales
             'conceptoscomercial(/)': 'getConceptosComMain',
             'conceptoscomercial/create(/)': 'getConceptoComCreate',
             'conceptoscomercial/:conceptoscomercial/edit(/)': 'getConceptoComEdit',
 
-            // Gestión Comercial
             'gestionescomercial(/)': 'getGestionesComercialMain',
             'gestionescomercial/create(/)': 'getGestionComercialCreate',
 
@@ -118,47 +111,37 @@ app || (app = {});
             | Contabilidad
             |-----------------------
             */
-
-            // Documentos Contables
             'documentos(/)': 'getDocumentosMain',
             'documentos/create(/)': 'getDocumentosCreate',
             'documentos/:documento/edit(/)':'getDocumentosEdit',
 
-            // Folders
             'folders(/)': 'getFoldersMain',
             'folders/create(/)': 'getFoldersCreate',
             'folders/:folder/edit(/)':'getFoldersEdit',
 
-            //  Plan Cuentas
             'plancuentas(/)': 'getPlanCuentasMain',
             'plancuentas/create(/)': 'getPlanCuentasCreate',
             'plancuentas/:plancuenta/edit(/)': 'getPlanCuentasEdit',
 
-            // Plan Cuentas NIIF
             'plancuentasnif(/)': 'getPlanCuentasNifMain',
             'plancuentasnif/create(/)': 'getPlanCuentasNifCreate',
             'plancuentasnif/:plancuentanif/edit(/)': 'getPlanCuentasNifEdit',
 
-            // Centro de Costo
             'centroscosto(/)': 'getCentrosCostoMain',
             'centroscosto/create(/)': 'getCentrosCostoCreate',
             'centroscosto/:centrocosto/edit(/)': 'getCentrosCostoEdit',
 
-            // Asientos
             'asientos(/)': 'getAsientosMain',
             'asientos/create(/)': 'getAsientosCreate',
             'asientos/:asientos(/)': 'getAsientosShow',
             'asientos/:asiento/edit(/)': 'getAsientosEdit',
 
-            // Asientos NIIF
             'asientosnif(/)': 'getAsientosNifMain',
             'asientosnif/:asientonif(/)': 'getAsientosNifShow',
             'asientosnif/:asientonif/edit(/)': 'getAsientosNifEdit',
 
-            // Activos Fijos
             'activosfijos(/)': 'getActivosFijosMain',
 
-            // Tipo de Activos
             'tipoactivos(/)': 'getTipoActivosMain',
             'tipoactivos/create(/)': 'getTipoActivoCreate',
             'tipoactivos/:tipoactivos/edit(/)': 'getTipoActivoEdit',
@@ -237,6 +220,7 @@ app || (app = {});
             |-----------------------
             */
             'autorizacionesca(/)': 'getAutorizacionesCaMain',
+            'gestioncarteras(/)': 'getGestionCarterasMain',
 
             'bancos(/)': 'getBancosMain',
             'bancos/create(/)': 'getBancosCreate',
@@ -300,8 +284,16 @@ app || (app = {});
 
             'chequesdevueltos(/)': 'getChequesDevueltosMain',
 
+            /*
+            |----------------------
+            | Cobros
+            |----------------------
+            */
             'gestioncobros(/)': 'getGestionCobrosMain',
             'gestioncobros/create(/)': 'getGestionCobroCreate',
+
+            'deudores(/)': 'getDeudoresMain',
+            'deudores/:deudores(/)': 'getDeudoresShow',
 
             /*
             |----------------------
@@ -362,11 +354,6 @@ app || (app = {});
             'egresos/create(/)': 'getEgresoCreate',
             'egresos/:egresos(/)': 'getEgresoShow',
 
-            // Caja Menor
-            'cajasmenores(/)': 'getCajasMenoresMain',
-            'cajasmenores/create(/)': 'getCajaMenorCreate',
-            'cajasmenores/:cajasmenores(/)': 'getCajaMenorShow',
-
             // Retefuente
             'retefuentes(/)': 'getReteFuentesMain',
             'retefuentes/create(/)': 'getReteFuenteCreate',
@@ -391,11 +378,6 @@ app || (app = {});
             'conceptosajustep(/)': 'getConceptosAjustepMain',
             'conceptosajustep/create(/)': 'getConceptosAjustepCreate',
             'conceptosajustep/:conceptosajustep/edit(/)': 'getConceptosAjustepEdit',
-
-            // Conceptoajustep
-            'conceptoscajamenor(/)': 'getConceptosCajaMenorMain',
-            'conceptoscajamenor/create(/)': 'getConceptoCajaMenorCreate',
-            'conceptoscajamenor/:conceptoscajamenor/edit(/)': 'getConceptoCajaMenorEdit',
         },
 
         /**
@@ -456,6 +438,8 @@ app || (app = {});
                     config.root = '/senccob/public/';
                 }else if (document.documentURI.search(/(koiSOFT)/gi) != '-1'){
                     config.root = '/koiSOFT/public/';
+                }else if (document.documentURI.search(/(senn)/gi) != '-1'){
+                    config.root = '/senn/public/';
                 }
 
             }
@@ -1922,6 +1906,19 @@ app || (app = {});
         },
 
         /**
+        * show view main GestionCarteras Cartera
+        */
+        getGestionCarterasMain: function () {
+
+            if ( this.mainGestionCarterasView instanceof Backbone.View ){
+                this.mainGestionCarterasView.stopListening();
+                this.mainGestionCarterasView.undelegateEvents();
+            }
+
+            this.mainGestionCarterasView = new app.MainGestionCarterasView( );
+        },
+
+        /**
         *show view main pedidosc Cartera
         */
         getPedidoscMain: function(){
@@ -2549,6 +2546,7 @@ app || (app = {});
 
             this.showChequeView = new app.ShowChequeView({ model: this.chequeModel });
         },
+
         // Cheques Devueltos
         getChequesDevueltosMain: function(){
             if (this.mainChequesDevueltosView instanceof Backbone.View) {
@@ -2557,7 +2555,10 @@ app || (app = {});
             }
             this.mainChequesDevueltosView = new app.MainChequesDevueltosView( );
         },
-        // Gestion Cobro
+
+        /*---------------------
+        | Deudores
+        /*--------------------*/
         getGestionCobrosMain: function(){
 
             if (this.mainGestionCobrosView instanceof Backbone.View) {
@@ -2566,6 +2567,7 @@ app || (app = {});
             }
             this.mainGestionCobrosView = new app.MainGestionCobrosView( );
         },
+
         getGestionCobroCreate: function(){
             this.gestionCobroModel = new app.GestionCobroModel();
 
@@ -2575,6 +2577,26 @@ app || (app = {});
             }
             this.createGestionCobroView = new app.CreateGestionCobroView({ model: this.gestionCobroModel });
             this.createGestionCobroView.render();
+        },
+
+        getDeudoresMain: function(){
+            if (this.mainDeudoresView instanceof Backbone.View) {
+                this.mainDeudoresView.stopListening();
+                this.mainDeudoresView.undelegateEvents();
+            }
+            this.mainDeudoresView = new app.MainDeudoresView( );
+        },
+
+        getDeudoresShow: function(deudor){
+            this.deudorModel = new app.DeudorModel();
+            this.deudorModel.set({'id': deudor}, {silent: true});
+
+            if ( this.showDeudorView instanceof Backbone.View ){
+                this.showDeudorView.stopListening();
+                this.showDeudorView.undelegateEvents();
+            }
+
+            this.showDeudorView = new app.ShowDeudorView({ model: this.deudorModel });
         },
 
         /*---------------------
@@ -2952,38 +2974,6 @@ app || (app = {});
             this.showEgresoView = new app.ShowEgresoView({ model: this.egreso1Model });
         },
 
-        // Cajas Menores
-        getCajasMenoresMain: function () {
-            if ( this.mainCajasMenoresView instanceof Backbone.View ){
-                this.mainCajasMenoresView.stopListening();
-                this.mainCajasMenoresView.undelegateEvents();
-            }
-            this.mainCajasMenoresView = new app.MainCajasMenoresView();
-        },
-
-        getCajaMenorCreate: function () {
-            this.cajaMenor1Model = new app.CajaMenor1Model();
-
-            if ( this.createCajaMenorView instanceof Backbone.View ){
-                this.createCajaMenorView.stopListening();
-                this.createCajaMenorView.undelegateEvents();
-            }
-            this.createCajaMenorView = new app.CreateCajaMenorView({ model: this.cajaMenor1Model });
-            this.createCajaMenorView.render();
-        },
-
-        getCajaMenorShow: function (cajaMenor1Model) {
-            this.cajaMenor1Model = new app.CajaMenor1Model();
-            this.cajaMenor1Model.set({'id': cajaMenor1Model}, {'silent':true});
-
-            if ( this.showCajaMenorView instanceof Backbone.View ){
-                this.showCajaMenorView.stopListening();
-                this.showCajaMenorView.undelegateEvents();
-            }
-
-            this.showCajaMenorView = new app.ShowCajaMenorView({ model: this.cajaMenor1Model });
-        },
-
         // Facturap
         getFacturaspMain: function () {
 
@@ -3192,42 +3182,6 @@ app || (app = {});
 
             this.createConceptoAjustepView = new app.CreateConceptoAjustepView({ model: this.conceptoajustepModel });
             this.conceptoajustepModel.fetch();
-        },
-
-        //ConceptoCajaMenor
-        getConceptosCajaMenorMain: function () {
-
-            if ( this.mainConceptosCajaMenorView instanceof Backbone.View ){
-                this.mainConceptosCajaMenorView.stopListening();
-                this.mainConceptosCajaMenorView.undelegateEvents();
-            }
-
-            this.mainConceptosCajaMenorView = new app.MainConceptosCajaMenorView( );
-        },
-
-        getConceptoCajaMenorCreate: function () {
-            this.conceptoCajaMenorModel = new app.ConceptoCajaMenorModel();
-
-            if ( this.createConceptoCajaMenorView instanceof Backbone.View ){
-                this.createConceptoCajaMenorView.stopListening();
-                this.createConceptoCajaMenorView.undelegateEvents();
-            }
-
-            this.createConceptoCajaMenorView = new app.CreateConceptoCajaMenorView({ model: this.conceptoCajaMenorModel });
-            this.createConceptoCajaMenorView.render();
-        },
-
-        getConceptoCajaMenorEdit: function (conceptocajamenor) {
-            this.conceptoCajaMenorModel = new app.ConceptoCajaMenorModel();
-            this.conceptoCajaMenorModel.set({'id': conceptocajamenor}, {'silent':true});
-
-            if ( this.createConceptoCajaMenorView instanceof Backbone.View ){
-                this.createConceptoCajaMenorView.stopListening();
-                this.createConceptoCajaMenorView.undelegateEvents();
-            }
-
-            this.createConceptoCajaMenorView = new app.CreateConceptoCajaMenorView({ model: this.conceptoCajaMenorModel });
-            this.conceptoCajaMenorModel.fetch();
         },
     }));
 })(jQuery, this, this.document);

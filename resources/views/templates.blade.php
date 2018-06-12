@@ -1906,7 +1906,7 @@
         <td colspan="6"></td>
         <th>Total</th>
         <th id="valor">0</th>
-        <th id="total">0</th>
+        <th id="saldo">0</th>
         <th></th>
     </tr>
     <tr>
@@ -1969,7 +1969,7 @@
         <td colspan="3"></td>
         <th>Total</th>
         <th class="text-center" id="total_count">0</th>
-        <th class="text-right total">0</th>
+        <th class="text-right" id="total">0</th>
         <td colspan="4"></td>
     </tr>
 </script>

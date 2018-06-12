@@ -349,7 +349,6 @@ Route::group(['middleware' => 'auth'], function(){
 		Route::resource('cuotas','Tesoreria\Facturap3Controller',['only'=>['index']]);
 		Route::resource('valorescentroscostos','Tesoreria\Facturap4Controller',['only'=>['index', 'store']]);
 		Route::get('validate', ['as' => 'facturasp.validate', 'uses' => 'Tesoreria\Facturap1Controller@validation']);
-		Route::get('exportar/{facturasp}', ['as' => 'facturasp.exportar', 'uses' => 'Tesoreria\Facturap1Controller@exportar']);
 	});
 
 	Route::group(['prefix' => 'ajustesp'], function()
@@ -364,22 +363,20 @@ Route::group(['middleware' => 'auth'], function(){
 		Route::get('anular/{egresos}', ['as' => 'egresos.anular', 'uses' => 'Tesoreria\EgresoController@anular']);
 		Route::get('exportar/{egresos}', ['as' => 'egresos.exportar', 'uses' => 'Tesoreria\EgresoController@exportar']);
 	});
-	
-	Route::group(['prefix' => 'cajasmenores'], function()
+
+	Route::group(['prefix' => 'facturasp'], function()
 	{
-		Route::resource('detalle', 'Tesoreria\CajaMenorDetalleController');
+		Route::get('exportar/{facturasp}', ['as' => 'facturasp.exportar', 'uses' => 'Tesoreria\Facturap1Controller@exportar']);
 	});
 
 	Route::resource('facturasp', 'Tesoreria\Facturap1Controller', ['except' => ['destroy','update','edit']]);
 	Route::resource('ajustesp', 'Tesoreria\AjustepController', ['except' => ['destroy']]);
 	Route::resource('egresos', 'Tesoreria\EgresoController', ['except' => ['destroy']]);
-	Route::resource('cajasmenores', 'Tesoreria\CajaMenorController', ['except' => ['destroy']]);
 	Route::resource('retefuentes', 'Tesoreria\ReteFuenteController', ['except' => ['destroy']]);
 	Route::resource('tipogastos', 'Tesoreria\TipoGastoController', ['except' => ['destroy']]);
 	Route::resource('tipopagos', 'Tesoreria\TipoPagoController', ['except' => ['destroy']]);
 	Route::resource('tipoproveedores', 'Tesoreria\TipoProveedorController', ['except' => ['destroy']]);
 	Route::resource('conceptosajustep', 'Tesoreria\ConceptoAjustepController', ['except' => ['destroy']]);
-	Route::resource('conceptoscajamenor', 'Tesoreria\ConceptoCajaMenorController', ['except' => ['destroy']]);
 
     /*
 	|-------------------------
@@ -404,6 +401,19 @@ Route::group(['middleware' => 'auth'], function(){
 
 	/*
 	|-------------------------
+	| Cobro Routes
+	|-------------------------
+	*/
+	Route::group(['prefix' => 'deudores'], function()
+	{
+		Route::resource('contactos', 'Cobro\ContactoDeudorController', ['only' => ['index']]);
+		Route::resource('documentos', 'Cobro\DocumentoCobroController', ['only' => ['index']]);
+	});
+	Route::resource('deudores', 'Cobro\DeudorController', ['only' => ['index', 'show']]);
+	Route::resource('gestioncarteras', 'Cobro\GestionCarteraController', ['only' => ['index']]);
+
+	/*
+	|-------------------------
 	| Imports Routes
 	|-------------------------
 	*/
@@ -412,5 +422,6 @@ Route::group(['middleware' => 'auth'], function(){
 		Route::post('productos',['as' =>'productos.import','uses'=>'Inventario\ProductoController@import'] );
 		Route::post('ajustes',['as' =>'ajustes.import','uses'=>'Inventario\AjusteController@import'] );
 		Route::post('asientos',['as' =>'asientos.import','uses'=>'Contabilidad\AsientoController@import'] );
+		Route::post('gestioncarteras',['as' =>'gestioncarteras.import','uses'=>'Cobro\GestionCarteraController@import'] );
 	});
 });

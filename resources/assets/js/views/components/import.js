@@ -63,8 +63,9 @@ app || (app = {});
                     }
                 })
                 .done(function(resp) {
-                    window.Misc.removeSpinner( _this.$wrapper );
                     if(!_.isUndefined(resp.success)) {
+                        window.Misc.removeSpinner( _this.$wrapper );
+
                         // response success or error
                         var text = resp.success ? '' : resp.errors;
                         if( _.isObject( resp.errors ) ) {

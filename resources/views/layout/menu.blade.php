@@ -77,12 +77,12 @@
     </li>
 
     {{--Cartera--}}
-    <li class="{{ in_array(Request::segment(1), ['autorizacionesca','bancos','conceptosrc','conceptocobros','cuentabancos','autorizaco','mediopagos', 'recibos', 'conceptonotas', 'notas','facturas','conceptosajustec','ajustesc','devoluciones','anticipos','cheques','chequesdevueltos','gestioncobros','causas','rcarteraedades', 'rhistorialclientes']) ? 'active' : '' }}">
+    <li class="{{ in_array(Request::segment(1), ['autorizacionesca', 'bancos', 'conceptosrc', 'conceptocobros', 'cuentabancos', 'autorizaco', 'mediopagos', 'recibos', 'conceptonotas', 'notas', 'facturas', 'conceptosajustec', 'ajustesc', 'devoluciones', 'anticipos', 'cheques', 'chequesdevueltos', 'causas', 'rcarteraedades', 'rhistorialclientes']) ? 'active' : '' }}">
         <a href="#">
             <i class="fa fa-suitcase"></i> <span>Cartera</span><i class="fa fa-angle-left pull-right"></i>
         </a>
         <ul class="treeview-menu">
-            <li class="{{ in_array(Request::segment(1), ['recibos', 'notas','facturas', 'ajustesc', 'devoluciones','anticipos','cheques','gestioncobros','chequesdevueltos']) ? 'active' : '' }}">
+            <li class="{{ in_array(Request::segment(1), ['recibos', 'notas','facturas', 'ajustesc', 'devoluciones', 'anticipos', 'cheques', 'chequesdevueltos']) ? 'active' : '' }}">
                 <a href="#">
                     <i class="fa fa-wpforms"></i> Módulos <i class="fa fa-angle-left pull-right"></i>
                 </a>
@@ -105,9 +105,6 @@
                     </li>
                     <li class="{{ Request::segment(1) == 'facturas' ? 'active' : '' }}">
                         <a href="{{ route('facturas.index') }}"><i class="fa fa-pencil-square-o"></i> Facturas</a>
-                    </li>
-                    <li class="{{ Request::segment(1) == 'gestioncobros' ? 'active' : '' }}">
-                        <a href="{{ route('gestioncobros.index') }}"><i class="fa fa-volume-control-phone"></i> Gestión de cobros</a>
                     </li>
                     <li class="{{ Request::segment(1) == 'notas' ? 'active' : '' }}">
                         <a href="{{ route('notas.index') }}"><i class="fa fa-book"></i> Notas</a>
@@ -167,6 +164,33 @@
                     {{--<li class="{{ Request::segment(1) == 'autorizaco' ? 'active' : ''}}">
                         <a href="#"><i class="fa fa-circle-o"></i> Autorización Cobro</a>
                     </li>--}}
+                </ul>
+            </li>
+        </ul>
+    </li>
+
+    {{-- Cobro --}}
+    <li class="treeview {{ in_array(Request::segment(1), ['deudores', 'gestioncarteras', 'gestioncobros']) ? 'active' : '' }}">
+        <a href="#">
+            <i class="fa fa-briefcase"></i> <span>Cobros</span><i class="fa fa-angle-left pull-right"></i>
+        </a>
+
+        <ul class="treeview-menu">
+            {{-- Modulos de cobro --}}
+            <li class="{{ in_array(Request::segment(1), ['deudores', 'gestioncarteras', 'gestioncobros']) ? 'active' : '' }}">
+                <a href="#">
+                    <i class="fa fa-wpforms"></i> Módulos <i class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="treeview-menu">
+                    <li class="{{ Request::segment(1) == 'deudores' ? 'active' : '' }}">
+                        <a href="{{ route('deudores.index') }}"><i class="fa fa-user"></i> Deudores</a>
+                    </li>
+                    <li class="{{ Request::segment(1) == 'gestioncarteras' ? 'active' : '' }}">
+                        <a href="{{ route('gestioncarteras.index') }}"><i class="fa fa-archive"></i> Gestión de carteras</a>
+                    </li>
+                    <li class="{{ Request::segment(1) == 'gestioncobros' ? 'active' : '' }}">
+                        <a href="{{ route('gestioncobros.index') }}"><i class="fa fa-volume-control-phone"></i> Gestión de cobros</a>
+                    </li>
                 </ul>
             </li>
         </ul>
@@ -424,7 +448,7 @@
                     </li>
                 </ul>
             </li>
-            {{-- Reportes  Tecnico --}}
+            {{-- Reportes  Tesoreria --}}
             <li class="{{ in_array(Request::segment(1), ['rordenesabiertas']) ? 'active' : '' }}">
                 <a href="#">
                     <i class="fa fa-bar-chart-o"></i> Reportes<i class= "fa fa-angle-left pull-right"></i>
@@ -464,22 +488,19 @@
         </ul>
     </li>
     {{-- Tesoreria --}}
-    <li class="treeview {{ in_array(Request::segment(1), ['facturasp','ajustesp','egresos','cajasmenores','retefuentes','tipoproveedores', 'tipogastos', 'tipopagos', 'conceptosajustep', 'conceptoscajamenor','rhistorialproveedores', 'rcarteraedadesproveedores']) ? 'active' : '' }}">
+    <li class="treeview {{ in_array(Request::segment(1), ['facturasp','ajustesp','egresos','retefuentes','tipoproveedores', 'tipogastos', 'tipopagos', 'conceptosajustep', 'rhistorialproveedores', 'rcarteraedadesproveedores']) ? 'active' : '' }}">
         <a href="#">
             <i class="fa fa-balance-scale"></i><span> Tesorería</span><i class="fa fa-angle-left pull-right"></i>
         </a>
         <ul class="treeview-menu">
             {{-- Modulos Tesoreria --}}
-            <li class="{{ in_array(Request::segment(1), ['facturasp', 'ajustesp', 'egresos', 'cajasmenores']) ? 'active' : '' }}">
+            <li class="{{ in_array(Request::segment(1), ['facturasp', 'ajustesp', 'egresos']) ? 'active' : '' }}">
                 <a href="#">
                     <i class="fa fa-wpforms"></i> Modulos <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
                     <li class="{{ Request::segment(1) == 'ajustesp' ? 'active' : '' }}">
                         <a href="{{ route('ajustesp.index') }}"><i class="fa fa-adjust"></i> Ajustes Proveedor</a>
-                    </li>
-                    <li class="{{ Request::segment(1) == 'cajasmenores' ? 'active' : '' }}">
-                        <a href="{{ route('cajasmenores.index') }}"><i class="fa fa-archive"></i> Caja Menor</a>
                     </li>
                     <li class="{{ Request::segment(1) == 'egresos' ? 'active' : '' }}">
                         <a href="{{ route('egresos.index') }}"><i class="fa fa-file-text-o"></i> Egresos</a>
@@ -504,14 +525,11 @@
                 </ul>
             </li>
             {{-- Referencias Tesoreria --}}
-            <li class="{{ in_array(Request::segment(1), ['retefuentes', 'tipoproveedores', 'tipogastos', 'conceptosajustep', 'conceptoscajamenor','tipopagos']) ? 'active' : '' }}">
+            <li class="{{ in_array(Request::segment(1), ['retefuentes', 'tipoproveedores', 'tipogastos', 'conceptosajustep', 'tipopagos']) ? 'active' : '' }}">
                 <a href="#">
                     <i class="fa fa-circle-o"></i> Referencias <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
-                    <li class="{{ Request::segment(1) == 'conceptoscajamenor' ? 'active' : '' }}">
-                        <a href="{{ route('conceptoscajamenor.index') }}"><i class="fa fa-circle-o"></i> Conceptos caja</a>
-                    </li>
                     <li class="{{ Request::segment(1) == 'conceptosajustep' ? 'active' : '' }}">
                         <a href="{{ route('conceptosajustep.index') }}"><i class="fa fa-circle-o"></i> Conceptos de ajuste</a>
                     </li>
