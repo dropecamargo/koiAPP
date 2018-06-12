@@ -155,7 +155,7 @@ class Recibo1 extends BaseModel
 		// Recuperar documento contable
 		$documento = Documento::where('documento_codigo', 'RC')->first();
 		if(!$documento instanceof Documento){
-			$object->error = "No es posible recuperar el prefijo $codigo en los documentos contables.";
+			$object->error = "No es posible recuperar el prefijo 'RC' en los documentos contables.";
 			return $object;
 		}
 

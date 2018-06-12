@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Base\Empresa, App\Models\Base\Tercero;
+use App\Models\Contabilidad\PlanCuenta;
 use Log, DB;
 
 class EmpresaController extends Controller
@@ -89,9 +90,24 @@ class EmpresaController extends Controller
                     $tercero->fillBoolean($data);
                     $tercero->save();
 
+                    //Recuperar Plan cuenta
+                    $cuenta = PlanCuenta::find($request->empresa_cuentacartera);
+                    if(!$cuenta instanceof PlanCuenta) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar plan de cuenta, verifique información ó por favor consulte al administrador.']);
+                    }
+
+                    // Validando Sub Niveles
+                    $result = $cuenta->validarSubnivelesCuenta();
+                    if ($result != 'OK') {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $result ]);
+                    }
+
                     // Empresa
                     $empresa->fill($data);
                     $empresa->fillBoolean($data);
+                    $empresa->empresa_cuentacartera = $cuenta->id;
                     $empresa->save();
 
                     // Update variable the session

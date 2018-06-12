@@ -7,7 +7,9 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use App\Classes\AsientoContableDocumento, App\Classes\AsientoNifContableDocumento;
 use App\Models\Tesoreria\CajaMenor1, App\Models\Tesoreria\CajaMenor2, App\Models\Tesoreria\ConceptoCajaMenor, App\Models\Base\Tercero, App\Models\Base\Documentos, App\Models\Base\Regional, App\Models\Contabilidad\PlanCuenta, App\Models\Contabilidad\CentroCosto;
+use App\Models\Cartera\CuentaBanco;
 use DB, Log, Datatables, Auth, App, View;
 
 class CajaMenorController extends Controller
@@ -21,7 +23,37 @@ class CajaMenorController extends Controller
     {
         if ($request->ajax()) {
             $query = CajaMenor1::query();
-            return Datatables::of($query)->make(true);
+            $query->select('cajamenor1.*','regional_nombre', 'cuentabanco_nombre', 'tercero_nit', DB::raw("(CASE WHEN tercero_persona = 'N'
+                        THEN CONCAT(tercero_nombre1,' ',tercero_nombre2,' ',tercero_apellido1,' ',tercero_apellido2,
+                                (CASE WHEN (tercero_razonsocial IS NOT NULL AND tercero_razonsocial != '') THEN CONCAT(' - ', tercero_razonsocial) ELSE '' END)
+                            )
+                        ELSE tercero_razonsocial END)
+                    AS tercero_nombre") );
+            $query->join('cuentabanco','cajamenor1_cuentabanco','=','cuentabanco.id');
+            $query->join('regional','cajamenor1_regional','=','regional.id');
+            $query->join('tercero', 'cajamenor1_tercero', '=', 'tercero.id');
+
+            // Persistent data filter
+            if($request->has('persistent') && $request->persistent) {
+                session(['searchcajamenor_tercero' => $request->has('nit') ? $request->nit : '']);
+                session(['searchcajamenor_regional' => $request->has('regional') ? $request->regional : '']);
+                session(['searchcajamenor_numero' => $request->has('numero') ? $request->numero : '']);
+            }
+            return Datatables::of($query)
+                ->filter(function($query) use($request) {
+                    // Tercero Nit
+                    if ($request->has('nit')) {
+                        $query->where('tercero_nit', $request->nit);
+                    }
+                    // Regional
+                    if ($request->has('regional')) {
+                        $query->where('cajamenor1_regional', $request->regional);
+                    }
+                    // Número de caja menor
+                    if ($request->has('numero')) {
+                        $query->where('cajamenor1_numero', $request->numero);
+                    }
+            })->make(true);
         }
         return view('tesoreria.cajasmenores.index');
     }
@@ -48,7 +80,6 @@ class CajaMenorController extends Controller
             $data = $request->all();
             $cajaMenor1 = new CajaMenor1;
             if ($cajaMenor1->isValid($data)) {
-
                 DB::beginTransaction();
                 try {
                     // /Recuperando Documento CM
@@ -63,6 +94,13 @@ class CajaMenorController extends Controller
                     if(!$tercero instanceof Tercero) {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar empleado, verifique información ó por favor consulte al administrador.']);
+                    }
+
+                    // Cuenta Bancaria
+                    $cuentabanco = CuentaBanco::find($request->cajamenor1_cuentabanco);
+                    if(!$cuentabanco instanceof CuentaBanco) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar la cuenta, verifique información ó por favor consulte al administrador.']);
                     }
 
                     //  Recuperando Regional
@@ -81,9 +119,9 @@ class CajaMenorController extends Controller
                     $cajaMenor1->cajamenor1_numero = $consecutive;
                     $cajaMenor1->cajamenor1_tercero = $tercero->id;
                     $cajaMenor1->cajamenor1_documentos = $documento->id;
+                    $cajaMenor1->cajamenor1_cuentabanco = $cuentabanco->id;
                     $cajaMenor1->cajamenor1_usuario_elaboro = Auth::user()->id;
                     $cajaMenor1->cajamenor1_fh_elaboro = date('Y-m-d H:m:s');
-                    // Falta valores Double
                     $cajaMenor1->save();
 
                     foreach ($data['detalle'] as $item) {
@@ -107,17 +145,81 @@ class CajaMenorController extends Controller
                         if(!$cliente instanceof Tercero) {
                             return response()->json(['success' => false, 'errors' => 'No es posible recuperar el cliente, verifique información ó por favor consulte al administrador.']);
                         }
-
                         // Caja Menor 2
                         $cajaMenor2 = new CajaMenor2;
+                        $cajaMenor2->fill($item);
                         $cajaMenor2->cajamenor2_cajamenor1 = $cajaMenor1->id;
                         $cajaMenor2->cajamenor2_conceptocajamenor = $conceptoCaja->id;
                         $cajaMenor2->cajamenor2_tercero = $cliente->id;
                         $cajaMenor2->cajamenor2_cuenta = $cuenta->id;
                         $cajaMenor2->cajamenor2_centrocosto = $centroCosto->id;
-                        // Falta valores Double
                         $cajaMenor2->save();
+
+                        // Preparando detalle asiento
+                        $result = $cajaMenor1->detalleAsiento($cajaMenor2, $cliente, $cuenta, $centroCosto);
+                        if(!is_array($result)){
+                            DB::rollback();
+                            return response()->json(['success' => false, 'errors' => $result]);
+                        }
+                        $detalle[] = $result;
                     }
+                    // Encabezado Asiento
+                    $encabezado = $cajaMenor1->encabezadoAsiento($tercero, $cuentabanco);
+                    if(!is_object($encabezado)){
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $encabezado]);
+                    }
+
+                    $detalle[] = $encabezado->cuenta;
+
+                    // Creo el objeto para manejar el asiento
+                    $objAsiento = new AsientoContableDocumento($encabezado->data);
+                    if($objAsiento->asiento_error) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $objAsiento->asiento_error]);
+                    }
+                    // Preparar asiento
+                    $result = $objAsiento->asientoCuentas($detalle);
+                    if($result != 'OK'){
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $result]);
+                    }
+
+                    // Insertar asiento
+                    $result = $objAsiento->insertarAsiento();
+                    if($result != 'OK') {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $result]);
+                    }
+                    // AsientoNif
+                    if (!empty($encabezado->dataNif)) {
+                        // Creo el objeto para manejar el asiento
+                        $objAsientoNif = new AsientoNifContableDocumento($encabezado->dataNif);
+                        if($objAsientoNif->asientoNif_error) {
+                            DB::rollback();
+                            return response()->json(['success' => false, 'errors' => $objAsiento->asientoNif_error]);
+                        }
+
+                        // Preparar asiento
+                        $result = $objAsientoNif->asientoCuentas($detalle);
+                        if($result != 'OK'){
+                            DB::rollback();
+                            return response()->json(['success' => false, 'errors' => $result]);
+                        }
+
+                        // Insertar asiento
+                        $result = $objAsientoNif->insertarAsientoNif();
+                        if($result != 'OK') {
+                            DB::rollback();
+                            return response()->json(['success' => false, 'errors' => $result]);
+                        }
+                        // Recuperar el Id del asiento y guardar en la factura
+                        $cajaMenor1->cajamenor1_asienton = $objAsientoNif->asientoNif->id;
+                    }
+
+                    $cajaMenor1->cajamenor1_asiento = $objAsiento->asiento->id;
+                    $cajaMenor1->save();
+
                     // Update consecutive regional_cm in Regional
                     $regional->regional_cm = $consecutive;
                     $regional->save();

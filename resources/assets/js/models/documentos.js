@@ -18,7 +18,13 @@ app || (app = {});
         idAttribute: 'id',
         defaults: {
         	'documentos_codigo': '',
-        	'documentos_nombre': ''
+        	'documentos_nombre': '',
+        	'documentos_cartera': 0,
+        	'documentos_contabilidad': 0,
+        	'documentos_comercial': 0,
+        	'documentos_inventario': 0,
+        	'documentos_tecnico': 0,
+        	'documentos_tesoreria': 1
         }
     });
 

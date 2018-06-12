@@ -17,6 +17,7 @@ app || (app = {});
         },
         parameters: {
             wrapper: null,
+            reembolso: null,
             edit: false,
             dataFilter: {}
         },
@@ -34,14 +35,13 @@ app || (app = {});
             this.confCollection = { reset: true, data: {} };
 
             // References
-            this.$debito = this.$('#total-debito');
-            this.$credito = this.$('#total-credito');
+            this.$valor = this.$('#total-valor');
 
             // Events Listeners
             this.listenTo( this.collection, 'add', this.addOne );
             this.listenTo( this.collection, 'reset', this.addAll );
-            this.listenTo( this.collection, 'request', this.loadSpinner);
             this.listenTo( this.collection, 'store', this.storeOne );
+            this.listenTo( this.collection, 'request', this.loadSpinner);
             this.listenTo( this.collection, 'sync', this.responseServer);
 
             if( !_.isUndefined(this.parameters.dataFilter.cajamenor) && !_.isNull(this.parameters.dataFilter.cajamenor) ){
@@ -69,14 +69,14 @@ app || (app = {});
         },
 
         /**
-        * Render all view Marketplace of the collection
+        * Render all view CajaMenorDetalle of the collection
         */
         addAll: function () {
             this.collection.forEach( this.addOne, this );
         },
 
         /**
-        * stores detalleAjustec
+        * stores detalleCajaMenor
         * @param form element
         */
         storeOne: function (data) {
@@ -130,13 +130,12 @@ app || (app = {});
         * Render totalize valor
         */
         totalize: function () {
-            var data = this.collection.totalize();
-            if(this.$debito.length) {
-                this.$debito.html( window.Misc.currency(data.debito) );
-            }
+            var data = this.collection.total();
+            this.$valor.html( window.Misc.currency(data) );
 
-            if(this.$credito.length) {
-                this.$credito.html( window.Misc.currency(data.credito) );
+            // Render value in field cajamenor1_reembolso
+            if (!_.isNull(this.parameters.reembolso)) {
+                this.parameters.reembolso.val(data);
             }
         },
 

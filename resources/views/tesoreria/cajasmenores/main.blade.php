@@ -41,11 +41,11 @@
 
                 <div class="form-group col-md-2">
                     <label for="cajamenor1_efectivo" class="control-label">Efectivo</label>
-                    <input type="text" id="cajamenor1_efectivo" name="cajamenor1_efectivo" class="form-control input-sm" data-currency required>
+                    <input type="text" id="cajamenor1_efectivo" name="cajamenor1_efectivo" class="form-control input-sm" value="0" data-currency>
                 </div>
                 <div class="form-group col-md-2">
                     <label for="cajamenor1_provisionales" class="control-label">Provisionales</label>
-                    <input  type="text" id="cajamenor1_provisionales" name="cajamenor1_provisionales" class="form-control input-sm"  value="" data-currency  required>
+                    <input  type="text" id="cajamenor1_provisionales" name="cajamenor1_provisionales" class="form-control input-sm" value="0" data-currency>
                 </div>
             </div>
             <div class="row">
@@ -57,7 +57,7 @@
                                 <i class="fa fa-user"></i>
                             </button>
                         </span>
-                        <input id="cajamenor1_tercero" placeholder="Empleado" class="form-control tercero-koi-component" name="cajamenor1_tercero" type="text" maxlength="15" data-wrapper="cajamenor-create" data-name="empleado_nombre" required>
+                        <input id="cajamenor1_tercero" placeholder="Empleado" class="form-control tercero-koi-component" name="cajamenor1_tercero" type="text" maxlength="15" data-wrapper="cajamenor-create" data-name="empleado_nombre" >
                     </div>
                 </div>
                 <div class="form-group col-md-5 col-xs-12">
@@ -66,11 +66,11 @@
                 </div>
                 <div class="form-group col-md-2">
                     <label for="cajamenor1_reembolso" class="control-label">Reembolso</label>
-                    <input type="text" id="cajamenor1_reembolso" name="cajamenor1_reembolso" class="form-control input-sm"   data-currency required>
+                    <input type="text" id="cajamenor1_reembolso" name="cajamenor1_reembolso" class="form-control input-sm" data-currency>
                 </div>
                 <div class="form-group col-md-2">
                     <label for="cajamenor1_fondo" class="control-label">Fondo</label>
-                    <input type="text" id="cajamenor1_fondo" name="cajamenor1_fondo" class="form-control input-sm" data-currency required>
+                    <input type="text" id="cajamenor1_fondo" name="cajamenor1_fondo" class="form-control input-sm" data-currency>
                 </div>
             </div>
             <div class="row">
@@ -122,7 +122,7 @@
                             <input id="tercero_nombre" name="tercero_nombre" placeholder="Nombre tercero" class="form-control input-sm" type="text" maxlength="15" readonly required>
                         </div>
                         <div class="form-group col-md-4">
-                            <select name="cajamenor2_conceptocajamenor" id="cajamenor2_conceptocajamenor" class="form-control select2-default-clear"data-placeholder="Seleccione concepto" required>
+                            <select name="cajamenor2_conceptocajamenor" id="cajamenor2_conceptocajamenor" class="form-control select2-default-clear"data-placeholder="Seleccione concepto" >
                                 @foreach( App\Models\Tesoreria\ConceptoCajaMenor::getConceptsCajaMenor() as $key => $value)
                                     <option  value="{{ $key }}">{{ $value }}</option>
                                 @endforeach
@@ -145,24 +145,24 @@
                     <div class="row">
                         <div class="form-group col-md-2 ">
                             <label for="cajamenor2_subtotal" class="control-label">Subtotal</label>
-                            <input type="text" id="cajamenor2_subtotal" name="cajamenor2_subtotal" class="form-control input-sm"   data-currency required>
+                            <input type="text" id="cajamenor2_subtotal" name="cajamenor2_subtotal" class="form-control input-sm"   data-currency>
                         </div>
                         <div class="form-group col-md-2">
                             <label for="cajamenor2_iva" class="control-label">Iva</label>
-                            <input type="text" id="cajamenor2_iva" name="cajamenor2_iva" class="form-control input-sm" data-currency required>
+                            <input type="text" id="cajamenor2_iva" name="cajamenor2_iva" class="form-control input-sm" data-currency value="0">
                         </div>
 
                         <div class="form-group col-md-2">
                             <label for="cajamenor2_reteiva" class="control-label">Rete Iva</label>
-                            <input type="text" id="cajamenor2_reteiva" name="cajamenor2_reteiva" class="form-control input-sm"   data-currency required>
+                            <input type="text" id="cajamenor2_reteiva" name="cajamenor2_reteiva" class="form-control input-sm"   data-currency value="0">
                         </div>
                         <div class="form-group col-md-2">
                             <label for="cajamenor2_reteica" class="control-label">Rete Ica</label>
-                            <input type="text" id="cajamenor2_reteica" name="cajamenor2_reteica" class="form-control input-sm"   data-currency required>
+                            <input type="text" id="cajamenor2_reteica" name="cajamenor2_reteica" class="form-control input-sm"   data-currency value="0">
                         </div>
                         <div class="form-group col-md-2">
                             <label for="cajamenor2_retefuente" class="control-label">Rete Fuente</label>
-                            <input type="text" id="cajamenor2_retefuente" name="cajamenor2_retefuente" class="form-control input-sm" data-currency required>
+                            <input type="text" id="cajamenor2_retefuente" name="cajamenor2_retefuente" class="form-control input-sm" data-currency value="0">
                         </div><br>
                         <div class="form-group col-md-1">
                             <button type="submit" class="btn btn-success btn-sm btn-block">
@@ -220,6 +220,6 @@
                 <%- centrocosto_codigo %>
             </a>
         </td>
-        <td>0</td>
+        <td class="text-right"><%- window.Misc.currency(cajamenor2_valor) %></td>
     </script>
 @stop

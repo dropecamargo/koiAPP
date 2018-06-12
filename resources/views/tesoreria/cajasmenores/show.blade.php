@@ -9,7 +9,7 @@
     <div class="box box-primary" id="cajamenor-show">
         <div class="box-body">
             <div class="row">
-                <div class="form-group col-md-3">
+                <div class="form-group col-md-4">
                     <label class="control-label">Regional</label>
                     <div>{{ $cajaMenor1->regional_nombre }}</div>
                 </div>
@@ -17,9 +17,38 @@
                     <label class="control-label">Número</label>
                     <div>{{ $cajaMenor1->cajamenor1_numero }}</div>
                 </div>
+                <div class="form-group col-md-2">
+                    <label class="control-label">Fecha</label>
+                    <div>{{ $cajaMenor1->cajamenor1_fecha }}</div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-12">
+                    <label class="control-label">Empleado</label>
+                    <div>{{ $cajaMenor1->tercero_nombre }} - <a href="{{ route('terceros.show', ['terceros' =>  $cajaMenor1->cajamenor1_tercero ]) }}" target="_blanck" title="Ver Empleado">{{ $cajaMenor1->tercero_nit }}</a></div>
+                </div>
+            </div>
+            <div class="row">
+
                 <div class="form-group col-md-4">
-                    <label class="control-label">Cliente</label>
-                    <div>{{ $cajaMenor1->tercero_nombre }}</div>
+                    <label class="control-label">Cuenta de banco</label>
+                    <div>{{ $cajaMenor1->cuentabanco_nombre }}</div>
+                </div>
+                <div class="form-group col-md-2">
+                    <label class="control-label">Efectivo</label>
+                    <div>{{ number_format ($cajaMenor1->cajamenor1_efectivo,2,',' , '.') }}</div>
+                </div>
+                <div class="form-group col-md-2">
+                    <label class="control-label">Provisional</label>
+                    <div>{{ number_format ($cajaMenor1->cajamenor1_provisionales,2,',' , '.') }}</div>
+                </div>
+                <div class="form-group col-md-2">
+                    <label class="control-label">Reembolso</label>
+                    <div>{{ number_format ($cajaMenor1->cajamenor1_reembolso,2,',' , '.') }}</div>
+                </div>
+                <div class="form-group col-md-2">
+                    <label class="control-label">Fondo</label>
+                    <div>{{ number_format ($cajaMenor1->cajamenor1_fondo,2,',' , '.') }}</div>
                 </div>
             </div>
             <div class="row">
@@ -59,6 +88,18 @@
                             </tr>
                         </tfoot>
                     </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="box box-solid">
+        <div class="box-body">
+            <div class="row">
+                <div class="col-md-6 col-sm-6 col-xs-6 text-left">
+                    <h4><a href="{{ route('asientos.show', ['asientos' =>  $cajaMenor1->cajamenor1_asiento ]) }}" target="_blanck" title="Ver Asiento"> Ver asiento contable </a></h4>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-6 text-right">
+                    <h4><b>Caja Menor N° {{$cajaMenor1->cajamenor1_numero}} </b></h4>
                 </div>
             </div>
         </div>

@@ -275,6 +275,18 @@
 						    		<input id="empresa_tj_revisor" value="<%- empresa_tj_revisor %>" placeholder="Tarjeta de Profesional" class="form-control input-sm" name="empresa_tj_revisor" type="text" maxlength="15">
 						    	</div>
 						    </div>
+                            <div>
+                                <div class="row">
+                                    <div class="form-group col-sm-6">
+                                        <label for="empresa_cuentacartera" class="control-label">Plan cuenta de cartera</label>
+                                        <select name="empresa_cuentacartera" id="empresa_cuentacartera" class="form-control select2-default-clear" required>
+                                            @foreach( App\Models\Contabilidad\PlanCuenta::getPlanCuentas() as $key => $value)
+                                                <option value="{{ $key }}" <%- empresa_cuentacartera == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
 						</div>
 
 					</div>

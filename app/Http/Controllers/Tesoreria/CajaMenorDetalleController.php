@@ -70,7 +70,11 @@ class CajaMenorDetalleController extends Controller
                     if(!$tercero instanceof Tercero) {
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar el cliente, verifique información ó por favor consulte al administrador.']);
                     }
-                    return response()->json(['success' => true, 'id' => uniqid(), 'plancuentas_nombre' => $cuenta->plancuentas_nombre, 'plancuentas_cuenta' => $cuenta->plancuentas_cuenta, 'centrocosto_codigo' => $centroCosto->centrocosto_codigo, 'centrocosto_nombre' => $centroCosto->centrocosto_nombre, 'conceptocajamenor_nombre' => $conceptoCaja->conceptocajamenor_nombre]);
+
+                    // Calculate valor
+                    $valor = $request->cajamenor2_subtotal + $request->cajamenor2_iva - ($request->cajamenor2_retefuente + $request->cajamenor2_reteica + $request->cajamenor2_reteiva);
+
+                    return response()->json(['success' => true, 'id' => uniqid(), 'plancuentas_nombre' => $cuenta->plancuentas_nombre, 'plancuentas_cuenta' => $cuenta->plancuentas_cuenta, 'centrocosto_codigo' => $centroCosto->centrocosto_codigo, 'centrocosto_nombre' => $centroCosto->centrocosto_nombre, 'conceptocajamenor_nombre' => $conceptoCaja->conceptocajamenor_nombre, 'cajamenor2_valor' => $valor]);
                 }catch(\Exception $e){
                     Log::error($e->getMessage());
                     return response()->json(['success' => false, 'errors' => trans('app.exception')]);

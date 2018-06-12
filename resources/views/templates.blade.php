@@ -581,6 +581,45 @@
 			<input type="text" id="documentos_nombre" name="documentos_nombre" value="<%- documentos_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="25" required>
 			<div class="help-block with-errors"></div>
 		</div>
+	</div>
+	<div class="row">
+		<div class="form-group col-sm-12">
+			<label class="checkbox-inline"><strong>Tipo</strong></label>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-2">
+			<label class="checkbox-inline" for="documentos_cartera">
+				<input type="checkbox" id="documentos_cartera" name="documentos_cartera" value="documentos_cartera" <%- parseInt(documentos_cartera) ? 'checked': ''%>> Cartera
+			</label>
+		</div>
+		<div class="col-sm-2">
+			<label class="checkbox-inline" for="documentos_contabilidad">
+				<input type="checkbox" id="documentos_contabilidad" name="documentos_contabilidad" value="documentos_contabilidad" <%- parseInt(documentos_contabilidad) ? 'checked': ''%>> Contabilidad
+			</label>
+		</div>
+		<div class="col-sm-2">
+			<label class="checkbox-inline" for="documentos_comercial">
+				<input type="checkbox" id="documentos_comercial" name="documentos_comercial" value="documentos_comercial" <%- parseInt(documentos_comercial) ? 'checked': ''%>> Comercial
+			</label>
+		</div>
+    </div>
+	<div class="row">
+		<div class="col-sm-2">
+			<label class="checkbox-inline" for="documentos_inventario">
+				<input type="checkbox" id="documentos_inventario" name="documentos_inventario" value="documentos_inventario" <%- parseInt(documentos_inventario) ? 'checked': ''%>> Inventario
+			</label>
+		</div>
+		<div class="col-sm-2">
+			<label class="checkbox-inline" for="documentos_tecnico">
+				<input type="checkbox" id="documentos_tecnico" name="documentos_tecnico" value="documentos_tecnico" <%- parseInt(documentos_tecnico) ? 'checked': ''%>> Técnico
+			</label>
+		</div>
+		<div class="col-sm-2">
+			<label class="checkbox-inline" for="documentos_tesoreria">
+				<input type="checkbox" id="documentos_tesoreria" name="documentos_tesoreria" value="documentos_tesoreria" <%- parseInt(documentos_tesoreria) ? 'checked': ''%>> Tesorería
+			</label>
+		</div>
     </div>
 </script>
 

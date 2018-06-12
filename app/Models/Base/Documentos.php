@@ -3,9 +3,10 @@
 namespace App\Models\Base;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\BaseModel;
 use Cache, Validator;
 
-class Documentos extends Model
+class Documentos extends BaseModel
 {
     /**
      * The database table used by the model.
@@ -29,6 +30,7 @@ class Documentos extends Model
      * @var array
      */
     protected $fillable = ['documentos_codigo', 'documentos_nombre'];
+    protected $boolean = ['documentos_cartera', 'documentos_contabilidad', 'documentos_comercial', 'documentos_inventario', 'documentos_tecnico', 'documentos_tesoreria'];
 
     public function isValid($data)
     {

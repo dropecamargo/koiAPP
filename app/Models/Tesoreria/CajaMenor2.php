@@ -21,14 +21,16 @@ class CajaMenor2 extends Model
      *
      * @var array
      */
-
-    protected $fillable = [];
+    protected $fillable = ['cajamenor2_subtotal', 'cajamenor2_iva', 'cajamenor2_retefuente', 'cajamenor2_reteica', 'cajamenor2_reteiva'];
 
 
 	public function isValid($data)
 	{
 		$rules = [
 			'cajamenor2_tercero' => 'required',
+			'cajamenor2_centrocosto' => 'required',
+			'cajamenor2_conceptocajamenor' => 'required',
+			'cajamenor2_subtotal' => 'numeric|required',
 		];
 
 		$validator = Validator::make($data, $rules);
@@ -47,7 +49,7 @@ class CajaMenor2 extends Model
 						(CASE WHEN (tercero_razonsocial IS NOT NULL AND tercero_razonsocial != '') THEN CONCAT(' - ', tercero_razonsocial) ELSE '' END)
 					)
 				ELSE tercero_razonsocial END)
-			AS tercero_nombre")
+			AS tercero_nombre, SUM(cajamenor2_subtotal + cajamenor2_iva - (cajamenor2_reteica - cajamenor2_reteiva - cajamenor2_retefuente)) as cajamenor2_valor")
 		);
 		$query->join('tercero', 'cajamenor2_tercero', '=', 'tercero.id');
 		$query->join('conceptocajamenor', 'cajamenor2_conceptocajamenor', '=', 'conceptocajamenor.id');
@@ -55,7 +57,6 @@ class CajaMenor2 extends Model
 		$query->join('plancuentas', 'cajamenor2_cuenta', '=', 'plancuentas.id');
 		$query->where('cajamenor2_cajamenor1', $id);
 		$cajaMenor2 = $query->get();
-
 		return $cajaMenor2;
 	}
 }

@@ -65,6 +65,7 @@ app || (app = {});
                 parameters: {
                     wrapper: this.el,
                     edit: true,
+                    reembolso: this.$('#cajamenor1_reembolso'),
                     dataFilter: {
                         'id': this.model.get('id')
                     }

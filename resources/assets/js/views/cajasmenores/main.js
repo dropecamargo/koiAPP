@@ -12,34 +12,42 @@ app || (app = {});
     app.MainCajasMenoresView = Backbone.View.extend({
 
         el: '#cajasmenores-main',
-
+        events: {
+            'click .btn-search': 'search',
+            'click .btn-clear': 'clear'
+        },
         /**
         * Constructor Method
         */
         initialize : function() {
+            var _this = this;
+
+            // Rerefences
+            this.$searchCajaMenorTercero = this.$('#searchcajamenor_tercero');
+            this.$searchCajaMenorRegional = this.$('#searchcajamenor_regional');
+            this.$searchCajaMenorNumero = this.$('#searchcajamenor_numero');
             this.$cajaMenorSearchTable = this.$('#cajasmenores-search-table');
 
-            this.$cajaMenorSearchTable.DataTable({
-                dom: "<'row'<'col-sm-4'B><'col-sm-4 text-center'l><'col-sm-4'f>>" +
-                    "<'row'<'col-sm-12'tr>>" +
+            this.cajaMenorSearchTable = this.$cajaMenorSearchTable.DataTable({
+                dom:"<'row'<'col-sm-12'tr>>" +
                     "<'row'<'col-sm-5'i><'col-sm-7'p>>",
                 processing: true,
                 serverSide: true,
                 language: window.Misc.dataTableES(),
-                ajax: window.Misc.urlFull( Route.route('cajasmenores.index') ),
-                columns: [
-                    { data: 'id', name: 'id' },
-                    { data: 'cajamenor1_tercero', name: 'cajamenor1_tercero' },
-                    { data: 'cajamenor1_observaciones', name: 'cajamenor1_observaciones'}
-                ],
-                buttons: [
-                    {
-                        text: '<i class="fa fa-plus"></i> Nuevo',
-                        className: 'btn-sm',
-                        action: function ( e, dt, node, config ) {
-                            window.Misc.redirect( window.Misc.urlFull( Route.route('cajasmenores.create') ) )
-                        }
+                ajax: {
+                    url: window.Misc.urlFull( Route.route('cajasmenores.index') ),
+                    data: function( data ) {
+                        data.persistent = true;
+                        data.nit = _this.$searchCajaMenorTercero.val();
+                        data.regional = _this.$searchCajaMenorRegional.val();
+                        data.numero = _this.$searchCajaMenorNumero.val();
                     }
+                },
+                columns: [
+                    { data: 'cajamenor1_numero', name: 'cajamenor1_numero' },
+                    { data: 'regional_nombre', name: 'regional_nombre' },
+                    { data: 'tercero_nombre', name: 'tercero_nombre' },
+                    { data: 'cuentabanco_nombre', name: 'cuentabanco_nombre'}
                 ],
                 columnDefs: [
                     {
@@ -51,7 +59,22 @@ app || (app = {});
                     }
                 ]
             });
-        }
+        },
+
+        search: function(e) {
+            e.preventDefault();
+
+            this.cajaMenorSearchTable.ajax.reload();
+        },
+
+        clear: function(e) {
+            e.preventDefault();
+
+            this.$searchCajaMenorRegional.val('').trigger('change');
+            this.$searchCajaMenorTercero.val('');
+            this.$searchCajaMenorNumero.val('');
+            this.cajaMenorSearchTable.ajax.reload();
+        },
     });
 
 })(jQuery, this, this.document);

@@ -45,6 +45,7 @@ app || (app = {});
             'actividad_tarifa' : '',
             'empresa_niif' : '',
             'empresa_iva' : '',
+            'empresa_cuentacartera' : '',
             'empresa_pedidoc' : 0
         }
     });

@@ -18,6 +18,12 @@ class CreateDocumentosTable extends Migration
             $table->increments('id');
             $table->string('documentos_codigo', 4)->unique();
             $table->string('documentos_nombre', 25);
+            $table->boolean('documentos_cartera')->default(false);
+            $table->boolean('documentos_contabilidad')->default(false);
+            $table->boolean('documentos_comercial')->default(false);
+            $table->boolean('documentos_inventario')->default(false);
+            $table->boolean('documentos_tecnico')->default(false);
+            $table->boolean('documentos_tesoreria')->default(false);
         });
     }
 
