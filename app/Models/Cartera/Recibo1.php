@@ -143,7 +143,7 @@ class Recibo1 extends BaseModel
 		return $cuenta;
 	}
 	/**
-	* Prepara el asiento 1 y hace el cuadre de credido y debito con la cuenta bancaria(Plan cuentas) del recibo
+	* Prepara el asiento 1 y hace el cuadre de credito y debito con la cuenta bancaria(Plan cuentas) del recibo
 	*/
 	public function encabezadoAsiento(Tercero $tercero, CuentaBanco $cuentaBanco, $credito, $debito)
 	{

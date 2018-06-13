@@ -112,7 +112,7 @@
                     <h4><a href="{{ route('asientos.show', ['asientos' =>  $recibo->recibo1_asiento ]) }}" target="_blanck" title="Ver Asiento"> Ver asiento contable </a></h4>
                 </div>
                 <div class="col-md-6 col-sm-6 col-xs-6 text-right">
-                    <h4><b>Recibo N° {{$recibo->recibo1_numero}} </b></h4>
+                    <h4><b>Recibo de caja N° {{$recibo->recibo1_numero}} </b></h4>
                 </div>
             </div>
         </div>

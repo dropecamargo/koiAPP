@@ -113,12 +113,12 @@
                     <table id="browse-detalle-list" class="table table-hover table-bordered" cellspacing="0">
                         <thead>
                             <tr>
-                                <th width="5px"></th>
-                                <th width="95px">Concepto</th>
-                                <th width="95px">Documento</th>
-                                <th width="95px">Numero</th>
-                                <th width="95px">Cuota</th>
-                                <th width="95px">Valor</th>
+                                <th width="5%"></th>
+                                <th width="30%">Concepto</th>
+                                <th width="20%">Documento</th>
+                                <th width="15%">Número</th>
+                                <th width="10%">Cuota</th>
+                                <th width="20%">Valor</th>
                             </tr>
                         </thead>
                         <tbody>

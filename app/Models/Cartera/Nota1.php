@@ -4,7 +4,7 @@ namespace App\Models\Cartera;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\BaseModel;
-use App\Models\Base\Tercero;
+use App\Models\Base\Tercero, App\Models\Contabilidad\Documento, App\Models\Contabilidad\PlanCuenta;
 use Validator, DB;
 
 class Nota1 extends BaseModel
@@ -107,5 +107,79 @@ class Nota1 extends BaseModel
         $response->nota = $historyClient;
         $response->position = $i;
         return $response;
+	}
+
+	/**
+	* Prepara el detalle del asiento , cuentas (Credito , Debito)
+	*/
+	public function detalleAsiento(Tercero $tercero, $id_cuenta, $naturaleza)
+	{
+		// Plan de cuentas
+		$planCuenta = PlanCuenta::find($id_cuenta);
+		if (!$planCuenta instanceof PlanCuenta) {
+			return "Error al recuperar cuenta en la preparacion del asiento";
+		}
+
+		$cuenta = [];
+		$cuenta['Cuenta'] = $planCuenta->plancuentas_cuenta;
+		$cuenta['Cuenta_Nombre'] = $planCuenta->plancuentas_nombre;
+		$cuenta['Tercero'] = $tercero->tercero_nit;
+		$cuenta['CentroCosto'] = '';
+		$cuenta['CentroCosto_Nombre'] = '';
+		$cuenta['Detalle'] = '';
+		$cuenta['Naturaleza'] = $naturaleza;
+		$cuenta['Base'] = 0;
+		$cuenta['Credito'] = ($naturaleza == 'C') ? $this->nota1_valor : 0;
+		$cuenta['Debito'] = ($naturaleza == 'D') ? $this->nota1_valor : 0;
+		$cuenta['Orden'] = '';
+
+		return $cuenta;
+	}
+	/**
+	* Prepara el asiento 1 e invoca detalle del asiento(cuentas) para asi prepararlo 
+	*/
+	public function encabezadoAsiento(Tercero $tercero, ConceptoNota $conceptoNota)
+	{
+		$object = new \stdClass();
+		$object->data = [];
+		$object->dataNif = [];
+		$object->cuenta = [];
+
+		// Recuperar documento contable
+		$documento = Documento::where('documento_codigo', 'NC')->first();
+		if(!$documento instanceof Documento){
+			return "No es posible recuperar el prefijo NC en los documentos contables.";
+		}
+
+		// Data asiento
+		$object->data = [
+			'asiento1_mes' => (Int) date('m'),
+			'asiento1_ano' => (Int) date('Y'),
+			'asiento1_dia' => (Int) date('d'),
+			'asiento1_numero' => $documento->documento_consecutivo + 1,
+			'asiento1_folder' => $documento->documento_folder,
+			'asiento1_documento' => $documento->id,
+			'asiento1_documentos' => $documento->documento_codigo,
+			'asiento1_id_documentos' => $this->id,
+			'asiento1_beneficiario' => $tercero->tercero_nit,
+		];
+
+		// Data Asiento Nif
+		if ($documento->documento_nif) {
+			$object->dataNif = [
+				'asienton1_mes' => (Int) date('m'),
+				'asienton1_ano' => (Int) date('Y'),
+				'asienton1_dia' => (Int) date('d'),
+				'asienton1_numero' => $documento->documento_consecutivo + 1,
+				'asienton1_folder' => $documento->documento_folder,
+				'asienton1_documento' => $documento->id,
+				'asienton1_documentos' => $documento->documento_codigo,
+				'asienton1_id_documentos' => $this->id,
+				'asienton1_beneficiario' => $tercero->tercero_nit,
+			];
+		}
+		$object->cuenta[] = $this->detalleAsiento($tercero, $conceptoNota->conceptonota_cuenta, 'D');
+		$object->cuenta[] = $this->detalleAsiento($tercero, session('empresa')->empresa_cuentacartera, 'C');
+		return $object;
 	}
 }

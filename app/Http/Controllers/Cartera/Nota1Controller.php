@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use App\Classes\AsientoContableDocumento, App\Classes\AsientoNifContableDocumento;
 use App\Models\Cartera\Nota1, App\Models\Cartera\Nota2, App\Models\Cartera\ConceptoNota, App\Models\Cartera\Factura3, App\Models\Cartera\ChDevuelto, App\Models\Cartera\Anticipo1;
 use App\Models\Base\Sucursal,App\Models\Base\Regional, App\Models\Base\Tercero, App\Models\Base\Documentos;
 use DB, Log, Auth, Datatables;
@@ -91,8 +92,6 @@ class Nota1Controller extends Controller
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar documentos, por favor verifique la información ó por favor consulte al administrador.']);
                     }
-                    //
-
                     // Consecutive
                     $consecutive = $regional->regional_nota + 1;
 
@@ -107,8 +106,9 @@ class Nota1Controller extends Controller
                     $nota->nota1_fh_elaboro = date('Y-m-d H:m:s');
                     $nota->save();
 
-                    $nota2 = isset($data['nota2']) ? $data['nota2'] : null;
-                    foreach ($nota2 as $item)
+                    // Sumatoria para nota1_valor
+                    $total = 0;
+                    foreach ($data['nota2'] as $item)
                     {
                         $documentos = Documentos::find($item['nota2_documentos_doc']);
                         if(!$documentos instanceof Documentos) {
@@ -163,7 +163,62 @@ class Nota1Controller extends Controller
                             break;
                         }
                         $nota2->save();
+                        $total += $nota2->nota2_valor;
                     }
+                    $nota->nota1_valor += $total;
+                    
+                    // Preparando asiento
+                    $encabezado = $nota->encabezadoAsiento($tercero, $concepto);
+                    if(!is_object($encabezado)){
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $encabezado]);
+                    }
+                    //Creo el objeto para manejar el asiento
+                    $objAsiento = new AsientoContableDocumento($encabezado->data);
+                    if($objAsiento->asiento_error) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $objAsiento->asiento_error]);
+                    }
+                    // Preparar asiento
+                    $result = $objAsiento->asientoCuentas($encabezado->cuenta);
+                    if($result != 'OK'){
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $result]);
+                    }
+
+                    // Insertar asiento
+                    $result = $objAsiento->insertarAsiento();
+                    if($result != 'OK') {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $result]);
+                    }
+                    // AsientoNif
+                    if (!empty($encabezado->dataNif)) {
+                        // Creo el objeto para manejar el asiento
+                        $objAsientoNif = new AsientoNifContableDocumento($encabezado->dataNif);
+                        if($objAsientoNif->asientoNif_error) {
+                            DB::rollback();
+                            return response()->json(['success' => false, 'errors' => $objAsiento->asientoNif_error]);
+                        }
+
+                        // Preparar asiento
+                        $result = $objAsientoNif->asientoCuentas($encabezado->cuenta);
+                        if($result != 'OK'){
+                            DB::rollback();
+                            return response()->json(['success' => false, 'errors' => $result]);
+                        }
+
+                        // Insertar asiento
+                        $result = $objAsientoNif->insertarAsientoNif();
+                        if($result != 'OK') {
+                            DB::rollback();
+                            return response()->json(['success' => false, 'errors' => $result]);
+                        }
+                        // Recuperar el Id del asiento y guardar en la factura
+                        $nota->nota1_asienton = $objAsientoNif->asientoNif->id;
+                    }
+                    $nota->nota1_asiento = $objAsiento->asiento->id;
+                    $nota->save();
 
                     // Update consecutive sucursal_nota in Regional
                     $regional->regional_nota = $consecutive;
