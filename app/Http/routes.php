@@ -410,6 +410,7 @@ Route::group(['middleware' => 'auth'], function(){
 		Route::resource('documentos', 'Cobro\DocumentoCobroController', ['only' => ['index']]);
 	});
 	Route::resource('deudores', 'Cobro\DeudorController', ['only' => ['index', 'show']]);
+	Route::resource('gestiondeudores', 'Cobro\GestionDeudorController', ['except' => ['destroy', 'edit' , 'update']]);
 	Route::resource('gestioncarteras', 'Cobro\GestionCarteraController', ['only' => ['index']]);
 
 	/*
@@ -419,9 +420,9 @@ Route::group(['middleware' => 'auth'], function(){
 	*/
 	Route::group(['prefix' => 'import'], function()
 	{
-		Route::post('productos',['as' =>'productos.import','uses'=>'Inventario\ProductoController@import'] );
-		Route::post('ajustes',['as' =>'ajustes.import','uses'=>'Inventario\AjusteController@import'] );
-		Route::post('asientos',['as' =>'asientos.import','uses'=>'Contabilidad\AsientoController@import'] );
-		Route::post('gestioncarteras',['as' =>'gestioncarteras.import','uses'=>'Cobro\GestionCarteraController@import'] );
+		Route::post('productos', ['as' =>'productos.import','uses'=>'Inventario\ProductoController@import'] );
+		Route::post('ajustes', ['as' =>'ajustes.import','uses'=>'Inventario\AjusteController@import'] );
+		Route::post('asientos', ['as' =>'asientos.import','uses'=>'Contabilidad\AsientoController@import'] );
+		Route::post('gestioncarteras', ['as' =>'gestioncarteras.import','uses'=>'Cobro\GestionCarteraController@import'] );
 	});
 });

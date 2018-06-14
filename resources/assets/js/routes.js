@@ -220,7 +220,9 @@ app || (app = {});
             |-----------------------
             */
             'autorizacionesca(/)': 'getAutorizacionesCaMain',
-            'gestioncarteras(/)': 'getGestionCarterasMain',
+
+            'gestioncobros(/)': 'getGestionCobrosMain',
+            'gestioncobros/create(/)': 'getGestionCobroCreate',
 
             'bancos(/)': 'getBancosMain',
             'bancos/create(/)': 'getBancosCreate',
@@ -289,11 +291,13 @@ app || (app = {});
             | Cobros
             |----------------------
             */
-            'gestioncobros(/)': 'getGestionCobrosMain',
-            'gestioncobros/create(/)': 'getGestionCobroCreate',
+            'gestioncarteras(/)': 'getGestionCarterasMain',
 
             'deudores(/)': 'getDeudoresMain',
             'deudores/:deudores(/)': 'getDeudoresShow',
+
+            'gestiondeudores(/)': 'getGestionDeudorMain',
+            'gestiondeudores/create(/)': 'getGestionDeudorCreate',
 
             /*
             |----------------------
@@ -1906,19 +1910,6 @@ app || (app = {});
         },
 
         /**
-        * show view main GestionCarteras Cartera
-        */
-        getGestionCarterasMain: function () {
-
-            if ( this.mainGestionCarterasView instanceof Backbone.View ){
-                this.mainGestionCarterasView.stopListening();
-                this.mainGestionCarterasView.undelegateEvents();
-            }
-
-            this.mainGestionCarterasView = new app.MainGestionCarterasView( );
-        },
-
-        /**
         *show view main pedidosc Cartera
         */
         getPedidoscMain: function(){
@@ -2196,6 +2187,26 @@ app || (app = {});
 
             this.createConceptoCobView = new app.CreateConceptoCobView({ model: this.conceptoCobModel });
             this.createConceptoCobView.render();
+        },
+
+        getGestionCobrosMain: function(){
+
+            if (this.mainGestionCobrosView instanceof Backbone.View) {
+                this.mainGestionCobrosView.stopListening();
+                this.mainGestionCobrosView.undelegateEvents();
+            }
+            this.mainGestionCobrosView = new app.MainGestionCobrosView( );
+        },
+
+        getGestionCobroCreate: function(){
+            this.gestionCobroModel = new app.GestionCobroModel();
+
+            if (this.createGestionCobroView instanceof Backbone.View) {
+                this.createGestionCobroView.stopListening();
+                this.createGestionCobroView.undelegateEvents();
+            }
+            this.createGestionCobroView = new app.CreateGestionCobroView({ model: this.gestionCobroModel });
+            this.createGestionCobroView.render();
         },
 
         getConceptoCobEdit: function (conceptocobros) {
@@ -2556,27 +2567,22 @@ app || (app = {});
             this.mainChequesDevueltosView = new app.MainChequesDevueltosView( );
         },
 
+
         /*---------------------
-        | Deudores
+        | Modulo Cobros
         /*--------------------*/
-        getGestionCobrosMain: function(){
 
-            if (this.mainGestionCobrosView instanceof Backbone.View) {
-                this.mainGestionCobrosView.stopListening();
-                this.mainGestionCobrosView.undelegateEvents();
+        /**
+        * show view main getGestionCarterasMain Cartera
+        */
+        getGestionCarterasMain: function () {
+
+            if ( this.mainGestionCarterasView instanceof Backbone.View ){
+                this.mainGestionCarterasView.stopListening();
+                this.mainGestionCarterasView.undelegateEvents();
             }
-            this.mainGestionCobrosView = new app.MainGestionCobrosView( );
-        },
 
-        getGestionCobroCreate: function(){
-            this.gestionCobroModel = new app.GestionCobroModel();
-
-            if (this.createGestionCobroView instanceof Backbone.View) {
-                this.createGestionCobroView.stopListening();
-                this.createGestionCobroView.undelegateEvents();
-            }
-            this.createGestionCobroView = new app.CreateGestionCobroView({ model: this.gestionCobroModel });
-            this.createGestionCobroView.render();
+            this.mainGestionCarterasView = new app.MainGestionCarterasView( );
         },
 
         getDeudoresMain: function(){
@@ -2598,6 +2604,27 @@ app || (app = {});
 
             this.showDeudorView = new app.ShowDeudorView({ model: this.deudorModel });
         },
+
+        getGestionDeudorMain: function(){
+
+            if (this.mainGestionDeudoresView instanceof Backbone.View) {
+                this.mainGestionDeudoresView.stopListening();
+                this.mainGestionDeudoresView.undelegateEvents();
+            }
+            this.mainGestionDeudoresView = new app.MainGestionDeudoresView( );
+        },
+
+        getGestionDeudorCreate: function(){
+            this.gestionDeudorModel = new app.GestionDeudorModel();
+
+            if (this.createGestionDeudoresView instanceof Backbone.View) {
+                this.createGestionDeudoresView.stopListening();
+                this.createGestionDeudoresView.undelegateEvents();
+            }
+            this.createGestionDeudoresView = new app.CreateGestionDeudoresView({ model: this.gestionDeudorModel });
+            this.createGestionDeudoresView.render();
+        },
+
 
         /*---------------------
         | Tecnicos

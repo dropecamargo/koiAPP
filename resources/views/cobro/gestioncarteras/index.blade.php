@@ -1,11 +1,11 @@
 @extends('layout.layout')
 
-@section('title') Gestión de carteras @stop
+@section('title') Gestión carteras @stop
 
 @section('content')
     <section class="content-header">
         <h1>
-            Gestión de carteras <small>Administración de gestiones de cartera</small>
+            Gestión carteras <small>Administración gestión de cartera</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> {{trans('app.home')}}</a></li>
@@ -21,16 +21,16 @@
                         <div class="form-group col-md-3 col-md-offset-1">
                             <div class="input-group input-group-sm">
                                 <span class="input-group-btn">
-                                    <button type="button" class="btn btn-default btn-flat btn-koi-search-tercero-component-table" data-field="searchgestioncaretar_tercero">
+                                    <button type="button" class="btn btn-default btn-flat btn-koi-search-tercero-component-table" data-field="searchgestioncartera_tercero">
                                         <i class="fa fa-user"></i>
                                     </button>
                                 </span>
-                                <input id="searchgestioncaretar_tercero" placeholder="Tercero" class="form-control tercero-koi-component input-sm" name="searchgestioncaretar_tercero" type="text" maxlength="15" data-name="searchgestioncaretar_tercero_nombre" required>
+                                <input id="searchgestioncartera_tercero" placeholder="Tercero" class="form-control tercero-koi-component input-sm" name="searchgestioncartera_tercero" type="text" maxlength="15" data-name="searchgestioncartera_tercero_nombre" required>
                             </div>
                             <div class="help-block with-errors"></div>
                         </div>
                         <div class="col-md-6">
-                            <input id="searchgestioncaretar_tercero_nombre" name="searchgestioncaretar_tercero_nombre" placeholder="Tercero beneficiario" class="form-control input-sm" type="text" maxlength="15" readonly required>
+                            <input id="searchgestioncartera_tercero_nombre" name="searchgestioncartera_tercero_nombre" placeholder="Tercero beneficiario" class="form-control input-sm" type="text" maxlength="15" readonly required>
                         </div>
                     </div>
                     <div class="row">
@@ -51,11 +51,6 @@
                             <button type="button" class="btn btn-success btn-sm btn-block submit-import">
                                 <i class="fa fa-upload"></i> {{ trans('app.import.xls') }}
                             </button>
-                        </div>
-                    </div>
-                    <div class="box-footer with-border">
-                        <div class="row">
-
                         </div>
                     </div>
                 {!! Form::close() !!}
