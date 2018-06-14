@@ -23,6 +23,8 @@ class CreateFactura1Table extends Migration
             $table->integer('factura1_sucursal')->unsigned();
             $table->integer('factura1_tercero')->unsigned();
             $table->integer('factura1_tercerocontacto')->unsigned();
+            $table->integer('factura1_asiento')->unsigned()->nullable();
+            $table->integer('factura1_asienton')->unsigned()->nullable();
             $table->integer('factura1_cuotas');
             $table->integer('factura1_plazo');
             $table->date('factura1_fecha');
@@ -41,6 +43,8 @@ class CreateFactura1Table extends Migration
             $table->integer('factura1_usuario_anulo')->unsigned()->nullable();
             $table->dateTime('factura1_fh_anulo')->nullable();
 
+            $table->foreign('factura1_asiento')->references('id')->on('asiento1')->onDelete('restrict');
+            $table->foreign('factura1_asienton')->references('id')->on('asienton1')->onDelete('restrict');
             $table->foreign('factura1_documentos')->references('id')->on('documentos')->onDelete('restrict');
             $table->foreign('factura1_puntoventa')->references('id')->on('puntoventa')->onDelete('restrict');
             $table->foreign('factura1_sucursal')->references('id')->on('sucursal')->onDelete('restrict');

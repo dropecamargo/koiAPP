@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use App\Classes\AsientoContableDocumento, App\Classes\AsientoNifContableDocumento;
 use App\Models\Cartera\Anticipo1,App\Models\Cartera\Anticipo2,App\Models\Cartera\Anticipo3;
 use App\Models\Base\Tercero,App\Models\Base\Documentos,App\Models\Base\Sucursal,App\Models\Base\Regional;
 use App\Models\Cartera\Conceptosrc, App\Models\Cartera\CuentaBanco, App\Models\Cartera\MedioPago;
@@ -112,7 +113,7 @@ class AnticipoController extends Controller
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar sucursal, verifique información ó por favor consulte al administrador.']);
                     }
                     // Recupero instancia regional
-                   $regional = Regional::find($sucursal->sucursal_regional);
+                    $regional = Regional::find($sucursal->sucursal_regional);
                     if(!$regional instanceof Regional) {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar regional, verifique información ó por favor consulte al administrador.']);
@@ -128,7 +129,7 @@ class AnticipoController extends Controller
                     $anticipo1->anticipo1_vendedor = $vendedor->id;
                     $anticipo1->anticipo1_documentos = $documento->id;
                     $anticipo1->anticipo1_valor = $request->anticipo1_valor;
-                    $anticipo1->anticipo1_saldo = $anticipo1->anticipo1_valor;
+                    $anticipo1->anticipo1_saldo = $request->anticipo1_valor;
                     $anticipo1->anticipo1_usuario_elaboro = Auth::user()->id;
                     $anticipo1->anticipo1_fh_elaboro = date('Y-m-d H:m:s');
                     $anticipo1->save();
@@ -162,6 +163,10 @@ class AnticipoController extends Controller
                         $anticipo2->save();
                     }
 
+                    // Reference variables prepare asiento
+                    $detalle = $encabezado = [];
+                    $credito = $debito = 0;
+
                     // Anticipo3
                     $items3 = isset($data['anticipo3']) ? $data['anticipo3'] : null;
                     foreach ($items3 as $value) {
@@ -173,9 +178,76 @@ class AnticipoController extends Controller
                         $anticipo3 = new Anticipo3;
                         $anticipo3->fill($value);
                         $anticipo3->anticipo3_anticipo1 = $anticipo1->id;
-                        $anticipo3->anticipo3_conceptosrc = $value['anticipo3_conceptosrc'];
+                        $anticipo3->anticipo3_conceptosrc = $conceptosrc->id;
                         $anticipo3->save();
+
+                        // Credito y debito
+                        $credito +=  ($anticipo3->anticipo3_naturaleza == 'C') ? $anticipo3->anticipo3_valor : 0;
+                        $debito +=  ($anticipo3->anticipo3_naturaleza == 'D') ? $anticipo3->anticipo3_valor : 0;
+
+                        // Preparando detalle asiento
+                        $result = $anticipo1->detalleAsiento($anticipo3, $tercero, $conceptosrc);
+                        if(!is_array($result)){
+                            DB::rollback();
+                            return response()->json(['success' => false, 'errors' => $result]);
+                        }
+                        $detalle[] = $result;
                     }
+
+                    // Encabezado Asiento
+                    $encabezado = $anticipo1->encabezadoAsiento($tercero, $cuentabanco, $credito, $debito);
+                    if(!is_object($encabezado)){
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $encabezado]);
+                    }
+                    $detalle[] = $encabezado->cuenta;
+
+                    // Creo el objeto para manejar el asiento
+                    $objAsiento = new AsientoContableDocumento($encabezado->data);
+                    if($objAsiento->asiento_error) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $objAsiento->asiento_error]);
+                    }
+                    // Preparar asiento
+                    $result = $objAsiento->asientoCuentas($detalle);
+                    if($result != 'OK'){
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $result]);
+                    }
+
+                    // Insertar asiento
+                    $result = $objAsiento->insertarAsiento();
+                    if($result != 'OK') {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $result]);
+                    }
+                    // AsientoNif
+                    if (!empty($encabezado->dataNif)) {
+                        // Creo el objeto para manejar el asiento
+                        $objAsientoNif = new AsientoNifContableDocumento($encabezado->dataNif);
+                        if($objAsientoNif->asientoNif_error) {
+                            DB::rollback();
+                            return response()->json(['success' => false, 'errors' => $objAsiento->asientoNif_error]);
+                        }
+
+                        // Preparar asiento
+                        $result = $objAsientoNif->asientoCuentas($detalle);
+                        if($result != 'OK'){
+                            DB::rollback();
+                            return response()->json(['success' => false, 'errors' => $result]);
+                        }
+
+                        // Insertar asiento
+                        $result = $objAsientoNif->insertarAsientoNif();
+                        if($result != 'OK') {
+                            DB::rollback();
+                            return response()->json(['success' => false, 'errors' => $result]);
+                        }
+                        // Recuperar el Id del asiento y guardar en la factura
+                        $anticipo1->anticipo1_asienton = $objAsientoNif->asientoNif->id;
+                    }
+                    $anticipo1->anticipo1_asiento = $objAsiento->asiento->id;
+                    $anticipo1->save();
 
                     // Update consecutive regional_anti in Regional
                     $regional->regional_anti = $consecutive;

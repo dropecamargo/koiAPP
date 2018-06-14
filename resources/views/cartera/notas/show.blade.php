@@ -9,13 +9,6 @@
     <div class="box box-primary" id="nota-show">
         <div class="box-body">
             <div class="row">
-                <div class="form-group col-md-3">
-                    <label class="control-label">Código</label>
-                    <div>{{ $nota->id }}</div>
-                </div>
-            </div>
-
-            <div class="row">
                 <div class="form-group col-md-2">
                     <label class="control-label">Fecha</label>
                     <div>{{ $nota->nota1_fecha }}</div>
@@ -30,13 +23,17 @@
                 </div>
             </div>
             <div class="row">
-                <div class="form-group col-md-3">
+                <div class="form-group col-md-5">
                     <label class="control-label">Cliente</label>
                     <div>{{ $nota->tercero_nombre }}</div>
                 </div>
                 <div class="form-group col-md-3">
                     <label class="control-label">Concepto</label>
                     <div>{{ $nota->conceptonota_nombre }}</div>
+                </div>
+                <div class="form-group col-md-2">
+                    <label class="control-label">Valor</label>
+                    <div>{{ number_format ($nota->nota1_valor,2,',' , '.') }}</div>
                 </div>
             </div>
             <div class="row">
@@ -65,7 +62,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                            {{-- Render content recibo2 --}}
+                            {{-- Render content nota2 --}}
                     </tbody>
                     <tfoot>
                         <tr>
@@ -75,6 +72,18 @@
                         </tr>
                     </tfoot>
                 </table>
+            </div>
+        </div>
+    </div>
+    <div class="box box-solid">
+        <div class="box-body">
+            <div class="row">
+                <div class="col-md-6 col-sm-6 col-xs-6 text-left">
+                    <h4><a href="{{ route('asientos.show', ['asientos' =>  $nota->nota1_asiento ]) }}" target="_blanck" title="Ver Asiento"> Ver asiento contable </a></h4>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-6 text-right">
+                    <h4><b>Nota de cartera N° {{$nota->nota1_numero}} </b></h4>
+                </div>
             </div>
         </div>
     </div>

@@ -106,10 +106,9 @@ class Recibo1Controller extends Controller
                     $recibo1->save();
 
                     // Recibo2
-                    $recibo2 = isset($data['recibo2']) ? $data['recibo2'] : null;
                     $detalle = $encabezado = [];
                     $credito = $debito = 0;
-                    foreach ($recibo2 as $item)
+                    foreach ($data['recibo2'] as $item)
                     {
                         $recibo2 = new Recibo2;
                         $recibo2->fill($item);
@@ -180,10 +179,6 @@ class Recibo1Controller extends Controller
                         }
                         $recibo2->save();
 
-                        // Valor del recibo 1
-                        $recibo1->recibo1_valor += $recibo2->recibo2_valor;
-                        $recibo1->save();
-
                         // Credito y debito
                         $credito +=  ($recibo2->recibo2_naturaleza == 'C') ? $recibo2->recibo2_valor : 0;
                         $debito +=  ($recibo2->recibo2_naturaleza == 'D') ? $recibo2->recibo2_valor : 0;
@@ -196,6 +191,7 @@ class Recibo1Controller extends Controller
                         }
                         $detalle[] = $result;
                     }
+                    $recibo1->recibo1_valor = $credito +  $debito;
 
                     foreach ($data['recibo3'] as $value) {
                         // Recupero instancia de MedioPago

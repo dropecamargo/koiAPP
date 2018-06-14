@@ -81,7 +81,7 @@
                         <tfoot>
                             <tr>
                                 <th colspan="3"></th>
-                                <th class="text-left">Total</th>
+                                <th class="text-right">Total</th>
                                 <th class="text-right"  id="total">0</th>
                             </tr>
                         </tfoot>
@@ -105,7 +105,7 @@
 	                    <tfoot>
 	                        <tr>
 	                            <th colspan="1"></th>
-	                            <th class="text-left">Total</th>
+	                            <th class="text-right">Total</th>
 	                            <th class="text-right"  id="total">0</th>
 	                        </tr>
 	                    </tfoot>
@@ -114,4 +114,16 @@
         	</div>
 		</div>
 	</div>
+    <div class="box box-solid">
+        <div class="box-body">
+            <div class="row">
+                <div class="col-md-6 col-sm-6 col-xs-6 text-left">
+                    <h4><a href="{{ route('asientos.show', ['asientos' =>  $anticipo1->anticipo1_asiento ]) }}" target="_blanck" title="Ver Asiento"> Ver asiento contable </a></h4>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-6 text-right">
+                    <h4><b>Anticipo de cartera N° {{$anticipo1->anticipo1_numero}} </b></h4>
+                </div>
+            </div>
+        </div>
+    </div>
 @stop
