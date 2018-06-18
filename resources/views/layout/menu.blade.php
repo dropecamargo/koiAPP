@@ -1,4 +1,4 @@
-<ul class="sidebar-menu">
+    <ul class="sidebar-menu">
     <li class="header">Menú de navegación</li>
     <li class="{{ Request::route()->getName() == 'dashboard' ? 'active' : '' }}">
         <a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> <span>Dashboard </span></a>
@@ -173,23 +173,40 @@
     </li>
 
     {{-- Cobro --}}
-    <li class="treeview {{ in_array(Request::segment(1), ['deudores', 'gestioncarteras']) ? 'active' : '' }}">
+    <li class="treeview {{ in_array(Request::segment(1), ['deudores', 'gestioncarteras', 'importarcarteras', 'rcarteraedadess', 'rhistorialclientess', 'gestiondeudores']) ? 'active' : '' }}">
         <a href="#">
             <i class="fa fa-briefcase"></i> <span>Cobros</span><i class="fa fa-angle-left pull-right"></i>
         </a>
 
         <ul class="treeview-menu">
             {{-- Modulos de cobro --}}
-            <li class="{{ in_array(Request::segment(1), ['deudores', 'gestioncarteras']) ? 'active' : '' }}">
+            <li class="{{ in_array(Request::segment(1), ['deudores', 'gestioncarteras', 'gestiondeudores']) ? 'active' : '' }}">
                 <a href="#">
                     <i class="fa fa-wpforms"></i> Módulos <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
+                    <li class="{{ Request::segment(1) == 'gestioncarteras' ? 'active' : '' }}">
+                        <a href="{{ route('gestioncarteras.index') }}"><i class="fa fa-upload"></i> Gestión de carteras</a>
+                    </li>
                     <li class="{{ Request::segment(1) == 'deudores' ? 'active' : '' }}">
                         <a href="{{ route('deudores.index') }}"><i class="fa fa-user"></i> Deudores</a>
                     </li>
-                    <li class="{{ Request::segment(1) == 'gestioncarteras' ? 'active' : '' }}">
-                        <a href="{{ route('gestioncarteras.index') }}"><i class="fa fa-archive"></i> Gestión de carteras</a>
+                    <li class="{{ Request::segment(1) == 'gestiondeudores' ? 'active' : '' }}">
+                        <a href="{{ route('gestiondeudores.index') }}"><i class="fa fa-archive"></i> Gestión de deudores</a>
+                    </li>
+                </ul>
+            </li>
+            {{-- Reportes cartera --}}
+            <li class="{{ in_array(Request::segment(1), ['rcarteraedadess', 'rhistorialclientess']) ? 'active' : '' }}">
+                <a href="#">
+                    <i class="fa fa-bar-chart-o"></i> Reportes <i class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="treeview-menu">
+                    <li class="{{ Request::segment(1) == 'rcarteraedadess' ? 'active' : '' }}">
+                        <a href="#"><i class="fa fa-circle-o"></i> Cartera edad</a>
+                    </li>
+                    <li class="{{ Request::segment(1) == 'rhistorialclientess' ? 'active' : '' }}">
+                        <a href="#"><i class="fa fa-circle-o"></i> Historial clientes</a>
                     </li>
                 </ul>
             </li>
@@ -448,7 +465,7 @@
                     </li>
                 </ul>
             </li>
-            {{-- Reportes  Tesoreria --}}
+            {{-- Reportes  Tecnico --}}
             <li class="{{ in_array(Request::segment(1), ['rordenesabiertas']) ? 'active' : '' }}">
                 <a href="#">
                     <i class="fa fa-bar-chart-o"></i> Reportes<i class= "fa fa-angle-left pull-right"></i>
@@ -488,7 +505,7 @@
         </ul>
     </li>
     {{-- Tesoreria --}}
-    <li class="treeview {{ in_array(Request::segment(1), ['facturasp', 'cajasmenores','ajustesp', 'egresos', 'retefuentes', 'tipoproveedores', 'tipogastos', 'tipopagos', 'conceptosajustep', 'rhistorialproveedores', 'rcarteraedadesproveedores']) ? 'active' : '' }}">
+    <li class="treeview {{ in_array(Request::segment(1), ['facturasp', 'cajasmenores','ajustesp', 'egresos', 'retefuentes', 'tipoproveedores', 'tipogastos', 'tipopagos', 'conceptosajustep', 'conceptoscajamenor','rhistorialproveedores', 'rcarteraedadesproveedores']) ? 'active' : '' }}">
         <a href="#">
             <i class="fa fa-balance-scale"></i><span> Tesorería</span><i class="fa fa-angle-left pull-right"></i>
         </a>
@@ -528,13 +545,16 @@
                 </ul>
             </li>
             {{-- Referencias Tesoreria --}}
-            <li class="{{ in_array(Request::segment(1), ['retefuentes', 'tipoproveedores', 'tipogastos', 'conceptosajustep', 'tipopagos']) ? 'active' : '' }}">
+            <li class="{{ in_array(Request::segment(1), ['retefuentes', 'tipoproveedores', 'tipogastos', 'conceptosajustep', 'tipopagos', 'conceptoscajamenor']) ? 'active' : '' }}">
                 <a href="#">
                     <i class="fa fa-circle-o"></i> Referencias <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
                     <li class="{{ Request::segment(1) == 'conceptosajustep' ? 'active' : '' }}">
                         <a href="{{ route('conceptosajustep.index') }}"><i class="fa fa-circle-o"></i> Conceptos de ajuste</a>
+                    </li>
+                    <li class="{{ Request::segment(1) == 'conceptoscajamenor' ? 'active' : '' }}">
+                        <a href="{{ route('conceptoscajamenor.index') }}"><i class="fa fa-circle-o"></i> Conceptos caja menor</a>
                     </li>
                     <li class="{{ Request::segment(1) == 'retefuentes' ? 'active' : '' }}">
                         <a href="{{ route('retefuentes.index') }}"><i class="fa fa-circle-o"></i> Retefuente</a>

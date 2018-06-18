@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\Base\Tercero, App\Models\Cobro\ContactoDeudor, App\Models\Cobro\Deudor, App\Models\Cobro\DocumentoCobro, App\Models\Cobro\GestionDeudor;
-use DB, Log, Auth, View, App, Excel;
+use App\Models\Base\Tercero, App\Models\Cobro\ContactoDeudor, App\Models\Cobro\Deudor, App\Models\Cobro\DocumentoCobro;
+use DB, Log, App, Excel;
 
 class GestionCarteraController extends Controller
 {
@@ -100,7 +100,7 @@ class GestionCarteraController extends Controller
             }
 
             // Validar que hayan ingresado tercero
-            if( !$request->has('searchgestioncaretar_tercero') ){
+            if( !$request->has('searchgestioncartera_tercero') ){
                 return response()->json(['success' => false, 'errors' => "Por favor ingrese un tercero para importar."]);
             }
 
@@ -108,10 +108,10 @@ class GestionCarteraController extends Controller
             DB::beginTransaction();
             try {
                 // Recuperar Tercero
-                $tercero = Tercero::where('tercero_nit', $request->searchgestioncaretar_tercero)->first();
+                $tercero = Tercero::where('tercero_nit', $request->searchgestioncartera_tercero)->first();
                 if(!$tercero instanceof Tercero){
                     DB::rollback();
-                    return response()->json(['success' => false, 'errors' => "No es posible recuperar el tercero con documento '$request->searchgestioncaretar_tercero', por favor verifique la información o consulte al administrador."]);
+                    return response()->json(['success' => false, 'errors' => "No es posible recuperar el tercero con documento '$request->searchgestioncartera_tercero', por favor verifique la información o consulte al administrador."]);
                 }
 
                 // Recuperar archivo excel y recorrerlo
