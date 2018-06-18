@@ -141,7 +141,7 @@ class DetalleAjusteController extends Controller
                             }
                             break;
                         case 'R':
-                            if(($request->has('ajuste2_cantidad_salida')) && ($request->has('ajuste2_cantidad_entrada')) || ((int)($request->ajuste2_costo == 0))) {
+                            if($request->ajuste2_cantidad_salida < 0 || $request->ajuste2_cantidad_entrada < 0 || $request->ajuste2_costo == 0) {
                                 return response()->json(['success' => false,'errors' => "No es posible realizar $tipoAjuste->tipoajuste_nombre, por favor verifique la información ó consulte al administrador"]);
                             }
                             break;

@@ -21,6 +21,7 @@ class CreateTipoajusteTable extends Migration
             $table->string('tipoajuste_tipo', 1);
             $table->boolean('tipoajuste_activo')->default(false);
             $table->integer('tipoajuste_cuenta')->unsigned();
+            $table->boolean('tipoajuste_calculaiva')->default(0);
 
             $table->foreign('tipoajuste_cuenta')->references('id')->on('plancuentas')->onDelete('restrict');
         });

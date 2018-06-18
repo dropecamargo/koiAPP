@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use App\Classes\AsientoContableDocumento, App\Classes\AsientoNifContableDocumento;
 use App\Models\Cartera\Ajustec1, App\Models\Cartera\Ajustec2, App\Models\Cartera\ConceptoAjustec, App\Models\Cartera\Factura3, App\Models\Cartera\ChDevuelto, App\Models\Cartera\Anticipo1;
 use App\Models\Base\Tercero, App\Models\Base\Sucursal, App\Models\Base\Regional, App\Models\Base\Documentos;
 use DB, Log, Datatables, Auth;
@@ -104,8 +105,8 @@ class Ajustec1Controller extends Controller
                     $ajustec->ajustec1_fh_elaboro = date('Y-m-d H:m:s');
                     $ajustec->save();
 
-                    $detalle = isset($data['detalle']) ? $data['detalle'] : null;
-                    foreach ($detalle as $item)
+                    $total = 0;
+                    foreach ($data['detalle'] as $item)
                     {
                         // Recupero instancia de Documentos
                         $documentos = Documentos::find($item['ajustec2_documentos_doc']);
@@ -121,7 +122,6 @@ class Ajustec1Controller extends Controller
 
                         switch ($documentos->documentos_codigo) {
                             case 'FACT':
-                                $tercero = Tercero::getTercero($item['ajustec2_tercero']);
                                 if(isset($item['factura3_id'])){
                                     $factura3 = Factura3::where('id',$item['factura3_id'])->where('factura3_factura1', $item['ajustec2_factura1'])->first();
                                     if( !$factura3 instanceof Factura3 ){
@@ -142,7 +142,6 @@ class Ajustec1Controller extends Controller
                                 }
                                 break;
                             case 'CHD':
-                                $tercero = Tercero::getTercero($item['ajustec2_tercero']);
                                 $chdevuelto = ChDevuelto::find($item['chdevuelto_id']);
                                 if ( !$chdevuelto instanceof ChDevuelto ) {
                                     DB::rollback();
@@ -159,7 +158,6 @@ class Ajustec1Controller extends Controller
                                 $ajustec2->ajustec2_valor = $item['ajustec2_valor'];
                             break;
                             case 'ANTI':
-                                $tercero = Tercero::getTercero($item['ajustec2_tercero']);
                                 $anticipo = Anticipo1::find( $item['anticipo_id'] );
                                 if (!$anticipo instanceof Anticipo1) {
                                     DB::rollback();
@@ -171,27 +169,77 @@ class Ajustec1Controller extends Controller
                                 $ajustec2->ajustec2_valor = $item['ajustec2_valor'];
                             break;
                             default:
-                                $tercero = Tercero::where('tercero_nit',$item['ajustec2_tercero'])->first();
                                 $ajustec2->ajustec2_valor = $item['ajustec2_valor'];
                             break;
                         }
-                        // Recupero instancia de Tercero
-                        if(!$tercero instanceof Tercero){
-                            DB::rollback();
-                            return response()->json(['success'=>false, 'errors'=>'No es posible recuperar cliente, verifique información ó por favor consulte al administrador.']);
-                        }
                         $ajustec2->ajustec2_tercero = $tercero->id;
                         $ajustec2->save();
+
+                        // Total para ajustec1
+                        $total += $ajustec2->ajustec2_valor ;
+                    }
+                    $ajustec->ajustec1_valor += $total;
+
+                    // Preparando asiento
+                    $encabezado = $ajustec->encabezadoAsiento($tercero, $conceptoajustec);
+                    if(!is_object($encabezado)){
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $encabezado]);
+                    }
+                    //Creo el objeto para manejar el asiento
+                    $objAsiento = new AsientoContableDocumento($encabezado->data);
+                    if($objAsiento->asiento_error) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $objAsiento->asiento_error]);
+                    }
+                    // Preparar asiento
+                    $result = $objAsiento->asientoCuentas($encabezado->cuenta);
+                    if($result != 'OK'){
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $result]);
                     }
 
+                    // Insertar asiento
+                    $result = $objAsiento->insertarAsiento();
+                    if($result != 'OK') {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $result]);
+                    }
+                    // AsientoNif
+                    if (!empty($encabezado->dataNif)) {
+                        // Creo el objeto para manejar el asiento
+                        $objAsientoNif = new AsientoNifContableDocumento($encabezado->dataNif);
+                        if($objAsientoNif->asientoNif_error) {
+                            DB::rollback();
+                            return response()->json(['success' => false, 'errors' => $objAsiento->asientoNif_error]);
+                        }
+
+                        // Preparar asiento
+                        $result = $objAsientoNif->asientoCuentas($encabezado->cuenta);
+                        if($result != 'OK'){
+                            DB::rollback();
+                            return response()->json(['success' => false, 'errors' => $result]);
+                        }
+
+                        // Insertar asiento
+                        $result = $objAsientoNif->insertarAsientoNif();
+                        if($result != 'OK') {
+                            DB::rollback();
+                            return response()->json(['success' => false, 'errors' => $result]);
+                        }
+                        // Recuperar el Id del asiento y guardar en la factura
+                        $ajustec->ajustec1_asienton = $objAsientoNif->asientoNif->id;
+                    }
+                    $ajustec->ajustec1_asiento = $objAsiento->asiento->id;
+                    $ajustec->save();
                     // Update consecutive regional_ajuc in Sucursal
                     $regional->regional_ajuc = $consecutive;
                     $regional->save();
 
                     // Commit Transaction
                     DB::commit();
-                    // return response()->json(['success' => false, 'errors' => 'TODO OK']);
                     return response()->json(['success' => true, 'id' => $ajustec->id]);
+                    // return response()->json(['success' => false, 'errors' => 'TODO OK']);
                 }catch(\Exception $e){
                     DB::rollback();
                     Log::error($e->getMessage());

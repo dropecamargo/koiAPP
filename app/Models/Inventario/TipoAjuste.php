@@ -35,7 +35,7 @@ class TipoAjuste extends BaseModel
 	*
 	* @var array
 	*/
-	protected $boolean = ['tipoajuste_activo'];
+	protected $boolean = ['tipoajuste_activo', 'tipoajuste_calculaiva'];
 
 	public function isValid($data)
 	{
@@ -43,6 +43,7 @@ class TipoAjuste extends BaseModel
 			'tipoajuste_nombre' => 'required|max:25|unique:tipoajuste',
 			'tipoajuste_sigla' => 'required|max:3|unique:tipoajuste',
 			'tipoajuste_tipo' => 'required|max:1',
+			'tipoajuste_cuenta' => 'required_if_attribute:tipoajuste_tipo,!=,R|min:1|numeric',
 		];
 
         if ($this->exists){
@@ -82,6 +83,14 @@ class TipoAjuste extends BaseModel
             $collection->prepend('', '');
             return $collection;
         });
+    }
+ 	public static function getTipoAjuste($id)
+    {
+        $query = TipoAjuste::query();
+        $query->select('tipoajuste.*', 'plancuentas_cuenta', 'plancuentas_nombre');
+        $query->leftJoin('plancuentas', 'tipoajuste_cuenta', '=', 'plancuentas.id');
+        $query->where('tipoajuste.id', $id);
+    	return $query->first();
     }
 
 	public function getTypesProducto()

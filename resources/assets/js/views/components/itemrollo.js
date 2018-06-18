@@ -13,8 +13,8 @@ app || (app = {});
 
         tagName: 'tr',
         template: null,
-        parameters: { 
-            type: 'E'   
+        parameters: {
+            type: 'E'
         },
 
         /**
@@ -33,7 +33,7 @@ app || (app = {});
         * Render View Element
         */
         render: function(){
-            this.template = _.template( ($( this.parameters.type == 'E' ? '#add-itemsrollos-tpl' : '#chooses-itemsrollos-tpl' ).html() || '') );
+            this.template = _.template( ($( this.parameters.type == 'E' || this.parameters.entry > 0 ? '#add-itemsrollos-tpl' : '#chooses-itemsrollos-tpl' ).html() || '') );
 
             var attributes = this.model.toJSON();
             this.$el.html( this.template(attributes) );

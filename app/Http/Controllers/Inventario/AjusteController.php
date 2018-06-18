@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\Inventario\Ajuste1, App\Models\Inventario\Ajuste2, App\Models\Inventario\TipoAjuste, App\Models\Inventario\Producto ,App\Models\Inventario\Lote, App\Models\Inventario\Rollo, App\Models\Inventario\Prodbode, App\Models\Inventario\Inventario, App\Models\Base\Documentos, App\Models\Base\Sucursal;
+
+use App\Classes\AsientoContableDocumento, App\Classes\AsientoNifContableDocumento;
+use App\Models\Inventario\Ajuste1, App\Models\Inventario\Ajuste2, App\Models\Inventario\TipoAjuste, App\Models\Inventario\Producto ,App\Models\Inventario\Lote, App\Models\Inventario\Rollo, App\Models\Inventario\Prodbode, App\Models\Inventario\Inventario, App\Models\Inventario\Linea, App\Models\Base\Documentos, App\Models\Base\Sucursal;
 use DB, Log, Datatables, Auth, App, View,Excel;
 
 class AjusteController extends Controller
@@ -109,11 +111,29 @@ class AjusteController extends Controller
                     $ajuste->save();
 
                     // Detalle ajuste
+                    $naturaleza = "";
+                    $naturalezaCuadre = "";
+                    if ($tipoajuste->tipoajuste_tipo == "E") {
+                        $naturaleza = 'D';
+                        $naturalezaCuadre = 'C';
+                    }elseif ($tipoajuste->tipoajuste_tipo == "S") {
+                        $naturaleza = 'C';
+                        $naturalezaCuadre = 'D';
+                    }
+                    $detalleAsiento = [];
+                    $total = 0;
                     foreach ($data['ajuste2'] as $item) {
+                        // Producto
                         $producto = Producto::find( $item['id_producto'] );
                         if (!$producto instanceof Producto) {
                             DB::rollback();
                             return response()->json(['success' => false, 'errors' => 'No es posible recuperar el producto, por favor verifique la información o consulte al administrador']);
+                        }
+                        // Linea
+                        $linea = Linea::find($producto->producto_linea);
+                        if (!$linea instanceof Linea) {
+                            DB::rollback();
+                            return response()->json(['success' => false, 'errors' => 'No es posible recuperar linea de producto, por favor verifique la información o consulte al administrador']);
                         }
 
                         if( !in_array($producto->tipoproducto->tipoproducto_codigo, explode(',', $tipoajuste->getTypesProducto()->tipoajuste_tipoproducto) ) ){
@@ -122,7 +142,6 @@ class AjusteController extends Controller
                         }
 
                         if ($tipoajuste->tipoajuste_tipo == 'E' || $item['ajuste2_cantidad_entrada'] > 0) {
-
                             // Detalle ajuste != Manejaserie
                             if ($producto->producto_maneja_serie != true) {
 
@@ -145,7 +164,6 @@ class AjusteController extends Controller
                             }
                             // Producto maneja serie
                             if ($producto->producto_maneja_serie == true) {
-
                                 // Costo
                                 $costo = $item['ajuste2_costo'];
 
@@ -234,8 +252,7 @@ class AjusteController extends Controller
                                     return response()->json(['success' => false,'errors '=> $inventario]);
                                 }
                             }
-                        }else if($tipoajuste->tipoajuste_tipo == 'S'){
-
+                        }else if($tipoajuste->tipoajuste_tipo == 'S' || $item['ajuste2_cantidad_salida'] > 0){
                             //Detalle ajuste
                             $ajusteDetalle = new Ajuste2;
                             $ajusteDetalle->fill($item);
@@ -265,7 +282,6 @@ class AjusteController extends Controller
                                     return response()->json(['success' => false,'errors '=> $inventario]);
                                 }
                             }else if($producto->producto_metrado == true){
-
                                 $items = isset($item['items']) ? $item['items'] : null;
                                 foreach ($items as $key => $valueItem) {
                                     if ($valueItem > 0) {
@@ -319,14 +335,72 @@ class AjusteController extends Controller
                                 }
                             }
                         }
+                        $total += $ajusteDetalle->ajuste2_costo;
+                        if (!empty($naturaleza)) {
+                            $detalleAsiento[] = $ajuste->detalleAsiento($naturaleza,$linea->linea_cuenta, $ajusteDetalle->ajuste2_costo);
+                        }
                     }
+                    if (!empty($naturalezaCuadre)) {
+                        $detalleAsiento[] = $ajuste->detalleAsiento($naturalezaCuadre,$tipoajuste->tipoajuste_cuenta, $total);
+                        $encabezado = $ajuste->encabezadoAsiento();
+                        if(!is_object($encabezado)){
+                            DB::rollback();
+                            return response()->json(['success' => false, 'errors' => $encabezado]);
+                        }
+                        //Creo el objeto para manejar el asiento
+                        $objAsiento = new AsientoContableDocumento($encabezado->data);
+                        if($objAsiento->asiento_error) {
+                            DB::rollback();
+                            return response()->json(['success' => false, 'errors' => $objAsiento->asiento_error]);
+                        }
+                        // Preparar asiento
+                        $result = $objAsiento->asientoCuentas($detalleAsiento);
+                        if($result != 'OK'){
+                            DB::rollback();
+                            return response()->json(['success' => false, 'errors' => $result]);
+                        }
 
+                        // Insertar asiento
+                        $result = $objAsiento->insertarAsiento();
+                        if($result != 'OK') {
+                            DB::rollback();
+                            return response()->json(['success' => false, 'errors' => $result]);
+                        }
+                        // AsientoNif
+                        if (!empty($encabezado->dataNif)) {
+                            // Creo el objeto para manejar el asiento
+                            $objAsientoNif = new AsientoNifContableDocumento($encabezado->dataNif);
+                            if($objAsientoNif->asientoNif_error) {
+                                DB::rollback();
+                                return response()->json(['success' => false, 'errors' => $objAsiento->asientoNif_error]);
+                            }
+
+                            // Preparar asiento
+                            $result = $objAsientoNif->asientoCuentas($detalleAsiento);
+                            if($result != 'OK'){
+                                DB::rollback();
+                                return response()->json(['success' => false, 'errors' => $result]);
+                            }
+
+                            // Insertar asiento
+                            $result = $objAsientoNif->insertarAsientoNif();
+                            if($result != 'OK') {
+                                DB::rollback();
+                                return response()->json(['success' => false, 'errors' => $result]);
+                            }
+                            // Recuperar el Id del asiento
+                            $ajuste->ajuste1_asienton = $objAsientoNif->asientoNif->id;
+                        }
+                        $ajuste->ajuste1_asiento = $objAsiento->asiento->id;
+                        $ajuste->save();
+                    }
                     // Update consecutive sucursal_ajus in Sucursal
                     $sucursal->sucursal_ajus = $consecutive;
                     $sucursal->save();
 
                     // Commit Transaction
                     DB::commit();
+                    // return response()->json(['success' => false, 'errors' => 'TODO OK']);
                     return response()->json(['success' => true, 'id' => $ajuste->id]);
                 }catch (\Exception $e) {
                     DB::rollback();

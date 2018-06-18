@@ -3,8 +3,8 @@
 namespace App\Models\Inventario;
 
 use Illuminate\Database\Eloquent\Model;
-use Validator, DB;
 
+use Validator, DB;
 class Ajuste2 extends Model
 {
 	/**

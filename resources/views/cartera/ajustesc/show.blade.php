@@ -10,33 +10,29 @@
         <div class="box-body">
             <div class="row">
                 <div class="form-group col-md-3">
-                    <label class="control-label">Código</label>
-                    <div>{{ $ajustec->id }}</div>
-                </div>
-                <div class="form-group col-md-3">
                     <label class="control-label">Fecha</label>
                     <div>{{ $ajustec->ajustec1_fecha }}</div>
                 </div>
-            </div>
-            <div class="row">
                 <div class="form-group col-md-3">
                     <label class="control-label">Sucursal</label>
                     <div>{{ $ajustec->sucursal_nombre }}</div>
                 </div>
                 <div class="form-group col-md-2">
-                    <label class="control-label">Numero</label>
+                    <label class="control-label">Número</label>
                     <div>{{ $ajustec->ajustec1_numero }}</div>
-                </div>
-                <div class="form-group col-md-4">
-                    <label class="control-label">Cliente</label>
-                    <div>{{ $ajustec->tercero_nombre }}</div>
                 </div>
             </div>
             <div class="row">
+                <div class="form-group col-md-6">
+                    <label class="control-label">Cliente</label>
+                    <div>{{ $ajustec->tercero_nombre }}</div>
+                </div>
                 <div class="form-group col-md-3">
                     <label class="control-label">Concepto</label>
                     <div>{{ $ajustec->conceptoajustec_nombre }}</div>
                 </div>
+            </div>
+            <div class="row">
                 <div class="form-group col-md-8">
                     <label class="control-label">Observaciones</label>
                     <div>{{ $ajustec->ajustec1_observaciones }}</div>
@@ -80,6 +76,18 @@
             <div class="row">
                 <div class="col-md-2 col-md-offset-5 col-sm-6 col-xs-6 text-left">
                     <a href=" {{ route('ajustesc.index') }}" class="btn btn-default btn-sm btn-block">{{ trans('app.comeback') }}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="box box-solid">
+        <div class="box-body">
+            <div class="row">
+                <div class="col-md-6 col-sm-6 col-xs-6 text-left">
+                    <h4><a href="{{ route('asientos.show', ['asientos' =>  $ajustec->ajustec1_asiento ]) }}" target="_blanck" title="Ver Asiento"> Ver asiento contable </a></h4>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-6 text-right">
+                    <h4><b>Ajuste de cartera N° {{$ajustec->ajustec1_numero}} </b></h4>
                 </div>
             </div>
         </div>

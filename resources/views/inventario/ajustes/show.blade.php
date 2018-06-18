@@ -91,4 +91,18 @@
             </div>
         </div>
     </div>
+    @if($ajuste1->tipoajuste_tipo != 'R')
+        <div class="box box-solid">
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-6 col-sm-6 col-xs-6 text-left">
+                        <h4><a href="{{ route('asientos.show', ['asientos' =>  $ajuste1->ajuste1_asiento ]) }}" target="_blanck" title="Ver Asiento"> Ver asiento contable </a></h4>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-6 text-right">
+                        <h4><b>Ajuste de inventario N° {{$ajuste1->ajuste1_numero}} </b></h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
 @stop

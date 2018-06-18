@@ -9,21 +9,25 @@
     <div class="box box-primary">
         <div class="box-body">
             <div class="row">
-                <div class="col-sm-4">
+                <div class="col-sm-6">
                     <label class="control-label">Nombre</label>
                     <div>{{ $lineas->linea_nombre }}</div>
                 </div>
+                <div class="col-sm-6">
+                    <label class="control-label">Plan de cuentas</label>
+                    <div>{{ $lineas->plancuentas_cuenta }} - {{ $lineas->plancuentas_nombre }}</div>
+                </div>
             </div>
             <div class="row">
-                <div class="col-sm-3">
+                <div class="col-sm-2">
                     <label class="control-label">Nivel 1</label>
                     <div>{{ $lineas->linea_margen_nivel1 }}</div>
                 </div>
-                <div class="col-sm-3">
+                <div class="col-sm-2">
                     <label class="control-label">Nivel 2</label>
                     <div>{{ $lineas->linea_margen_nivel2 }}</div>
                 </div>
-                <div class="col-sm-3">
+                <div class="col-sm-2">
                     <label class="control-label">Nivel 3</label>
                     <div>{{ $lineas->linea_margen_nivel3 }}</div>
                 </div>

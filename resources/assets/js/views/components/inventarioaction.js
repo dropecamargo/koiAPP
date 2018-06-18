@@ -68,7 +68,7 @@ app || (app = {});
                 _this = this,
                 stuffToDo = {
                     'modalSerie': function() {
-                        if (resp.tipo == 'E' || resp.data.ajuste2_cantidad_entrada) {
+                        if (resp.tipo == 'E' || resp.data.ajuste2_cantidad_entrada > 0) {
                             _this.$modalIn.find('.content-modal').empty().html(_this.templateAddSeries( ));
                             _this.$modalIn.find('.modal-title').text('Inventario, Entradas De Productos ');
                         }
@@ -76,7 +76,7 @@ app || (app = {});
                         _this.referenceSerie(resp);
                     },
                     'ProductoMetrado': function(){
-                        if (resp.tipo  == 'E' || resp.data.ajuste2_cantidad_entrada) {
+                        if (resp.tipo  == 'E' || resp.data.ajuste2_cantidad_entrada ) {
                             _this.$modalIn.find('.content-modal').empty().html(_this.templateAddItemRollo(resp) );
                             _this.$modalIn.find('.modal-title').text('Inventario - Entradas de productos metrados');
                             _this.referenceMetrado(resp);
@@ -87,7 +87,7 @@ app || (app = {});
                         }
                     },
                     'ProductoVence': function(){
-                        if (resp.tipo  == 'E' || resp.data.ajuste2_cantidad_entrada) {
+                        if (resp.tipo  == 'E' || resp.data.ajuste2_cantidad_entrada > 0) {
                             _this.$modalIn.find('.content-modal').empty().html(_this.templateAddItemsProductVence(resp) );
                             _this.$modalIn.find('.modal-title').text('Inventario - Entradas de productos con fecha de vencimiento ');
                             _this.referenceVencimiento(resp);
@@ -191,12 +191,12 @@ app || (app = {});
             this.$wraperFormIn = this.$modalIn.find('.content-modal');
             this.$wraperErrorIn = this.$('#error-inventario');
 
-            if(atributes.tipo == 'E' ){
+            if(atributes.tipo == 'E' || atributes.data.ajuste2_cantidad_entrada > 0){
                 // Items rollo view
                 this.$wraperItemRollo = this.$('#browse-itemtollo-list');
                 this.itemRolloINList.add( new app.ItemRolloModel({ id: shortid.uuid() }) );
 
-            }else{
+            }else if (atributes.tipo == 'S' || atributes.data.ajuste2_cantidad_salida > 0) {
                 //salidas
                 this.$wraperItemRollo = this.$('#browse-chooseitemtollo-list');
                 this.itemRolloINList.fetch({ reset: true, data: { producto: atributes.data.producto_serie,   sucursal: atributes.data.sucursal } });
@@ -309,7 +309,8 @@ app || (app = {});
             var view = new app.ItemRolloINListView({
                 model: itemRolloModel,
                 parameters: {
-                    type: this.parameters.tipo
+                    type: this.parameters.tipo,
+                    entry: this.parameters.data.ajuste2_cantidad_entrada
                 }
             });
             itemRolloModel.view = view;
@@ -326,7 +327,7 @@ app || (app = {});
                     this.parameters.data = $.extend({}, this.parameters.data, window.Misc.formToJson(e.target));
                     this.collection.trigger('store', this.parameters.data);
 
-                }else if(this.parameters.action == 'ProductoMetrado' && this.parameters.tipo == 'E') {
+                }else if(this.parameters.action == 'ProductoMetrado' && this.parameters.tipo == 'E' || this.parameters.data.ajuste2_cantidad_entrada) {
                     var metros = 0,
                         cantidad = 0;
 

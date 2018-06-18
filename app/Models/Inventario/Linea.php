@@ -42,6 +42,7 @@ class Linea extends BaseModel
     {
         $rules = [
             'linea_nombre' => 'required|max:50|unique:linea',
+            'linea_cuenta' => 'required|min:1',
             'linea_margen_nivel1' => 'max:4',
             'linea_margen_nivel2' => 'max:4',
             'linea_margen_nivel3' => 'max:4',
@@ -87,6 +88,15 @@ class Linea extends BaseModel
             $collection->prepend('', '');
             return $collection;
         });
+    }
+
+    public static function getline($id)
+    {
+        $query = Linea::query();
+        $query->select('linea.*', 'plancuentas_cuenta', 'plancuentas_nombre');
+        $query->leftJoin('plancuentas', 'linea_cuenta', '=', 'plancuentas.id');
+        $query->where('linea.id', $id);
+        return $query->first();
     }
 
 }
