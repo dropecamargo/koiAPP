@@ -49,14 +49,40 @@ class LineaController extends Controller
             if ($linea->isValid($data)) {
                 DB::beginTransaction();
                 try {
-                    // Recupero instancia de Plan de Cuentas
-                    $cuenta = PlanCuenta::find($request->linea_cuenta);
-                    if (!$cuenta instanceof PlanCuenta) {
+                    // Recupero instancia de Plan de Cuentas - Inventario
+                    $cuentaInventario = PlanCuenta::find($request->linea_inventario);
+                    if (!$cuentaInventario instanceof PlanCuenta) {
                         DB::rollback();
-                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar plan de cuenta, verifique información ó por favor consulte al administrador.']);
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar plan de cuenta linea inventario, verifique información ó por favor consulte al administrador.']);
                     }
                     // Validando Sub Niveles
-                    $result = $cuenta->validarSubnivelesCuenta();
+                    $result = $cuentaInventario->validarSubnivelesCuenta();
+                    if ($result != 'OK') {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $result ]);
+                    }
+
+                    // Recupero instancia de Plan de Cuentas - Costo
+                    $cuentaCostos = PlanCuenta::find($request->linea_costo);
+                    if (!$cuentaCostos instanceof PlanCuenta) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar plan de cuenta linea costo, verifique información ó por favor consulte al administrador.']);
+                    }
+                    // Validando Sub Niveles
+                    $result = $cuentaCostos->validarSubnivelesCuenta();
+                    if ($result != 'OK') {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $result ]);
+                    }
+
+                    // Recupero instancia de Plan de Cuentas - Venta
+                    $cuentaVentas = PlanCuenta::find($request->linea_venta);
+                    if (!$cuentaVentas instanceof PlanCuenta) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar plan de cuenta linea venta, verifique información ó por favor consulte al administrador.']);
+                    }
+                    // Validando Sub Niveles
+                    $result = $cuentaVentas->validarSubnivelesCuenta();
                     if ($result != 'OK') {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => $result ]);
@@ -64,7 +90,9 @@ class LineaController extends Controller
                     // Linea
                     $linea->fill($data);
                     $linea->fillBoolean($data);
-                    $linea->linea_cuenta = $cuenta->id;
+                    $linea->linea_inventario = $cuentaInventario->id;
+                    $linea->linea_costo = $cuentaCostos->id;
+                    $linea->linea_venta = $cuentaVentas->id;
                     $linea->save();
 
                     // Commit Transaction
@@ -127,14 +155,40 @@ class LineaController extends Controller
             if ($linea->isValid($data)) {
                 DB::beginTransaction();
                 try {
-                    // Recupero instancia de Plan de Cuentas
-                    $cuenta = PlanCuenta::find($request->linea_cuenta);
-                    if (!$cuenta instanceof PlanCuenta) {
+                    // Recupero instancia de Plan de Cuentas - Inventario
+                    $cuentaInventario = PlanCuenta::find($request->linea_inventario);
+                    if (!$cuentaInventario instanceof PlanCuenta) {
                         DB::rollback();
-                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar plan de cuenta, verifique información ó por favor consulte al administrador.']);
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar plan de cuenta linea inventario, verifique información ó por favor consulte al administrador.']);
                     }
                     // Validando Sub Niveles
-                    $result = $cuenta->validarSubnivelesCuenta();
+                    $result = $cuentaInventario->validarSubnivelesCuenta();
+                    if ($result != 'OK') {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $result ]);
+                    }
+
+                    // Recupero instancia de Plan de Cuentas - Costo
+                    $cuentaCostos = PlanCuenta::find($request->linea_costo);
+                    if (!$cuentaCostos instanceof PlanCuenta) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar plan de cuenta linea costo, verifique información ó por favor consulte al administrador.']);
+                    }
+                    // Validando Sub Niveles
+                    $result = $cuentaCostos->validarSubnivelesCuenta();
+                    if ($result != 'OK') {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $result ]);
+                    }
+
+                    // Recupero instancia de Plan de Cuentas - Venta
+                    $cuentaVentas = PlanCuenta::find($request->linea_venta);
+                    if (!$cuentaVentas instanceof PlanCuenta) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar plan de cuenta linea venta, verifique información ó por favor consulte al administrador.']);
+                    }
+                    // Validando Sub Niveles
+                    $result = $cuentaVentas->validarSubnivelesCuenta();
                     if ($result != 'OK') {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => $result ]);
@@ -142,9 +196,11 @@ class LineaController extends Controller
                     // Linea
                     $linea->fill($data);
                     $linea->fillBoolean($data);
-                    $linea->linea_cuenta = $cuenta->id;
+                    $linea->linea_inventario = $cuentaInventario->id;
+                    $linea->linea_costo = $cuentaCostos->id;
+                    $linea->linea_venta = $cuentaVentas->id;
                     $linea->save();
-
+                    
                     // Commit Transaction
                     DB::commit();
 

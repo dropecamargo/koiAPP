@@ -1262,10 +1262,30 @@
 			<div class="help-block with-errors"></div>
 		</div>
 		<div class="form-group col-sm-6">
-			<label for="linea_cuenta" class="control-label">Plan cuenta</label>
-			<select name="linea_cuenta" id="linea_cuenta" class="form-control select2-default-clear" required>
+			<label for="linea_inventario" class="control-label">Cuenta de inventario</label>
+			<select name="linea_inventario" id="linea_inventario" class="form-control select2-default-clear" required>
 				@foreach( App\Models\Contabilidad\PlanCuenta::getPlanCuentas() as $key => $value)
-					<option value="{{ $key }}" <%- linea_cuenta == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
+					<option value="{{ $key }}" <%- linea_inventario == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
+				@endforeach
+			</select>
+			<div class="help-block with-errors"></div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="form-group col-sm-6">
+			<label for="linea_costo" class="control-label">Cuenta de costos</label>
+			<select name="linea_costo" id="linea_costo" class="form-control select2-default-clear" required>
+				@foreach( App\Models\Contabilidad\PlanCuenta::getPlanCuentas() as $key => $value)
+					<option value="{{ $key }}" <%- linea_costo == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
+				@endforeach
+			</select>
+			<div class="help-block with-errors"></div>
+		</div>
+		<div class="form-group col-sm-6">
+			<label for="linea_venta" class="control-label">Cuenta de ventas</label>
+			<select name="linea_venta" id="linea_venta" class="form-control select2-default-clear" required>
+				@foreach( App\Models\Contabilidad\PlanCuenta::getPlanCuentas() as $key => $value)
+					<option value="{{ $key }}" <%- linea_venta == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
 				@endforeach
 			</select>
 			<div class="help-block with-errors"></div>

@@ -21,7 +21,9 @@ app || (app = {});
         	'linea_margen_nivel2' : 0,
         	'linea_margen_nivel3' : 0,
             'linea_unidadnegocio' : '',
-            'linea_cuenta' : '',
+            'linea_inventario' : '',
+            'linea_venta' : '',
+            'linea_costo' : '',
             'linea_activo' : 1
         }
     });

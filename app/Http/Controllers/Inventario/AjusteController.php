@@ -335,9 +335,9 @@ class AjusteController extends Controller
                                 }
                             }
                         }
-                        $total += $ajusteDetalle->ajuste2_costo;
                         if (!empty($naturaleza)) {
-                            $detalleAsiento[] = $ajuste->detalleAsiento($naturaleza,$linea->linea_cuenta, $ajusteDetalle->ajuste2_costo);
+                            $total += $ajusteDetalle->ajuste2_costo;
+                            $detalleAsiento[] = $ajuste->detalleAsiento($naturaleza,$linea->linea_inventario, $ajusteDetalle->ajuste2_costo);
                         }
                     }
                     if (!empty($naturalezaCuadre)) {

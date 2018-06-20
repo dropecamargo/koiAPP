@@ -33,7 +33,7 @@ app || (app = {});
             this.$wraperForm = this.$('#render-form-ajuste');
 
             this.detalleAjuste = new app.AjustesDetalleCollection();
-
+            this.response = '';
             // Events
             this.listenTo( this.model, 'change', this.render );
             this.listenTo( this.model, 'sync', this.responseServer );
@@ -88,6 +88,13 @@ app || (app = {});
 
             if (!e.isDefaultPrevented()) {
                 e.preventDefault();
+
+                // Valida que entrada y salidas sean iguales en $$$  en tipo 'R'
+                console.log();
+                if(this.detalleAjuste.diferencia() != 0 && this.response.tipoajuste_tipo == 'R'){
+                    alertify.error("Entrada no igual a salidas");
+                    return;
+                }
                 var data = window.Misc.formToJson( e.target );
                     data.ajuste2 = this.detalleAjuste.toJSON();
                 this.model.save( data, {patch: true, silent: true} );
@@ -128,6 +135,8 @@ app || (app = {});
                                 }
                             });
                             _this.inventarioActionView.render();
+                            _this.$divDetalle.empty().html( _this.templateDetailt( _this.response ) );
+                            _this.ready();
                         }
                     })(this)
                 });
@@ -157,7 +166,7 @@ app || (app = {});
 
                     //Render form detalle ajuste
                     _this.$divDetalle.empty().html( _this.templateDetailt( resp ) );
-
+                    _this.response = resp ;
                     //Hide input lote
                     (resp.tipoajuste_tipo == 'S') ? _this.$('#ajuste1_lotes').hide() : _this.$('#ajuste1_lotes').show();
 
@@ -179,12 +188,11 @@ app || (app = {});
         */
         changeReclacification:function(e){
             e.preventDefault();
-
-            if ($(e.target).attr('id') == $('#ajuste2_cantidad_entrada').attr('id')) {
-                $('#ajuste2_cantidad_salida').removeAttr("required").prop('readonly', true);
-            }else{
-                $('#ajuste2_cantidad_entrada').removeAttr("required").prop('readonly', true);
-                $('#ajuste2_costo').prop('readonly',true);
+            if (this.$(e.target).attr('id') == this.$('#ajuste2_cantidad_entrada').attr('id')) {
+                this.$('#ajuste2_cantidad_salida').removeAttr("required").prop('readonly', true);
+            }else if ($(e.target).attr('id') == this.$('#ajuste2_cantidad_salida').attr('id')) {
+                this.$('#ajuste2_cantidad_entrada').removeAttr("required").prop('readonly', true);
+                this.$('#ajuste2_costo').prop('readonly',true);
             }
         },
         /**

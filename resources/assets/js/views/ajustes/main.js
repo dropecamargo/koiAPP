@@ -32,7 +32,7 @@ app || (app = {});
             this.$searchAjusteFecha = this.$('#searchajuste_ajuste_fecha');
 
             this.ajustesSearchTable = this.$ajustesSearchTable.DataTable({
-                dom:"<'row'<'col-sm-4'B><'col-sm-4 text-center'l>>" +
+                dom:"<'row'<'col-sm-6'B><'col-sm-6 text-right'l>>" +
                     "<'row'<'col-sm-12'tr>>" +
                     "<'row'<'col-sm-5'i><'col-sm-7'p>>",
                 processing: true,

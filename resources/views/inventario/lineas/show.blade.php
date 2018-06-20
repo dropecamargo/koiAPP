@@ -14,7 +14,7 @@
                     <div>{{ $lineas->linea_nombre }}</div>
                 </div>
                 <div class="col-sm-6">
-                    <label class="control-label">Plan de cuentas</label>
+                    <label class="control-label">Cuenta de inventario</label>
                     <div>{{ $lineas->plancuentas_cuenta }} - {{ $lineas->plancuentas_nombre }}</div>
                 </div>
             </div>
