@@ -13,9 +13,13 @@
                     <label>Sigla</label>
                     <div>{{ $tipoajuste->tipoajuste_sigla }}</div>
                 </div>
-                <div class="col-sm-8">
+                <div class="col-sm-4">
                     <label>Nombre</label>
                     <div>{{ $tipoajuste->tipoajuste_nombre }}</div>
+                </div>
+                <div class="col-sm-6">
+                    <label>Plan cuenta</label>
+                    <div>{{ $tipoajuste->plancuentas_nombre }} - {{$tipoajuste->plancuentas_cuenta}}</div>
                 </div>
             </div>
             <div class="row">
@@ -26,6 +30,11 @@
                 <div class="col-sm-2">
                      <label class="checkbox-inline" for="tipoajuste_activo">
                             <input type="checkbox" id="tipoajuste_activo" name="tipoajuste_activo" value="tipoajuste_activo" disabled {{ $tipoajuste->tipoajuste_activo  ? 'checked': '' }}> Activo
+                    </label>
+                </div>
+                <div class="col-sm-2">
+                     <label class="checkbox-inline" for="tipoajuste_calculaiva">
+                            <input type="checkbox" id="tipoajuste_calculaiva" name="tipoajuste_calculaiva" value="tipoajuste_calculaiva" disabled {{ $tipoajuste->tipoajuste_calculaiva  ? 'checked': '' }}> ¿ Calcula iva ?
                     </label>
                 </div>
             </div>

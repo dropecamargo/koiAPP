@@ -18,6 +18,7 @@ app || (app = {});
             'click .submit-tipoajuste': 'submitTipoajuste',
             'submit #form-tipoajuste': 'onStore',
             'submit #form-detalle-tipoajuste': 'onStoreItem',
+            'change #tipoajuste_tipo': 'changeTipoAjuste',
         },
 
         /**
@@ -47,6 +48,10 @@ app || (app = {});
             // References
             this.$form = this.$('#form-tipoajuste');
             this.$formItem = this.$('#form-detallle-tipoajuste');
+
+            // Control de select tipo
+            this.$('#tipoajuste_tipo').change()
+
 
             this.referenceViews();
             this.ready();
@@ -97,7 +102,15 @@ app || (app = {});
                 this.detalleTipoAjusteList.trigger('store', data);
             }
         },
-
+        /**
+        * Controla el select del tipo de ajuste
+        */
+        changeTipoAjuste: function (e) {
+            e.preventDefault();
+            if ( this.$(e.target).val() == 'R') {
+                this.$('#tipoajuste_cuenta').parent().hide();
+            }
+        },
         /**
         * fires libraries js
         */

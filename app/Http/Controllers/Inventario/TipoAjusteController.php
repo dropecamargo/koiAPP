@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\Inventario\TipoAjuste, App\Models\Inventario\TipoAjuste2, App\Models\Inventario\TipoProducto;
+use App\Models\Inventario\TipoAjuste, App\Models\Inventario\TipoAjuste2, App\Models\Inventario\TipoProducto, App\Models\Contabilidad\PlanCuenta;
 use DB, Log, Datatables, Cache;
 
 class TipoAjusteController extends Controller
@@ -48,14 +48,29 @@ class TipoAjusteController extends Controller
             if ($tipoajuste->isValid($data)) {
                 DB::beginTransaction();
                 try {
-                    //tipoajuste
+
+                    // Tipo Ajuste
                     $tipoajuste->fill($data);
                     $tipoajuste->fillBoolean($data);
+
+                    if ($request->has('tipoajuste_cuenta')) {
+                        $cuenta = PlanCuenta::find($request->tipoajuste_cuenta);
+                        if (!$cuenta instanceof PlanCuenta) {
+                            DB::rollback();
+                            return response()->json(['success' => false, 'errors' => 'No es posible recuperar plan de cuenta, verifique información ó por favor consulte al administrador.']);
+                        }
+                        // Validando Sub Niveles
+                        $result = $cuenta->validarSubnivelesCuenta();
+                        if ($result != 'OK') {
+                            DB::rollback();
+                            return response()->json(['success' => false, 'errors' => $result ]);
+                        }
+                        $tipoajuste->tipoajuste_cuenta = $cuenta->id;
+                    }
                     $tipoajuste->save();
 
-                    // Select multiple && Guardar referencia select multiple
-                    $detalle = isset($data['detalle']) ? $data['detalle'] : null;
-                    foreach ( $detalle as $tipoproducto) {
+                    // Select multiple guarda referencia select multiple
+                    foreach ( $data['detalle'] as $tipoproducto) {
                         $tipoajuste2 = new TipoAjuste2;
                         $tipoajuste2->tipoajuste2_tipoajuste = $tipoajuste->id;
                         $tipoajuste2->tipoajuste2_tipoproducto = $tipoproducto['tipoproducto'];
@@ -86,7 +101,7 @@ class TipoAjusteController extends Controller
      */
     public function show(Request $request, $id)
     {
-        $tipoajuste = TipoAjuste::findOrFail($id);
+        $tipoajuste = TipoAjuste::getTipoAjuste($id);
         if ($request->ajax()) {
             // Recuperar tipoajuste2
             if($request->has('call')){
@@ -124,14 +139,28 @@ class TipoAjusteController extends Controller
             if ($tipoajuste->isValid($data)) {
                 DB::beginTransaction();
                 try {
-                    //tipoajuste
+                    // Tipo Ajuste
                     $tipoajuste->fill($data);
                     $tipoajuste->fillBoolean($data);
+
+                    if ($request->has('tipoajuste_cuenta')) {
+                        $cuenta = PlanCuenta::find($request->tipoajuste_cuenta);
+                        if (!$cuenta instanceof PlanCuenta) {
+                            DB::rollback();
+                            return response()->json(['success' => false, 'errors' => 'No es posible recuperar plan de cuenta, verifique información ó por favor consulte al administrador.']);
+                        }
+                        // Validando Sub Niveles
+                        $result = $cuenta->validarSubnivelesCuenta();
+                        if ($result != 'OK') {
+                            DB::rollback();
+                            return response()->json(['success' => false, 'errors' => $result ]);
+                        }
+                        $tipoajuste->tipoajuste_cuenta = $cuenta->id;
+                    }
                     $tipoajuste->save();
 
                     // Select multiple && Guardar referencia select multiple
-                    $detalle = isset($data['detalle']) ? $data['detalle'] : null;
-                    foreach ( $detalle as $tipoproducto) {
+                    foreach ( $data['detalle'] as $tipoproducto) {
                         // Validar Tipodeporudcto
                         $validar = TipoAjuste2::where('tipoajuste2_tipoproducto', $tipoproducto['tipoproducto'])->where('tipoajuste2_tipoajuste', $tipoajuste->id)->first();
                         if( !$validar instanceof TipoAjuste2 ){

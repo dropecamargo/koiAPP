@@ -358,6 +358,11 @@ app || (app = {});
             'egresos/create(/)': 'getEgresoCreate',
             'egresos/:egresos(/)': 'getEgresoShow',
 
+            // Caja Menor
+            'cajasmenores(/)': 'getCajasMenoresMain',
+            'cajasmenores/create(/)': 'getCajaMenorCreate',
+            'cajasmenores/:cajasmenores(/)': 'getCajaMenorShow',
+
             // Retefuente
             'retefuentes(/)': 'getReteFuentesMain',
             'retefuentes/create(/)': 'getReteFuenteCreate',
@@ -382,6 +387,11 @@ app || (app = {});
             'conceptosajustep(/)': 'getConceptosAjustepMain',
             'conceptosajustep/create(/)': 'getConceptosAjustepCreate',
             'conceptosajustep/:conceptosajustep/edit(/)': 'getConceptosAjustepEdit',
+
+            // Conceptoajustep
+            'conceptoscajamenor(/)': 'getConceptosCajaMenorMain',
+            'conceptoscajamenor/create(/)': 'getConceptoCajaMenorCreate',
+            'conceptoscajamenor/:conceptoscajamenor/edit(/)': 'getConceptoCajaMenorEdit',
         },
 
         /**
@@ -3002,6 +3012,38 @@ app || (app = {});
             this.showEgresoView = new app.ShowEgresoView({ model: this.egreso1Model });
         },
 
+        // Cajas Menores
+        getCajasMenoresMain: function () {
+            if ( this.mainCajasMenoresView instanceof Backbone.View ){
+                this.mainCajasMenoresView.stopListening();
+                this.mainCajasMenoresView.undelegateEvents();
+            }
+            this.mainCajasMenoresView = new app.MainCajasMenoresView();
+        },
+
+        getCajaMenorCreate: function () {
+            this.cajaMenor1Model = new app.CajaMenor1Model();
+
+            if ( this.createCajaMenorView instanceof Backbone.View ){
+                this.createCajaMenorView.stopListening();
+                this.createCajaMenorView.undelegateEvents();
+            }
+            this.createCajaMenorView = new app.CreateCajaMenorView({ model: this.cajaMenor1Model });
+            this.createCajaMenorView.render();
+        },
+
+        getCajaMenorShow: function (cajaMenor1Model) {
+            this.cajaMenor1Model = new app.CajaMenor1Model();
+            this.cajaMenor1Model.set({'id': cajaMenor1Model}, {'silent':true});
+
+            if ( this.showCajaMenorView instanceof Backbone.View ){
+                this.showCajaMenorView.stopListening();
+                this.showCajaMenorView.undelegateEvents();
+            }
+
+            this.showCajaMenorView = new app.ShowCajaMenorView({ model: this.cajaMenor1Model });
+        },
+
         // Facturap
         getFacturaspMain: function () {
 
@@ -3210,6 +3252,42 @@ app || (app = {});
 
             this.createConceptoAjustepView = new app.CreateConceptoAjustepView({ model: this.conceptoajustepModel });
             this.conceptoajustepModel.fetch();
+        },
+
+        //ConceptoCajaMenor
+        getConceptosCajaMenorMain: function () {
+
+            if ( this.mainConceptosCajaMenorView instanceof Backbone.View ){
+                this.mainConceptosCajaMenorView.stopListening();
+                this.mainConceptosCajaMenorView.undelegateEvents();
+            }
+
+            this.mainConceptosCajaMenorView = new app.MainConceptosCajaMenorView( );
+        },
+
+        getConceptoCajaMenorCreate: function () {
+            this.conceptoCajaMenorModel = new app.ConceptoCajaMenorModel();
+
+            if ( this.createConceptoCajaMenorView instanceof Backbone.View ){
+                this.createConceptoCajaMenorView.stopListening();
+                this.createConceptoCajaMenorView.undelegateEvents();
+            }
+
+            this.createConceptoCajaMenorView = new app.CreateConceptoCajaMenorView({ model: this.conceptoCajaMenorModel });
+            this.createConceptoCajaMenorView.render();
+        },
+
+        getConceptoCajaMenorEdit: function (conceptocajamenor) {
+            this.conceptoCajaMenorModel = new app.ConceptoCajaMenorModel();
+            this.conceptoCajaMenorModel.set({'id': conceptocajamenor}, {'silent':true});
+
+            if ( this.createConceptoCajaMenorView instanceof Backbone.View ){
+                this.createConceptoCajaMenorView.stopListening();
+                this.createConceptoCajaMenorView.undelegateEvents();
+            }
+
+            this.createConceptoCajaMenorView = new app.CreateConceptoCajaMenorView({ model: this.conceptoCajaMenorModel });
+            this.conceptoCajaMenorModel.fetch();
         },
     }));
 })(jQuery, this, this.document);

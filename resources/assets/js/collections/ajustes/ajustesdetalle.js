@@ -20,6 +20,34 @@ app || (app = {});
         * Constructor Method
         */
         initialize : function(){
+        },
+
+        diferencia: function(){
+            return this.entrada() - this.salida();
+        },
+
+        entrada: function(){
+            var entradas = _.filter(this.models, function(item){
+                return item.get('ajuste2_cantidad_entrada') > 0;
+            });
+
+            return _.reduce(entradas, function(sum, model) {
+                return sum + parseFloat( model.get('ajuste2_costo') )
+            }, 0);
+        },
+
+        salida: function(){
+            var salidas = _.filter(this.models, function(item){
+                return item.get('ajuste2_cantidad_salida') > 0;
+            });
+
+            return _.reduce(salidas, function(sum, model) {
+                return sum + parseFloat( model.get('ajuste2_costo') )
+            }, 0);
+        },
+
+        total: function(){
+            return this.entrada() + this.salida();
         }
    });
 

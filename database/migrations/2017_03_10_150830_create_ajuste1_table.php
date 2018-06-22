@@ -21,10 +21,14 @@ class CreateAjuste1Table extends Migration
             $table->integer('ajuste1_sucursal')->unsigned();
             $table->date('ajuste1_fecha');
             $table->integer('ajuste1_documentos')->unsigned();
+            $table->integer('ajuste1_asiento')->unsigned()->nullable();
+            $table->integer('ajuste1_asienton')->unsigned()->nullable();
             $table->text('ajuste1_observaciones');
             $table->integer('ajuste1_usuario_elaboro')->unsigned();
             $table->dateTime('ajuste1_fh_elaboro');
-            
+
+            $table->foreign('ajuste1_asiento')->references('id')->on('asiento1')->onDelete('restrict');
+            $table->foreign('ajuste1_asienton')->references('id')->on('asienton1')->onDelete('restrict');
             $table->foreign('ajuste1_sucursal')->references('id')->on('sucursal')->onDelete('restrict');
             $table->foreign('ajuste1_tipoajuste')->references('id')->on('tipoajuste')->onDelete('restrict');
             $table->foreign('ajuste1_documentos')->references('id')->on('documentos')->onDelete('restrict');

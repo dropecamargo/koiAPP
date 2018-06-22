@@ -20,6 +20,8 @@ app || (app = {});
             'tipoajuste_sigla':'',
             'tipoajuste_tipo':'',
             'tipoajuste_tipoproducto':'',
+        	'tipoajuste_cuenta': '',
+        	'tipoajuste_calculaiva': 0,
         	'tipoajuste_activo': 1
         }
     });

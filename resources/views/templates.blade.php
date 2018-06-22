@@ -1256,9 +1256,38 @@
 
 <script type="text/template" id="add-linea-tpl">
     <div class="row">
-		<div class="form-group col-sm-7">
+		<div class="form-group col-sm-6">
 			<label for="linea_nombre" class="control-label">Nombre</label>
 			<input type="text" id="linea_nombre" name="linea_nombre" value="<%- linea_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="50" required>
+			<div class="help-block with-errors"></div>
+		</div>
+		<div class="form-group col-sm-6">
+			<label for="linea_inventario" class="control-label">Cuenta de inventario</label>
+			<select name="linea_inventario" id="linea_inventario" class="form-control select2-default-clear" required>
+				@foreach( App\Models\Contabilidad\PlanCuenta::getPlanCuentas() as $key => $value)
+					<option value="{{ $key }}" <%- linea_inventario == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
+				@endforeach
+			</select>
+			<div class="help-block with-errors"></div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="form-group col-sm-6">
+			<label for="linea_costo" class="control-label">Cuenta de costos</label>
+			<select name="linea_costo" id="linea_costo" class="form-control select2-default-clear" required>
+				@foreach( App\Models\Contabilidad\PlanCuenta::getPlanCuentas() as $key => $value)
+					<option value="{{ $key }}" <%- linea_costo == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
+				@endforeach
+			</select>
+			<div class="help-block with-errors"></div>
+		</div>
+		<div class="form-group col-sm-6">
+			<label for="linea_venta" class="control-label">Cuenta de ventas</label>
+			<select name="linea_venta" id="linea_venta" class="form-control select2-default-clear" required>
+				@foreach( App\Models\Contabilidad\PlanCuenta::getPlanCuentas() as $key => $value)
+					<option value="{{ $key }}" <%- linea_venta == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
+				@endforeach
+			</select>
 			<div class="help-block with-errors"></div>
 		</div>
 	</div>
@@ -1539,11 +1568,11 @@
 				<input type="checkbox" id="conceptoajustec_activo" name="conceptoajustec_activo" value="conceptoajustec_activo" <%- parseInt(conceptoajustec_activo) ? 'checked': ''%>> Activo
 			</label>
 		</div>
-
-		<div class="form-group col-sm-2 col-xs-6">
+		{{-- Se comenta para poder hacer asientos de una manera basica --}}
+		<!-- <div class="form-group col-sm-2 col-xs-6">
 			<br><label class="checkbox-inline" for="conceptoajustec_sumas_iguales">
 				<input type="checkbox" id="conceptoajustec_sumas_iguales" name="conceptoajustec_sumas_iguales" value="conceptoajustec_sumas_iguales" <%- parseInt(conceptoajustec_sumas_iguales) ? 'checked': ''%>> Sumas igual
-			</label>
+			</label> -->
 		</div>
 	</div>
 	<div class="row">

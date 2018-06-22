@@ -25,11 +25,20 @@
         			<input type="text" id="tipoajuste_sigla" name="tipoajuste_sigla" value="<%- tipoajuste_sigla %>" placeholder="Sigla" class="form-control input-sm input-toupper" maxlength="3" required>
         			<div class="help-block with-errors"></div>
         		</div>
-        		<div class="form-group col-sm-6">
+        		<div class="form-group col-sm-4">
         			<label for="tipoajuste_nombre" class="control-label">Nombre</label>
         			<input type="text" id="tipoajuste_nombre" name="tipoajuste_nombre" value="<%- tipoajuste_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="25" required>
         			<div class="help-block with-errors"></div>
         		</div>
+                <div class="form-group col-sm-6">
+                    <label for="tipoajuste_cuenta" class="control-label">Plan cuenta</label>
+                    <select name="tipoajuste_cuenta" id="tipoajuste_cuenta" class="form-control select2-default-clear" required>
+                        @foreach( App\Models\Contabilidad\PlanCuenta::getPlanCuentas() as $key => $value)
+                            <option value="{{ $key }}" <%- tipoajuste_cuenta == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
+                        @endforeach
+                    </select>
+                    <div class="help-block with-errors"></div>
+                </div>
         	</div>
         	<div class="row">
         		<div class="form-group col-sm-2">
@@ -41,9 +50,15 @@
         			</select>
         			<div class="help-block with-errors"></div>
         		</div>
-        		<div class="col-sm-3"><br>
+        		<div class="col-sm-1"><br>
         			<label class="checkbox-inline" for="tipoajuste_activo">
         				<input type="checkbox" id="tipoajuste_activo" name="tipoajuste_activo" value="tipoajuste_activo" <%- parseInt(tipoajuste_activo) ? 'checked': ''%>> Activo
+        			</label>
+        		</div>
+
+        		<div class="col-sm-2"><br>
+        			<label class="checkbox-inline" for="tipoajuste_calculaiva">
+        				<input type="checkbox" id="tipoajuste_calculaiva" name="tipoajuste_calculaiva" value="tipoajuste_calculaiva" <%- parseInt(tipoajuste_calculaiva) ? 'checked': ''%>> ¿ Calcula iva ?
         			</label>
         		</div>
         	</div>
