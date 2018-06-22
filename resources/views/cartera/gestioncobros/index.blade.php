@@ -1,7 +1,7 @@
 @extends('cartera.gestioncobros.main')
 
 @section('breadcrumb')
-    <li class="active">Gestion de cobros</li>
+    <li class="active">Gestión de cobros</li>
 @stop
 
 @section('module')

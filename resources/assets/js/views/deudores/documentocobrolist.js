@@ -31,7 +31,7 @@ app || (app = {});
             this.listenTo( this.collection, 'store', this.storeOne );
             this.listenTo( this.collection, 'sync', this.responseServer);
 
-            this.collection.fetch({ data: {deudor_id: this.parameters.dataFilter.deudor_id}, reset: true });
+            this.collection.fetch({ data: this.parameters.dataFilter, reset: true });
         },
 
         /*

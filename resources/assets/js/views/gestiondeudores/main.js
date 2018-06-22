@@ -28,8 +28,8 @@ app || (app = {});
                 ajax: window.Misc.urlFull( Route.route('gestiondeudores.index') ),
                 columns: [
                     { data: 'id', name: 'id' },
-                    { data: 'gestiondeudor_conceptocob', name: 'gestiondeudor_conceptocob' },
-                    { data: 'gestiondeudor_deudor', name: 'gestiondeudor_deudor' },
+                    { data: 'conceptocob_nombre', name: 'conceptocob_nombre' },
+                    { data: 'tercero_nombre', name: 'tercero_nombre' },
                     { data: 'gestiondeudor_fh', name: 'gestiondeudor_fh'},
                     { data: 'gestiondeudor_proxima', name: 'gestiondeudor_proxima'},
                 ],

@@ -1,7 +1,7 @@
 @extends('cartera.gestioncobros.main')
 
 @section('breadcrumb')
-    <li><a href="{{ route('gestioncobros.index')}}">Gestion de cobro</a></li>
+    <li><a href="{{ route('gestioncobros.index')}}">Gestión de cobro</a></li>
     <li class="active">{{ $gestioncobro->id }}</li>
 @stop
 

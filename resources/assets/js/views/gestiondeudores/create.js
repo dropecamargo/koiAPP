@@ -15,6 +15,7 @@ app || (app = {});
         template: _.template( ($('#add-gestiondeudor-tpl').html() || '') ),
         events: {
             'submit #form-gestiondeudor': 'onStore',
+            'change .deudor-koi-component': 'changeDeudor'
         },
 
         /**
@@ -40,6 +41,28 @@ app || (app = {});
                 var data = window.Misc.formToJson( e.target );
                 this.model.save( data, {patch: true, silent: true} );
             }
+        },
+
+        /**
+        * Event change deudor
+        */
+        changeDeudor: function (e){
+            e.preventDefault();
+
+            var tercero = this.$(e.target).attr('data-tercero');
+            var deudor_nit = this.$(e.target).val();
+            this.documentocobrolist = new app.DocumentoCobroList();
+
+            // Documento Cobro list
+            this.documentoCobroListView = new app.DocumentoCobroView({
+                collection: this.documentocobrolist,
+                parameters: {
+                    dataFilter: {
+                        tercero_id: tercero,
+                        deudor_nit: deudor_nit
+                    }
+                }
+            });
         },
 
         /*

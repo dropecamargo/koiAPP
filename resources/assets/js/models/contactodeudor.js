@@ -16,6 +16,12 @@ app || (app = {});
         },
         idAttribute: 'id',
         defaults: {
+            'contactodeudor_nombre': '',
+            'contactodeudor_direccion': '',
+            'contactodeudor_email': '',
+            'contactodeudor_cargo': '',
+            'contactodeudor_telefono': '',
+            'contactodeudor_movil': ''
         }
     });
 

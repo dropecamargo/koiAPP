@@ -27,13 +27,12 @@ class GestionCobroController extends Controller
 
             // Filter show collection in tercero
             if ($request->has('tercero')) {
-                $query->select('gestioncobro.*', 'conceptocob_nombre', DB::raw(DB::raw("(CASE WHEN tercero_persona = 'N'
+                $query->select('gestioncobro.*', 'conceptocob_nombre', DB::raw("(CASE WHEN tercero_persona = 'N'
                     THEN CONCAT(tercero_nombre1,' ',tercero_nombre2,' ',tercero_apellido1,' ',tercero_apellido2,
                             (CASE WHEN (tercero_razonsocial IS NOT NULL AND tercero_razonsocial != '') THEN CONCAT(' - ', tercero_razonsocial) ELSE '' END)
                         )
                     ELSE tercero_razonsocial END)
-                AS usuario_nombre")));
-
+                AS usuario_nombre"));
                 $query->join('tercero','gestioncobro_usuario_elaboro', '=', 'tercero.id');
                 $query->join('conceptocob','gestioncobro_conceptocob', '=', 'conceptocob.id');
                 $query->where('gestioncobro_tercero', $request->tercero);
@@ -105,7 +104,7 @@ class GestionCobroController extends Controller
 
                     $url = route('gestioncobros.show', $gestioncobro->id, false);
                     $descripcion = Str::title($request->tercero_nombre);
-                    $title = trans('notification.call.gestion');
+                    $title = trans('notification.call.gestioncobro');
 
                     // Parameters newNotificacion(tercero->session, tiponotificacion, visto, fecha_visto, fecha, hora, url, descripcion, titulo)
                     $result = Notificacion::newNotificacion(Auth::user()->id, 'llamada', false, null, $request->gestioncobro_proxima, $request->gestioncobro_hproxima, $url, $descripcion, $title);

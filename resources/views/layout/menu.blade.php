@@ -173,14 +173,14 @@
     </li>
 
     {{-- Cobro --}}
-    <li class="treeview {{ in_array(Request::segment(1), ['deudores', 'gestioncarteras', 'importarcarteras', 'rcarteraedadess', 'rhistorialclientess']) ? 'active' : '' }}">
+    <li class="treeview {{ in_array(Request::segment(1), ['gestioncarteras', 'deudores', 'gestiondeudores', 'rresumencobros']) ? 'active' : '' }}">
         <a href="#">
             <i class="fa fa-briefcase"></i> <span>Cobros</span><i class="fa fa-angle-left pull-right"></i>
         </a>
 
         <ul class="treeview-menu">
             {{-- Modulos de cobro --}}
-            <li class="{{ in_array(Request::segment(1), ['deudores', 'gestioncarteras', 'gestiondeudores']) ? 'active' : '' }}">
+            <li class="{{ in_array(Request::segment(1), ['gestioncarteras', 'deudores', 'gestiondeudores']) ? 'active' : '' }}">
                 <a href="#">
                     <i class="fa fa-wpforms"></i> Módulos <i class="fa fa-angle-left pull-right"></i>
                 </a>
@@ -197,16 +197,13 @@
                 </ul>
             </li>
             {{-- Reportes cartera --}}
-            <li class="{{ in_array(Request::segment(1), ['rcarteraedadess', 'rhistorialclientess']) ? 'active' : '' }}">
+            <li class="{{ in_array(Request::segment(1), ['rresumencobros']) ? 'active' : '' }}">
                 <a href="#">
                     <i class="fa fa-bar-chart-o"></i> Reportes <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
-                    <li class="{{ Request::segment(1) == 'rcarteraedadess' ? 'active' : '' }}">
-                        <a href="#"><i class="fa fa-circle-o"></i> Cartera edad</a>
-                    </li>
-                    <li class="{{ Request::segment(1) == 'rhistorialclientess' ? 'active' : '' }}">
-                        <a href="#"><i class="fa fa-circle-o"></i> Historial clientes</a>
+                    <li class="{{ Request::segment(1) == 'rresumencobros' ? 'active' : '' }}">
+                        <a href="{{ route('rresumencobros.index') }}"><i class="fa fa-circle-o"></i> Resumen de cobro</a>
                     </li>
                 </ul>
             </li>

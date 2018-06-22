@@ -16,6 +16,7 @@ app || (app = {});
         },
         idAttribute: 'id',
         defaults: {
+        	'gestiondeudor_deudor': '',
         	'gestiondeudor_proxima': moment().format('YYYY-MM-DD'),
             'gestiondeudor_fh': moment().format('YYYY-MM-DD'),
         }

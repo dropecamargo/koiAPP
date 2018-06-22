@@ -397,6 +397,7 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::resource('rauxcontable', 'Reporte\AuxiliarContableController', ['only' => ['index']]);
 	Route::resource('rlibrodiario', 'Reporte\LibroDiarioController', ['only' => ['index']]);
 	Route::resource('rlibromayor', 'Reporte\LibroMayorController', ['only' => ['index']]);
+	Route::resource('rresumencobros', 'Reporte\ResumenCobroController', ['only' => ['index']]);
 	Route::resource('rimpuestos', 'Reporte\RelacionImpuestosController', ['only' => ['index']]);
 
 	/*
@@ -406,8 +407,9 @@ Route::group(['middleware' => 'auth'], function(){
 	*/
 	Route::group(['prefix' => 'deudores'], function()
 	{
-		Route::resource('contactos', 'Cobro\ContactoDeudorController', ['only' => ['index']]);
+		Route::resource('contactos', 'Cobro\ContactoDeudorController', ['only' => ['index', 'update', 'store']]);
 		Route::resource('documentos', 'Cobro\DocumentoCobroController', ['only' => ['index']]);
+		Route::post('gestiondeudor', ['as' => 'deudores.gestiondeudor', 'uses' => 'Cobro\DeudorController@gestiondeudor']);
 	});
 	Route::resource('deudores', 'Cobro\DeudorController', ['only' => ['index', 'show']]);
 	Route::resource('gestiondeudores', 'Cobro\GestionDeudorController', ['except' => ['destroy', 'edit' , 'update']]);
