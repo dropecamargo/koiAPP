@@ -14,7 +14,8 @@ app || (app = {});
         el: '#productos-main',
         events: {
             'click .btn-search': 'search',
-            'click .btn-clear': 'clear'
+            'click .btn-clear': 'clear',
+            'click .btn-import-modal': 'import'
         },
 
         /**
@@ -29,8 +30,7 @@ app || (app = {});
             this.$searchName = this.$('#producto_nombre');
 
             this.productosSearchTable = this.$productosSearchTable.DataTable({
-                dom:"<'row'<'col-sm-4'B><'col-sm-4 text-center'l>>" +
-                    "<'row'<'col-sm-12'tr>>" +
+                dom:"<'row'<'col-sm-12'tr>>" +
                     "<'row'<'col-sm-5'i><'col-sm-7'p>>",
 				processing: true,
                 serverSide: true,
@@ -48,20 +48,6 @@ app || (app = {});
                     { data: 'producto_referencia', name: 'producto_referencia' },
                     { data: 'producto_nombre', name: 'producto_nombre' }
                 ],
-                buttons: [
-                   {
-                       text: 'Importar',
-                       className: 'btn-sm',
-                       action: function () {
-                            _this.importActionView = new app.ImportProductoActionView({
-                               parameters: {
-                                   title: 'productos',
-                                   url: window.Misc.urlFull( Route.route('productos.import') )
-                               }
-                           });
-                       }
-                   }
-               ],
                 columnDefs: [
                     {
                         targets: 0,
@@ -87,6 +73,28 @@ app || (app = {});
             this.$searchName.val('');
 
             this.productosSearchTable.ajax.reload();
+        },
+        /*
+        * Import data of Excel
+        */
+        import: function(e) {
+            var _this = this;
+
+            e.preventDefault();
+
+            // ImportActionView undelegateEvents
+            if ( this.importActionView instanceof Backbone.View ){
+                this.importActionView.stopListening();
+                this.importActionView.undelegateEvents();
+            }
+            this.importActionView = new app.ImportDataActionView({
+                parameters: {
+                    title: 'productos',
+                    url: window.Misc.urlFull( Route.route('productos.import') ),
+                    datatable: _this.asientosSearchTable
+                }
+            });
+            this.importActionView.render();
         },
     });
 

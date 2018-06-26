@@ -43,7 +43,7 @@ class TipoAjuste extends BaseModel
 			'tipoajuste_nombre' => 'required|max:25|unique:tipoajuste',
 			'tipoajuste_sigla' => 'required|max:3|unique:tipoajuste',
 			'tipoajuste_tipo' => 'required|max:1',
-			'tipoajuste_cuenta' => 'required_if_attribute:tipoajuste_tipo,!=,R|min:1|numeric',
+			'tipoajuste_cuenta' => 'required_if:tipoajuste_tipo,E|required_if:tipoajuste_tipo,S|min:1|numeric',
 		];
 
         if ($this->exists){

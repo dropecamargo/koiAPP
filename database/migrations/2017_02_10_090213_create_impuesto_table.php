@@ -18,7 +18,10 @@ class CreateImpuestoTable extends Migration
             $table->increments('id');
             $table->string('impuesto_nombre', 100)->unique();
             $table->double('impuesto_porcentaje')->default(0);
+            $table->integer('impuesto_cuenta')->unsigned();
             $table->boolean('impuesto_activo')->default(false);
+
+            $table->foreign('impuesto_cuenta')->references('id')->on('plancuentas')->onDelete('restrict');
         });
     }
 

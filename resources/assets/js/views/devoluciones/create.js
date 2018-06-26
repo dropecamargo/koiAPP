@@ -17,7 +17,7 @@ app || (app = {});
         events: {
             'click .submit-devolucion' : 'submitForm',
             'submit #form-devolucion1' : 'onStore',
-            'change #devolucion1_tercero' : 'referenceView', 
+            'change #devolucion1_tercero' : 'referenceView',
         },
         parameters: {
         },
@@ -26,19 +26,18 @@ app || (app = {});
         * Constructor Method
         */
         initialize : function() {
-           
+
             // Attributes
             this.$wraperForm = this.$('#render-form-devolucion');
 
             this.detalleDevolucion = new app.DevolucionDetalleCollection();
 
-
             // Events
             this.listenTo( this.model, 'change', this.render );
             this.listenTo( this.model, 'sync', this.responseServer );
-            this.listenTo( this.model, 'request', this.loadSpinner );            
-            
-            this.ready(); 
+            this.listenTo( this.model, 'request', this.loadSpinner );
+
+            this.ready();
         },
         /*
         * Render View Element
@@ -65,8 +64,8 @@ app || (app = {});
                 e.preventDefault();
                 var data = window.Misc.formToJson( e.target );
                 this.model.save( data, {patch: true, silent: true} );
-            }   
-        },  
+            }
+        },
         /**
         * Reference view collection
         */
@@ -81,22 +80,21 @@ app || (app = {});
                         'id_factura2': id
                     }
                 }
-            }); 
+            });
         },
-
 
         /**
         * fires libraries js
         */
         ready: function () {
             // to fire plugins
-            
+
             if( typeof window.initComponent.initToUpper == 'function' )
                 window.initComponent.initToUpper();
-            
+
             if( typeof window.initComponent.initSelect2 == 'function' )
                 window.initComponent.initSelect2();
-            
+
             if( typeof window.initComponent.initValidator == 'function' )
                 window.initComponent.initValidator();
 
@@ -109,7 +107,7 @@ app || (app = {});
         */
         loadSpinner: function (model, xhr, opts) {
             window.Misc.setSpinner( this.el );
-            
+
         },
 
         /**
@@ -127,7 +125,7 @@ app || (app = {});
 
                 if( !resp.success ) {
                     alertify.error(text);
-                    return; 
+                    return;
                 }
             }
             window.Misc.redirect( window.Misc.urlFull( Route.route('devoluciones.show', { devoluciones: resp.id})) );

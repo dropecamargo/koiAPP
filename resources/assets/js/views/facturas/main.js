@@ -12,7 +12,10 @@ app || (app = {});
     app.MainFacturasView = Backbone.View.extend({
 
         el: '#facturas-main',
+
         events: {
+            'click .btn-search': 'search',
+            'click .btn-clear': 'clear'
         },
 
         /**
@@ -22,37 +25,33 @@ app || (app = {});
             var _this = this;
 
             // Rerefences
+            this.$searchfacturaNumero = this.$('#searchfactura_numero');
+            this.$searchfacturaTercero = this.$('#searchfactura_tercero');
+            this.$searchfacturaTerceroNombre = this.$('#searchfactura_tercero_nombre');
             this.$facturasSearchTable = this.$('#facturas-search-table');
-            
-            this.$facturasSearchTable.DataTable({
-                dom: "<'row'<'col-sm-4'B><'col-sm-4 text-center'l><'col-sm-4'f>>" +
-                    "<'row'<'col-sm-12'tr>>" +
+
+            this.facturasSearchTable = this.$facturasSearchTable.DataTable({
+                dom:"<'row'<'col-sm-12'tr>>" +
                     "<'row'<'col-sm-5'i><'col-sm-7'p>>",
                 processing: true,
                 serverSide: true,
                 language: window.Misc.dataTableES(),
-                ajax: window.Misc.urlFull( Route.route('facturas.index') ),
-                columns: [ 
+                ajax: {
+                    url: window.Misc.urlFull( Route.route('facturas.index') ),
+                    data: function( data ) {
+                        data.persistent = true;
+                        data.tercero_nit = _this.$searchfacturaTercero.val();
+                        data.tercero_nombre = _this.$searchfacturaTerceroNombre.val();
+                        data.numero = _this.$searchfacturaNumero.val();
+                    }
+                },
+                columns: [
                     { data: 'factura1_numero', name: 'factura1_numero' },
                     { data: 'puntoventa_prefijo', name: 'puntoventa_prefijo' },
                     { data: 'sucursal_nombre', name: 'sucursal_nombre' },
                     { data: 'tercero_nit', name: 'tercero_nit' },
                     { data: 'tercero_nombre', name: 'factura1_tercero' },
-                    { data: 'tercero_razonsocial', name: 'tercero_razonsocial'},
-                    { data: 'tercero_nombre1', name: 'tercero_nombre1' },
-                    { data: 'tercero_nombre2', name: 'tercero_nombre2' },
-                    { data: 'tercero_apellido1', name: 'tercero_apellido1' },
-                    { data: 'tercero_apellido2', name: 'tercero_apellido2' },
                     { data: 'factura1_fh_elaboro', name: 'factura1_fh_elaboro' },
-                ],
-                buttons: [
-                    {
-                        text: '<i class="fa fa-plus"></i> Nueva factura',
-                        className: 'btn-sm',
-                        action: function ( e, dt, node, config ) {
-                            window.Misc.redirect( window.Misc.urlFull( Route.route('facturas.create') ) )
-                        }
-                    }
                 ],
                 columnDefs: [
                     {
@@ -61,15 +60,11 @@ app || (app = {});
                         render: function ( data, type, full, row ) {
                            return '<a href="'+ window.Misc.urlFull( Route.route('facturas.show', {facturas: full.id }) )  +'">' + data + '</a>';
                         },
-                       
+
                     },
                     {
                         targets:2,
-                        width:'20%' 
-                    },
-                    {
-                        targets: [5,6,7,8,9],
-                        visible: false,
+                        width:'20%'
                     },
                 ],
                 fnRowCallback: function( row, data ) {
@@ -80,6 +75,20 @@ app || (app = {});
                     }
                 }
             });
+        },
+
+        search: function(e) {
+            e.preventDefault();
+            this.facturasSearchTable.ajax.reload();
+        },
+
+        clear: function(e) {
+            e.preventDefault();
+            this.$searchfacturaNumero.val('');
+            this.$searchfacturaTercero.val('');
+            this.$searchfacturaTerceroNombre.val('');
+
+            this.facturasSearchTable.ajax.reload();
         }
     });
 })(jQuery, this, this.document);

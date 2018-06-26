@@ -11,7 +11,7 @@
                 {!! Form::open(['id' => 'form-koi-search-ajuste-component', 'class' => 'form-horizontal', 'data-toggle' => 'validator', 'role' => 'form']) !!}
                     <div class="form-group">
                         <label for="searchajuste_ajuste_tipo" class="col-md-1 control-label">Tipo</label>
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <select name="searchajuste_ajuste_tipo" id="searchajuste_ajuste_tipo" class="form-control select2-default-clear">
                                 @foreach( App\Models\Inventario\TipoAjuste::getTiposAjustes() as $key => $value)
                                     <option  value="{{ $key }}" {{ session('searchajuste_ajuste_tipo') == $key ? 'selected': '' }} >{{ $value }}</option>
@@ -35,6 +35,9 @@
                                 </div>
                                 <input id="searchajuste_ajuste_fecha" type="text" name="searchajuste_ajuste_fecha" class="form-control datepicker" value = "{{ session('searchajuste_ajuste_fecha') }}" placeholder="Fecha" >
                             </div>
+                        </div>
+                        <div class="col-md-1">
+                            <a href="#" class="btn btn-default btn-sm btn-import-modal"><i class="fa fa-upload"></i> Importar</a>
                         </div>
                     </div>
                     <div class="form-group">

@@ -68,8 +68,8 @@
                             <th width="15%">Referencia</th>
                             <th width="30%">Nombre</th>
                             <th width="10%">Cantidad</th>
-                            <th width="15%">Precio</th>
-                            <th width="15%">Total</th>
+                            <th class="text-right" width="15%">Precio</th>
+                            <th class="text-right" width="15%">Total</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -79,8 +79,8 @@
                         <tr>
                             <th colspan="2" class="text-right">Totales</th>
                             <th id="total_devueltas"> </th>
-                            <th id="total_price"></th>
-                            <th id="total"></th>
+                            <th class="text-right" id="total_price"></th>
+                            <th class="text-right" id="total"></th>
                         </tr>
                     </tfoot>
                 </table>
@@ -95,4 +95,16 @@
             </div>
         </div>
 	</div>
+    <div class="box box-solid">
+        <div class="box-body">
+            <div class="row">
+                <div class="col-md-6 col-sm-6 col-xs-6 text-left">
+                    <h4><a href="{{ route('asientos.show', ['asientos' =>  $devolucion->devolucion1_asiento ]) }}" target="_blanck" title="Ver Asiento"> Ver asiento contable </a></h4>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-6 text-right">
+                    <h4><b>Devolución N° {{$devolucion->devolucion1_numero}} </b></h4>
+                </div>
+            </div>
+        </div>
+    </div>
 @stop

@@ -13,8 +13,8 @@ app || (app = {});
 
         el: '#browse-detalle-devolucion-list',
         events: {
-            'change input.change-cant-devo' : 'cantidadDevolucion', 
-            'click .all-devoluciones' : 'clickAll', 
+            'change input.change-cant-devo' : 'cantidadDevolucion',
+            'click .all-devoluciones' : 'clickAll',
         },
         parameters: {
             wrapper: null,
@@ -26,18 +26,19 @@ app || (app = {});
         * Constructor Method
         */
         initialize : function(opts){
-            // extends parameters
+
+            // Extends parameters
             if( opts !== undefined && _.isObject(opts.parameters) )
                 this.parameters = $.extend({},this.parameters, opts.parameters);
 
             //Init Attributes
             this.confCollection = { reset: true, data: {} };
 
-            // reference input totales show
+            // Reference input totales show
             this.$total = this.$('#total');
             this.$devueltas = this.$('#total_devueltas');
             this.$price = this.$('#total_price');
-                    
+
             // Events Listeners
             this.listenTo( this.collection, 'add', this.addOne );
             this.listenTo( this.collection, 'reset', this.addAll );
@@ -50,13 +51,6 @@ app || (app = {});
                 this.confCollection.data.id_factura2 = this.parameters.dataFilter.id_factura2;
                 this.collection.fetch( this.confCollection );
             }
-        },
-
-        /*
-        * Render View Element
-        */
-        render: function() {
-
         },
 
         /**
@@ -84,8 +78,9 @@ app || (app = {});
             this.$el.find('tbody').html('');
             this.collection.forEach( this.addOne, this );
         },
+        
         /**
-        *Evalua cantidad del input
+        * Evalua cantidad del input
         */
         cantidadDevolucion: function(e){
             e.preventDefault();
@@ -95,15 +90,16 @@ app || (app = {});
 
             if (this.$cantidad.val() > model.get('factura2_cantidad') ) {
                 return alertify.error('Cantidad no puede ser mayor a lo que se encuentra en la factura');
-            }    
+            }
 
             model.set('devolucion2_cantidad', this.$cantidad.val());
             this.setModel(model);
 
             this.totalize();
         },
-        /*
-        *setea cantidad al modelo ya evaluada y render subtotal 
+
+        /**
+        * Setea cantidad al modelo ya evaluada y render subtotal
         */
         setModel:function(model){
             var subtotal = model.get('devolucion2_costo') -  model.get('devolucion2_descuento');
@@ -114,7 +110,7 @@ app || (app = {});
         },
 
         /**
-        *Render totales the collection
+        * Render totales the collection
         */
         totalize: function(){
             var data = this.collection.totalize();
@@ -122,14 +118,16 @@ app || (app = {});
             this.$total.empty().html(window.Misc.currency(data.devolucion1_total) );
             this.$price.empty().html(window.Misc.currency(data.devolucion1_bruto) );
         },
-        /*
-        *Function devuelve todos los items
+
+        /**
+        * Function devuelve todos los items
         */
         clickAll:function(e){
             e.preventDefault();
             this.collection.devolverTodo();
             this.addAll();
         },
+
         /**
         * Load spinner on the request
         */
@@ -138,7 +136,7 @@ app || (app = {});
         },
 
         /**
-        * response of the server
+        * Response of the server
         */
         responseServer: function ( target, resp, opts ) {
             window.Misc.removeSpinner( this.el );

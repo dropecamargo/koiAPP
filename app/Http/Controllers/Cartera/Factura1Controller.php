@@ -7,10 +7,10 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\Models\Cartera\Factura1, App\Models\Cartera\Factura2, App\Models\Cartera\Factura3, App\Models\Cartera\Factura4, App\Models\Comercial\Pedidoc1, App\Models\Comercial\Pedidoc2, App\Models\Inventario\Producto, App\Models\Inventario\Linea, App\Models\Inventario\Lote, App\Models\Inventario\Prodbode, App\Models\Inventario\Inventario, App\Models\Inventario\Rollo, App\Models\Base\Tercero, App\Models\Base\PuntoVenta, App\Models\Base\Documentos, App\Models\Base\Sucursal, App\Models\Base\Contacto;
-
+use App\Classes\AsientoContableDocumento, App\Classes\AsientoNifContableDocumento;
+use App\Models\Cartera\Factura1, App\Models\Cartera\Factura2, App\Models\Cartera\Factura3, App\Models\Cartera\Factura4, App\Models\Comercial\Pedidoc1, App\Models\Comercial\Pedidoc2, App\Models\Inventario\Producto, App\Models\Inventario\Linea, App\Models\Inventario\Lote, App\Models\Inventario\Prodbode;
+use App\Models\Inventario\Inventario, App\Models\Inventario\Rollo, App\Models\Base\Tercero, App\Models\Base\PuntoVenta, App\Models\Base\Documentos, App\Models\Base\Sucursal, App\Models\Base\Contacto, App\Models\Inventario\Impuesto;
 use App\Classes\Exports\Factura\FacturaExport;
-
 use App, View, Auth, DB, Log, Datatables;
 
 class Factura1Controller extends Controller
@@ -35,6 +35,12 @@ class Factura1Controller extends Controller
             $query->join('puntoventa','factura1_puntoventa', '=', 'puntoventa.id');
             $query->join('sucursal','factura1_sucursal', '=', 'sucursal.id');
             $query->orderBy('factura1.id', 'desc');
+            // Persistent data filter
+            if($request->has('persistent') && $request->persistent) {
+                session(['searchfactura_tercero' => $request->has('tercero_nit') ? $request->tercero_nit : '']);
+                session(['searchfactura_tercero_nombre' => $request->has('tercero_nombre') ? $request->tercero_nombre : '']);
+                session(['searchfactura_numero' => $request->has('numero') ? $request->numero : '']);
+            }
 
             return Datatables::of($query)
                 ->filter(function($query) use($request) {
@@ -47,7 +53,7 @@ class Factura1Controller extends Controller
                     if($request->has('tercero_nit')) {
                         $query->whereRaw("tercero_nit LIKE '%{$request->tercero_nit}%'");
                     }
-
+                    
                     // Sucursal
                     if ($request->has('sucursal')) {
                         $query->where('factura1_sucursal', $request->sucursal);
@@ -151,6 +157,8 @@ class Factura1Controller extends Controller
                     $factura1->factura1_fh_elaboro = date('Y-m-d H:m:s');
                     $factura1->save();
 
+                    // Reference prepare asiento
+                    $cuentas = [];
                     foreach ($data['factura2'] as $item) {
 
                         $producto = Producto::where('producto_serie', $item['producto_serie'])->first();
@@ -163,6 +171,12 @@ class Factura1Controller extends Controller
                         if ( !$linea instanceof Linea ) {
                             DB::rollback();
                             return response()->json(['success' => false, 'errors' => 'No es posible recuperar linea, por favor verifique información o consulte al administrador']);
+                        }
+                        // Impuesto validate
+                        $impuesto = Impuesto::find($producto->producto_impuesto);
+                        if ( !$linea instanceof Linea ) {
+                            DB::rollback();
+                            return response()->json(['success' => false, 'errors' => 'No es posible recuperar impuesto, por favor verifique información o consulte al administrador']);
                         }
                         //prepare detalle2
                         if(session('empresa')->empresa_pedidoc){
@@ -200,6 +214,12 @@ class Factura1Controller extends Controller
                         if ($factura1->factura1_retencion < $retencion) {
                             $factura1->factura1_retencion = $retencion;
                             $factura1->save();
+                        }
+                        // Detalle asiento
+                        $cuentas[] = $factura1->asientoCuentas($cliente, $linea->linea_venta, 'C', $precio);
+                        $cuentas[] = $factura1->asientoCuentas($cliente, $impuesto->impuesto_cuenta, 'C', $factura2->factura2_iva_valor, $precio - $factura2->factura2_descuento_valor );
+                        if ($factura2->factura2_descuento_valor > 0) {
+                            $cuentas[] = $factura1->asientoCuentas($cliente, $linea->linea_venta, 'D', $factura2->factura2_descuento_valor);
                         }
 
                         // Inventario
@@ -290,6 +310,58 @@ class Factura1Controller extends Controller
                         DB::rollback();
                         return response()->json(['success'=> false, 'errors'=>'No es posible realizar factura3,por favor verifique la información ó por favor consulte al administrador']);
                     }
+
+                    // Preparando asiento
+                    $encabezado = $factura1->encabezadoAsiento($cliente);
+                    $cuentas[] = $factura1->asientoCuentas($cliente, session('empresa')->empresa_cuentacartera, 'D');
+
+                    // Creo el objeto para manejar el asiento
+                    $objAsiento = new AsientoContableDocumento($encabezado->data);
+                    if($objAsiento->asiento_error) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $objAsiento->asiento_error]);
+                    }
+                    // Preparar asiento
+                    $result = $objAsiento->asientoCuentas($cuentas);
+                    if($result != 'OK'){
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $result]);
+                    }
+
+                    // Insertar asiento
+                    $result = $objAsiento->insertarAsiento();
+                    if($result != 'OK') {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $result]);
+                    }
+                    // AsientoNif
+                    if (!empty($encabezado->dataNif)) {
+                        // Creo el objeto para manejar el asiento
+                        $objAsientoNif = new AsientoNifContableDocumento($encabezado->dataNif);
+                        if($objAsientoNif->asientoNif_error) {
+                            DB::rollback();
+                            return response()->json(['success' => false, 'errors' => $objAsiento->asientoNif_error]);
+                        }
+
+                        // Preparar asiento
+                        $result = $objAsientoNif->asientoCuentas($cuentas);
+                        if($result != 'OK'){
+                            DB::rollback();
+                            return response()->json(['success' => false, 'errors' => $result]);
+                        }
+
+                        // Insertar asiento
+                        $result = $objAsientoNif->insertarAsientoNif();
+                        if($result != 'OK') {
+                            DB::rollback();
+                            return response()->json(['success' => false, 'errors' => $result]);
+                        }
+                        // Recuperar el Id del asiento y guardar en la factura
+                        $factura1->factura1_asienton = $objAsientoNif->asientoNif->id;
+                    }
+                    $factura1->factura1_asiento = $objAsiento->asiento->id;
+                    $factura1->save();
+
                     // Update consecutive puntoventa_numero in PuntoVenta
                     $puntoventa->puntoventa_numero = $consecutive;
                     $puntoventa->save();

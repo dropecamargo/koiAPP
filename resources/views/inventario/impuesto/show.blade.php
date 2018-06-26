@@ -9,13 +9,11 @@
     <div class="box box-primary">
         <div class="box-body">
             <div class="row">
-                <div class="col-sm-12">
+                <div class="col-sm-5">
                     <label>Nombre</label>
                     <div>{{ $impuesto->impuesto_nombre }}</div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-3">
+                <div class="col-sm-2">
                     <label>Porcentaje %</label>
                     <div>{{ $impuesto->impuesto_porcentaje }}</div>
                 </div>
@@ -23,6 +21,12 @@
                     <label class="checkbox-inline" for="impuestos_activo">
                         <input type="checkbox" id="impuestos_activo" name="impuestos_activo" value="impuestos_activo" disabled {{ $impuesto->impuesto_activo ? 'checked': '' }}> Activo
                     </label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-5">
+                    <label>Cuenta de impuestos</label>
+                    <div>{{ $impuesto->plancuentas_cuenta }} - {{ $impuesto->plancuentas_nombre}}</div>
                 </div>
             </div>
         </div>

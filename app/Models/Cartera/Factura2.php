@@ -3,6 +3,7 @@
 namespace App\Models\Cartera;
 
 use Illuminate\Database\Eloquent\Model;
+
 use App\Models\BaseModel;
 use Validator;
 

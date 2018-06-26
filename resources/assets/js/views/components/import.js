@@ -1,5 +1,5 @@
 /**
-* Class ProductoActionView  of Backbone Router
+* Class ImportDataActionView  of Backbone Router
 * @author KOI || @dropecamargo
 * @link http://koi-ti.com
 */
@@ -9,7 +9,7 @@ app || (app = {});
 
 (function ($, window, document, undefined) {
 
-    app.ImportProductoActionView = Backbone.View.extend({
+    app.ImportDataActionView = Backbone.View.extend({
 
         el: 'body',
         template: _.template( ($('#import-data-tpl').html() || '') ),

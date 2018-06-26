@@ -35,5 +35,16 @@
                 </label>
             </div>
         </div>
+        <div class="row">
+            <div class="form-group col-sm-6">
+                <label for="impuesto_cuenta" class="control-label">Cuenta de impuestos</label>
+                <select name="impuesto_cuenta" id="impuesto_cuenta" class="form-control select2-default-clear" required>
+                    @foreach( App\Models\Contabilidad\PlanCuenta::getPlanCuentas() as $key => $value)
+                        <option value="{{ $key }}" <%- impuesto_cuenta == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
+                    @endforeach
+                </select>
+                <div class="help-block with-errors"></div>
+            </div>
+        </div>
     </script>
 @stop

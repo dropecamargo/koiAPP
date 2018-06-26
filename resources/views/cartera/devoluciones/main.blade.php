@@ -81,20 +81,12 @@
                         <table id="browse-detalle-devolucion-list" class="table table-hover table-bordered" cellspacing="0">
                             <thead>
                                 <tr>
-                                    <th colspan="6" class="text-center">
-                                        <button type="button" class="btn btn-default btn-sm all-devoluciones">Devolver todas</button>
-                                    </th>
-                                </tr>
-                            </thead>
-                            <thead>
-                                <tr>
                                     <th width="15%">Referencia</th>
                                     <th width="40%">Nombre</th>
                                     <th width="5%">Cantidad</th>
                                     <th width="15%">Precio</th>
                                     <th width="10%">Devueltas</th>
-                                    <th width="15%">Total
-                                    </th>
+                                    <th width="15%">Total</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -102,9 +94,12 @@
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <th colspan="4" class="text-right">Total</th>
-                                    <th id="total_devueltas"> </th>
-                                    <th id="total"></th>
+                                    <th colspan="3" class="text-right">
+                                        <button type="button" class="btn btn-default btn-sm all-devoluciones ">Devolver todas</button>
+                                    </th>
+                                    <th class="text-right">Total:</th>
+                                    <th class="text-right" id="total_devueltas"> </th>
+                                    <th class="text-right" id="total"></th>
                                 </tr>
                             </tfoot>
                         </table>
@@ -126,7 +121,7 @@
             <td><%- devolucion2_cantidad %></td>
         <% } %>
 
-        <td><%- window.Misc.currency(devolucion2_costo) %></td>
+        <td class="text-right"><%- window.Misc.currency(devolucion2_costo) %></td>
 
         <% if(edit){ %>
             <td>
@@ -134,6 +129,6 @@
             </td>
         <% } %>
 
-        <td id="total_<%- id %>"><%- window.Misc.currency(devolucion2_total) %></td>
+        <td  class="text-right" id="total_<%- id %>"><%- window.Misc.currency(devolucion2_total) %></td>
     </script>
 @stop

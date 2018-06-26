@@ -6,9 +6,10 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Classes\AsientoContableDocumento, App\Classes\AsientoNifContableDocumento;
 use App\Models\Cartera\Devolucion1,App\Models\Cartera\Devolucion2,App\Models\Cartera\Factura1,App\Models\Cartera\Factura2;
 use App\Models\Base\Documentos,App\Models\Base\Sucursal,App\Models\Base\Tercero;
-use App\Models\Inventario\Producto, App\Models\Inventario\Inventario, App\Models\Inventario\Prodbode, App\Models\Inventario\Lote, App\Models\Inventario\Rollo;
+use App\Models\Inventario\Producto, App\Models\Inventario\Linea, App\Models\Inventario\Impuesto, App\Models\Inventario\Inventario, App\Models\Inventario\Prodbode, App\Models\Inventario\Lote, App\Models\Inventario\Rollo;
 use DB, Log, Datatables,Auth;
 
 class Devolucion1Controller extends Controller
@@ -99,6 +100,9 @@ class Devolucion1Controller extends Controller
                     $devolucion1->devolucion1_fh_elaboro = date('Y-m-d H:i:s');
                     $devolucion1->save();
 
+                    // Reference fields
+                    $iva = $bruto = $descuento = $total = 0;
+                    $cuentas = [];
                     $factura2 = Factura2::where('factura2_factura1', $factura1->id)->get();
                     foreach ($factura2 as $value) {
                         // Concateno request
@@ -110,6 +114,18 @@ class Devolucion1Controller extends Controller
                                 DB::rollback();
                                 return response()->json(['success' => false, 'errors' => 'No es posible recuperar producto, por favor verifique la información ó por favor consulte al administrador.']);
                             }
+                            // Linea validate
+                            $linea = Linea::find($producto->producto_linea);
+                            if ( !$linea instanceof Linea ) {
+                                DB::rollback();
+                                return response()->json(['success' => false, 'errors' => 'No es posible recuperar linea, por favor verifique información o consulte al administrador']);
+                            }
+                            // Impuesto validate
+                            $impuesto = Impuesto::find($producto->producto_impuesto);
+                            if ( !$linea instanceof Linea ) {
+                                DB::rollback();
+                                return response()->json(['success' => false, 'errors' => 'No es posible recuperar impuesto, por favor verifique información o consulte al administrador']);
+                            }
                             // Devolucion2
                             $devolucion2 = new Devolucion2;
                             $result = $devolucion2->store($value, $producto->id, $devolucion1->id, $request->$cantidad);
@@ -117,6 +133,25 @@ class Devolucion1Controller extends Controller
                                 DB::rollback();
                                 return response()->json(['success' => false, 'errors' => $result ]);
                             }
+                            // Iva, Bruto, Descuento, Total (Devolcion1)
+                            $factor = $devolucion2->devolucion2_iva / 100;
+                            if ($devolucion2->devolucion2_precio > 0) {
+                                $iva += $devolucion2->devolucion2_precio * $factor * $devolucion2->devolucion2_cantidad;
+                                $bruto += $devolucion2->devolucion2_precio * $devolucion2->devolucion2_cantidad;
+                            }else{
+                                $iva += $devolucion2->devolucion2_costo * $factor * $devolucion2->devolucion2_cantidad;
+                                $bruto += $devolucion2->devolucion2_costo * $devolucion2->devolucion2_cantidad;
+                            }
+                            $descuento += $devolucion2->devolucion2_descuento;
+                            $total += ($bruto + $iva) - $descuento;
+
+                            // Detalle asiento
+                            $cuentas[] = $devolucion1->asientoCuentas($cliente, $linea->linea_venta, 'D', $bruto);
+                            $cuentas[] = $devolucion1->asientoCuentas($cliente, $impuesto->impuesto_cuenta, 'D', $iva, $bruto - $devolucion2->devolucion2_descuento );
+                            if ($devolucion2->devolucion2_descuento > 0) {
+                                $cuentas[] = $factura1->asientoCuentas($cliente, $linea->linea_venta, 'C', $factura2->devolucion2_descuento);
+                            }
+
                             // Inventario
                             $inventario = Inventario::where('inventario_documentos',$factura1->factura1_documentos)->where('inventario_id_documento',$factura1->id)->where('inventario_serie', $producto->id)->where('inventario_sucursal', $sucursal->id)->first();
                             if (!$inventario instanceof Inventario) {
@@ -199,6 +234,63 @@ class Devolucion1Controller extends Controller
                         DB::rollback();
                         return response()->json(['success' => false,'errors'=> $devolucion2]);
                     }
+
+                    // Calculos totales devolucion1
+                    $devolucion1->devolucion1_bruto = $bruto;
+                    $devolucion1->devolucion1_iva = $iva;
+                    $devolucion1->devolucion1_descuento = $descuento;
+                    $devolucion1->devolucion1_total = $total;
+
+                    // Preparando asiento
+                    $encabezado = $devolucion1->encabezadoAsiento($cliente);
+                    $cuentas[] = $devolucion1->asientoCuentas($cliente, session('empresa')->empresa_cuentacartera, 'C');
+                    // Creo el objeto para manejar el asiento
+                    $objAsiento = new AsientoContableDocumento($encabezado->data);
+                    if($objAsiento->asiento_error) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $objAsiento->asiento_error]);
+                    }
+                    // Preparar asiento
+                    $result = $objAsiento->asientoCuentas($cuentas);
+                    if($result != 'OK'){
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $result]);
+                    }
+
+                    // Insertar asiento
+                    $result = $objAsiento->insertarAsiento();
+                    if($result != 'OK') {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $result]);
+                    }
+                    // AsientoNif
+                    if (!empty($encabezado->dataNif)) {
+                        // Creo el objeto para manejar el asiento
+                        $objAsientoNif = new AsientoNifContableDocumento($encabezado->dataNif);
+                        if($objAsientoNif->asientoNif_error) {
+                            DB::rollback();
+                            return response()->json(['success' => false, 'errors' => $objAsiento->asientoNif_error]);
+                        }
+
+                        // Preparar asiento
+                        $result = $objAsientoNif->asientoCuentas($cuentas);
+                        if($result != 'OK'){
+                            DB::rollback();
+                            return response()->json(['success' => false, 'errors' => $result]);
+                        }
+
+                        // Insertar asiento
+                        $result = $objAsientoNif->insertarAsientoNif();
+                        if($result != 'OK') {
+                            DB::rollback();
+                            return response()->json(['success' => false, 'errors' => $result]);
+                        }
+                        // Recuperar el Id del asiento y guardar en la devolucion
+                        $devolucion1->devolucion1_asienton = $objAsientoNif->asientoNif->id;
+                    }
+                    $devolucion1->devolucion1_asiento = $objAsiento->asiento->id;
+                    $devolucion1->save();
+
                     // Update consecutive sucursal_devo in Sucursal
                     $sucursal->sucursal_devo = $consecutive;
                     $sucursal->save();

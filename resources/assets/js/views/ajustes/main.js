@@ -15,7 +15,8 @@ app || (app = {});
 
         events: {
             'click .btn-search': 'search',
-            'click .btn-clear': 'clear'
+            'click .btn-clear': 'clear',
+            'click .btn-import-modal': 'import'
         },
 
         /**
@@ -32,8 +33,7 @@ app || (app = {});
             this.$searchAjusteFecha = this.$('#searchajuste_ajuste_fecha');
 
             this.ajustesSearchTable = this.$ajustesSearchTable.DataTable({
-                dom:"<'row'<'col-sm-6'B><'col-sm-6 text-right'l>>" +
-                    "<'row'<'col-sm-12'tr>>" +
+                dom:"<'row'<'col-sm-12'tr>>" +
                     "<'row'<'col-sm-5'i><'col-sm-7'p>>",
                 processing: true,
                 serverSide: true,
@@ -63,23 +63,7 @@ app || (app = {});
                         },
 
                     },
-                ],
-                buttons: [
-                   {
-                       text: 'Importar',
-                       className: 'btn-sm',
-                       action: function () {
-                            _this.importActionView = new app.ImportProductoActionView({
-                               parameters: {
-                                   title: 'ajustes',
-                                   url: window.Misc.urlFull( Route.route('ajustes.import') )
-                               }
-                           });
-
-                           _this.importActionView.render();
-                       }
-                   }
-               ],
+                ]
             });
         },
 
@@ -96,6 +80,28 @@ app || (app = {});
             this.$searchAjusteSucursal.val('').trigger('change');
             this.$searchAjusteFecha.val('');
             this.ajustesSearchTable.ajax.reload();
+        },
+        /*
+        * Import data of Excel
+        */
+        import: function(e) {
+            var _this = this;
+
+            e.preventDefault();
+
+            // ImportActionView undelegateEvents
+            if ( this.importActionView instanceof Backbone.View ){
+                this.importActionView.stopListening();
+                this.importActionView.undelegateEvents();
+            }
+            this.importActionView = new app.ImportDataActionView({
+                parameters: {
+                    title: 'ajustes',
+                    url: window.Misc.urlFull( Route.route('ajustes.import') ),
+                    datatable: _this.asientosSearchTable
+                }
+            });
+            this.importActionView.render();
         },
     });
 })(jQuery, this, this.document);

@@ -16,8 +16,11 @@
                         </div>
 
                         <label for="producto_nombre" class="col-md-1 control-label">Nombre</label>
-                        <div class="col-md-8">
+                        <div class="col-md-7">
                             {!! Form::text('producto_nombre', session('search_producto_nombre'), ['id' => 'producto_nombre', 'class' => 'form-control input-sm input-toupper', 'placeholder' => 'Nombre del producto']) !!}
+                        </div>
+                        <div class="col-md-1">
+                            <a href="#" class="btn btn-default btn-sm btn-import-modal"><i class="fa fa-upload"></i> Importar</a>
                         </div>
                     </div>
 

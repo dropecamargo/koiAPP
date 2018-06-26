@@ -1,4 +1,5 @@
 /**
+/**
 * Class ImpuestoModel extend of Backbone Model
 * @author KOI || @dropecamargo
 * @link http://koi-ti.com
@@ -19,6 +20,7 @@ app || (app = {});
             'impuesto_nombre': '',
             'impuesto_porcentaje': '',
             'impuesto_activo': 1,
+            'impuesto_cuenta': 1,
             'plancuentas_nombre': ''
         }
     });

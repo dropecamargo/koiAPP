@@ -520,6 +520,8 @@ class AjusteController extends Controller
                 $ajuste->save();
 
                 // Ajuste2 - Excel
+                $detalleAsiento = [];
+                $total = 0;
                 $excel = Excel::load($request->file)->get();
                 foreach ($excel as $row) {
                     $producto = Producto::where( 'producto_serie', $row->producto_serie )->first();
@@ -532,7 +534,12 @@ class AjusteController extends Controller
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'El tipo de ajuste no es valido, por favor verifique la información o consulte al administrador']);
                     }
-
+                    // Linea
+                    $linea = Linea::find($producto->producto_linea);
+                    if (!$linea instanceof Linea) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar linea de producto, por favor verifique la información o consulte al administrador']);
+                    }
                     if ($row->cantidad_entrada > 0) {
 
                         // Detalle ajuste != Manejaserie
@@ -639,7 +646,62 @@ class AjusteController extends Controller
                             }
                         }
                     }
+                    // Preparando Asietno
+                    $total += $ajusteDetalle->ajuste2_costo;
+                    $detalleAsiento[] = $ajuste->detalleAsiento('D',$linea->linea_inventario, $ajusteDetalle->ajuste2_costo);
                 }
+                $detalleAsiento[] = $ajuste->detalleAsiento('C',$tipoajuste->tipoajuste_cuenta, $total);
+                $encabezado = $ajuste->encabezadoAsiento();
+                if(!is_object($encabezado)){
+                    DB::rollback();
+                    return response()->json(['success' => false, 'errors' => $encabezado]);
+                }
+                //Creo el objeto para manejar el asiento
+                $objAsiento = new AsientoContableDocumento($encabezado->data);
+                if($objAsiento->asiento_error) {
+                    DB::rollback();
+                    return response()->json(['success' => false, 'errors' => $objAsiento->asiento_error]);
+                }
+                // Preparar asiento
+                $result = $objAsiento->asientoCuentas($detalleAsiento);
+                if($result != 'OK'){
+                    DB::rollback();
+                    return response()->json(['success' => false, 'errors' => $result]);
+                }
+
+                // Insertar asiento
+                $result = $objAsiento->insertarAsiento();
+                if($result != 'OK') {
+                    DB::rollback();
+                    return response()->json(['success' => false, 'errors' => $result]);
+                }
+                // AsientoNif
+                if (!empty($encabezado->dataNif)) {
+                    // Creo el objeto para manejar el asiento
+                    $objAsientoNif = new AsientoNifContableDocumento($encabezado->dataNif);
+                    if($objAsientoNif->asientoNif_error) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $objAsiento->asientoNif_error]);
+                    }
+
+                    // Preparar asiento
+                    $result = $objAsientoNif->asientoCuentas($detalleAsiento);
+                    if($result != 'OK'){
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $result]);
+                    }
+
+                    // Insertar asiento
+                    $result = $objAsientoNif->insertarAsientoNif();
+                    if($result != 'OK') {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $result]);
+                    }
+                    // Recuperar el Id del asiento
+                    $ajuste->ajuste1_asienton = $objAsientoNif->asientoNif->id;
+                }
+                $ajuste->ajuste1_asiento = $objAsiento->asiento->id;
+                $ajuste->save();
                 // Update consecutive sucursal_ajus in Sucursal
                 $sucursal->sucursal_ajus = $consecutive;
                 $sucursal->save();
