@@ -2042,6 +2042,18 @@
     </tr>
 </script>
 
+<script type="text/template" id="add-documentocobro-item-tpl">
+    <td colspan="2"><%- documentocobro_tipo %></td>
+    <td><%- documentocobro_numero %></td>
+    <td><%- documentocobro_expedicion %></td>
+    <td><%- documentocobro_vencimiento %></td>
+    <td><%- days %></td>
+    <td class="text-center"><%- documentocobro_cuota %></td>
+    <td class="text-right"><%- window.Misc.currency( documentocobro_valor ) %></td>
+    <td class="text-right"><%- window.Misc.currency( documentocobro_saldo ) %></td>
+    <th></th>
+</script>
+
 <script type="text/template" id="qq-template">
     <div class="qq-uploader-selector qq-uploader qq-gallery" qq-drop-area-text="{{ trans('app.files.drop') }}">
         <div class="qq-total-progress-bar-container-selector qq-total-progress-bar-container">

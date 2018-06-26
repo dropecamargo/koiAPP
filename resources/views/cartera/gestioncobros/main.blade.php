@@ -5,7 +5,7 @@
 @section('content')
     <section class="content-header">
         <h1>
-            Gestion Cobro <small>Administración de cobros</small>
+            Gestión de cobro <small>Administración de gestión de cobros</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> {{trans('app.home')}}</a></li>

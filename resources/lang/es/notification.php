@@ -15,6 +15,7 @@ return [
 
 	'call' => [
         'pending' => 'Tiene una llamada pendiente',
-        'gestion' => 'Tiene una gestion de cobro pendiente'
+        'gestioncobro' => 'Tiene una gestión de cobro pendiente',
+        'gestiondeudor' => 'Tiene una gestión de deudor pendiente'
     ]
 ];

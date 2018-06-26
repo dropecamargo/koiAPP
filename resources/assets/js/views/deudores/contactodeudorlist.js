@@ -12,6 +12,9 @@ app || (app = {});
     app.ContactoDeudorView = Backbone.View.extend({
 
         el: '#browse-contactos-deudor-list',
+        events: {
+            'click .btn-edit-contactodeudor': 'editOne'
+        },
         parameters: {
             dataFilter: {}
         },
@@ -30,6 +33,8 @@ app || (app = {});
             this.listenTo( this.collection, 'store', this.storeOne );
             this.listenTo( this.collection, 'sync', this.responseServer);
 
+            // Trigger
+            this.on('createOne', this.createOne, this);
             this.collection.fetch({ data: {deudor_id: this.parameters.dataFilter.deudor_id}, reset: true });
         },
 
@@ -58,6 +63,41 @@ app || (app = {});
         addAll: function () {
             this.$el.find('tbody').html('');
             this.collection.forEach( this.addOne, this );
+        },
+
+        editOne: function(e) {
+            e.preventDefault();
+
+            var resource = $(e.currentTarget).attr("data-resource"),
+                model = this.collection.get(resource),
+                _this = this;
+
+            if ( this.createContactoDeudorView instanceof Backbone.View ){
+                this.createContactoDeudorView.stopListening();
+                this.createContactoDeudorView.undelegateEvents();
+            }
+
+            this.createContactoDeudorView = new app.CreateContactoDeudorView({
+                model: model
+            });
+            this.createContactoDeudorView.render();
+        },
+
+        createOne: function(deudor) {
+            var _this = this;
+            if ( this.createContactoDeudorView instanceof Backbone.View ){
+                this.createContactoDeudorView.stopListening();
+                this.createContactoDeudorView.undelegateEvents();
+            }
+
+            this.createContactoDeudorView = new app.CreateContactoDeudorView({
+                model: new app.ContactoDeudorModel(),
+                collection: _this.collection,
+                parameters: {
+                    'deudor_id': deudor
+               }
+            });
+            this.createContactoDeudorView.render();
         },
 
         /**

@@ -52,6 +52,11 @@ input[type=file] {
 	position: relative;
 }
 
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
 .dropdown-submenu>.dropdown-menu {
 	top: 0;
 	left: 100%;

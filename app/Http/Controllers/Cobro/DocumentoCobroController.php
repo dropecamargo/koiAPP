@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\Cobro\DocumentoCobro;
+use App\Models\Cobro\DocumentoCobro, App\Models\Cobro\Deudor;
 use DB;
 
 class DocumentoCobroController extends Controller
@@ -22,6 +22,14 @@ class DocumentoCobroController extends Controller
             $detalle = [];
             if( $request->has('deudor_id') ){
                 $detalle = DocumentoCobro::select('documentocobro.*', DB::raw("DATEDIFF(documentocobro_vencimiento, NOW() ) as days"))->where('documentocobro_deudor', $request->deudor_id)->orderBy('documentocobro_vencimiento', 'desc')->get();
+            }
+
+            if( $request->has('tercero_id') && $request->has('deudor_nit') ){
+                // Recuperar deudor
+                $deudor = Deudor::where('deudor_tercero', $request->tercero_id)->where('deudor_nit', $request->deudor_nit)->first();
+                if($deudor instanceof Deudor){
+                    $detalle = DocumentoCobro::select('documentocobro.*', DB::raw("DATEDIFF(documentocobro_vencimiento, NOW() ) as days"))->where('documentocobro_deudor', $deudor->id)->orderBy('documentocobro_vencimiento', 'desc')->get();
+                }
             }
             return response()->json($detalle);
         }

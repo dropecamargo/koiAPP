@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\Cobro\ContactoDeudor;
+use App\Models\Cobro\ContactoDeudor, App\Models\Cobro\Deudor;
+use DB, Log;
 
 class ContactoDeudorController extends Controller
 {
@@ -44,7 +45,40 @@ class ContactoDeudorController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if ($request->ajax()) {
+            $data = $request->all();
+
+            $contactodeudor = new ContactoDeudor;
+            if ($contactodeudor->isValid($data)) {
+                DB::beginTransaction();
+                try {
+                    // Recuperar tercero
+                    $deudor = Deudor::find($request->deudor_id);
+                    if(!$deudor instanceof Deudor) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar al deudor, por favor verifique la información o consulte al administrador.']);
+                    }
+
+                    // ContactoDeudor
+                    $contactodeudor->fill($data);
+                    $contactodeudor->contactodeudor_deudor = $deudor->id;
+                    $contactodeudor->save();
+
+                    // Commit Transaction
+                    DB::commit();
+                    return response()->json(['success' => true,
+                        'id' => $contactodeudor->id,
+                        'contactodeudor_nombre' => $contactodeudor->contactodeudor_nombre
+                    ]);
+                }catch(\Exception $e){
+                    DB::rollback();
+                    Log::error($e->getMessage());
+                    return response()->json(['success' => false, 'errors' => trans('app.exception')]);
+                }
+            }
+            return response()->json(['success' => false, 'errors' => $contactodeudor->errors]);
+        }
+        abort(403);
     }
 
     /**
@@ -78,7 +112,29 @@ class ContactoDeudorController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        if ($request->ajax()) {
+            $data = $request->all();
+
+            $contactodeudor = ContactoDeudor::findOrFail($id);
+            if ($contactodeudor->isValid($data)) {
+                DB::beginTransaction();
+                try {
+                    // Documento
+                    $contactodeudor->fill($data);
+                    $contactodeudor->save();
+
+                    // Commit Transaction
+                    DB::commit();
+                    return response()->json(['success' => true, 'id' => $contactodeudor->id]);
+                }catch(\Exception $e){
+                    DB::rollback();
+                    Log::error($e->getMessage());
+                    return response()->json(['success' => false, 'errors' => trans('app.exception')]);
+                }
+            }
+            return response()->json(['success' => false, 'errors' => $contactodeudor->errors]);
+        }
+        abort(403);
     }
 
     /**

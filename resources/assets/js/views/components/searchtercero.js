@@ -49,6 +49,7 @@ app || (app = {});
             this.$btnContact = this.$("#"+this.$inputContent.attr("data-contacto"));
             this.$inputAddress = this.$("#"+this.$inputContent.attr("data-address"));
             this.$inputPuntoVenta = this.$("#"+this.$inputContent.attr("data-punto"));
+            this.$inputDeudor = this.$("#"+this.$inputContent.attr("data-deudor"));
             this.$changeIf = this.$inputContent.attr("data-change");
             this.$inputCliente = this.$inputContent.attr("data-cliente");
             this.$inputVendedor = this.$inputContent.attr("data-vendedor");
@@ -130,6 +131,12 @@ app || (app = {});
 
             if(this.$btnContact.length > 0) {
                 this.$btnContact.attr('data-tercero', data.id);
+            }
+
+            if(this.$inputDeudor.length > 0) {
+                $('#gestiondeudor_deudor').val(null).text('');
+                $('#deudor_nombre').val(null).text('');
+                this.$inputDeudor.attr('data-tercero', data.id);
             }
 
             if(this.$concepto.length > 0 && this.$wrap.length > 0 || this.$concepto.length > 0) {
