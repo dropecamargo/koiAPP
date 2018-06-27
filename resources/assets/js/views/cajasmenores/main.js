@@ -54,7 +54,11 @@ app || (app = {});
                         targets: 0,
                         width: '10%',
                         render: function ( data, type, full, row ) {
-                            return '<a href="'+ window.Misc.urlFull( Route.route('cajasmenores.show', {cajasmenores: full.id }) )  +'">' + data + '</a>';
+                            if( parseInt(full.cajamenor1_preguardado) ) {
+                                return '<a href="'+ window.Misc.urlFull( Route.route('cajasmenores.edit', {cajasmenores: full.id }) )  +'">' + data + ' <span class="label label-warning pull-right">PRE</span></a>';
+                            }else{
+                                return '<a href="'+ window.Misc.urlFull( Route.route('cajasmenores.show', {cajasmenores: full.id }) )  +'">' + data + '</a>';
+                            }
                         }
                     }
                 ]

@@ -18,8 +18,14 @@ app || (app = {});
         	'cajamenor1_numero': '',
         	'cajamenor1_tercero': '',
         	'cajamenor1_fecha': '',
+            'cajamenor1_efectivo': 0,
+            'cajamenor1_reembolso': 0,
+            'cajamenor1_fondo': 0,
+            'cajamenor1_provisionales': 0,
             'cajamenor1_cuentabanco': '',
-        	'cajamenor1_observaciones': ''
+        	'cajamenor1_observaciones': '',
+            'tercero_nit': '',
+            'tercero_nombre': ''
         }
     });
 })(this, this.document);

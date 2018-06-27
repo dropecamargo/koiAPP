@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\Tesoreria\CajaMenor2, App\Models\Tesoreria\ConceptoCajaMenor, App\Models\Base\Tercero, App\Models\Contabilidad\PlanCuenta, App\Models\Contabilidad\CentroCosto;
-use Log;
+use App\Models\Tesoreria\CajaMenor1, App\Models\Tesoreria\CajaMenor2, App\Models\Tesoreria\ConceptoCajaMenor, App\Models\Base\Tercero, App\Models\Contabilidad\PlanCuenta, App\Models\Contabilidad\CentroCosto;
+use Log, DB;
 class CajaMenorDetalleController extends Controller
 {
     /**
@@ -49,7 +49,13 @@ class CajaMenorDetalleController extends Controller
             $data = $request->all();
             $cajaMenor2 = new CajaMenor2;
             if ($cajaMenor2->isValid($data)) {
+                DB::beginTransaction();
                 try {
+                    // CajaMenor1
+                    $cajaMenor1 = CajaMenor1::find($request->cajamenor1);
+                    if (!$cajaMenor1 instanceof CajaMenor1) {
+                        return response()->json(['success' => false, 'errors' => 'No es posible recuperar caja menor, verifique información ó por favor consulte al administrador.']);
+                    }
                     // Concepto Caja
                     $conceptoCaja = ConceptoCajaMenor::find($request->cajamenor2_conceptocajamenor);
                     if(!$conceptoCaja instanceof ConceptoCajaMenor) {
@@ -74,8 +80,18 @@ class CajaMenorDetalleController extends Controller
                     // Calculate valor
                     $valor = $request->cajamenor2_subtotal + $request->cajamenor2_iva - ($request->cajamenor2_retefuente + $request->cajamenor2_reteica + $request->cajamenor2_reteiva);
 
-                    return response()->json(['success' => true, 'id' => uniqid(), 'plancuentas_nombre' => $cuenta->plancuentas_nombre, 'plancuentas_cuenta' => $cuenta->plancuentas_cuenta, 'centrocosto_codigo' => $centroCosto->centrocosto_codigo, 'centrocosto_nombre' => $centroCosto->centrocosto_nombre, 'conceptocajamenor_nombre' => $conceptoCaja->conceptocajamenor_nombre, 'cajamenor2_valor' => $valor]);
+                    $cajaMenor2->fill($data);
+                    $cajaMenor2->cajamenor2_cajamenor1 = $cajaMenor1->id;
+                    $cajaMenor2->cajamenor2_conceptocajamenor = $conceptoCaja->id;
+                    $cajaMenor2->cajamenor2_tercero = $tercero->id;
+                    $cajaMenor2->cajamenor2_cuenta = $cuenta->id;
+                    $cajaMenor2->cajamenor2_centrocosto = $centroCosto->id;
+                    $cajaMenor2->save();
+
+                    DB::commit();
+                    return response()->json(['success' => true, 'id' => $cajaMenor2->id, 'plancuentas_nombre' => $cuenta->plancuentas_nombre, 'plancuentas_cuenta' => $cuenta->plancuentas_cuenta, 'centrocosto_codigo' => $centroCosto->centrocosto_codigo, 'centrocosto_nombre' => $centroCosto->centrocosto_nombre, 'conceptocajamenor_nombre' => $conceptoCaja->conceptocajamenor_nombre, 'cajamenor2_valor' => $valor]);
                 }catch(\Exception $e){
+                    DB::rollback();
                     Log::error($e->getMessage());
                     return response()->json(['success' => false, 'errors' => trans('app.exception')]);
                 }
@@ -125,8 +141,27 @@ class CajaMenorDetalleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        //
+        if ($request->ajax()) {
+            DB::beginTransaction();
+            try {
+                $cajaMenor2 = CajaMenor2::find($id);
+                if(!$cajaMenor2 instanceof CajaMenor2){
+                    return response()->json(['success' => false, 'errors' => 'No es recuperar item del detalle, por favor verifique la información del asiento o consulte al administrador.']);
+                }
+
+                // Eliminar item asiento2
+                $cajaMenor2->delete();
+
+                DB::commit();
+                return response()->json(['success' => true]);
+            }catch(\Exception $e){
+                DB::rollback();
+                Log::error(sprintf('%s -> %s: %s', 'CajaMenorDetalleController', 'destroy', $e->getMessage()));
+                return response()->json(['success' => false, 'errors' => trans('app.exception')]);
+            }
+        }
+        abort(403);
     }
 }

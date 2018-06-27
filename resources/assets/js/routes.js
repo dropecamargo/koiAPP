@@ -361,7 +361,8 @@ app || (app = {});
             // Caja Menor
             'cajasmenores(/)': 'getCajasMenoresMain',
             'cajasmenores/create(/)': 'getCajaMenorCreate',
-            'cajasmenores/:cajasmenores(/)': 'getCajaMenorShow',
+            'cajasmenores/:cajamenor(/)': 'getCajaMenorShow',
+            'cajasmenores/:cajamenor/edit(/)': 'getCajaMenorEdit',
 
             // Retefuente
             'retefuentes(/)': 'getReteFuentesMain',
@@ -3032,9 +3033,9 @@ app || (app = {});
             this.createCajaMenorView.render();
         },
 
-        getCajaMenorShow: function (cajaMenor1Model) {
+        getCajaMenorShow: function (cajaMenor1) {
             this.cajaMenor1Model = new app.CajaMenor1Model();
-            this.cajaMenor1Model.set({'id': cajaMenor1Model}, {'silent':true});
+            this.cajaMenor1Model.set({'id': cajaMenor1}, {'silent':true});
 
             if ( this.showCajaMenorView instanceof Backbone.View ){
                 this.showCajaMenorView.stopListening();
@@ -3042,6 +3043,24 @@ app || (app = {});
             }
 
             this.showCajaMenorView = new app.ShowCajaMenorView({ model: this.cajaMenor1Model });
+        },
+
+        getCajaMenorEdit: function (cajaMenor1) {
+            this.cajaMenor1Model = new app.CajaMenor1Model();
+            this.cajaMenor1Model.set({'id': cajaMenor1}, {'silent':true});
+
+            if ( this.editCajaMenorView instanceof Backbone.View ){
+                this.editCajaMenorView.stopListening();
+                this.editCajaMenorView.undelegateEvents();
+            }
+
+            if ( this.createCajaMenorView instanceof Backbone.View ){
+                this.createCajaMenorView.stopListening();
+                this.createCajaMenorView.undelegateEvents();
+            }
+
+            this.createCajaMenorView = new app.EditCajaMenorView({ model: this.cajaMenor1Model });
+            this.cajaMenor1Model.fetch();
         },
 
         // Facturap

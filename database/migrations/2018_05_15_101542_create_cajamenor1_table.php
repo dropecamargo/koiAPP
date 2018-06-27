@@ -28,6 +28,7 @@ class CreateCajamenor1Table extends Migration
             $table->double('cajamenor1_efectivo');
             $table->double('cajamenor1_provisionales');
             $table->double('cajamenor1_reembolso');
+            $table->boolean('cajamenor1_preguardado')->default(true);            
             $table->date('cajamenor1_fecha');
             $table->text('cajamenor1_observaciones');
             $table->integer('cajamenor1_usuario_elaboro')->unsigned();

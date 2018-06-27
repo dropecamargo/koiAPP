@@ -56,7 +56,7 @@ class CajaMenor2 extends Model
 		$query->join('centrocosto', 'cajamenor2_centrocosto', '=', 'centrocosto.id');
 		$query->join('plancuentas', 'cajamenor2_cuenta', '=', 'plancuentas.id');
 		$query->where('cajamenor2_cajamenor1', $id);
-		$cajaMenor2 = $query->get();
-		return $cajaMenor2;
+		$query->groupBy('cajamenor2.id');
+		return $query->get();
 	}
 }

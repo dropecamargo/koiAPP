@@ -1,5 +1,5 @@
 /**
-* Class CreateCajaMenorView  of Backbone Router
+* Class EditCajaMenorView  of Backbone Router
 * @author KOI || @dropecamargo
 * @link http://koi-ti.com
 */
@@ -9,13 +9,15 @@ app || (app = {});
 
 (function ($, window, document, undefined) {
 
-    app.CreateCajaMenorView = Backbone.View.extend({
+    app.EditCajaMenorView = Backbone.View.extend({
 
         el: '#cajamenor-create',
         template: _.template( ($('#add-cajamenor-tpl').html() || '') ),
         templateDetailt: _.template( ($('#add-cajamenor-detail-tpl').html() || '') ),
         events: {
+            'click .submit-cajamenor' :'submitForm',
             'submit #form-cajamenor': 'onStore',
+            'submit #form-detail-cajamenor': 'onStoreItem'
         },
 
         /**
@@ -25,6 +27,9 @@ app || (app = {});
             // Initialize
             if( opts !== undefined && _.isObject(opts.parameters) )
                 this.parameters = $.extend({}, this.parameters, opts.parameters);
+
+            // Collection
+            this.detalleCajaMenor = new app.CajaMenorDetalleList();
 
             // Spinner
             this.$spinner = this.$('#spinner-box');
@@ -40,7 +45,7 @@ app || (app = {});
         */
         render: function() {
             var attributes = this.model.toJSON();
-            attributes.edit = false;
+            attributes.edit = true;
             this.$el.html( this.template(attributes) );
 
             this.$wraperDetail = this.$('#render-form-detail');
@@ -51,7 +56,30 @@ app || (app = {});
             this.$('#cajamenor2_cuenta').prop('disabled', true);
 
             // Reference views
+            this.referenceViews();
             this.ready();
+        },
+
+        referenceViews:function(){
+            this.detalleCajaMenorView = new app.DetalleCajaMenorView( {
+                collection: this.detalleCajaMenor,
+                parameters: {
+                    edit: true,
+                    reembolso: this.$('#cajamenor1_reembolso'),
+                    template: this.templateDetailt,
+                    wrapperTemplate: this.$wraperDetail,
+                    dataFilter: {
+                        'cajamenor': this.model.get('id')
+                    }
+               }
+            });
+        },
+
+        /**
+        * Event submit Caja Menor
+        */
+        submitForm: function (e) {
+            this.$form.submit();
         },
 
         /**
@@ -67,6 +95,18 @@ app || (app = {});
         },
 
         /**
+        *   Evenet Submit item
+        */
+        onStoreItem: function (e) {
+            if (!e.isDefaultPrevented()) {
+                e.preventDefault();
+
+                var data = window.Misc.formToJson( e.target );
+                    data.cajamenor1 = this.model.get('id');
+                this.detalleCajaMenor.trigger( 'store', data );
+            }
+        },
+        /**
         * fires libraries js
         */
         ready: function () {
@@ -79,6 +119,12 @@ app || (app = {});
 
             if( typeof window.initComponent.initValidator == 'function' )
                 window.initComponent.initValidator();
+
+            if( typeof window.initComponent.initDatePicker == 'function' )
+                window.initComponent.initDatePicker();
+
+            if( typeof window.initComponent.initInputMask == 'function' )
+                window.initComponent.initInputMask();
         },
 
         /**
@@ -105,7 +151,7 @@ app || (app = {});
                     alertify.error(text);
                     return;
                 }
-                Backbone.history.navigate(Route.route('cajasmenores.edit', { cajasmenores: resp.id}), { trigger:true });
+                window.Misc.redirect( window.Misc.urlFull( Route.route('cajasmenores.edit', { cajasmenores: resp.id }), { trigger:true }) );
             }
         }
     });

@@ -371,7 +371,7 @@ Route::group(['middleware' => 'auth'], function(){
 
 	Route::group(['prefix' => 'cajasmenores'], function()
 	{
-		Route::resource('detalle', 'Tesoreria\CajaMenorDetalleController');
+		Route::resource('detalle', 'Tesoreria\CajaMenorDetalleController', ['only' => ['index', 'store', 'destroy']]);
 	});
 
 	Route::resource('facturasp', 'Tesoreria\Facturap1Controller', ['except' => ['destroy','update','edit']]);

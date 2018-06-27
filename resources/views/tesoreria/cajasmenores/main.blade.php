@@ -1,112 +1,147 @@
 @extends('layout.layout')
-
 @section('title') Caja Menor @stop
-
 @section('content')
-    <section class="content-header">
-        <h1>
-            Caja menor <small>Administración de caja menor</small>
-        </h1>
-        <ol class="breadcrumb">
-            <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> {{trans('app.home')}}</a></li>
-            @yield('breadcrumb')
-        </ol>
-    </section>
-
-    <section class="content">
-        @yield ('module')
-    </section>
+    @yield ('module')
 
     <script type="text/template" id="add-cajamenor-tpl">
-        <form method="POST" accept-charset="UTF-8" id="form-cajamenor" data-toggle="validator">
-            <div class="row">
-                <div class="form-group col-md-4">
-                    <label for="cajamenor1_regional" class="control-label">Regional</label>
-                    <select name="cajamenor1_regional" id="cajamenor1_regional" class="form-control select2-default-clear change-regional-consecutive-koi-component" data-field="cajamenor1_numero" data-document ="cajamenor" data-wrapper="cajamenor-create" required>
-                        @foreach( App\Models\Base\Regional::getRegionales() as $key => $value)
-                            <option  value="{{ $key }}">{{ $value }}</option>
-                        @endforeach
-                    </select>
-                </div>
+        <section class="content-header">
+            <h1>
+                Caja menor <small>Administración de caja menor <% if( !_.isUndefined(edit) && !_.isNull(edit) && edit) { %> <span class="label label-warning">Preguardado</span> <% }%></small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> {{trans('app.home')}}</a></li>
+                <li><a href="{{ route('cajasmenores.index') }}">Cajas menores</a></li>
+                <% if( !_.isUndefined(edit) && !_.isNull(edit) && edit) { %>
+                    <li><a href="<%- window.Misc.urlFull( Route.route('cajasmenores.show', { cajasmenores: id}) ) %>"><%- id %></a></li>
+                    <li class="active">Editar</li>
+                <% }else{ %>
+                    <li class="active">Nuevo</li>
+                <% } %>
+            </ol>
+        </section>
+        <section class="content">
+            <div class="box box-primary" id="spinner-box">
+        		<div class="box-body">
+                    <form method="POST" accept-charset="UTF-8" id="form-cajamenor" data-toggle="validator">
+                        <div class="row">
+                            <div class="form-group col-md-4">
+                                <label for="cajamenor1_regional" class="control-label">Regional</label>
+                                <select name="cajamenor1_regional" id="cajamenor1_regional" class="form-control select2-default-clear change-regional-consecutive-koi-component" data-field="cajamenor1_numero" data-document ="cajamenor" data-wrapper="cajamenor-create" required>
+                                    @foreach( App\Models\Base\Regional::getRegionales() as $key => $value)
+                                    <option  value="{{ $key }}" <%- cajamenor1_regional == '{{ $key }}' ? 'selected': ''%>>{{ $value }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
 
-                <div class="form-group col-md-1">
-                    <label for="cajamenor1_numero" class="control-label">Número</label>
-                    <input id="cajamenor1_numero" name="cajamenor1_numero" class="form-control input-sm" type="number" min="1" value="<%- cajamenor1_numero %>" required readonly>
-                </div>
+                            <div class="form-group col-md-1">
+                                <label for="cajamenor1_numero" class="control-label">Número</label>
+                                <input id="cajamenor1_numero" name="cajamenor1_numero" class="form-control input-sm" type="number" min="1" value="<%- cajamenor1_numero %>" required readonly>
+                            </div>
 
-                <div class="form-group col-md-3">
-                    <label for="cajamenor1_fecha" class="control-label">Fecha</label>
-                    <input id="cajamenor1_fecha" name="cajamenor1_fecha" class="form-control input-sm datepicker-back" type="text"  value="{{ date('Y-m-d') }}" placeholder="Fecha" date-picker  required>
-                </div>
+                            <div class="form-group col-md-3">
+                                <label for="cajamenor1_fecha" class="control-label">Fecha</label>
+                                <input id="cajamenor1_fecha" name="cajamenor1_fecha" class="form-control input-sm datepicker-back" type="text"  value="{{ date('Y-m-d') }}" placeholder="Fecha" date-picker  required>
+                            </div>
 
-                <div class="form-group col-md-2">
-                    <label for="cajamenor1_efectivo" class="control-label">Efectivo</label>
-                    <input type="text" id="cajamenor1_efectivo" name="cajamenor1_efectivo" class="form-control input-sm" value="0" data-currency>
-                </div>
-                <div class="form-group col-md-2">
-                    <label for="cajamenor1_provisionales" class="control-label">Provisionales</label>
-                    <input  type="text" id="cajamenor1_provisionales" name="cajamenor1_provisionales" class="form-control input-sm" value="0" data-currency>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-md-3">
-                    <label for="cajamenor1_tercero" class="control-label">Empleado</label>
-                    <div class="input-group input-group-sm">
-                        <span class="input-group-btn">
-                            <button type="button" class="btn btn-default btn-flat btn-koi-search-tercero-component-table" data-field="cajamenor1_tercero">
-                                <i class="fa fa-user"></i>
-                            </button>
-                        </span>
-                        <input id="cajamenor1_tercero" placeholder="Empleado" class="form-control tercero-koi-component" name="cajamenor1_tercero" type="text" maxlength="15" data-wrapper="cajamenor-create" data-name="empleado_nombre" >
-                    </div>
-                </div>
-                <div class="form-group col-md-5 col-xs-12">
-                    <label for="cajamenor1_tercero" class="control-label"></label>
-                    <input id="empleado_nombre" name="empleado_nombre" placeholder="Nombre empleado" class="form-control input-sm" type="text" maxlength="15" readonly required>
-                </div>
-                <div class="form-group col-md-2">
-                    <label for="cajamenor1_reembolso" class="control-label">Reembolso</label>
-                    <input type="text" id="cajamenor1_reembolso" name="cajamenor1_reembolso" class="form-control input-sm" data-currency>
-                </div>
-                <div class="form-group col-md-2">
-                    <label for="cajamenor1_fondo" class="control-label">Fondo</label>
-                    <input type="text" id="cajamenor1_fondo" name="cajamenor1_fondo" class="form-control input-sm" data-currency>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-md-8">
-                    <label for="cajamenor1_observaciones" class="control-label">Observaciones</label>
-                    <textarea id="cajamenor1_observaciones" name="cajamenor1_observaciones" class="form-control" rows="2" placeholder="Observaciones"></textarea>
-                </div>
-                <div class="form-group col-md-4">
-                    <label for="cajamenor1_cuentabanco" class="control-label">Cuenta de banco</label>
-                    <select name="cajamenor1_cuentabanco" id="cajamenor1_cuentabanco" class="form-control select2-default" required>
-                       @foreach( App\Models\Cartera\CuentaBanco::getCuenta() as $key => $value)
-                            <option  value="{{ $key }}" <%- cajamenor1_cuentabanco == '{{ $key }}' ? 'selected': ''%>>{{ $value }}</option>
-                        @endforeach
-                    </select>
-                </div>
-            </div>
-        </form>
+                            <div class="form-group col-md-2">
+                                <label for="cajamenor1_efectivo" class="control-label">Efectivo</label>
+                                <input type="text" id="cajamenor1_efectivo" name="cajamenor1_efectivo" class="form-control input-sm" value="<%- cajamenor1_efectivo %>" data-currency>
+                            </div>
+                            <div class="form-group col-md-2">
+                                <label for="cajamenor1_provisionales" class="control-label">Provisionales</label>
+                                <input  type="text" id="cajamenor1_provisionales" name="cajamenor1_provisionales" class="form-control input-sm" value="<%- cajamenor1_provisionales %>" data-currency>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-3">
+                                <label for="cajamenor1_tercero" class="control-label">Empleado</label>
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default btn-flat btn-koi-search-tercero-component-table" data-field="cajamenor1_tercero">
+                                            <i class="fa fa-user"></i>
+                                        </button>
+                                    </span>
+                                    <input id="cajamenor1_tercero" placeholder="Empleado" class="form-control tercero-koi-component" name="cajamenor1_tercero" type="text" maxlength="15" data-wrapper="cajamenor-create" data-name="empleado_nombre" value="<%- tercero_nit %>">
+                                </div>
+                            </div>
+                            <div class="form-group col-md-5 col-xs-12">
+                                <label for="cajamenor1_tercero" class="control-label"></label>
+                                <input id="empleado_nombre" name="empleado_nombre" placeholder="Nombre empleado" class="form-control input-sm" type="text" maxlength="15" value="<%- tercero_nombre %>" readonly required>
+                            </div>
+                            <div class="form-group col-md-2">
+                                <label for="cajamenor1_reembolso" class="control-label">Reembolso</label>
+                                <input type="text" id="cajamenor1_reembolso" name="cajamenor1_reembolso" class="form-control input-sm" value="<%- cajamenor1_reembolso %>" data-currency>
+                            </div>
+                            <div class="form-group col-md-2">
+                                <label for="cajamenor1_fondo" class="control-label">Fondo</label>
+                                <input type="text" id="cajamenor1_fondo" name="cajamenor1_fondo" class="form-control input-sm" value="<%- cajamenor1_fondo %>" data-currency>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-8">
+                                <label for="cajamenor1_observaciones" class="control-label">Observaciones</label>
+                                <textarea id="cajamenor1_observaciones" name="cajamenor1_observaciones" class="form-control" value"<%- cajamenor1_observaciones %>" rows="2" placeholder="Observaciones"></textarea>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="cajamenor1_cuentabanco" class="control-label">Cuenta de banco</label>
+                                <select name="cajamenor1_cuentabanco" id="cajamenor1_cuentabanco" class="form-control select2-default" required>
+                                    @foreach( App\Models\Cartera\CuentaBanco::getCuenta() as $key => $value)
+                                    <option  value="{{ $key }}" <%- cajamenor1_cuentabanco == '{{ $key }}' ? 'selected': ''%>>{{ $value }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <% if(edit) { %> </form> <% } %>
 
-        <div class="box-footer with-border">
-            <div class="row">
-                <div class="col-sm-2 col-sm-offset-4 col-xs-6 text-left">
-                    <a href="{{ route('ajustesc.index') }}" class="btn btn-default btn-sm btn-block">{{ trans('app.cancel') }}</a>
-                </div>
-                <div class="col-sm-2 col-xs-6 text-right">
-                    <button type="button" class="btn btn-primary btn-sm btn-block submit-cajamenor">{{ trans('app.save') }}</button>
-                </div>
-            </div>
-        </div>
+                        <div class="box-footer with-border">
+                            <div class="row">
+                                <div class="col-md-2 <%- (edit) ? 'col-md-offset-4' : 'col-md-offset-5' %> text-left">
+                                    <a href="{{ route('cajasmenores.index') }}" class="btn btn-default btn-sm btn-block">{{ trans('app.cancel') }}</a>
+                                </div>
+                                <% if(edit) { %>
+                                    <div class="col-sm-2 col-xs-6 text-right">
+                                        <button type="button" class="btn btn-primary btn-sm btn-block submit-cajamenor">{{ trans('app.save') }}</button>
+                                    </div>
+                                    <% } %>
+                                </div>
+                        </div>
 
-        <div id="render-form-detail"></div>
+                        <div id="render-form-detail">
+                            {{-- Render form detalle cajamenor --}}
+                        </div>
+                        <!-- table table-bordered table-striped -->
+                        <div class="box-body table-responsive no-padding">
+                            <table id="browse-detalle-cajamenor-list" class="table table-hover table-bordered" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th width="5%"></th>
+                                        <th width="25%">Concepto</th>
+                                        <th width="30%">Tercero</th>
+                                        <th width="15%">Cuenta</th>
+                                        <th width="15%">Centro Costo</th>
+                                        <th width="10%">Valor</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                        {{-- Render content cajamenor2 --}}
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th colspan="5" class="text-right">Total</td>
+                                        <th class="text-right"  id="total-valor">0</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+        		</div>
+        	</div>
+        </section>
     </script>
 
     <script type="text/template" id="add-cajamenor-detail-tpl">
         <div class="box box-solid">
             <div class="box-body">
-                <form method="POST" accept-charset="UTF-8" id="form-detail-cajamenor" data-toggle="validator">
+                <% if(edit) { %> <form method="POST" accept-charset="UTF-8" id="form-detail-cajamenor" data-toggle="validator"> <% } %>
                     <div class="row">
                         <div class="form-group col-md-3">
                             <div class="input-group input-group-sm">
@@ -171,31 +206,6 @@
                         </div>
                     </div>
                 </form>
-
-                <!-- table table-bordered table-striped -->
-                <div class="box-body table-responsive no-padding">
-                    <table id="browse-detalle-cajamenor-list" class="table table-hover table-bordered" cellspacing="0">
-                        <thead>
-                            <tr>
-                                <th width="5%"></th>
-                                <th width="25%">Concepto</th>
-                                <th width="30%">Tercero</th>
-                                <th width="15%">Cuenta</th>
-                                <th width="15%">Centro Costo</th>
-                                <th width="10%">Valor</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                                {{-- Render content ajustep2 --}}
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <th colspan="5" class="text-right">Total</td>
-                                <th class="text-right"  id="total-valor">0</td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
             </div>
         </div>
     </script>

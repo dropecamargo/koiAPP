@@ -71,7 +71,6 @@ class Ajuste1 extends Model
 	*/
 	public function detalleAsiento($naturaleza, $idCuenta, $valor)
 	{
-		\Log::info($valor);
 		$planCuenta = PlanCuenta::find($idCuenta);
 		if (!$planCuenta instanceof PlanCuenta) {
 			return "Error al recuperar cuenta en la preparacion del asiento";

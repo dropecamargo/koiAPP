@@ -16,7 +16,6 @@ app || (app = {});
             'click .item-detalle-cajamenor-remove': 'removeOne'
         },
         parameters: {
-            wrapper: null,
             reembolso: null,
             edit: false,
             dataFilter: {}
@@ -83,14 +82,14 @@ app || (app = {});
             var _this = this
 
             // Set Spinner
-            window.Misc.setSpinner( this.parameters.wrapper );
+            window.Misc.setSpinner( this.parameters.el );
 
             // Add model in collection
             var cajamenor2Model = new app.CajaMenor2Model();
             cajamenor2Model.save(data, {
                 success : function(model, resp) {
                     if(!_.isUndefined(resp.success)) {
-                        window.Misc.removeSpinner( _this.parameters.wrapper );
+                        window.Misc.removeSpinner( _this.parameters.el );
 
                         // response success or error
                         var text = resp.success ? '' : resp.errors;
@@ -104,10 +103,14 @@ app || (app = {});
                         }
                         // Add model in collection
                         _this.collection.add(model);
+
+                        // Clean form
+                        _this.parameters.wrapperTemplate.html( _this.parameters.template({edit: _this.parameters.edit}) );
+                        _this.ready();
                     }
                 },
                 error : function(model, error) {
-                    window.Misc.removeSpinner( _this.parameters.wrapper );
+                    window.Misc.removeSpinner( _this.parameters.el );
                     alertify.error(error.statusText)
                 }
             });
@@ -118,11 +121,28 @@ app || (app = {});
         */
         removeOne: function (e) {
             e.preventDefault();
-            var resource = $(e.currentTarget).attr("data-resource");
-            var model = this.collection.get(resource);
+            var _this = this;
+                resource = $(e.currentTarget).attr("data-resource");
+                model = this.collection.get(resource);
             if ( model instanceof Backbone.Model ) {
-                model.view.remove();
-                this.collection.remove(model);
+                model.destroy({
+                    success : function(model, resp) {
+                        if(!_.isUndefined(resp.success)) {
+                            window.Misc.removeSpinner( _this.el );
+
+                            if( !resp.success ) {
+                                alertify.error(resp.errors);
+                                return;
+                            }
+
+                            model.view.remove();
+                            _this.collection.remove(model);
+
+                            // Update total
+                            _this.totalize();
+                        }
+                    }
+                });
             }
         },
 
@@ -134,11 +154,23 @@ app || (app = {});
             this.$valor.html( window.Misc.currency(data) );
 
             // Render value in field cajamenor1_reembolso
-            if (!_.isNull(this.parameters.reembolso)) {
+            if (!_.isNull(this.parameters.reembolso))
                 this.parameters.reembolso.val(data);
-            }
         },
+        /**
+        * fires libraries js
+        */
+        ready: function () {
+            // to fire plugins
+            if( typeof window.initComponent.initSelect2 == 'function' )
+                window.initComponent.initSelect2();
 
+            if( typeof window.initComponent.initValidator == 'function' )
+                window.initComponent.initValidator();
+
+            if( typeof window.initComponent.initInputMask == 'function' )
+                window.initComponent.initInputMask();
+        },
         /**
         * Load spinner on the request
         */

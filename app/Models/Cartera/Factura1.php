@@ -153,7 +153,6 @@ class Factura1 extends BaseModel
 		// Plan de cuentas
 		$planCuenta = PlanCuenta::find($idCuenta);
 		if (!$planCuenta instanceof PlanCuenta) {
-			\Log::info($idCuenta);
 			return "Error al recuperar cuenta en Concepto de recibo";
 		}
 		if ($valor == 0) {

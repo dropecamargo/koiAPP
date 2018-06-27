@@ -33,27 +33,14 @@ class CajaMenor1 extends Model
 			'cajamenor1_numero' => 'required',
 			'cajamenor1_tercero' => 'required',
 			'cajamenor1_cuentabanco' => 'required',
-			'cajamenor1_fondo' => 'required',
-			'cajamenor1_efectivo' => 'required',
-			'cajamenor1_provisionales' => 'required',
-			'cajamenor1_reembolso' => 'required'
+			'cajamenor1_fondo' => 'required'
+			// 'cajamenor1_efectivo' => 'required',
+			// 'cajamenor1_provisionales' => 'required',
+			// 'cajamenor1_reembolso' => 'required'
 		];
 
 		$validator = Validator::make($data, $rules);
     	if ($validator->passes()) {
-            // Validar Carrito
-            $detalle = isset($data['detalle']) ? $data['detalle'] : null;
-            if(!isset($detalle) || $detalle == null || !is_array($detalle) || count($detalle) == 0) {
-                $this->errors = 'Por favor ingrese el detalle para realizar caja menor.';
-                return false;
-            }
-
-            // Valida $ fondo
-			$fondo = $data['cajamenor1_efectivo'] + $data['cajamenor1_provisionales'] + $data['cajamenor1_reembolso'];
-			if ($fondo != $data['cajamenor1_fondo']) {
-				$this->errors = 'Valor de FONDO no es igual a la suma de EFECTIVO, PROVISIONALES y REEMBOLSO.';
-				return false;
-			}
             return true;
         }
 		$this->errors = $validator->errors();
