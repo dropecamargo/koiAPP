@@ -4,6 +4,7 @@ namespace App\Models\Tesoreria;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Base\Tercero;
+use App\Models\Contabilidad\Documento;
 use Validator, DB;
 
 class Facturap1 extends Model
@@ -136,5 +137,49 @@ class Facturap1 extends Model
         $response->facturaProveedor = $historyClient;
         $response->position = $i;
         return $response;
+    }
+    /**
+    * Prepara el asiento 1
+    */
+    public function encabezadoAsiento(Tercero $tercero)
+    {
+        $object = new \stdClass();
+        $object->data = [];
+        $object->dataNif = [];
+
+        // Recuperar documento contable
+        $documento = Documento::where('documento_codigo', 'FP')->first();
+        if(!$documento instanceof Documento){
+            return "No es posible recuperar el prefijo FP en los documentos contables.";
+        }
+
+        // Data asiento
+        $object->data = [
+            'asiento1_mes' => (Int) date('m'),
+            'asiento1_ano' => (Int) date('Y'),
+            'asiento1_dia' => (Int) date('d'),
+            'asiento1_numero' => $documento->documento_consecutivo + 1,
+            'asiento1_folder' => $documento->documento_folder,
+            'asiento1_documento' => $documento->id,
+            'asiento1_documentos' => $documento->documento_codigo,
+            'asiento1_id_documentos' => $this->id,
+            'asiento1_beneficiario' => $tercero->tercero_nit,
+        ];
+
+        // Data Asiento Nif
+        if ($documento->documento_nif) {
+            $object->dataNif = [
+                'asienton1_mes' => (Int) date('m'),
+                'asienton1_ano' => (Int) date('Y'),
+                'asienton1_dia' => (Int) date('d'),
+                'asienton1_numero' => $documento->documento_consecutivo + 1,
+                'asienton1_folder' => $documento->documento_folder,
+                'asienton1_documento' => $documento->id,
+                'asienton1_documentos' => $documento->documento_codigo,
+                'asienton1_id_documentos' => $this->id,
+                'asienton1_beneficiario' => $tercero->tercero_nit,
+            ];
+        }
+        return $object;
     }
 }

@@ -69,9 +69,7 @@ class EntradaDetalleController extends Controller
                         return response()->json(['success' => false,'errors' => "No es posible realizar movimientos para productos que no manejan unidades"]);
                     }
 
-                    if ($request->get('entrada2_cantidad') == 0 || $request->get('entrada2_costo') == 0 ) {
-                       return response()->json(['success' => false,'errors' => "No es posible realizar $tipoAjuste->tipoajuste_nombre, por favor verifique la información ó consulte al administrador"]);
-                    }
+                    // Validaciones 
                     if ($producto->producto_maneja_serie == true) {
                         // Producto serie
                         $series = [];
@@ -82,7 +80,7 @@ class EntradaDetalleController extends Controller
 
                             // Validar series ingresadas repetidas
                             if(in_array($request->get("producto_serie_$item"), $series)){
-                                return response()->json(['success' => false,'errors' => "No es posible registrar dos números de serie iguales"]);  
+                                return response()->json(['success' => false,'errors' => "No es posible registrar dos números de serie iguales"]);
                             }
 
                             // Validar serie
@@ -104,7 +102,7 @@ class EntradaDetalleController extends Controller
                         foreach ($items as $key => $item) {
                             $metradoItem += $item['rollo_metros'] * $item['rollo_cantidad'];
                         }
-                        
+
                         if ($metradoItem != $request->entrada2_cantidad) {
                             return response()->json(['success' => false,'errors' => "Metraje debe ser igual a la cantidad de ({$request->entrada2_cantidad}) METROS ingresada anteriormente, por favor verifique información."]);
                         }
@@ -120,7 +118,7 @@ class EntradaDetalleController extends Controller
                         if ($numUnidades != $request->entrada2_cantidad) {
                             return response()->json(['success' => false,'errors' => "Unidades debe ser igual a la cantidad ({$request->entrada2_cantidad}) ingresada anteriormente, por favor verifique información."]);
                         }
-                    } 
+                    }
                     return response()->json(['success' => true, 'id' => uniqid(), 'id_producto'=>$producto->id,'producto_serie'=> $producto->producto_serie,'producto_nombre'=> $producto->producto_nombre ]);
                 } catch (\Exception $e) {
                     Log::error($e->getMessage());

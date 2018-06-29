@@ -24,6 +24,8 @@ class CreateFacturap1Table extends Migration
             $table->integer('facturap1_tipoproveedor')->unsigned();
             $table->integer('facturap1_tipogasto')->unsigned();
             $table->integer('facturap1_cuotas')->unsigned();
+            $table->integer('facturap1_asiento')->unsigned()->nullable();
+            $table->integer('facturap1_asienton')->unsigned()->nullable();
             $table->date('facturap1_fecha');
             $table->date('facturap1_vencimiento');
             $table->string('facturap1_factura', 20);
@@ -36,6 +38,8 @@ class CreateFacturap1Table extends Migration
             $table->double('facturap1_apagar')->default(0);
             $table->text('facturap1_observaciones');
 
+            $table->foreign('facturap1_asiento')->references('id')->on('asiento1')->onDelete('restrict');
+            $table->foreign('facturap1_asienton')->references('id')->on('asienton1')->onDelete('restrict');
             $table->foreign('facturap1_entrada1')->references('id')->on('entrada1')->onDelete('restrict');
             $table->foreign('facturap1_regional')->references('id')->on('regional')->onDelete('restrict');
             $table->foreign('facturap1_documentos')->references('id')->on('documentos')->onDelete('restrict');

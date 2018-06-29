@@ -14,7 +14,7 @@ app || (app = {});
         el: '#facturap-create',
         template: _.template(($('#add-facturap-tpl').html() || '') ),
         events: {
-            'click .submit-facturap': 'submitFormFacturap', 
+            'click .submit-facturap': 'submitFormFacturap',
             'submit #form-facturap' :'onStore',
 
             'submit #form-facturap2-impuesto': 'onStoreFacturap2',
@@ -40,18 +40,18 @@ app || (app = {});
             this.detalleFacturap4 = new app.DetalleFacturasp4Collection();
             this.activoFijoList = new app.ActivoFijoList();
             this.entradasList = new app.EntradasList();
-           
+
             // Events
             this.listenTo( this.model, 'change', this.render );
             this.listenTo( this.model, 'sync', this.responseServer );
-            this.listenTo( this.model, 'request', this.loadSpinner );            
+            this.listenTo( this.model, 'request', this.loadSpinner );
         },
 
         /*
         * Render View Element
         */
         render: function() {
-                        
+
             var attributes = this.model.toJSON();
                 attributes.edit = false;
             this.$el.html( this.template(attributes) );
@@ -60,7 +60,7 @@ app || (app = {});
 
             // Spinner
             this.spinner = this.$('#spinner-main');
-            
+
             //Reference views
             this.referenceViews();
 
@@ -70,8 +70,8 @@ app || (app = {});
         /*
         * Reference views
         */
-        referenceViews:function(){ 
-            
+        referenceViews:function(){
+
             // View facturap detail
             this.detalleFacturap2View = new app.Facturap2DetalleView( {
                 collection: this.detalleFacturap2,
@@ -141,9 +141,9 @@ app || (app = {});
                     if (this.entradasList.length > 0){
                         data.entrada1 = window.Misc.formToJson(this.$('#form-entrada'));
                         data.entrada2 = this.entradasList.toJSON();
-                    } 
+                    }
                 this.model.save( data, {patch: true, silent: true} );
-            }   
+            }
         },
         /**
         * Store facturap2
@@ -152,7 +152,7 @@ app || (app = {});
             if (!e.isDefaultPrevented()) {
                 e.preventDefault();
                 var data = window.Misc.formToJson( e.target ) ;
-                    data.facturap1 = window.Misc.formToJson( this.$form ); 
+                    data.facturap1 = window.Misc.formToJson( this.$form );
                 this.detalleFacturap2.trigger( 'store', data);
             }
         },
@@ -187,13 +187,13 @@ app || (app = {});
                 var data = window.Misc.formToJson( e.target );
                     data.tipo = 'E';
                     data.lote = this.$('#entrada1_lote').val();
-                    
+
                 window.Misc.evaluateActionsInventory({
                     'data': data,
                     'wrap': this.spinner,
                     'callback': (function (_this) {
                         return function ( action , tipo)
-                        {      
+                        {
                             // Open InventarioActionView
                             if ( _this.inventarioActionView instanceof Backbone.View ){
                                 _this.inventarioActionView.stopListening();
@@ -221,7 +221,7 @@ app || (app = {});
             e.preventDefault();
             var _this = this;
             if (_this.$('#facturap1_tercero').val() == '') {
-                _this.$(e.target).val('');   
+                _this.$(e.target).val('');
                 return alertify.error('Campo de proveedor se encuentra vacio, por favor verifique información');
             }
             if (_this.$(e.target).val() != '') {
@@ -330,9 +330,9 @@ app || (app = {});
         *
         */
         calculateBase: function(){
-            subtotal = this.$('#facturap1_subtotal').inputmask('unmaskedvalue'); 
-            descuento = this.$('#facturap1_descuento').inputmask('unmaskedvalue'); 
-            return subtotal - descuento; 
+            subtotal = this.$('#facturap1_subtotal').inputmask('unmaskedvalue');
+            descuento = this.$('#facturap1_descuento').inputmask('unmaskedvalue');
+            return subtotal - descuento;
         },
 
         /**
@@ -341,17 +341,17 @@ app || (app = {});
         ready: function () {
             // to fire plugins
             if( typeof window.initComponent.initICheck == 'function' )
-                window.initComponent.initICheck(); 
+                window.initComponent.initICheck();
 
             if( typeof window.initComponent.initInputMask == 'function' )
                 window.initComponent.initInputMask();
-            
+
             if( typeof window.initComponent.initToUpper == 'function' )
                 window.initComponent.initToUpper();
-            
+
             if( typeof window.initComponent.initSelect2 == 'function' )
                 window.initComponent.initSelect2();
-            
+
             if( typeof window.initComponent.initValidator == 'function' )
                 window.initComponent.initValidator();
 
@@ -381,7 +381,7 @@ app || (app = {});
 
                 if( !resp.success ) {
                     alertify.error(text);
-                    return; 
+                    return;
                 }
             }
             window.Misc.redirect( window.Misc.urlFull( Route.route('facturasp.show', { facturasp: resp.id})) );

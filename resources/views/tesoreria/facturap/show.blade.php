@@ -15,7 +15,7 @@
 
     <section class="content">
         <div class="box box-solid" id="facturap-show">
-            <div class="nav-tabs-custom tab-primary tab-whithout-box-shadow">
+            <div class="nav-tabs-custom tab-warning tab-whithout-box-shadow">
                 <ul class="nav nav-tabs">
                     <li class="active"><a href="#tab_facturap" data-toggle="tab">Factura</a></li>
                     <li><a href="#tab_impuesto" data-toggle="tab">Impuesto/Retención</a></li>
@@ -259,6 +259,18 @@
                 </div>
             </div>
         </div>
+		<div class="box box-solid">
+			<div class="box-body">
+				<div class="row">
+					<div class="col-md-6 col-sm-6 col-xs-6 text-left">
+						<h4><a href="{{ route('asientos.show', ['asientos' =>  $facturap1->facturap1_asiento ]) }}" target="_blanck" title="Ver Asiento"> Ver asiento contable </a></h4>
+					</div>
+					<div class="col-md-6 col-sm-6 col-xs-6 text-right">
+						<h4><b>Caja Menor N° {{$facturap1->facturap1_numero}} </b></h4>
+					</div>
+				</div>
+			</div>
+		</div>
     </section>
     <script type="text/template" id="show-facturap-cuota-tpl">
         <td><%- facturap3_cuota %></td>

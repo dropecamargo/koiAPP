@@ -6,7 +6,11 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\Tesoreria\Facturap1,App\Models\Tesoreria\Facturap2,App\Models\Tesoreria\Facturap3,App\Models\Tesoreria\TipoProveedor,App\Models\Tesoreria\TipoGasto,App\Models\Tesoreria\ReteFuente, App\Models\Inventario\Entrada1, App\Models\Inventario\Entrada2, App\Models\Inventario\Impuesto, App\Models\Contabilidad\ActivoFijo, App\Models\Base\Tercero, App\Models\Base\Documentos, App\Models\Base\Regional;
+use App\Classes\AsientoContableDocumento, App\Classes\AsientoNifContableDocumento;
+use App\Models\Base\Tercero, App\Models\Base\Documentos, App\Models\Base\Regional;
+use App\Models\Tesoreria\Facturap1, App\Models\Tesoreria\Facturap2, App\Models\Tesoreria\Facturap3, App\Models\Tesoreria\TipoProveedor, App\Models\Tesoreria\TipoGasto, App\Models\Tesoreria\ReteFuente;
+use App\Models\Inventario\Entrada1, App\Models\Inventario\Entrada2, App\Models\Inventario\Impuesto;
+use App\Models\Contabilidad\ActivoFijo;
 use App, View, DB, Log, Datatables;
 
 class Facturap1Controller extends Controller
@@ -135,6 +139,7 @@ class Facturap1Controller extends Controller
                     $facturap1->save();
 
                     // Facturap2
+                    $cuentas = [];
                     $facturap2 = isset($data['facturap2']) ? $data['facturap2'] : null;
                     foreach ($facturap2 as $item) {
                         $facturapDetalle = new Facturap2;
@@ -192,18 +197,72 @@ class Facturap1Controller extends Controller
                     $entrada2 = isset($data['entrada2']) ? $data['entrada2'] : null;
 
                     if (!empty($entrada1) && !empty($entrada1)) {
-                        $entrada = Entrada1::store($facturap1, $entrada1, $entrada2);
+                        $entrada = Entrada1::store($facturap1, $tipoproveedor, $entrada1, $entrada2);
                         if (!$entrada->success) {
                             DB::rollback();
                             return response()->json(['success'=> false, 'errors'=> $entrada->errors]);
                         }
+                        $cuentas = array_merge($cuentas,$entrada->cuentas);
                     }
+                    // Preparando asiento
+                    $encabezado = $facturap1->encabezadoAsiento($tercero);
+                    if(!is_object($encabezado)){
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $encabezado]);
+                    }
+                    //Creo el objeto para manejar el asiento
+                    $objAsiento = new AsientoContableDocumento($encabezado->data);
+                    if($objAsiento->asiento_error) {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $objAsiento->asiento_error]);
+                    }
+                    // Preparar asiento
+                    $result = $objAsiento->asientoCuentas($cuentas);
+                    if($result != 'OK'){
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $result]);
+                    }
+
+                    // Insertar asiento
+                    $result = $objAsiento->insertarAsiento();
+                    if($result != 'OK') {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $result]);
+                    }
+                    // AsientoNif
+                    if (!empty($encabezado->dataNif)) {
+                        // Creo el objeto para manejar el asiento
+                        $objAsientoNif = new AsientoNifContableDocumento($encabezado->dataNif);
+                        if($objAsientoNif->asientoNif_error) {
+                            DB::rollback();
+                            return response()->json(['success' => false, 'errors' => $objAsiento->asientoNif_error]);
+                        }
+
+                        // Preparar asiento
+                        $result = $objAsientoNif->asientoCuentas($cuentas);
+                        if($result != 'OK'){
+                            DB::rollback();
+                            return response()->json(['success' => false, 'errors' => $result]);
+                        }
+
+                        // Insertar asiento
+                        $result = $objAsientoNif->insertarAsientoNif();
+                        if($result != 'OK') {
+                            DB::rollback();
+                            return response()->json(['success' => false, 'errors' => $result]);
+                        }
+                        // Recuperar el Id del asiento y guardar en la factura
+                        $facturap1->facturap1_asienton = $objAsientoNif->asientoNif->id;
+                    }
+                    $facturap1->facturap1_asiento = $objAsiento->asiento->id;
+                    $facturap1->save();
                     // Update consecutive regional_fpro
                     $regional->regional_fpro = $consecutive;
                     $regional->save();
 
                     // Commit
                     DB::commit();
+                    // return response()->json(['success' => false, 'errors' => "TODO OK" ]);
                     return response()->json(['success' => true, 'id' => $facturap1->id ]);
                 } catch (\Exception $e) {
                     DB::rollback();

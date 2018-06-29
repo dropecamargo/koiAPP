@@ -1778,10 +1778,18 @@
 
 <script type="text/template" id="add-conceptoajustep-tpl">
 	<div class="row">
-		<div class="form-group col-sm-8">
+		<div class="form-group col-sm-5">
 			<label for="conceptoajustep_nombre" class="control-label">Nombre</label>
 			<input type="text" id="conceptoajustep_nombre" name="conceptoajustep_nombre" value="<%- conceptoajustep_nombre %>" placeholder="Nombre" class="form-control input-sm input-toupper" maxlength="50" required>
 			<div class="help-block with-errors"></div>
+		</div>
+		<div class="form-group col-sm-5">
+			<label for="conceptoajustep_cuenta" class="control-label">Plan cuenta</label>
+			<select name="conceptoajustep_cuenta" id="conceptoajustep_cuenta" class="form-control select2-default-clear">
+				@foreach( App\Models\Contabilidad\PlanCuenta::getPlanCuentas() as $key => $value)
+					<option value="{{ $key }}" <%- conceptoajustep_cuenta == '{{ $key }}' ? 'selected': ''%> >{{ $value }}</option>
+				@endforeach
+			</select>
 		</div>
 		<div class="form-group col-sm-2 col-xs-8">
 			<br><label class="checkbox-inline" for="conceptoajustep_activo">

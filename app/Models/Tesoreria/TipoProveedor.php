@@ -37,6 +37,7 @@ class TipoProveedor extends BaseModel
     {
         $rules = [
             'tipoproveedor_nombre' => 'required|max:50|unique:tipoproveedor',
+            'tipoproveedor_cuenta' => 'numeric',
         ];
 
         if ($this->exists){
@@ -44,7 +45,7 @@ class TipoProveedor extends BaseModel
         }else{
             $rules['tipoproveedor_nombre'] .= '|required';
         }
-        
+
         $validator = Validator::make($data, $rules);
         if ($validator->passes()) {
             return true;
@@ -66,5 +67,12 @@ class TipoProveedor extends BaseModel
             $collection->prepend('', '');
             return $collection;
         });
+    }
+
+    public static function getTipoProveedor($id){
+        $query = TipoProveedor::select('tipoproveedor.*', 'plancuentas_nombre', 'plancuentas_cuenta');
+        $query->leftJoin('plancuentas', 'tipoproveedor_cuenta', '=', 'plancuentas.id');
+        $query->where('tipoproveedor.id', $id);
+        return $query->first();
     }
 }

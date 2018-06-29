@@ -9,9 +9,13 @@
     <div class="box box-primary">
         <div class="box-body">
             <div class="row">
-                <div class="col-sm-4">
+                <div class="col-sm-5">
                     <label>Nombre</label>
                     <div>{{ $conceptoajustep->conceptoajustep_nombre }}</div>
+                </div>
+                <div class="col-md-5 col-xs-12 col-sm-12">
+                    <label class="control-label">Plan cuentas</label>
+                    <div>{{ $conceptoajustep->plancuentas_cuenta}} - {{ $conceptoajustep->plancuentas_nombre }}</div>
                 </div>
                 <div class="col-sm-2 col-xs-8"><br>
                     <label class="checkbox-inline" for="conceptoajustep_activo">

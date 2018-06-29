@@ -18,6 +18,7 @@ app || (app = {});
         defaults: {
             'tipoproveedor_nombre': '',
             'tipoproveedor_activo': 1,
+            'tipoproveedor_cuenta': '',
             'plancuentas_nombre': ''
         }
     });

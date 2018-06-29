@@ -3,7 +3,7 @@
 namespace App\Models\Inventario;
 
 use Illuminate\Database\Eloquent\Model;
-use Validator; 
+use Validator;
 
 class Entrada2 extends Model
 {
@@ -21,7 +21,7 @@ class Entrada2 extends Model
 	*
 	* @var array
 	*/
-	protected $fillable = ['entrada2_cantidad','entrada2_costo'];	
+	protected $fillable = ['entrada2_cantidad','entrada2_costo'];
 
 	public function isValid($data)
 	{
@@ -35,7 +35,6 @@ class Entrada2 extends Model
     		// Valid entrada
 	     	$dataEntrada = isset($data['entrada']) ? $data['entrada'] : null;
 	     	$entrada = new Entrada1;
-
             if(!$entrada->isValid($dataEntrada)) {
                 $this->errors = $entrada->errors;
                 return false;
@@ -57,7 +56,7 @@ class Entrada2 extends Model
 		return false;
 	}
 
-	public static function getEntrada2($id) 
+	public static function getEntrada2($id)
 	{
 		$query = Entrada2::query();
 		$query->select('entrada2.*', 'producto_serie', 'producto_nombre');

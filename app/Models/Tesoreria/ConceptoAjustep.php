@@ -44,7 +44,7 @@ class ConceptoAjustep extends BaseModel
 		}else{
 			$rules['conceptoajustep_nombre'] .= '|required';
 		}
-		
+
 		$validator = Validator::make($data, $rules);
     	if ($validator->passes()) {
             return true;
@@ -69,4 +69,11 @@ class ConceptoAjustep extends BaseModel
         	return $collection;
         });
     }
+	public static function getConcepto($id)
+	{
+		$query = ConceptoAjustep::select('conceptoajustep.*', 'plancuentas_nombre', 'plancuentas_cuenta');
+		$query->leftJoin('plancuentas', 'conceptoajustep_cuenta', '=', 'plancuentas.id');
+		$query->where('conceptoajustep.id', $id);
+		return $query->first();
+	}
 }

@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\Tesoreria\TipoProveedor;
+use App\Models\Tesoreria\TipoProveedor, App\Models\Contabilidad\PlanCuenta;
 use DB, Log, Datatables, Cache;
 
 class TipoProveedorController extends Controller
@@ -49,9 +49,24 @@ class TipoProveedorController extends Controller
             if ($tipoproveedor->isValid($data)) {
                 DB::beginTransaction();
                 try {
+                    // Recuperar Plan Cuentas
+                    $cuenta = PlanCuenta::find($request->tipoproveedor_cuenta);
+                    if (!$cuenta instanceof PlanCuenta) {
+                        DB::rollback();
+                        return response()->json(['success' => false , 'errors' => 'No es posible recuperar plan de cuenta, verifique información ó por favor consulte al administrador.']);
+                    }
+
+                    // Validando Sub Niveles
+                    $result = $cuenta->validarSubnivelesCuenta();
+                    if ($result != 'OK') {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $result ]);
+                    }
+
                     // TipoProveedor
                     $tipoproveedor->fill($data);
                     $tipoproveedor->fillBoolean($data);
+                    $tipoproveedor->tipoproveedor_cuenta = $cuenta->id;
                     $tipoproveedor->save();
 
                     // Commit Transaction
@@ -59,6 +74,7 @@ class TipoProveedorController extends Controller
 
                     // Forget cache
                     Cache::forget( TipoProveedor::$key_cache );
+
                     return response()->json(['success' => true, 'id' =>$tipoproveedor->id]);
                 } catch (\Exception $e) {
                     DB::rollback();
@@ -79,7 +95,7 @@ class TipoProveedorController extends Controller
      */
     public function show(Request $request, $id)
     {
-        $tipoproveedor = TipoProveedor::findOrFail($id);
+        $tipoproveedor = TipoProveedor::getTipoProveedor($id);
         if ($request->ajax()) {
             return response()->json($tipoproveedor);
         }
@@ -113,9 +129,24 @@ class TipoProveedorController extends Controller
             if ($tipoproveedor->isValid($data)) {
                 DB::beginTransaction();
                 try {
+                    // Recuperar Plan Cuentas
+                    $cuenta = PlanCuenta::find($request->tipoproveedor_cuenta);
+                    if (!$cuenta instanceof PlanCuenta) {
+                        DB::rollback();
+                        return response()->json(['success' => false , 'errors' => 'No es posible recuperar plan de cuenta, verifique información ó por favor consulte al administrador.']);
+                    }
+
+                    // Validando Sub Niveles
+                    $result = $cuenta->validarSubnivelesCuenta();
+                    if ($result != 'OK') {
+                        DB::rollback();
+                        return response()->json(['success' => false, 'errors' => $result ]);
+                    }
+
                     // TipoProveedor
                     $tipoproveedor->fill($data);
                     $tipoproveedor->fillBoolean($data);
+                    $tipoproveedor->tipoproveedor_cuenta = $cuenta->id;
                     $tipoproveedor->save();
 
                     // Commit Transaction
@@ -123,6 +154,7 @@ class TipoProveedorController extends Controller
 
                     // Forget cache
                     Cache::forget( TipoProveedor::$key_cache );
+
                     return response()->json(['success' => true, 'id' =>$tipoproveedor->id]);
                 } catch (\Exception $e) {
                     DB::rollback();

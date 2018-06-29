@@ -13,6 +13,10 @@
                     <label class="control-label">Nombre</label>
                     <div>{{ $tipoproveedor->tipoproveedor_nombre }}</div>
                 </div>
+                <div class="col-md-5 col-xs-12 col-sm-12">
+                    <label class="control-label">Plan cuentas</label>
+                    <div>{{ $tipoproveedor->plancuentas_cuenta}} - {{ $tipoproveedor->plancuentas_nombre }}</div>
+                </div>
                 <div class="col-sm-2 col-xs-8">
                     <label class="checkbox-inline" for="tipoproveedores_activo">
                         <input type="checkbox" id="tipoproveedores_activo" name="tipoproveedores_activo" value="tipoproveedores_activo" disabled {{ $tipoproveedor->tipoproveedor_activo ? 'checked': '' }}> Activo
