@@ -113,6 +113,7 @@ app || (app = {});
 	        var data = this.deudoresSearchTable.row( $(e.currentTarget).parents('tr') ).data();
 
 			this.$inputContent.val( data.deudor_nit );
+            this.$inputContent.attr('referencia_deudor', data.id);
             this.$inputName.val( data.deudor_nombre );
 
             this.$inputContent.trigger('change');

@@ -14,19 +14,19 @@ class DatabaseSeeder extends Seeder
     {
         Model::unguard();
 
-        $this->call(TerceroTableSeeder::class);
-        $this->call(EmpresaTableSeeder::class);
-        $this->call(DocumentosTableSeeder::class);
-        $this->call(RegionalesTableSeeder::class);
-        $this->call(SucursalesTableSeeder::class);
+        // $this->call(TerceroTableSeeder::class);
+        // $this->call(EmpresaTableSeeder::class);
+        // $this->call(DocumentosTableSeeder::class);
+        // $this->call(RegionalesTableSeeder::class);
+        // $this->call(SucursalesTableSeeder::class);
         $this->call(ModulosTableSeeder::class);
-        $this->call(PermisosTableSeeder::class);
-        $this->call(ImpuestoTableSeeder::class);
-        $this->call(UnidadMedidaTableSeeder::class);
-        $this->call(RolTableSeeder::class);
-        $this->call(TipoNotificacionTableSeeder::class);
-        $this->call(ServicioTableSeeder::class);
-        $this->call(UsuarioRolTableSeeder::class);
+        // $this->call(PermisosTableSeeder::class);
+        // $this->call(ImpuestoTableSeeder::class);
+        // $this->call(UnidadMedidaTableSeeder::class);
+        // $this->call(RolTableSeeder::class);
+        // $this->call(TipoNotificacionTableSeeder::class);
+        // $this->call(ServicioTableSeeder::class);
+        // $this->call(UsuarioRolTableSeeder::class);
 
         Model::reguard();
     }

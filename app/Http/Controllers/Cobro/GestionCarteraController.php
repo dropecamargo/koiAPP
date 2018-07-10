@@ -133,7 +133,7 @@ class GestionCarteraController extends Controller
                     }
 
                     // Campos para el documento cobro
-                    $docdeudor = Deudor::where('deudor_nit', $row->documentonitdeudor)->first();
+                    $docdeudor = Deudor::where('deudor_nit', $row->documentonitdeudor)->where('deudor_tercero', $tercero->id)->first();
                     if($docdeudor instanceof Deudor){
                         $documentocobro = new DocumentoCobro;
                         $documentocobro->documentocobro_deudor = $docdeudor->id;

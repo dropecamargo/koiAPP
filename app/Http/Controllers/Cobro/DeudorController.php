@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Str;
-
 use App\Models\Cobro\Deudor, App\Models\Cobro\GestionDeudor, App\Models\Cartera\ConceptoCob, App\Models\Base\Notificacion, App\Models\Base\Tercero;
 use Datatables, DB, Log, Auth;
 
@@ -29,6 +28,9 @@ class DeudorController extends Controller
                 ELSE tercero_razonsocial END)
             AS tercero_nombre"));
             $query->join('tercero', 'deudor_tercero', '=', 'tercero.id');
+            if( Auth::user()->hasRole('cliente') ){
+                $query->where('deudor_tercero', Auth::user()->id);
+            }
             return Datatables::of($query)
                 ->filter(function($query) use($request) {
                     // Tercero
@@ -89,6 +91,11 @@ class DeudorController extends Controller
         $deudor = Deudor::getDeudor($id);
         if ($request->ajax()) {
             return response()->json($deudor);
+        }
+        if( Auth::user()->hasRole('cliente') ){
+            if( $deudor->deudor_tercero != Auth::user()->id ){
+                abort('403');
+            }
         }
         return view('cobro.deudores.show', ['deudor' => $deudor]);
     }

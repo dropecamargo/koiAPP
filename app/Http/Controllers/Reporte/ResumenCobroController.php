@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Cobro\GestionDeudor;
-use View, Excel, App, DB, Log;
+use View, Excel, App, DB, Log, Auth;
 
 class ResumenCobroController extends Controller
 {
@@ -31,6 +31,9 @@ class ResumenCobroController extends Controller
             $query->join('deudor', 'gestiondeudor_deudor', '=', 'deudor.id');
             $query->join('tercero', 'deudor_tercero', '=', 'tercero.id');
             $query->whereBetween( DB::raw("SUBSTRING_INDEX(gestiondeudor_fh, ' ', '1')"), [$request->fecha_inicial, $request->fecha_final] );
+            if( Auth::user()->hasRole('cliente') ){
+                $query->where('deudor_tercero', Auth::user()->id);
+            }
             $llamadas = $query->get();
 
                 // llamadas programadas en rango de fecha
@@ -45,6 +48,9 @@ class ResumenCobroController extends Controller
             $query->join('deudor', 'gestiondeudor_deudor', '=', 'deudor.id');
             $query->join('tercero', 'deudor_tercero', '=', 'tercero.id');
             $query->whereBetween( DB::raw("SUBSTRING_INDEX(gestiondeudor_proxima, ' ', '1')"), [$request->fecha_inicial, $request->fecha_final] );
+            if( Auth::user()->hasRole('cliente') ){
+                $query->where('deudor_tercero', Auth::user()->id);
+            }
             $llamadas_p = $query->get();
 
             // Preparar datos reporte
