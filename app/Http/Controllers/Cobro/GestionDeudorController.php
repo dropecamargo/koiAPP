@@ -21,7 +21,7 @@ class GestionDeudorController extends Controller
     {
         if( $request->ajax() ){
             $query = GestionDeudor::query();
-            $query->select('gestiondeudor.*', 'conceptocob_nombre',  DB::raw("(CASE WHEN tercero_persona = 'N'
+            $query->select('gestiondeudor.*', 'deudor_tercero', 'conceptocob_nombre',  DB::raw("(CASE WHEN tercero_persona = 'N'
                 THEN CONCAT(tercero_nombre1,' ',tercero_nombre2,' ',tercero_apellido1,' ',tercero_apellido2,
                         (CASE WHEN (tercero_razonsocial IS NOT NULL AND tercero_razonsocial != '') THEN CONCAT(' - ', tercero_razonsocial) ELSE '' END)
                     )
@@ -30,6 +30,9 @@ class GestionDeudorController extends Controller
             $query->join('conceptocob','gestiondeudor_conceptocob', '=', 'conceptocob.id');
             $query->join('deudor','gestiondeudor_deudor', '=', 'deudor.id');
             $query->join('tercero','deudor_tercero', '=', 'tercero.id');
+            if( Auth::user()->hasRole('cliente') ){
+                $query->where('deudor_tercero', Auth::user()->id);
+            }
             return Datatables::of($query->get())->make(true);
         }
         return view('cobro.gestiondeudores.index');
@@ -66,7 +69,7 @@ class GestionDeudorController extends Controller
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar cliente, verifique información ó por favor consulte al administrador.']);
                     }
 
-                    $deudor = Deudor::where('deudor_nit', $request->gestiondeudor_deudor)->first();
+                    $deudor = Deudor::where('deudor.id', $request->deudor_id)->first();
                     if(!$deudor instanceof Deudor) {
                         DB::rollback();
                         return response()->json(['success' => false, 'errors' => 'No es posible recuperar deudor, verifique información ó por favor consulte al administrador.']);
@@ -126,10 +129,18 @@ class GestionDeudorController extends Controller
      */
     public function show(Request $request, $id)
     {
+
         $gestiondeudor = GestionDeudor::getGestionDeudor($id);
         if(!$gestiondeudor instanceof GestionDeudor) {
             abort(404);
         }
+
+        if( Auth::user()->hasRole('cliente') ){
+            if( $gestiondeudor->deudor_tercero != Auth::user()->id ){
+                abort('403');
+            }
+        }
+
          if($request->ajax()) {
             return response()->json($gestiondeudor);
         }

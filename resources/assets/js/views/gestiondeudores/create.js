@@ -31,6 +31,17 @@ app || (app = {});
             this.listenTo( this.model, 'request', this.loadSpinner );
         },
 
+        /*
+        * Render View Element
+        */
+        render: function() {
+            var attributes = this.model.toJSON();
+            this.$wraperForm.html( this.template(attributes) );
+            this.deudor = this.$('#gestiondeudor_deudor');
+
+            this.ready();
+        },
+
         /**
         * Event Create Folder
         */
@@ -39,6 +50,8 @@ app || (app = {});
                 e.preventDefault();
 
                 var data = window.Misc.formToJson( e.target );
+                    data.deudor_id = this.deudor.attr('referencia_deudor');
+
                 this.model.save( data, {patch: true, silent: true} );
             }
         },
@@ -63,16 +76,6 @@ app || (app = {});
                     }
                 }
             });
-        },
-
-        /*
-        * Render View Element
-        */
-        render: function() {
-            var attributes = this.model.toJSON();
-            this.$wraperForm.html( this.template(attributes) );
-
-            this.ready();
         },
 
         /**

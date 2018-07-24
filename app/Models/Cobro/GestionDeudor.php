@@ -41,7 +41,7 @@ class GestionDeudor extends BaseModel
 
     public static function getGestionDeudor($id){
         $query = GestionDeudor::query();
-        $query->select('gestiondeudor.*', 'conceptocob_nombre', 'deudor_nit', 'deudor_digito', 'deudor_razonsocial', 'deudor_nombre1', 'deudor_nombre2', 'deudor_apellido1', 'deudor_apellido2', 'tercero_nit', DB::raw("(CASE WHEN tercero_persona = 'N'
+        $query->select('gestiondeudor.*', 'conceptocob_nombre', 'deudor_tercero', 'deudor_nit', 'deudor_digito', 'deudor_razonsocial', 'deudor_nombre1', 'deudor_nombre2', 'deudor_apellido1', 'deudor_apellido2', 'tercero_nit', DB::raw("(CASE WHEN tercero_persona = 'N'
             THEN CONCAT(tercero_nombre1,' ',tercero_nombre2,' ',tercero_apellido1,' ',tercero_apellido2,
                     (CASE WHEN (tercero_razonsocial IS NOT NULL AND tercero_razonsocial != '') THEN CONCAT(' - ', tercero_razonsocial) ELSE '' END)
                 )
