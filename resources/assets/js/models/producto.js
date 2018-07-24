@@ -45,7 +45,8 @@ app || (app = {});
             'producto_tercero':'',
             'producto_servicio':'',
             'producto_vencimiento': moment().format('YYYY-MM-DD'),
-            'producto_unidad': 1
+            'producto_unidad': 1,
+            'modelo_nombre': ''
         }
     });
 })(this, this.document);

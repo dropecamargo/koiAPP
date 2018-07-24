@@ -41,6 +41,7 @@ app || (app = {});
             'sucursales(/)': 'getSucursalesMain',
             'sucursales/create(/)': 'getSucursalesCreate',
             'sucursales/:sucursal/edit(/)': 'getSucursalesEdit',
+            'sucursales/:sucursal(/)': 'getSucursalesShow',
 
             //Ubicaciones
             'ubicaciones(/)': 'getUbicacionesMain',
@@ -625,6 +626,19 @@ app || (app = {});
             this.createSucursalView = new app.CreateSucursalView({ model: this.sucursalModel });
             this.sucursalModel.fetch();
         },
+
+        getSucursalesShow: function (sucursal) {
+            this.sucursalModel = new app.SucursalModel();
+            this.sucursalModel.set({'id': sucursal}, {'silent':true});
+
+            if ( this.showSucursalView instanceof Backbone.View ){
+                this.showSucursalView.stopListening();
+                this.showSucursalView.undelegateEvents();
+            }
+
+            this.showSucursalView = new app.ShowSucursalView({ model: this.sucursalModel });
+        },
+
         // Ubicaciones
         getUbicacionesMain: function () {
 

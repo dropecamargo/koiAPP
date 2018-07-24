@@ -24,8 +24,8 @@ label {
 	width: 100% !important;
 }
 
-input[type=file] {
-	display: none;
+input#file.selectfile {
+    display: none;
 }
 
 .select2-container--default .select2-selection--multiple .select2-selection__choice {
@@ -340,12 +340,28 @@ label {
 	color:black;
 }
 
-#fine-uploader .preview-link {
-    display: block;
-    height: 100%;
-    width: 100%;
+.qq-uploader {
+	max-height: initial;
 }
 
-#fine-uploader .qq-upload-button {
-    width: 150px;
+#trigger-upload {
+	color: white;
+	background-color: #00ABC7;
+	font-size: 14px;
+	padding: 7px 20px;
+	background-image: none;
+}
+
+.fine-uploader .qq-upload-button {
+   margin-right: 15px;
+   width: 150px;
+}
+
+.fine-uploader .qq-uploader .qq-total-progress-bar-container {
+   width: 60%;
+}
+
+.fine-uploader .qq-uploader .qq-upload-file-selector {
+   width: 60%;
+   overflow-x: visible;
 }

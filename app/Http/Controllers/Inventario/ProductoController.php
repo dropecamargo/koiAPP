@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\Base\Sucursal, App\Models\Inventario\Producto, App\Models\Inventario\Prodbode, App\Models\Inventario\Impuesto, App\Models\Inventario\TipoAjuste, App\Models\Base\Tercero, App\Models\Base\Contacto, App\Models\Inventario\Servicio, App\Models\Inventario\Linea, App\Models\Inventario\Marca, App\Models\Inventario\Modelo, App\Models\Inventario\TipoProducto, App\Models\Inventario\Grupo, App\Models\Inventario\SubGrupo, App\Models\Inventario\Unidad;
-use DB, Log, Datatables, Excel;
+use App\Models\Base\Sucursal, App\Models\Inventario\Producto, App\Models\Inventario\Prodbode, App\Models\Inventario\Impuesto, App\Models\Inventario\TipoAjuste, App\Models\Base\Tercero, App\Models\Base\Contacto, App\Models\Inventario\Servicio, App\Models\Inventario\Linea, App\Models\Inventario\Marca, App\Models\Inventario\Modelo, App\Models\Inventario\TipoProducto, App\Models\Inventario\Grupo, App\Models\Inventario\SubGrupo, App\Models\Inventario\Unidad, App\Models\Inventario\ProductoImagen;
+use DB, Log, Datatables, Excel, Storage, Auth;
 
 class ProductoController extends Controller
 {
@@ -201,6 +201,22 @@ class ProductoController extends Controller
                     $producto->producto_marca = $marca->id;
                     $producto->producto_modelo = $modelo->id;
                     $producto->save();
+
+                    // Reuperar imagenes y almacenar en storage/app/productos
+                    foreach ($data['imagenes'] as $image) {
+                        // Recuperar nombre de archivo
+                        $name = str_random(4)."_{$image->getClientOriginalName()}";
+
+                        // Insertar imagen
+                        $imagen = new ProductoImagen;
+                        $imagen->productoi_archivo = $name;
+                        $imagen->productoi_producto = $producto->id;
+                        $imagen->productoi_fh_elaboro = date('Y-m-d H:m:s');
+                        $imagen->productoi_usuario_elaboro = Auth::user()->id;
+                        $imagen->save();
+
+                        Storage::put("productos/producto_$producto->id/$name", file_get_contents($image->getRealPath()));
+                    }
 
                     // Commit Transaction
                     DB::commit();

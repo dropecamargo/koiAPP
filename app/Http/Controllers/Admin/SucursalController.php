@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\Base\Sucursal,App\Models\Base\Ubicacion,App\Models\Base\Regional;
-use DB, Log, Datatables, Cache;
+use App\Models\Base\Sucursal, App\Models\Base\Ubicacion, App\Models\Base\Regiona, App\Models\Base\SucursalImagen;
+use DB, Log, Datatables, Cache, Auth, Storage;
 
 class SucursalController extends Controller
 {
@@ -63,6 +63,22 @@ class SucursalController extends Controller
                         $sucursal->sucursal_defecto = $ubicacion->id;
                         $sucursal->sucursal_ubicaciones = true;
                         $sucursal->save();
+                    }
+
+                    // Reuperar imagenes y almacenar en storage/app/productos
+                    foreach ($data['imagenes'] as $image) {
+                        // Recuperar nombre de archivo
+                        $name = str_random(4)."_{$image->getClientOriginalName()}";
+
+                        // Insertar imagen
+                        $imagen = new SucursalImagen;
+                        $imagen->sucursali_archivo = $name;
+                        $imagen->sucursali_sucursal = $sucursal->id;
+                        $imagen->sucursali_fh_elaboro = date('Y-m-d H:m:s');
+                        $imagen->sucursali_usuario_elaboro = Auth::user()->id;
+                        $imagen->save();
+
+                        Storage::put("sucursales/sucursal_$sucursal->id/$name", file_get_contents($image->getRealPath()));
                     }
 
                     // Commit Transaction

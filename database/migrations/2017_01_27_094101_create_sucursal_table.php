@@ -32,6 +32,8 @@ class CreateSucursalTable extends Migration
             $table->integer('sucursal_remr')->unsigned();
             $table->integer('sucursal_trau')->unsigned();
             $table->boolean('sucursal_activo')->default(false);
+            $table->double('sucursal_latitud')->default(0);
+            $table->double('sucursal_longitud')->default(0);
 
             $table->unique(['sucursal_nombre', 'sucursal_regional']);
             $table->foreign('sucursal_regional')->references('id')->on('regional')->onDelete('restrict');

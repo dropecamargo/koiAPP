@@ -59,6 +59,9 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::resource('departamentos', 'Admin\DepartamentoController', ['only' => ['index', 'show']]);
 	Route::resource('municipios', 'Admin\MunicipioController', ['only' => ['index']]);
 	Route::resource('paises', 'Admin\PaisController', ['only' => ['index']]);
+	Route::group(['prefix' => 'sucursales'], function(){
+		Route::resource('imagenes', 'Admin\SucursalImagenController', ['only' => ['index', 'store', 'destroy']]);
+	});
 	Route::resource('sucursales', 'Admin\SucursalController', ['except' => ['destroy']]);
 	Route::resource('ubicaciones', 'Admin\UbicacionController', ['except' => ['destroy']]);
 	Route::resource('notificaciones', 'Admin\NotificacionController', ['only' => ['index','update']]);
@@ -176,12 +179,13 @@ Route::group(['middleware' => 'auth'], function(){
 		Route::get('search', ['as' => 'productos.search', 'uses' => 'Inventario\ProductoController@search']);
 		Route::resource('rollos', 'Inventario\RolloController', ['only' => ['index']]);
 		Route::resource('lotes', 'Inventario\LoteController', ['only' => ['index']]);
-		Route::post('evaluate',['as' =>'productos.evaluate','uses'=>'Inventario\ProductoController@evaluate'] );
-		Route::post('validate',['as' =>'productos.validate','uses'=>'Inventario\ProductoController@validation'] );
-		Route::put('machine',['as' =>'productos.machine','uses'=>'Inventario\ProductoController@machine'] );
-		Route::post('storeserie',['as' =>'productos.storeserie','uses'=>'Inventario\ProductoController@storeserie'] );
+		Route::post('evaluate', ['as' => 'productos.evaluate', 'uses' => 'Inventario\ProductoController@evaluate'] );
+		Route::post('validate', ['as' => 'productos.validate', 'uses' => 'Inventario\ProductoController@validation'] );
+		Route::put('machine', ['as' => 'productos.machine', 'uses' => 'Inventario\ProductoController@machine'] );
+		Route::post('storeserie', ['as' => 'productos.storeserie', 'uses' => 'Inventario\ProductoController@storeserie'] );
 		Route::resource('prodbode', 'Inventario\ProdbodeController', ['only' => ['index']]);
-		Route::get('referencia',['as' =>'productos.referencia','uses'=>'Inventario\ProductoController@referencia'] );
+		Route::get('referencia', ['as' => 'productos.referencia', 'uses' => 'Inventario\ProductoController@referencia'] );
+		Route::resource('imagenes', 'Inventario\ProductoImagenController', ['only' => ['index', 'store', 'destroy']]);
 	});
 
 	Route::group(['prefix' => 'pedidos'], function()

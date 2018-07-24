@@ -474,6 +474,19 @@
                       </div>
                   </div>
                 @endif
+                <div class="box box-solid collapsed-box">
+                    <div class="box-header">
+                        <h1 class="box-title">Imágenes</h1>
+                        <div class="box-tools pull-right">
+                            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div class="box-body">
+                            <div class="fine-uploader"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 

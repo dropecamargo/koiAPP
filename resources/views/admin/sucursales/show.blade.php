@@ -6,7 +6,7 @@
 @stop
 
 @section('module')
-    <div class="box box-primary">
+    <div class="box box-primary" id="sucursal-show">
         <div class="box-body">
             <div class="row">
                 <div class="form-group col-sm-4">
@@ -34,23 +34,33 @@
                 </div>
             </div>
 
-        </div>
-
-        <div class="box-footer with-border">
-            <div class="row">
-                @if( $sucursal->sucursal_nombre != '090 GARANTIAS' && $sucursal->sucursal_nombre != '091 PROVISIONAL')
+            <div class="box-footer with-border">
+                <div class="row">
+                    @if( $sucursal->sucursal_nombre != '090 GARANTIAS' && $sucursal->sucursal_nombre != '091 PROVISIONAL')
                     <div class="col-sm-2 col-sm-offset-4 col-xs-6 text-left">
-                @else
-                    <div class="col-sm-2 col-sm-offset-5 col-xs-6 text-left">
-                @endif
-                    <a href=" {{ route('sucursales.index') }}" class="btn btn-default btn-sm btn-block">{{ trans('app.comeback') }}</a>
+                        @else
+                        <div class="col-sm-2 col-sm-offset-5 col-xs-6 text-left">
+                            @endif
+                            <a href=" {{ route('sucursales.index') }}" class="btn btn-default btn-sm btn-block">{{ trans('app.comeback') }}</a>
+                        </div>
+
+                        @if( $sucursal->sucursal_nombre != '090 GARANTIAS' && $sucursal->sucursal_nombre != '091 PROVISIONAL')
+                        <div class="col-sm-2 col-xs-6 text-right">
+                            <a href=" {{ route('sucursales.edit', ['sucursales' => $sucursal->id ])}}" class="btn btn-primary btn-sm btn-block"> {{trans('app.edit')}}</a>
+                        </div>
+                        @endif
+                    </div>
                 </div>
 
-                @if( $sucursal->sucursal_nombre != '090 GARANTIAS' && $sucursal->sucursal_nombre != '091 PROVISIONAL')
-                    <div class="col-sm-2 col-xs-6 text-right">
-                        <a href=" {{ route('sucursales.edit', ['sucursales' => $sucursal->id ])}}" class="btn btn-primary btn-sm btn-block"> {{trans('app.edit')}}</a>
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Imágenes</h3>
                     </div>
-                @endif
+
+                    <div class="box-body">
+                        <div class="fine-uploader"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

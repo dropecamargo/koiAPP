@@ -27,6 +27,7 @@ return [
     'find' => 'Buscar',
     'continue' => 'Continuar',
     'clear' => 'Limpiar',
+	'delete' => 'Eliminar',
 
     'pdf' => 'Generar PDF',
     'xls' => 'Generar XLS',
@@ -35,9 +36,10 @@ return [
 		'xls' => 'Importar XLS',
 	],
 
-    'files' => [
-        'upload' => 'Seleccionar archivo',
-        'drop' => 'Suelta los archivos aquí',
-        'retry' => 'Volver a intentar'
+	'files' => [
+        'choose-file' => 'Examinar...',
+        'drop' => 'Arrastre y suelte los archivos aquí...',
+        'retry' => 'Volver a intentar',
+        'process' => 'Procesando los archivos...'
     ]
 ];

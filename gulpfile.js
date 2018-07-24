@@ -13,7 +13,8 @@ var elixir = require('laravel-elixir');
 
 var paths = {
     'libs': './resources/assets/libs/',
-    'adminlte': './resources/assets/libs/AdminLTE/'
+    'adminlte': './resources/assets/libs/AdminLTE/',
+    'node': './node_modules/'
 }
 
 elixir(function(mix) {
@@ -32,8 +33,7 @@ elixir(function(mix) {
         paths.libs + 'font-awesome/css/font-awesome.min.css',
         paths.libs + 'fullcalendar/dist/fullcalendar.min.css',
         paths.libs + 'datatables.net-bs/css/dataTables.bootstrap.css',
-        paths.libs + 'fine-uploader/dist/fine-uploader.min.css',
-        paths.libs + 'fine-uploader/dist/fine-uploader-gallery.css',
+        paths.node + 'fine-uploader/jquery.fine-uploader/fine-uploader-new.css',
         paths.libs + 'datatables.net-buttons-bs/css/buttons.bootstrap.min.css',
     ], 'public/css/vendor.min.css');
 
@@ -69,7 +69,7 @@ elixir(function(mix) {
         paths.libs + 'alertify.js/dist/js/alertify.js',
         paths.libs + 'fullcalendar/dist/fullcalendar.min.js',
         paths.libs + 'fullcalendar/dist/locale/es.js',
-        paths.libs + 'fine-uploader/dist/jquery.fine-uploader.js',
+        paths.node + 'fine-uploader/jquery.fine-uploader/jquery.fine-uploader.js',
    	], 'public/js/vendor.min.js')
     .scripts([
         'models/*.js',
@@ -86,7 +86,8 @@ elixir(function(mix) {
 
     mix.copy(paths.adminlte + 'bootstrap/fonts/', 'public/build/fonts');
     mix.copy(paths.adminlte + 'plugins/iCheck/minimal/green**.png', 'public/build/css');
-    mix.copy(paths.libs + 'fine-uploader/dist/**.gif', 'public/build/css');
+    mix.copy(paths.node + 'fine-uploader/jquery.fine-uploader/**.gif', 'public/build/css');
+    mix.copy(paths.node + 'fine-uploader/jquery.fine-uploader/placeholders/**.png', 'public/build/css/placeholders');
     mix.copy(paths.libs + 'font-awesome/fonts/', 'public/build/fonts');
     mix.copy(paths.libs + 'jquery-ui/themes/base/images/', 'public/build/css/images/');
 });
