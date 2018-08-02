@@ -66,7 +66,8 @@ class SucursalController extends Controller
                     }
 
                     // Reuperar imagenes y almacenar en storage/app/productos
-                    foreach ($data['imagenes'] as $image) {
+                    $images = isset( $data['imagenes'] ) ? $data['imagenes'] : [];
+                    foreach ($images as $image) {
                         // Recuperar nombre de archivo
                         $name = str_random(4)."_{$image->getClientOriginalName()}";
 
