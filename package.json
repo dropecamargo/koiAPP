@@ -4,7 +4,9 @@
     "gulp": "^3.8.8"
   },
   "dependencies": {
+    "bootstrap-sass": "^3.0.0",
+    "fine-uploader": "^5.16.2",
     "laravel-elixir": "^4.0.0",
-    "bootstrap-sass": "^3.0.0"
+    "natives": "^1.1.4"
   }
 }

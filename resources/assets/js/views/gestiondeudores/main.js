@@ -28,10 +28,14 @@ app || (app = {});
                 ajax: window.Misc.urlFull( Route.route('gestiondeudores.index') ),
                 columns: [
                     { data: 'id', name: 'id' },
-                    { data: 'conceptocob_nombre', name: 'conceptocob_nombre' },
+                    { data: 'deudor_nombre', name: 'deudor_nombre' },
                     { data: 'tercero_nombre', name: 'tercero_nombre' },
                     { data: 'gestiondeudor_fh', name: 'gestiondeudor_fh'},
                     { data: 'gestiondeudor_proxima', name: 'gestiondeudor_proxima'},
+                    { data: 'deudor_nombre1', name: 'deudor.deudor_nombre1'},
+                    { data: 'deudor_nombre2', name: 'deudor.deudor_nombre2'},
+                    { data: 'deudor_apellido1', name: 'deudor.deudor_apellido1'},
+                    { data: 'deudor_apellido2', name: 'deudor.deudor_apellido2'},
                 ],
                 buttons: [
                     {
@@ -50,6 +54,15 @@ app || (app = {});
                         render: function ( data, type, full, row ) {
                             return '<a href="'+ window.Misc.urlFull( Route.route('gestiondeudores.show', {gestiondeudores: full.id }) )  +'">' + data + '</a>';
                         }
+                    },
+                    {
+                        targets: [5,6,7,8],
+                        visible: false,
+                        searchable: true,
+                    },
+                    {
+                        targets: [1,2],
+                        searchable: false,
                     }
                 ]
             });

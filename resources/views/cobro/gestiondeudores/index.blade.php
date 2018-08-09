@@ -12,7 +12,7 @@
                     <thead>
                         <tr>
                             <th>Código</th>
-                            <th>Concepto</th>
+                            <th>Deudor</th>
                             <th>Cliente</th>
                             <th>Fecha</th>
                             <th>Fecha proxima</th>
